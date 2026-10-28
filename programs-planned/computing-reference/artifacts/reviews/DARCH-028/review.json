@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-028",
+  "chapter_digest": "652b0b40b32b5a331d085fb015563d39c20f486640cd0469621bfa7df4c5f2e5",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked ISO/IEC/IEEE 42010:2022, NIST SP 800-160 Volume 1 Revision 1, W3C PROV-O, W3C DCAT 3, OpenAPI Specification 3.1.1, AsyncAPI Specification 3.0.0, Google's SRE chapter on Addressing Cascading Failures, and Data Mesh Principles and Logical Architecture. Seven primary destinations returned HTTP 200. The official ISO record was retrievable through source review but rejected the command-line client with HTTP 403. Claims remain bounded to architecture description, trustworthy secure-system engineering, provenance, catalogs, interface description, cascading-failure practice, or data-mesh architecture."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the directed multigraph, typed dependency-edge tuple, direct provider and consumer sets, reverse-reachable blast-radius set, strongly connected components, evidence predicates, and contextual criticality function.",
+        "Checked the declared edge direction as consumer to provider and the corresponding reverse traversal for affected consumers.",
+        "Verified distinct semantic, operational, control, organizational, platform, provider, and lifecycle dependency meanings."
+      ],
+      "notes": "Notation preserves edge type, version, purpose, authority, effective time, and query convention rather than treating every system arrow as equivalent."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed cross-domain-blast-radius with Python 3.14.4 and reproduced 6 nodes, 6 edges, provider=party, 4 affected nodes, and the sorted blast radius fraud, fulfillment, orders, revenue.",
+        "Recomputed reachability as party to orders and fraud directly, orders to fulfillment and revenue, and revenue to fraud, with duplicates removed.",
+        "Verified that rates is not reverse-reachable from party and that the provider itself is excluded by the declared convention."
+      ],
+      "notes": "The exact result applies only to the six declared edges; realized production impact depends on versions, feature use, timing, fallbacks, and graph completeness."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived reverse-reachable blast radius under consumer-to-provider edge direction.",
+        "Verified that mutually reachable nodes form candidate cyclic components while cycles require semantic and operational review rather than automatic rejection.",
+        "Checked that declared-only, observed-only, corroborated, and absent states follow from paired design and runtime evidence predicates."
+      ],
+      "notes": "The reasoning distinguishes structural potential, contextual criticality, actual runtime effect, semantic authority, and verified harm."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed product versus system nodes, direct versus transitive edges, technical lineage versus semantic authority, source versus feedback, delayed cycle versus removed cycle, and potential versus realized impact.",
+        "Tested hidden consumers, seasonal use, missing telemetry, stale declarations, shared controls, correlated regions, retry storms, cache age, corrupt replay, identity merges, and reference-code changes.",
+        "Reviewed providers, licensing, purpose, access, privacy, security, records, unknown use, reorganizations, product retirement, historical reports, and archival correction duties."
+      ],
+      "notes": "Boundary cases prevent lineage coverage, edge count, popularity, asynchrony, provider terms, caching, or source correction from standing in for governed end-to-end dependency behavior."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced consumer, provider, purpose, assertions, interface, contract, service, criticality, failure modes, controls, evidence, ownership, and lifecycle through the chapter.",
+        "Verified authority, runtime discovery, critical paths, blast radius, concentration, cycles, caching, bulkheads, retries, degradation, quality, corrections, incidents, changes, and retirement obligations.",
+        "Checked identity, semantic, contract, discovery, topology, resilience, protection, change, operation, and lifecycle obligations across all ten gates."
+      ],
+      "notes": "The invariants preserve semantic authority and bounded propagation through normal use, change, failure, correction, provider events, organizational transfer, and retirement."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the identity, semantic, contract, discovery, topology, resilience, protection, change, operation, and lifecycle gates as one assurance argument.",
+        "Checked counterexamples to lineage-is-architecture, system-arrows-identify-responsibility, autonomy-means-no-dependency, asynchrony-removes-coupling, cycles-hidden-by-queues-are-gone, and component-percentages-compose-directly reasoning.",
+        "Verified that credible governance requires typed edges, reconciled evidence, topology analysis, resilience, protection, change control, end-to-end validation, ownership, and lifecycle closure."
+      ],
+      "notes": "The chapter provides a dependency assurance structure, not proof that one topology, lineage tool, central model, platform pattern, resilience mechanism, or graph metric fits every organization."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of dependency, authority, source, truth, critical, affected, available, resilient, isolated, complete, observed, active, corrected, recovered, verified, and proof.",
+        "Confirmed that potential reachability, realized impact, declared design, runtime observation, semantic authority, contract conformance, and risk acceptance remain distinct.",
+        "Verified that the executable checker is labeled as reverse reachability over six declared edges and excludes graph completeness, active use, realized impact, cycles, fallback, controls, and risk."
+      ],
+      "notes": "Claims remain bounded to declared nodes, edge direction, types, versions, purposes, assertions, time, evidence, and query conventions."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated standards and architectural guidance, internal graph reasoning, executable fixtures, illustrative examples, exercises, runtime observations, incident evidence, and independent assurance.",
+        "Confirmed that no production graph completeness, active edge, realized blast radius, resilience, control effectiveness, completed recovery, acceptable risk, or external review is claimed.",
+        "Checked that local adoption requires reconciled declarations and observations, version analysis, contracts, tests, telemetry, exercises, incidents, protection review, consumer validation, and accountable decisions."
+      ],
+      "notes": "Normative sources, internal reasoning, generated checks, design assertions, runtime evidence, operational outcomes, and external assurance are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed directed multigraphs, dependency types, products and systems, edge contracts, predicate authority, feedback, declared and runtime discovery, human and policy edges, criticality, transitivity, blast radius, concentration, cut points, cycles, service budgets, caching, bulkheads, retries, degradation, quality, correction, incidents, change, unknown consumers, shared semantics, reference data, identity, platforms, controls, providers, views, tests, measures, transfer, and retirement as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable edge records, stable identifiers, contract links, catalog and runtime reconciliation, critical-path queries, reverse reachability, cycle review, cache policies, retry budgets, bulkheads, fallback, correction manifests, incident coordination, migration analysis, provider mappings, exercises, metrics, ownership transfers, and closure. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from typed dependency edges through evidence reconciliation, topology, authority, resilience, protection, change, operation, and lifecycle. Ten examples, executable evidence, seventeen misconceptions, five exercises, and complete answers cover mechanics and limitations."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, enterprise-architecture, graph-theory, distributed-systems, data-product, API, eventing, platform, cybersecurity, privacy, legal, records-management, provider, accessibility, operations, audit, risk, or practitioner review is claimed."
+}

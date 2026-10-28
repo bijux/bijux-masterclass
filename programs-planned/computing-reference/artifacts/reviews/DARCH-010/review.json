@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-010",
+  "chapter_digest": "9874cb289082c70c152d87a7eb32dac4e9bc9883846fe54ced3c7d8eecc5822e",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked the official ISO/IEC/IEEE 42010:2022 and 15288:2023 records, The Open Group TOGAF Architecture Development Method and Architecture Content, the SEI Quality Attribute Workshop and Views and Beyond collections, and the NIST Cybersecurity Framework 2.0 and Privacy Framework. Six destinations returned HTTP 200; both official ISO records were retrievable through source review but rejected the command-line client with HTTP 403. Claims are limited to each source's stated scope."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the charter tuple, typed output-support relation, decision-authorization predicate, and operational measure tuple.",
+        "Checked that mandate, outcomes, boundary, stakeholders, authority, drivers, rules, work, evidence, governance, and triggers remain distinct."
+      ],
+      "notes": "Notation separates authority and governance claims from architecture outputs, outcome hypotheses, measures, and empirical evidence."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed charter-register-integrity with Python 3.14.4 and reproduced 4 records, 0 valid records, 4 sorted findings, and ready=false.",
+        "Independently traced missing baseline, missing output use, missing decision authority, and missing exception expiry to the fixture.",
+        "Recomputed Exercise 4 as 18 supported outputs of 24, or 75%, while preserving unknown overlap between supported and hard-constraint-violating outputs."
+      ],
+      "notes": "Fixture counts and the declared support ratio are exact under stated rules; neither establishes semantic support, feasibility, or authorization."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived charter actionability from bounded mandate, authority coverage, resource coverage, output-to-use trace, hard constraints, operational measures, and governed change.",
+        "Checked that every funded output must support an outcome hypothesis, decision, obligation, or evidence need through a typed relation.",
+        "Verified that an approval is valid only when delegated authority covers the exact decision, boundary, conditions, and time."
+      ],
+      "notes": "The model prevents document signatures, artifact production, or metric totals from substituting for legitimate authority and outcome evidence."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed enterprise versus domain, advisory versus approval, sponsor versus specialist authority, included versus interfacing scope, and current versus transition versus target cases.",
+        "Tested unfunded participation, unknown jurisdiction, affected-party omission, hard constraints, emergency action, expired exception, invalidated assumption, and reduced-resource cases.",
+        "Reviewed generated output versus achieved outcome, activity metric versus consequence, closure versus enduring ownership, and renewal versus silent continuation."
+      ],
+      "notes": "Boundary cases keep the charter proportional to legitimate authority, resources, lifecycle applicability, and affected consequences."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced issuing authority, decision scope, effective period, resources, outcomes, beneficiaries, boundary, roles, evidence, and triggers through the charter structure.",
+        "Verified separation of principles, policies, constraints, preferences, assumptions, risks, decisions, outputs, outcomes, and measures.",
+        "Confirmed exception authority, expiry, change propagation, renewal evidence, closure criteria, and transfer of enduring responsibilities."
+      ],
+      "notes": "The ten-gate mechanism preserves mandate and outcome traceability from authorization through termination."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the mandate, outcome, scope, stakeholder-and-authority, driver-and-rule, direction-and-work, resource, evidence, governance, and lifecycle gates.",
+        "Checked counterexamples for universal ownership, solution-first framing, sponsor omnipotence, output-as-outcome, catalog-percentage success, unfunded governance, and permanent exceptions.",
+        "Verified that approval conclusions require correct authority while feasibility and outcome conclusions separately require resource and empirical evidence."
+      ],
+      "notes": "The chapter provides an auditable charter argument, not proof that a generic charter, governance model, or proposed architecture is fit for every context."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of charter, mandate, authority, owner, accountable, approve, outcome, output, constraint, policy, exception, success, evidence, prove, and required.",
+        "Confirmed that authorization, technical truth, legal interpretation, feasibility, implementation, risk acceptance, and outcome achievement are not conflated.",
+        "Verified that the executable checker is labeled as four field-rule checks and excludes authority legitimacy, baseline correctness, resource sufficiency, and architecture quality proof."
+      ],
+      "notes": "Claims remain bounded to named decisions, entities, stakeholders, authorities, time periods, conditions, sources, and evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed source currency, standards and framework scope, hypothetical examples, outcome hypotheses, baselines, measures, activity indicators, resource estimates, and fixture output.",
+        "Confirmed that no charter approval, legal or policy interpretation, standards conformance, funded capacity, production outcome, stakeholder consensus, or external review is claimed.",
+        "Checked that local conclusions require source authority, affected-party participation, representative measurements, resource commitments, specialist review, and operational evidence."
+      ],
+      "notes": "Published frameworks, governance decisions, illustrative records, hypotheses, predictions, operational measures, and empirical outcomes are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed charter identity, mandate, outcomes, scope, stakeholders, decision rights, drivers, rules, current evidence, direction, views, work, resources, measures, learning, decisions, dissent, exceptions, change, renewal, and closure as one coherent operating agreement."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable charter records, outcome and authority models, scope boundaries, work and roadmap fields, resource reconciliation, evidence plans, exception paths, change triggers, approval, and responsibility transfer. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from charter purpose through mandate, outcomes, scope, authority, work, resources, evidence, governance, and lifecycle. Ten examples, an executable checker, failure cases, five exercises, and full answers cover both drafting and adversarial review."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, enterprise-architecture, legal, privacy, security, safety, finance, affected-stakeholder, governance-authority, operations, or practitioner review is claimed."
+}
