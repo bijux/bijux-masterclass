@@ -1,3 +1,5 @@
+> Planned source collection. See [collection status](COLLECTION.md) for preservation and qualification limits.
+
 # Node.js Programming — TypeScript-First, Runtime-Literate, and Production-Oriented
 
 This program teaches JavaScript as the executed language, TypeScript as a static reasoning layer, Node.js as the host runtime, and package metadata and protocols as executable contracts. The course books are the primary product. Laboratories isolate one mechanism; capstones require mechanisms from the entire earlier path to coexist in complete software.
