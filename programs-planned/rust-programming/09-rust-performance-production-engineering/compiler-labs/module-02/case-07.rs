@@ -1,0 +1,1 @@
+fn oracle(values: &[u64]) -> u64 { values.iter().sum() } fn indexed(values: &[u64]) -> u64 { values.chunks(4).map(|c| c.iter().sum::<u64>()).sum() } fn main() { let v: Vec<_> = (0..100).collect(); assert_eq!(oracle(&v), indexed(&v)); }

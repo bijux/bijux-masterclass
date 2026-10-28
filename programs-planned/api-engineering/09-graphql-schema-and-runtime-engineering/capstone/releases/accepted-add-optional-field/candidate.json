@@ -1,0 +1,8 @@
+{
+  "activeOperationsValid": true,
+  "budgetsPass": true,
+  "change": "add optional Project.description: String",
+  "expected": "additive",
+  "oldClientPasses": true,
+  "ownershipComplete": true
+}

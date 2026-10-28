@@ -1,0 +1,26 @@
+[
+  {
+    "Plan": {
+      "Actual Rows": 1,
+      "Node Type": "Limit",
+      "Plan Rows": 1,
+      "Plans": [
+        {
+          "Actual Rows": 1,
+          "Index Name": "idx_run_jobs_available_claim",
+          "Node Type": "Index Scan",
+          "Plan Rows": 1,
+          "Relation Name": "run_jobs",
+          "Shared Hit Blocks": 18,
+          "Shared Read Blocks": 2,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        }
+      ],
+      "Shared Hit Blocks": 21,
+      "Shared Read Blocks": 4,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0
+    }
+  }
+]

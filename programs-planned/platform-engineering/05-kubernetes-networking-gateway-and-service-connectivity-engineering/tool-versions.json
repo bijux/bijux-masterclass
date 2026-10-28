@@ -1,0 +1,9 @@
+{
+  "cilium": "1.20.0",
+  "gatewayAPI": "1.6.1",
+  "go": "1.23+",
+  "kind": "0.32.0",
+  "kubernetes": "1.36.2",
+  "mkdocs-material": "9.x",
+  "python": "3.12+"
+}

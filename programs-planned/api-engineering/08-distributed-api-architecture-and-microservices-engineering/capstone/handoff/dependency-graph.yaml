@@ -1,0 +1,37 @@
+version: '1.0'
+synchronous_edges:
+- from: edge-gateway
+  to: analysis-control
+  purpose: public command and authoritative query
+  max_budget_ms: 700
+- from: edge-gateway
+  to: artifact-service
+  purpose: authorized artifact retrieval
+  max_budget_ms: 900
+- from: worker-plane
+  to: analysis-control
+  purpose: lease and completion authority
+  max_budget_ms: 1500
+- from: worker-plane
+  to: artifact-service
+  purpose: artifact upload
+  max_budget_ms: 5000
+asynchronous_edges:
+- from: analysis-control
+  to: notification-service
+  contract: analysis-events-1.0
+- from: artifact-service
+  to: analysis-control
+  contract: artifact-events-1.0
+forbidden_edges:
+- from: analysis-control
+  to: notification-service
+  reason: notification must not block run completion
+- from: artifact-service
+  to: analysis-control
+  reason: artifact authorization uses signed capability, not callback authorization
+- from: notification-service
+  to: analysis-control
+  reason: delivery retries must be independent
+max_public_sync_depth: 2
+cycles_forbidden: true

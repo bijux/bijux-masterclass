@@ -1,0 +1,24 @@
+{
+  "evidence": {
+    "executed": [
+      "Python 3.13 semantic lane",
+      "Go 1.23 controller core",
+      "PyYAML static document lane"
+    ],
+    "notExecuted": [
+      "kubectl 1.36.2",
+      "kind 0.32.0",
+      "Kubernetes API server 1.36.x",
+      "kubeconform",
+      "MkDocs strict build"
+    ]
+  },
+  "go": "1.23.2 dependency-light controller lane",
+  "kind": "0.32.0",
+  "kindNode": "kindest/node:v1.36.1@sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5",
+  "kubectl": "1.36.2",
+  "kubernetes": "1.36.2",
+  "pytest": "9.0.2",
+  "python": "3.13",
+  "pyyaml": "6.0.3"
+}

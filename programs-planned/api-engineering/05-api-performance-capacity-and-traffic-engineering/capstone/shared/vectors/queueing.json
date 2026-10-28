@@ -1,0 +1,35 @@
+{
+  "profile": "1.0",
+  "littleLaw": [
+    {
+      "id": "jobs",
+      "throughputPerSecond": 20,
+      "meanTimeSeconds": 5,
+      "unit": "jobs",
+      "expectedMeanInSystem": 100
+    },
+    {
+      "id": "requests",
+      "throughputPerSecond": 50,
+      "meanTimeSeconds": 0.4,
+      "unit": "requests",
+      "expectedMeanInSystem": 20
+    }
+  ],
+  "mm1": [
+    {
+      "id": "rho-80",
+      "arrivalRate": 80,
+      "serviceRate": 100,
+      "expectedUtilization": 0.8,
+      "expectedMeanTimeSeconds": 0.05
+    },
+    {
+      "id": "rho-95",
+      "arrivalRate": 95,
+      "serviceRate": 100,
+      "expectedUtilization": 0.95,
+      "expectedMeanTimeSeconds": 0.2
+    }
+  ]
+}

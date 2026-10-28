@@ -1,0 +1,1 @@
+struct NonEmpty(String);impl NonEmpty{fn new(s:String)->Option<Self>{(!s.is_empty()).then_some(Self(s))}fn as_str(&self)->&str{&self.0}}fn main(){let value=NonEmpty::new("x".into()).unwrap();assert_eq!(value.as_str(),"x");}

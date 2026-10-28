@@ -1,0 +1,19 @@
+{
+  "namespace": "atlas-system",
+  "workloads": [
+    {
+      "image": "platform/atlas-api@sha256:6e3b38e88f6ef4252b635b6d199095db46233d7b6f85f3be4384d746386317a7",
+      "kind": "Deployment",
+      "name": "atlas-api",
+      "port": 8080,
+      "replicas": 3
+    },
+    {
+      "image": "platform/atlas-worker@sha256:bbd52b30969ebb6fb3568d2ce5c1ebfb420c7bd7a80001f2a1014feaa4d7a036",
+      "kind": "Deployment",
+      "name": "atlas-worker",
+      "port": null,
+      "replicas": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "defects": [
+    {"id":"CF-DEF-01","name":"unstable resource keys","expectedProof":"plan-proof"},
+    {"id":"CF-DEF-02","name":"unlocked unversioned state","expectedProof":"backend-proof"},
+    {"id":"CF-DEF-03","name":"child module configures provider","expectedProof":"module-proof"},
+    {"id":"CF-DEF-04","name":"workload in management account","expectedProof":"organization-proof"},
+    {"id":"CF-DEF-05","name":"data subnet internet route","expectedProof":"network-proof"},
+    {"id":"CF-DEF-06","name":"wildcard runtime IAM","expectedProof":"identity-proof"},
+    {"id":"CF-DEF-07","name":"secret and latest download in user data","expectedProof":"compute-proof"},
+    {"id":"CF-DEF-08","name":"encrypted backup with unavailable key","expectedProof":"recovery-proof"},
+    {"id":"CF-DEF-09","name":"refactor without move map","expectedProof":"migration-proof"},
+    {"id":"CF-DEF-10","name":"public SSH candidate","expectedProof":"release-proof"}
+  ]
+}

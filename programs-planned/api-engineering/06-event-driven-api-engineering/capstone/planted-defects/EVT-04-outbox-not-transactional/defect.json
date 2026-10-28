@@ -1,0 +1,8 @@
+{
+  "id": "EVT-04",
+  "slug": "EVT-04-outbox-not-transactional",
+  "summary": "Domain state commits without the outbox row",
+  "mustBeRejected": true,
+  "expectedOracle": "dual-write proof detects a terminal run with no publication intent",
+  "proofFamily": "outbox"
+}

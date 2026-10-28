@@ -1,0 +1,7 @@
+{
+  "expectedProof": "storage-interface-policy",
+  "id": "KUBE-06-emptydir-durable",
+  "slug": "emptydir-durable",
+  "status": "must-be-rejected",
+  "summary": "durable worker paths are backed by Pod-lifetime storage"
+}

@@ -1,0 +1,8 @@
+{
+  "artifact_batch_calls": 1,
+  "delivery_batch_calls": 1,
+  "denied_source_calls": 0,
+  "parents": 2,
+  "request_scoped": true,
+  "status": "pass"
+}

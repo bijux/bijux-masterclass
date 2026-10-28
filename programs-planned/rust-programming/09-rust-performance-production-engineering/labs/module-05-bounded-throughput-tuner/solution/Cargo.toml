@@ -1,0 +1,12 @@
+[package]
+name = "c9-lab05-throughput-solution"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+tokio = { workspace = true }
+
+[lints]
+workspace = true

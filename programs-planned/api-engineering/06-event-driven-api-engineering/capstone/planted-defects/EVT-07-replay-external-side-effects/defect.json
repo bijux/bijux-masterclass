@@ -1,0 +1,8 @@
+{
+  "id": "EVT-07",
+  "slug": "EVT-07-replay-external-side-effects",
+  "summary": "Replay resends customer notifications",
+  "mustBeRejected": true,
+  "expectedOracle": "replay policy rejects any plan whose external side effects are enabled",
+  "proofFamily": "replay"
+}

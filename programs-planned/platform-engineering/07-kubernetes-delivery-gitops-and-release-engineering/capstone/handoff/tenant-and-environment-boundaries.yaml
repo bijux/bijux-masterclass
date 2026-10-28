@@ -1,0 +1,14 @@
+environments:
+- name: dev
+  controller: flux
+  promotionAuthority: automation-plus-review
+- name: staging
+  controller: argocd
+  promotionAuthority: release-engineering
+- name: prod
+  controller: argocd
+  promotionAuthority: environment-owner
+tenantRules:
+- no cross-tenant secret reads
+- no shared mutable namespace
+- controller scope follows tenant boundary

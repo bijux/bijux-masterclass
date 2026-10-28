@@ -1,0 +1,10 @@
+{
+  "defect": "image and runtime user are UID 0",
+  "expectedDecision": "rejected",
+  "expectedGate": "runtime-profile-proof",
+  "expectedProof": "runtime-profile-proof",
+  "id": "C3-DEFECT-001",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "The image default and observed runtime process both use UID 0.",
+  "title": "Root-owned workload process"
+}

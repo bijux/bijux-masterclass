@@ -1,0 +1,6 @@
+{
+  "candidate": "unbounded-fanout",
+  "expected": "reject",
+  "issue": "gateway issues one remote call per artifact row",
+  "rejecting_gate": "dependency-budget"
+}

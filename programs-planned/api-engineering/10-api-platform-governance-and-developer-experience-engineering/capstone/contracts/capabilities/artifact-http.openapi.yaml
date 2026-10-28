@@ -1,0 +1,77 @@
+openapi: 3.1.0
+info:
+  title: Artifact HTTP Capability
+  version: 1.0.0
+  description: Internal read capability owned by Artifact Service. It exposes artifact metadata and bounded content retrieval without transferring artifact ownership to the graph or platform layers.
+servers:
+  - url: https://artifact.internal.example.invalid
+paths:
+  /artifacts/{artifactId}:
+    get:
+      operationId: getArtifact
+      summary: Read artifact metadata
+      parameters:
+        - $ref: '#/components/parameters/ArtifactId'
+      responses:
+        '200':
+          description: Artifact metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artifact'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /artifacts/{artifactId}/content:
+    get:
+      operationId: downloadArtifact
+      summary: Stream artifact content
+      parameters:
+        - $ref: '#/components/parameters/ArtifactId'
+      responses:
+        '200':
+          description: Complete artifact bytes
+          headers:
+            ETag:
+              schema: {type: string}
+            Digest:
+              schema: {type: string}
+          content:
+            application/octet-stream:
+              schema: {type: string, format: binary}
+        '206':
+          description: Requested byte range
+          content:
+            application/octet-stream:
+              schema: {type: string, format: binary}
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    ArtifactId:
+      name: artifactId
+      in: path
+      required: true
+      schema: {type: string, pattern: '^[a-z0-9][a-z0-9-]{2,63}$'}
+  schemas:
+    Artifact:
+      type: object
+      required: [id, runId, mediaType, size, sha256, createdAt]
+      properties:
+        id: {type: string}
+        runId: {type: string}
+        mediaType: {type: string}
+        size: {type: integer, minimum: 0}
+        sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+        createdAt: {type: string, format: date-time}
+  responses:
+    NotFound:
+      description: The caller cannot retrieve the artifact
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            required: [type, title, status]
+            properties:
+              type: {type: string, format: uri-reference}
+              title: {type: string}
+              status: {type: integer, const: 404}

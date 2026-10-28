@@ -1,0 +1,15 @@
+description: Precondition failed
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: https://api.example.test/problems/precondition
+      title: Precondition failed
+      status: 412
+      detail: The supplied entity tag does not match the current representation.
+      instance: /example
+      requestId: req_012345abcdef

@@ -1,0 +1,14 @@
+{
+  "evidence_class": "semantic-and-release",
+  "supported_matrix": [
+    "consumer-1.0/provider-1.0",
+    "consumer-1.0/provider-1.1",
+    "consumer-1.1/provider-1.0-feature-disabled",
+    "consumer-1.1/provider-1.1"
+  ],
+  "rejected_matrix": ["consumer-2.0/provider-1.x"],
+  "owner_local_migrations": true,
+  "shadow_comparison_clean": true,
+  "rollback_target_present": true,
+  "status": "pass"
+}

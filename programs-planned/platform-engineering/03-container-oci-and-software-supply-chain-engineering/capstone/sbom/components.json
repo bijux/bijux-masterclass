@@ -1,0 +1,30 @@
+[
+  {
+    "bom-ref": "pkg:generic/atlas-probe@1.0.0",
+    "licenses": [
+      {
+        "license": {
+          "id": "Apache-2.0"
+        }
+      }
+    ],
+    "name": "atlas-probe",
+    "purl": "pkg:generic/atlas-probe@1.0.0",
+    "type": "application",
+    "version": "1.0.0"
+  },
+  {
+    "bom-ref": "pkg:golang/stdlib@1.23.2",
+    "licenses": [
+      {
+        "license": {
+          "id": "BSD-3-Clause"
+        }
+      }
+    ],
+    "name": "Go standard library",
+    "purl": "pkg:golang/stdlib@1.23.2",
+    "type": "framework",
+    "version": "1.23.2"
+  }
+]

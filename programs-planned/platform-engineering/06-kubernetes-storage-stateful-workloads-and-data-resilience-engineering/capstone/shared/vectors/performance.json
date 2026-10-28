@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "averageKiB": 16,
+      "expectedMiBs": 18.75,
+      "iops": 1200
+    },
+    {
+      "expectedOutstandingSeconds": 0.05,
+      "iops": 100,
+      "queueDepth": 5
+    }
+  ]
+}

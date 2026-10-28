@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "expected": "fail",
+      "findings": [
+        {
+          "severity": "blocker",
+          "status": "fail"
+        }
+      ],
+      "name": "blocker failure"
+    },
+    {
+      "expected": "review",
+      "findings": [
+        {
+          "severity": "major",
+          "status": "review"
+        }
+      ],
+      "name": "major review"
+    },
+    {
+      "expected": "pass",
+      "findings": [
+        {
+          "severity": "major",
+          "status": "pass"
+        }
+      ],
+      "name": "all pass"
+    }
+  ]
+}

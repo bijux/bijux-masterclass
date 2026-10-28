@@ -1,0 +1,26 @@
+{
+  "cases": [
+    {
+      "fires": false,
+      "id": "fault-never",
+      "probability": 0.0,
+      "seed": 1,
+      "target": "postgres.query"
+    },
+    {
+      "fires": true,
+      "id": "fault-always",
+      "probability": 1.0,
+      "seed": 1,
+      "target": "postgres.query"
+    },
+    {
+      "fires": false,
+      "id": "fault-other-target",
+      "probability": 1.0,
+      "queryTarget": "postgres.query",
+      "seed": 1,
+      "target": "artifact.publish"
+    }
+  ]
+}

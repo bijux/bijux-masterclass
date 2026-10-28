@@ -1,0 +1,17 @@
+{
+  "runtimeIdentity": "atlas-environment-runtime-role",
+  "staticCloudKeys": false,
+  "requiredCapabilities": [
+    "read environment-scoped configuration",
+    "read environment-scoped secrets",
+    "use workload KMS key",
+    "write result backups under owned prefix"
+  ],
+  "explicitlyForbidden": [
+    "manage organization",
+    "mutate network",
+    "read other environments",
+    "delete audit archive",
+    "administer KMS key"
+  ]
+}

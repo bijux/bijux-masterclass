@@ -1,0 +1,23 @@
+{
+  "courseReleaseDate": "2026-08-07",
+  "python": "3.13.5",
+  "node": "22.16.0",
+  "typescript": "5.9.2",
+  "fastapi": "0.128.2",
+  "pydantic": "2.13.4",
+  "psycopg": "3.3.4",
+  "httpx": "0.28.1",
+  "uvicorn": "0.48.0",
+  "pytest": "9.0.2",
+  "fastify": "5.11.2",
+  "nodePostgres": "8.22.0",
+  "vitest": "4.1.10",
+  "k6": "1.7.1",
+  "locust": "2.46.3",
+  "postgresqlDocumentationProfile": "18",
+  "documentation": {
+    "mkdocs": "1.6.1",
+    "mkdocsMaterial": "9.6.18"
+  },
+  "evidenceNote": "Versions are the Course 5 reference profile, not a claim that every dependency is the newest available release."
+}

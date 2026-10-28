@@ -1,0 +1,1717 @@
+{
+  "file_count": 342,
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "f414b05893a8995530b1af57675dec249724ebe1cc49ff07c6d2f7f7f60902c7",
+      "size": 105
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "ddf3cc526c7c7f3b8b9d8c2b5d591edb0f42650347a88ff9340b2c6a62545ba3",
+      "size": 377
+    },
+    {
+      "path": "COURSE-CONTENTS.md",
+      "sha256": "eddfd7a06551b533abfb6b0db875dea5c8e2967be617722baed66357ff7705c6",
+      "size": 3399
+    },
+    {
+      "path": "FINAL-VERIFICATION.md",
+      "sha256": "e90c0a339e1be4a8a7ff56470c5f6facef5075bcc38d7959fa83e5fe93d45ea1",
+      "size": 3282
+    },
+    {
+      "path": "Makefile",
+      "sha256": "ef52e89ecf87a0f1d25416cc69bb641b9cb98d9c0a76c6a432d5240662cedf3f",
+      "size": 2979
+    },
+    {
+      "path": "NEXT-COURSE-HANDOFF.md",
+      "sha256": "954d5f92ec637b1183d6b706ffccfe9eb94b97a62296e1184255bfd6dd26fcd9",
+      "size": 695
+    },
+    {
+      "path": "PREDECESSOR-HANDOFF.md",
+      "sha256": "1847a07f4f492d9c08191a23aeb534a1978e5123ffdc442f7605a70d96a1a594",
+      "size": 523
+    },
+    {
+      "path": "PRODUCTION-CLAIMS.md",
+      "sha256": "e58a6b42e52a049c0df9dd7f79d5d493b3d6e7c228fdd98f2c59cfbfc12c7e06",
+      "size": 1281
+    },
+    {
+      "path": "README.md",
+      "sha256": "cf60f2f5d18e42c40410dd9e62c350c5d053bd959f8d15eceddb0dc4f11f79ee",
+      "size": 1161
+    },
+    {
+      "path": "assessment/final-defense-rubric.md",
+      "sha256": "1f626a01f1227c084e76747888b2bf8c6e6c2badf15b5bbad14b72c1c0a9370f",
+      "size": 1117
+    },
+    {
+      "path": "assessment/final-defense-scenarios.md",
+      "sha256": "84faf2b87637ccaed7b542106c9cdde65c83d2f1e2deaaf906067b3ff09e0fe6",
+      "size": 729
+    },
+    {
+      "path": "assessment/grading.json",
+      "sha256": "d5348c31bf7f7353f9a92548dcadb81033c187895842496210053062dbd27cf7",
+      "size": 644
+    },
+    {
+      "path": "buf.gen.yaml",
+      "sha256": "9c71d83227c48512e6cd3c48287a3b86cb4ddbdda169b7f52ebc83b607b36ef9",
+      "size": 162
+    },
+    {
+      "path": "buf.yaml",
+      "sha256": "98e7cca48654cf0f7440f896c279a9e6c6da2d9eeabc03fe5341de82839e712c",
+      "size": 112
+    },
+    {
+      "path": "capstone/README.md",
+      "sha256": "91fefbea4565c65fcf9b5f8820be60f198433b491aaae1fcea08721fe864b071",
+      "size": 1130
+    },
+    {
+      "path": "capstone/contracts/compatibility-policy.yaml",
+      "sha256": "12a6c0ee008c01e4f6097909c6af96af8985cb7d4f2055d3ed93ff54ffa01afc",
+      "size": 579
+    },
+    {
+      "path": "capstone/contracts/descriptors/analysis-v1.json",
+      "sha256": "dbe972ebd73fff2080fe1f88930ee29353c0349717219f4aac99ceb2bf95b90d",
+      "size": 17061
+    },
+    {
+      "path": "capstone/contracts/descriptors/analysis-v1.pb",
+      "sha256": "fbcabac7496a915b574a2f164e4669c157f779ff54fd8129b8b9a50553986b75",
+      "size": 2942
+    },
+    {
+      "path": "capstone/contracts/proto/bijux/analysis/v1/analysis.proto",
+      "sha256": "871307a4cfd2b34658fe5a7506ca1f8a127816c4186ef426163869dd2dbbda27",
+      "size": 3436
+    },
+    {
+      "path": "capstone/contracts/proto/frontier/analysis_edition_2024.proto",
+      "sha256": "dd7dbb6566b2fcddc02820441bfc1dfce244406fcf49452523e2efc5877ac924",
+      "size": 447
+    },
+    {
+      "path": "capstone/database/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/database/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/database/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/database/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/database/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/database/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "path": "capstone/database/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "path": "capstone/database/migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "path": "capstone/database/migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "path": "capstone/database/migrations/010_event_outbox_inbox.sql",
+      "sha256": "bc8387ce6b0ab2d87fc033018d96cd85cb24e4465631e9501f610bf075960191",
+      "size": 2673
+    },
+    {
+      "path": "capstone/database/migrations/011_event_replay_dead_letters.sql",
+      "sha256": "682527c166e689556765836aae9f2d8c8ed07844a7ee07b3f77c81f77dadf8b3",
+      "size": 3001
+    },
+    {
+      "path": "capstone/database/migrations/012_event_contract_catalog.sql",
+      "sha256": "bb6077ce0447bf6ee35513cd1f3b46bf9e70d4c514602fdbcfdc539d5399ed28",
+      "size": 2588
+    },
+    {
+      "path": "capstone/database/migrations/013_rpc_idempotency_and_resume.sql",
+      "sha256": "7f41c576958ce32ebcb0d08bff17a23e06ba7ef3466b656f87f340ef6106c845",
+      "size": 784
+    },
+    {
+      "path": "capstone/database/migrations/014_worker_sessions_and_attempts.sql",
+      "sha256": "f366b5b5640a962f82943768cb19923a5885fd75321ad0edd58dab4c76f3172b",
+      "size": 956
+    },
+    {
+      "path": "capstone/database/migrations/015_rpc_contract_catalog.sql",
+      "sha256": "cf6e230f0f53dd8f1a2c8c09cc6444587830fa486479bf61136f2768f0f0783d",
+      "size": 603
+    },
+    {
+      "path": "capstone/final-defense/trace.json",
+      "sha256": "f7b9a7d88093573a7c48589f05101e65e291d4e92656416acc7f0a4cef36019f",
+      "size": 1374
+    },
+    {
+      "path": "capstone/handoff/BOUNDARY.json",
+      "sha256": "b4e9e588cc17b5ff5ee51296e33f606835c238c4dce9f51e17d376a5592242ff",
+      "size": 473
+    },
+    {
+      "path": "capstone/handoff/MANIFEST.json",
+      "sha256": "19f5ae2e5fbbbce518505a23d0b85b27720b287e16a3fc9a6d6a03477d856089",
+      "size": 8739
+    },
+    {
+      "path": "capstone/handoff/MANIFEST.sha256",
+      "sha256": "10e41f06b4aa53a9064869c2a17c329c2b0219a10e9fa7a09e7866dd6941077c",
+      "size": 80
+    },
+    {
+      "path": "capstone/handoff/README.md",
+      "sha256": "e301f75c0149caae03af1602a271b18e068004c7594f7a436f7e354156c4c8cc",
+      "size": 451
+    },
+    {
+      "path": "capstone/handoff/contracts/compatibility-policy.yaml",
+      "sha256": "12a6c0ee008c01e4f6097909c6af96af8985cb7d4f2055d3ed93ff54ffa01afc",
+      "size": 579
+    },
+    {
+      "path": "capstone/handoff/contracts/descriptors/analysis-v1.json",
+      "sha256": "dbe972ebd73fff2080fe1f88930ee29353c0349717219f4aac99ceb2bf95b90d",
+      "size": 17061
+    },
+    {
+      "path": "capstone/handoff/contracts/descriptors/analysis-v1.pb",
+      "sha256": "fbcabac7496a915b574a2f164e4669c157f779ff54fd8129b8b9a50553986b75",
+      "size": 2942
+    },
+    {
+      "path": "capstone/handoff/contracts/proto/bijux/analysis/v1/analysis.proto",
+      "sha256": "871307a4cfd2b34658fe5a7506ca1f8a127816c4186ef426163869dd2dbbda27",
+      "size": 3436
+    },
+    {
+      "path": "capstone/handoff/contracts/proto/frontier/analysis_edition_2024.proto",
+      "sha256": "dd7dbb6566b2fcddc02820441bfc1dfce244406fcf49452523e2efc5877ac924",
+      "size": 447
+    },
+    {
+      "path": "capstone/handoff/final-defense/trace.json",
+      "sha256": "f7b9a7d88093573a7c48589f05101e65e291d4e92656416acc7f0a4cef36019f",
+      "size": 1374
+    },
+    {
+      "path": "capstone/handoff/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/handoff/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/handoff/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/handoff/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/handoff/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/handoff/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "path": "capstone/handoff/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "path": "capstone/handoff/migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "path": "capstone/handoff/migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "path": "capstone/handoff/migrations/010_event_outbox_inbox.sql",
+      "sha256": "bc8387ce6b0ab2d87fc033018d96cd85cb24e4465631e9501f610bf075960191",
+      "size": 2673
+    },
+    {
+      "path": "capstone/handoff/migrations/011_event_replay_dead_letters.sql",
+      "sha256": "682527c166e689556765836aae9f2d8c8ed07844a7ee07b3f77c81f77dadf8b3",
+      "size": 3001
+    },
+    {
+      "path": "capstone/handoff/migrations/012_event_contract_catalog.sql",
+      "sha256": "bb6077ce0447bf6ee35513cd1f3b46bf9e70d4c514602fdbcfdc539d5399ed28",
+      "size": 2588
+    },
+    {
+      "path": "capstone/handoff/migrations/013_rpc_idempotency_and_resume.sql",
+      "sha256": "7f41c576958ce32ebcb0d08bff17a23e06ba7ef3466b656f87f340ef6106c845",
+      "size": 784
+    },
+    {
+      "path": "capstone/handoff/migrations/014_worker_sessions_and_attempts.sql",
+      "sha256": "f366b5b5640a962f82943768cb19923a5885fd75321ad0edd58dab4c76f3172b",
+      "size": 956
+    },
+    {
+      "path": "capstone/handoff/migrations/015_rpc_contract_catalog.sql",
+      "sha256": "cf6e230f0f53dd8f1a2c8c09cc6444587830fa486479bf61136f2768f0f0783d",
+      "size": 603
+    },
+    {
+      "path": "capstone/handoff/operations/lifecycle-policy.yaml",
+      "sha256": "92fdbdb70e373468aee8c8b1fe9b963104e581e42ea931f57bafaff404e59f8f",
+      "size": 594
+    },
+    {
+      "path": "capstone/handoff/operations/service-config.json",
+      "sha256": "d29d629bba43872a4e2e88fc3a8d2b5e7e519df43f61f53f860b72cccab90d5c",
+      "size": 930
+    },
+    {
+      "path": "capstone/handoff/releases/rpc-1.0/release-report.json",
+      "sha256": "972cf31fe7b5c4360e81ffd7fe567ccfd8083fe97212fbfcbcf0112e3cc15186",
+      "size": 581
+    },
+    {
+      "path": "capstone/handoff/rpc-case/capability-matrix.json",
+      "sha256": "e1f31fa7645bb9b152edbeaa55be4e5cb181a90c390147f68245a615731f6980",
+      "size": 1066
+    },
+    {
+      "path": "capstone/handoff/rpc-case/consumer-declarations.yaml",
+      "sha256": "f5bde9299a298083298316df720b169c7ae58f654f7dd84b1aebaa3fe7d89bca",
+      "size": 611
+    },
+    {
+      "path": "capstone/handoff/rpc-case/deadline-retry-policy.yaml",
+      "sha256": "5fed33cb3c4ac666dc6715091614cefda903c6a343964b4c28f66874bbcbe7ff",
+      "size": 944
+    },
+    {
+      "path": "capstone/handoff/rpc-case/interaction-decisions.yaml",
+      "sha256": "ad40ec987620a82554bbe9516fb6ee42ee0c5a4995e4d66bd1161424a4691b7e",
+      "size": 1072
+    },
+    {
+      "path": "capstone/handoff/rpc-case/rpc-catalog.yaml",
+      "sha256": "ea6f042ee7ac9ddb5940cda87550c69293fc84e8059b2ee5d9ba8d31f3e50d97",
+      "size": 2028
+    },
+    {
+      "path": "capstone/handoff/rpc-case/service-ownership.yaml",
+      "sha256": "c6accd8b1dd9eaf764ac74b64d96856fb242077ee73f3690ededcd70a64c15a1",
+      "size": 692
+    },
+    {
+      "path": "capstone/handoff/rpc-case/status-policy.yaml",
+      "sha256": "73f2244c58355d5c7bde66127499c35fa8306a117282d13a5a7326ee41017b1d",
+      "size": 743
+    },
+    {
+      "path": "capstone/handoff/rpc-case/streaming-policy.yaml",
+      "sha256": "dd1920c7da77f75db8c9a4189d4d0de6ec52f344414c9669732feca95c30980c",
+      "size": 672
+    },
+    {
+      "path": "capstone/handoff/rpc-case/version-ledger.yaml",
+      "sha256": "1eac45ba58cd7884c3ab8013e606ad2ba1669283c43e4f443cff3ca6ea4faa6a",
+      "size": 360
+    },
+    {
+      "path": "capstone/handoff/security/method-policy.yaml",
+      "sha256": "b57c61f51ff3349f8925ded65717085921179061978e4e7c39e8d1a50422aa92",
+      "size": 980
+    },
+    {
+      "path": "capstone/handoff/service-boundary-dossier.yaml",
+      "sha256": "771aa913bc1058cc6ed0a808d0b9e287ee5d18ca820d53551d82324cfdfbd0f1",
+      "size": 1234
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/boundary.json",
+      "sha256": "47ab3db174c1d866302a0158a43342dbe4ae7c3ad232dfa4e8051c3948d46f44",
+      "size": 840
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/compatibility.json",
+      "sha256": "052fd8a424bad34a555f955a723731579f494ac94f7433f98128a4147c5e81ff",
+      "size": 1029
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/deadlines.json",
+      "sha256": "39d16ed263f8d7dcc647597be3c93013cc8f9263760f6ad492c7e07f242bd77e",
+      "size": 511
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/flow-control.json",
+      "sha256": "089f85cd3894991787f3dc56c6a469bef3c73544dad5409895dc57d7ee4661a5",
+      "size": 613
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/lifecycle.json",
+      "sha256": "7bf78532ddd704b733e57438936a6c324e9cd688ccee4ffe489d94869b05554c",
+      "size": 871
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/retries.json",
+      "sha256": "183cc3c2ab00a655526db41cf7bae3d522972e600bcdfcdb774d4b026ad6866c",
+      "size": 1092
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/security.json",
+      "sha256": "f37dbde96140a8ddc6dbf3cd1b486ea87db604e72928c8ee684df644ec3c630e",
+      "size": 952
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/status.json",
+      "sha256": "d06c7393b7d36b295d09836d2593db4b0656f39aafc402b8df5668c4d71bb8f7",
+      "size": 1240
+    },
+    {
+      "path": "capstone/handoff/shared/vectors/streaming.json",
+      "sha256": "24c1e0d9300f99f0b6177c3651ed2ca9f943b91844117e0521876c90d71452e2",
+      "size": 1189
+    },
+    {
+      "path": "capstone/operations/lifecycle-policy.yaml",
+      "sha256": "92fdbdb70e373468aee8c8b1fe9b963104e581e42ea931f57bafaff404e59f8f",
+      "size": 594
+    },
+    {
+      "path": "capstone/operations/service-config.json",
+      "sha256": "d29d629bba43872a4e2e88fc3a8d2b5e7e519df43f61f53f860b72cccab90d5c",
+      "size": 930
+    },
+    {
+      "path": "capstone/planted-defects/RPC-01-table-service/README.md",
+      "sha256": "9d40b892e0f0162077dd06ad9ddf5d3b8933cb81d1e54aa9987772e517104747",
+      "size": 169
+    },
+    {
+      "path": "capstone/planted-defects/RPC-01-table-service/defect.json",
+      "sha256": "92f2e1dde1352324c31f601d30dd3fe804e78b74c793784409dff5a2413ebea6",
+      "size": 119
+    },
+    {
+      "path": "capstone/planted-defects/RPC-02-field-tag-reuse/README.md",
+      "sha256": "2b4522e708d00a4e87b54c91f83cb004d9c4d4823a04aa7c1683c6dab04bd1b5",
+      "size": 170
+    },
+    {
+      "path": "capstone/planted-defects/RPC-02-field-tag-reuse/defect.json",
+      "sha256": "7aca5a8e59673c543ce756b824ce22a2c96a54a1b4bc870ae30c6f75eec6fa12",
+      "size": 120
+    },
+    {
+      "path": "capstone/planted-defects/RPC-03-meaningful-enum-zero/README.md",
+      "sha256": "fa16b7e1f5cccd3a01391919333d4ba7a6d2a9db3079182192899e071e373ecf",
+      "size": 156
+    },
+    {
+      "path": "capstone/planted-defects/RPC-03-meaningful-enum-zero/defect.json",
+      "sha256": "961f8e50bc329f983ab0c7d6e5d2acbe46861bd6ab8599d9f8183b52f8dd35ca",
+      "size": 106
+    },
+    {
+      "path": "capstone/planted-defects/RPC-04-business-data-in-metadata/README.md",
+      "sha256": "0934019c2809af86470f959e6116f75cbaff7920aaf3c2e90e2850da61d426fb",
+      "size": 173
+    },
+    {
+      "path": "capstone/planted-defects/RPC-04-business-data-in-metadata/defect.json",
+      "sha256": "ae2b41f1ef6ea081ed8d0a4766f3f7ecd11af0261b50f48ede9dff372f71378a",
+      "size": 123
+    },
+    {
+      "path": "capstone/planted-defects/RPC-05-unsafe-mutation-retry/README.md",
+      "sha256": "5c0ba5b8959537646830884cba6168bb4d82af15a0bb26d455e298e1b06080d9",
+      "size": 181
+    },
+    {
+      "path": "capstone/planted-defects/RPC-05-unsafe-mutation-retry/defect.json",
+      "sha256": "035542f0e9db38d18265cbce13b78f796174c2a34b451acd384b93b6d16641da",
+      "size": 131
+    },
+    {
+      "path": "capstone/planted-defects/RPC-06-unbounded-stream-queue/README.md",
+      "sha256": "72821aec11d79c95707cb25cc8c40d2bb6ddbf46ea17f287a9c131202d0ce18d",
+      "size": 173
+    },
+    {
+      "path": "capstone/planted-defects/RPC-06-unbounded-stream-queue/defect.json",
+      "sha256": "9306c2edfbbd9752711a147a1b1d4cecf534c646efeb32615dfcf81b9caff06a",
+      "size": 123
+    },
+    {
+      "path": "capstone/planted-defects/RPC-07-stream-as-lease-authority/README.md",
+      "sha256": "aeff814754a1d923eac9328e1c37bc82b48390aa3807404f29f240f3d5703113",
+      "size": 189
+    },
+    {
+      "path": "capstone/planted-defects/RPC-07-stream-as-lease-authority/defect.json",
+      "sha256": "f7406344253e0348830acd524650f4e1e5b2cda926d1516ad7d4b74256fa4624",
+      "size": 139
+    },
+    {
+      "path": "capstone/planted-defects/RPC-08-tenant-from-caller-metadata/README.md",
+      "sha256": "3e69d8ee38c2a096f392293afc20c611d7e10003e5b3840dbba2b7b911766465",
+      "size": 171
+    },
+    {
+      "path": "capstone/planted-defects/RPC-08-tenant-from-caller-metadata/defect.json",
+      "sha256": "144e798b38051d9f20fdbedf389542132badecdd1a7fc19f5db4a5fc3dd481f0",
+      "size": 121
+    },
+    {
+      "path": "capstone/planted-defects/RPC-09-health-always-serving/README.md",
+      "sha256": "1bc4efa73324b7bdbfe06706fcdfa887b235eb5072b111931f6985c06cd8389d",
+      "size": 168
+    },
+    {
+      "path": "capstone/planted-defects/RPC-09-health-always-serving/defect.json",
+      "sha256": "ebdc4bc642c7e2df859b0600acc48c92590a3b5ba4c4e4cda71c06e702652f5b",
+      "size": 118
+    },
+    {
+      "path": "capstone/planted-defects/RPC-10-ungoverned-reflection-method/README.md",
+      "sha256": "3f481a3bc0f9649f5a299abcc86edc99fa90c10fee51074b251b893e01648b0d",
+      "size": 184
+    },
+    {
+      "path": "capstone/planted-defects/RPC-10-ungoverned-reflection-method/defect.json",
+      "sha256": "d2939b768b82ac4dc81ef4d52d4968e49525e89b55b94bbd0b05f12cf2b3eee1",
+      "size": 134
+    },
+    {
+      "path": "capstone/predecessor/handoff/MANIFEST.json",
+      "sha256": "e2ee73b372567a72b34c41935a065431b614909db0c70539acaa31917473d0f0",
+      "size": 9467
+    },
+    {
+      "path": "capstone/predecessor/handoff/MANIFEST.sha256",
+      "sha256": "7958d641b92e55ea01093807c1db834717c34097fb6332d5f1fe74d546a189bd",
+      "size": 80
+    },
+    {
+      "path": "capstone/predecessor/handoff/README.md",
+      "sha256": "4ed78219231d730c3e81825495bec846bd9953bae4f0aba9e2ee30149ff80614",
+      "size": 419
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/asyncapi.yaml",
+      "sha256": "43410d220996bd5dd1f86242ab36916bac3817febda716b39023aceb9cf3c37a",
+      "size": 2619
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/messages/AnalysisRunCompleted.yaml",
+      "sha256": "ca85e2c7fd0596977f12e233150d3bb1cfc99d92e5abb08bc186890514453468",
+      "size": 799
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/messages/AnalysisRunFailed.yaml",
+      "sha256": "3c55c628ebe8ebde2470fd1aab006ca163e34cb2c7fe6c9ab20bf1bb9eb3d7d5",
+      "size": 772
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/messages/AnalysisRunProgressed.yaml",
+      "sha256": "ceac128be2218352d198c51b41c732de89b5c9f1aa41066b496a3da8efd290d8",
+      "size": 820
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/messages/AnalysisRunRequested.yaml",
+      "sha256": "e63ebe8b52139450e6dc8d0455098c93582ae786f629f671b21bec66f1353ea8",
+      "size": 800
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/messages/AnalysisRunStarted.yaml",
+      "sha256": "8bff43dca884c91d7486930e98916d95fc74e810471e45daeb20f47770eea9e9",
+      "size": 781
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/messages/ArtifactPublished.yaml",
+      "sha256": "f077195bbfbe40e01b20dee97207db622392675566461c902d2c37c0d0b93300",
+      "size": 801
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/messages/StartAnalysis.yaml",
+      "sha256": "3e7090ff75c15b3e6b0aedfb0ba7677d8951332023d7ee9e171a03bf67bb421d",
+      "size": 793
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/schemas/analysis-run-completed.v1.schema.json",
+      "sha256": "873b2de49203dbe339c5ed7fb687e62446cd6db366d4a2ff87be67cc42e95e2c",
+      "size": 700
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/schemas/analysis-run-failed.v1.schema.json",
+      "sha256": "2423ecf7dc402f3beb516f2aec962f83d717f9f7f20a93ed6afe6ee02959668a",
+      "size": 680
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/schemas/analysis-run-progressed.v1.schema.json",
+      "sha256": "8ec63b1ff9c453ad26cbf3327f91dd3535a8ce4180ec1550e4cba1f01388d9c8",
+      "size": 683
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/schemas/analysis-run-requested.v1.schema.json",
+      "sha256": "ec554d5208b2c83694fd57cd436805ee73c8aec510633c9989b2ebf7b9946cd8",
+      "size": 565
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/schemas/analysis-run-started.v1.schema.json",
+      "sha256": "87a2294ff0c59a1eb9a016de4e9bb94078e39213d94ad2a0bfbfc8644be95bb6",
+      "size": 568
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/schemas/artifact-published.v1.schema.json",
+      "sha256": "0f4b381009c027dd08a1ce4fe4a32cfe87e3d45182dac7e74980dbc097cf2541",
+      "size": 746
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/schemas/event-envelope.v1.schema.json",
+      "sha256": "c92ff1e32e65ffbec7f907749b015a49240d190bea569e26e99295cee61bcaa3",
+      "size": 1623
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/components/schemas/start-analysis-command.v1.schema.json",
+      "sha256": "c3352bcf36a7d83ade8e29a77d70a3d7870d48ab09049dccd91f79be484593e1",
+      "size": 700
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/event-catalog.yaml",
+      "sha256": "41a9f9a07b7ee14653f9d6fe22e16fa90e5e352617e59b3a58a8a90e2c91e32d",
+      "size": 2664
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/examples/analysis-run-completed.v1.json",
+      "sha256": "eed3b60ccb3ef3ce5a71c36f6d701c3036a24a764eae11fcb930af6141242a27",
+      "size": 793
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/examples/analysis-run-failed.v1.json",
+      "sha256": "5067ffe6a090b15a19d344fc6f09a7f7594f6138dc915dde1b5359b88ddfa0a0",
+      "size": 739
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/examples/analysis-run-progressed.v1.json",
+      "sha256": "2d99777ec863cb2fba11d5822fab0122013cf86693c38eddff3a4d97eb470687",
+      "size": 733
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/examples/analysis-run-requested.v1.json",
+      "sha256": "0358f2cb5b55edb310dc42e04097666901474af1734ffe9d0e6914db121d80e6",
+      "size": 755
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/examples/analysis-run-started.v1.json",
+      "sha256": "6b6ddeeab8290f927b5912de0a0a2c9e1ca4ba76618061305992aed0a3cf6073",
+      "size": 728
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/examples/artifact-published.v1.json",
+      "sha256": "559e19bbacb3cebe38fa7d09e7395ff506827c0567bd0aa59cc545f960a93683",
+      "size": 864
+    },
+    {
+      "path": "capstone/predecessor/handoff/contracts/examples/start-analysis-command.v1.json",
+      "sha256": "fb2d810759c286f4ba0034b0f747dd8f94bff0df3761f3a7afccf772e29d95a4",
+      "size": 714
+    },
+    {
+      "path": "capstone/predecessor/handoff/event-case/channel-policy.yaml",
+      "sha256": "b5c446cb935f3ea30fc3d1491b78669e05eedc41caea88373a700f2a897cceae",
+      "size": 1305
+    },
+    {
+      "path": "capstone/predecessor/handoff/event-case/compatibility-policy.yaml",
+      "sha256": "31c3ac87ef704740eff316c4d2b390ba95f367aee20d75098049c57dbedb3e0e",
+      "size": 959
+    },
+    {
+      "path": "capstone/predecessor/handoff/event-case/consumer-catalog.yaml",
+      "sha256": "0f8aeeb75943ea7b74d7f0b1253255390acb2f796a16e2e05f91a48d91a5b39c",
+      "size": 1822
+    },
+    {
+      "path": "capstone/predecessor/handoff/event-case/event-profile.json",
+      "sha256": "198d3c15f165166ffe96e8131c94cc18010b806728e1d399d81c3c5e01f0c8a8",
+      "size": 794
+    },
+    {
+      "path": "capstone/predecessor/handoff/event-case/message-taxonomy.yaml",
+      "sha256": "3f2f290cf9a95d4f883b203a958d982829cb15a4a76ba70933d7085822466722",
+      "size": 2413
+    },
+    {
+      "path": "capstone/predecessor/handoff/migrations/010_event_outbox_inbox.sql",
+      "sha256": "bc8387ce6b0ab2d87fc033018d96cd85cb24e4465631e9501f610bf075960191",
+      "size": 2673
+    },
+    {
+      "path": "capstone/predecessor/handoff/migrations/011_event_replay_dead_letters.sql",
+      "sha256": "682527c166e689556765836aae9f2d8c8ed07844a7ee07b3f77c81f77dadf8b3",
+      "size": 3001
+    },
+    {
+      "path": "capstone/predecessor/handoff/migrations/012_event_contract_catalog.sql",
+      "sha256": "bb6077ce0447bf6ee35513cd1f3b46bf9e70d4c514602fdbcfdc539d5399ed28",
+      "size": 2588
+    },
+    {
+      "path": "capstone/predecessor/handoff/releases/event-1.0.json",
+      "sha256": "799ad71acc608a299cd7bd28e711fba6568dca86bab3519a3adb1bbc038a0174",
+      "size": 361
+    },
+    {
+      "path": "capstone/predecessor/handoff/replay/example-plan.yaml",
+      "sha256": "b5c30dc25d3c567bb11411e12c021fe76437376b753440d7c537b7a6846bfcea",
+      "size": 416
+    },
+    {
+      "path": "capstone/predecessor/handoff/replay/replay-policy.yaml",
+      "sha256": "73bf3d84a777d40e9771f5de0c0a33e64cc78b41bc2dff72e5b2cc9b86f4b65c",
+      "size": 740
+    },
+    {
+      "path": "capstone/predecessor/handoff/security/producer-grants.yaml",
+      "sha256": "6c222b6491bdce9b775c788e77311320d5631919df6bdbe5da48c39590b1ca3c",
+      "size": 1201
+    },
+    {
+      "path": "capstone/predecessor/handoff/stream-processing/window-policy.yaml",
+      "sha256": "276dd5fe306ec4f4736e670dd1eaf7ef055ae68874266f2f2923ace08f06e9d0",
+      "size": 592
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/delivery.json",
+      "sha256": "56018bd6c7257ee57479724e1065c01d25b5aea257c9ddbd113dc6f57782b2f0",
+      "size": 872
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/envelope.json",
+      "sha256": "df55e4384e23b2ba4aef6a1281d7eca11dee30a067d52e9bc41f8d05aaf0e0d8",
+      "size": 2016
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/evolution.json",
+      "sha256": "eec53de5773309829edbbaa40fc909141a4fd2084de5ad921898b3b495c00adf",
+      "size": 812
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/outbox-inbox.json",
+      "sha256": "b1c591c0dda3c2b66e13b6b2d2a42ca3f3dabe550877f54e6a41a752244e7fa3",
+      "size": 899
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/partitioning.json",
+      "sha256": "13c4a567eaf7c553a0c0a400d33d4a7d3bb06c4947d1ee4edf94070fdabcb955",
+      "size": 861
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/reliability.json",
+      "sha256": "9a504bc486633f2f0571f2cb42d00e1b89b4df7c98800d71ad5b32e28a15df91",
+      "size": 860
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/replay.json",
+      "sha256": "382b1febf8bbd7e71e96870f81a51540065c65eba1fd9a6ad386ba3e2b1b0b7a",
+      "size": 865
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/security.json",
+      "sha256": "5fb372e94e1174e88005dc36e800b01840fc96bfe0cd9ab5faa804007fe7792f",
+      "size": 779
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/stream-time.json",
+      "sha256": "9d246fb9913c2b5693df35d57a778b755d2fab5a5b405f39fd806a4b6b5669d7",
+      "size": 849
+    },
+    {
+      "path": "capstone/predecessor/handoff/vectors/workflow.json",
+      "sha256": "4bd38586e313d7dd267e1682b185b1df2c8b796332d5c558a6f64e0105ed2c78",
+      "size": 840
+    },
+    {
+      "path": "capstone/releases/rejected-enum-renumber/candidate.json",
+      "sha256": "bbf88450a75aede15f30399d570f9255dc0baebeda64e107758b016b757633d0",
+      "size": 105
+    },
+    {
+      "path": "capstone/releases/rejected-method-shape/candidate.json",
+      "sha256": "81c14b600dbe101f8358f2c1b4b4831b2644b1076826930b10a297d11f660293",
+      "size": 132
+    },
+    {
+      "path": "capstone/releases/rejected-missing-owner/candidate.json",
+      "sha256": "77bb3b9edacc314f4490173a47c524103cc5150793f3f2026388b9191ed4e555",
+      "size": 124
+    },
+    {
+      "path": "capstone/releases/rejected-tag-reuse/candidate.json",
+      "sha256": "d0f6695f1cce0131451e879993bc94fbacfc45782282a3f101e44bb9e2e908d7",
+      "size": 136
+    },
+    {
+      "path": "capstone/releases/rejected-unbounded-stream/candidate.json",
+      "sha256": "33b7024a1435c1532d489e520e0b05a1cafc5ef0261a11384fabcdba262caced",
+      "size": 125
+    },
+    {
+      "path": "capstone/releases/rejected-unrestricted-reflection/candidate.json",
+      "sha256": "d7209b88f83ab45cc3a8d750d82201bd9699d96fbb859bf9d6226f2e5919fcc4",
+      "size": 136
+    },
+    {
+      "path": "capstone/releases/rejected-unsafe-retry/candidate.json",
+      "sha256": "7b2371b73ce7d49a198150a0a854ff83877bccf08d5096e4d251fdaf7e512d26",
+      "size": 129
+    },
+    {
+      "path": "capstone/releases/rpc-1.0/README.md",
+      "sha256": "7919e37a1e683ec77779467a2f0184b5032b4ac861454ed7d53053b0b4674a97",
+      "size": 250
+    },
+    {
+      "path": "capstone/releases/rpc-1.0/release-report.json",
+      "sha256": "972cf31fe7b5c4360e81ffd7fe567ccfd8083fe97212fbfcbcf0112e3cc15186",
+      "size": 581
+    },
+    {
+      "path": "capstone/releases/rpc-1.1/candidate.proto.patch",
+      "sha256": "6a5c2bca0006ad3306a2fa2742a8e233c84307971e8af8774eb4f0c31c573530",
+      "size": 76
+    },
+    {
+      "path": "capstone/releases/rpc-1.1/compatibility-report.json",
+      "sha256": "d90d6bd7cf0cacf86dd33f2fd5d076bab961560121a3537260515a242bd2bd99",
+      "size": 473
+    },
+    {
+      "path": "capstone/rpc-case/capability-matrix.json",
+      "sha256": "e1f31fa7645bb9b152edbeaa55be4e5cb181a90c390147f68245a615731f6980",
+      "size": 1066
+    },
+    {
+      "path": "capstone/rpc-case/consumer-declarations.yaml",
+      "sha256": "f5bde9299a298083298316df720b169c7ae58f654f7dd84b1aebaa3fe7d89bca",
+      "size": 611
+    },
+    {
+      "path": "capstone/rpc-case/deadline-retry-policy.yaml",
+      "sha256": "5fed33cb3c4ac666dc6715091614cefda903c6a343964b4c28f66874bbcbe7ff",
+      "size": 944
+    },
+    {
+      "path": "capstone/rpc-case/interaction-decisions.yaml",
+      "sha256": "ad40ec987620a82554bbe9516fb6ee42ee0c5a4995e4d66bd1161424a4691b7e",
+      "size": 1072
+    },
+    {
+      "path": "capstone/rpc-case/rpc-catalog.yaml",
+      "sha256": "ea6f042ee7ac9ddb5940cda87550c69293fc84e8059b2ee5d9ba8d31f3e50d97",
+      "size": 2028
+    },
+    {
+      "path": "capstone/rpc-case/service-ownership.yaml",
+      "sha256": "c6accd8b1dd9eaf764ac74b64d96856fb242077ee73f3690ededcd70a64c15a1",
+      "size": 692
+    },
+    {
+      "path": "capstone/rpc-case/status-policy.yaml",
+      "sha256": "73f2244c58355d5c7bde66127499c35fa8306a117282d13a5a7326ee41017b1d",
+      "size": 743
+    },
+    {
+      "path": "capstone/rpc-case/streaming-policy.yaml",
+      "sha256": "dd1920c7da77f75db8c9a4189d4d0de6ec52f344414c9669732feca95c30980c",
+      "size": 672
+    },
+    {
+      "path": "capstone/rpc-case/version-ledger.yaml",
+      "sha256": "1eac45ba58cd7884c3ab8013e606ad2ba1669283c43e4f443cff3ca6ea4faa6a",
+      "size": 360
+    },
+    {
+      "path": "capstone/security/method-policy.yaml",
+      "sha256": "b57c61f51ff3349f8925ded65717085921179061978e4e7c39e8d1a50422aa92",
+      "size": 980
+    },
+    {
+      "path": "capstone/shared/golden/analysis-run-v1.bin",
+      "sha256": "0658bd065901cd732b9af3139e0ba9539108cf27752b785acf292fd5228a4f98",
+      "size": 75
+    },
+    {
+      "path": "capstone/shared/golden/analysis-run-v1.json",
+      "sha256": "c6c9e53541912900eed1ed4926c60ba62c39799bef62aed9a832a672e1548e0a",
+      "size": 372
+    },
+    {
+      "path": "capstone/shared/vectors/boundary.json",
+      "sha256": "47ab3db174c1d866302a0158a43342dbe4ae7c3ad232dfa4e8051c3948d46f44",
+      "size": 840
+    },
+    {
+      "path": "capstone/shared/vectors/compatibility.json",
+      "sha256": "052fd8a424bad34a555f955a723731579f494ac94f7433f98128a4147c5e81ff",
+      "size": 1029
+    },
+    {
+      "path": "capstone/shared/vectors/deadlines.json",
+      "sha256": "39d16ed263f8d7dcc647597be3c93013cc8f9263760f6ad492c7e07f242bd77e",
+      "size": 511
+    },
+    {
+      "path": "capstone/shared/vectors/flow-control.json",
+      "sha256": "089f85cd3894991787f3dc56c6a469bef3c73544dad5409895dc57d7ee4661a5",
+      "size": 613
+    },
+    {
+      "path": "capstone/shared/vectors/int64.json",
+      "sha256": "35b9826d6c5944fed38143eb11836d547ccbdd464c75eec2b400684e4a61ac7e",
+      "size": 671
+    },
+    {
+      "path": "capstone/shared/vectors/lifecycle.json",
+      "sha256": "7bf78532ddd704b733e57438936a6c324e9cd688ccee4ffe489d94869b05554c",
+      "size": 871
+    },
+    {
+      "path": "capstone/shared/vectors/presence.json",
+      "sha256": "1eb6c239acafc75bb59cb66d28704c3551214ef74cf2c52373e54c19640a8b4e",
+      "size": 683
+    },
+    {
+      "path": "capstone/shared/vectors/retries.json",
+      "sha256": "183cc3c2ab00a655526db41cf7bae3d522972e600bcdfcdb774d4b026ad6866c",
+      "size": 1092
+    },
+    {
+      "path": "capstone/shared/vectors/security.json",
+      "sha256": "f37dbde96140a8ddc6dbf3cd1b486ea87db604e72928c8ee684df644ec3c630e",
+      "size": 952
+    },
+    {
+      "path": "capstone/shared/vectors/status.json",
+      "sha256": "d06c7393b7d36b295d09836d2593db4b0656f39aafc402b8df5668c4d71bb8f7",
+      "size": 1240
+    },
+    {
+      "path": "capstone/shared/vectors/streaming.json",
+      "sha256": "24c1e0d9300f99f0b6177c3651ed2ca9f943b91844117e0521876c90d71452e2",
+      "size": 1189
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/010_event_outbox_inbox.sql",
+      "sha256": "bc8387ce6b0ab2d87fc033018d96cd85cb24e4465631e9501f610bf075960191",
+      "size": 2673
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/011_event_replay_dead_letters.sql",
+      "sha256": "682527c166e689556765836aae9f2d8c8ed07844a7ee07b3f77c81f77dadf8b3",
+      "size": 3001
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/012_event_contract_catalog.sql",
+      "sha256": "bb6077ce0447bf6ee35513cd1f3b46bf9e70d4c514602fdbcfdc539d5399ed28",
+      "size": 2588
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/013_rpc_idempotency_and_resume.sql",
+      "sha256": "7f41c576958ce32ebcb0d08bff17a23e06ba7ef3466b656f87f340ef6106c845",
+      "size": 784
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/014_worker_sessions_and_attempts.sql",
+      "sha256": "f366b5b5640a962f82943768cb19923a5885fd75321ad0edd58dab4c76f3172b",
+      "size": 956
+    },
+    {
+      "path": "capstone/tracks/python-grpc/migrations/015_rpc_contract_catalog.sql",
+      "sha256": "cf6e230f0f53dd8f1a2c8c09cc6444587830fa486479bf61136f2768f0f0783d",
+      "size": 603
+    },
+    {
+      "path": "capstone/tracks/python-grpc/pyproject.toml",
+      "sha256": "ae85259f0dd59d7c1825d5b8506a01b834f686a42aef2820d12c298d6a74e38d",
+      "size": 233
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/__init__.py",
+      "sha256": "bdbcf1fdbd6bb9f4dc758d5175ece11fefc40de939686bb56c7367b479084be0",
+      "size": 45
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/analysis_pb2.py",
+      "sha256": "f41b4e4be6ce502ebc3b2d5d77b0bb9ff93b3573ecc1a52e4e5191058d636785",
+      "size": 5297
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/analysis_pb2_grpc.py",
+      "sha256": "b0db708d00b09da327d422da461542538d2a127fe2e5134092b61db5b74c91e8",
+      "size": 5849
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/client.py",
+      "sha256": "ec8fe37bdc2c33cb15742c7f9bcc52328d10a7224a072085630d1f86c4a05ef0",
+      "size": 3613
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/deadlines.py",
+      "sha256": "9bc6e7f3fd50db44d3cfff6886660fa7203d31dfcbafbcf0e0c9e70d3ac5d053",
+      "size": 1466
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/errors.py",
+      "sha256": "5922f89d29312f61928942a0d9863fe978b7c23178e3c32d202af9dfc3b357e8",
+      "size": 1136
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/lifecycle.py",
+      "sha256": "c88d66f1afa8e64fa681252fc63970a3f467afe460e2e5d2da738fefa37dcd3b",
+      "size": 1619
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/mapping.py",
+      "sha256": "7af03aa565e9e057f210964a05321d356a252bef83700f29bbd1f0f34e38067d",
+      "size": 894
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/models.py",
+      "sha256": "ee41661a450a274dbc19c2b2a252c76da217ac44628e74ac3f6d42187e21d2bc",
+      "size": 2271
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/security.py",
+      "sha256": "0b29280b891ec1b64c0e5936b4e713f1a74b3d77e4271187a98e62409484568c",
+      "size": 1687
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/server.py",
+      "sha256": "06bc1e5ffb99b430fb1399db3f90dfe8460018fa595e3f229287876a4535c9a0",
+      "size": 8717
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/status.py",
+      "sha256": "5ac9539465a90dea7a5017e28650190931788957bb96a3774fbbc473001986fe",
+      "size": 1502
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/store.py",
+      "sha256": "9505e8b7d912414f6523e4a1c8a761fa0aa2676a9a3f48eedda9a303cad50df0",
+      "size": 9965
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/streaming.py",
+      "sha256": "b977d042c82062366222b03828c7a66b692ea42e9ac787370f9d6e78226e9227",
+      "size": 2429
+    },
+    {
+      "path": "capstone/tracks/python-grpc/src/analysis_rpc/tour.py",
+      "sha256": "004cb7644cc171b04dc1f4dd0269d4bb00eea3dc8c9257406d0c0f011f604fbf",
+      "size": 1468
+    },
+    {
+      "path": "capstone/tracks/python-grpc/tests/test_core.py",
+      "sha256": "0f4bf627d36d6b4a763205773dc8984c5b0d0e48ce06663ab3f079570e62da5f",
+      "size": 9843
+    },
+    {
+      "path": "capstone/tracks/python-grpc/tests/test_network.py",
+      "sha256": "1c3108910741f0f4b0d2074d46e2a273aa37b342d54145a8559608d4963a2ffa",
+      "size": 4150
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/010_event_outbox_inbox.sql",
+      "sha256": "bc8387ce6b0ab2d87fc033018d96cd85cb24e4465631e9501f610bf075960191",
+      "size": 2673
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/011_event_replay_dead_letters.sql",
+      "sha256": "682527c166e689556765836aae9f2d8c8ed07844a7ee07b3f77c81f77dadf8b3",
+      "size": 3001
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/012_event_contract_catalog.sql",
+      "sha256": "bb6077ce0447bf6ee35513cd1f3b46bf9e70d4c514602fdbcfdc539d5399ed28",
+      "size": 2588
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/013_rpc_idempotency_and_resume.sql",
+      "sha256": "7f41c576958ce32ebcb0d08bff17a23e06ba7ef3466b656f87f340ef6106c845",
+      "size": 784
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/014_worker_sessions_and_attempts.sql",
+      "sha256": "f366b5b5640a962f82943768cb19923a5885fd75321ad0edd58dab4c76f3172b",
+      "size": 956
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/migrations/015_rpc_contract_catalog.sql",
+      "sha256": "cf6e230f0f53dd8f1a2c8c09cc6444587830fa486479bf61136f2768f0f0783d",
+      "size": 603
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/optional-network/client.ts",
+      "sha256": "ac950b3f93fa45fef70cb91cfc06e7118d0be0029d5f153f923e4313aff2dd25",
+      "size": 972
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/optional-network/server.ts",
+      "sha256": "7068d9f8dc0e17d9c0b05ac2a1f044c8cb3402c7cc28b5906408c31fd79329ea",
+      "size": 8055
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/package.json",
+      "sha256": "bdcd52488d7a65386824f8848f96bc3f1c592c7e2d7237f49e9940ea800b5b29",
+      "size": 493
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/catalogue.ts",
+      "sha256": "2e75d37a526707440107371f78869a3f4131628c63b4c7cf18b12d8fdb6ae1ff",
+      "size": 2482
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/deadline.ts",
+      "sha256": "7650dac5587218a3fd9c26b869bbba19ee19533f5269dfe67d27312bebc54b55",
+      "size": 1554
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/index.ts",
+      "sha256": "1640112e844d1e4164a40f763909d5c6b305e3b4c04afa99b6780e1a965c75a5",
+      "size": 271
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/inprocess.ts",
+      "sha256": "059adac85d94e0b649add29c3824ef21ab4109a0d10002654becb2f051e93a48",
+      "size": 2485
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/lifecycle.ts",
+      "sha256": "76bc6d9002f98561e6d68c1465c883f7133bf9eca0804d8a85aa39b906eb4c5a",
+      "size": 1232
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/model.ts",
+      "sha256": "3c4a6bf5d3d16ef5870285968bf79c577869702e334a03b5f2f6e52165378210",
+      "size": 2677
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/node-shim.d.ts",
+      "sha256": "f7e230bacabcb5e384eebf873d5f51e7b02ac8eb4cc43afacf452afb7b6141cd",
+      "size": 335
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/security.ts",
+      "sha256": "97eeca51ec838064abae73e9f4dfd6de10efd939328acb9bcb039a3cf4a0b879",
+      "size": 1853
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/status.ts",
+      "sha256": "2112a09f431cb620453883ee3e64134a3e38583c58f07afbd20fbefd1db55bed",
+      "size": 1283
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/stream.ts",
+      "sha256": "dde6b351c1eeb1f14083be10f8b84420c8c3272990f4ae252dee8e21d9ce0b17",
+      "size": 3693
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/src/wire.ts",
+      "sha256": "b8c9748730d64957b5dd731740e6bee819c97c4590ac629dfc743d90d736a1d9",
+      "size": 1602
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/test-js/deadline-status.test.mjs",
+      "sha256": "43c7ad1bd63510902039bdff1a7a040bfba08057d6301cd1ee3206b403fb6fce",
+      "size": 1517
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/test-js/model.test.mjs",
+      "sha256": "64c94ce3b8a5d4062cd5609a76cfc2f7e2c891f475bbe3d68fbabf9058c357da",
+      "size": 2081
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/test-js/stream-security.test.mjs",
+      "sha256": "4c836a57077b65d489bdc4377be31439d12eaaea8ce544f0af947bb2d2649e16",
+      "size": 2095
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/test-js/wire-lifecycle-catalogue.test.mjs",
+      "sha256": "b33c99aa8e839ff6e78fd3077e42ac5bb8a4bc733a489a2c9554a13abbf833ad",
+      "size": 1448
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/tsconfig.json",
+      "sha256": "f74400087372e1ad054a825c3b655a1bc3d443a9d88e26defed41d5ff2c91a08",
+      "size": 345
+    },
+    {
+      "path": "capstone/tracks/typescript-grpc/tsconfig.network.json",
+      "sha256": "7d33936c95409a58160caf8506ee903f55772dfb3d710879c5af1c5ad72218b9",
+      "size": 182
+    },
+    {
+      "path": "course-book/capstone.md",
+      "sha256": "26bd7581f59c0fab450621acb8e953a66e55c2b9d62bb35de874755e6b557d94",
+      "size": 4455
+    },
+    {
+      "path": "course-book/evidence-model.md",
+      "sha256": "5fa32bf73380aab1be65bd90291e259064a8ac3835a0ee6c4d2b648162ba8ca1",
+      "size": 1662
+    },
+    {
+      "path": "course-book/glossary.md",
+      "sha256": "daeb543a8f5b7c9f639efd5f43e959b67743a0d8f155b76b46f50a595406f568",
+      "size": 2883
+    },
+    {
+      "path": "course-book/index.md",
+      "sha256": "b7ccf4f464faca977e50abb173c7cb8818c0164c28129e0078e6bf06beefbeb6",
+      "size": 8322
+    },
+    {
+      "path": "course-book/language-strategy.md",
+      "sha256": "fb8e82527c260b53fbab5602db1f039f4b71d4fb6f9d3937fd56d4d628949536",
+      "size": 1433
+    },
+    {
+      "path": "course-book/module-00-orientation/checkpoint.md",
+      "sha256": "adf9aafd724c71a39aa5333ab6f134d42834d9e514fca5ccb2e7bfe84689769a",
+      "size": 1715
+    },
+    {
+      "path": "course-book/module-00-orientation/index.md",
+      "sha256": "6155e6fc40c766909e520e5665ed0251baa121720857c848e26a1168dd625334",
+      "size": 3698
+    },
+    {
+      "path": "course-book/module-00-orientation/lab.md",
+      "sha256": "d2a423261000e800b97421bae255d198e4bd77e2e03c87ab646a46ba4e000748",
+      "size": 3286
+    },
+    {
+      "path": "course-book/module-01-rpc-boundaries-and-service-ownership/checkpoint.md",
+      "sha256": "1cbe69fce162e1684d0965f16022946255abce5cf5b8cf3e3d9a7bde7c976d7b",
+      "size": 1918
+    },
+    {
+      "path": "course-book/module-01-rpc-boundaries-and-service-ownership/exercise-answers.md",
+      "sha256": "68217f8ee33b1c0c6124771382ae62dc94ed59a361575052cc982a7e9ff53914",
+      "size": 11064
+    },
+    {
+      "path": "course-book/module-01-rpc-boundaries-and-service-ownership/exercises.md",
+      "sha256": "1a7e80997305cc151ca02fc6ab5a618f4363f82552735a73295a1fd1ef28b88a",
+      "size": 2594
+    },
+    {
+      "path": "course-book/module-01-rpc-boundaries-and-service-ownership/index.md",
+      "sha256": "cdf82ecc53c34bcab664b483130f184898d9b27d3796778f775b974a942a9cfb",
+      "size": 14032
+    },
+    {
+      "path": "course-book/module-01-rpc-boundaries-and-service-ownership/lab.md",
+      "sha256": "edca62966404095d36c9f388c70e7db7c4733a2544407173ad3d973c100364cc",
+      "size": 4897
+    },
+    {
+      "path": "course-book/module-02-protobuf-modeling-presence-and-semantic-types/checkpoint.md",
+      "sha256": "5b987103c8d13dc7b4f0042310904721f03d75a0274e518ce1cf5b3ef4e45841",
+      "size": 1933
+    },
+    {
+      "path": "course-book/module-02-protobuf-modeling-presence-and-semantic-types/exercise-answers.md",
+      "sha256": "37bfb5f915bfebaf8c00119970808ccfcb57ee706158dbd2c817b713b51339b8",
+      "size": 9200
+    },
+    {
+      "path": "course-book/module-02-protobuf-modeling-presence-and-semantic-types/exercises.md",
+      "sha256": "b5b9a7a57e5f9fdd38a19d6fd7442b4c2de8ba76b0179f3b1114c73e87226cae",
+      "size": 2307
+    },
+    {
+      "path": "course-book/module-02-protobuf-modeling-presence-and-semantic-types/index.md",
+      "sha256": "fb455e5456229e75544b2e6e3776ac9ab1756702c320ab7645e52b55d657a4b5",
+      "size": 17566
+    },
+    {
+      "path": "course-book/module-02-protobuf-modeling-presence-and-semantic-types/lab.md",
+      "sha256": "b6b201c00e7567c2b2ddaa7706e2facdecf4f3ea50f6c261f802dd9d11fb23cc",
+      "size": 5282
+    },
+    {
+      "path": "course-book/module-03-wire-format-unknown-fields-and-compatibility/checkpoint.md",
+      "sha256": "bf57ca38a0f88f91d4e319852f065df93064ca0662c853fa7b054c0f50b95acd",
+      "size": 1856
+    },
+    {
+      "path": "course-book/module-03-wire-format-unknown-fields-and-compatibility/exercise-answers.md",
+      "sha256": "ebad4069dfa8bc4f08a570a5e1d43f1ba86c6eae93bd4b9e2f3bcb135fc52135",
+      "size": 9001
+    },
+    {
+      "path": "course-book/module-03-wire-format-unknown-fields-and-compatibility/exercises.md",
+      "sha256": "62a59a2e738f9255648e3085d059d46433689251d78e5774b63e269f46685113",
+      "size": 2301
+    },
+    {
+      "path": "course-book/module-03-wire-format-unknown-fields-and-compatibility/index.md",
+      "sha256": "4517ef45c0e92bf20a7dcfbed7db6e8238b6182d715e5a99eb07b6b976a2d99d",
+      "size": 16073
+    },
+    {
+      "path": "course-book/module-03-wire-format-unknown-fields-and-compatibility/lab.md",
+      "sha256": "c4d6da7e3a8c308b3a69b068e2f62a64f9ad55b9558a77c6ded3ab940a501683",
+      "size": 5180
+    },
+    {
+      "path": "course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/checkpoint.md",
+      "sha256": "4f83db43282c338b27747eefe544783dbaa25b29bdecb631bebf3099a6a2107c",
+      "size": 1763
+    },
+    {
+      "path": "course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/exercise-answers.md",
+      "sha256": "4d420dcf7fa60421d13f3e24013cdce8f082dbac424471d215ec2185dd659433",
+      "size": 9012
+    },
+    {
+      "path": "course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/exercises.md",
+      "sha256": "2ca783fcef1fb72658ec8dbed294ef9f08f53b61a763904f91a862f19c4a04b3",
+      "size": 2282
+    },
+    {
+      "path": "course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/index.md",
+      "sha256": "6421b2d36314a6abe8d8da981899671f1b51b2c3a9c11b5c7138e87f841399e0",
+      "size": 16078
+    },
+    {
+      "path": "course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/lab.md",
+      "sha256": "bb150d470fb31cf014fd80c0d8e7b52968c33fb26b40fee35be70c69b24883f6",
+      "size": 5178
+    },
+    {
+      "path": "course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/checkpoint.md",
+      "sha256": "f004edd9ed369bd3c0fdd260eadf7f01aff92ee40297879499460c81b2c56203",
+      "size": 1821
+    },
+    {
+      "path": "course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/exercise-answers.md",
+      "sha256": "929f4784deda5008dfa840891abb8b72d224429ce8f4b897d20e8df43e5900e7",
+      "size": 8732
+    },
+    {
+      "path": "course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/exercises.md",
+      "sha256": "cbb24dae5659334b8bb0e674cc315faa7012d455963104f13fee5543f30515a5",
+      "size": 2198
+    },
+    {
+      "path": "course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/index.md",
+      "sha256": "6d8b692a3f4e5dd549cb95f4b7966ab5f72beb6e4c1057e314d813997d0e8439",
+      "size": 15186
+    },
+    {
+      "path": "course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/lab.md",
+      "sha256": "cce912428379438e7d21372d9a99bd91dcaa367d96a0919b0dbcdc6bf578b2ae",
+      "size": 5477
+    },
+    {
+      "path": "course-book/module-06-streaming-rpcs-flow-control-and-backpressure/checkpoint.md",
+      "sha256": "a22916480f36ae14485c905d63e9ef2f12ceadb9b5009bc2c7788239857d1212",
+      "size": 1902
+    },
+    {
+      "path": "course-book/module-06-streaming-rpcs-flow-control-and-backpressure/exercise-answers.md",
+      "sha256": "f978e2f4eaac88677e57e8af6bbecb763b2b0319ac4c9e409b1bb807c3f28f05",
+      "size": 8800
+    },
+    {
+      "path": "course-book/module-06-streaming-rpcs-flow-control-and-backpressure/exercises.md",
+      "sha256": "ed1c976189eec55b9c1e59967b5ead178f6063d9a75ba2088c336d499dd91226",
+      "size": 2262
+    },
+    {
+      "path": "course-book/module-06-streaming-rpcs-flow-control-and-backpressure/index.md",
+      "sha256": "5dacb939e654fad9737667a038139d2a9f09e1d3791491b55ac661ef51c17ff9",
+      "size": 15608
+    },
+    {
+      "path": "course-book/module-06-streaming-rpcs-flow-control-and-backpressure/lab.md",
+      "sha256": "8d9b627abda50cfaf928626c042f762553b1e651467a18574d24eaf4facd58c7",
+      "size": 5237
+    },
+    {
+      "path": "course-book/module-07-identity-authorization-mtls-and-tenant-isolation/checkpoint.md",
+      "sha256": "f5428fc254cd16120f69ad7a345c55821fce186a30a10930b6d34bc1214f96bc",
+      "size": 1903
+    },
+    {
+      "path": "course-book/module-07-identity-authorization-mtls-and-tenant-isolation/exercise-answers.md",
+      "sha256": "5d06a2213ffbb239e0fed646d4e616dd29d62f0be1475c799a887d1a60c1867f",
+      "size": 8407
+    },
+    {
+      "path": "course-book/module-07-identity-authorization-mtls-and-tenant-isolation/exercises.md",
+      "sha256": "563ad2506e9d0cabd2c75eb0e5080f8f047adedf977faa5dacfdf23b1f514633",
+      "size": 2259
+    },
+    {
+      "path": "course-book/module-07-identity-authorization-mtls-and-tenant-isolation/index.md",
+      "sha256": "9247c01e704d134f59bc5447a1d505ab019184f589562ebf5edf7648f1979ed9",
+      "size": 15364
+    },
+    {
+      "path": "course-book/module-07-identity-authorization-mtls-and-tenant-isolation/lab.md",
+      "sha256": "3650ffa04a0134dc5b4ee01aae83cb2aaf0a5b99e204e1194dff207e5199b8f6",
+      "size": 5263
+    },
+    {
+      "path": "course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/checkpoint.md",
+      "sha256": "686c3c8b910d45025fc8e61a8e042e0d3e6fe508b62fdcca9e40771fd48de47e",
+      "size": 1904
+    },
+    {
+      "path": "course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/exercise-answers.md",
+      "sha256": "149fdf4fb320b8fb30f945aed4d3450a38a3f082efaf76c53d8e4d688d37a80a",
+      "size": 7939
+    },
+    {
+      "path": "course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/exercises.md",
+      "sha256": "b4eb19416eb6db4aa74beb3a07adb8ab4013beb0a4b9f5707724b721dd241d45",
+      "size": 2182
+    },
+    {
+      "path": "course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/index.md",
+      "sha256": "b7d575757e380521d94c4899ea5bb3729c9df739d040de4fa114e6a48e04266d",
+      "size": 14836
+    },
+    {
+      "path": "course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/lab.md",
+      "sha256": "46d847eb9de6a96ff422f2d0637583698b591ea3e5068f5f324464309fb6baf4",
+      "size": 5659
+    },
+    {
+      "path": "course-book/module-09-generation-testing-reflection-and-schema-governance/checkpoint.md",
+      "sha256": "01ae6a1830182fd0ed6a9d472235751d67e394426ac860c489ab39346a15c113",
+      "size": 1848
+    },
+    {
+      "path": "course-book/module-09-generation-testing-reflection-and-schema-governance/exercise-answers.md",
+      "sha256": "ac6748ea48fe3be86320a2fef551f8e7f270b3a4993a1e6d196912421d4f05dc",
+      "size": 8269
+    },
+    {
+      "path": "course-book/module-09-generation-testing-reflection-and-schema-governance/exercises.md",
+      "sha256": "ee058ab1ed49e127dc918d59da47202d54a597c598981885219c1325b3551d8e",
+      "size": 2117
+    },
+    {
+      "path": "course-book/module-09-generation-testing-reflection-and-schema-governance/index.md",
+      "sha256": "ac258086267c7d1e8f84d971bd985ab7ea1abbf9a58237c28e6adadc1040f13e",
+      "size": 15020
+    },
+    {
+      "path": "course-book/module-09-generation-testing-reflection-and-schema-governance/lab.md",
+      "sha256": "104672a3042155cd3d4adfbfd94f966f12e6b39e05e1bfe976d26f2daec402e0",
+      "size": 5237
+    },
+    {
+      "path": "course-book/module-10-http-events-and-grpc-release-and-final-defense/checkpoint.md",
+      "sha256": "fbd2865f2bad973d5a00419458a966f50b4145f8256308cc0f7ea74d9d724ab3",
+      "size": 1999
+    },
+    {
+      "path": "course-book/module-10-http-events-and-grpc-release-and-final-defense/exercise-answers.md",
+      "sha256": "f2458df6d3ae24dfb8d8b23567d34842ebf4bd9c32b93f8478dd1611e71eb2c3",
+      "size": 9488
+    },
+    {
+      "path": "course-book/module-10-http-events-and-grpc-release-and-final-defense/exercises.md",
+      "sha256": "2b59b5ba1578caba9384e328a3b4c0626e59363b225b6669cff9789029259390",
+      "size": 2332
+    },
+    {
+      "path": "course-book/module-10-http-events-and-grpc-release-and-final-defense/index.md",
+      "sha256": "182ba3374d9f0b40bd32cd495c86387e2e199ab0f3e6a664b4f5235ca63cb7e4",
+      "size": 17003
+    },
+    {
+      "path": "course-book/module-10-http-events-and-grpc-release-and-final-defense/lab.md",
+      "sha256": "b44ff0344daa14926a282fe6523a68673fe7f101f6da4dd65f88e696e75afbcd",
+      "size": 5717
+    },
+    {
+      "path": "course-book/standards.md",
+      "sha256": "ae961d081adc718c2a732158f8b6335b5b9b85d77593b40d7bf638909b32708b",
+      "size": 1951
+    },
+    {
+      "path": "course-book/start-here.md",
+      "sha256": "1ed4fdfc2c843f6e88ea255af98bf8bc7bb79b6f482fdff95eb0afdce3a6b8b3",
+      "size": 2554
+    },
+    {
+      "path": "course-book/study-plan.md",
+      "sha256": "fe189f45a6041361746844debec057d8381e28efe0da47b62ad523d28551cf83",
+      "size": 4780
+    },
+    {
+      "path": "course.json",
+      "sha256": "be1b96d4e916b421a1d262d97dd643c6fc1bb50b0c13ed0c039d97e63431f859",
+      "size": 13432
+    },
+    {
+      "path": "instructor/lab-reset.md",
+      "sha256": "11d0f6f0924f0b26c4845d68e91f997b6b60c69c92a4cdffddff78c841e6f077",
+      "size": 396
+    },
+    {
+      "path": "instructor/planted-defect-map.md",
+      "sha256": "0060d18de037a749bb67217cab688c63dd6027a088c38a6f137dec93f66ff581",
+      "size": 604
+    },
+    {
+      "path": "instructor/teaching-notes.md",
+      "sha256": "c4c21248491c6167d73192443c58be4a5d4e4fea23945a3a0ef57919b2923647",
+      "size": 1155
+    },
+    {
+      "path": "mkdocs.yml",
+      "sha256": "516f16f312d4f56e1217152aacc2a1615638da089f944cbbbbe3801eae680ed9",
+      "size": 5771
+    },
+    {
+      "path": "reports/capability-execution.json",
+      "sha256": "fd8733cbfff2460d6c5af1f2c7cd00d4a906f78745f41db752310e73c017c5e4",
+      "size": 822
+    },
+    {
+      "path": "reports/module-01-boundary-proof.json",
+      "sha256": "01211d91f90bb5bb1615121e1f0775a39d247e152114bd72a0264dcdf49b5f1b",
+      "size": 212
+    },
+    {
+      "path": "reports/module-02-model-proof.json",
+      "sha256": "75b0c4709a677e15d0ed9f9ffdfc10d008cd78a67eae4226a3beeee8a284556a",
+      "size": 271
+    },
+    {
+      "path": "reports/module-03-wire-proof.json",
+      "sha256": "a49f12c3c68ef78ae14216883600daec43751e143628ae7b9201ab467491aba6",
+      "size": 211
+    },
+    {
+      "path": "reports/module-04-unary-proof.json",
+      "sha256": "565abc0c34e449447d8284bc49ebace0cbd25766cebfdfcdce331097df8c6060",
+      "size": 188
+    },
+    {
+      "path": "reports/module-05-deadline-proof.json",
+      "sha256": "134d24f2dc507ce63366dca7c1fda37e7d565586276997ed1c2e349d265de80a",
+      "size": 223
+    },
+    {
+      "path": "reports/module-06-streaming-proof.json",
+      "sha256": "363183fe98d61b0a1b9d8356e2067e463119c1b3df77b57b7d88f41b07662828",
+      "size": 282
+    },
+    {
+      "path": "reports/module-07-security-proof.json",
+      "sha256": "1f382714970f74823e63df57691362af1a42db736fe32a206d08c548d8a11721",
+      "size": 228
+    },
+    {
+      "path": "reports/module-08-lifecycle-proof.json",
+      "sha256": "60a9e02a06099e96b8575ea21a239cdd8cf2673a7ad234d42f25a5e8e6c136bb",
+      "size": 224
+    },
+    {
+      "path": "reports/module-09-governance-proof.json",
+      "sha256": "ad8d35e05a0c58cdc3a898e30e635231dd2a76927dbb7a44fc5d3521d2238efb",
+      "size": 332
+    },
+    {
+      "path": "reports/module-10-release-proof.json",
+      "sha256": "ff26165a6281b2d6de14b169110b2ac0161b6415b1b7f1312a23b8122ef411be",
+      "size": 247
+    },
+    {
+      "path": "reports/release-verification.json",
+      "sha256": "1d72980f9fc42bc8ee64f8b430b191abfe9f454815398c04089c1230fbd77206",
+      "size": 588
+    },
+    {
+      "path": "requirements-docs.txt",
+      "sha256": "a97e1e4c59b20cb8464276f9b97466f0a1aeeb1cdad373c5284fa224b47215eb",
+      "size": 14
+    },
+    {
+      "path": "scripts/build_manifest.py",
+      "sha256": "cdb07fe5dc90256fbb9bb3c1e9c662e170ad7352ec045ec64a1247546e66fe33",
+      "size": 1784
+    },
+    {
+      "path": "scripts/course_tool.py",
+      "sha256": "27d4b7fd84179dcda66cd6576ea89d934ea0f85797865af22c195a2a31b0e191",
+      "size": 18890
+    },
+    {
+      "path": "scripts/generate_python_stubs.py",
+      "sha256": "7d1b418f62d6c65b257cf070bd94d15cbb1c552db0e0055140f2c3da752df4bb",
+      "size": 835
+    },
+    {
+      "path": "tests/README.md",
+      "sha256": "43f6f0429c775d40a0de768e9a86d777539edcd3e68337421be147faccaff963",
+      "size": 240
+    },
+    {
+      "path": "tool-versions.json",
+      "sha256": "7ea47699ae586fe8a74c82986c89bb5dee5fe58e014243f1a106008248a6dd85",
+      "size": 569
+    }
+  ],
+  "format": "bijux-course-manifest-v1",
+  "root": "07-grpc-and-protobuf-engineering"
+}

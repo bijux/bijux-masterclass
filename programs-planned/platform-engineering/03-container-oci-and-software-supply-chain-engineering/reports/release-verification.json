@@ -1,0 +1,39 @@
+{
+  "capstone": "Atlas Workload Release 1.0",
+  "course": "03-container-oci-and-software-supply-chain-engineering",
+  "courseBook": {
+    "checkpoints": 10,
+    "exercises": 120,
+    "labs": 10,
+    "modules": 10,
+    "pages": 100,
+    "words": 58849,
+    "workedAnswers": 120
+  },
+  "evidenceBoundary": "dependency-light release mechanisms plus bounded local runtime observation; no production conformance or operations claim",
+  "executed": {
+    "coreProof": "passed",
+    "goWorkloadCompilation": "passed",
+    "localMarkdownLinks": 238,
+    "plantedDefects": 10,
+    "predecessorFiles": 13,
+    "pythonTests": 24,
+    "releaseCandidates": 10,
+    "runtimeHarness": "passed",
+    "shellSyntaxFiles": 4,
+    "strictNavigationCoverage": "passed",
+    "successorHandoffFiles": 9
+  },
+  "notExecuted": [
+    "strict MkDocs rendered-site build",
+    "independent BuildKit/Docker/Podman multi-platform build",
+    "independent runc/crun runtime execution",
+    "operated registry authentication, retention, replication, garbage collection, and disaster recovery",
+    "native arm64 execution on target hardware",
+    "operated Sigstore identity/transparency verification",
+    "independent Syft/Grype inventory and vulnerability evidence",
+    "representative capacity or production operations evidence"
+  ],
+  "release": "1.0.0",
+  "schemaVersion": "1.0"
+}

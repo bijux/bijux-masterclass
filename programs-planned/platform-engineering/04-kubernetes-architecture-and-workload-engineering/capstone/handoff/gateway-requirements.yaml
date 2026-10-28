@@ -1,0 +1,12 @@
+version: atlas-gateway-handoff-1.0
+publicHost: atlas.example.invalid
+backend:
+  service: atlas-api
+  namespace: atlas-system
+  port: 8080
+requirements:
+  - TLS authority and certificate lifecycle must be explicit
+  - forwarded identity is trusted only from approved gateway hops
+  - readiness governs backend eligibility
+  - timeout, retry and body-size policy must not weaken application correctness
+  - Gateway API is the preferred reference lane; legacy Ingress is comparative only

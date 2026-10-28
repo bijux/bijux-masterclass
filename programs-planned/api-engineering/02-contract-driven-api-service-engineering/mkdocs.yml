@@ -1,0 +1,95 @@
+site_name: Contract-Driven API Service Engineering
+site_description: Course 2 of the API Engineering program
+docs_dir: course-book
+site_dir: site
+use_directory_urls: false
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - navigation.indexes
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
+nav:
+- Course Introduction: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Standards: standards.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Glossary: glossary.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — Application Use Cases and Boundaries:
+  - Chapter: module-01-application-use-cases/index.md
+  - Exercises: module-01-application-use-cases/exercises.md
+  - Worked Answers: module-01-application-use-cases/exercise-answers.md
+  - Lab: module-01-application-use-cases/lab.md
+  - Checkpoint: module-01-application-use-cases/checkpoint.md
+- Module 02 — Domain State and Invariants:
+  - Chapter: module-02-domain-state-invariants/index.md
+  - Exercises: module-02-domain-state-invariants/exercises.md
+  - Worked Answers: module-02-domain-state-invariants/exercise-answers.md
+  - Lab: module-02-domain-state-invariants/lab.md
+  - Checkpoint: module-02-domain-state-invariants/checkpoint.md
+- Module 03 — Relational Modeling and Migrations:
+  - Chapter: module-03-relational-modeling-migrations/index.md
+  - Exercises: module-03-relational-modeling-migrations/exercises.md
+  - Worked Answers: module-03-relational-modeling-migrations/exercise-answers.md
+  - Lab: module-03-relational-modeling-migrations/lab.md
+  - Checkpoint: module-03-relational-modeling-migrations/checkpoint.md
+- Module 04 — Transactions, Concurrency, ETags, and Idempotency:
+  - Chapter: module-04-transactions-concurrency-idempotency/index.md
+  - Exercises: module-04-transactions-concurrency-idempotency/exercises.md
+  - Worked Answers: module-04-transactions-concurrency-idempotency/exercise-answers.md
+  - Lab: module-04-transactions-concurrency-idempotency/lab.md
+  - Checkpoint: module-04-transactions-concurrency-idempotency/checkpoint.md
+- Module 05 — Queries, Stable Pagination, and Authorized Access:
+  - Chapter: module-05-query-pagination-authorization/index.md
+  - Exercises: module-05-query-pagination-authorization/exercises.md
+  - Worked Answers: module-05-query-pagination-authorization/exercise-answers.md
+  - Lab: module-05-query-pagination-authorization/lab.md
+  - Checkpoint: module-05-query-pagination-authorization/checkpoint.md
+- Module 06 — Durable Workers and Recovery:
+  - Chapter: module-06-durable-workers-recovery/index.md
+  - Exercises: module-06-durable-workers-recovery/exercises.md
+  - Worked Answers: module-06-durable-workers-recovery/exercise-answers.md
+  - Lab: module-06-durable-workers-recovery/lab.md
+  - Checkpoint: module-06-durable-workers-recovery/checkpoint.md
+- Module 07 — Streaming and Artifact Integrity:
+  - Chapter: module-07-streaming-artifact-integrity/index.md
+  - Exercises: module-07-streaming-artifact-integrity/exercises.md
+  - Worked Answers: module-07-streaming-artifact-integrity/exercise-answers.md
+  - Lab: module-07-streaming-artifact-integrity/lab.md
+  - Checkpoint: module-07-streaming-artifact-integrity/checkpoint.md
+- Module 08 — Transactional Outbox and Webhook Delivery:
+  - Chapter: module-08-webhooks-transactional-outbox/index.md
+  - Exercises: module-08-webhooks-transactional-outbox/exercises.md
+  - Worked Answers: module-08-webhooks-transactional-outbox/exercise-answers.md
+  - Lab: module-08-webhooks-transactional-outbox/lab.md
+  - Checkpoint: module-08-webhooks-transactional-outbox/checkpoint.md
+- Module 09 — Failure-Oriented Verification:
+  - Chapter: module-09-failure-proof-architecture/index.md
+  - Exercises: module-09-failure-proof-architecture/exercises.md
+  - Worked Answers: module-09-failure-proof-architecture/exercise-answers.md
+  - Lab: module-09-failure-proof-architecture/lab.md
+  - Checkpoint: module-09-failure-proof-architecture/checkpoint.md
+- Module 10 — Lifecycle and Compatible Release:
+  - Chapter: module-10-lifecycle-compatible-release/index.md
+  - Exercises: module-10-lifecycle-compatible-release/exercises.md
+  - Worked Answers: module-10-lifecycle-compatible-release/exercise-answers.md
+  - Lab: module-10-lifecycle-compatible-release/lab.md
+  - Checkpoint: module-10-lifecycle-compatible-release/checkpoint.md

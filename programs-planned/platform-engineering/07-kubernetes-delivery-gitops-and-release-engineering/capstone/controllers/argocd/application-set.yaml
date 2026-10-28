@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: atlas-nonproduction
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - environment: dev
+            revision: 1111111111111111111111111111111111111111
+          - environment: staging
+            revision: 2222222222222222222222222222222222222222
+  template:
+    metadata:
+      name: atlas-{{ .environment }}
+    spec:
+      project: atlas
+      source:
+        repoURL: https://git.example.invalid/atlas/environment.git
+        targetRevision: "{{ .revision }}"
+        path: capstone/repository/apps/atlas/overlays/{{ .environment }}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: atlas-{{ .environment }}

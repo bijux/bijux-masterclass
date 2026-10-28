@@ -1,0 +1,14 @@
+{
+  "configuration": [
+    "/etc/atlas"
+  ],
+  "durable": [
+    "/var/lib/atlas/spool",
+    "/var/lib/atlas/results"
+  ],
+  "ephemeral": [
+    "/tmp",
+    "/run/atlas"
+  ],
+  "imageFilesystemIsDurable": false
+}

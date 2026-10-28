@@ -1,0 +1,281 @@
+{
+  "algorithm": "sha256",
+  "files": [
+    {
+      "mode": "0644",
+      "path": "BOUNDARY.json",
+      "sha256": "b4e9e588cc17b5ff5ee51296e33f606835c238c4dce9f51e17d376a5592242ff",
+      "size": 473
+    },
+    {
+      "mode": "0644",
+      "path": "README.md",
+      "sha256": "e301f75c0149caae03af1602a271b18e068004c7594f7a436f7e354156c4c8cc",
+      "size": 451
+    },
+    {
+      "mode": "0644",
+      "path": "contracts/compatibility-policy.yaml",
+      "sha256": "12a6c0ee008c01e4f6097909c6af96af8985cb7d4f2055d3ed93ff54ffa01afc",
+      "size": 579
+    },
+    {
+      "mode": "0644",
+      "path": "contracts/descriptors/analysis-v1.json",
+      "sha256": "dbe972ebd73fff2080fe1f88930ee29353c0349717219f4aac99ceb2bf95b90d",
+      "size": 17061
+    },
+    {
+      "mode": "0644",
+      "path": "contracts/descriptors/analysis-v1.pb",
+      "sha256": "fbcabac7496a915b574a2f164e4669c157f779ff54fd8129b8b9a50553986b75",
+      "size": 2942
+    },
+    {
+      "mode": "0644",
+      "path": "contracts/proto/bijux/analysis/v1/analysis.proto",
+      "sha256": "871307a4cfd2b34658fe5a7506ca1f8a127816c4186ef426163869dd2dbbda27",
+      "size": 3436
+    },
+    {
+      "mode": "0644",
+      "path": "contracts/proto/frontier/analysis_edition_2024.proto",
+      "sha256": "dd7dbb6566b2fcddc02820441bfc1dfce244406fcf49452523e2efc5877ac924",
+      "size": 447
+    },
+    {
+      "mode": "0644",
+      "path": "final-defense/trace.json",
+      "sha256": "f7b9a7d88093573a7c48589f05101e65e291d4e92656416acc7f0a4cef36019f",
+      "size": 1374
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/010_event_outbox_inbox.sql",
+      "sha256": "bc8387ce6b0ab2d87fc033018d96cd85cb24e4465631e9501f610bf075960191",
+      "size": 2673
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/011_event_replay_dead_letters.sql",
+      "sha256": "682527c166e689556765836aae9f2d8c8ed07844a7ee07b3f77c81f77dadf8b3",
+      "size": 3001
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/012_event_contract_catalog.sql",
+      "sha256": "bb6077ce0447bf6ee35513cd1f3b46bf9e70d4c514602fdbcfdc539d5399ed28",
+      "size": 2588
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/013_rpc_idempotency_and_resume.sql",
+      "sha256": "7f41c576958ce32ebcb0d08bff17a23e06ba7ef3466b656f87f340ef6106c845",
+      "size": 784
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/014_worker_sessions_and_attempts.sql",
+      "sha256": "f366b5b5640a962f82943768cb19923a5885fd75321ad0edd58dab4c76f3172b",
+      "size": 956
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/015_rpc_contract_catalog.sql",
+      "sha256": "cf6e230f0f53dd8f1a2c8c09cc6444587830fa486479bf61136f2768f0f0783d",
+      "size": 603
+    },
+    {
+      "mode": "0644",
+      "path": "operations/lifecycle-policy.yaml",
+      "sha256": "92fdbdb70e373468aee8c8b1fe9b963104e581e42ea931f57bafaff404e59f8f",
+      "size": 594
+    },
+    {
+      "mode": "0644",
+      "path": "operations/service-config.json",
+      "sha256": "d29d629bba43872a4e2e88fc3a8d2b5e7e519df43f61f53f860b72cccab90d5c",
+      "size": 930
+    },
+    {
+      "mode": "0644",
+      "path": "releases/rpc-1.0/release-report.json",
+      "sha256": "972cf31fe7b5c4360e81ffd7fe567ccfd8083fe97212fbfcbcf0112e3cc15186",
+      "size": 581
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/capability-matrix.json",
+      "sha256": "e1f31fa7645bb9b152edbeaa55be4e5cb181a90c390147f68245a615731f6980",
+      "size": 1066
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/consumer-declarations.yaml",
+      "sha256": "f5bde9299a298083298316df720b169c7ae58f654f7dd84b1aebaa3fe7d89bca",
+      "size": 611
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/deadline-retry-policy.yaml",
+      "sha256": "5fed33cb3c4ac666dc6715091614cefda903c6a343964b4c28f66874bbcbe7ff",
+      "size": 944
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/interaction-decisions.yaml",
+      "sha256": "ad40ec987620a82554bbe9516fb6ee42ee0c5a4995e4d66bd1161424a4691b7e",
+      "size": 1072
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/rpc-catalog.yaml",
+      "sha256": "ea6f042ee7ac9ddb5940cda87550c69293fc84e8059b2ee5d9ba8d31f3e50d97",
+      "size": 2028
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/service-ownership.yaml",
+      "sha256": "c6accd8b1dd9eaf764ac74b64d96856fb242077ee73f3690ededcd70a64c15a1",
+      "size": 692
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/status-policy.yaml",
+      "sha256": "73f2244c58355d5c7bde66127499c35fa8306a117282d13a5a7326ee41017b1d",
+      "size": 743
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/streaming-policy.yaml",
+      "sha256": "dd1920c7da77f75db8c9a4189d4d0de6ec52f344414c9669732feca95c30980c",
+      "size": 672
+    },
+    {
+      "mode": "0644",
+      "path": "rpc-case/version-ledger.yaml",
+      "sha256": "1eac45ba58cd7884c3ab8013e606ad2ba1669283c43e4f443cff3ca6ea4faa6a",
+      "size": 360
+    },
+    {
+      "mode": "0644",
+      "path": "security/method-policy.yaml",
+      "sha256": "b57c61f51ff3349f8925ded65717085921179061978e4e7c39e8d1a50422aa92",
+      "size": 980
+    },
+    {
+      "mode": "0644",
+      "path": "service-boundary-dossier.yaml",
+      "sha256": "771aa913bc1058cc6ed0a808d0b9e287ee5d18ca820d53551d82324cfdfbd0f1",
+      "size": 1234
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/boundary.json",
+      "sha256": "47ab3db174c1d866302a0158a43342dbe4ae7c3ad232dfa4e8051c3948d46f44",
+      "size": 840
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/compatibility.json",
+      "sha256": "052fd8a424bad34a555f955a723731579f494ac94f7433f98128a4147c5e81ff",
+      "size": 1029
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/deadlines.json",
+      "sha256": "39d16ed263f8d7dcc647597be3c93013cc8f9263760f6ad492c7e07f242bd77e",
+      "size": 511
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/flow-control.json",
+      "sha256": "089f85cd3894991787f3dc56c6a469bef3c73544dad5409895dc57d7ee4661a5",
+      "size": 613
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/lifecycle.json",
+      "sha256": "7bf78532ddd704b733e57438936a6c324e9cd688ccee4ffe489d94869b05554c",
+      "size": 871
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/retries.json",
+      "sha256": "183cc3c2ab00a655526db41cf7bae3d522972e600bcdfcdb774d4b026ad6866c",
+      "size": 1092
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/security.json",
+      "sha256": "f37dbde96140a8ddc6dbf3cd1b486ea87db604e72928c8ee684df644ec3c630e",
+      "size": 952
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/status.json",
+      "sha256": "d06c7393b7d36b295d09836d2593db4b0656f39aafc402b8df5668c4d71bb8f7",
+      "size": 1240
+    },
+    {
+      "mode": "0644",
+      "path": "shared/vectors/streaming.json",
+      "sha256": "24c1e0d9300f99f0b6177c3651ed2ca9f943b91844117e0521876c90d71452e2",
+      "size": 1189
+    }
+  ]
+}

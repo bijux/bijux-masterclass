@@ -1,0 +1,25 @@
+version: '1.0'
+resourceRequired:
+- service.name
+- service.version
+- deployment.environment.name
+- telemetry.schema.version
+logRequired:
+- timestamp
+- severity
+- event.name
+forbiddenAttributes:
+- authorization
+- cookie
+- api.key
+- token
+- password
+- dataset.content
+metricForbiddenLabels:
+- user.id
+- tenant.id
+- project.id
+- dataset.id
+- run.id
+- request.id
+- trace.id

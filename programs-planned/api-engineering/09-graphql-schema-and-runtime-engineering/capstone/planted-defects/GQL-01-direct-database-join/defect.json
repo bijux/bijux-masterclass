@@ -1,0 +1,7 @@
+{
+  "description": "resolver reads two private service databases",
+  "expectedProof": "ownership-proof",
+  "failure": "A resolver bypasses service authority by reading private persistence.",
+  "id": "GQL-01-direct-database-join",
+  "mustBeRejected": true
+}

@@ -1,0 +1,24 @@
+version: '1.0'
+stream: analysis-outcomes
+acceptedEventTypes:
+  - org.bijux.analysis.run.completed.v1
+  - org.bijux.analysis.run.failed.v1
+eventTimeField: data.occurredAt
+window:
+  kind: tumbling
+  widthSeconds: 300
+watermark:
+  source: maximum observed event time minus configured out-of-order bound
+  allowedLatenessSeconds: 600
+lateBeyondPolicy: quarantine
+identity: event.id
+partitioning: tenantid
+outputs:
+  - completionCount
+  - failureCount
+  - totalDurationMs
+  - revision
+correctionPolicy:
+  allowed: true
+  identity: tenant + windowStart + revision
+  externalSideEffects: prohibited

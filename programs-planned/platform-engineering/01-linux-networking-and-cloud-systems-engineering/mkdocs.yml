@@ -1,0 +1,98 @@
+site_name: Platform Engineering — Course 1
+site_description: Linux, Networking, and Cloud Systems Engineering
+docs_dir: course-book
+theme:
+  name: material
+  features:
+  - navigation.indexes
+  - navigation.sections
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc:
+    permalink: true
+- pymdownx.details
+- pymdownx.superfences
+nav:
+- Course: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Standards: standards.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Glossary: glossary.md
+- Operational Reference:
+  - Atlas Architecture: reference/atlas-architecture.md
+  - Atlas Evidence Map: reference/atlas-evidence-map.md
+  - Service Failure Runbook: reference/runbook-service-failure.md
+  - Storage Failure Runbook: reference/runbook-storage-failure.md
+  - Certificate Failure Runbook: reference/runbook-certificate-failure.md
+  - Instance Replacement Runbook: reference/runbook-instance-replacement.md
+- Orientation — Establish the Laboratory and Evidence Boundary:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — Processes, System Calls, Files, and Signals:
+  - Chapter: module-01-processes-system-calls-files-and-signals/index.md
+  - Exercises: module-01-processes-system-calls-files-and-signals/exercises.md
+  - Worked Answers: module-01-processes-system-calls-files-and-signals/exercise-answers.md
+  - Lab: module-01-processes-system-calls-files-and-signals/lab.md
+  - Checkpoint: module-01-processes-system-calls-files-and-signals/checkpoint.md
+- Module 02 — Identity, Permissions, Capabilities, and Service Supervision:
+  - Chapter: module-02-identity-permissions-capabilities-and-supervision/index.md
+  - Exercises: module-02-identity-permissions-capabilities-and-supervision/exercises.md
+  - Worked Answers: module-02-identity-permissions-capabilities-and-supervision/exercise-answers.md
+  - Lab: module-02-identity-permissions-capabilities-and-supervision/lab.md
+  - Checkpoint: module-02-identity-permissions-capabilities-and-supervision/checkpoint.md
+- Module 03 — CPU, Memory, Scheduling, Namespaces, and cgroups:
+  - Chapter: module-03-cpu-memory-scheduling-namespaces-and-cgroups/index.md
+  - Exercises: module-03-cpu-memory-scheduling-namespaces-and-cgroups/exercises.md
+  - Worked Answers: module-03-cpu-memory-scheduling-namespaces-and-cgroups/exercise-answers.md
+  - Lab: module-03-cpu-memory-scheduling-namespaces-and-cgroups/lab.md
+  - Checkpoint: module-03-cpu-memory-scheduling-namespaces-and-cgroups/checkpoint.md
+- Module 04 — Storage, Filesystems, I/O, and Durability:
+  - Chapter: module-04-storage-filesystems-io-and-durability/index.md
+  - Exercises: module-04-storage-filesystems-io-and-durability/exercises.md
+  - Worked Answers: module-04-storage-filesystems-io-and-durability/exercise-answers.md
+  - Lab: module-04-storage-filesystems-io-and-durability/lab.md
+  - Checkpoint: module-04-storage-filesystems-io-and-durability/checkpoint.md
+- Module 05 — IP, Routing, Transport, and Sockets:
+  - Chapter: module-05-ip-routing-transport-and-sockets/index.md
+  - Exercises: module-05-ip-routing-transport-and-sockets/exercises.md
+  - Worked Answers: module-05-ip-routing-transport-and-sockets/exercise-answers.md
+  - Lab: module-05-ip-routing-transport-and-sockets/lab.md
+  - Checkpoint: module-05-ip-routing-transport-and-sockets/checkpoint.md
+- Module 06 — DNS, HTTP, TLS, and PKI:
+  - Chapter: module-06-dns-http-tls-and-pki/index.md
+  - Exercises: module-06-dns-http-tls-and-pki/exercises.md
+  - Worked Answers: module-06-dns-http-tls-and-pki/exercise-answers.md
+  - Lab: module-06-dns-http-tls-and-pki/lab.md
+  - Checkpoint: module-06-dns-http-tls-and-pki/checkpoint.md
+- Module 07 — Firewalls, NAT, Proxies, and Load Balancing:
+  - Chapter: module-07-firewalls-nat-proxies-and-load-balancing/index.md
+  - Exercises: module-07-firewalls-nat-proxies-and-load-balancing/exercises.md
+  - Worked Answers: module-07-firewalls-nat-proxies-and-load-balancing/exercise-answers.md
+  - Lab: module-07-firewalls-nat-proxies-and-load-balancing/lab.md
+  - Checkpoint: module-07-firewalls-nat-proxies-and-load-balancing/checkpoint.md
+- Module 08 — Virtualization, Images, Boot, and Cloud Compute:
+  - Chapter: module-08-virtualization-images-boot-and-cloud-compute/index.md
+  - Exercises: module-08-virtualization-images-boot-and-cloud-compute/exercises.md
+  - Worked Answers: module-08-virtualization-images-boot-and-cloud-compute/exercise-answers.md
+  - Lab: module-08-virtualization-images-boot-and-cloud-compute/lab.md
+  - Checkpoint: module-08-virtualization-images-boot-and-cloud-compute/checkpoint.md
+- Module 09 — Cloud Primitives, Identity, and Failure Domains:
+  - Chapter: module-09-cloud-primitives-identity-and-failure-domains/index.md
+  - Exercises: module-09-cloud-primitives-identity-and-failure-domains/exercises.md
+  - Worked Answers: module-09-cloud-primitives-identity-and-failure-domains/exercise-answers.md
+  - Lab: module-09-cloud-primitives-identity-and-failure-domains/lab.md
+  - Checkpoint: module-09-cloud-primitives-identity-and-failure-domains/checkpoint.md
+- Module 10 — Production Host Engineering and Final Defense:
+  - Chapter: module-10-production-host-engineering-and-final-defense/index.md
+  - Exercises: module-10-production-host-engineering-and-final-defense/exercises.md
+  - Worked Answers: module-10-production-host-engineering-and-final-defense/exercise-answers.md
+  - Lab: module-10-production-host-engineering-and-final-defense/lab.md
+  - Checkpoint: module-10-production-host-engineering-and-final-defense/checkpoint.md

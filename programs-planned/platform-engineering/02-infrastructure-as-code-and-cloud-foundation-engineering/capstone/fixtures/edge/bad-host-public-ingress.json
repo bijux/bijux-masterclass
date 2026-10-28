@@ -1,0 +1,5 @@
+{
+  "hostIngressSource": "0.0.0.0/0",
+  "publicHost": true,
+  "targetPort": 8080
+}

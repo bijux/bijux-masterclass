@@ -1,0 +1,5 @@
+{
+  "change": "reuse removed field 7 for diagnostic_code",
+  "expected": "reject",
+  "reason": "retained bytes can be misinterpreted"
+}

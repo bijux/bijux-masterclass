@@ -1,0 +1,10 @@
+{
+  "defect": "amd64 binary is published as arm64",
+  "expectedDecision": "rejected",
+  "expectedGate": "platform-proof",
+  "expectedProof": "platform-proof",
+  "id": "C3-DEFECT-004",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "An amd64 ELF binary is published below a linux/arm64 descriptor.",
+  "title": "Architecture label does not match executable"
+}

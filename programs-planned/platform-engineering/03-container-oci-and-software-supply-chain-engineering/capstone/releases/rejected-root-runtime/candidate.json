@@ -1,0 +1,11 @@
+{
+  "candidateRelease": "atlas-workload-release-1.0.0",
+  "condition": "The candidate changes the runtime user from 65532:65532 to 0:0 and adds broad capabilities.",
+  "evidenceClass": "dependency-light",
+  "expectedDecision": "rejected",
+  "failedGate": "runtime-authority",
+  "id": "rejected-root-runtime",
+  "reviewQuestion": "What exact evidence would be required to change this decision without weakening another gate?",
+  "schemaVersion": "1.0",
+  "title": "Runtime requests host root"
+}

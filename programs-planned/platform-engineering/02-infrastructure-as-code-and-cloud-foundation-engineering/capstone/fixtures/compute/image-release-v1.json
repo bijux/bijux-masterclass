@@ -1,0 +1,9 @@
+{
+  "architecture": "amd64",
+  "base": "debian-13",
+  "buildIdentity": "atlas-image-pipeline",
+  "imageId": "ami-atlas-2026-08-001",
+  "mutableAlias": null,
+  "sourceDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "testReport": "reports/image-v1.json"
+}

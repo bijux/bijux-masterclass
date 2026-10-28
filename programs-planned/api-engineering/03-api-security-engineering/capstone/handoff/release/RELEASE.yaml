@@ -1,0 +1,11 @@
+serviceRelease: security-1.0.0
+publicApi: 1.2.0
+securityProfile: '1.0'
+databaseMigrations:
+- '006'
+- '007'
+compatibility: additive/internal-security-state
+notes:
+- No existing API 1.2 operation or valid representation removed.
+- Security failures retain documented Problem Details categories.
+- Protected resource metadata is additive.

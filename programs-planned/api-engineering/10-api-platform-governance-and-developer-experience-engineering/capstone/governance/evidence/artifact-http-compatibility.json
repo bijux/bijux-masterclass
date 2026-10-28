@@ -1,0 +1,11 @@
+{
+  "apiRef": "api:default/artifact-http",
+  "collectedAt": "2026-08-08T08:30:00Z",
+  "expiresAt": "2026-11-08T08:30:00Z",
+  "id": "artifact-http-compatibility-1",
+  "kind": "compatibility",
+  "owner": "group:default/artifact-team",
+  "sourceContract": "contracts/capabilities/artifact-http.openapi.yaml",
+  "statement": "compatibility evidence for api:default/artifact-http in the bounded Course 10 profile.",
+  "status": "pass"
+}

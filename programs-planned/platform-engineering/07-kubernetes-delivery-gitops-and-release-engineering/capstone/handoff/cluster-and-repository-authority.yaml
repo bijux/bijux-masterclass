@@ -1,0 +1,21 @@
+repositories:
+- name: application
+  writePrincipals:
+  - application-team
+  productionCredentials: false
+- name: environment
+  writePrincipals:
+  - release-automation
+  - environment-owner
+  protectedBranches:
+  - production
+controllers:
+- name: argocd
+  environments:
+  - staging
+  - prod
+  clusterAdmin: false
+- name: flux
+  environments:
+  - dev
+  clusterAdmin: false

@@ -1,0 +1,223 @@
+requirements:
+- id: R-01
+  statement: Reject ambiguous critical HTTP headers before authentication.
+  priority: must
+  owner: edge
+  status: active
+- id: R-02
+  statement: Reject duplicate JSON members, malformed UTF-8, non-finite values, trailing
+    content, and excessive depth/bytes.
+  priority: must
+  owner: edge
+  status: active
+- id: R-03
+  statement: Expose one parsed request representation to all downstream components.
+  priority: must
+  owner: edge
+  status: active
+- id: R-04
+  statement: Trust forwarding headers only from configured immediate peers and explicit
+    chain policy.
+  priority: must
+  owner: edge
+  status: active
+- id: R-05
+  statement: Enforce normalized external host, scheme, and port policy.
+  priority: must
+  owner: edge
+  status: active
+- id: R-06
+  statement: Accept only configured credential channels and approved JWT algorithms/types.
+  priority: must
+  owner: identity
+  status: active
+- id: R-07
+  statement: Validate configured issuer and API audience.
+  priority: must
+  owner: identity
+  status: active
+- id: R-08
+  statement: Validate required identity and temporal claims with bounded skew and
+    lifetime.
+  priority: must
+  owner: identity
+  status: active
+- id: R-09
+  statement: Select verification keys only from trusted configured JWKS and reject
+    unknown/duplicate key IDs.
+  priority: must
+  owner: identity
+  status: active
+- id: R-10
+  statement: Support durable access-token identifier revocation.
+  priority: must
+  owner: identity
+  status: active
+- id: R-11
+  statement: Store API keys only as separately peppered digests and compare in constant
+    time.
+  priority: must
+  owner: identity
+  status: active
+- id: R-12
+  statement: Support versioned credential/key rotation with bounded overlap.
+  priority: must
+  owner: identity
+  status: active
+- id: R-13
+  statement: Default deny every operation and enforce required scope/role/assurance.
+  priority: must
+  owner: authorization
+  status: active
+- id: R-14
+  statement: Enforce tenant and resource relationship at the authoritative query or
+    transaction.
+  priority: must
+  owner: authorization
+  status: active
+- id: R-15
+  statement: Apply policy-defined existence concealment to foreign resources.
+  priority: must
+  owner: authorization
+  status: active
+- id: R-16
+  statement: Bind collection filters, cursors, and counts to the authorized tenant/principal
+    set.
+  priority: must
+  owner: authorization
+  status: active
+- id: R-17
+  statement: Reject or strip server-owned and policy-forbidden input/output fields.
+  priority: must
+  owner: authorization
+  status: active
+- id: R-18
+  statement: Decode, normalize, resolve, and confine all filesystem paths below fixed
+    roots.
+  priority: must
+  owner: input-storage
+  status: active
+- id: R-19
+  statement: Reject symlinks and non-regular file types where the profile requires.
+  priority: must
+  owner: input-storage
+  status: active
+- id: R-20
+  statement: Stream uploads under actual byte, time, and concurrency limits with cleanup.
+  priority: must
+  owner: input-storage
+  status: active
+- id: R-21
+  statement: Apply archive member, path, count, individual-size, cumulative-size,
+    and expansion policy.
+  priority: must
+  owner: input-storage
+  status: active
+- id: R-22
+  statement: Keep untrusted values separate from SQL, shell, template, and deserialization
+    instruction syntax.
+  priority: must
+  owner: input-storage
+  status: active
+- id: R-23
+  statement: Parse outbound URLs and restrict scheme, port, user information, fragment,
+    and host form.
+  priority: must
+  owner: outbound-webhook
+  status: active
+- id: R-24
+  statement: Resolve all destination addresses and reject any forbidden or mixed answer.
+  priority: must
+  owner: outbound-webhook
+  status: active
+- id: R-25
+  statement: Bind the connection to validated addresses, verify peer, and revalidate
+    every redirect.
+  priority: must
+  owner: outbound-webhook
+  status: active
+- id: R-26
+  statement: Authenticate webhook exact bytes and versioned metadata with a named
+    key/algorithm profile.
+  priority: must
+  owner: outbound-webhook
+  status: active
+- id: R-27
+  statement: Verify webhook freshness, known key, and signature before parsing or
+    effect.
+  priority: must
+  owner: outbound-webhook
+  status: active
+- id: R-28
+  statement: Persist delivery identifiers and make receiver effects idempotent against
+    replay.
+  priority: must
+  owner: outbound-webhook
+  status: active
+- id: R-29
+  statement: Represent secrets with non-rendering types and access through a provider
+    boundary.
+  priority: must
+  owner: secrets-audit
+  status: active
+- id: R-30
+  statement: Redact sensitive fields recursively from logs, errors, reports, and handoff.
+  priority: must
+  owner: secrets-audit
+  status: active
+- id: R-31
+  statement: Minimize audit data and pseudonymize stable identifiers where appropriate.
+  priority: must
+  owner: secrets-audit
+  status: active
+- id: R-32
+  statement: Apply cost-aware tenant/principal/operation budgets before expensive
+    effects.
+  priority: must
+  owner: abuse
+  status: active
+- id: R-33
+  statement: Bound concurrency, streams, queue admission, bytes, and storage with
+    exception-safe release.
+  priority: must
+  owner: abuse
+  status: active
+- id: R-34
+  statement: Pin and verify direct/transitive dependencies and build inputs.
+  priority: must
+  owner: supply-chain
+  status: active
+- id: R-35
+  statement: Produce SBOM/provenance and disposition security findings without scanner-only
+    claims.
+  priority: must
+  owner: supply-chain
+  status: active
+- id: R-36
+  statement: Produce structured incident events and preserve evidence with source/confidence.
+  priority: must
+  owner: incident
+  status: active
+- id: R-37
+  statement: Issue a compatible security release and rerun affected proof after containment.
+  priority: must
+  owner: incident
+  status: active
+- id: R-38
+  statement: Chain audit records under a documented local-integrity profile and state
+    its limits.
+  priority: must
+  owner: secrets-audit
+  status: active
+- id: R-39
+  statement: Every active requirement has positive, negative, and planted-control-removal
+    evidence.
+  priority: must
+  owner: supply-chain
+  status: active
+- id: R-40
+  statement: Release staging excludes fixture-private keys, peppers, raw tokens, and
+    runtime state.
+  priority: must
+  owner: supply-chain
+  status: active

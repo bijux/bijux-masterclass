@@ -1,0 +1,8 @@
+{
+  "deleteOnTermination": false,
+  "encrypted": true,
+  "keyAlias": "alias/atlas-dev-data",
+  "snapshotPolicy": "daily",
+  "volumeId": "vol-atlas-data",
+  "zoneId": "euc1-az1"
+}

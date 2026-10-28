@@ -1,0 +1,21 @@
+{
+  "specversion": "1.0",
+  "id": "00000000-0000-4000-8000-000000000002",
+  "source": "urn:bijux:analysis-control",
+  "type": "org.bijux.analysis.run.requested.v1",
+  "subject": "analysis-runs/run-001",
+  "time": "2026-08-07T10:00:02Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://schemas.bijux.dev/events/analysis-run-requested.v1",
+  "tenantid": "tenant-a",
+  "correlationid": "00000000-0000-4000-8000-000000000100",
+  "causationid": "00000000-0000-4000-8000-000000000001",
+  "partitionkey": "run-001",
+  "traceparent": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
+  "data": {
+    "runId": "run-001",
+    "datasetId": "dataset-001",
+    "requestedBy": "principal-001",
+    "requestedAt": "2026-08-07T10:00:00Z"
+  }
+}

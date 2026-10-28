@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: VolumeAttributesClass
+metadata:
+  name: atlas-throughput
+  annotations:
+    atlas.example.invalid/implementation-evidence: not-executed
+driverName: csi.atlas.example.invalid
+parameters:
+  provisioned-iops: "5000"
+  provisioned-throughput-mibps: "250"

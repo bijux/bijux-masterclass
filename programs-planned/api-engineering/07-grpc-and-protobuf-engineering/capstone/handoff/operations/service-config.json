@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "loadBalancingConfig": [
+    {
+      "round_robin": {}
+    }
+  ],
+  "methodConfig": [
+    {
+      "name": [
+        {
+          "service": "bijux.analysis.v1.AnalysisControlService",
+          "method": "GetRun"
+        }
+      ],
+      "waitForReady": false,
+      "timeout": "2s",
+      "retryPolicy": {
+        "maxAttempts": 3,
+        "initialBackoff": "0.1s",
+        "maxBackoff": "1s",
+        "backoffMultiplier": 2,
+        "retryableStatusCodes": [
+          "UNAVAILABLE"
+        ]
+      }
+    },
+    {
+      "name": [
+        {
+          "service": "bijux.analysis.v1.AnalysisControlService",
+          "method": "CreateRun"
+        }
+      ],
+      "waitForReady": false,
+      "timeout": "3s"
+    }
+  ],
+  "channel": {
+    "keepaliveTimeMs": 30000,
+    "keepaliveTimeoutMs": 5000,
+    "permitWithoutCalls": false,
+    "maxConnectionAgeMs": 900000,
+    "maxConnectionAgeGraceMs": 30000
+  }
+}

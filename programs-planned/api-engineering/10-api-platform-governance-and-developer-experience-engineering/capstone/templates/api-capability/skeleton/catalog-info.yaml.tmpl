@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: {{api_name}}
+  namespace: default
+  title: {{title}}
+spec:
+  type: {{protocol}}
+  lifecycle: proposed
+  owner: {{owner_short}}
+  system: {{system_short}}
+  definition: '$text: ./contracts/contract.stub'

@@ -1,0 +1,18 @@
+{
+  "cases": [
+    {
+      "destination": "empty",
+      "expected": "pass",
+      "name": "empty-restore"
+    },
+    {
+      "destination": "nonempty",
+      "expected": "error",
+      "name": "nonempty-restore"
+    },
+    {
+      "expected": "error",
+      "name": "missing-object"
+    }
+  ]
+}

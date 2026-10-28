@@ -1,0 +1,35 @@
+{
+  "artifact-integrity": {
+    "publicDetail": "Artifact integrity verification failed.",
+    "status": 500
+  },
+  "cursor-invalid": {
+    "status": 422
+  },
+  "idempotency-conflict": {
+    "status": 409
+  },
+  "invalid-run-transition": {
+    "status": 409
+  },
+  "lease-lost": {
+    "public": false,
+    "status": 409
+  },
+  "not-found": {
+    "concealsOwnership": true,
+    "status": 404
+  },
+  "payload-too-large": {
+    "status": 413
+  },
+  "precondition-failed": {
+    "status": 412
+  },
+  "precondition-required": {
+    "status": 428
+  },
+  "unsupported-media-type": {
+    "status": 415
+  }
+}

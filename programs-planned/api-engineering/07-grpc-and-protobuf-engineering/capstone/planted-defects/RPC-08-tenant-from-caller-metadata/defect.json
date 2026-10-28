@@ -1,0 +1,5 @@
+{
+  "id": "RPC-08",
+  "title": "Trust x-tenant-id without verified identity",
+  "expected_rejection": "security-proof"
+}

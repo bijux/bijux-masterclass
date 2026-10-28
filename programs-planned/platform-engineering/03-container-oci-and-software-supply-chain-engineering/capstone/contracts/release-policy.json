@@ -1,0 +1,21 @@
+{
+  "allowedEvidenceClasses": [
+    "dependency-light-local",
+    "native-tool-local",
+    "isolated-builder"
+  ],
+  "blockSeverity": "critical",
+  "profile": "atlas-workload-release-policy-1.0",
+  "requiredPlatforms": [
+    {
+      "architecture": "amd64",
+      "os": "linux"
+    },
+    {
+      "architecture": "arm64",
+      "os": "linux"
+    }
+  ],
+  "trustedBuilder": "https://build.atlas.invalid/isolated-builder/v1",
+  "trustedKeyFingerprint": "GENERATED_DURING_TOUR"
+}

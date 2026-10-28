@@ -1,0 +1,11 @@
+[req]
+distinguished_name = dn
+prompt = no
+x509_extensions = ca_ext
+[dn]
+CN = Atlas Course Fixture CA
+[ca_ext]
+basicConstraints = critical,CA:TRUE,pathlen:0
+keyUsage = critical,keyCertSign,cRLSign
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always

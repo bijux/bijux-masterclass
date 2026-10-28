@@ -1,0 +1,92 @@
+site_name: JavaScript Object Model and Runtime Protocols
+site_description: A reader-first second course in JavaScript object semantics and
+  Node.js runtime protocols
+docs_dir: .
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.indexes
+  - content.code.copy
+nav:
+- Course overview: README.md
+- Course-book start: course-book/index.md
+- Outcomes: course-book/outcomes.md
+- Ten-day plan: course-book/study-plan.md
+- Module 11 — Objects, Property Keys, Descriptors, and Enumeration:
+  - Chapter: course-book/module-11-properties-descriptors-and-enumeration/index.md
+  - Workbook: course-book/module-11-properties-descriptors-and-enumeration/workbook.md
+  - Reasoned solutions: course-book/module-11-properties-descriptors-and-enumeration/solutions.md
+- Module 12 — Prototypes, Delegation, Lookup, and Shadowing:
+  - Chapter: course-book/module-12-prototypes-delegation-and-lookup/index.md
+  - Workbook: course-book/module-12-prototypes-delegation-and-lookup/workbook.md
+  - Reasoned solutions: course-book/module-12-prototypes-delegation-and-lookup/solutions.md
+- Module 13 — Functions, Receivers, Constructors, and new:
+  - Chapter: course-book/module-13-functions-receivers-constructors-and-new/index.md
+  - Workbook: course-book/module-13-functions-receivers-constructors-and-new/workbook.md
+  - Reasoned solutions: course-book/module-13-functions-receivers-constructors-and-new/solutions.md
+- Module 14 — Classes, Fields, Private State, and Initialization:
+  - Chapter: course-book/module-14-classes-private-state-and-initialization/index.md
+  - Workbook: course-book/module-14-classes-private-state-and-initialization/workbook.md
+  - Reasoned solutions: course-book/module-14-classes-private-state-and-initialization/solutions.md
+- Module 15 — Composition, Capabilities, Mixins, and Object Architecture:
+  - Chapter: course-book/module-15-composition-capabilities-and-mixins/index.md
+  - Workbook: course-book/module-15-composition-capabilities-and-mixins/workbook.md
+  - Reasoned solutions: course-book/module-15-composition-capabilities-and-mixins/solutions.md
+- Module 16 — Symbols and Runtime Protocols:
+  - Chapter: course-book/module-16-symbols-and-runtime-protocols/index.md
+  - Workbook: course-book/module-16-symbols-and-runtime-protocols/workbook.md
+  - Reasoned solutions: course-book/module-16-symbols-and-runtime-protocols/solutions.md
+- Module 17 — Iterables, Iterators, Generators, and Traversal:
+  - Chapter: course-book/module-17-iterables-iterators-and-generators/index.md
+  - Workbook: course-book/module-17-iterables-iterators-and-generators/workbook.md
+  - Reasoned solutions: course-book/module-17-iterables-iterators-and-generators/solutions.md
+- Module 18 — Reflection, Proxies, Traps, and Invariants:
+  - Chapter: course-book/module-18-reflection-proxies-and-invariants/index.md
+  - Workbook: course-book/module-18-reflection-proxies-and-invariants/workbook.md
+  - Reasoned solutions: course-book/module-18-reflection-proxies-and-invariants/solutions.md
+- Module 19 — Object Graphs, Cloning, Reachability, and Disposal:
+  - Chapter: course-book/module-19-object-graphs-cloning-reachability-and-disposal/index.md
+  - Workbook: course-book/module-19-object-graphs-cloning-reachability-and-disposal/workbook.md
+  - Reasoned solutions: course-book/module-19-object-graphs-cloning-reachability-and-disposal/solutions.md
+- Module 20 — Object-Model Architecture, Testing, and Independent Change:
+  - Chapter: course-book/module-20-object-model-architecture-testing-and-change/index.md
+  - Workbook: course-book/module-20-object-model-architecture-testing-and-change/workbook.md
+  - Reasoned solutions: course-book/module-20-object-model-architecture-testing-and-change/solutions.md
+- ObjectAtlas engineering guide: course-book/capstone.md
+- Final review: course-book/final-review.md
+- Final review solutions: course-book/final-review-solutions.md
+- Reference desk: course-book/reference.md
+- Independent laboratories:
+  - Laboratory system: labs/README.md
+  - Laboratory 11 — Descriptor-Safe Settings: labs/module-11-descriptor-safe-settings/README.md
+  - Laboratory 12 — Prototype-Based Policy Catalog: labs/module-12-prototype-policy-catalog/README.md
+  - Laboratory 13 — Receiver-Safe Command Adapter: labs/module-13-receiver-safe-command-adapter/README.md
+  - Laboratory 14 — Private Counter Bank: labs/module-14-private-counter-bank/README.md
+  - Laboratory 15 — Capability-Composed Document: labs/module-15-capability-composed-document/README.md
+  - Laboratory 16 — Protocol-Aware Value Object: labs/module-16-protocol-aware-value-object/README.md
+  - Laboratory 17 — Hierarchy Walker: labs/module-17-hierarchy-walker/README.md
+  - Laboratory 18 — Transactional Draft Proxy: labs/module-18-transactional-draft-proxy/README.md
+  - Laboratory 19 — Graph Snapshot and Lease: labs/module-19-graph-snapshot-and-lease/README.md
+  - Laboratory 20 — Object-Model Audit: labs/module-20-object-model-audit/README.md
+- Type-checker and runtime investigations: compiler-labs/README.md
+- ObjectAtlas implementation: capstone/README.md
+exclude_docs: '**/node_modules/**
+
+  **/dist/**
+
+  **/site/**
+
+  **/starter/**
+
+  **/reference/**
+
+  capstone/src/**
+
+  capstone/tests/**
+
+  compiler-labs/module-*/**
+
+  '

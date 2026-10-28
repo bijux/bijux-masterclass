@@ -1,0 +1,99 @@
+{
+  "dns": {
+    "privateZone": "atlas.internal",
+    "resolver": "vpc"
+  },
+  "egressProfile": "per-az-nat",
+  "requiredAvailabilityZones": 2,
+  "subnets": [
+    {
+      "azId": "euc1-az1",
+      "cidr": "10.64.0.0/24",
+      "name": "public-a",
+      "routes": [
+        {
+          "destination": "10.64.0.0/16",
+          "target": "local"
+        },
+        {
+          "destination": "0.0.0.0/0",
+          "target": "igw"
+        }
+      ],
+      "tier": "public"
+    },
+    {
+      "azId": "euc1-az2",
+      "cidr": "10.64.1.0/24",
+      "name": "public-b",
+      "routes": [
+        {
+          "destination": "10.64.0.0/16",
+          "target": "local"
+        },
+        {
+          "destination": "0.0.0.0/0",
+          "target": "igw"
+        }
+      ],
+      "tier": "public"
+    },
+    {
+      "azId": "euc1-az1",
+      "cidr": "10.64.16.0/20",
+      "name": "private-a",
+      "routes": [
+        {
+          "destination": "10.64.0.0/16",
+          "target": "local"
+        },
+        {
+          "destination": "0.0.0.0/0",
+          "target": "nat-a"
+        }
+      ],
+      "tier": "private"
+    },
+    {
+      "azId": "euc1-az2",
+      "cidr": "10.64.32.0/20",
+      "name": "private-b",
+      "routes": [
+        {
+          "destination": "10.64.0.0/16",
+          "target": "local"
+        },
+        {
+          "destination": "0.0.0.0/0",
+          "target": "nat-b"
+        }
+      ],
+      "tier": "private"
+    },
+    {
+      "azId": "euc1-az1",
+      "cidr": "10.64.64.0/24",
+      "name": "data-a",
+      "routes": [
+        {
+          "destination": "10.64.0.0/16",
+          "target": "local"
+        }
+      ],
+      "tier": "data"
+    },
+    {
+      "azId": "euc1-az2",
+      "cidr": "10.64.65.0/24",
+      "name": "data-b",
+      "routes": [
+        {
+          "destination": "10.64.0.0/16",
+          "target": "local"
+        }
+      ],
+      "tier": "data"
+    }
+  ],
+  "vpcCidr": "10.64.0.0/16"
+}

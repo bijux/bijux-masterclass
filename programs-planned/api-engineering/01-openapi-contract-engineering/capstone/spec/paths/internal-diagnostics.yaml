@@ -1,0 +1,24 @@
+get:
+  tags:
+  - Internal
+  summary: Inspect deterministic training state
+  description: Admin-only diagnostics. Removed from public and partner views by Overlay.
+  operationId: getInternalDiagnostics
+  security:
+  - OAuth2:
+    - admin
+  x-audience: internal
+  responses:
+    '200':
+      description: In-memory object counts and simulated outbound events.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Diagnostics.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml

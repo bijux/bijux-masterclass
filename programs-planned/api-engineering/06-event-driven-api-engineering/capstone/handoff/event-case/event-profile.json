@@ -1,0 +1,22 @@
+{
+  "profile": "1.0",
+  "asyncapi": "3.1.0",
+  "cloudEvents": "1.0",
+  "publicHttpApi": "1.2",
+  "envelope": "contracts/components/schemas/event-envelope.v1.schema.json",
+  "eventTypePattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*\\.v[1-9][0-9]*$",
+  "identity": {
+    "eventId": "globally unique immutable UUID",
+    "correlationId": "workflow identity shared across related messages",
+    "causationId": "event or command that directly caused this message",
+    "partitionKey": "stable aggregate ordering key"
+  },
+  "canonicalization": {
+    "encoding": "UTF-8",
+    "objectKeys": "lexicographic",
+    "whitespace": "none",
+    "nonFiniteNumbers": "rejected",
+    "unsafeIntegers": "rejected",
+    "floatingPointNumbers": "rejected; use scaled integers or decimal strings with declared units"
+  }
+}

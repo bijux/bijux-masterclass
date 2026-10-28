@@ -1,0 +1,6 @@
+LEDGERFLOW-V1
+1	acct-a	open	0	primary
+2	acct-a	withdraw	5	insufficient
+bad	acct-b	open	nan	invalid fields
+3	acct-b	open	0	secondary
+3	acct-b	deposit	5	duplicate id

@@ -1,0 +1,25 @@
+version: '1.0'
+clients:
+- id: analysis-web-1.x
+  owner: analysis-client-team
+  support: active
+  operations:
+  - CancelAnalysis
+  - CreateProject
+  - GetProjectOverview
+  - GetRun
+  - ListRuns
+  - NodeLookup
+  - RunUpdates
+  - SearchPlatform
+  - StartAnalysis
+  - Viewer
+- id: analysis-cli-1.x
+  owner: developer-experience-team
+  support: active
+  operations:
+  - Viewer
+  - GetRun
+  - ListRuns
+  - StartAnalysis
+  - RunUpdates

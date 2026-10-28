@@ -1,0 +1,17 @@
+{
+  "examplesMustDeclare": [
+    "apiRef",
+    "contractVersion",
+    "environment",
+    "expectedOutcome"
+  ],
+  "requiredForActive": [
+    "overview",
+    "quickstart",
+    "taskGuide",
+    "reference",
+    "support",
+    "changelog"
+  ],
+  "searchZeroResultBudget": 0.05
+}

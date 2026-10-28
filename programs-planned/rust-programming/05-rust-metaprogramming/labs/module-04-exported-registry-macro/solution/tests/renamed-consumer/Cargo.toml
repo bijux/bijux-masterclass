@@ -1,0 +1,13 @@
+[package]
+name = "c5-lab04-renamed-consumer"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+renamed_registry = { package = "c5-lab04-registry-solution", path = "../.." }
+
+[lints]
+workspace = true

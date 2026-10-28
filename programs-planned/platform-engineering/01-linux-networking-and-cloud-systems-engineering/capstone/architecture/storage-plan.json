@@ -1,0 +1,31 @@
+{
+  "profileVersion": "1.0",
+  "classes": [
+    {
+      "name": "root-image",
+      "durability": "replaceable",
+      "backup": false
+    },
+    {
+      "name": "runtime",
+      "durability": "ephemeral",
+      "backup": false
+    },
+    {
+      "name": "atlas-state",
+      "durability": "survive-instance-restart-and-replacement",
+      "backup": true,
+      "restoreTestRequired": true
+    },
+    {
+      "name": "logs",
+      "durability": "local-buffer-plus-external-export",
+      "backup": false
+    },
+    {
+      "name": "backup",
+      "durability": "independent-failure-domain",
+      "backup": false
+    }
+  ]
+}

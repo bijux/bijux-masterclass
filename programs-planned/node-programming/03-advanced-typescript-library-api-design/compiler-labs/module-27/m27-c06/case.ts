@@ -1,0 +1,1 @@
+interface Formatter{format(value:string):string}class InternalFormatter implements Formatter{format(value:string){return value;}debug(){return'private';}}const publicValue:Formatter=new InternalFormatter();console.log(publicValue.debug());

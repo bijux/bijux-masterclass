@@ -1,0 +1,11 @@
+{
+  "affectedConsumers": [
+    "consumer-legacy-cli"
+  ],
+  "apiRef": "api:default/analysis-http",
+  "blockingConsumers": [
+    "consumer-legacy-cli"
+  ],
+  "retirementDecision": "blocked",
+  "version": "1.1.0"
+}

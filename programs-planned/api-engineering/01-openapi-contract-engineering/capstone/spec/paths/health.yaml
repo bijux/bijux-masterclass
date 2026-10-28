@@ -1,0 +1,22 @@
+get:
+  tags:
+  - System
+  summary: Check service health
+  description: Returns process health without exposing internal diagnostics.
+  operationId: getHealth
+  security: []
+  responses:
+    '200':
+      description: The service is healthy.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Health.yaml
+          example:
+            status: ok
+            service: analysis-runs-api
+            version: 1.0.0
+            time: '2026-08-05T10:00:00Z'

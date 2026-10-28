@@ -1,0 +1,27 @@
+{
+  "ingress": [
+    {
+      "name": "api",
+      "protocol": "HTTP",
+      "port": 8080,
+      "source": "governed-edge-security-identity"
+    }
+  ],
+  "egress": [
+    {
+      "name": "configuration",
+      "destination": "approved-parameter-secret-endpoints"
+    },
+    {
+      "name": "backup",
+      "destination": "foundation-backup-bucket"
+    },
+    {
+      "name": "telemetry",
+      "destination": "approved-collector"
+    }
+  ],
+  "publicAddressOnWorkload": false,
+  "dnsRequired": true,
+  "tlsTermination": "edge-in-course2"
+}

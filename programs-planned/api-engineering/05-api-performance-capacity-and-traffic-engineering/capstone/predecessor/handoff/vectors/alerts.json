@@ -1,0 +1,50 @@
+{
+  "cases": [
+    {
+      "firing": true,
+      "id": "alert-fast-fire",
+      "long": {
+        "good": 980,
+        "total": 1000
+      },
+      "minimumEvents": 10,
+      "objective": 0.999,
+      "short": {
+        "good": 96,
+        "total": 100
+      },
+      "threshold": 14.4
+    },
+    {
+      "firing": false,
+      "id": "alert-short-recovers",
+      "long": {
+        "good": 980,
+        "total": 1000
+      },
+      "minimumEvents": 10,
+      "objective": 0.999,
+      "short": {
+        "good": 100,
+        "total": 100
+      },
+      "threshold": 14.4
+    },
+    {
+      "firing": false,
+      "id": "alert-low-traffic",
+      "long": {
+        "good": 4,
+        "total": 5
+      },
+      "minimumEvents": 10,
+      "objective": 0.999,
+      "reason": "insufficient-traffic",
+      "short": {
+        "good": 1,
+        "total": 1
+      },
+      "threshold": 14.4
+    }
+  ]
+}

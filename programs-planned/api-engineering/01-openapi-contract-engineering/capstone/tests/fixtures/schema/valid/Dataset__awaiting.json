@@ -1,0 +1,16 @@
+{
+  "id": "dts_0001",
+  "projectId": "prj_0001",
+  "ownerId": "learner",
+  "name": "reads",
+  "source": {
+    "kind": "local-file",
+    "fileName": "reads.csv",
+    "mediaType": "text/csv"
+  },
+  "status": "awaiting-upload",
+  "contentLength": null,
+  "checksumSha256": null,
+  "createdAt": "2026-08-05T10:00:00Z",
+  "updatedAt": "2026-08-05T10:01:00Z"
+}

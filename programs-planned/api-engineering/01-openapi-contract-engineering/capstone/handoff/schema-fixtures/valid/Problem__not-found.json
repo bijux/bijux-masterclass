@@ -1,0 +1,8 @@
+{
+  "type": "https://api.example.test/problems/not-found",
+  "title": "Resource not found",
+  "status": 404,
+  "detail": "Missing.",
+  "instance": "/projects/prj_9999",
+  "requestId": "req_012345abcdef"
+}

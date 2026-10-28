@@ -1,0 +1,15 @@
+{
+  "apis": [
+    "apps/v1",
+    "batch/v1",
+    "policy/v1",
+    "apiextensions.k8s.io/v1",
+    "rbac.authorization.k8s.io/v1"
+  ],
+  "claimBoundary": "dependency-light semantics and static contracts unless a stronger evidence class is recorded",
+  "customAPI": "platform.bijux.dev/v1alpha1",
+  "kindNodeImage": "kindest/node:v1.36.1@sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5",
+  "kindReference": "0.32.0",
+  "kubernetesConceptualBaseline": "1.36.2",
+  "profile": "atlas-kubernetes-course4-1.0"
+}

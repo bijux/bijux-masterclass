@@ -1,0 +1,11 @@
+{
+  "costEvidence": "approved",
+  "destructiveCriticalChange": false,
+  "imdsTokens": "required",
+  "liveCloudEvidence": "not-executed",
+  "longLivedCiKey": false,
+  "name": "rejected-public-ssh",
+  "natArchitecture": "single-sandbox",
+  "publicSsh": true,
+  "stateProtection": "verified"
+}

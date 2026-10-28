@@ -1,0 +1,3 @@
+# AxiomStore legacy fixture
+alpha=one
+beta=two=with=delimiters

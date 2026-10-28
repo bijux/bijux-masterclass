@@ -1,0 +1,28 @@
+{
+  "decision": "accepted",
+  "extracted": [
+    "notification-service",
+    "artifact-service"
+  ],
+  "gates": {
+    "acyclic-sync-graph": "pass",
+    "boundary-evidence": "pass",
+    "operability": "pass",
+    "reconciliation": "pass",
+    "rollback": "pass",
+    "saga-recovery": "pass",
+    "service-auth": "pass",
+    "shadow-compare": "pass",
+    "single-writer-ownership": "pass",
+    "version-skew": "pass"
+  },
+  "profile": "distributed-architecture-1.0",
+  "retained": [
+    "analysis-control"
+  ],
+  "unexecuted": [
+    "live multi-database PostgreSQL",
+    "container network partition",
+    "Kubernetes traffic shift"
+  ]
+}

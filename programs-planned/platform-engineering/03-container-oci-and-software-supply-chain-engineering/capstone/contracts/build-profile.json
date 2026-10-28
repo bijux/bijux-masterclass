@@ -1,0 +1,27 @@
+{
+  "archive": {
+    "gid": 0,
+    "gzipMtime": 0,
+    "mtime": 0,
+    "sortedPaths": true,
+    "uid": 0
+  },
+  "forbiddenInputs": [
+    "network fetched mutable latest",
+    "host credentials",
+    "wall clock",
+    "untracked files"
+  ],
+  "go": {
+    "buildId": "empty",
+    "cgo": false,
+    "trimpath": true
+  },
+  "profile": "atlas-deterministic-build-1.0",
+  "source": "capstone/workload",
+  "sourceDigestAlgorithm": "sha256",
+  "targets": [
+    "linux/amd64",
+    "linux/arm64"
+  ]
+}

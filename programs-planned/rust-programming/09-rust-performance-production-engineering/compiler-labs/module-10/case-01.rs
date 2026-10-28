@@ -1,0 +1,1 @@
+fn peak(active:usize,a:usize,queued:usize,q:usize,fixed:usize)->Option<usize>{active.checked_mul(a)?.checked_add(queued.checked_mul(q)?)?.checked_add(fixed)} fn main(){assert_eq!(peak(2,10,3,4,5),Some(37));}

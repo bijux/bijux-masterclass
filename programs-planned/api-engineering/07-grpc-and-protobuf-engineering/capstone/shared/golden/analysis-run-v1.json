@@ -1,0 +1,14 @@
+{
+  "sha256": "0658bd065901cd732b9af3139e0ba9539108cf27752b785acf292fd5228a4f98",
+  "length": 75,
+  "semantic": {
+    "name": "projects/p-1/runs/r-golden",
+    "project_name": "projects/p-1",
+    "dataset_name": "datasets/d-1",
+    "state": "RUN_STATE_COMPLETED",
+    "progress_percent": 100,
+    "etag": "\"run-9\"",
+    "result_summary": "ok",
+    "revision": "9"
+  }
+}

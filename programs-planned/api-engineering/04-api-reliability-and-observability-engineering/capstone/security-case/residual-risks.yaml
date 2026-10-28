@@ -1,0 +1,24 @@
+residualRisks:
+- id: RR-01
+  threat: T-12
+  statement: Application tests cannot prove every resolver/proxy/network path; require
+    isolated environment and egress evidence.
+  owner: platform
+  review: before deployment
+- id: RR-02
+  threat: T-15
+  statement: Privileged operators may access process memory; production key custody
+    and host hardening remain external.
+  owner: security-operations
+  review: quarterly
+- id: RR-03
+  threat: T-16
+  statement: Dependency-light budgets are single-process; distributed enforcement
+    requires a shared authoritative store.
+  owner: service
+  review: before horizontal scaling
+- id: RR-04
+  threat: T-19
+  statement: Local audit chaining is not independent immutable storage.
+  owner: security-operations
+  review: before regulated use

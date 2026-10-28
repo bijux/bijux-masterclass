@@ -1,0 +1,7 @@
+{
+  "description": "mutation creates a fresh command key on retry",
+  "expectedProof": "mutation-proof",
+  "failure": "A retry generates another source command and another logical effect.",
+  "id": "GQL-08-idempotency-lost",
+  "mustBeRejected": true
+}

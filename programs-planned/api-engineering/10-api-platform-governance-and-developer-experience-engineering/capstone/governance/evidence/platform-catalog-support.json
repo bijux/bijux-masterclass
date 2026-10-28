@@ -1,0 +1,11 @@
+{
+  "apiRef": "api:default/platform-catalog",
+  "collectedAt": "2026-08-08T08:30:00Z",
+  "expiresAt": "2026-11-08T08:30:00Z",
+  "id": "platform-catalog-support-1",
+  "kind": "support",
+  "owner": "group:default/api-platform-team",
+  "sourceContract": "contracts/platform/platform-catalog.openapi.yaml",
+  "statement": "support evidence for api:default/platform-catalog in the bounded Course 10 profile.",
+  "status": "pass"
+}

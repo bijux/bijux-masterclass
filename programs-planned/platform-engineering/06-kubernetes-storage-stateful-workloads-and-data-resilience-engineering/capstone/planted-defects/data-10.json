@@ -1,0 +1,6 @@
+{
+  "description": "GitOps handoff allows pruning retained recovery assets",
+  "expectedProof": "successor protected-resource proof",
+  "id": "DATA-10",
+  "status": "must-be-rejected"
+}

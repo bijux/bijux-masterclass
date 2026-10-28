@@ -1,0 +1,35 @@
+[Unit]
+Description=Atlas Teaching HTTPS Edge
+After=network.target atlas-api.service
+Wants=atlas-api.service
+
+[Service]
+Type=simple
+User=atlas-edge
+Group=atlas-edge
+SupplementaryGroups=atlas-runtime atlas-log
+UMask=0077
+WorkingDirectory=/opt/atlas
+Environment=PYTHONPATH=/opt/atlas/capstone
+ExecStart=/usr/bin/python3 -m atlas_host.proxy --config /etc/atlas/atlas.json --cert /etc/atlas/tls/atlas.crt --key /etc/atlas/tls/atlas.key --backend 127.0.0.1:18080
+Restart=on-failure
+RestartSec=2s
+TimeoutStopSec=20s
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/run/atlas /var/log/atlas
+CapabilityBoundingSet=
+AmbientCapabilities=
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictSUIDSGID=yes
+RestrictNamespaces=yes
+SystemCallArchitectures=native
+TasksMax=128
+MemoryMax=256M
+CPUQuota=100%
+
+[Install]
+WantedBy=multi-user.target

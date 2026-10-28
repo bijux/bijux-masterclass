@@ -1,0 +1,8 @@
+[project]
+name = "atlas-host-runtime-course"
+version = "1.0.0"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["capstone/tests", "tests"]
+addopts = "-q"

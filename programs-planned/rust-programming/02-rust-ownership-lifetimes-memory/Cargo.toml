@@ -1,0 +1,46 @@
+[workspace]
+resolver = "3"
+members = [
+    "capstone",
+    "labs/module-01-borrow-surgery/solution",
+    "labs/module-02-zero-copy-records/solution",
+    "labs/module-03-scoped-visitors/solution",
+    "labs/module-04-resource-pool/solution",
+    "labs/module-05-boxed-expressions/solution",
+    "labs/module-06-rc-weak-graph/solution",
+    "labs/module-07-interior-cache/solution",
+    "labs/module-08-layout-observatory/solution",
+    "labs/module-09-variance-branding/solution",
+    "labs/module-10-pinned-tracker/solution",
+]
+exclude = [
+    "labs/module-01-borrow-surgery/starter",
+    "labs/module-02-zero-copy-records/starter",
+    "labs/module-03-scoped-visitors/starter",
+    "labs/module-04-resource-pool/starter",
+    "labs/module-05-boxed-expressions/starter",
+    "labs/module-06-rc-weak-graph/starter",
+    "labs/module-07-interior-cache/starter",
+    "labs/module-08-layout-observatory/starter",
+    "labs/module-09-variance-branding/starter",
+    "labs/module-10-pinned-tracker/starter",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+publish = false
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+correctness = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

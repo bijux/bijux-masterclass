@@ -1,0 +1,16 @@
+type: object
+additionalProperties: false
+required:
+- name
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 80
+    pattern: ^\S(?:.*\S)?$
+  description:
+    type: string
+    maxLength: 500
+examples:
+- name: Summer cohort
+  description: Quality analysis for the August cohort.

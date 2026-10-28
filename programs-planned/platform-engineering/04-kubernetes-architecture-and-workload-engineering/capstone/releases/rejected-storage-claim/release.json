@@ -1,0 +1,5 @@
+{
+  "decision": "rejected",
+  "name": "atlas-kubernetes-runtime-emptydir-durable",
+  "reason": "Pod-lifetime storage is claimed as durable"
+}

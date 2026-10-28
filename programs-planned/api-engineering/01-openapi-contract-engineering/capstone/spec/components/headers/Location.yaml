@@ -1,0 +1,5 @@
+description: Canonical URI of the created or accepted resource.
+schema:
+  type: string
+  format: uri-reference
+example: /analysis-runs/run_0001

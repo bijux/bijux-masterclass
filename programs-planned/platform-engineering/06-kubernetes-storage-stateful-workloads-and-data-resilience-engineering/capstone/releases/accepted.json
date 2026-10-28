@@ -1,0 +1,11 @@
+{
+  "candidate": "atlas-data-plane-1.0",
+  "evidence": {
+    "migration_compatibility": "pass",
+    "predecessor": "pass",
+    "restore_drill": "pass",
+    "semantic_csi": "pass",
+    "single_writer": "pass"
+  },
+  "expected": "accepted"
+}

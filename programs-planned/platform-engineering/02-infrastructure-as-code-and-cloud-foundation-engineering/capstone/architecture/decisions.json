@@ -1,0 +1,24 @@
+{
+  "decisions": [
+    {
+      "decision": "AWS is the primary execution lane; concepts remain provider-neutral",
+      "id": "ADR-001"
+    },
+    {
+      "decision": "OpenTofu is the primary IaC engine",
+      "id": "ADR-002"
+    },
+    {
+      "decision": "Course 2 retains one private Atlas host to keep replacement and data ownership visible",
+      "id": "ADR-003"
+    },
+    {
+      "decision": "S3 native lockfile and versioned KMS-encrypted state form the reference backend",
+      "id": "ADR-004"
+    },
+    {
+      "decision": "Kubernetes and containers are deferred to later courses",
+      "id": "ADR-005"
+    }
+  ]
+}

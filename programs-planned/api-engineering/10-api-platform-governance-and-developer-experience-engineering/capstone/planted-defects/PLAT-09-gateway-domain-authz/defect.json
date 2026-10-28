@@ -1,0 +1,5 @@
+{
+  "defect": "Gateway configuration takes ownership of domain authorization",
+  "expectedRejectingProof": "runtime-proof",
+  "id": "PLAT-09-gateway-domain-authz"
+}

@@ -1,0 +1,7 @@
+{
+  "expectedProof": "manifest-policy",
+  "id": "KUBE-01-mutable-image",
+  "slug": "mutable-image",
+  "status": "must-be-rejected",
+  "summary": "image identity is tag-based rather than digest-based"
+}

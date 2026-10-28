@@ -1,0 +1,12 @@
+{
+  "cloudevents": null,
+  "cniSpec": "1.1.0",
+  "gatewayAPI": "1.6.1",
+  "gatewayChannel": "standard",
+  "kubernetes": "1.36.2",
+  "notes": [
+    "GatewayClass, Gateway, HTTPRoute, GRPCRoute and ReferenceGrant use their standard-channel API versions where available.",
+    "Experimental Gateway API resources are teaching frontiers, not baseline release requirements.",
+    "NetworkPolicy enforcement depends on the installed network plugin."
+  ]
+}

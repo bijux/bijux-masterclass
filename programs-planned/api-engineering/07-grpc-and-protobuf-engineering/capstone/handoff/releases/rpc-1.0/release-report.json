@@ -1,0 +1,29 @@
+{
+  "rpc_api": "1.0",
+  "service_release": "1.0.0",
+  "decision": "accepted",
+  "public_http_api": "1.2",
+  "event_api": "1.0",
+  "migration_head": "015",
+  "gates": {
+    "contract": "pass",
+    "wire": "pass",
+    "generated-clients": "pass",
+    "unary": "pass",
+    "deadlines": "pass",
+    "streaming": "pass",
+    "security": "pass",
+    "lifecycle": "pass",
+    "public-http": "pass",
+    "event-history": "pass",
+    "rollback": "pass"
+  },
+  "unexecuted": [
+    "buf",
+    "protoc-regeneration",
+    "grpcurl",
+    "mtls",
+    "postgresql",
+    "typescript-network"
+  ]
+}

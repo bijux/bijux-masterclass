@@ -1,0 +1,6 @@
+{
+  "expectedControl": "hook replay and data compatibility gate",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-03",
+  "title": "Helm hook performs destructive non-idempotent migration"
+}

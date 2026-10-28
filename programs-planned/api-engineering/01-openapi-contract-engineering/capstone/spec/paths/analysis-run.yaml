@@ -1,0 +1,35 @@
+parameters:
+- $ref: ../components/parameters/RunId.yaml
+get:
+  tags:
+  - Analysis Runs
+  summary: Retrieve an analysis run
+  description: Returns current state. The training providers advance deterministically on polling.
+  operationId: getAnalysisRun
+  security:
+  - OAuth2:
+    - runs:read
+  - ApiKey: []
+  responses:
+    '200':
+      description: Current analysis-run representation.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AnalysisRun.yaml
+      links:
+        artifacts:
+          operationId: listRunArtifacts
+          parameters:
+            runId: $response.body#/id
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

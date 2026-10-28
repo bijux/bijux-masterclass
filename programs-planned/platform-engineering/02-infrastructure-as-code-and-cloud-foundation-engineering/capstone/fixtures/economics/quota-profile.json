@@ -1,0 +1,23 @@
+[
+  {
+    "limit": 10,
+    "name": "on-demand-instances",
+    "requestLeadDays": 2,
+    "requiredAdditional": 2,
+    "used": 2
+  },
+  {
+    "limit": 5,
+    "name": "elastic-ips",
+    "requestLeadDays": 3,
+    "requiredAdditional": 2,
+    "used": 2
+  },
+  {
+    "limit": 50,
+    "name": "load-balancers",
+    "requestLeadDays": 1,
+    "requiredAdditional": 1,
+    "used": 1
+  }
+]
