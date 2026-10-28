@@ -1,0 +1,5 @@
+{
+  "claim": "production-networking-proven",
+  "environment": "kind-local",
+  "expected": "reject"
+}

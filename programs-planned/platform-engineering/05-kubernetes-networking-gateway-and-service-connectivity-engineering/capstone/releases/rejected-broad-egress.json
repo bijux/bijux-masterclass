@@ -1,0 +1,8 @@
+{
+  "name": "broad-egress-candidate",
+  "expected": "rejected",
+  "gates": [
+    {"name": "approved-egress-contract", "state": "fail", "blocker": true},
+    {"name": "tls", "state": "pass"}
+  ]
+}

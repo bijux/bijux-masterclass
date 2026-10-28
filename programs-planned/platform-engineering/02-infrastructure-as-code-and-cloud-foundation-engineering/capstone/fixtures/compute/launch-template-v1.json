@@ -1,0 +1,18 @@
+{
+  "architecture": "amd64",
+  "dataVolume": {
+    "device": "/dev/atlas-data",
+    "encrypted": true
+  },
+  "imageId": "ami-atlas-2026-08-001",
+  "instanceProfile": "atlas-dev-runtime",
+  "instanceQuota": 3,
+  "metadataOptions": {
+    "httpPutResponseHopLimit": 1,
+    "httpTokens": "required"
+  },
+  "privateSubnet": "private-a",
+  "publicIp": false,
+  "rootIsDurableAuthority": false,
+  "userData": "#!/bin/sh\nset -eu\nmount /dev/atlas-data /var/lib/atlas\nsystemctl start atlas-api atlas-worker\n"
+}

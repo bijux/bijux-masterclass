@@ -1,0 +1,8 @@
+{
+  "application": "TLS/backend semantics and authorization",
+  "cni": "node networking owner",
+  "dns": "CoreDNS and optional node cache",
+  "gateway": "Gateway controller and data plane",
+  "policy": "NetworkPolicy-capable CNI",
+  "serviceDataPlane": "kube-proxy or declared replacement"
+}

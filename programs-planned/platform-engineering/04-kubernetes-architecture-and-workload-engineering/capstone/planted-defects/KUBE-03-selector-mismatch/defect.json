@@ -1,0 +1,7 @@
+{
+  "expectedProof": "manifest-policy",
+  "id": "KUBE-03-selector-mismatch",
+  "slug": "selector-mismatch",
+  "status": "must-be-rejected",
+  "summary": "controller selector does not match Pod template labels"
+}

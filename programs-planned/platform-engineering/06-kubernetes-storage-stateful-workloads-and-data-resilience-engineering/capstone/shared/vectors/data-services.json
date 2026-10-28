@@ -1,0 +1,13 @@
+{
+  "cases": [
+    {
+      "crossRegion": true,
+      "expertise": "limited",
+      "recommendation": "managed-service"
+    },
+    {
+      "customEngine": true,
+      "recommendation": "operator-or-direct"
+    }
+  ]
+}

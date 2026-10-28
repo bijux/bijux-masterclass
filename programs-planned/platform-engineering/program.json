@@ -1,0 +1,57 @@
+{
+  "cumulativeCapstone": "Atlas Developer Platform",
+  "currentCapstone": "Atlas Delivery Plane 1.0",
+  "currentCourses": [
+    {
+      "directory": "01-linux-networking-and-cloud-systems-engineering",
+      "number": 1,
+      "stage": "Understand and operate the substrate",
+      "title": "Linux, Networking, and Cloud Systems Engineering"
+    },
+    {
+      "directory": "02-infrastructure-as-code-and-cloud-foundation-engineering",
+      "number": 2,
+      "stage": "Codify the cloud foundation and its change process",
+      "title": "Infrastructure as Code and Cloud Foundation Engineering"
+    },
+    {
+      "directory": "03-container-oci-and-software-supply-chain-engineering",
+      "number": 3,
+      "stage": "Package and verify the workload release",
+      "title": "Container, OCI, and Software Supply Chain Engineering"
+    },
+    {
+      "directory": "04-kubernetes-architecture-and-workload-engineering",
+      "number": 4,
+      "stage": "Reconcile verified workloads through declarative APIs",
+      "title": "Kubernetes Architecture and Workload Engineering"
+    },
+    {
+      "directory": "05-kubernetes-networking-gateway-and-service-connectivity-engineering",
+      "number": 5,
+      "stage": "Connect, discover, segment, and expose workloads deliberately",
+      "title": "Kubernetes Networking, Gateway, and Service Connectivity Engineering"
+    },
+    {
+      "directory": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering",
+      "number": 6,
+      "stage": "Persist, protect, and recover data deliberately",
+      "title": "Kubernetes Storage, Stateful Workloads, and Data Resilience Engineering"
+    },
+    {
+      "directory": "07-kubernetes-delivery-gitops-and-release-engineering",
+      "number": 7,
+      "stage": "Deliver reviewed desired state safely and observably",
+      "title": "Kubernetes Delivery, GitOps, and Release Engineering"
+    }
+  ],
+  "id": "platform-engineering",
+  "plannedCourses": [
+    "Platform Security, Identity, Policy, and Multi-Tenancy Engineering",
+    "Platform Reliability, Observability, Capacity, and Fleet Engineering",
+    "Internal Developer Platform and Control Plane Engineering"
+  ],
+  "primaryProduct": "course-books",
+  "schemaVersion": 1,
+  "title": "Platform Engineering"
+}

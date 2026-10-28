@@ -1,0 +1,16 @@
+apiVersion: delivery.atlas.dev/v1alpha1
+kind: DataCompatibilityMatrix
+metadata:
+  name: atlas-api-1-7-0
+spec:
+  phase: writer-cutover
+  stable:
+    reads: [old, new]
+    writes: [old]
+  candidate:
+    reads: [old, new]
+    writes: [new]
+  backfill:
+    resumable: true
+    verified: true
+  rollbackFrontier: before-old-writer-removal

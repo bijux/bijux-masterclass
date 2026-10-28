@@ -1,0 +1,92 @@
+{
+  "accountLifecycle": {
+    "quarantine": "suspended-ou",
+    "retirement": "inventory-backup-close"
+  },
+  "accounts": [
+    {
+      "deleteAuthority": "organization-admin",
+      "id": "100000000001",
+      "ou": "root",
+      "role": "management",
+      "workloads": [
+        "atlas-prod"
+      ]
+    },
+    {
+      "deleteAuthority": "log-archive-admin",
+      "id": "100000000002",
+      "ou": "security",
+      "role": "log-archive",
+      "workloads": []
+    },
+    {
+      "deleteAuthority": "security-admin",
+      "id": "100000000003",
+      "ou": "security",
+      "role": "audit",
+      "workloads": []
+    },
+    {
+      "deleteAuthority": "platform-admin",
+      "id": "100000000004",
+      "ou": "infrastructure",
+      "role": "shared-services",
+      "workloads": [
+        "dns",
+        "artifact-registry"
+      ]
+    },
+    {
+      "deleteAuthority": "workload-admin",
+      "id": "100000000005",
+      "ou": "workloads",
+      "role": "workload-nonprod",
+      "workloads": [
+        "atlas-dev"
+      ]
+    },
+    {
+      "deleteAuthority": "workload-admin",
+      "id": "100000000006",
+      "ou": "workloads",
+      "role": "workload-prod",
+      "workloads": [
+        "atlas-prod"
+      ]
+    },
+    {
+      "deleteAuthority": "sandbox-owner",
+      "id": "100000000007",
+      "ou": "sandbox",
+      "role": "sandbox",
+      "workloads": [
+        "learner"
+      ]
+    }
+  ],
+  "identities": [
+    {
+      "canMutate": false,
+      "name": "plan"
+    },
+    {
+      "canMutate": true,
+      "name": "apply"
+    },
+    {
+      "canManageOrganization": false,
+      "name": "workload"
+    },
+    {
+      "canMutate": false,
+      "name": "audit"
+    },
+    {
+      "canMutate": true,
+      "monitored": true,
+      "name": "break-glass"
+    }
+  ],
+  "organizationId": "o-atlas"
+}

@@ -1,0 +1,6 @@
+{
+  "id": "NET-02",
+  "title": "Overlay MTU is ignored",
+  "description": "The Pod interface keeps 1500 while the underlay plus tunnel supports only 1450.",
+  "expectedProof": "path-mtu-proof"
+}

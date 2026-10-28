@@ -1,0 +1,46 @@
+{
+  "capabilities": [
+    {
+      "name": "dynamicProvisioning",
+      "nativeEvidence": "not-executed",
+      "required": true
+    },
+    {
+      "name": "controllerPublish",
+      "nativeEvidence": "not-executed",
+      "required": true
+    },
+    {
+      "name": "nodeStage",
+      "nativeEvidence": "not-executed",
+      "required": true
+    },
+    {
+      "name": "volumeExpansion",
+      "nativeEvidence": "not-executed",
+      "required": true
+    },
+    {
+      "name": "volumeSnapshot",
+      "nativeEvidence": "not-executed",
+      "required": true
+    },
+    {
+      "name": "volumeGroupSnapshot",
+      "nativeEvidence": "not-executed",
+      "required": false
+    },
+    {
+      "name": "modifyVolume",
+      "nativeEvidence": "not-executed",
+      "required": false
+    },
+    {
+      "name": "volumeHealth",
+      "nativeEvidence": "not-executed",
+      "required": false
+    }
+  ],
+  "driver": "csi.atlas.example.invalid",
+  "profile": "course-semantic-only"
+}

@@ -1,0 +1,8 @@
+{
+  "risks": [
+    "live CNI/Gateway/NetworkPolicy evidence may be unexecuted",
+    "PVCs remain unbound until Course 6",
+    "storage protocol MTU and latency unmeasured",
+    "cloud private endpoint behavior unexecuted"
+  ]
+}

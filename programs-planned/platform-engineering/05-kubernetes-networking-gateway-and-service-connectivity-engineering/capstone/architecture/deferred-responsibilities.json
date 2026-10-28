@@ -1,0 +1,24 @@
+{
+  "course6": [
+    "CSI",
+    "PV/PVC",
+    "StorageClass",
+    "snapshots",
+    "backup",
+    "restore"
+  ],
+  "course7": [
+    "GitOps",
+    "progressive delivery"
+  ],
+  "course8": [
+    "admission",
+    "workload identity governance",
+    "multi-tenancy"
+  ],
+  "course9": [
+    "fleet SLOs",
+    "capacity",
+    "upgrades"
+  ]
+}

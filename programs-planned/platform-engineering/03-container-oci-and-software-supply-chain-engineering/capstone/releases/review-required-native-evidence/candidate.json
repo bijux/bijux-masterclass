@@ -1,0 +1,11 @@
+{
+  "candidateRelease": "atlas-workload-release-1.0.0",
+  "condition": "Cross-compilation and ELF checks pass, but native arm64 execution is unavailable in the current environment.",
+  "evidenceClass": "environment-backed",
+  "expectedDecision": "review-required",
+  "failedGate": "target-runtime-evidence",
+  "id": "review-required-native-evidence",
+  "reviewQuestion": "What exact evidence would be required to change this decision without weakening another gate?",
+  "schemaVersion": "1.0",
+  "title": "Native target execution evidence is absent"
+}

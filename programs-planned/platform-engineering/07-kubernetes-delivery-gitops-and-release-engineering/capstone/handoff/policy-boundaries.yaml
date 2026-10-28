@@ -1,0 +1,16 @@
+policies:
+- boundary: admission
+  owner: Course 8
+  mustPreserve:
+  - immutable image digest
+  - non-root runtime
+  - approved provenance
+- boundary: prune
+  owner: delivery-and-data
+  mustPreserve:
+  - protected resources
+  - retirement approval
+- boundary: tenant
+  owner: Course 8
+  mustPreserve:
+  - namespace and repository separation

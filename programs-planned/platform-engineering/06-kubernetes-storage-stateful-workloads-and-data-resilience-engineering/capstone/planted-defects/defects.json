@@ -1,0 +1,54 @@
+{
+  "defects": [
+    {
+      "description": "authoritative run state stored in emptyDir",
+      "id": "DATA-01",
+      "proof": "data catalogue and lifetime lab"
+    },
+    {
+      "description": "Immediate zonal binding strands the workload",
+      "id": "DATA-02",
+      "proof": "binding and topology proof"
+    },
+    {
+      "description": "CSI CreateVolume retry creates a second backend volume",
+      "id": "DATA-03",
+      "proof": "idempotency test"
+    },
+    {
+      "description": "partial multi-volume provisioning is silently forgotten",
+      "id": "DATA-04",
+      "proof": "capacity transition ledger"
+    },
+    {
+      "description": "replacement writer lacks a fencing generation",
+      "id": "DATA-05",
+      "proof": "stale-writer test"
+    },
+    {
+      "description": "database operator has no restore owner",
+      "id": "DATA-06",
+      "proof": "responsibility review"
+    },
+    {
+      "description": "crash-consistent snapshot labelled application-consistent",
+      "id": "DATA-07",
+      "proof": "snapshot checkpoint proof"
+    },
+    {
+      "description": "backup candidate has no empty-destination restore",
+      "id": "DATA-08",
+      "proof": "restore gate"
+    },
+    {
+      "description": "performance tier accepted after weakening retention",
+      "id": "DATA-09",
+      "proof": "categorical release gate"
+    },
+    {
+      "description": "GitOps handoff allows pruning retained recovery assets",
+      "id": "DATA-10",
+      "proof": "successor protected-resource proof"
+    }
+  ]
+}

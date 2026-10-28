@@ -1,0 +1,14 @@
+{
+  "name": "atlas-connectivity-plane-1.0",
+  "expected": "accepted",
+  "gates": [
+    {"name": "predecessor-integrity", "state": "pass"},
+    {"name": "packet-path-contract", "state": "pass"},
+    {"name": "service-and-dns", "state": "pass"},
+    {"name": "network-policy", "state": "pass"},
+    {"name": "gateway-and-tls", "state": "pass"},
+    {"name": "egress", "state": "pass"},
+    {"name": "local-cluster", "state": "not-executed", "blocker": false},
+    {"name": "managed-cloud", "state": "not-executed", "blocker": false}
+  ]
+}

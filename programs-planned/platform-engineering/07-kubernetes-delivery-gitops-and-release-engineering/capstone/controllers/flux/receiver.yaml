@@ -1,0 +1,13 @@
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: atlas-environment
+  namespace: flux-system
+spec:
+  type: generic-hmac
+  events: [ping, push]
+  secretRef:
+    name: atlas-webhook-token
+  resources:
+    - kind: GitRepository
+      name: atlas-environment

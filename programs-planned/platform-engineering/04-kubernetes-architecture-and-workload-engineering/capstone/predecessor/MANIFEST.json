@@ -1,0 +1,50 @@
+{
+  "files": [
+    {
+      "bytes": 292,
+      "path": "README.md",
+      "sha256": "bf8115fee2948420477f0accfc32902bf8ab1d6624468676a5c324e4ed6c9c4a"
+    },
+    {
+      "bytes": 191,
+      "path": "configuration-contract.json",
+      "sha256": "18e335886748be34b0e0cb3ecb4acd30539b4225ba7da57759e417978e103eaa"
+    },
+    {
+      "bytes": 1608,
+      "path": "image-release.json",
+      "sha256": "64561ed733f160a049fe3127c0833cb2d2aff907fb3d584522568a866101e164"
+    },
+    {
+      "bytes": 555,
+      "path": "known-risks.json",
+      "sha256": "40c0cdf0d1ec31b8a681066b185c54ef75813665d6713e16fe2f3eeb76382292"
+    },
+    {
+      "bytes": 267,
+      "path": "resource-hypotheses.json",
+      "sha256": "79e00b98058986a442e838657d4058ead636273bce39fca26612c661f1a78616"
+    },
+    {
+      "bytes": 211,
+      "path": "storage-contract.json",
+      "sha256": "4fc8ef6892aebac7b9eb3d1b33a95cfd3819e0b4f2ef675131bcaf1968617d04"
+    },
+    {
+      "bytes": 2034,
+      "path": "supply-chain-contract.json",
+      "sha256": "8f8ce9240f217c967f9a77a8c0a60f71095ec2d3ab308dee03b6a21a20edcad5"
+    },
+    {
+      "bytes": 158,
+      "path": "version-ledger.json",
+      "sha256": "b5e9f577c1aca69a4392e74d5cb487fd0b8e5b2ad2188249681cff6d7189d4d7"
+    },
+    {
+      "bytes": 710,
+      "path": "workload-contract.json",
+      "sha256": "6d3716610ce7d116fb7bd056f6bce7036eb008ac755813094fc2671713c0d3ce"
+    }
+  ],
+  "schemaVersion": "1.0"
+}

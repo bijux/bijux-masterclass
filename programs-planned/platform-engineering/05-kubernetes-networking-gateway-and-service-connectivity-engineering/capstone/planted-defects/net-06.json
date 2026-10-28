@@ -1,0 +1,6 @@
+{
+  "id": "NET-06",
+  "title": "Gateway route attaches across an unauthorized namespace",
+  "description": "Listener allowedRoutes and ReferenceGrant boundaries are bypassed.",
+  "expectedProof": "gateway-attachment-proof"
+}

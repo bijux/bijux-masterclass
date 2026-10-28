@@ -1,0 +1,11 @@
+{
+  "paths": [
+    "same-pod",
+    "same-node-pod",
+    "cross-node-pod",
+    "clusterip-service",
+    "https-gateway",
+    "external-egress"
+  ],
+  "version": "atlas-packet-paths-1.0"
+}

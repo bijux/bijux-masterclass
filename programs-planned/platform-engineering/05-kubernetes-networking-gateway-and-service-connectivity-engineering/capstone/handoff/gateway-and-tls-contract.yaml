@@ -1,0 +1,15 @@
+version: atlas-gateway-tls-1.0
+publicHost: atlas.example.invalid
+gateway:
+  namespace: atlas-gateway
+  name: atlas-public
+  api: gateway.networking.k8s.io/v1
+  listener: https
+tls:
+  termination: gateway
+  certificateOwner: platform certificate lifecycle
+  backendTransport: HTTP in Atlas Network Plane 1.0
+  endToEndTLSClaim: false
+storageImplication:
+  - artifact download URLs must preserve the public authority
+  - backend storage credentials must never be placed in route objects

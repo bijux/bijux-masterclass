@@ -1,0 +1,6 @@
+{
+  "expectedControl": "secret adoption evidence",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-07",
+  "title": "SOPS file is decryptable but workload never adopts new value"
+}

@@ -1,0 +1,10 @@
+{
+  "ndots": 5,
+  "negativeTtl": 10,
+  "positiveTtl": 30,
+  "search": [
+    "atlas-system.svc.cluster.local",
+    "svc.cluster.local",
+    "cluster.local"
+  ]
+}

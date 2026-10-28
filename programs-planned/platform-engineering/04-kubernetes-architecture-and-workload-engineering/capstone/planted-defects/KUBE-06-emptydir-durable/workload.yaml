@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: atlas-worker-storage-defect, namespace: atlas-system}
+spec:
+  selector: {matchLabels: {app: atlas-worker-storage-defect}}
+  template:
+    metadata: {labels: {app: atlas-worker-storage-defect}}
+    spec:
+      containers:
+        - name: atlas-worker
+          image: platform/atlas-worker@sha256:bbd52b30969ebb6fb3568d2ce5c1ebfb420c7bd7a80001f2a1014feaa4d7a036
+          volumeMounts: [{name: spool, mountPath: /var/lib/atlas/spool}]
+          resources: {requests: {cpu: 100m, memory: 64Mi}, limits: {cpu: 500m, memory: 128Mi}}
+          securityContext: {runAsNonRoot: true, allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
+      volumes: [{name: spool, emptyDir: {}}]

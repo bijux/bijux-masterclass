@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: atlas-api-defect, namespace: atlas-system}
+spec:
+  selector: {matchLabels: {app: atlas-api-defect}}
+  template:
+    metadata: {labels: {app: atlas-api-defect}}
+    spec:
+      containers:
+        - name: atlas-api
+          image: platform/atlas-api:latest
+          resources: {requests: {cpu: 100m, memory: 64Mi}, limits: {cpu: 500m, memory: 128Mi}}
+          securityContext: {runAsNonRoot: true, allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}

@@ -1,0 +1,6 @@
+{
+  "id": "NET-05",
+  "title": "Default deny is claimed without an enforcing CNI",
+  "description": "NetworkPolicy objects exist, but no dataplane verdict proves enforcement.",
+  "expectedProof": "policy-enforcement-evidence"
+}

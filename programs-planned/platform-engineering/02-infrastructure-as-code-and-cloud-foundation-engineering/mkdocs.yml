@@ -1,0 +1,113 @@
+site_name: Infrastructure as Code and Cloud Foundation Engineering
+site_description: Platform Engineering Course 2 — reader-first cloud foundation engineering
+docs_dir: course-book
+site_dir: site
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - content.code.copy
+markdown_extensions:
+- admonition
+- tables
+- attr_list
+- def_list
+- toc:
+    permalink: true
+- pymdownx.details
+- pymdownx.superfences
+- pymdownx.highlight
+nav:
+- Home: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Standards: standards.md
+- Glossary: glossary.md
+- Guides:
+  - How to Read a Plan: guides/how-to-read-a-plan.md
+  - Cloud Account Safety: guides/cloud-account-safety.md
+  - Cost and Quota Safety: guides/cost-and-quota-safety.md
+  - Evidence Journal: guides/evidence-journal.md
+  - Worked Foundation Walkthrough: guides/atlas-cloud-foundation-walkthrough.md
+- Casebook:
+  - Two Writers and a Green Pipeline: casebook/state-incident-two-writers.md
+  - Private Subnet Lost S3: casebook/network-egress-outage.md
+  - Backup Exists, Key Is Gone: casebook/identity-and-key-recovery.md
+  - Partial Apply at the Edge: casebook/partial-apply-at-the-edge.md
+- Reference:
+  - OpenTofu Execution Model: reference/opentofu-execution-model.md
+  - State Incident Response: reference/state-incident-response.md
+  - CIDR and Subnet Planning: reference/cidr-and-subnet-planning.md
+  - IAM Policy Evaluation: reference/iam-policy-evaluation.md
+  - Module Interface Checklist: reference/module-interface-checklist.md
+  - Infrastructure Migration Playbook: reference/infrastructure-migration-playbook.md
+  - Plan Review Checklist: reference/plan-review-checklist.md
+  - Provider Comparison Map: reference/provider-comparison-map.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- 1. Declarative Infrastructure and Execution:
+  - Chapter: module-01-declarative-infrastructure-and-execution-model/index.md
+  - Exercises: module-01-declarative-infrastructure-and-execution-model/exercises.md
+  - Worked Answers: module-01-declarative-infrastructure-and-execution-model/exercise-answers.md
+  - Lab: module-01-declarative-infrastructure-and-execution-model/lab.md
+  - Checkpoint: module-01-declarative-infrastructure-and-execution-model/checkpoint.md
+- 2. State, Backends, Locking, and Recovery:
+  - Chapter: module-02-state-backends-locking-encryption-and-recovery/index.md
+  - Exercises: module-02-state-backends-locking-encryption-and-recovery/exercises.md
+  - Worked Answers: module-02-state-backends-locking-encryption-and-recovery/exercise-answers.md
+  - Lab: module-02-state-backends-locking-encryption-and-recovery/lab.md
+  - Checkpoint: module-02-state-backends-locking-encryption-and-recovery/checkpoint.md
+- 3. Module Interfaces and Composition:
+  - Chapter: module-03-module-design-interfaces-and-composition/index.md
+  - Exercises: module-03-module-design-interfaces-and-composition/exercises.md
+  - Worked Answers: module-03-module-design-interfaces-and-composition/exercise-answers.md
+  - Lab: module-03-module-design-interfaces-and-composition/lab.md
+  - Checkpoint: module-03-module-design-interfaces-and-composition/checkpoint.md
+- 4. Landing Zones and Guardrails:
+  - Chapter: module-04-landing-zones-accounts-identity-and-guardrails/index.md
+  - Exercises: module-04-landing-zones-accounts-identity-and-guardrails/exercises.md
+  - Worked Answers: module-04-landing-zones-accounts-identity-and-guardrails/exercise-answers.md
+  - Lab: module-04-landing-zones-accounts-identity-and-guardrails/lab.md
+  - Checkpoint: module-04-landing-zones-accounts-identity-and-guardrails/checkpoint.md
+- 5. Network Foundations:
+  - Chapter: module-05-network-foundation-addressing-routing-egress-and-dns/index.md
+  - Exercises: module-05-network-foundation-addressing-routing-egress-and-dns/exercises.md
+  - Worked Answers: module-05-network-foundation-addressing-routing-egress-and-dns/exercise-answers.md
+  - Lab: module-05-network-foundation-addressing-routing-egress-and-dns/lab.md
+  - Checkpoint: module-05-network-foundation-addressing-routing-egress-and-dns/checkpoint.md
+- 6. Identity, Secrets, and Encryption:
+  - Chapter: module-06-identity-secrets-encryption-and-workload-authority/index.md
+  - Exercises: module-06-identity-secrets-encryption-and-workload-authority/exercises.md
+  - Worked Answers: module-06-identity-secrets-encryption-and-workload-authority/exercise-answers.md
+  - Lab: module-06-identity-secrets-encryption-and-workload-authority/lab.md
+  - Checkpoint: module-06-identity-secrets-encryption-and-workload-authority/checkpoint.md
+- 7. Compute, Images, and Replacement:
+  - Chapter: module-07-compute-images-bootstrap-and-replacement/index.md
+  - Exercises: module-07-compute-images-bootstrap-and-replacement/exercises.md
+  - Worked Answers: module-07-compute-images-bootstrap-and-replacement/exercise-answers.md
+  - Lab: module-07-compute-images-bootstrap-and-replacement/lab.md
+  - Checkpoint: module-07-compute-images-bootstrap-and-replacement/checkpoint.md
+- 8. Edge, Backup, and Recovery:
+  - Chapter: module-08-edge-data-protection-backup-and-recovery/index.md
+  - Exercises: module-08-edge-data-protection-backup-and-recovery/exercises.md
+  - Worked Answers: module-08-edge-data-protection-backup-and-recovery/exercise-answers.md
+  - Lab: module-08-edge-data-protection-backup-and-recovery/lab.md
+  - Checkpoint: module-08-edge-data-protection-backup-and-recovery/checkpoint.md
+- 9. Drift, Import, and Migrations:
+  - Chapter: module-09-drift-import-refactoring-and-infrastructure-migrations/index.md
+  - Exercises: module-09-drift-import-refactoring-and-infrastructure-migrations/exercises.md
+  - Worked Answers: module-09-drift-import-refactoring-and-infrastructure-migrations/exercise-answers.md
+  - Lab: module-09-drift-import-refactoring-and-infrastructure-migrations/lab.md
+  - Checkpoint: module-09-drift-import-refactoring-and-infrastructure-migrations/checkpoint.md
+- 10. Delivery, Policy, and Release:
+  - Chapter: module-10-delivery-policy-testing-and-cloud-foundation-release/index.md
+  - Exercises: module-10-delivery-policy-testing-and-cloud-foundation-release/exercises.md
+  - Worked Answers: module-10-delivery-policy-testing-and-cloud-foundation-release/exercise-answers.md
+  - Lab: module-10-delivery-policy-testing-and-cloud-foundation-release/lab.md
+  - Checkpoint: module-10-delivery-policy-testing-and-cloud-foundation-release/checkpoint.md

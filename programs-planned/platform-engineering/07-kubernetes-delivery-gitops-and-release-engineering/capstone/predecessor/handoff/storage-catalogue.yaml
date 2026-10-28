@@ -1,0 +1,10 @@
+version: atlas-storage-catalogue-1.0
+classes:
+  - name: atlas-rwo-durable
+    bindingMode: WaitForFirstConsumer
+    reclaimPolicy: Retain
+    expansion: true
+  - name: atlas-rwx-shared
+    bindingMode: WaitForFirstConsumer
+    reclaimPolicy: Retain
+    use: bounded compatibility workloads only

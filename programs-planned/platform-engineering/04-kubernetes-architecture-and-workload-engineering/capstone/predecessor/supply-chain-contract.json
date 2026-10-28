@@ -1,0 +1,48 @@
+{
+  "images": {
+    "atlas-api": {
+      "policyDecision": "accepted",
+      "provenanceEnvelope": {
+        "digest": "sha256:850520a74d7fe78420e163cd70e616e167abbbb162c664c0a5fb44729bc24cbc",
+        "mediaType": "application/vnd.dsse.envelope.v1+json",
+        "predicate": "https://slsa.dev/provenance/v1"
+      },
+      "referrerCount": 2,
+      "sbom": {
+        "digest": "sha256:90d808d139444d1b3ab57b5b08e0562d0faa3a6b2fd2517866fc8d3926633a7a",
+        "mediaType": "application/vnd.cyclonedx+json",
+        "profile": "CycloneDX 1.7 course fixture"
+      },
+      "subjectDigest": "sha256:6e3b38e88f6ef4252b635b6d199095db46233d7b6f85f3be4384d746386317a7"
+    },
+    "atlas-worker": {
+      "policyDecision": "accepted",
+      "provenanceEnvelope": {
+        "digest": "sha256:a61f27a5c1d363f3232917e3a513c9d93166809bc24928de3b3162f17a9306f0",
+        "mediaType": "application/vnd.dsse.envelope.v1+json",
+        "predicate": "https://slsa.dev/provenance/v1"
+      },
+      "referrerCount": 2,
+      "sbom": {
+        "digest": "sha256:e30e93d486d6c24b14e66e79c457d8cc4d0c0f258fd6df9552ffc1a400e7178b",
+        "mediaType": "application/vnd.cyclonedx+json",
+        "profile": "CycloneDX 1.7 course fixture"
+      },
+      "subjectDigest": "sha256:bbd52b30969ebb6fb3568d2ce5c1ebfb420c7bd7a80001f2a1014feaa4d7a036"
+    }
+  },
+  "signer": {
+    "fingerprint": "sha256:711514246ce619753f737f8603f1de281aad15149c45b3ebe885ffc2ba2a8e94",
+    "trust": "public deterministic course fixture; no production authority"
+  },
+  "trustBoundary": "fixture key; not a production trust root",
+  "unexecuted": [
+    "independent native BuildKit or equivalent build",
+    "native arm64 execution where target hardware is unavailable",
+    "production OCI runtime and seccomp/LSM enforcement",
+    "production registry authentication, retention, replication, and recovery",
+    "operated signing identity and transparency verification",
+    "representative capacity evidence"
+  ],
+  "verificationPolicy": "atlas-workload-release-policy-1.0"
+}

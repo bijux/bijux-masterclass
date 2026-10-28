@@ -1,0 +1,19 @@
+{
+  "health": {
+    "liveness": "process can execute minimal self-check",
+    "readiness": "API can durably accept supported work",
+    "edge": "bounded routing decision",
+    "worker": "fresh heartbeat plus queue access"
+  },
+  "logging": {
+    "format": "structured JSON lines",
+    "sensitiveData": "redacted",
+    "requiredFields": [
+      "timestamp",
+      "event",
+      "service",
+      "release",
+      "correlation"
+    ]
+  }
+}

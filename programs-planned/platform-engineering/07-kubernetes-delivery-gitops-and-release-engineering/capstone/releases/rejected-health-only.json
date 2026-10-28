@@ -1,0 +1,67 @@
+{
+  "approvals": [],
+  "gates": [
+    {
+      "blocker": true,
+      "name": "immutable-artifacts",
+      "reason": "digests unchanged",
+      "status": "pass",
+      "subject": "atlas-1.7.0-health-only"
+    },
+    {
+      "blocker": true,
+      "name": "render-determinism",
+      "reason": "two independent renders match",
+      "status": "pass",
+      "subject": "atlas-1.7.0-health-only"
+    },
+    {
+      "blocker": true,
+      "name": "restore-evidence",
+      "reason": "empty-destination restore within objective",
+      "status": "pass",
+      "subject": "atlas-1.7.0-health-only"
+    },
+    {
+      "blocker": true,
+      "name": "secret-adoption",
+      "reason": "new version adopted before predecessor revoked",
+      "status": "pass",
+      "subject": "atlas-1.7.0-health-only"
+    },
+    {
+      "blocker": true,
+      "name": "progressive-analysis",
+      "reason": "Kubernetes health provided without journey evidence",
+      "status": "fail",
+      "subject": "atlas-1.7.0-health-only"
+    },
+    {
+      "blocker": true,
+      "name": "fleet-compatibility",
+      "reason": "target profiles satisfy requirements",
+      "status": "pass",
+      "subject": "atlas-1.7.0-health-only"
+    }
+  ],
+  "name": "atlas-1.7.0-health-only",
+  "protectedDeletions": [],
+  "revision": {
+    "artifacts": {
+      "chartDigest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "imageDigests": [
+        "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      ],
+      "sourceArtifactDigest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    "commit": "3333333333333333333333333333333333333333",
+    "environment": "prod",
+    "predecessor": "atlas-1.6.0",
+    "releaseId": "atlas-1.7.0-health-only",
+    "renderDigest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "renderer": "kustomize",
+    "rendererVersion": "5.8.1"
+  },
+  "rollbackFrontier": "before-old-writer-removal"
+}

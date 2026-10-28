@@ -1,0 +1,135 @@
+site_name: Platform Engineering — Kubernetes Architecture and Workload Engineering
+site_description: Reader-first Course 4 of the Bijux Platform Engineering program
+docs_dir: course-book
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.indexes
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.details
+- pymdownx.superfences
+- pymdownx.tabbed
+nav:
+- Home: index.md
+- Start here: start-here.md
+- Study plan: study-plan.md
+- Capstone: capstone.md
+- Evidence model: evidence-model.md
+- Language strategy: language-strategy.md
+- Standards: standards.md
+- Glossary: glossary.md
+- Guides:
+  - Debugging by controller ownership: guides/debugging-by-controller-ownership.md
+  - Evidence capture: guides/evidence-capture.md
+  - How to read a Kubernetes object: guides/how-to-read-a-kubernetes-object.md
+  - Optional local-cluster lane: guides/local-cluster-lane.md
+- Casebook:
+  - Case 1 — The successful apply that produced no service: casebook/case-01-the-successful-apply.md
+  - Case 2 — The controller fight: casebook/case-02-the-controller-fight.md
+  - Case 3 — The probe storm: casebook/case-03-the-probe-storm.md
+  - Case 4 — The impossible rollout: casebook/case-04-the-impossible-rollout.md
+  - Case 5 — The helpful operator: casebook/case-05-the-helpful-operator.md
+- Reference:
+  - API concurrency, watches, and consistency: reference/api-concurrency-watches-and-consistency.md
+  - Cluster version and API lifecycle: reference/cluster-version-and-api-lifecycle.md
+  - Component ownership matrix: reference/component-ownership-matrix.md
+  - Conditions and events: reference/conditions-and-events.md
+  - Configuration change semantics: reference/configuration-change-semantics.md
+  - Workload-controller choice: reference/controller-choice.md
+  - Controller status and condition design: reference/controller-status-and-condition-design.md
+  - Custom-resource evolution: reference/custom-resource-evolution.md
+  - Deferred responsibilities: reference/deferred-responsibilities.md
+  - Disruption and availability populations: reference/disruption-and-availability-populations.md
+  - Kubernetes incident evidence template: reference/incident-evidence-template.md
+  - Job retries and effect identity: reference/job-effect-identity.md
+  - kubectl reading map: reference/kubectl-reading-map.md
+  - Labels, selectors, and object graphs: reference/labels-selectors-and-object-graphs.md
+  - Manifest review checklist: reference/manifest-review-checklist.md
+  - Pod lifecycle and restart evidence: reference/pod-lifecycle-and-restart-evidence.md
+  - Probe decision table: reference/probe-decision-table.md
+  - Resource units and QoS reference: reference/resource-units-and-qos.md
+  - Rollout mathematics reference: reference/rollout-math.md
+  - Scheduling evidence and repair: reference/scheduling-evidence-and-repair.md
+- Capstone manual:
+  - Atlas Kubernetes Runtime architecture: capstone/architecture.md
+  - Capstone proof map: capstone/proof-map.md
+  - Capstone walkthrough: capstone/walkthrough.md
+- Assessment:
+  - Final defense: assessment/final-defense.md
+  - Assessment rubric: assessment/rubric.md
+- Instructor:
+  - Facilitation guide: instructor/facilitation-guide.md
+  - Planted-defect map: instructor/planted-defect-map.md
+- Orientation:
+  - Orientation: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 1 — Kubernetes as an API-Driven Control System:
+  - Chapter: module-01-kubernetes-as-an-api-driven-control-system/index.md
+  - Exercises: module-01-kubernetes-as-an-api-driven-control-system/exercises.md
+  - Worked answers: module-01-kubernetes-as-an-api-driven-control-system/exercise-answers.md
+  - Lab: module-01-kubernetes-as-an-api-driven-control-system/lab.md
+  - Checkpoint: module-01-kubernetes-as-an-api-driven-control-system/checkpoint.md
+- Module 2 — API Objects, Change Semantics, and Ownership:
+  - Chapter: module-02-api-objects-change-semantics-and-ownership/index.md
+  - Exercises: module-02-api-objects-change-semantics-and-ownership/exercises.md
+  - Worked answers: module-02-api-objects-change-semantics-and-ownership/exercise-answers.md
+  - Lab: module-02-api-objects-change-semantics-and-ownership/lab.md
+  - Checkpoint: module-02-api-objects-change-semantics-and-ownership/checkpoint.md
+- Module 3 — Pods, Container Composition, and Lifecycle:
+  - Chapter: module-03-pods-container-composition-and-lifecycle/index.md
+  - Exercises: module-03-pods-container-composition-and-lifecycle/exercises.md
+  - Worked answers: module-03-pods-container-composition-and-lifecycle/exercise-answers.md
+  - Lab: module-03-pods-container-composition-and-lifecycle/lab.md
+  - Checkpoint: module-03-pods-container-composition-and-lifecycle/checkpoint.md
+- Module 4 — Deployments, ReplicaSets, and Rollout Mathematics:
+  - Chapter: module-04-deployments-replicasets-and-rollout-mathematics/index.md
+  - Exercises: module-04-deployments-replicasets-and-rollout-mathematics/exercises.md
+  - Worked answers: module-04-deployments-replicasets-and-rollout-mathematics/exercise-answers.md
+  - Lab: module-04-deployments-replicasets-and-rollout-mathematics/lab.md
+  - Checkpoint: module-04-deployments-replicasets-and-rollout-mathematics/checkpoint.md
+- Module 5 — Jobs, CronJobs, DaemonSets, and Controller Choice:
+  - Chapter: module-05-jobs-cronjobs-daemonsets-and-controller-choice/index.md
+  - Exercises: module-05-jobs-cronjobs-daemonsets-and-controller-choice/exercises.md
+  - Worked answers: module-05-jobs-cronjobs-daemonsets-and-controller-choice/exercise-answers.md
+  - Lab: module-05-jobs-cronjobs-daemonsets-and-controller-choice/lab.md
+  - Checkpoint: module-05-jobs-cronjobs-daemonsets-and-controller-choice/checkpoint.md
+- Module 6 — Configuration, Secrets, and Workload Identity Projection:
+  - Chapter: module-06-configuration-secrets-and-workload-identity-projection/index.md
+  - Exercises: module-06-configuration-secrets-and-workload-identity-projection/exercises.md
+  - Worked answers: module-06-configuration-secrets-and-workload-identity-projection/exercise-answers.md
+  - Lab: module-06-configuration-secrets-and-workload-identity-projection/lab.md
+  - Checkpoint: module-06-configuration-secrets-and-workload-identity-projection/checkpoint.md
+- Module 7 — Resources, QoS, Scheduling, and Topology:
+  - Chapter: module-07-resources-qos-scheduling-and-topology/index.md
+  - Exercises: module-07-resources-qos-scheduling-and-topology/exercises.md
+  - Worked answers: module-07-resources-qos-scheduling-and-topology/exercise-answers.md
+  - Lab: module-07-resources-qos-scheduling-and-topology/lab.md
+  - Checkpoint: module-07-resources-qos-scheduling-and-topology/checkpoint.md
+- Module 8 — Health, Lifecycle, Disruption, and Availability:
+  - Chapter: module-08-health-lifecycle-disruption-and-availability/index.md
+  - Exercises: module-08-health-lifecycle-disruption-and-availability/exercises.md
+  - Worked answers: module-08-health-lifecycle-disruption-and-availability/exercise-answers.md
+  - Lab: module-08-health-lifecycle-disruption-and-availability/lab.md
+  - Checkpoint: module-08-health-lifecycle-disruption-and-availability/checkpoint.md
+- Module 9 — StatefulSets, Stable Identity, and Controller Fit:
+  - Chapter: module-09-statefulsets-stable-identity-and-controller-fit/index.md
+  - Exercises: module-09-statefulsets-stable-identity-and-controller-fit/exercises.md
+  - Worked answers: module-09-statefulsets-stable-identity-and-controller-fit/exercise-answers.md
+  - Lab: module-09-statefulsets-stable-identity-and-controller-fit/lab.md
+  - Checkpoint: module-09-statefulsets-stable-identity-and-controller-fit/checkpoint.md
+- Module 10 — Custom Resources, Controllers, and Workload Release:
+  - Chapter: module-10-custom-resources-controllers-and-workload-release/index.md
+  - Exercises: module-10-custom-resources-controllers-and-workload-release/exercises.md
+  - Worked answers: module-10-custom-resources-controllers-and-workload-release/exercise-answers.md
+  - Lab: module-10-custom-resources-controllers-and-workload-release/lab.md
+  - Checkpoint: module-10-custom-resources-controllers-and-workload-release/checkpoint.md

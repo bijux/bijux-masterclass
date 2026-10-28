@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atlas-config
+  namespace: atlas-system
+  labels:
+    app.kubernetes.io/part-of: atlas
+data:
+  ATLAS_LOG_FORMAT: json
+  ATLAS_WORKER_POLL_SECONDS: "2"
+  ATLAS_CONFIG_VERSION: "1"

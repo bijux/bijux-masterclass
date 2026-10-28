@@ -1,0 +1,6 @@
+{
+  "id": "NET-04",
+  "title": "DNS success is treated as service health",
+  "description": "An A record is considered sufficient evidence that the API is reachable.",
+  "expectedProof": "dns-versus-endpoint-proof"
+}

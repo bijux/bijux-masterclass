@@ -1,0 +1,12 @@
+apiVersion: platform.bijux.dev/v1alpha1
+kind: AtlasWorkload
+metadata:
+  name: atlas
+  namespace: atlas-system
+spec:
+  apiImage: platform/atlas-api@sha256:6e3b38e88f6ef4252b635b6d199095db46233d7b6f85f3be4384d746386317a7
+  workerImage: platform/atlas-worker@sha256:bbd52b30969ebb6fb3568d2ce5c1ebfb420c7bd7a80001f2a1014feaa4d7a036
+  apiReplicas: 3
+  workerReplicas: 1
+  configurationRef: atlas-config
+  availabilityClass: critical

@@ -1,0 +1,41 @@
+{
+  "dataClasses": [
+    {
+      "authority": "atlas-db",
+      "deletionOwner": "service-and-platform-joint",
+      "name": "run-state",
+      "rpoSeconds": 60,
+      "rtoSeconds": 900,
+      "storage": "transactional",
+      "writers": 1
+    },
+    {
+      "authority": "atlas-artifacts",
+      "deletionOwner": "retention-policy",
+      "name": "artifacts",
+      "rpoSeconds": 300,
+      "rtoSeconds": 1800,
+      "storage": "immutable-object",
+      "writers": 1
+    },
+    {
+      "authority": "none",
+      "deletionOwner": "pod-lifecycle",
+      "name": "worker-scratch",
+      "rpoSeconds": 0,
+      "rtoSeconds": 60,
+      "storage": "pod-ephemeral",
+      "writers": 0
+    },
+    {
+      "authority": "atlas-backup",
+      "deletionOwner": "recovery-owner",
+      "name": "recovery-evidence",
+      "rpoSeconds": 3600,
+      "rtoSeconds": 3600,
+      "storage": "independent-object",
+      "writers": 1
+    }
+  ],
+  "schemaVersion": "1.0"
+}

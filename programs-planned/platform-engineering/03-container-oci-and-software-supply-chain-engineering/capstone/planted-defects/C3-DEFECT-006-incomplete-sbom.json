@@ -1,0 +1,10 @@
+{
+  "defect": "SBOM omits build-time and runtime component evidence without declaring incompleteness",
+  "expectedDecision": "rejected",
+  "expectedGate": "sbom-proof",
+  "expectedProof": "sbom-proof",
+  "id": "C3-DEFECT-006",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "The inventory omits relevant components while asserting complete composition.",
+  "title": "Incomplete SBOM presented as complete"
+}

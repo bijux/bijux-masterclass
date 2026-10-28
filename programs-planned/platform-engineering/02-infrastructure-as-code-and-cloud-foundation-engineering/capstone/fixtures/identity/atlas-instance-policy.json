@@ -1,0 +1,56 @@
+{
+  "Statement": [
+    {
+      "Action": [
+        "ssm:GetParameter"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:ssm:eu-central-1:100000000005:parameter/atlas/dev/*"
+      ],
+      "Sid": "ReadAtlasConfig"
+    },
+    {
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/atlas:environment": "dev"
+        }
+      },
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:secretsmanager:eu-central-1:100000000005:secret:atlas/dev/*"
+      ],
+      "Sid": "ReadAtlasSecrets"
+    },
+    {
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::atlas-dev-backup/results/*"
+      ],
+      "Sid": "WriteAtlasBackup"
+    },
+    {
+      "Action": [
+        "s3:*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      },
+      "Effect": "Deny",
+      "Resource": [
+        "arn:aws:s3:::atlas-dev-backup",
+        "arn:aws:s3:::atlas-dev-backup/*"
+      ],
+      "Sid": "DenyInsecureTransport"
+    }
+  ],
+  "Version": "2012-10-17"
+}

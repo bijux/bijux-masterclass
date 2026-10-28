@@ -1,0 +1,13 @@
+{
+  "profile": "atlas-registry-retention-1.0",
+  "immutable": ["release digests", "signed attestations", "incident holds"],
+  "mutable": ["discovery tags", "environment channels"],
+  "tagPolicy": "tags are pointers and never deployment identity",
+  "garbageCollection": {
+    "requiresReachabilityScan": true,
+    "requiresReferrerAwareness": true,
+    "minimumRollbackGenerations": 5,
+    "incidentHoldOverridesRetention": true
+  },
+  "promotion": "copy or mount the exact manifest graph; do not rebuild per environment"
+}

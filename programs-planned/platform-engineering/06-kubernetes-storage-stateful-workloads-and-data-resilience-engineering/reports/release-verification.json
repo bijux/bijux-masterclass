@@ -1,0 +1,61 @@
+{
+  "claimBoundary": "Local semantic and filesystem evidence is not represented as native Kubernetes, storage-backend, cloud, or operated production evidence.",
+  "course": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering",
+  "executed": {
+    "capstoneTour": {
+      "passed": 9,
+      "total": 9
+    },
+    "coreProof": "passed",
+    "goTests": "passed",
+    "manifestResources": 18,
+    "plantedDefects": {
+      "rejected": 10,
+      "status": "passed"
+    },
+    "pythonTests": {
+      "failed": 0,
+      "passed": 37
+    },
+    "releaseClassification": {
+      "candidates": 7,
+      "status": "passed"
+    },
+    "sharedVectors": {
+      "cases": 23,
+      "files": 10
+    }
+  },
+  "inventory": {
+    "checkpoints": 10,
+    "courseBookPages": 100,
+    "courseBookWords": 54759,
+    "exercises": 120,
+    "goFiles": 3,
+    "jsonFiles": 41,
+    "labs": 10,
+    "mainChapterMaxWords": 2790,
+    "mainChapterMinWords": 2321,
+    "markdownFiles": 120,
+    "plantedDefects": 10,
+    "predecessorPayloadFiles": 10,
+    "pythonFiles": 42,
+    "releaseCandidates": 7,
+    "runbooks": 6,
+    "successorPayloadFiles": 10,
+    "workedAnswers": 120,
+    "yamlFiles": 28
+  },
+  "notExecuted": [
+    "native Kubernetes API, scheduler, kubelet, and controller behavior",
+    "native CSI sidecars, driver, and backend operations",
+    "kind/container runtime local-cluster lane",
+    "real database quorum, fencing, and point-in-time recovery",
+    "cloud volume, snapshot, KMS, multi-zone, and regional recovery",
+    "strict MkDocs rendering",
+    "independent kubeconform validation"
+  ],
+  "releaseDate": "2026-08-09",
+  "schemaVersion": "1.0",
+  "status": "dependency-light-release-passed"
+}

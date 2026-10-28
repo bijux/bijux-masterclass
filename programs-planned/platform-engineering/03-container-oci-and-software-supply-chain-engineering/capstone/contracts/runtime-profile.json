@@ -1,0 +1,136 @@
+{
+  "hostname": "atlas-probe",
+  "linux": {
+    "gidMappings": [
+      {
+        "containerID": 0,
+        "hostID": 0,
+        "size": 1
+      },
+      {
+        "containerID": 1,
+        "hostID": 100000,
+        "size": 65536
+      }
+    ],
+    "maskedPaths": [
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/timer_list"
+    ],
+    "namespaces": [
+      {
+        "type": "pid"
+      },
+      {
+        "type": "mount"
+      },
+      {
+        "type": "uts"
+      },
+      {
+        "type": "ipc"
+      },
+      {
+        "type": "network"
+      },
+      {
+        "type": "user"
+      }
+    ],
+    "readonlyPaths": [
+      "/proc/asound",
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ],
+    "resources": {
+      "cpu": {
+        "period": 100000,
+        "quota": 50000
+      },
+      "memory": {
+        "limit": 134217728
+      },
+      "pids": {
+        "limit": 64
+      }
+    },
+    "uidMappings": [
+      {
+        "containerID": 0,
+        "hostID": 0,
+        "size": 1
+      },
+      {
+        "containerID": 1,
+        "hostID": 100000,
+        "size": 65536
+      }
+    ]
+  },
+  "mounts": [
+    {
+      "destination": "/proc",
+      "options": [
+        "nosuid",
+        "noexec",
+        "nodev"
+      ],
+      "source": "proc",
+      "type": "proc"
+    },
+    {
+      "destination": "/tmp",
+      "options": [
+        "nosuid",
+        "nodev",
+        "mode=1777",
+        "size=16777216"
+      ],
+      "source": "tmpfs",
+      "type": "tmpfs"
+    },
+    {
+      "destination": "/var/lib/atlas",
+      "options": [
+        "rbind",
+        "rw",
+        "nosuid",
+        "nodev"
+      ],
+      "source": "state",
+      "type": "bind"
+    }
+  ],
+  "ociVersion": "1.3.0",
+  "process": {
+    "args": [
+      "/usr/local/bin/atlas-probe"
+    ],
+    "capabilities": {
+      "ambient": [],
+      "bounding": [],
+      "effective": [],
+      "inheritable": [],
+      "permitted": []
+    },
+    "cwd": "/",
+    "env": [
+      "PATH=/usr/local/bin:/usr/bin:/bin",
+      "ATLAS_RELEASE=1.0.0"
+    ],
+    "noNewPrivileges": true,
+    "terminal": false,
+    "user": {
+      "gid": 65532,
+      "uid": 65532
+    }
+  },
+  "root": {
+    "path": "rootfs",
+    "readonly": true
+  }
+}

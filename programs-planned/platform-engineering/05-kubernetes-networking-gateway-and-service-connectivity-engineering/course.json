@@ -1,0 +1,19 @@
+{
+  "checkpoints": 10,
+  "courseBookPages": 106,
+  "courseBookWords": 45491,
+  "cumulativeCapstone": "Atlas Connectivity Plane 1.0",
+  "evidenceProfile": "document+semantic+local-network",
+  "exercises": 120,
+  "id": "kubernetes-networking-gateway-and-service-connectivity-engineering",
+  "labs": 10,
+  "modules": 10,
+  "number": 5,
+  "predecessor": "04-kubernetes-architecture-and-workload-engineering",
+  "primaryProduct": "course-book",
+  "program": "platform-engineering",
+  "release": "1.0.0",
+  "schemaVersion": 1,
+  "successor": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering",
+  "title": "Kubernetes Networking, Gateway, and Service Connectivity Engineering"
+}
