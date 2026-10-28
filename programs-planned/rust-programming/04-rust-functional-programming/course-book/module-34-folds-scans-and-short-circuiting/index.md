@@ -530,7 +530,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator::try_fold](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.try_fold)
 - [ControlFlow](https://doc.rust-lang.org/std/ops/enum.ControlFlow.html)
 
-[← Module 33](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 35 →](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md)
+[← Module 33](../module-33-iterator-algebra-and-pipeline-shape/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 35 →](../module-35-option-result-and-fallible-traversal/index.md)
 
 ## Continue
 

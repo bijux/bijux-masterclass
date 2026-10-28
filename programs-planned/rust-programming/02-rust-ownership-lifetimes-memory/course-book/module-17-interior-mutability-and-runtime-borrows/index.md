@@ -662,7 +662,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [RefCell](https://doc.rust-lang.org/std/cell/struct.RefCell.html)
 - [UnsafeCell](https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html)
 
-[← Module 16](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 18 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md)
+[← Module 16](../module-16-rc-weak-and-ownership-graphs/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 18 →](../module-18-memory-representation-validity-and-layout/index.md)
 
 ## Continue
 

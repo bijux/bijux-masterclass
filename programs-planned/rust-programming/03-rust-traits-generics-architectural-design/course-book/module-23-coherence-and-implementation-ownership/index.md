@@ -533,7 +533,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Implementations](https://doc.rust-lang.org/reference/items/implementations.html)
 - [Rust Reference: Trait implementation coherence](https://doc.rust-lang.org/reference/items/implementations.html#trait-implementation-coherence)
 
-[← Module 22](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 24 →](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md)
+[← Module 22](../module-22-associated-types-and-type-families/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 24 →](../module-24-static-polymorphism-and-opaque-types/index.md)
 
 ## Continue
 

@@ -716,7 +716,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Testing](https://doc.rust-lang.org/book/ch11-00-testing.html)
 - [rustdoc Book](https://doc.rust-lang.org/rustdoc/)
 
-[← Module 8](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 10 →](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md)
+[← Module 8](../module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 10 →](../module-10-integration-and-independent-change/index.md)
 
 ## Continue
 

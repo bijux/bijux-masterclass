@@ -805,7 +805,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Traits](https://doc.rust-lang.org/reference/items/traits.html)
 - [The Rust Book: Traits](https://doc.rust-lang.org/book/ch10-02-traits.html)
 
-[← Module 20](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 22 →](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md)
+[← Module 20](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 22 →](../module-22-associated-types-and-type-families/index.md)
 
 ## Continue
 

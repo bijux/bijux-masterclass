@@ -501,7 +501,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [FromIterator](https://doc.rust-lang.org/std/iter/trait.FromIterator.html)
 - [Extend](https://doc.rust-lang.org/std/iter/trait.Extend.html)
 
-[← Module 35](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 37 →](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md)
+[← Module 35](../module-35-option-result-and-fallible-traversal/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 37 →](../module-37-recursive-data-and-structural-sharing/index.md)
 
 ## Continue
 

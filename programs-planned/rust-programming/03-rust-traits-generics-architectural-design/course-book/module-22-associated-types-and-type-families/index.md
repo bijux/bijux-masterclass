@@ -631,7 +631,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Associated items](https://doc.rust-lang.org/reference/items/associated-items.html)
 - [Rust Reference: Generic parameters](https://doc.rust-lang.org/reference/items/generics.html)
 
-[← Module 21](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 23 →](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md)
+[← Module 21](../module-21-traits-as-behavioral-contracts/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 23 →](../module-23-coherence-and-implementation-ownership/index.md)
 
 ## Continue
 

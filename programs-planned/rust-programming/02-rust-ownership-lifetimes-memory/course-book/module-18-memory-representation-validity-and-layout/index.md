@@ -571,7 +571,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Type layout](https://doc.rust-lang.org/reference/type-layout.html)
 - [Rust Reference: Type validity](https://doc.rust-lang.org/reference/behavior-considered-undefined.html)
 
-[← Module 17](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 19 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
+[← Module 17](../module-17-interior-mutability-and-runtime-borrows/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 19 →](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
 
 ## Continue
 

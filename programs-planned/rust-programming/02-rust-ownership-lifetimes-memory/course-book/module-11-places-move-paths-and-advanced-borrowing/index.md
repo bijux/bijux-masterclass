@@ -977,7 +977,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Place expressions](https://doc.rust-lang.org/reference/expressions.html#place-expressions-and-value-expressions)
 - [Rust Reference: Borrow expressions](https://doc.rust-lang.org/reference/expressions/operator-expr.html#borrow-operators)
 
-[← Module 10](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 12 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md)
+[← Module 10](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 12 →](../module-12-lifetime-relationships-and-borrowed-apis/index.md)
 
 ## Continue
 

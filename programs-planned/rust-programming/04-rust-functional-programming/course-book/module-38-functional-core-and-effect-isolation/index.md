@@ -388,7 +388,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [std::io](https://doc.rust-lang.org/std/io/)
 
-[← Module 37](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 39 →](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md)
+[← Module 37](../module-37-recursive-data-and-structural-sharing/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 39 →](../module-39-combinator-laws-and-cost-models/index.md)
 
 ## Continue
 

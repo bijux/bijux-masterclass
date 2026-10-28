@@ -452,7 +452,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Cargo SemVer compatibility](https://doc.rust-lang.org/cargo/reference/semver.html)
 - [Rust API Guidelines: Dependability](https://rust-lang.github.io/api-guidelines/dependability.html)
 
-[← Module 28](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 30 →](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md)
+[← Module 28](../module-28-boundary-traits-and-adapters/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 30 →](../module-30-architectural-synthesis/index.md)
 
 ## Continue
 

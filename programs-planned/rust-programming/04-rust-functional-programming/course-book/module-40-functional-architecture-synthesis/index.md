@@ -373,7 +373,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Closures and Iterators](https://doc.rust-lang.org/book/ch13-00-functional-features.html)
 - [Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 
-[← Module 39](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md) · [one-hundred-module map](../../../COURSE_MAP.md)
+[← Module 39](../module-39-combinator-laws-and-cost-models/index.md) · [one-hundred-module map](../../../COURSE_MAP.md)
 
 ## Continue
 

@@ -1,3 +1,5 @@
+> Planned source collection. See [collection status](COLLECTION.md) for preservation and qualification limits.
+
 # Rust Programming — One Hundred Modules, Ten Courses
 
 This is one cumulative Rust curriculum, not ten disconnected surveys. It begins with ordinary typed programs and ends with the ability to review, evolve, and defend a long-lived Rust system. Each course keeps the obligations established before it and adds one new level of responsibility.

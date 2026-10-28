@@ -542,7 +542,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator adapters](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [std::iter](https://doc.rust-lang.org/std/iter/)
 
-[← Module 32](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 34 →](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md)
+[← Module 32](../module-32-the-iterator-model/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 34 →](../module-34-folds-scans-and-short-circuiting/index.md)
 
 ## Continue
 

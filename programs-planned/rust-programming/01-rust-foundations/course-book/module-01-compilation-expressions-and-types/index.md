@@ -796,7 +796,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Cargo Book](https://doc.rust-lang.org/cargo/)
 - [Rust Reference: Expressions](https://doc.rust-lang.org/reference/expressions.html)
 
-[one-hundred-module map](../../../COURSE_MAP.md) · [Module 2 →](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md)
+[one-hundred-module map](../../../COURSE_MAP.md) · [Module 2 →](../module-02-control-flow-functions-and-invariants/index.md)
 
 ## Continue
 

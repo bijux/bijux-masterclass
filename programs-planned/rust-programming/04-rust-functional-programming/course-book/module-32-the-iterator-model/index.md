@@ -587,7 +587,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [IntoIterator](https://doc.rust-lang.org/std/iter/trait.IntoIterator.html)
 
-[← Module 31](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 33 →](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md)
+[← Module 31](../module-31-closures-capture-and-callable-contracts/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 33 →](../module-33-iterator-algebra-and-pipeline-shape/index.md)
 
 ## Continue
 

@@ -883,7 +883,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Generics, Traits, and Lifetimes](https://doc.rust-lang.org/book/ch10-00-generics.html)
 - [Rust Reference: Trait bounds](https://doc.rust-lang.org/reference/trait-bounds.html)
 
-[← Module 7](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 9 →](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md)
+[← Module 7](../module-07-errors-parsing-files-and-persistence/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 9 →](../module-09-crates-modules-public-apis-tests-and-documentation/index.md)
 
 ## Continue
 

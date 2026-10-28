@@ -715,7 +715,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [std::mem](https://doc.rust-lang.org/std/mem/)
 - [std::panic](https://doc.rust-lang.org/std/panic/)
 
-[← Module 13](../../../02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 15 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md)
+[← Module 13](../module-13-scoped-access-and-escape-prevention/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 15 →](../module-15-box-deref-dynamically-sized-types-and-cow/index.md)
 
 ## Continue
 

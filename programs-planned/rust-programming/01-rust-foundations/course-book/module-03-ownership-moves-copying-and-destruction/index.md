@@ -743,7 +743,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Ownership](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
 - [Rust Reference: Destructors](https://doc.rust-lang.org/reference/destructors.html)
 
-[← Module 2](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 4 →](../../../01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md)
+[← Module 2](../module-02-control-flow-functions-and-invariants/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 4 →](../module-04-borrowing-references-slices-and-strings/index.md)
 
 ## Continue
 

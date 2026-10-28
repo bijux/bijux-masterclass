@@ -555,7 +555,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
 - [Weak](https://doc.rust-lang.org/std/rc/struct.Weak.html)
 
-[← Module 15](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 17 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md)
+[← Module 15](../module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 17 →](../module-17-interior-mutability-and-runtime-borrows/index.md)
 
 ## Continue
 

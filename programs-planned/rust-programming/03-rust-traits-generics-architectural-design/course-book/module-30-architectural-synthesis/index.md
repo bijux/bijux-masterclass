@@ -415,7 +415,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-[← Module 29](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 31 →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
+[← Module 29](../module-29-public-api-evolution/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 31 →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
 
 ## Continue
 

@@ -466,7 +466,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
 - [The Rust Book: Recursive types](https://doc.rust-lang.org/book/ch15-01-box.html)
 
-[← Module 36](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 38 →](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md)
+[← Module 36](../module-36-custom-iterators-and-collection-protocols/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 38 →](../module-38-functional-core-and-effect-isolation/index.md)
 
 ## Continue
 

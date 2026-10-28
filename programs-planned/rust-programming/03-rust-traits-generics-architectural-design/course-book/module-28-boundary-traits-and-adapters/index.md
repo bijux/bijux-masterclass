@@ -504,7 +504,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [AsRef](https://doc.rust-lang.org/std/convert/trait.AsRef.html)
 - [Borrow](https://doc.rust-lang.org/std/borrow/trait.Borrow.html)
 
-[← Module 27](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 29 →](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md)
+[← Module 27](../module-27-typestate-and-capability-oriented-apis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 29 →](../module-29-public-api-evolution/index.md)
 
 ## Continue
 

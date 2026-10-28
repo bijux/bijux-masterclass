@@ -881,7 +881,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Higher-ranked trait bounds](https://doc.rust-lang.org/reference/trait-bounds.html#higher-ranked-trait-bounds)
 - [Rust Reference: Closure expressions](https://doc.rust-lang.org/reference/expressions/closure-expr.html)
 
-[← Module 12](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 14 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
+[← Module 12](../module-12-lifetime-relationships-and-borrowed-apis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 14 →](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
 
 ## Continue
 

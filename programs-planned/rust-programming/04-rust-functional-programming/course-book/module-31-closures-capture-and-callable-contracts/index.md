@@ -741,7 +741,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Closure expressions](https://doc.rust-lang.org/reference/expressions/closure-expr.html)
 - [Fn traits](https://doc.rust-lang.org/std/ops/trait.Fn.html)
 
-[← Module 30](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 32 →](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md)
+[← Module 30](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 32 →](../module-32-the-iterator-model/index.md)
 
 ## Continue
 

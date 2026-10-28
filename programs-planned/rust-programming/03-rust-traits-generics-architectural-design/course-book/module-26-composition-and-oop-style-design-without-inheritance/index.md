@@ -549,7 +549,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Object-Oriented Features](https://doc.rust-lang.org/book/ch18-00-oop.html)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-[← Module 25](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 27 →](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md)
+[← Module 25](../module-25-trait-objects-and-dynamic-polymorphism/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 27 →](../module-27-typestate-and-capability-oriented-apis/index.md)
 
 ## Continue
 

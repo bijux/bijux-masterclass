@@ -524,7 +524,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Result](https://doc.rust-lang.org/std/result/enum.Result.html)
 - [FromIterator for Result](https://doc.rust-lang.org/std/result/enum.Result.html#impl-FromIterator%3CResult%3CA,+E%3E%3E-for-Result%3CV,+E%3E)
 
-[← Module 34](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 36 →](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md)
+[← Module 34](../module-34-folds-scans-and-short-circuiting/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 36 →](../module-36-custom-iterators-and-collection-protocols/index.md)
 
 ## Continue
 

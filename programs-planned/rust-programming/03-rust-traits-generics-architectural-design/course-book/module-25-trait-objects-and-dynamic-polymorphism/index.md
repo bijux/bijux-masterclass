@@ -501,7 +501,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
 - [Rust Reference: Dyn compatibility](https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility)
 
-[← Module 24](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 26 →](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md)
+[← Module 24](../module-24-static-polymorphism-and-opaque-types/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 26 →](../module-26-composition-and-oop-style-design-without-inheritance/index.md)
 
 ## Continue
 

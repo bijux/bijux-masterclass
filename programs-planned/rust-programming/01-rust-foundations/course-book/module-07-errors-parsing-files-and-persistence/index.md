@@ -892,7 +892,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [std::io](https://doc.rust-lang.org/std/io/)
 
-[← Module 6](../../../01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 8 →](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md)
+[← Module 6](../module-06-collections-iterators-and-closures/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 8 →](../module-08-generics-traits-conversions-and-lifetime-basics/index.md)
 
 ## Continue
 

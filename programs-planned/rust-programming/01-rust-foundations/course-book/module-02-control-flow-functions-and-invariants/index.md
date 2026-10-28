@@ -819,7 +819,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Functions and Control Flow](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html)
 - [Rust Reference: Control-flow expressions](https://doc.rust-lang.org/reference/expressions/loop-expr.html)
 
-[← Module 1](../../../01-rust-foundations/course-book/module-01-compilation-expressions-and-types/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 3 →](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md)
+[← Module 1](../module-01-compilation-expressions-and-types/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 3 →](../module-03-ownership-moves-copying-and-destruction/index.md)
 
 ## Continue
 

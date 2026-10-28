@@ -1048,7 +1048,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Closures and Iterators](https://doc.rust-lang.org/book/ch13-00-functional-features.html)
 - [Iterator documentation](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 
-[← Module 5](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 7 →](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md)
+[← Module 5](../module-05-structs-enums-methods-and-pattern-matching/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 7 →](../module-07-errors-parsing-files-and-persistence/index.md)
 
 ## Continue
 

@@ -652,7 +652,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [PhantomData](https://doc.rust-lang.org/std/marker/struct.PhantomData.html)
 - [Rustonomicon: Drop checking](https://doc.rust-lang.org/nomicon/dropck.html)
 
-[← Module 18](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 20 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md)
+[← Module 18](../module-18-memory-representation-validity-and-layout/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 20 →](../module-20-pinning-and-address-sensitive-design/index.md)
 
 ## Continue
 

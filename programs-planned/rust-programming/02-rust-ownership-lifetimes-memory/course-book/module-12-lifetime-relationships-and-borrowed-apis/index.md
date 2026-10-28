@@ -878,7 +878,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Lifetimes](https://doc.rust-lang.org/reference/trait-bounds.html#lifetime-bounds)
 - [Rust Reference: Lifetime elision](https://doc.rust-lang.org/reference/lifetime-elision.html)
 
-[← Module 11](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 13 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md)
+[← Module 11](../module-11-places-move-paths-and-advanced-borrowing/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 13 →](../module-13-scoped-access-and-escape-prevention/index.md)
 
 ## Continue
 

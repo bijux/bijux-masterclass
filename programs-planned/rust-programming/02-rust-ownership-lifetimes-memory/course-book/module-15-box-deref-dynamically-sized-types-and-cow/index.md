@@ -607,7 +607,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [std::ops::Deref](https://doc.rust-lang.org/std/ops/trait.Deref.html)
 - [std::borrow::Cow](https://doc.rust-lang.org/std/borrow/enum.Cow.html)
 
-[← Module 14](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 16 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md)
+[← Module 14](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 16 →](../module-16-rc-weak-and-ownership-graphs/index.md)
 
 ## Continue
 

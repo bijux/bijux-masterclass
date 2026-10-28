@@ -460,7 +460,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: impl Trait](https://doc.rust-lang.org/reference/types/impl-trait.html)
 - [Rust Compiler Development Guide: Monomorphization](https://rustc-dev-guide.rust-lang.org/backend/monomorph.html)
 
-[← Module 23](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 25 →](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md)
+[← Module 23](../module-23-coherence-and-implementation-ownership/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 25 →](../module-25-trait-objects-and-dynamic-polymorphism/index.md)
 
 ## Continue
 

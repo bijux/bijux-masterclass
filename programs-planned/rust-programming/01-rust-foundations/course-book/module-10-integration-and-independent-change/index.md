@@ -673,7 +673,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [Cargo Book: Package layout](https://doc.rust-lang.org/cargo/guide/project-layout.html)
 
-[← Module 9](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 11 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
+[← Module 9](../module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 11 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
 
 ## Continue
 

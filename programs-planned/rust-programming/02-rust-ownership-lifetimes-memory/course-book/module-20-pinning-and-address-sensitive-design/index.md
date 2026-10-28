@@ -561,7 +561,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Pin](https://doc.rust-lang.org/std/pin/struct.Pin.html)
 - [Unpin](https://doc.rust-lang.org/std/marker/trait.Unpin.html)
 
-[← Module 19](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 21 →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
+[← Module 19](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 21 →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
 
 ## Continue
 

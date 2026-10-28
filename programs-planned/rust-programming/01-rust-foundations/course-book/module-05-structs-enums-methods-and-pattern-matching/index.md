@@ -1044,7 +1044,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Enums and Pattern Matching](https://doc.rust-lang.org/book/ch06-00-enums.html)
 - [Rust Reference: Patterns](https://doc.rust-lang.org/reference/patterns.html)
 
-[← Module 4](../../../01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 6 →](../../../01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md)
+[← Module 4](../module-04-borrowing-references-slices-and-strings/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 6 →](../module-06-collections-iterators-and-closures/index.md)
 
 ## Continue
 
