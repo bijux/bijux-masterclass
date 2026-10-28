@@ -1,7 +1,7 @@
 {
   "documentation": {
     "mkdocs": "1.6.x",
-    "mkdocs-material": "9.6.x"
+    "mkdocs-material": "9.7.7"
   },
   "graphql_over_http": "Stage 2 draft, checked 2026-08-08",
   "graphql_specification": "September 2025",
@@ -9,11 +9,12 @@
   "python": ">=3.12",
   "python_optional": {
     "graphql-core": "3.2.x",
-    "strawberry-graphql": "0.278.x"
+    "strawberry-graphql": "0.327.2"
   },
   "typescript": "5.8.x",
   "typescript_optional": {
     "graphql": "16.x",
     "graphql-yoga": "5.x"
-  }
+  },
+  "maintained_on": "2026-10-28"
 }

@@ -49774,8 +49774,8 @@
       "sha256": "a74c9e1bdb55407d781c2696d89dae8c7bf3f844d9bf5546e55b8a6196bc91fd",
       "bytes": 1106,
       "mode": "100644",
-      "sha256_after": "eea32743d7d24f0f4796751921dcedaf90c6257adc1a52d8f6855185340b0bec",
-      "transformation": "dependency-and-contract-maintenance"
+      "sha256_after": "8213e6c19b908aafa804f3756c31def48cf80ebaaf5c92a57fdfb83361235ea0",
+      "transformation": "dependency-and-contract-maintenance; maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/.env.example",
@@ -53446,8 +53446,8 @@
       "sha256": "5363ef2992aa300acbf2e6745a74477170f1c996e8563a865d9d2e41edd78edf",
       "bytes": 319,
       "mode": "100644",
-      "sha256_after": "5363ef2992aa300acbf2e6745a74477170f1c996e8563a865d9d2e41edd78edf",
-      "transformation": null
+      "sha256_after": "d17fa71726d181fc0c7333e793448345bf8b11fc2e7a0419a7470ecab38fffbd",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/.env.example",
@@ -59962,8 +59962,8 @@
       "sha256": "a11186ff8adc2e23147162cee7ec54f21b4ee8854c12c4ffbda46c1e4705ed49",
       "bytes": 853,
       "mode": "100644",
-      "sha256_after": "a11186ff8adc2e23147162cee7ec54f21b4ee8854c12c4ffbda46c1e4705ed49",
-      "transformation": null
+      "sha256_after": "380b23eea9ae38123112bd2e2379ca96cd364513697a026024a8a5d0703ba51b",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/assessment/README.md",
@@ -64948,8 +64948,8 @@
       "sha256": "12ed72d2447820b3f6b54ed8415da0fc3888ecb793bc8deeffa10c53ba6e8533",
       "bytes": 610,
       "mode": "100644",
-      "sha256_after": "12ed72d2447820b3f6b54ed8415da0fc3888ecb793bc8deeffa10c53ba6e8533",
-      "transformation": null
+      "sha256_after": "b85444bb1fb55fbf4995ee5001abd8beefd124470590dd73298929765b3cefc1",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/05-api-performance-capacity-and-traffic-engineering/assessment/README.md",
@@ -70447,8 +70447,8 @@
       "sha256": "7ea47699ae586fe8a74c82986c89bb5dee5fe58e014243f1a106008248a6dd85",
       "bytes": 569,
       "mode": "100644",
-      "sha256_after": "7ea47699ae586fe8a74c82986c89bb5dee5fe58e014243f1a106008248a6dd85",
-      "transformation": null
+      "sha256_after": "73e86e2e737a929ae25288d691cc064904c994e00007286f5c2478e4f3945225",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/07-grpc-and-protobuf-engineering/assessment/final-defense-rubric.md",
@@ -76117,8 +76117,8 @@
       "sha256": "54430de198c21a05083443eb51caa5447cde16bb8c6669d18f5e06828d4e3084",
       "bytes": 427,
       "mode": "100644",
-      "sha256_after": "54430de198c21a05083443eb51caa5447cde16bb8c6669d18f5e06828d4e3084",
-      "transformation": null
+      "sha256_after": "57a4c7a03cb31d415b6b1d4455065fca45230ff560870ebe6cbc8d8a65e489ac",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/assessment/final-defense.md",
@@ -81991,6 +81991,193 @@
         {
           "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/tests/test_server_adapter.py",
           "sha256": "2dee865416d9c0c1c1ab2e5d71519cc22e8a2007a9674120df79057d609af0ba"
+        }
+      ]
+    },
+    {
+      "intent": "Describe the maintained dependency versions in course tool inventories; original source snapshot identities remain unchanged.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/tool-versions.json",
+          "sha256_before": "5363ef2992aa300acbf2e6745a74477170f1c996e8563a865d9d2e41edd78edf",
+          "sha256_after": "d17fa71726d181fc0c7333e793448345bf8b11fc2e7a0419a7470ecab38fffbd",
+          "packages": [
+            {
+              "name": "fastapi",
+              "before": "0.141.1",
+              "after": "0.162.0"
+            },
+            {
+              "name": "fastify",
+              "before": "5.11.2",
+              "after": "5.12.7"
+            },
+            {
+              "name": "mkdocs-material",
+              "before": "9.6.18",
+              "after": "9.7.7"
+            },
+            {
+              "name": "pytest",
+              "before": "9.1.1",
+              "after": "9.0.3"
+            },
+            {
+              "name": "vitest",
+              "before": "4.1.10",
+              "after": "4.1.12"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/05-api-performance-capacity-and-traffic-engineering/tool-versions.json",
+          "sha256_before": "12ed72d2447820b3f6b54ed8415da0fc3888ecb793bc8deeffa10c53ba6e8533",
+          "sha256_after": "b85444bb1fb55fbf4995ee5001abd8beefd124470590dd73298929765b3cefc1",
+          "packages": [
+            {
+              "name": "fastapi",
+              "before": "0.128.2",
+              "after": "0.162.0"
+            },
+            {
+              "name": "pytest",
+              "before": "9.0.2",
+              "after": "9.0.3"
+            },
+            {
+              "name": "fastify",
+              "before": "5.11.2",
+              "after": "5.12.7"
+            },
+            {
+              "name": "vitest",
+              "before": "4.1.10",
+              "after": "4.1.12"
+            },
+            {
+              "name": "mkdocsMaterial",
+              "before": "9.6.18",
+              "after": "9.7.7"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/tool-versions.json",
+          "sha256_before": "a11186ff8adc2e23147162cee7ec54f21b4ee8854c12c4ffbda46c1e4705ed49",
+          "sha256_after": "380b23eea9ae38123112bd2e2379ca96cd364513697a026024a8a5d0703ba51b",
+          "packages": [
+            {
+              "name": "fastapi",
+              "before": "0.128.2",
+              "after": "0.162.0"
+            },
+            {
+              "name": "pytest",
+              "before": "9.0.2",
+              "after": "9.0.3"
+            },
+            {
+              "name": "fastify",
+              "before": "5.11.2",
+              "after": "5.12.7"
+            },
+            {
+              "name": "fastifySwaggerUi",
+              "before": "6.1.1",
+              "after": "6.1.2"
+            },
+            {
+              "name": "vitest",
+              "before": "4.1.10",
+              "after": "4.1.12"
+            },
+            {
+              "name": "opentelemetryPythonSdk",
+              "before": "1.44.0",
+              "after": "1.45.1"
+            },
+            {
+              "name": "opentelemetryPythonInstrumentation",
+              "before": "0.65b0",
+              "after": "0.66b1"
+            },
+            {
+              "name": "mkdocsMaterial",
+              "before": "9.6.18",
+              "after": "9.7.7"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/tool-versions.json",
+          "sha256_before": "eea32743d7d24f0f4796751921dcedaf90c6257adc1a52d8f6855185340b0bec",
+          "sha256_after": "8213e6c19b908aafa804f3756c31def48cf80ebaaf5c92a57fdfb83361235ea0",
+          "packages": [
+            {
+              "name": "fastapi",
+              "before": "0.128.2",
+              "after": "0.162.0"
+            },
+            {
+              "name": "pytest",
+              "before": "9.0.2",
+              "after": "9.0.3"
+            },
+            {
+              "name": "mkdocs-material",
+              "before": "9.7.0",
+              "after": "9.7.7"
+            },
+            {
+              "name": "openapi-python-client",
+              "before": "0.29.0",
+              "after": "0.29.1"
+            },
+            {
+              "name": "fastify",
+              "before": "5.11.2",
+              "after": "5.12.7"
+            },
+            {
+              "name": "@fastify/swagger-ui",
+              "before": "5.2.6",
+              "after": "6.1.2"
+            },
+            {
+              "name": "vitest",
+              "before": "4.1.10",
+              "after": "4.1.12"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/tool-versions.json",
+          "sha256_before": "54430de198c21a05083443eb51caa5447cde16bb8c6669d18f5e06828d4e3084",
+          "sha256_after": "57a4c7a03cb31d415b6b1d4455065fca45230ff560870ebe6cbc8d8a65e489ac",
+          "packages": [
+            {
+              "name": "mkdocs-material",
+              "before": "9.6.x",
+              "after": "9.7.7"
+            },
+            {
+              "name": "strawberry-graphql",
+              "before": "0.278.x",
+              "after": "0.327.2"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/07-grpc-and-protobuf-engineering/tool-versions.json",
+          "sha256_before": "7ea47699ae586fe8a74c82986c89bb5dee5fe58e014243f1a106008248a6dd85",
+          "sha256_after": "73e86e2e737a929ae25288d691cc064904c994e00007286f5c2478e4f3945225",
+          "packages": [
+            {
+              "name": "@grpc/grpc-js",
+              "before": "1.14.4",
+              "after": "1.14.5"
+            }
+          ]
         }
       ]
     }

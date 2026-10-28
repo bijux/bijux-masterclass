@@ -8,7 +8,7 @@
     "grpcio": "1.83.0",
     "grpcio-tools": "1.83.0",
     "protobuf-python": "7.35.1",
-    "@grpc/grpc-js": "1.14.4",
+    "@grpc/grpc-js": "1.14.5",
     "@grpc/proto-loader": "0.8.1",
     "protobufjs": "8.7.1"
   },
@@ -21,5 +21,6 @@
     "protoc": "not-available",
     "buf": "not-available",
     "grpcurl": "not-available"
-  }
+  },
+  "maintained_on": "2026-10-28"
 }

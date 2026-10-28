@@ -3,21 +3,22 @@
   "python": "3.13.5",
   "node": "22.16.0",
   "typescript": "5.9.2",
-  "fastapi": "0.128.2",
+  "fastapi": "0.162.0",
   "pydantic": "2.13.4",
   "psycopg": "3.3.4",
   "httpx": "0.28.1",
   "uvicorn": "0.48.0",
-  "pytest": "9.0.2",
-  "fastify": "5.11.2",
+  "pytest": "9.0.3",
+  "fastify": "5.12.7",
   "nodePostgres": "8.22.0",
-  "vitest": "4.1.10",
+  "vitest": "4.1.12",
   "k6": "1.7.1",
   "locust": "2.46.3",
   "postgresqlDocumentationProfile": "18",
   "documentation": {
     "mkdocs": "1.6.1",
-    "mkdocsMaterial": "9.6.18"
+    "mkdocsMaterial": "9.7.7"
   },
-  "evidenceNote": "Versions are the Course 5 reference profile, not a claim that every dependency is the newest available release."
+  "evidenceNote": "Versions are the Course 5 reference profile, not a claim that every dependency is the newest available release.",
+  "maintained_on": "2026-10-28"
 }
