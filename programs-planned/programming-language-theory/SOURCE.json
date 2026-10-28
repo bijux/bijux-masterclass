@@ -1,0 +1,356 @@
+{
+  "schema_version": 1,
+  "collection": "language-theory",
+  "state": "planned",
+  "base_commit": "30265cfc10a0875d49504cf12c169f7e92e7c3cd",
+  "qualified_for_course_ci": false,
+  "qualified_for_publication": false,
+  "selected_snapshot": "6afc28d83d07ac99a490d668c19234d688071a15",
+  "source_snapshots": [
+    {
+      "content_id": "db627084c4aacbef984cab06acc895839618750580d3a7eaeace8d2fb2e4bd73",
+      "commit": "6afc28d83d07ac99a490d668c19234d688071a15",
+      "files": [
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/ToC.md",
+          "destination": "lambda-calculus/outline.md",
+          "sha256": "478dea3eb4cb65eff601bad083f1d2187e4eb33f6d62517ffd63131181955328",
+          "bytes": 9777,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-01.md",
+          "destination": "lambda-calculus/module-01.md",
+          "sha256": "5c4b4375a15bfcde53d9ea78014f3a070df7e1c15ab40fe79c005ccff316b99e",
+          "bytes": 18320,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-02.md",
+          "destination": "lambda-calculus/module-02.md",
+          "sha256": "97cfcf368f9d7265ff8ca44e93818384478c9bdbc54f1abed7eb7d4184c56418",
+          "bytes": 25667,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-03.md",
+          "destination": "lambda-calculus/module-03.md",
+          "sha256": "291e8b24d3611767270a27e3de3cd454e88418d01209a3347bf0a602a95669f3",
+          "bytes": 25673,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-04.md",
+          "destination": "lambda-calculus/module-04.md",
+          "sha256": "2e2ba8a83714c03c86ec4f5acfcd6f5de14e0a35da3a6405da63822e2687554d",
+          "bytes": 23566,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-05.md",
+          "destination": "lambda-calculus/module-05.md",
+          "sha256": "8d284f484f59417c0024b5d65ed15192a26e6413a8aef3413e2a83cb3d724048",
+          "bytes": 28243,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-06.md",
+          "destination": "lambda-calculus/module-06.md",
+          "sha256": "3d4872a550f849a3f85804b6f6cc2307df2ae978d643dc598000b56944274a22",
+          "bytes": 27440,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-07.md",
+          "destination": "lambda-calculus/module-07.md",
+          "sha256": "87bdb46bcfe6e1dc7cf953bb43c0101bffd884d1cd7bf86d3dcc54486c92548a",
+          "bytes": 23469,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-08.md",
+          "destination": "lambda-calculus/module-08.md",
+          "sha256": "6db49e632aca7bcf094f345f8c434c2b8ef8d1a5541e62149ab12a189d2a198e",
+          "bytes": 19449,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-09.md",
+          "destination": "lambda-calculus/module-09.md",
+          "sha256": "43e2796db0258a4880091c76ea0dcefb3189f01528ca4ac4d2f0bc5e447f5962",
+          "bytes": 25195,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-10.md",
+          "destination": "lambda-calculus/module-10.md",
+          "sha256": "82168fbc5c2d019777364aac172bf4cc59a168750873bd6c5a077e2b89a5735c",
+          "bytes": 25542,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-11.md",
+          "destination": "lambda-calculus/module-11.md",
+          "sha256": "c9728c98123dd099a250ac42b59680034215a4d5bf687dfb13ada1b680ed0b51",
+          "bytes": 18901,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-12.md",
+          "destination": "lambda-calculus/module-12.md",
+          "sha256": "ae376f84af8011284a77cbc547588db5c26c969d091fd4363d9f23dc58036174",
+          "bytes": 18528,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-13.md",
+          "destination": "lambda-calculus/module-13.md",
+          "sha256": "327e7dc6ae546bf2b2a32f8729923debee1c804881bd81572ba0e535810e104f",
+          "bytes": 14877,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-14.md",
+          "destination": "lambda-calculus/module-14.md",
+          "sha256": "40e047fdb4a50fadf0eff9e406cb424bddeae88dfd68a1026f2bfd8ddf22d874",
+          "bytes": 22569,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-15.md",
+          "destination": "lambda-calculus/module-15.md",
+          "sha256": "b46b3fa63c6c0213a0a0eaa7ba2da81ec4ff82d4677f9a165a4849352e0f112d",
+          "bytes": 16382,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-16.md",
+          "destination": "lambda-calculus/module-16.md",
+          "sha256": "139bbbd432e42ddc140ed493d203c30aab17016e55a6688ac8fc154a0c6dace9",
+          "bytes": 23864,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-17.md",
+          "destination": "lambda-calculus/module-17.md",
+          "sha256": "cbda4ea3d869274888d3c739027d9cf5f2c0acdc5914f1c62cf378f0aa13e146",
+          "bytes": 12475,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-18.md",
+          "destination": "lambda-calculus/module-18.md",
+          "sha256": "e06502cdb173ded6811d7efd7515dfa8f79cda567ff15c39513969cbb5f8d5ef",
+          "bytes": 17714,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-19.md",
+          "destination": "lambda-calculus/module-19.md",
+          "sha256": "980a40ffb63188f125a1bb42ffb26805c1d86819426807f821fa9f7793b623ee",
+          "bytes": 19718,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-20.md",
+          "destination": "lambda-calculus/module-20.md",
+          "sha256": "5f8c0ffb470cba9cb28ff780e053551c180712c3ecda966945e88eae4e35dec9",
+          "bytes": 12135,
+          "mode": "100755"
+        }
+      ]
+    }
+  ],
+  "current_source_files": [
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/ToC.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/outline.md",
+      "sha256": "478dea3eb4cb65eff601bad083f1d2187e4eb33f6d62517ffd63131181955328",
+      "bytes": 9777,
+      "mode": "100755",
+      "sha256_after": "478dea3eb4cb65eff601bad083f1d2187e4eb33f6d62517ffd63131181955328",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-01.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-01.md",
+      "sha256": "5c4b4375a15bfcde53d9ea78014f3a070df7e1c15ab40fe79c005ccff316b99e",
+      "bytes": 18320,
+      "mode": "100755",
+      "sha256_after": "5c4b4375a15bfcde53d9ea78014f3a070df7e1c15ab40fe79c005ccff316b99e",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-02.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-02.md",
+      "sha256": "97cfcf368f9d7265ff8ca44e93818384478c9bdbc54f1abed7eb7d4184c56418",
+      "bytes": 25667,
+      "mode": "100755",
+      "sha256_after": "97cfcf368f9d7265ff8ca44e93818384478c9bdbc54f1abed7eb7d4184c56418",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-03.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-03.md",
+      "sha256": "291e8b24d3611767270a27e3de3cd454e88418d01209a3347bf0a602a95669f3",
+      "bytes": 25673,
+      "mode": "100755",
+      "sha256_after": "291e8b24d3611767270a27e3de3cd454e88418d01209a3347bf0a602a95669f3",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-04.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-04.md",
+      "sha256": "2e2ba8a83714c03c86ec4f5acfcd6f5de14e0a35da3a6405da63822e2687554d",
+      "bytes": 23566,
+      "mode": "100755",
+      "sha256_after": "2e2ba8a83714c03c86ec4f5acfcd6f5de14e0a35da3a6405da63822e2687554d",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-05.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-05.md",
+      "sha256": "8d284f484f59417c0024b5d65ed15192a26e6413a8aef3413e2a83cb3d724048",
+      "bytes": 28243,
+      "mode": "100755",
+      "sha256_after": "8d284f484f59417c0024b5d65ed15192a26e6413a8aef3413e2a83cb3d724048",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-06.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-06.md",
+      "sha256": "3d4872a550f849a3f85804b6f6cc2307df2ae978d643dc598000b56944274a22",
+      "bytes": 27440,
+      "mode": "100755",
+      "sha256_after": "3d4872a550f849a3f85804b6f6cc2307df2ae978d643dc598000b56944274a22",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-07.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-07.md",
+      "sha256": "87bdb46bcfe6e1dc7cf953bb43c0101bffd884d1cd7bf86d3dcc54486c92548a",
+      "bytes": 23469,
+      "mode": "100755",
+      "sha256_after": "87bdb46bcfe6e1dc7cf953bb43c0101bffd884d1cd7bf86d3dcc54486c92548a",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-08.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-08.md",
+      "sha256": "6db49e632aca7bcf094f345f8c434c2b8ef8d1a5541e62149ab12a189d2a198e",
+      "bytes": 19449,
+      "mode": "100755",
+      "sha256_after": "6db49e632aca7bcf094f345f8c434c2b8ef8d1a5541e62149ab12a189d2a198e",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-09.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-09.md",
+      "sha256": "43e2796db0258a4880091c76ea0dcefb3189f01528ca4ac4d2f0bc5e447f5962",
+      "bytes": 25195,
+      "mode": "100755",
+      "sha256_after": "43e2796db0258a4880091c76ea0dcefb3189f01528ca4ac4d2f0bc5e447f5962",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/module-10.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-10.md",
+      "sha256": "82168fbc5c2d019777364aac172bf4cc59a168750873bd6c5a077e2b89a5735c",
+      "bytes": 25542,
+      "mode": "100755",
+      "sha256_after": "82168fbc5c2d019777364aac172bf4cc59a168750873bd6c5a077e2b89a5735c",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-11.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-11.md",
+      "sha256": "c9728c98123dd099a250ac42b59680034215a4d5bf687dfb13ada1b680ed0b51",
+      "bytes": 18901,
+      "mode": "100755",
+      "sha256_after": "c9728c98123dd099a250ac42b59680034215a4d5bf687dfb13ada1b680ed0b51",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-12.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-12.md",
+      "sha256": "ae376f84af8011284a77cbc547588db5c26c969d091fd4363d9f23dc58036174",
+      "bytes": 18528,
+      "mode": "100755",
+      "sha256_after": "ae376f84af8011284a77cbc547588db5c26c969d091fd4363d9f23dc58036174",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-13.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-13.md",
+      "sha256": "327e7dc6ae546bf2b2a32f8729923debee1c804881bd81572ba0e535810e104f",
+      "bytes": 14877,
+      "mode": "100755",
+      "sha256_after": "327e7dc6ae546bf2b2a32f8729923debee1c804881bd81572ba0e535810e104f",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-14.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-14.md",
+      "sha256": "40e047fdb4a50fadf0eff9e406cb424bddeae88dfd68a1026f2bfd8ddf22d874",
+      "bytes": 22569,
+      "mode": "100755",
+      "sha256_after": "40e047fdb4a50fadf0eff9e406cb424bddeae88dfd68a1026f2bfd8ddf22d874",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-15.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-15.md",
+      "sha256": "b46b3fa63c6c0213a0a0eaa7ba2da81ec4ff82d4677f9a165a4849352e0f112d",
+      "bytes": 16382,
+      "mode": "100755",
+      "sha256_after": "b46b3fa63c6c0213a0a0eaa7ba2da81ec4ff82d4677f9a165a4849352e0f112d",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-16.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-16.md",
+      "sha256": "139bbbd432e42ddc140ed493d203c30aab17016e55a6688ac8fc154a0c6dace9",
+      "bytes": 23864,
+      "mode": "100755",
+      "sha256_after": "139bbbd432e42ddc140ed493d203c30aab17016e55a6688ac8fc154a0c6dace9",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-17.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-17.md",
+      "sha256": "cbda4ea3d869274888d3c739027d9cf5f2c0acdc5914f1c62cf378f0aa13e146",
+      "bytes": 12475,
+      "mode": "100755",
+      "sha256_after": "cbda4ea3d869274888d3c739027d9cf5f2c0acdc5914f1c62cf378f0aa13e146",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-18.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-18.md",
+      "sha256": "e06502cdb173ded6811d7efd7515dfa8f79cda567ff15c39513969cbb5f8d5ef",
+      "bytes": 17714,
+      "mode": "100755",
+      "sha256_after": "e06502cdb173ded6811d7efd7515dfa8f79cda567ff15c39513969cbb5f8d5ef",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-19.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-19.md",
+      "sha256": "980a40ffb63188f125a1bb42ffb26805c1d86819426807f821fa9f7793b623ee",
+      "bytes": 19718,
+      "mode": "100755",
+      "sha256_after": "980a40ffb63188f125a1bb42ffb26805c1d86819426807f821fa9f7793b623ee",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming-theories/-theories-[\u03bb-calculus]/TBR/module-20.md",
+      "destination": "programs-planned/programming-language-theory/lambda-calculus/module-20.md",
+      "sha256": "5f8c0ffb470cba9cb28ff780e053551c180712c3ecda966945e88eae4e35dec9",
+      "bytes": 12135,
+      "mode": "100755",
+      "sha256_after": "5f8c0ffb470cba9cb28ff780e053551c180712c3ecda966945e88eae4e35dec9",
+      "transformation": null
+    }
+  ],
+  "duplicate_source_aliases": []
+}
