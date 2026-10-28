@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-066",
+  "chapter_digest": "a32c0899862d23e21a3e46b781b1e7247129894d3dcba73a61963ad76f526e07",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked Hoare's ACM DOI record, Floyd-Rivest's author/DBLP/ACM records, Blum-Floyd-Pratt-Rivest-Tarjan's publisher record, the official NIST Fisher-Yates entry, Lemire's ACM record, Knuth bibliographic data, Devroye's author-hosted book, and the Cambridge Mitzenmacher-Upfal record. No current library-default, generator-quality, or benchmark-superiority claim is made."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked zero-based rank, three-way partitions, active sizes, expectation, geometric series, permutation/subset probabilities, inclusion probabilities, modulo decomposition, rejection limits, and balanced GitHub math delimiters."],
+      "notes": "Rank and sample-size uses of k are explicitly disambiguated, and all probability denominators have declared domains."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Recomputed Quickselect traces and triangular work, byte-to-six modulo counts, ordered and unordered sample probabilities, with-replacement inclusion, stratum weights, shard inclusion rates, fallback ratios, and all exercise arithmetic.", "Exhaustively checked 21,324 sequence/rank cases, 16,072 partial-shuffle draw paths, and 2,079 source-range/target-bound rejection mappings."],
+      "notes": "Empty and full samples, all-equal values, duplicate ranks, bound one, and exactly divisible source ranges were included."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Re-derived three-way rank transitions and expected linear work from constant-probability geometric shrink events.", "Re-derived ordered-prefix and uniform-subset probabilities, modulo-bias preimage counts, rejection uniformity, and with-replacement inclusion probability."],
+      "notes": "Expected cost, worst-case cost, exact output correctness, and distributional uniformity remain separate claims."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Checked empty input, invalid ranks, duplicate blocks, all-equal data, smallest/largest pivots, sorted adversarial paths, NaN/comparator failures, zero/full sample sizes, and source exhaustion.", "Checked modulo bias, repeated rejection, zero/negative/NaN weights, finite-priority collisions, missing shards, unit mismatch, frame drift, adaptive inputs, seed exposure, stream overlap, cancellation, and value-dependent stopping."],
+      "notes": "Reservoir sampling and randomized incremental construction remain within their successor modules rather than being duplicated here."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Checked partition multiset conservation, rank adjustment, strict active-size reduction, sample-prefix distinctness, suffix conservation, bounded-draw ranges, and exact output recomputation.", "Checked sampling-frame binding, inclusion-probability records, generator/version/transcript identity, fallback semantics, deterministic parallel stream derivation, and privacy-aware evidence retention."],
+      "notes": "The executable algorithms consume an injected bounded-draw transcript and never consult their expected outputs."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed the fixed-input and uniform-pivot premises, middle-half probability, expected waiting time, geometric work sum, and quadratic bad path.", "Reviewed Fisher-Yates induction/product proof, unordered multiplicity, modulo/rejection proof, sampling-design distinctions, and limits of statistical testing."],
+      "notes": "Randomness is not claimed to provide deterministic latency, representative frames, independence, or cryptographic security without additional premises."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Audited uniform, independent, expected, worst case, exact, representative, pseudorandom, unpredictable, secure, statistical, exhaustive, and empirical language.", "Separated universal derivations, cited primary results, deterministic transcript tests, exhaustive finite mapping, generator analysis, and production policy."],
+      "notes": "Passing frequency tests is explicitly not promoted into a proof of generator or mapping correctness."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/ALGE-066/report.json", "The CPython 3.14.4 snippet exited zero with exact duplicate-aware selection, partial-shuffle, and invalid-draw outputs on macOS 13.7.8 x86_64.", "Independent exhaustive tests covered 21,324 selection cases, 16,072 shuffle paths, and 2,079 rejection-mapping parameter pairs."],
+      "notes": "Finite enumeration validates the tested mappings but does not replace the expectation proof or establish the concrete generator's statistical or security properties."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed order-statistic semantics, randomized Quickselect, worst-case fallback, partial Fisher-Yates, bounded integers, sampling designs, frame representativeness, generator contracts, adversaries, and evidence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed mutation ownership, duplicates, comparator defects, work limits, fallback, exact bounded draws, distributed merging, stream derivation, cancellation, privacy, versioning, and replay."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter derives both expected selection cost and exact sampling distributions, separates randomness layers and evidence strengths, includes ten distinct mathematical and production examples, and ends with five progressive exercises and complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external academic, statistical, security, privacy, distributed-systems, performance, or operational review is claimed. Results remain conditional on rank and comparator semantics, frame completeness, abstract draw uniformity, generator and stream assumptions, stopping policy, arithmetic, and recorded environment."
+}

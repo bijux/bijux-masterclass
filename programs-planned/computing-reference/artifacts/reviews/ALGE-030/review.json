@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-030",
+  "chapter_digest": "585989f84b3cd55be311642b45b09d857e9e589ee9208465a2b2bfbb8e37a9fa",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the current Pearson records for Levitin and Kleinberg-Tardos; the official MIT Press fourth-edition CLRS record; Jeff Erickson's author-hosted textbook; Springer records for Skiena and Muller-Hannemann-Schirra; Cambridge University Press records for McGeoch and Motwani-Raghavan; primary DOI or publisher records for Dijkstra, Karp, and Horowitz-Sahni; and the official CS2023 Algorithmic Foundations scope. Historical theorems, textbook synthesis, current curricular claims, bounded reproduction, and original engineering guidance remain distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked the problem, workload, requirement, precondition, guarantee, evidence, admissible-set, cost-vector, budget, encoded-size, output, and policy symbols for declared and consistent meanings.",
+        "Checked every inline and display expression; Markdown validation covers delimiters, commands, subscripts, equivalence, implication, quantifiers, minima, sums, logarithms, floors, asymptotic notation, and units.",
+        "Separated semantic guarantees from performance estimates, numeric magnitude from encoded bit length, peak space from payload bytes, and I/O and communication from generic running time."
+      ],
+      "notes": "The revised cost vector uses distinct I/O and communication symbols, and target-indexed DP bounds explicitly count T+1 table positions."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the executable's four strategy choices, work estimates 64, 180, 64, and 4,194,304, witness sums, and explicit incomplete outcome.",
+        "Compared bounded subset-sum methods with independent oracles across 137,774 exhaustive cases, 7,680 nonnegative target-DP cases, 10,731 signed meet-in-the-middle cases, and 12 insufficient-budget boundaries.",
+        "Exhausted 1,024 interval families and 3,280 key streams for the external-sort minimum-offset transfer, and replayed the weighted-interval, insufficient-state, unsafe-bound-rounding, and hard-filter examples.",
+        "Recomputed 18 named arithmetic quantities: both subset-sum regimes, both index break-even examples, meet-in-the-middle byte and MiB totals, output cross product and TiB conversion, exercise state and byte totals, and the 16,000,000,000-byte external input."
+      ],
+      "notes": "The independent harness records 160,501 bounded oracle or boundary checks plus the four documented dispatcher profiles; all strict inequality thresholds were checked on both sides."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived admissibility as established preconditions plus a guarantee refining the required contract, followed by hard filtering before ranking.",
+        "Re-derived earliest-finish exchange for unweighted intervals and confirmed why weights invalidate that exchange; re-derived history equivalence as the DP state-sufficiency obligation.",
+        "Re-derived backtracking prune safety, minimization lower-bound direction, meet-in-the-middle factor-and-join completeness, and transform-run-lift correspondence.",
+        "Re-derived the target-DP versus meet-in-the-middle regime comparison, output-size lower bound, preprocessing break-even inequality, dominance relation, and resource-feasible Pareto filtering."
+      ],
+      "notes": "Every derivation is conditional on its stated semantic and structural premises; the chapter does not infer universal superiority from a paradigm label."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked empty and singleton inputs, duplicates, zero values, negative targets, signed and nonnegative values, exact budget equality, one-below-budget failure, and witness replay.",
+        "Checked identical interval endpoints, compatible boundaries, weighted counterexamples, insufficient DP keys, equality-sensitive branch-and-bound pruning, weak bounds, and unsafe upward rounding.",
+        "Checked duplicate-join output explosion, all-witness versus count-only contracts, missing selector features, stale features, workload drift, hostile input order, memory ceilings, and resource failure.",
+        "Checked the external-sort transfer on empty, all-equal, all-distinct, reordered, and run-boundary-equivalent key streams, plus corrupt runs, disk exhaustion, cancellation, restart, and incomplete publication semantics."
+      ],
+      "notes": "When proof, feature, memory, output, or completion evidence is missing, the policy rejects the candidate or returns incomplete rather than manufacturing an exact absent or complete result."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced contract, encoded size, baseline, structure, candidate certificates, admissibility, cost vectors, regime boundaries, implementation, oracle, experiment, hybrid boundary, failure policy, telemetry, rollout, and reevaluation through the sixteen-step worksheet.",
+        "Checked that every complete dispatcher branch is exact under its gate, every witness replays to the target, and insufficient budget never becomes an absent claim.",
+        "Checked greedy interval cardinality against exhaustive independent optima for every subset of a ten-interval universe.",
+        "Checked signed meet-in-the-middle and nonnegative target DP against mask-order exhaustive oracles throughout their bounded domains.",
+        "Checked transform-sort-group results against independent map minima and checked publication binds input digest, schema, comparator, implementation, coverage, counts, checksums, and validator evidence."
+      ],
+      "notes": "The policy invariant is semantic admissibility first, multidimensional resource feasibility second, and evidence-backed ranking only among remaining candidates."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the admissible-set theorem by dispatcher case analysis and the implementation-refinement and hybrid-contract assumptions needed for its conclusion.",
+        "Reviewed the certificate matrix for exhaustive, decrease, divide, greedy, dynamic programming, backtracking, branch and bound, meet-in-the-middle, transform, randomized, and approximate methods.",
+        "Reviewed greedy exchange and counterexample scope, DP state equivalence and recurrence coverage, search-tree coverage and prune implications, and conservative bound direction.",
+        "Reviewed exact summary joins, transformation preconditions and lifting, reduction direction, randomized guarantee classes, amplification premises, and output lower bounds.",
+        "Reviewed hard constraints, dominance, regime algebra, feature acquisition, hybrid transitions, failure status, workload drift, experiment design, and atomic publication."
+      ],
+      "notes": "The decision table routes investigation but is never presented as proof; each admitted candidate still requires its paradigm-specific certificate."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished polynomial from pseudo-polynomial bounds and numeric magnitude from encoded length.",
+        "Retained expected, amortized, randomized, approximation, anytime, output-sensitive, and incomplete qualifiers wherever used.",
+        "Distinguished exact found or absent status from incomplete status and candidate generation from exact verification.",
+        "Distinguished general proof, asymptotic model, finite oracle evidence, measured constants, production telemetry, and local regime conclusions."
+      ],
+      "notes": "No finite experiment, benchmark winner, learned score, rounded estimate, or familiar paradigm name is labeled as a universal correctness certificate."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-030/report.json records isolated CPython 3.14.4 execution, zero exit status, empty stderr, and exact expected and actual output.",
+        "The executable establishes four finite evidence-gated subset-sum profiles, including exact witnesses and an explicit incomplete budget result.",
+        "A separate independent run records 160,501 bounded subset-sum, interval, budget, and external-sort checks plus 18 named arithmetic recomputations and four documented dispatch profiles.",
+        "Production guidance requires feature-version, selected-candidate, verifier, counterfactual sample, full status, resource, fallback, drift, failure, and publication telemetry."
+      ],
+      "notes": "Local bounded execution does not establish universal paradigm superiority, production constants, arbitrary workload distributions, external-system behavior, or an unproved structural premise."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the progression from problem and output contracts through encoded size, structural certificates, paradigm-specific obligations, admissibility, multidimensional costs, algebraic regimes, counterexample search, reductions, hybrids, runtime dispatch, experiments, operations, and reevaluation."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed identity and tie semantics, numeric width, memory and scratch peaks, I/O and communication, feature acquisition cost, conservative pruning arithmetic, versioned evidence, censored runs, fallback, cancellation, restart, workload drift, shadowing, rollback, and atomic publication. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified a first-principles selection model, a proof-obligation matrix, formal derivations, a reusable sixteen-step worksheet, one passing executable, exactly ten varied worked examples, and five exercises progressing from paradigm discrimination and arithmetic through unsafe learned dispatch to an unfamiliar external-memory transfer, all with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

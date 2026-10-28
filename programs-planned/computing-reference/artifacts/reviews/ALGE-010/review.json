@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-010",
+  "chapter_digest": "77251170e309d7a4f48b7ee59c36be82aed5bc705aed4810a3f8dbb88dd4d19c",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the official MIT Press CLRS fourth-edition record, the cited primary ACM papers and DOI records on managed-runtime, hierarchical, biased, and parallel-system benchmarking, ACM's current Artifact Review and Badging Version 1.1 policy, and the current official CS2023 Algorithmic Foundations scope. Raj Jain's established performance-analysis text was checked as the foundational book citation. Current claims are limited to checked publication/policy metadata and the distinctions actually stated by those sources."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked every speedup, reduction, paired-difference, sample-variance, and log-log expression for defined symbols, balanced delimiters, and consistent lower-is-better direction.",
+        "Confirmed that milliseconds, percentages, counts, ratios, and logarithms are labeled and never combined as unlike additive units.",
+        "The strict Markdown mathematics audit reports no normalization changes, issues, or diagnostics."
+      ],
+      "notes": "The chapter declares ratio-of-means speedup explicitly and warns that other ratio aggregations answer different questions."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the five synthetic pairs: baseline mean 102, candidate mean 83, paired differences 21, 18, 17, 18, and 21 with mean 19, speedup 102/83 approximately 1.228916, and time reduction approximately 18.6275 percent.",
+        "Recomputed Exercise 2: means 115 and 97.5, differences 30, 5, 10, and 25 with mean 17.5, speedup approximately 1.179487, and time reduction approximately 15.2174 percent.",
+        "Checked the half-time example: baseline/candidate speedup is 2 and reduction relative to baseline is 50 percent."
+      ],
+      "notes": "Rounded displayed values agree with the exact calculations and preserve the stated ratio direction."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived mean paired difference, ratio-of-means speedup, and baseline-relative percent reduction from their definitions.",
+        "Checked the sample-variance denominator m-1 under the stated m>1 premise.",
+        "Re-derived log T(n)=log c+alpha log n from T(n)=c n^alpha for positive c, n, and T and confirmed it is used only as a finite-regime diagnostic."
+      ],
+      "notes": "No descriptive statistic is promoted into a correctness proof, asymptotic proof, causal effect, or production forecast."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked empty, singleton, boundary, duplicate, malformed, absent-target, adversarial-input, timeout, crash, incorrect-output, and resource-exhaustion treatment.",
+        "Checked cold start, non-stabilizing warm-up, one-shot versus reused setup, timer resolution, thermal drift, correlated iterations, fixed seeds, compiler elimination, and treatment-order confounding.",
+        "Checked sparse tail evidence, including the warning that 100 requests leave a nominal p99 at an extreme order statistic with almost no tail resolution."
+      ],
+      "notes": "Failures and outliers remain part of the evidence unless a predeclared invalidity rule applies; favorable-case deletion is explicitly rejected."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced contract, analytical claim, model-to-code correspondence, controlled observation, and bounded decision as separate links throughout the chapter.",
+        "Checked that both treatments retain the same semantic contract, input instances, lifecycle accounting, toolchain treatment, and failure reporting before cost comparison.",
+        "Checked that experimental units remain distinct from nested inner iterations and that every conclusion retains workload, environment, statistic, and limitation scope."
+      ],
+      "notes": "The governing invariant is evidential traceability: every conclusion must point to the evidence type capable of supporting it."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the claim that a finite valid counterexample can refute a universal claim while a finite timing sweep cannot prove an eventual asymptotic bound.",
+        "Reviewed the distinction between operation-count derivation, counter correspondence, physical timing, causal attribution, and deployment judgment.",
+        "Checked that empirical disagreement rejects a calibrated finite model or mapping before it is said to reject an asymptotic theorem."
+      ],
+      "notes": "The chapter teaches evaluation structure rather than presenting an unqualified statistical or performance theorem."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished universal proof, exact arithmetic, model prediction, executable observation, controlled experiment, causal inference, and operational evidence.",
+        "Labeled log-log slopes and normalized curves as diagnostics rather than proofs of Big-O or Theta behavior.",
+        "Kept approximate-algorithm quality thresholds, equivalence margins, uncertainty procedures, and artifact badges conditional on their declared assumptions or review process."
+      ],
+      "notes": "No local self-check is described as independent reproduction or external validation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-010/report.json records CPython 3.14.4 on macOS 13.7.8, the isolated command, zero exit status, empty stderr, and exact expected/actual output.",
+        "The executable reproduced the five-pair means, medians, mean difference, speedup, and percent reduction exactly as declared."
+      ],
+      "notes": "The observations are explicitly invented arithmetic inputs; the run is not labeled a benchmark, causal study, hardware characterization, or production result."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the progression from claim ledger and correctness gate through model predictions, treatment design, experimental hierarchy, warm-up, randomization, benchmark integrity, input and metric choice, uncertainty, disagreement diagnosis, artifacts, and bounded decisions. The module combines prior analytical foundations without taking ownership away from testing, reliability, operating-systems, architecture, or concurrency courses."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed fair baselines, output consumption, compiler/runtime adaptation, setup accounting, process-level replication, counter mapping, raw-data retention, timeouts, workload drift, resource trade-offs, canaries, monitoring, rollback, and reproducibility metadata. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles definitions, a sixteen-part evaluation worksheet, explicit formulas with interpretation limits, one reproducible arithmetic ledger, exactly ten distinct worked examples, and five exercises progressing from evidence classification and computation through benchmark redesign and an unfamiliar probabilistic-service decision, each with a complete answer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable, conceptual, practitioner, and pedagogical review only; no external algorithms, statistics, performance-engineering, systems, academic, or practitioner review is claimed."
+}

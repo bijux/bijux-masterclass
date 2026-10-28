@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "module_id": "DSE-035",
+  "chapter_digest": "6be41af62142839e5b5dd95a8145658b8464b16e6fcff7112a35bd77c9eb4f60",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed the Sleator-Tarjan primary paper and author page, current/graduate CMU lecture sources, current Boost.Intrusive documentation/source, current GCC policy-based implementation, current ISO C++ associative requirements, and the July 2026 Chmel et al. primary preprint. All ten final destinations returned HTTP 200. Classical proofs, production implementations, standard container contracts, and the new non-peer-reviewed competitiveness result are scoped separately."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked x/parent/grandparent orientation, weights, subtree weight, logarithmic rank, potential, actual/amortized cost, access frequency, working-set number, rank distance, and OPT terminology.",
+        "Checked actual, amortized, expected, worst-case, competitive, and empirical claims remain distinct."
+      ],
+      "notes": "Log base and unit-cost choices can change constants; the chapter states the conventional base-two form and scopes constant sensitivity."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Reproduced insertion of 5,3,7,2,4,6,8 yielding sorted keys 2 through 8, root 8, height six, and fifteen rotations.",
+        "Reproduced accesses to 2,7,6 with roots matching each key and rotation deltas four, one, and three.",
+        "Reproduced repeated access to root 6 with zero rotations and miss 9 splaying last-visited 8 with two rotations.",
+        "Reproduced deletion of 5 yielding keys 2,3,4,6,7,8, root 4, height three, exact size six, and valid invariants."
+      ],
+      "notes": "Trace counts are finite implementation observations, not Access-Lemma constants or workload estimates."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified zig, same-direction zig-zig, and opposite-direction zig-zag preserve named in-order regions and exact reachability.",
+        "Verified amortized-cost summation telescopes potential and unit weights make the Access-Lemma rank difference at most log2 n.",
+        "Reviewed local-rank proof structure: only x,parent,grandparent ranks change, logarithmic concavity bounds each double step, and x rank increases telescope.",
+        "Verified delete/join key-domain proof and distinguished basic Access-Lemma consequences from stronger specialized locality/sequential/competitive results."
+      ],
+      "notes": "The chapter does not independently reprove dynamic finger, sequential access, or the 2026 competitive-ratio theorem."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/singleton/root access, all zig orientations, linear chains, repeat hits, misses below/inside/above range, duplicate update, absent/root/internal delete, and empty/illegal join boundaries.",
+        "Reviewed top-down versus bottom-up, full versus conditional splay, comparator/value/allocation/augmentation failure, implicit/lazy tags, intrusive lifetime, and persistent sharing.",
+        "Reviewed const/read-as-write behavior, shared/exclusive/fine-grained/optimistic access, root publication, reclamation, hostile serialized chains, recursion limits, operation budgets, and adversarial sequences."
+      ],
+      "notes": "A chain can be structurally valid; tail protection is policy rather than an invariant repair."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Independently checked strict global BST bounds, acyclic unique reachability, exact parent links, cached subtree sizes, total count, and sorted associations.",
+        "Checked every recorded hit places its key at root, repeat access performs no rotation, miss places last-visited boundary at root, and delete physically removes only the requested association."
+      ],
+      "notes": "No height/color/priority invariant is imposed; a tall valid shape is intentionally observed."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed rotation region/parent/root/middle-subtree preservation and demoted-before-promoted augmentation.",
+        "Reviewed Access-Lemma assumptions, local case accounting, telescoping, unit/custom weights, and the distinction between per-operation actual and sequence amortized cost.",
+        "Reviewed operation reductions for hit/miss/update/insert/delete/split/join and their identity/failure preconditions.",
+        "Reviewed static/locality theorem scope and current dynamic-optimality status, including the 2026 factor, additive term, sequence regime, model, and preprint status."
+      ],
+      "notes": "Top-down, semi-splay, link-cut, persistent, fine-grained concurrent, and implementation-specific intrusive variants retain separate proofs."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The Access Lemma is derived at proof-structure level with assumptions/constants scoped; stronger locality theorems are not claimed as immediate corollaries where separate analysis is required.",
+        "Dynamic optimality remains labeled conjectural; the July 2026 result is labeled a preprint with sublogarithmic rather than constant competitive factor and additive/model qualifications.",
+        "Boost/GCC implementation behavior, ISO observable requirements, abstract BST cost, and hardware benchmark behavior are separated."
+      ],
+      "notes": "The executable Python map is not presented as Boost, GCC, link-cut, top-down, persistent, or concurrent code."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library Python trace passed exact sixteen-line stdout, empty stderr, and zero exit status under the recorded toolchain.",
+        "It emits evidence=finite_splay_access_delete_trace and verifies insertion, three hits, repeat locality, last-visited miss, physical deletion/join, order, roots, height, sizes, parents, and reachability.",
+        "All ten final source destinations and repository-local links were checked directly."
+      ],
+      "notes": "No potential ledger across all shapes, distribution/locality theorem, competitive ratio, generic failure/lifetime path, iterator contract, concurrent history, cache/memory profile, or production benchmark was empirically evaluated."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed representation without height balance, splay cases, potential analysis, standard operations, access-sensitive theorem hierarchy, current dynamic-optimality progress, implementation variants, augmentation, identity/failure, constness/concurrency, storage/security, testing, and alternatives."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed explicit hit/miss/update mutation, live-ancestry rotation orientation, root/parent/middle reconnect, demoted-first augmentation, join-domain enforcement, typed failure and tail budgets, iterator matrix, const API, exclusive/optimistic synchronization, publication/reclamation, bounded logical decoding, telemetry, and workload-tail benchmarking."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Builds from ordinary BST validity to exact splay cases and amortized proof, distinguishes the theorem hierarchy/current research status, includes a reproduced access/miss/delete trace, fourteen misconceptions, ten varied examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary-source, mathematical, executable-snippet, conceptual, practitioner, and pedagogical evidence only; no external academic, Sleator-Tarjan, CMU, Boost, GCC, ISO, Chmel-et-al., security, performance, reliability, operations, architecture, or independent practitioner review is claimed. The chapter and finite trace prove neither the Access Lemma for all states, stronger locality/sequential theorems, constant-factor dynamic optimality, correctness of the July 2026 preprint, generic comparator/exception/lifetime safety, top-down/implicit/link-cut/persistent correctness, stable iterators, thread safety, linearizability, safe reclamation, production memory/cache/tail behavior, workload-independent superiority, certification, nor deployment fitness."
+}

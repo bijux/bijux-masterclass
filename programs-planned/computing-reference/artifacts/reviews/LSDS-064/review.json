@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "LSDS-064",
+  "chapter_digest": "de558afdca58ebf763799b6dd24342f34fb9e6b095a1ecd91be86b2effae42bd",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 13,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked current Trino, Spark, PostgreSQL, DataFusion, DuckDB, and Calcite join/planner documentation plus primary F1 Query, Presto, and MapReduce sources. All thirteen cited URLs returned HTTP 200. Product behavior is attributed and algorithmic guidance states semantic, statistical, resource, and recovery assumptions."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed input bags R/S, join keys, residual predicate, partitions, hash version, partition count, and owner function.",
+        "Reviewed per-key multiplicities, build bytes, hash amplification, destinations, and worker memory.",
+        "Checked union, Cartesian multiplicity, modular routing, positive counts, estimates, and units."
+      ],
+      "notes": "Ordinary equality, null-safe equality, ordering comparison, and residual qualification remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the Python 3 fixture and reproduced four duplicate-key matches and zero ordinary-equality null matches.",
+        "Recomputed the compact example as two build rows times two probe rows for key 1, yielding four pairs.",
+        "Recomputed Exercise 1 as 15 ordinary-equality pairs and 39 null-safe pairs."
+      ],
+      "notes": "Counts are before residual filtering and are explicitly scoped to bag semantics."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified compatible unique partition routing makes the union of local equality joins complete without cross-partition duplicates.",
+        "Verified equal-key runs contribute m_R(a)*m_S(a) candidate pairs under bag semantics.",
+        "Verified a Bloom filter with no false negatives can prune definite absence but cannot prove positive join membership."
+      ],
+      "notes": "Partition correctness, local join semantics, balance, memory fit, and recovery are separate claims."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty inputs, duplicates, null/composite keys, outer unmatched rows, residual predicates, semi/anti/null-aware forms, and uniqueness claims.",
+        "Reviewed oversized broadcast, decoded amplification, hot keys, inherent large output, recursive spill nonconvergence, full storage, and comparator mismatch.",
+        "Reviewed stale statistics, late filters, adaptive replacement, worker loss, duplicate attempts, corrupt manifests, and mixed protocol/hash epochs."
+      ],
+      "notes": "Semantic, distribution, resource, skew, recovery, and adaptive failures each have explicit handling."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced logical join semantics through strategy, distribution/order, local algorithm, spill, task attempt, exchange, and selected output.",
+        "Checked duplicate/null/outer/semi/anti behavior survives partitioning, recursion, heavy-key handling, retries, and adaptation.",
+        "Checked memory, network, spill, dynamic filter, tenant, snapshot, security, and commit boundaries."
+      ],
+      "notes": "Task success and downstream-visible selected output remain separate states."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the ten-step audit from semantics and alternatives through property proofs, bounded execution, attempts, skew, adaptation, and validation.",
+        "Checked partitioned-join identity premises: compatible routing, exact assignment, full local multiplicity, and selected attempts.",
+        "Checked Bloom pruning argument and why it cannot replace exact semi/anti join evaluation."
+      ],
+      "notes": "Conditional correctness arguments do not overclaim strategy optimality or production performance."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited inner, outer, semi, anti, ordinary equality, null-safe equality, residual, build, probe, hash, merge, and grace terminology.",
+        "Confirmed broadcast, repartition, co-located, singleton, and indexed strategies are not conflated with local algorithms.",
+        "Confirmed sorted, compatibly ordered, compatibly partitioned, balanced, in-memory, committed, and visible remain distinct."
+      ],
+      "notes": "Every result claim states its join and null/multiplicity scope."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed estimated/actual rows/bytes, distinct/null/heavy keys, output, build memory, buckets, sort runs, network, spill, blocked time, filters, retries, and tail.",
+        "Confirmed no universal broadcast threshold, amplification, partition count, spill fan-out, Bloom size, skew threshold, or adaptive trigger is prescribed.",
+        "Confirmed production acceptance requires differential/metamorphic tests, adversarial data, failure injection, canarying, safety freezes, and epoch-aware rollback."
+      ],
+      "notes": "The fixture demonstrates duplicate/null semantics only and is not a distributed cost benchmark."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed join semantics, duplicate/null/outer handling, partition proofs, broadcast/repartition/co-location/nested strategies, hash memory, grace spill, merge runs/order, costs, orientation, dynamic filters, skew, heavy keys, adaptation, failure, observability, and validation."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable join/property contracts, memory amplification guards, aligned spill manifests, recursive-skew escape, comparator compatibility, dynamic-filter identity, selected attempts, adaptive epochs, causal metrics, fault injection, canary, and rollback. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from SQL semantics to distributed property and resource choices. Ten examples and five answered exercises cover multiplicity, nulls, outer completeness, broadcast, repartition, grace skew, merge compatibility, Bloom filters, adaptation, executable hash joining, full outer design, cost comparison, spill, and validation."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external Trino/Spark/PostgreSQL/DataFusion/DuckDB/Calcite maintainer, F1/Presto/MapReduce researcher, query-engine operator, database/distributed-systems/platform/SRE/performance/security specialist, affected user, governance or accessibility specialist, or certification review is claimed."
+}

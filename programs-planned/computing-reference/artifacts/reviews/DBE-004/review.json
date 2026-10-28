@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-004",
+  "chapter_digest": "d0b714559cec80e5f2928dd7bfa2160e34120abf40523bb4061f60427b9c73e2",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed author-affiliated IBM records for Codd, Heath, and Fagin; the Armstrong bibliographic record; Bernstein's primary 3NF synthesis paper; CMU graduate teaching material; and PostgreSQL 18 constraint documentation. All seven final destinations returned HTTP 200. Historical theorem claims are separated from current implementation context."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked U, F, F+, X+_F, projection, natural join, determinant, superkey, candidate key, and prime-attribute notation.",
+        "Checked concatenated attribute letters consistently denote sets, not strings or ordered column lists.",
+        "Checked satisfaction, implication, losslessness, and dependency preservation quantify over all legal relations."
+      ],
+      "notes": "SQL null behavior is explicitly excluded from the classical FD equality model."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed A+=ABCDE and C+=CDE for F={A->BC,C->D,D->E}.",
+        "Recomputed A as the only candidate key among all nonempty subsets of ABCDE.",
+        "Recomputed projection sizes ABC=2, CD=2, and DE=2 and exact recovery of two source tuples.",
+        "Recomputed the AB/BC counterexample join as four tuples containing two spurious tuples."
+      ],
+      "notes": "Finite join equality supports the fixture only; the chapter uses an intersection-determinant argument for universal losslessness."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived closure to fixed point using reflexivity-compatible initialization and repeated FD application.",
+        "Re-derived candidate-key minimality and the mandatory-key lower bound for attributes absent from all right sides.",
+        "Re-derived C->D and D->E as 3NF/BCNF violations because C and D are non-superkeys and D/E are non-prime.",
+        "Re-derived the minimal cover in Example 8 as {A->B,B->C}.",
+        "Re-derived sequential losslessness of ABC/CD/DE from C->D and D->E and verified all displayed dependencies remain local."
+      ],
+      "notes": "Normal-form conclusions are relative to the complete stated FD set and its implication closure."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/trivial dependencies, singleton and composite keys, multiple candidate keys, and prime-attribute exceptions.",
+        "Reviewed accidental sample correlation, time/tenant/type scope, mutable facts, nulls, and probabilistic/conditional dependencies.",
+        "Reviewed lossless but non-preserving decompositions and preserving but unproven-lossless designs.",
+        "Reviewed temporal snapshots, analytical read models, service boundaries, higher dependency classes, and migration enforcement."
+      ],
+      "notes": "The chapter prevents stronger conclusions when multivalued or join dependencies, temporal scope, or SQL nulls are material."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "The closure algorithm grows monotonically and stops only at a fixed point.",
+        "Candidate-key enumeration rejects supersets of already discovered keys and requires full closure.",
+        "Projection deduplicates tuples and natural join matches all shared attributes before appending right-only values.",
+        "The conforming decomposition recovers exact schema and rows; the lossy decomposition reports exact extra rows.",
+        "The verifier matched exact eight-line stdout, empty stderr, and zero exit status."
+      ],
+      "notes": "The displayed BCNF violations are a reviewed fixture constant rather than output of a general normal-form checker."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed soundness roles of reflexivity, augmentation, transitivity, and derived union/decomposition/pseudotransitivity.",
+        "Reviewed closure termination from finite monotone growth and implication use for key/normal-form decisions.",
+        "Reviewed the binary lossless-join condition against the shared-attribute determinant theorem.",
+        "Reviewed BCNF decomposition losslessness separately from dependency preservation.",
+        "Reviewed 3NF synthesis requirements including minimal cover, projected relations, contained-schema removal, and a candidate-key relation."
+      ],
+      "notes": "The chapter explains theorem obligations but does not formalize Armstrong completeness or a general chase proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated finite counterexamples, finite confirmations, domain assumptions, formal implication, and universal decomposition properties.",
+        "Separated 1NF/2NF/3NF/BCNF definitions from heuristics such as 'no transitive dependencies'.",
+        "Separated normalization from physical storage, performance, derived snapshots, and deliberate denormalization.",
+        "The model explicitly disclaims minimal-cover, projected-dependency, chase, multivalued-dependency, SQL-null, and cost analysis."
+      ],
+      "notes": "No sample dataset is presented as proof of an FD or universal losslessness."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library Python closure/key/projection/join model executed successfully through the repository verifier.",
+        "All seven final scholarly or official reference destinations returned HTTP 200 on 2026-08-30.",
+        "Structure, front matter, links, ten worked examples, five exercises, five answers, and exact snippet expectations passed draft validation.",
+        "The lossy two-row fixture empirically generates the predicted four-row join and two spurious tuples."
+      ],
+      "notes": "No SQL engine, production schema, profiler, chase implementation, schema migration, workload benchmark, or deployment was exercised."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently moves from domain FDs through implication, closure, keys, covers, normal forms, losslessness, dependency preservation, and executable constraints without confusing these separate properties."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed semantic elicitation, profiler limits, temporal/tenant scope, projected key/FK enforcement, 3NF versus BCNF choices, snapshot/read-model exceptions, service boundaries, migration validation, and measured denormalization."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The one-page review, formal definitions, fixed-point model, lossy counterexample, ten varied examples, and five retrieval-to-transfer exercises progress from FD meaning to schema design judgment."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/institutional/official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter and model do not prove correctness of any production dependency inventory, SQL schema, migration, null/collation semantics, general minimal-cover or chase implementation, higher-normal-form design, workload performance, or deployment fitness."
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-018",
+  "chapter_digest": "60bdc67fac167c68eb79d84f6d26f22ac2c74b058cbd9c88f3ccd1bdd3a31840",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 13, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked the primary OSTEP MLFQ chapter and current official documentation for Linux policies, nice and scheduling attributes, CFS, EEVDF, scheduler statistics, PSI, cgroup v2, Windows priority boosts and priorities, FreeBSD operational priority controls, and MIT's 2025 xv6 text. All 13 cited URLs returned HTTP 200; textbook MLFQ is not attributed to modern schedulers with different documented mechanisms."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked queues Q_0 through Q_(k-1), level l, quantum q_l, allotment A_l, task level ell_i, charged service u_i, group g_i, boost interval B, and finite-population bound terms.", "Reviewed feedback queue, demotion, promotion, boost, allotment, gaming, aging, virtual runtime, eligibility, throttling, and capacity terminology."],
+      "notes": "The notation distinguishes per-dispatch quantum, cumulative level charge, dynamic classification, group supply, and boost epochs."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the transition model and confirmed CPU-bound A moves through levels 1,2,2 after exhausting quanta 1,2,4.", "Confirmed short-blocking B remains at levels 0,0,0 under the declared rule and the boost maps both tasks to level 0."],
+      "notes": "The deterministic transitions omit cumulative partial charge, queue timing, arrivals, overhead, and adversarial interactions."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived demotion ell_i=min(l+1,k-1) after charged service reaches A_l and checked that partial service must persist across yield to defeat the q-epsilon attack.", "Checked the conditional post-boost wait expression N*A_0 plus bounded dispatch and interference, with finite population and capacity assumptions."],
+      "notes": "The chapter labels boost-based starvation control as conditional rather than treating interval B alone as a latency bound."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed threshold rounding, pre-expiration yield, trivial I/O, lock-contention misclassification, fork reset, group movement, coordinated threads, continual arrivals, and unbounded boosted populations.", "Reviewed boost cost, epoch races, stopped and throttled tasks, migration, hotplug, capacity normalization, frequency and thermal changes, hierarchy, observer overhead, and safety isolation."],
+      "notes": "Feedback, accounting, starvation, gaming, hierarchy, multicore, performance, security, operational, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced unique placement, monotone charge, atomic feedback transitions, conditional starvation control, hierarchy preservation, migration consistency, and evidence scope through ten examples and five answers.", "Verified the toy implements only its declared exhausted-and-not-blocked transition and explicitly withholds production-scheduler claims."],
+      "notes": "The chapter does not conflate observed burst with remaining demand, block with interaction, quantum with allotment, boost with admission, or dynamic priority with reservation."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed configuration, charge, transitions, ownership, gaming counterexamples, conditional starvation derivation, hierarchy, topology, and empirical evidence obligations.", "Constructed counterexamples for per-dispatch reset, unconditional wake promotion, process-identity reset, unlimited boosted peers, per-task tenant multiplication, stale migration state, and feedback-controlled safety tasks."],
+      "notes": "The chapter offers reusable policy obligations, not a formal proof of a production MLFQ, Linux, Windows, FreeBSD, or a safety scheduler."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of interactive, fair, bounded, starvation-free, equivalent, accurate, optimal, safe, real-time, and certification.", "Confirmed textbook rules, named-system documentation, abstract toy transitions, empirical tuning, analytical assumptions, security policy, and human assurance remain separately scoped."],
+      "notes": "The chapter explicitly rejects equating CFS or EEVDF with textbook MLFQ and rejects finite traces as starvation proof."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-018/report.json records A-levels=1,2,2, B-levels=0,0,0, and boosted-levels=0,0 for toy-mlfq-feedback under Python 3.", "Reviewed arrivals, queue level, charge, boost, block reason, wake placement, migration, throttle, response, completion, starvation, overhead, workload, topology, provenance, and observer limits."],
+      "notes": "The passing toy excludes real queues, timers, CPUs, cumulative accounting, hierarchy, adversaries, migrations, overhead, and named scheduler code."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed unknown demand, levels, quanta, allotments, blocking, demotion, promotion, boosts, starvation, gaming, fairness, hierarchy, multicore feedback, stability, and assurance as distinct but coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed parameterization, charge boundaries, wake placement, boost epochs, fork and group evasion, cgroup containment, capacity normalization, tracing, false classification, overload, and safety partitioning as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from unknown-demand inference through feedback mechanics, starvation and gaming, named-system distinctions, hierarchy, stability, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux, Windows, or FreeBSD scheduler maintainer, performance scientist, security or real-time analyst, safety authority, independent verifier, or certification review is claimed."
+}

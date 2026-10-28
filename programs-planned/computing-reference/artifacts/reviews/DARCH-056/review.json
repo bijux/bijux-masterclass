@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-056",
+  "chapter_digest": "b72103195d46f5903520fd0275f40ec848c1186e5b1cb3dd592f065fc3f28bf6",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked the W3C SKOS Reference and Primer; IBM Hierarchy, HIERARCHYREL, and Exploring and Working with Hierarchies; SAP Processing Hierarchies and Time Dependency of Master Data; Oracle Account Hierarchy; W3C PROV-O; and NIST SP 800-160 Volume 1 Revision 1. All ten official or primary destinations returned HTTP 200. Claims remain bounded to cited direct and transitive relations, hierarchy operations and roles, temporal versions, organizational parent-child structure, provenance, and trustworthy lifecycle mechanisms."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the hierarchy-architecture tuple, direct-edge version, transitive closure, acyclicity predicate, strict-tree conditions, rollup expression, and FitHierarchy predicate.",
+        "Checked distinctions among node identity, placement, direct edge, inferred ancestor relation, path, depth, closure, hierarchy release, and consumer activation.",
+        "Verified that relation type, parent, child, role, effective and transaction time, status, source, operation, provenance, fact time, allocation, and aggregation remain explicit."
+      ],
+      "notes": "Notation supports typed temporal hierarchies without treating parent_id, textual path, current closure, or a generic graph relation as universal semantics."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed temporal-hierarchy-move-rollup with Python 3.14.4 and reproduced the declared seven-line output for two releases.",
+        "Verified release 1 places leaf values 40 and 60 under north and south respectively, yielding branch totals 40 and 60.",
+        "Confirmed release 2 moves the 40-value leaf to south, yielding north 0, south 100, root 100, no detected cycle, and two retained releases."
+      ],
+      "notes": "The recomputation proves only recursive reachability, directed-cycle testing, and integer sums for two small in-memory trees; it does not establish edge truth, authority, temporal fitness, scale, or production safety."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified direct edge versions induce but remain distinct from transitive reachability and derived closure.",
+        "Checked acyclicity as absence of any node reachable from itself and strict-tree requirements as one root, one parent per nonroot, reachability, and acyclicity.",
+        "Reviewed rollup as a function of fact version, hierarchy release, time, path or unique-node policy, allocation, units, and missingness."
+      ],
+      "notes": "The reasoning separates structural validity from semantic truth and valid hierarchy topology from valid business aggregation."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed entity versus placement, direct versus transitive edge, hierarchy versus general graph, tree versus forest and DAG, move versus copy, and node merge versus entity identity boundaries.",
+        "Tested self-links, duplicates, distant cycles, invalid type pairs, multiple parents, multiple roots, orphans, excessive depth, sibling ordering, future edges, interval overlap, and stale-version updates.",
+        "Reviewed polyhierarchy double counting, invalid weights, nonadditive facts, as-was versus restated reporting, missed events, stale closure, subtree fan-out, path identity, authorization inheritance, inference exposure, recovery, and resurrection after retirement."
+      ],
+      "notes": "Boundary cases prevent one parent column, acyclicity alone, current paths, valid closure, or matching root totals from standing in for trustworthy hierarchy decisions."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced outcomes, types, nodes, edges, constraints, time, versions, workflows, derivations, publication, protection, service, ownership, evidence, and lifecycle throughout the chapter.",
+        "Verified stable node IDs, direct-edge provenance, declared structural family, temporal axes, immutable releases, expected-version workflows, atomic candidate validation, pinned rollups, versioned derived indexes, and correction acknowledgement.",
+        "Checked all ten architecture gates across tree, forest, polyhierarchy, planned change, subtree move, rollup, publication, incident correction, recovery, migration, and retirement."
+      ],
+      "notes": "The invariants keep hierarchies typed, temporal, evidence-preserving, structurally validated, reproducible, impact-aware, protected, recoverable, and owned."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed outcome, type, evidence, integrity, version, workflow, derivation, contract, protection and service, and lifecycle gates as one assurance structure.",
+        "Checked counterexamples to every-parent-relation-is-same, hierarchy-is-tree, parent-belongs-on-node, path-is-ID, direct-is-transitive, local-check-prevents-cycle, multiple-parents-only-affect-display, and valid-hierarchy-means-valid-rollup reasoning.",
+        "Verified FitHierarchy requires justified purpose, typed semantics, stable identity, valid direct edges, explicit time, safe workflows and derivations, protected reliable publication, accountable outcomes, and closure."
+      ],
+      "notes": "The chapter provides a scoped hierarchy assurance framework, not proof that one topology, storage representation, rollup rule, platform, or organization fits every relationship or use."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of parent, direct, transitive, valid, acyclic, authoritative, current, effective, complete, synchronized, reconciled, corrected, recovered, fit, and retired.",
+        "Confirmed that official specifications, source assertions, inferred closure, executable checks, runtime telemetry, rollup results, consumer outcomes, accountable decisions, and external assurance remain distinct.",
+        "Verified executable evidence is explicitly limited to two small in-memory releases and excludes edge authority, temporal truth, aggregation fitness, concurrency, scale, consumer activation, protection, and recovery."
+      ],
+      "notes": "Claims remain bounded to named hierarchy types, releases, edges, intervals, derivations, consumers, purposes, consequences, and lifecycle states."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated official hierarchy, semantic-relation, temporal, provenance, and lifecycle sources from internal architecture reasoning and executable evidence.",
+        "Confirmed that no production edge accuracy, cycle rate, rollup correctness, change capacity, event delivery, protection effectiveness, recovery, adoption, business value, or external review is claimed.",
+        "Checked that local adoption requires relationship and authority research, source and consumer contracts, graph and rollup validation, protection review, workload and failure testing, recovery exercises, outcome measurement, cost, and accountable approval."
+      ],
+      "notes": "Published mechanisms, source assertions, inferred structures, generated checks, runtime observations, consumer outcomes, governance decisions, and independent assurance are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed decision and hierarchy types, entity and placement, stable nodes, direct and transitive edges, tree, forest, DAG, polyhierarchy and graphs, cycle and type validation, roots, reachability, depth, order, edge attributes, temporal axes, releases, planning and alternate views, synchronized subtrees, workflows, concurrency, operations, subtree changes, merge and split, retirement, rollups, allocation, nonadditive facts, historical policy, APIs, events, snapshots, closure and paths, caches, scale, degraded behavior, inference protection, correction, recovery, ownership, outcomes, migration, and retirement as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable hierarchy-type contracts, stable node keys, temporal edge records, candidate-release validation, self-loop and cycle checks, parent and root rules, allocation constraints, planned releases, expected-version operations, idempotency, before-and-after subtree impact, immutable snapshots, bounded traversal APIs, event and snapshot repair, versioned closure tables, cache invalidation sets, graph-scale telemetry, authorization separation, correction propagation, restore and rebuild procedures, and dependency closure. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from relationship meaning and structural families through temporal edges, releases, workflows, derivations, rollups, contracts, scale, protection, recovery, ownership, and lifecycle judgment. Ten differentiated examples, executable evidence, eighteen misconceptions, five progressive exercises, and complete answers cover mechanisms and limitations while preparing controlled-vocabulary hierarchy depth in DARCH-057."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, graph-theory, hierarchy-management, master-data-management, data-architecture, data-engineering, platform, API, analytics, reliability, cybersecurity, privacy, legal, finance, records-management, provider, accessibility, operations, audit, economics, organizational-governance, or practitioner review is claimed."
+}

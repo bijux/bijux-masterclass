@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-099",
+  "chapter_digest": "8155208c8a58431a8650813d2ac16babb782e650adc06ec2b103b659d9f4c40d",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked ACM Artifact Review and Badging Version 1.1 current terminology, Cambridge experimental algorithmics, PLOS computational-reproducibility guidance, Science and IEEE reproducibility papers, the CRC collection, rigorous benchmarking, and numerical-stability sources."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Defined claim set, claim type, expected and observed result, comparison rule, evidence graph, protocol digest, provenance, and outcome states.",
+        "Checked asymptotic, ratio, percentage, hash, statistical, numeric-tolerance, and exact-equality terminology."
+      ],
+      "notes": "Claim identifiers, expected-result symbols, and evidence-graph edge notation are kept distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the four paired differences as mean 2.5 ms and aggregate reduction as 10.0%.",
+        "Recomputed Exercise 2 arithmetic mean ratio 0.933333, mean reduction 6.6667%, geometric mean ratio 0.925213, and multiplicative reduction 7.4787%."
+      ],
+      "notes": "Alternative ratio summaries are not substituted for the paper's unspecified phrase."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Reviewed claim conjunction decomposition and per-claim outcome mapping.",
+        "Reviewed hash byte-identity implication and its non-implications for semantics, provenance, completeness, and correctness."
+      ],
+      "notes": "Collision resistance is an explicit operational premise rather than a proof of artifact truth."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed missing historical hardware, proprietary inputs, mutable downloads, broken builds, modern substitutes, failed runs, censored timeouts, ambiguous prose, and stochastic seed selection.",
+        "Reviewed shared-code oracles, plot-only matches, invalid outputs, numerical disagreement, hostile artifacts, licensing, and author nonresponse."
+      ],
+      "notes": "Unavailable prerequisites produce scoped blocked outcomes rather than silent substitutions."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked immutable source/dependency/input/configuration/seed/command/environment/output binding and raw-to-derived separation.",
+        "Checked frozen comparison rules, complete failed-run retention, explicit deviation records, and per-claim conclusion scope.",
+        "Verified the canonical byte payload's SHA-256 digest independently before snippet validation."
+      ],
+      "notes": "A matching digest establishes only the named byte-identity edge."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the logical non-transfer from one conjunct or one reproduced claim to a whole-paper conclusion.",
+        "Reviewed the requirement to trace theorem hypotheses into the implemented variant and experimental inputs."
+      ],
+      "notes": "Proof audits, exhaustive finite checks, and empirical runs retain separate evidentiary roles."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited rerun, reproduction, reimplementation, replication, generalization, extension, audit, reproduced, not reproduced, inconclusive, and blocked language.",
+        "Separated artifact availability, functionality, reusability, result validation, peer review, and independent evidence."
+      ],
+      "notes": "The chapter explicitly defines operational terminology because community conventions differ."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-099/report.json",
+        "The CPython 3.14.4 fixture reproduced the canonical artifact digest and declared arithmetic on macOS 13.7.8 x86_64.",
+        "Independent hashing and ratio calculations reproduced the fixture and exercise results."
+      ],
+      "notes": "The fixture validates one claim-bound computation, not workload, timing, code, or paper-wide validity."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed claim inventories, contracts, evidence graphs, reproduction relationships, frozen protocols, safe acquisition, environment reconstruction, premeasurement validation, formal and empirical checks, triangulation, deviations, outcomes, and reporting."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed untrusted execution, immutable acquisition, dependency and platform reconstruction, licenses, resource limits, raw-run preservation, independent checkers, blocked proprietary evidence, portability, and archival handoff."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter turns paper reading into a typed evidence workflow, supplies one executable claim-bound recomputation, ten distinct examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external author, venue, artifact-evaluation, academic, statistical, performance, security, or production review is claimed. Conclusions remain conditional on targeted claims, terminology, paper and artifact versions, acquisition and licenses, environment reconstruction, input provenance, algorithm variant, comparison rules, independent checks, deviations, resources, platform, toolchain, and unresolved blockers."
+}

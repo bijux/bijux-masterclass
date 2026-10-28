@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-085",
+  "chapter_digest": "fcf73de9f94662848ae806b3ad099c1720d6c7f176049fb4adc59c9e9c74ed9e",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked current AWS API Gateway token-bucket/throttling guidance, Envoy local/global limiter semantics, NGINX rate-limiting guidance, current IETF HTTPAPI RateLimit Internet-Draft status, RFC 6585 status 429, RFC 9110 Retry-After and the cited traffic-regulation, reliability, queueing and performance sources. Managed limits and the draft header fields are explicitly qualified."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked key, token, capacity, refill, cost, timestamps, interval admission, replica count, hierarchy and distributed-error notation.",
+        "Checked lazy-refill/spend, ideal interval bound, Little's-Law counterexample and local-replica multiplication equations."
+      ],
+      "notes": "Rate, burst, concurrency and long-period quota remain distinct dimensions."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Reproduced the executable trace: five initial admits then reject; one token refills by 500 ms and admits; at 1,000 ms one token cannot pay cost two; by 3,000 ms capacity refills to five and cost five admits; 7 allowed, 2 rejected, 0 remaining.",
+        "Recomputed ideal three-second bound B+rΔ = 5+2(3)=11 cost units.",
+        "Recomputed Exercise 2: floor(30/4)=7 immediate complete requests, 2 tokens remain, and 30+6(10)=90 cost upper bound.",
+        "Recomputed Exercise 3: five local buckets provide about 200/s and aggregate initial burst 400, not global 40/s and 80."
+      ],
+      "notes": "Interval cost bounds do not promise a number of complete requests or production capacity."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified ideal token conservation from capacity-clamped refill and atomic cost spend yields B+rΔ bound.",
+        "Verified rate alone cannot bound residents when residence is unbounded and verified n independent buckets sum to n(B+rΔ).",
+        "Verified atomic all-or-nothing hierarchical spend conditionally preserves each bucket constraint and bounded key admission is required to bound state cardinality."
+      ],
+      "notes": "Proofs assume one monotonic atomic state, correct costs and declared distributed error; they do not calibrate capacity."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/full/partial, exact equality, cost above capacity, discrete/continuous refill, fixed/sliding boundary, zero/backward/large elapsed, precision and overflow.",
+        "Reviewed concurrent overspend, hierarchy partial spend/rollback, weighted/unknown streaming cost, token refund, finite wait/defer, deadlines and retries.",
+        "Reviewed untrusted identity, NAT/botnet/key spray, eviction/cold start, per-replica scale, shard remap, central-store partition, lease expiry, fail-open/closed, protocol metadata/privacy and safety-critical priority."
+      ],
+      "notes": "Real clocks, atomic stores, proxies, workloads, distribution, security and safety require integration/fault evidence and named review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced declared policy/key/unit/algorithm, authenticated bounded identity, atomic spend, monotonic refill, atomic hierarchy and pre-work rejection through exposition/examples/answers.",
+        "Traced finite wait/defer, cost/capacity calibration, distributed overshoot, cold-state lifecycle and advisory privacy-safe feedback."
+      ],
+      "notes": "The limiter is never presented as concurrency isolation or a service-capacity proof."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed token-conservation, concurrency counterexample, local multiplication, hierarchical safety and cardinality-bound arguments against explicit premises.",
+        "Reviewed why fixed-window and distributed/local enforcement claims require trace/error semantics.",
+        "Confirmed no-capacity-proof limitation follows because configuration is external to algorithm correctness."
+      ],
+      "notes": "No formal proof of concrete distributed storage, fairness, downstream safety, security or high-stakes operation is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited exact, global, bounded, atomic, fair, authoritative, standard, safe, guarantee and proof language.",
+        "Confirmed the RateLimit document is labeled active Internet-Draft/work in progress and managed-platform best-effort semantics are not elevated into hard ceilings."
+      ],
+      "notes": "Advisory response metadata is not represented as a promise of future admission."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-085/report.json",
+        "Reproduced nine sequential milli-token decisions, allowed/rejected counts, terminal balance and ideal interval arithmetic using Python 3.",
+        "Confirmed the block performs no concurrency, authentication, state eviction, networking, distributed coordination, queueing or protected work."
+      ],
+      "notes": "Execution establishes one fixed integer trace only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter treats Rate Limiter as an authenticated temporal cost-admission contract with explicit burst, hierarchy and distributed error, not a requests-per-second slogan."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers token/fixed/sliding/GCRA algorithms, rate-versus-concurrency/quota, keys/cardinality, weighted cost, hierarchy, distributed architectures, protocol/client behavior, telemetry, security and fault testing."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with conditional proofs, exact milli-token trace, ten distinct cases and five exercises progressing from policy design through arithmetic, distributed tradeoffs, diagnosis and safety-critical judgment."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

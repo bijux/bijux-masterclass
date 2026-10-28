@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "module_id": "DE-005",
+  "chapter_digest": "d5a46093d9813f94d7eaa8b17a8d09b0cb1a5e2e6bafc7065ee20411a80584fe",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 15,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked 15 unique primary references: current Apache Arrow columnar format 1.5, introduction, C Data/Stream/Device interfaces, security, versioning, implementation status, Flight, experimental dissociated IPC, Python data and memory guidance, FAQ, and the FlatBuffers internals specification. Replaced one moved implementation-status URL after direct retrieval returned 404."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+        "status": "passed",
+        "method": "manual_review",
+        "evidence": [
+          "Reviewed array tuple A, type T, length n, logical offset o, null count c, ordered buffers B, dictionary D, children K, physical index p, validity function, fixed-width ranges, variable offsets, record batches, struct validity, and zero-copy boundary predicate Z.",
+          "Checked index domains, half-open ranges, bit numbering, offset units, type parameters, and parent/child composition before use."
+        ],
+        "notes": "Logical indices, physical slots, byte offsets, child indices, and device locations remain distinct throughout."
+    },
+    "numerical_recomputation": {
+        "status": "passed",
+        "method": "numerical_recomputation",
+        "evidence": [
+          "Executed arrow-layout-audit with Python 3.14.4 and reproduced length 4, null count 1, validity byte 00001101, visible values (10,None,30,40), UTF-8 values ('a',None,'bc'), false empty-is-null comparison, aligned four-row/two-column batch, and slice (None,30).",
+          "Manually recomputed LSB validity bits 0, 2, and 3 as decimal 13 and traced UTF-8 offset ranges [0,1), [1,1), and [1,3).",
+          "Recomputed the exercise List<Int32> offsets (0,2,2,2,3) and validity low bits 1101."
+        ],
+        "notes": "The physical value 999 beneath a null slot is intentionally ignored, confirming that output follows validity rather than stored bytes."
+    },
+    "symbolic_recomputation": {
+        "status": "passed",
+        "method": "symbolic_recomputation",
+        "evidence": [
+          "Re-derived physical index p=o+i for slices and the LSB bitmap test at p.",
+          "Re-derived fixed-width ranges [wp,w(p+1)) and variable-width ranges [q[p],q[p+1)) with length difference.",
+          "Checked record-batch equal-length alignment, struct visible validity as parent AND child, and boundary-specific zero-copy conditions."
+        ],
+        "notes": "The derivations separate representational validity from domain grain and measured performance."
+    },
+    "boundary_and_adversarial_cases": {
+        "status": "passed",
+        "method": "boundary_analysis",
+        "evidence": [
+          "Reviewed zero/all/alternating nulls, absent all-valid bitmaps, poisoned null slots, slice offsets across bitmap bytes, empty versus null strings/lists, invalid UTF-8, 32/64-bit offsets, negative/descending/overflowing/terminal-out-of-range offsets, and retained large parent buffers.",
+          "Reviewed nested parent/child validity, child-length mismatch, list versus list-view rules, sparse/dense union IDs and offsets, dictionary mismatch/replacement/invalid indices, run-end termination, chunk boundaries, and independent column filtering.",
+          "Reviewed malformed IPC framing/metadata/body/compression, giant allocations, recursion, untrusted C pointers, early/double release, cancellation, CPU/device mismatch, missing synchronization, endianness/alignment repair, and unsupported format features."
+        ],
+        "notes": "Byte, logical, nested, lifetime, trust, device, version and resource boundaries all receive explicit validation ownership."
+    },
+    "invariant_checking": {
+        "status": "passed",
+        "method": "invariant_analysis",
+        "evidence": [
+          "Traced type-layout, bounds, null, alignment, nested-validity, ownership, interchange and resource invariants through the fourteen-step mechanism.",
+          "Verified the executable model applies logical offset to validity and value access and refuses unequal record-batch column lengths.",
+          "Checked that every zero-copy claim requires same allocation plus schema, lifetime, immutability, bounds, alignment, device and synchronization conditions."
+        ],
+        "notes": "Performance opportunity is never allowed to override data, memory-safety, or row-alignment obligations."
+    },
+    "proof_review": {
+        "status": "passed",
+        "method": "proof_review",
+        "evidence": [
+          "Reviewed the collision construction in which equal adjacent offsets represent both valid-empty and null slots.",
+          "Confirmed the separate validity bit distinguishes those values and that dropping it maps two source states to one output.",
+          "Checked the non-injectivity conclusion: reconstruction is impossible without retained or external null information."
+        ],
+        "notes": "The proof applies to ordinary variable-width/list layouts and does not misstate union-specific null representation."
+    },
+    "proof_sketch_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Confirmed the null-versus-empty non-injectivity argument is explicitly labeled a proof sketch.",
+          "Audited uses of valid, exact, safe, immutable, stable, portable, zero-copy, trusted, required, preserve, and guarantee for stated scopes and preconditions."
+        ],
+        "notes": "No printed equality, shared address, columnar layout, or successful IPC parse is promoted to unconditional semantic or performance proof."
+    },
+    "empirical_evidence_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Confirmed arrow-layout-audit is labeled a synthetic representation model rather than a benchmark or full Arrow implementation.",
+          "Reviewed columnar performance, batch sizing, dictionary/run-end benefits, slicing, memory maps, zero-copy and device transfer as workload- and boundary-dependent claims requiring measurement.",
+          "Confirmed no production reliability, universal speedup, memory-safety certification, cross-language completeness, device support, or external-review claim."
+        ],
+        "notes": "Current implementation and experimental-feature claims are tied to retrieved official documentation and still require deployed-version verification."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed fixed/variable layouts, validity, slicing, lists, structs, unions, dictionaries, run ends, semantic and extension types, batches, chunks, IPC, C interfaces, device memory, versions and measurement as one coherent in-memory model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed schema retrieval, buffer inspection, row/byte batch limits, cross-runtime ownership, IPC trust boundaries, device synchronization, allocation/copy evidence, row reconciliation, version-feature inventories and production telemetry. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from raw array components through nesting and batches to interchange operations; ten examples and five complete answers cover bitmap/slice tracing, malformed offsets, null-list design, zero-copy evidence and adversarial IPC ingestion."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, Apache Arrow, FlatBuffers, data-practitioner, security, performance, accelerator, or production-interoperability review is claimed."
+}

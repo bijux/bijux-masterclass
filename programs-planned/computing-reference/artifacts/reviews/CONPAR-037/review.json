@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-037",
+  "chapter_digest": "a39cd11e898177c22815f88f9e86cef0e6e25c89d7e1e4b2957ea1fb3b015271",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Java policy-configurable structured scopes were checked against JEP 525; Python TaskGroup failure/cancellation and exception groups against current Python docs; Swift child-task lifetime against SE-0304; Kotlin scope and supervision differences against official docs; scoped borrowing against Rust std; Go errgroup lifetime/cancellation against official package docs; nursery semantics against Trio; and historical rationale against the original Smith and Sústrik essays. Preview/version-specific claims are labeled."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation defines accepted set A, disjoint terminal subsets S/F/C/T/P, queue/running/cleanup bounds, and parent-child lifetime intervals.",
+        "Accepted, proposed, started, terminal, transferred, and joined identities remain distinct throughout."
+      ],
+      "notes": "Set cardinality, disjointness, indicator, capacity, and interval notation was checked for consistent domains."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "artifacts/snippets/CONPAR-037/report.json records A succeeded, B failed, C cancelled-before-start, accepted three, terminal three, and running zero.",
+        "Independent replay confirms B triggers cancellation, queued C receives one terminal slot, A produces one late-to-cancel success, and the group joins all identities."
+      ],
+      "notes": "Counts, source-ordered mapping, failure identity, cancellation flag, set equality, stdout, and empty stderr agree."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Disjoint exhaustive terminal categories yield |A|=|S|+|F|+|C|+|T|+|P| and one indicator per accepted identity.",
+        "Structured nesting requires p_start<=c_start<=c_terminal<=p_join unless ownership is atomically transferred; capacity inequalities are separately stated."
+      ],
+      "notes": "Accounting, lifetime, and boundedness properties are separate and none is inferred from the others."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/one/many children, eager producer throw, body failure, simultaneous failures, cancellation frontier, insensitive child, duplicate close, and nested scope.",
+        "Reviewed unbounded fan-out/input/result queues, cleanup permits, borrowed/context authority, detachment transfer, blocking isolation, shutdown, API policy evolution, and safety-critical publication."
+      ],
+      "notes": "Boundary review spans lifetime, failure, scheduling, capacity, ownership, security, cancellation, compatibility, and deployment risks."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every accepted child receives one stable identity and one terminal record before scope reaches JOINED.",
+        "Admission closes before drain, failures are retained, cancellation follows owned edges, permits span protected cleanup, and exit joins or transfers every child."
+      ],
+      "notes": "Invariants were checked across accept, start, succeed, fail, cancel-before-start, cancel-running, cleanup, transfer, and shutdown."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "The no-orphan argument follows from identity allocation before execution, refusal after closure, terminal write-once wrappers, and join validation.",
+        "The fail-fast counterexample shows the exact cancellation frontier is schedule-dependent while accounting and post-close admission invariants remain stable."
+      ],
+      "notes": "Proofs depend on the declared group wrapper and do not establish child operation cancellation safety or forced termination."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Java, Python, Swift, Kotlin, Rust, Go, and Trio semantics are named by API/version rather than universalized.",
+        "Executable limitations exclude actual tasks, races, exception groups, cancellation, cleanup, bounds, scopes, deadlines, blocking, and runtime behavior."
+      ],
+      "notes": "Runtime specifications, portable ownership discipline, deterministic accounting evidence, and external safety review remain distinct."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-037 passed the exact accounting trace with recorded Python version, stdout, and stderr.",
+        "Failure observation order, cancellation latency, frontier, cleanup time, blocking termination, resource occupancy, and physical behavior are explicitly empirical."
+      ],
+      "notes": "The run validates one predetermined mapping only and proves no real concurrency or runtime task-group property."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed task trees, scope states, ownership-before-start, join, failure policies/groups, accounting, bounds, admission races, cancellation, context/borrowing, result order, backpressure, detachment transfer, supervision, noncooperation, shutdown, observability, and evolution."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed stable slots, synchronous producer failure capture, lazy bounded workers, cleanup leases, causal cancellation, deterministic reports, full result queues, service-level supervisors, isolation transfer, root-scope closure, controlled scheduling tests, and preview API compatibility."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet states nesting and accounting; exposition progresses from scope mechanics to operations; the trace demonstrates a nontrivial fail-fast frontier; ten examples are distinct; and five exercises move from states to aviation transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring and verification evidence only; no external runtime, language, practitioner, distributed-systems, security, medical, aviation, regulatory, real-time, or functional-safety review is claimed. The deterministic model does not establish real task lifetime, cancellation, failure aggregation, bounds, cleanup, transfer, or deployment correctness."
+}

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "module_id": "API-041",
+  "chapter_digest": "61ca171b9f871c0131df7e66407bc0f372ecb2e184d44d277c7002261a8771ad",
+  "review_date": "2026-09-01",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 6,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-01",
+    "notes": "Checked all six structured references at their authoritative publishers. OWASP's maintained Threat Modeling Project confirms methodology-neutral, continuous modeling with scope, threats, treatment, and review; the community page supplies the structured-representation definition. Verified the official 2023 API Security Top 10 remains the published API edition. RFC 3552 supports explicit attacker/threat and out-of-scope reasoning; NIST lists SP 800-218 SSDF version 1.1 as final; Microsoft Learn documents STRIDE's six categories."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+        "status": "passed",
+        "method": "manual_review",
+        "evidence": [
+          "Reviewed M=(S,A,C,B,F,T,K,V,O), scenario tuple tau=(c,p,e,x,a,q), and mappings k:T->2^K and v:K->2^V for consistent introduction and use.",
+          "Confirmed symbols distinguish scope, actors, boundaries, flows, scenarios, controls, evidence, and ownership without collision and use GitHub-compatible math delimiters."
+        ],
+        "notes": "The notation formalizes traceability only; the chapter explicitly denies that it proves completeness or effectiveness."
+    },
+    "numerical_recomputation": {
+        "status": "not_applicable",
+        "method": "not_applicable",
+        "evidence": [],
+        "notes": "The chapter intentionally avoids quantitative probability or loss estimates and warns against false numeric precision. Counts in the executable register are deterministic structural observations rather than a mathematical estimate requiring independent numerical analysis."
+    },
+    "symbolic_recomputation": {
+        "status": "passed",
+        "method": "symbolic_recomputation",
+        "evidence": [
+          "Reconstructed the trace chain from scenario tau through k(tau) controls and v(k) evidence and confirmed that an unresolved priority scenario is one lacking both approved disposition and sufficient current owned evidence.",
+          "Checked that all components of the central model recur in the ten-step mechanism and threat-register guidance."
+        ],
+        "notes": "The set-valued mappings allow multiple layered controls and multiple evidence items per control, matching the prose and executable registry."
+    },
+    "boundary_and_adversarial_cases": {
+        "status": "passed",
+        "method": "boundary_analysis",
+        "evidence": [
+          "Traced anonymous, authenticated tenant, tenant admin, compromised client, partner/dependency, support/insider, and accidental actor capabilities across public edge, forwarded identity, data, queue, object store, egress, telemetry, and control-plane boundaries.",
+          "Reviewed cross-user/cross-tenant object access, property assignment, privileged functions, cost amplification, business abuse, SSRF, unsafe consumption, stale inventory, impersonation, credential recovery, batches, races, caches, and deprecated versions."
+        ],
+        "notes": "The review checks both malformed attacks and harmful valid behavior; it does not assume authentication, HTTPS, internal networks, or known routes eliminate adversarial paths."
+    },
+    "invariant_checking": {
+        "status": "passed",
+        "method": "invariant_analysis",
+        "evidence": [
+          "Executed threat-register-traceability and observed three known scenarios, known assets/boundaries, owned controls, and one high-priority scenario with missing evidence.",
+          "Checked that structural model_traceable remains true while all_treated_verified remains false, preserving the distinction between registry consistency and release readiness."
+        ],
+        "notes": "The model correctly exposes rather than hides the unresolved high-priority resource-consumption scenario. It is explicitly limited to traceability and makes no claim to discover threats or judge control quality."
+    },
+    "proof_review": {
+        "status": "not_applicable",
+        "method": "not_applicable",
+        "evidence": [],
+        "notes": "No formal security theorem or proof is claimed. Threat-model completeness for an open adversarial system is explicitly disclaimed; the module presents a defensible assurance process instead."
+    },
+    "proof_sketch_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Confirmed the mechanism section narrows the defensible claim to systematic enumeration over an accurate scope with assumptions, treatments, evidence, and maintenance.",
+          "Confirmed the executable example is labeled as structural traceability only and the OWASP Top 10, STRIDE, scanners, and penetration tests are all labeled incomplete individually."
+        ],
+        "notes": "The prose separates guidance, prompts, assumptions, operational evidence, and residual-risk decisions without presenting a checklist as a proof."
+    },
+    "empirical_evidence_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Snippet report artifacts/snippets/API-041/report.json records the deterministic local traceability model as passing after matching its deliberately false treatment-completeness result.",
+          "Recommendations for fuzzing, load testing, penetration work, monitoring, drills, and inventory reconciliation are stated as required evidence, not as measurements performed for this abstract system."
+        ],
+        "notes": "No deployment effectiveness, loss probability, model completeness, or external security assessment is claimed from the executable example."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed scope, assets, properties, actor capabilities, flows, boundaries, entry points, causal scenarios, chains, prioritization, treatment, evidence, register, lifecycle, and facilitation as one coherent method. API-specific risk categories remain prompts connected to concrete paths rather than a detached checklist."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Checked that the guidance can operate in a delivery team: decision-sized scopes, deployed architecture, API inventory, normal work tracking, control owners, release rules, accepted-risk authority/expiry, evidence freshness, operational signals, response authority, incident feedback, and change-based model diffs are all specified."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter moves from explicit properties and concrete order-API context through actors, boundaries, enumeration, prioritization, controls, evidence, and lifecycle. Ten examples span distinct API threats; five exercises progress from scoped modeling to attack chains, SSRF/unsafe consumption, governance, and method synthesis, with reasoned answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-040",
+  "chapter_digest": "a70e3f384da269e9e0ccf76566ce4869a5518727247c06734361f648fc6f275b",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked the Pearson GoF catalog, primary Liskov/Wing and Parnas papers, Bloch/Fowler bibliographic records, C++ Core Guidelines updated 2026-06-14, Java SE 25 initialization specification, and Python 3.14.7 data model. Inheritance, construction/dispatch, NVI, callback, refactoring, and language-specific claims are scoped explicitly."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked template composition, base invariant, step pre/post/failure/resource contracts, adjacent-step implication, cleanup relation, success obligation, and explicit versus undocumented call-trace notation."
+      ],
+      "notes": "Algorithm skeleton, primitive operation, optional hook, invariant step, cleanup, transaction, external effect, and durable workflow remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Confirmed whitespace and CSV inputs each yield three lowercase tokens alpha,beta,alpha.",
+        "Confirmed blank whitespace prepares to empty, splits to zero tokens, and triggers the empty-sequence check.",
+        "Recomputed independent three-choice cross-product as 3^4=81 and reproduced all three exact output lines."
+      ],
+      "notes": "The finite pure-string trace is not evidence for arbitrary subclasses or resource-owning templates."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Traced validation/preparation→required split→shared normalization→postvalidation ordering.",
+        "Checked compositional condition Qi implies P(i+1) and each step preserves the required base invariant under stated hook contracts.",
+        "Checked reverse cleanup dependency and plan/commit separation for local versus external effects."
+      ],
+      "notes": "The proof assumes terminating conforming overrides and non-overridden skeleton; Python does not enforce finality in the example."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/one/many/oversized items, missing required primitive, unsafe optional default, invalid/mutable/retained hook result, repeated/reordered hook calls, strengthened precondition, partial mutation, and subclass-specific type checks.",
+        "Reviewed virtual dispatch during construction/destruction, reentrancy, recursion, locks/deadlock, concurrent calls, exception at every step, partial acquisition, cleanup failure/double cleanup, cancellation between/during steps, async completion after cancel, transaction/remote effect ambiguity, and framework version skew.",
+        "Reviewed untrusted plugin provenance, broad service locators, secret exposure, CPU/memory/time/output abuse, isolation limits, and surgical/industrial procedure misuse."
+      ],
+      "notes": "Real third-party subclasses, concurrency, resources, transactions, async runtimes, isolation, compatibility rollouts, and high-stakes domain evidence remain outside the snippet."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked base-owned non-bypassable skeleton, documented primitive/hook contracts, abstract required operations, safe optional defaults, no construction/destruction callbacks, stable callback invariant/no unsafe lock, all-path cleanup, behavioral substitution, and extraction of independent variation axes against exposition and answers."
+      ],
+      "notes": "The chapter treats protected hooks as versioned behavioral APIs and rejects inheritance/access modifiers as effect atomicity or security mechanisms."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed shown preparation/split/normalization/postvalidation trace line by line.",
+        "Reviewed compositional pre/post/invariant claim with callback, failure, cleanup, and finality assumptions exposed.",
+        "Reviewed exception-safety and transaction/effect claims as mechanism-specific obligations rather than consequences of inheritance."
+      ],
+      "notes": "No arbitrary override correctness, language-enforced finality, thread safety, resource leak freedom, distributed atomicity, plugin sandboxing, clinical/functional safety, or regulatory proof is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited prove, invariant, final, safe, atomic, cleanup, secure, complete, compatible, valid, guarantee, and conclusion language."
+      ],
+      "notes": "Strong claims state hook/language/mechanism assumptions and separate empirical, compatibility, security, and high-stakes evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-040/report.json",
+        "Reproduced both concrete split primitives under the shared skeleton, identical normalized tuples, and blank-input postvalidation failure.",
+        "Adversarial subclasses, construction dispatch, reentrancy/locks, faults/resources, async cancellation, transaction/external effects, plugin isolation, compatibility rollout, and high-stakes procedure evidence remain prescribed future work."
+      ],
+      "notes": "The run establishes only the annotated pure token example; no external academic/practitioner review or production/high-stakes guarantee is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter derives Template Method from one invariant skeleton and separates required primitives, optional hooks, NVI/finality, callback contracts, behavioral substitution, construction, exception/resource behavior, async/effects, extension security, evolution, and composition alternatives."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers base-owned validation/order/commit/cleanup, narrow named hook contracts, no virtual construction/destruction calls, stable state outside unsafe locks, reverse scoped cleanup, explicit async cancellation, plan-before-effect, framework compatibility kits, plugin capabilities/isolation, and protocol/fault/leak tests."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet supplies a compact compositional model, the runnable example makes fixed versus variable steps concrete, ten examples span primitive defaults through high-stakes transfer, and five complete answers support tracing, resource design, callback diagnosis, architecture comparison, and domain review."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

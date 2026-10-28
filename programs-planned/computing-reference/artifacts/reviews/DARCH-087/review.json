@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-087",
+  "chapter_digest": "fe83954ab52909cddeb94c4dc1ad9c78255246138376a00169c2161f70cacb2a",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 16,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked current Trino pushdown, connector, and security documentation; Apache Calcite adapters; PostgreSQL foreign-data and postgres_fdw documentation; W3C SPARQL federated-query and DCAT 3 recommendations; Apache Arrow Flight SQL; Google BigQuery and Amazon Athena federation documentation; current OpenLineage, OpenTelemetry, and OPA specifications; the Open Data Contract Standard; and NIST CSF 2.0. All sixteen destinations returned HTTP 200. Vendor and implementation claims remain identified as context; local semantic equivalence, snapshot coherence, policy enforcement, source isolation, performance, cost, reproducibility, and outcomes require operational evidence."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the federated-query tuple Q and its users, contracts, sources, mappings, planning, execution, governance, observation, resilience, and lifecycle components.",
+        "Checked source capability, plan, snapshot-vector, query-receipt, cost, reliability, and closure notation and kept logical identity, physical identity, semantics, execution, delivery, and outcome distinct."
+      ],
+      "notes": "Notation represents a distributed query contract without collapsing catalog visibility, syntactic compatibility, semantic equivalence, source authority, snapshot coherence, plan choice, policy enforcement, or consumer value."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed federated-query-candidate-evaluation with Python 3.14.4 and reproduced the declared thirteen-line output.",
+        "Confirmed ten invented queries produce four qualified and one each missing-contract, type-loss, policy-gap, stale-snapshot, unbounded-source-load, and missing-lineage result, across seven sources, six connector types, four join strategies, ten receipts, and ten decision events."
+      ],
+      "notes": "The recomputation proves deterministic classification of invented declarations only; it proves no real query correctness, connector capability, source identity, semantic preservation, policy enforcement, workload isolation, performance, cost, reproducibility, or outcome."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified logical objects bind owners, consumers, source authority, mappings, supported operations, service, policy, cost, and lifecycle while capability claims remain source-, connector-, version-, expression-, and invocation-specific.",
+        "Checked plans bind source versions, mappings, policy revisions, pushdowns, residuals, exchanges, resource budgets, partial-result rules, and delivery evidence; reviewed materialization decisions retain semantic, service, sovereignty, risk, and economic criteria."
+      ],
+      "notes": "The review separates logical algebra from physical execution; parse success from semantic equivalence; current source state from a global snapshot; coordinator completion from delivery; cache from supported materialization; and compensation from rollback."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed consumer, logical product, catalog, coordinator, connector, source, security domain, region, worker, exchange, spill, cache, materialization, receipt, provider, and recovery boundaries.",
+        "Tested decimal overflow, null and missing states, collation conflict, time-zone transitions, function differences, stale statistics, skew, policy-altering pushdown, shared credentials, inference, source overload, failed cancellation, retry snapshot mixing, missing sources, cache leakage, connector drift, and stale recovery."
+      ],
+      "notes": "Boundary cases prevent a successful parse, cast, source fragment, coordinator response, cache hit, retry, shared credential, lineage table list, uptime measure, or restored catalog from standing in for a correct governed federated result."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced stable identity, owned contracts, explicit mappings, capability evidence, inspected plans, source protection, attributable identity, visible snapshot limits, complete-or-explicit-partial results, receipts, recovery, and closure throughout the chapter.",
+        "Checked consumer, contract, semantics, time, capability, planning, execution, policy, temporary-state, delivery, lineage, cost, resilience, materialization, recovery, and retirement gates."
+      ],
+      "notes": "The invariants keep source independence, query meaning, distributed execution, security decisions, temporary data, result delivery, user effects, economics, and lifecycle independently accountable."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the assurance sequence from consumer decision through product contract, semantic mapping, capability qualification, logical validation, physical planning, bounded execution, policy enforcement, receipt, operation, recovery, and closure.",
+        "Checked counterexamples to transparent-is-correct, same-type-is-same-meaning, capability-is-pushdown, current-is-consistent, read-only-is-effect-free, timeout-is-cancellation, retry-is-repeatable, partial-is-complete, delivered-is-useful, and stopped-is-retired claims."
+      ],
+      "notes": "The chapter supplies a scoped assurance framework and counterexamples, not a formal proof that sources are authoritative, mappings preserve meaning, snapshots align, optimizers choose well, controls are complete, or outcomes are beneficial."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of transparent, equivalent, safe, supported, current, complete, consistent, isolated, attributable, reproducible, reliable, economical, recovered, and closed.",
+        "Confirmed standards, vendor and project documentation, internal synthesis, invented examples, conditional design claims, and toy executable evidence remain separately labeled and scoped."
+      ],
+      "notes": "Claims remain bounded to named consumers, logical objects, sources, connector and mapping versions, expressions, plans, policies, snapshots, budgets, attempts, receipts, time intervals, and outcomes."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated standards, specifications, and vendor or project documentation from internal architecture, invented scenarios, and executable declarations.",
+        "Confirmed no production semantic correctness, snapshot coherence, connector compatibility, policy enforcement, source isolation, latency, cancellation, cache safety, cost efficiency, recovery, or stakeholder benefit is claimed."
+      ],
+      "notes": "Local adoption requires contract tests, source fixtures, plan evidence, policy decisions, workload and cancellation tests, snapshot records, traces, lineage, cost attribution, incidents, recovery exercises, and consumer outcome evidence."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed consumer decisions, logical products, federation and virtualization boundaries, source authority, identity, capabilities, types, nulls, collation, time, functions, statistics, validation, pushdown, residuals, joins, exchanges, source protection, snapshots, nondeterminism, retries, writes, policy, inference, temporary state, partial failure, lineage, observability, caching, materialization, testing, migration, recovery, and closure as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable logical-object, connector-capability, mapping, source, plan, fragment, snapshot, policy-decision, receipt, cache, materialization, incident, recovery, and closure records. Admission, quotas, cancellation, spill, plan inspection, compatibility tests, identity propagation, policy placement, telemetry, canaries, rollback, and credential revocation have explicit ownership, evidence, and failure behavior. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from consumer decision and product contract through semantics, capabilities, planning, execution, governance, evidence, operations, materialization choice, migration, recovery, and closure. Ten differentiated examples, one executable query evaluator with explicit limitations, fifty misconceptions, five progressive exercises, and complete answers prepare organizational data sharing in DARCH-088."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, vendor, legal, regulatory, Trino, Apache Calcite, PostgreSQL, W3C, Apache Arrow, Google Cloud, Amazon Web Services, OpenLineage, OpenTelemetry, OPA, NIST, data-contract, database-team, source-owner, platform-team, security, privacy, consumer, affected-stakeholder, independent-assurance, audit, compliance, or practitioner review is claimed."
+}

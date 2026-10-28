@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-041",
+  "chapter_digest": "0ce556c8a78f601788cc369437a0276b70588287f3a95a7c381fa44ba8ccf673",
+  "review_date": "2026-08-31",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked current NASA Decision Analysis, Design Solution Definition, and glossary guidance; official NASA records for the Risk-Informed Decision Making Handbook, Risk Management Handbook, and Systems Engineering Toolbox; official NASA procedural-requirement representations; official NIST decision-support publication metadata; and official ISO metadata for ISO/IEC/IEEE 15288:2023. NASA web/procedural, glossary, and NIST resources returned HTTP 200. Three NTRS record endpoints timed out in the command-line client after their official representations had already been inspected through the web retrieval path. ISO returned HTTP 403 to the command-line client, but its official web representation had also been inspected. The chapter declares its value/utility convention and does not imply one decision method or preference model is universally applicable."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed alternatives, mandatory/enhancing criteria, feasible set, attribute vectors, single-attribute value functions, swing weights, additive value, dominance, uncertain states, expected utility, and sensitivity regions.",
+        "Confirmed additive aggregation is explicitly conditioned on fixed scale semantics, compensation, preferential independence, nonnegative normalized weights, and feasibility screening."
+      ],
+      "notes": "The chapter distinguishes physical measurement, normalized value, utility under uncertainty, weight, aggregate score, recommendation, and final decision."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed additive-value-model-check and reproduced weight sum 1.000, scores A 0.705, B 0.720, C 0.700, ranking B-A-C, and B-over-A margin 0.015.",
+        "Recomputed the compact example as A 0.480 and B 0.630; Example 1 latency value as 0.70; Example 5 ranking reversal totals; and Example 6 expected utility 5 versus utility of expectation about 7.071.",
+        "Recomputed Answer 1 as A 0.425 and B about 0.6692, Answer 2 break-even weight 4/7 or 0.5714, and Answer 3 expected benefit 75, expected utility 7.5, and utility of expectation about 8.6603."
+      ],
+      "notes": "All displayed arithmetic agrees with independent recomputation. Decimal scores remain conditional preference synthesis and are not physical percentages or probabilities of success."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Confirmed feasibility is a conjunction over mandatory criteria and is evaluated before enhancing-score aggregation.",
+        "Derived the two-criterion break-even relation and confirmed dominance requires no-worse value on all criteria and strict improvement on at least one.",
+        "Confirmed nonlinear utility generally makes expected utility differ from utility applied to expected outcome."
+      ],
+      "notes": "The chapter does not claim additive value or expected utility is valid without its preference, probability, independence, and consequence assumptions."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Challenged post-hoc criteria, generic criteria lists, infeasible alternatives, alternative-dependent min-max anchors, linear threshold scoring, arbitrary/equal weights, causal double counting, missing evidence midpoints, probability/correlation gaps, stakeholder averaging, and analyst/authority role confusion.",
+        "Reviewed safety/legal/security constraints, nonlinear/saturating/asymmetric value, deep uncertainty, catastrophic tails, distributional effects, rights, affected groups, evidence timing, noncompensatory decisions, and changed decision context.",
+        "Reviewed all ten examples and five answers for scale anchors, constraints, dependence, sensitivity, expected utility, dominance, missing evidence, stakeholder conflict, decision override, and bounded conclusions."
+      ],
+      "notes": "Consequential decisions still require applicable domain, decision-science, safety, security, economic, human-factors, ethical, regulatory, operational, and affected-stakeholder review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced decision frame, objective trace, mandatory screening, measure definition, function anchors/shape, swing-weight semantics, overlap/dependence, evidence/preference separation, uncertainty, dominance, sensitivity, recommendation/decision distinction, and change reassessment throughout the chapter.",
+        "Confirmed fundamental ends remain distinct from means such as design features and causal intermediate measures.",
+        "Confirmed separate stakeholder profiles and authority are preserved before any legitimate aggregation."
+      ],
+      "notes": "A utility score is consistently treated as a conditional preference model, not objective goodness, requirement compliance, moral worth, or percent completion."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents decision-model equations and derivations but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed feasible, preferred, dominant, robust, best, measurable, objective, expected, safe, uncertain, current, and complete language for explicit evidence/preference scope.",
+        "artifacts/snippets/SYSENG-041/report.json records exact local execution evidence for the additive arithmetic checker.",
+        "Model, simulation, prototype, field, survey, human-in-the-loop, supplier, cost, schedule, reliability, and operational evidence is bounded by configuration, scenario, method, provenance, uncertainty, correlation, and limitations."
+      ],
+      "notes": "No external review is claimed. A top score is never presented as objective proof that an alternative is best or that its predictions, preferences, and stakeholder treatment are correct."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked decision frame, objective, criterion, attribute, mandatory/enhancing criterion, value, utility, weight, preferential independence, dominance, sensitivity, robustness, and value of information. Evidence truth, preference judgment, analyst recommendation, and authority decision remain distinct."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked cooling tradeoffs, fixed-anchor latency, thermal constraint, nonlinear availability, double-counted reliability chains, weight reversal, expected utility, dominance, supplier cost intervals, stakeholder conflict, export-license override, generic trade-matrix redesign, and medication-delivery architecture. Each case ties calculations to authority, evidence, uncertainty, constraints, and reopening triggers."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from framing and means-ends objectives through criteria/measures, fixed anchors/functions, value versus utility, swing weights, independence/dominance, aggregation/missing evidence/uncertainty, expected utility, sensitivity/value of information, stakeholder differences, noncompensatory methods, bias challenge, recommendation, and decision record. Ten examples and five complete answers require scaling, break-even, nonlinear expectation, model critique, and sociotechnical decision design."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, practitioner, decision-science, architecture, mechanical, electrical, thermal, fluid, software, data, control, safety, security, privacy, accessibility, human-factors, economics, ethics, supplier, operations, verification, validation, regulatory, clinical, or affected-stakeholder review is claimed."
+}

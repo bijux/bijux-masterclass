@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-006",
+  "chapter_digest": "8cd14ce041a5c68cd72c1f9c9492c9317a753d184eee50ca43662c0639304de5",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked composite-pattern definition, role-based composition, synergy, publication venue, year, and pages against Riehle's author-hosted paper and publication record; checked Gamma et al., POSA volumes, Yacoub-Ammar, Hohpe-Woolf, and Fowler bibliographic and topical scope against publisher records. No current product behavior is asserted."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked contract-graph components, partial role-binding map, role-fusion equality, conjunction/satisfiability obligation, order-sensitive composition, and trace invariant."
+      ],
+      "notes": "Compatibility is explicitly an engineering obligation rather than a claimed general automated decision procedure."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter makes no numerical claim; executable evidence is a four-line access-control trace."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked role fusion as equal participant binding, contract conjunction for fused roles, noncommutativity through outer/inner wrapper behavior, and the non-implication from isolated-instance tests to composed trace invariants."
+      ],
+      "notes": "No free associativity or commutativity is assumed for stateful or ordered composition."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed role-name collision, wrapper short circuit, cross-user cache leakage, authorization revocation, independent repository sessions, callback cycles, expired async scope, nested retry multiplication, ambiguous transaction outcome, duplicate outbox delivery, and pattern-soup simplification."
+      ],
+      "notes": "Normal, failure, recovery, teardown, security, state, and lifecycle boundaries are covered."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked force-to-instance justification, role compatibility across nine contract dimensions, end-to-end control/data traces, order semantics, singular state authority, security non-bypass, bounded guarantees, ownership, evidence, and removal seams."
+      ],
+      "notes": "Every composition example identifies a cross-pattern invariant or a reason to simplify."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Traced both cache/authorization compositions call by call: the populated outer resource cache short-circuits inner authorization, whereas outer authorization rejects the guest before cache access."
+      ],
+      "notes": "The argument is bounded to the declared toy key and behavior; production limitations are explicit."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of composition, role, binding, fusion, stringing, overlapping, composite pattern, synergy, recurrence, invariant, guarantee, valid, proof, and conclusion."
+      ],
+      "notes": "A local composition is never promoted automatically to a composite pattern."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Ran the annotated Python example and reproduced owner/guest results for both wrapper orders, including the unsafe guest disclosure and safe denial."
+      ],
+      "notes": "The run supports only the illustrated call-order claim; no production security review is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter distinguishes local composition, stringing, overlapping, role fusion, and recurring composite patterns, then integrates structure with state, control, time, error, lifecycle, authority, and observation contracts."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Factory/Strategy, Adapter/Strategy, Composite/Visitor, Observer/Mediator, Repository/Identity Map/Unit of Work, Command/Memento, Retry/transaction, Outbox/Idempotent Consumer, logging/retry, and medical access reflect production seam failures and ownership."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet provides contract dimensions; exposition progresses from role binding to order, state, time, asynchrony, recurrence, and simplification; ten examples are distinct; five exercises culminate in a high-stakes unfamiliar composition with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

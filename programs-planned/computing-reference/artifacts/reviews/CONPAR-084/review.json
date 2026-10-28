@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-084",
+  "chapter_digest": "6d4e8f4be6d66b9030cdf11880f65745a05e6d13f486f8cc0be0f6c69aa0f16b",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten primary references. The official MPI 5.0 PDF and exact Cartesian constructor, dimensions, distributed-graph, topology-inquiry, and subarray sections returned HTTP 200. Current LAMMPS documentation returned HTTP 200. Current PETSc 3.25 DMDA, DMPlex partition, and overlap pages were retrieved and reviewed through the documentation search index; a later local curl retry was unavailable because the shell resolver could not resolve petsc.org, which is recorded as a retrieval-environment limitation rather than evidence against the source."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions consistently defines V, E, P, owner map pi, owned sets, compute/memory/edge weights, load, imbalance, cut, ghost sets, generation, maps, and boundary classes.",
+        "Half-open ranges, rank coordinates, logical/physical topology, ownership/replication, and static/dynamic partitioning remain distinct."
+      ],
+      "notes": "Checked quotient/remainder notation, weighted graph objective, surface/volume language, set identities, generations, and global/local maps."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed x sizes [4,3,3], y sizes [4,3], six half-open boxes, loads [16,12,12,12,9,9], and total 70.",
+        "Recomputed cut edges as (3-1)*7+(2-1)*10=24 and maximum-to-average imbalance as 16/(70/6)=1.37142857.",
+        "Recomputed exercise ranges for N=23,P=5, the 3x2 versus 6x1 separators, and artifacts/snippets/CONPAR-084/report.json exact output."
+      ],
+      "notes": "All arithmetic uses exact integers except displayed ratios."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived quotient/remainder sizes, starts kq+min(k,r), consecutive half-open endpoints, exact sum N, and disjoint coverage.",
+        "Re-derived weighted load, maximum/average imbalance, cut objective, rectangular surface estimate, dependency-to-ghost obligation, and generation-safe migration conditions.",
+        "Rechecked that logical topology metadata and weighted objectives do not imply physical placement or universal performance."
+      ],
+      "notes": "Performance and partition optimality claims remain conditional and empirical."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed N=0/1, P=1, P>N, prime/non-power rank counts, uneven dimensions, empty parts, overflow, degenerate dimensions, physical/periodic/partition boundaries, reordered ranks, directed/asymmetric graphs, isolated vertices, and disconnected parts.",
+        "Reviewed unequal compute/memory weights, high-degree separators, replicated-metadata growth, adaptive refinement, particle multi-part motion, stale ghosts, mixed generations, duplicate/lost migration, insufficient destination capacity, rollback, and restart at changed P.",
+        "Reviewed floating variation, conservation, malformed graph denial, sensitive placement/logs, wildfire forecasting, and radiation-dose optimization."
+      ],
+      "notes": "Covers indexing, topology, ownership, numerics, resources, migration, failure/restart, security/privacy, operations, and high-stakes use."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Owned sets are disjoint and cover active global entities exactly once; stable IDs and decomposition generation identify authority independent of rank mapping.",
+        "Every remote dependency has a compatible owner export and version-matched ghost import; physical, periodic, and partition boundaries remain distinct.",
+        "Checked capacities and conservation survive migration; new maps, ghosts, and communicators activate atomically only after counts, digests, and application validation pass."
+      ],
+      "notes": "Checked invariants from global model through mapping, local compute, boundary exchange, repartition, restart, and publication."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Coverage proof handles quotient/remainder endpoints and independently requires ID counting/hashing for general partitioners.",
+        "Dependency proof quantifies every owned computation edge; conservation proof prevents missing/double interface effects; migration proof accounts for stationary and moved entities.",
+        "Cost proof separates hard capacity/correctness constraints, modeled multi-objective metrics, and target measurements."
+      ],
+      "notes": "No balanced count, low cut, topology constructor, successful migration, snippet, or source check is claimed as universal correctness, numerical validity, or scalability proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Formal ownership/dependency obligations, cost heuristics, implementation mechanisms, and measurements are separately identified.",
+        "The executable fence explicitly disclaims MPI, unstructured partitioning, halo/physics, and performance evidence.",
+        "Wildfire and radiation examples name required reviewers and explicitly claim none."
+      ],
+      "notes": "Partition quality hypotheses and high-stakes application claims remain outside mechanical validation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-084 passed with exact stdout, empty stderr, zero exit code, and retained evidence.",
+        "The chapter requires multiple entity/rank/topology/partition/weight/generation cases, coverage hashes, edge reciprocity, poisoned ghosts, conservation/reference checks, migration faults, restart changes, and numeric policy validation.",
+        "Production evidence records inputs and mapping digests, partitioner/version/options/seeds, placement, per-rank work/memory/neighbors/bytes, migrations, generations, validation, and restart lineage."
+      ],
+      "notes": "The snippet verifies one deterministic rectangular partition only and supplies no MPI, mesh, network, application, or high-stakes evidence."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed entity/dependency modeling, structured and irregular partitions, graphs/hypergraphs/space-filling curves, particles/replication, ownership/ghost/boundary semantics, mappings/storage, dynamic migration, multi-objective metrics, validation, operations, privacy, and high-stakes limits."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed stable IDs and versioned maps, quotient/remainder bounds, topology queries after reordering, checked counts/extents, sparse exchange plans, weight/capacity modeling, migration preflight/deduplication/rollback, checkpoint redistribution, independent coverage/conservation tests, telemetry, quotas, and sensitive-data controls."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter moves from global entities to structured/irregular decompositions, ownership proof, migration, and evidence; includes one exact uneven-grid model; counters sixteen misconceptions; supplies ten distinct examples through wildfire risk; and ends with five progressive exercises and complete answers including radiation-dose optimization."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external MPI Forum/PETSc/LAMMPS/partitioner/mesh-library, MPI/runtime/network/storage/cluster/accelerator, formal verification, numerical/scientific, wildfire/meteorology/geospatial/emergency-management, radiation-oncology/medical-physics/dosimetry/imaging/clinical, security/privacy, operations/SRE, quality/regulatory/certification, ethics, accessibility/human-factors, or safety review is claimed. The chapter and integer model establish neither a real decomposition's correctness, conservation, numerical accuracy, migration/restart safety, performance, portability, or scalability, nor forecast/medical validity, regulatory approval, or deployment safety. PETSc source retrieval was reviewed through the web documentation index, while a later shell curl could not resolve that host."
+}

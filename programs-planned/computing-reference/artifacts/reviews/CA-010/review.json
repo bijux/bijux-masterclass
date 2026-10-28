@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "CA-010",
+  "chapter_digest": "3508443655cdb4ad30bb9a2ec7ce787b4d7fb00624ca5f0c699faf88d0158cd3",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 8, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked the current RISC-V base integer specification, current Ibex fetch/decode/execute references, primary PicoRV32 and Rocket Chip repositories, OpenTitan's integrated Ibex documentation, author resources for digital architecture, and Nand to Tetris project material. All eight authoritative URLs returned HTTP 200. ISA semantics, concrete implementation examples, pedagogical diagrams, simplified traces and production recommendations remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked PC/current-next, source/destination register, register value, immediate, effective address, instruction, write-enable and mux-select notation.", "Verified architectural state, microarchitectural state and commit events are defined separately."],
+      "notes": "Notation ties diagram signals to one ISA transition without implying instantaneous wires, fixed physical resources or omitted exception behavior."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Recomputed register add 7+9 as ALU/writeback value 16.", "Recomputed load address 100+12 as 112 with memory writeback 55, and taken branch 64-8 as next PC 56 with no ordinary writes."],
+      "notes": "The deterministic Python snippet reproduced all three expected instruction-trace outputs."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived an instruction as an architectural pre-state to post-state relation with explicit unchanged locations.", "Checked add, load, store, branch and jump control paths against operand, ALU, memory, writeback and PC-select requirements."],
+      "notes": "The transition reasoning assumes a simplified supported ISA subset and memory contract; it is not a full processor proof."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed scattered immediates, constant register, mux unused codes, store data separation, load extension, branch/jump bases, alignment and byte lanes.", "Reviewed illegal encodings, variable memory latency, memory faults, reset, interrupts, resource conflicts, critical and hold paths, commit suppression and physical/logical separation."],
+      "notes": "Fetch, decode, operand, execute, memory, writeback, PC, timing, exception and implementation boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced instruction bits from PC fetch through field decode, operands, immediate, ALU, memory, muxes and guarded state commits.", "Verified illegal-side-effect suppression, load/store distinctions, next-PC rules, timing assumptions, handshakes and explicit omission inventory."],
+      "notes": "The invariant set prevents plausible datapath values from standing in for complete control, memory or precise-commit behavior."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed fifteen ISA, state, fetch, decode, operand, execute, memory, writeback, PC, commit, timing, interface, resource, evidence and change obligations.", "Constructed counterexamples for arrow-as-clocked-transfer, PC-plus-four-as-universal, load-ALU-as-writeback, two-memory-boxes-as-physical-separation and datapath-tests-as-control-proof claims."],
+      "notes": "The chapter supplies diagram-reading and refinement obligations, not formal verification of RISC-V, Ibex, PicoRV32, Rocket Chip, OpenTitan or a physical processor."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of architectural, committed, current, next, legal, illegal, single-cycle, separate, precise and verified.", "Confirmed ISA requirements, diagram hypotheses, pedagogical memory assumptions, RTL behavior, timing and physical evidence remain separate."],
+      "notes": "The three executable traces are explicitly bounded fragments rather than binary decode, cycle-accurate simulation or implementation proof."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/CA-010/report.json records source, expected and actual output, stderr, exit status, Python toolchain and environment for three datapath traces.", "Reviewed required ISA, control-table, reference-model, instruction, memory, exception, RTL, synthesis, timing, fault and reviewer evidence."],
+      "notes": "The passing toy establishes three arithmetic/control outputs only; it provides no evidence for instruction encoding, HDL, clocking, memory interfaces, exceptions or hardware."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed processor diagrams as mappings from ISA state transitions through state owners, combinational transformations, control selects, interfaces and guarded commit events."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including fetch, decode, register files, immediates, ALU controls, loads/stores, branches/jumps, muxes, illegal instructions, widths, endianness, timing, resources, handshakes, faults, reset, interrupts and trace verification. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from diagram legend and state ownership through instruction-class traces to timing, exceptions and refinement, followed by fifteen obligations, fifteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external computer-architecture academic, RISC-V or processor-core maintainer, RTL or formal-verification engineer, memory-system or physical-design specialist, industrial safety assessor, independent-verification or certification review is claimed."
+}

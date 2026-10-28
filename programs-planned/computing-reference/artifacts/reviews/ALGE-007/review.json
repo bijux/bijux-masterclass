@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-007",
+  "chapter_digest": "6c8bed62d41a804e9219ad7e1e0cce4c5aa5f950b14fa9d86674eb335b078720",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the official MIT Press fourth-edition CLRS record, the official MIT OpenCourseWare 6.006 recurrence handout, the Akra-Bazzi primary-paper DOI record, publication records for the three durable books, and the current official CS2023 Algorithmic Foundations scope. The chapter distinguishes the stated extended Master theorem from narrower variants and limits Akra-Bazzi claims to eligible recurrences under its technical hypotheses."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked every recurrence, expectation, summation, logarithm, exponent, floor, ceiling, asymptotic relation, integral, and work/span/space symbol for defined ownership and balanced GitHub-supported dollar delimiters.",
+        "Corrected 84 malformed draft inline-math closers before review; the strict GitHub math audit now reports no issues, no diagnostics, and no pending normalization.",
+        "Checked that equal-split notation, unequal Akra-Bazzi notation, random-variable conditioning, and liveness recurrences are not conflated."
+      ],
+      "notes": "Exact equalities are restricted to declared models and admitted sizes; rounded or implementation-dependent relations are expressed as inequalities or qualified asymptotic simplifications."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed T(1)=0 and T(n)=2T(n/2)+n for all eleven powers of two through 1024 and matched T(n)=n log_2 n, including T(1024)=10240.",
+        "Recomputed the Exercise 1 exact form at n=100 as 10103 and checked the displayed n^2 lower and 5n^2 upper bounds from n=1 onward.",
+        "Checked the Akra-Bazzi exponent equation at p=1, the case-3 regularity ratios 1/2 and 1/4, and recursion-tree node/leaf counts on representative powers of two."
+      ],
+      "notes": "Finite recomputation corroborates the algebra and executable model; induction, level summation, and theorem premises carry the general claims."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived decrementing sums, halving geometric sums, balanced recursion-tree height, per-level work, and leaf identity a^(log_b n)=n^(log_b a).",
+        "Re-derived all three extended Master classifications, including polynomial separation, k>=0 in the stated case 2, and the eventual case-3 regularity inequality.",
+        "Solved (1/3)^p+(2/3)^p=1 at p=1 and recomputed the Akra-Bazzi integral as log n, yielding Theta(n log n).",
+        "Checked the strengthened substitution step for 3T(n/2)+n: 1-3d/2<=-d exactly when d>=2."
+      ],
+      "notes": "The chapter explicitly sends logarithmic-gap, additive-shrinkage, nonconstant-branching, random, and irregular recurrences outside the displayed Master classifier."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked n=0 versus n=1 bases, fixed and growing cutoffs, powers and non-powers of b, floor/ceiling children, strict descent, and threshold-adjacent inputs.",
+        "Checked unequal and data-dependent splits, empty or absent binary searches, memoized/shared calls, short-circuit branches, and pathological imbalance.",
+        "Checked unbounded retries, failure/cancellation, random/adaptive environments, sequential versus concurrent children, retained outputs, and buffer-lifetime effects on peak space."
+      ],
+      "notes": "A same-size retry is not treated as a well-founded size recurrence; it requires an attempt/deadline or probabilistic progress model."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced resource, case, domain, base, executed calls, sizes, local work, recurrence relation, solver premises, and implementation evidence through the twelve-step worksheet.",
+        "Checked that recursive arguments decrease in every solved recurrence and that each recurrence term maps to an owned execution mechanism.",
+        "Checked that work adds executed tasks, span follows the longest dependency, and peak space counts only simultaneously live storage."
+      ],
+      "notes": "The governing invariant is recurrence-to-code correspondence; algebraic solvability alone is never presented as evidence that the model matches an implementation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the merge recurrence by exact recursion-tree summation, executable recomputation, and the case-2 classifier.",
+        "Reviewed the 3T(n/2)+n tree and strengthened induction, including the positive base-cost premise needed for the stated leaf lower bound.",
+        "Reviewed matching upper/lower reasoning for decrementing, binary-search worst-case, leaf-dominated, balanced-level, and root-dominated examples.",
+        "Reviewed every Master invocation for constant a and b, the comparison exponent, polynomial gap or logarithmic balance, and regularity where required."
+      ],
+      "notes": "Floors, ceilings, and concrete code remain separate correspondence obligations unless bounded by the stated monotonicity and base assumptions."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished exact derivations and completed asymptotic arguments from conceptual theorem summaries and implementation-review plans.",
+        "Qualified Akra-Bazzi use with technical hypotheses and rounding treatment rather than presenting its displayed form as universally applicable.",
+        "Separated the finite executable identity check from the inductive proof and from correspondence to a concrete merge implementation."
+      ],
+      "notes": "Randomized quicksort, remote retry, parallel partitioning, and allocator behavior are scoped modeling examples rather than verified implementation claims."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-007/report.json records CPython 3.14.4 on macOS 13.7.8, the isolated command, zero exit status, empty stderr, and exact expected/actual output.",
+        "The run reproduced six displayed recurrence values and checked all eleven powers of two from 1 through 1024 against n log_2 n."
+      ],
+      "notes": "The executable is an abstract recurrence evaluator, not a merge-sort benchmark or evidence about caches, schedulers, allocators, stack use, rounded sizes, or production latency."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the progression from deriving a resource-specific recurrence through bases, unrolling, trees, substitution, all three Master cases, theorem gaps, eligible unequal splits, random conditioning, and distinct work/span/space models. The chapter consistently separates modeling, mathematical solution, and implementation correspondence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed cutoffs, floors and ceilings, memoization, branch frequency, overlap, imbalance, retries, deadlines, cancellation, parallel scheduling, buffer liveness, retained outputs, cache effects, counters, adversarial inputs, and the limits of timing curves. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified a compact review, explicit derivation worksheet, intermediate algebra for every method, one reproducible exact model, exactly ten distinct worked examples, and five exercises progressing from unrolling and Master classification through substitution, resource diagnosis, and an unfamiliar parallel partitioner with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable, conceptual, practitioner, and pedagogical review only; no external algorithms, probability, parallel-systems, performance, academic, or practitioner review is claimed."
+}

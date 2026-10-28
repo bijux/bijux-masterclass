@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-096",
+  "chapter_digest": "81a76254f6de71a69d3890133dd01f0129d77b15fe195a93660d13fd8b21dec5",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 11, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux kernel documentation for kdump, VMCOREINFO, bug hunting, KGDB/KDB, GDB scripts, ramoops, netconsole, Magic SysRq, taint, issue reporting and fault injection. All eleven official URLs returned HTTP 200 after normal redirects. Panic-path mechanisms, architecture dependencies, diagnostic guidance, simplified models and security recommendations remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked invalid-transition, first-symptom, panic, capture-entry and durable-completion timeline notation.", "Reviewed disjoint page accounting and runtime-to-link address relocation with exact-build and region preconditions."],
+      "notes": "Notation separates fault occurrence, later observation, dump coverage and executable relocation rather than treating a dump address as a root cause."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Subtracted runtime base 0xffffffffa1000000 from fault address 0xffffffffa12345d0 and confirmed offset 0x2345d0.", "Added the offset to link base 0xffffffff81000000, confirmed 0xffffffff812345d0 and round-tripped to the runtime address."],
+      "notes": "The deterministic computation validates relocation arithmetic only; it does not establish build identity, region membership, a real KASLR slide or correct symbolization."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived temporal ordering from latent invalid transition through first detection, stop, capture entry and durable completion.", "Verified page classification only under disjoint exhaustive classes and derived link address as link base plus runtime offset for one matching relocated image."],
+      "notes": "Compression does not alter classified pages, while filtering and unreadable ranges do; runtime regions and modules require separate bases."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed continuing after oops, missing reservation, undersized capture kernels, failed root storage, stale DMA, unavailable locks, partial transfer and filtered pages.", "Reviewed wrong builds, module relocation, corrupt stacks, missing CPUs, taint, hangs, debugger perturbation, intermittent bisection, malicious dumps and cross-tenant secret exposure."],
+      "notes": "Failure trigger, crash handoff, CPU/device state, storage, representation, reconstruction, analysis, reproduction, security and recovery boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced pre-crash reservation and preload through panic-safe entry, device stabilization, vmcore export, checksummed storage and known-good reboot.", "Verified first-evidence preservation, exact vmlinux/module/debug identity, VMCOREINFO, per-region relocation, page omissions, access custody and regression testing."],
+      "notes": "The invariant set treats capture as an independently prepared failure-time system whose evidence remains bounded by corruption and omissions."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed twelve trigger, preparation, independence, panic-safety, preservation, completeness, reconstruction, interpretation, security, reproduction, remediation and recovery obligations.", "Constructed counterexamples for panic-line-as-cause, continued-as-recovered, reservation-as-guarantee, kexec-as-device-reset, plausible-symbol-as-correct and successful-capture-as-safe-recovery claims."],
+      "notes": "The chapter provides reusable forensic obligations, not a formal proof of Linux kdump, capture completeness, debugger correctness, root cause or a recovery process."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of first, captured, complete, preserved, valid, matching, symbolized, coherent, recovered, reproducible and fixed.", "Confirmed warnings, oopses and panics; raw and filtered dumps; exact and uncertain frames; exposure and causality; capture and recovery remain distinct."],
+      "notes": "Kernel contracts, simplified arithmetic, operational recommendations, forensic inferences and assurance limits remain separately labeled."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-096/report.json records source, expected and actual output, stderr, exit status, Python toolchain and environment for address relocation.", "Reviewed required build, module, source, boot, taint, reservation, capture-image, destination, vmcore, VMCOREINFO, loss, checksum, custody, reproducer and fix evidence."],
+      "notes": "The passing toy establishes three address-arithmetic outputs only; it provides no evidence for a real KASLR slide, crash, vmcore, unwind, kdump handoff, root cause or recovery."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed crash debugging as a lossy evidence chain from first invalid transition through prepared capture, exact-build reconstruction, controlled reproduction and verified remediation."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including panic policy, reserved memory, minimal capture kernels, stale DMA, destinations, VMCOREINFO, filtering, symbols, unwinding, pstore, remote consoles, live debugging, bisection, fault injection, custody and recovery. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from failure classification through capture mechanics and reconstruction to debugging, reproduction, security and recovery, followed by twelve obligations, sixteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux kdump or debugging maintainer, kernel forensics specialist, hardware or DMA expert, incident responder, privacy reviewer, independent-verification or certification review is claimed."
+}

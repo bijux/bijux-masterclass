@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-047",
+  "chapter_digest": "c6ea13fbdf0ca6e3678ab3cc12763e7d8a60d523a620b96e78e3608f49230559",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 6,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked Kuhn's 1955 Wiley DOI record and Munkres's 1957 SIAM record as primary algorithm sources; current publisher records for Schrijver, Ahuja-Magnanti-Orlin, and CLRS; and official SciPy 1.18.0 documentation. The dense rectangular interface claims are version and retrieval-date scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked primal variables, row and column equalities, dual potentials, reduced costs, equality graph, alternating reached sets, delta update, and objective notation; checked balanced GitHub math delimiters."],
+      "notes": "Minimization direction, unrestricted potentials, nonnegative reduced costs, and binary versus relaxed variables remain explicit."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Enumerated all six permutations of the 3-by-3 executable instance and recomputed the unique selected cost 1+2+2=5.", "Checked all nine dual sums (3,1,2), (2,0,1), and (3,1,2) against the cost matrix and recomputed dual value 5.", "Recomputed worked-example gaps, dummy counts, collision outcomes, and big-M counterexample."],
+      "notes": "The executable uses exact integer costs and reports exact primal-dual equality."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Re-derived weak duality by multiplying dual constraints by nonnegative primal variables and applying row and column sums.", "Re-derived complementary tightness as sufficient for objective equality.", "Checked all four reduced-cost regions under the Hungarian potential update and the positive dual-objective increment.", "Reviewed assignment-polytope integrality through permutation extreme points and the total-unimodular alternative."],
+      "notes": "The chapter does not claim integrality survives arbitrary added side constraints."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Checked rectangular and incomplete graphs, unequal sides, dummy penalties, forbidden arcs, insufficient big-M bounds, negative potentials, nonunique potentials and optima, NaN, overflow, floating error, and mixed units.", "Checked sparse instances, stale snapshots, deterministic ordering, maximum-score transforms, pair interactions, capacity greater than one, and distribution constraints."],
+      "notes": "Forbidden pairs, nonassignment, and zero cost are kept semantically distinct."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Checked one selection per required row and column, dual feasibility, nonnegative reduced costs, tight matched edges, preservation under potential updates, and one matrix snapshot.", "Checked executable permutation feasibility, cost recomputation, every dual inequality, selected-edge tightness, and equal objectives."],
+      "notes": "Optimality is accepted only after both primal and dual feasibility validate."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed each equality in the weak-duality derivation.", "Reviewed complementary-slackness equality for selected edges.", "Reviewed alternating-reachability cardinality and reduced-cost changes in the Hungarian update.", "Reviewed bounded-polytope and total-unimodularity routes to an integral optimum."],
+      "notes": "The core proof assumes a finite balanced additive assignment with a feasible complete bipartite cost matrix; variants receive separate modeling conditions."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Audited uses of proof, theorem, integrality, feasibility, optimal, certificate, exact, current, and independent.", "Confirmed that mathematical duality, local enumeration, library behavior, and deployed-policy adequacy are not conflated."],
+      "notes": "The Birkhoff-von Neumann and total-unimodularity results are attributed rather than presented as newly proved in full."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/ALGE-047/report.json", "The CPython snippet exited zero with exact four-line stdout, empty stderr, a cost-five assignment, a feasible value-five dual, selected-edge tightness, and a true certificate result."],
+      "notes": "Enumeration reproduces one small instance in the recorded environment; the algebraic weak-duality argument supports the general certificate."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from additive model through primal and dual formulation, weak duality, complementary tightness, Hungarian updates, integrality, rectangular modeling, executable verification, numerics, current interfaces, and governance."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed objective direction, stable identities, sparse versus dense representation, forbidden-edge semantics, dummy policy, numeric scale, overflow and NaN, deterministic ties, snapshot digests, independent checking, capacities, and interacting costs."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter derives the primal-dual certificate and Hungarian invariant, includes ten distinct mathematical and production examples, and ends with five progressive exercises and complete model answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external academic, independent solver, security, performance, fairness, legal, or domain review is claimed. The additive assignment model does not certify interacting costs or unstated allocation policy."
+}

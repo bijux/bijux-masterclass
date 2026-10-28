@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-092",
+  "chapter_digest": "73316a1b9644ec27c63a886ea8af25dcc2777b1d233817481584c165e41a7fff",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked Fowler's original DTO catalog/chapter and Local DTO qualification, current OpenAPI 3.1.1, JSON Schema 2020-12, Protocol Buffers field-presence/evolution guidance, RFC 8259/9110 and OWASP mass-assignment guidance. Parser/generator behavior remains version qualified."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked input/output DTO, parse/serialize, context mapping, result projection, presence state and reader/writer notation.",
+        "Checked allow-list/visible-set relations and non-invertible mapping qualification."
+      ],
+      "notes": "Direction, trust, audience and model ownership remain explicit."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter contains no quantitative result whose correctness depends on numerical calculation; resource bounds are design dimensions without fixed calculations."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified separate input allow-list prevents fields outside writable set from reaching the shown mapper path, unlike reflection copying.",
+        "Verified presence-state preservation distinguishes omitted/no-change, null/clear and default/value set operations.",
+        "Verified additive optional-field compatibility requires tolerant old readers and preserved existing meaning; required/type/meaning changes break premises.",
+        "Verified asymmetric projection cannot generally satisfy inverse round-trip equality."
+      ],
+      "notes": "Authorization, inference risk and business validity require contextual mechanisms beyond schema/mapping."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed absent/null/empty/zero/false, unknown fields/enums, required additions, renames, numeric precision, timezone/Unicode and duplicate/parser behavior.",
+        "Reviewed mass assignment, nested secret exposure, lazy graphs/cycles, oversized/decompression/nesting attacks, polymorphic injection, logs/schema examples and inference risk.",
+        "Reviewed old/new cross-language fixtures, batching/partial failure, local DTO ceremony and high-stakes decision exposure."
+      ],
+      "notes": "Actual parser/generator/canonicalization and cross-language behavior require toolchain fixtures/fuzzing."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced named boundary/direction, writable allow-list, layered validation, presence, authorized output, canonical scalars, mapping errors, compatibility and resource bounds through examples/answers.",
+        "Confirmed domain/persistence/command/event/view semantics are not collapsed into DTO."
+      ],
+      "notes": "Allow-list prevents automatic new-field exposure but cannot alone prevent inference from allowed combinations."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed call-reduction, mass-assignment, exposure, presence, compatibility, mapping-ownership and bounded-parsing arguments against stated premises.",
+        "Confirmed counterexamples for shared request/response/domain/ORM model, reflection mapping, collapsed presence, float money, ordinal enums and unbounded graphs."
+      ],
+      "notes": "No proof of complete confidentiality, compatibility across all toolchains, legal/privacy adequacy or constant parser cost is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited valid, authorized, compatible, safe, canonical, exact, required, optional, unknown, exposed and round-trip language.",
+        "Confirmed schema conformance, domain correctness, security/privacy review and empirical toolchain evidence are separated."
+      ],
+      "notes": "DTO is presented as a boundary pattern, not mandatory local architecture."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-092/report.json",
+        "Reproduced response allow-list, no password_hash field, absent/null/value presence and ignored role using Python 3.",
+        "Confirmed no serialization, schema, auth, domain transaction, compatibility, precision or allocation behavior was executed."
+      ],
+      "notes": "Execution establishes fixed dictionary/mapping branches only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter preserves the original remote-transfer motive while defining modern DTO value through explicit trust, ownership, compatibility and exposure boundaries."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers representation distinctions, direction/authority, validation, presence, scalar encodings, mapping, evolution, resource safety, security/privacy and cross-version evidence."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with deterministic boundary mapping, ten distinct examples and five exercises progressing from shape design through compatibility, diagnosis, boundary selection and regulated transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

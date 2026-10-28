@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-067",
+  "chapter_digest": "54ca4800cff970f51e1bed339781bca338f7cc53ce148ee5f48708ad5b838855",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Crossref independently confirmed titles, authorship scope, dates, and exact DOI records for persistent data structures, atomic snapshots, MVCC, SI definitions/anomalies, serializability, SSI, and the PostgreSQL implementation paper; this check exposed and corrected an initially wrong VLDB DOI before review. Current PostgreSQL 18 MVCC and isolation documentation and current Linux kernel RCU documentation resolved directly and support the scoped product/mechanism claims. Scholarly DOI landing behavior varies by publisher, so metadata was checked through Crossref and institutional primary copies where needed. Claims are paraphrased and no inaccessible quotation is used."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation consistently defines immutable roots, item-version sets, read/commit versions, read/write sets, visibility, anti-dependencies, horizon, retirement, and snapshot stability.",
+        "Persistence, atomic-scan linearizability, MVCC visibility, SI, serializability, durability, freshness, and reclamation claims retain distinct domains."
+      ],
+      "notes": "Checked version ordering, greatest-visible-version language, set intersections, anti-dependency direction, graph-cycle language, O(log n) path copying, horizon inequalities, and logical rather than wall-clock coordinates."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed that the two disjoint write sets A and B have empty intersection and therefore both commit under the teaching SI rule.",
+        "Recomputed the resulting state as A=false, B=false with invariant false; dependency validation commits A, rejects B after A changes B's read key, and leaves A=false, B=true with invariant true.",
+        "artifacts/snippets/CONPAR-067/report.json records the exact expected dictionaries, commit lists, Boolean outcomes, empty stderr, and zero exit code."
+      ],
+      "notes": "The output validates the finite write-skew model only. It is not a PostgreSQL execution, a complete SSI algorithm, a durability protocol, or evidence about every SI implementation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Path-copying induction preserves every old immutable subtree and replaces only the root-to-change path, yielding one functional update without changing the old root.",
+        "Release publication followed by acquire discovery orders complete initialization before reader traversal, subject to atomic root and lifetime assumptions.",
+        "The on-call history has T_A to-rw T_B and T_B to-rw T_A; the cycle excludes a serial order even though write sets are disjoint."
+      ],
+      "notes": "These are reusable proof obligations, not mechanized proofs of a concrete persistent tree, compiler memory model, MVCC engine, SSI implementation, RCU implementation, or filesystem."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty and old versions, branching from history, shallow mutable aliases, exceptions during construction, multi-root tears, self-writes, aborted/uncommitted/deleted versions, commit-ID gaps, timestamp collision, wraparound, ABA, and identity reuse.",
+        "Reviewed write skew, phantoms, predicate/range reads, opacity, statement versus transaction snapshots, stale caches/replicas, mixed external sources, schema/index visibility, crash publication, WAL/data ordering, recovery, and external effects.",
+        "Reviewed reader announcement races, nesting, cancellation, thread death, long snapshots, replica/backup/change-stream/audit pins, vacuum/compaction, resource exhaustion, GC retention, manual reclamation, rollback, security/revocation, and clinical freshness."
+      ],
+      "notes": "Boundary review covers semantic, memory-order, version-order, transaction, database, storage, recovery, lifecycle, distributed, operational, security/privacy, resource, and high-stakes safety cases."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every published root is completely initialized and transitively immutable; all related roots become visible through one atomic commit boundary.",
+        "Each transaction applies one declared visibility rule, hides aborted/uncommitted versions, reads its own writes, and validates every dependency required by the claimed isolation level.",
+        "Every retired version remains allocated until all reader, replica, recovery, backup, stream, rollback, and audit obligations pass their corresponding horizons."
+      ],
+      "notes": "Checked invariants across private construction, publication, snapshot acquisition, read selection, write staging, conflict validation, commit/abort, index update, crash/recovery, retirement, grace periods, reclamation, and external dispatch."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "The persistent-structure proof uses immutability plus induction from changed leaf to new root and explicitly covers private failure before publication.",
+        "The publication proof names release/acquire synchronization, one atomic root, transitively complete construction, and independent lifetime protection.",
+        "The SI anomaly proof identifies both anti-dependencies and the cycle; the reclamation proof requires announcement/load ordering and a grace condition for every reader that could reach a retired root."
+      ],
+      "notes": "Review found no inference from stable reads to serializability, from persistent data to crash durability, from garbage collection to bounded retention, or from one root swap to cross-system consistency."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable fence is explicitly a sequential finite model and disclaims database, locking, durability, and complete SSI behavior.",
+        "The atomic-snapshot helping discussion is labeled a classic proof sketch and warns against casual production translation.",
+        "The high-stakes example requires named human review and explicitly states that no external review is claimed."
+      ],
+      "notes": "No stable view, DOI, executable output, internal review, current product documentation, or stress plan is mislabeled as universal serializability, lifetime safety, durability, freshness, certification, or clinical safety."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-067 passed the annotated Python model under the recorded Python 3.14.4 toolchain with exact stdout, empty stderr, and zero exit code.",
+        "The evidence strategy separately requires reference-model comparisons, generated histories and serialization graphs, predicate anomalies, crashes, lag, long snapshots, wrap boundaries, faults, recovery, and systematic lifetime interleavings.",
+        "Performance and operational evidence names version chains, copied bytes, root contention, validation, aborts, retained history, horizons, reclamation lag, fragmentation, and recovery volume rather than equating correctness with throughput."
+      ],
+      "notes": "Empirical evidence establishes the local model output only and proves no production database, persistent structure, memory ordering, reclamation, storage, distributed snapshot, performance, security, clinical, or safety claim."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the distinction among immutability, persistence, atomic scans, MVCC, and SI; path copying; visibility; private writes/publication; write skew; predicates/serializability; freshness/opacity; identity/wraparound; reclamation; durability/recovery; external effects; performance; and evidence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed super-root publication, release/acquire ordering, version metadata, read-your-writes, abort invisibility, predicate conflicts, retry strategy, guardian rows, mixed-source consistency, counter/no-reuse proof, reader pinning, vacuum horizons, lag/backpressure, WAL/recovery, outbox dispatch, monitoring, and adversarial testing."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter begins with five commonly conflated abstractions, builds from immutable structures to MVCC and SI anomalies, includes one exact executable write-skew contrast, supplies ten distinct examples through clinical configuration, and ends with five progressive exercises and complete scoped answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external persistent-data-structure, atomic-snapshot, memory-model, compiler/runtime, MVCC/database, PostgreSQL, RCU/kernel, storage/filesystem, recovery, distributed-systems, performance, security/privacy, clinical, regulatory, operations, human-factors, or safety review is claimed. The chapter and executable model establish neither a named implementation's immutability, linearizability, isolation, serializability, reclamation safety, crash durability, freshness, performance, security, certification, clinical validity, nor deployment safety."
+}

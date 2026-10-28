@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-097",
+  "chapter_digest": "03af77aca8fd11e436382852ff570a64efbe647b8c8b3f85ba62f4b18305b342",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked publisher, journal, DOI, or primary-paper records for Rice's selection formulation, algorithm portfolios, SATzilla, AutoFolio, ASlib, the algorithm-selection survey, universal restart strategies, and experimental algorithmics. Current tool behavior is not asserted."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Defined instance population, candidates, selection-time features, policy, loss, overhead terms, SBS, VBS, oracle gap, and gap closed before use.",
+        "Checked lower-is-better directions, nonnegative weights, milliseconds, percentages, core-seconds, censoring, and resource-budget terminology."
+      ],
+      "notes": "Oracle, deployable policy, static baseline, schedule, restart, race, and adaptive policy remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed candidate totals A=61 and B=49, VBS=43, selector execution=45, end-to-end=47.5, regret=4.5, gap closed=25%, and fastest-label accuracy=80%.",
+        "Recomputed Exercise 2 SBS=21, VBS=17, selector execution=18, end-to-end=19.5, regret=2.5, and gap closed=37.5%."
+      ],
+      "notes": "Feature-inclusive and execution-only effects are never substituted for each other."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived the weighted VBS inequality from pointwise minima under nonnegative weights.",
+        "Reviewed the gap-closed normalization and the additive feature-value inequality."
+      ],
+      "notes": "The VBS inequality applies to the recorded candidate loss table, not unobserved deployment outcomes."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero oracle gap, negative gap closed, timeouts, wrong answers, missing features, feature overflow, out-of-domain instances, adversarial inputs, and correlated candidate failures.",
+        "Reviewed parallel contention, late cancellation, state incompatibility, selective feedback, distribution drift, and stale candidates."
+      ],
+      "notes": "Constraint failure and uncertainty reduce selector authority and trigger fallback."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked pre-decision feature availability, frozen procedure identity, family-grouped splits, end-to-end cost accounting, and deterministic fallback invariants.",
+        "Checked transition invariants for problem identity, incumbent validity, certificate provenance, budget, numeric semantics, cancellation ownership, and single publication."
+      ],
+      "notes": "Adaptation cannot waive semantic admissibility or independent verification."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the oracle-bound proof premise that all compared losses share a common frozen table and nonnegative weighting.",
+        "Reviewed restart claims against Las Vegas correctness, fresh randomness, independence, and restart-cost assumptions."
+      ],
+      "notes": "Universal restart theory is not generalized to arbitrary stateful production solvers."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited oracle, opportunity, attainable, retrospective, held-out, causal, safe, calibrated, exact, censored, and heuristic language.",
+        "Separated theorem-conditioned restart behavior, empirical portfolio evidence, model prediction, and production decision."
+      ],
+      "notes": "VBS is consistently labeled retrospective rather than deployable."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-097/report.json",
+        "The CPython 3.14.4 fixture reproduced SBS, VBS, overhead-inclusive selector loss, regret, gap closed, and label accuracy on macOS 13.7.8 x86_64.",
+        "Independent arithmetic reproduced the fixture and exercise results."
+      ],
+      "notes": "The finite fixture demonstrates accounting; it does not validate a learned selector on an external population."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed scenario definition, baselines, useful diversity, feature design, portfolio geometries, decision-loss training, grouped evaluation, uncertainty, adaptation, restarts, races, monitoring, and retirement."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed candidate and feature versioning, censored failures, resource accounting, OOD fallback, cancellation, independent verification, selective feedback, drift telemetry, rollback, and member retirement."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter derives portfolio evaluation from first principles, supplies an executable end-to-end accounting fixture, ten distinct worked examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external academic, machine-learning, solver, performance, operations, or production review is claimed. Conclusions remain conditional on problem semantics, candidate set, feature availability and cost, population and family structure, loss, censoring and failure rules, tuning and split protocol, oracle table, uncertainty calibration, fallback, resource accounting, environment, platform, toolchain, and drift."
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-060",
+  "chapter_digest": "da5e12c431cbb71ac9b889a89f780991187fb47a920735ac0fcd593ec4de23fb",
+  "review_date": "2026-08-31",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked the current NASA Systems Engineering Handbook page and PDF; active NASA-HDBK-1009A and NASA-HDBK-1004 records; official OMG SysML v2 overview, Language 2.0 and Systems Modeling API 1.0 specifications; official GAO weapon-system testing report; and official NIST Model-Based Enterprise publication/program records. All ten final URLs returned HTTP 200. Claims distinguish normative specifications, official guidance/findings and the chapter's workflow synthesis."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the decision-contract tuple over question, decision owner, outputs, authorities/configuration, evidence, gates and review time.",
+        "Reviewed lead time as active plus waiting plus rework for the explicitly additive teaching model.",
+        "Reviewed flow efficiency and the bounded utility prioritization expression.",
+        "Reviewed support relation, gate-result set and freshness semantics."
+      ],
+      "notes": "The chapter explicitly warns that real workflow intervals can overlap and that the utility expression is not a universal economic law."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed mbse-decision-flow-fixture under python3 with exact output recorded in artifacts/snippets/SYSENG-060/report.json.",
+        "Confirmed four complete decision contracts, two completed items and both completed gates passed.",
+        "Confirmed two work-in-progress items against a declared limit of two.",
+        "Recomputed sixteen active, twenty-four waiting and four rework hours for forty-four total lead hours.",
+        "Recomputed flow efficiency as 16/44 = 36.4 percent to one decimal and one overdue unfinished item."
+      ],
+      "notes": "The declared teaching data diagnose queue behavior only; they do not establish project performance, causality, content quality or an optimal WIP limit."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Confirmed every workflow item binds a question and owner to outputs, source/configuration, evidence, gates and time.",
+        "Confirmed minimum sufficient scope is derived from decision/evidence need and does not mean minimal rigor.",
+        "Confirmed the pilot argument proceeds from baseline and contract through implementation, delivery, comparison, adoption, control and explicit scale/adapt/retire decision.",
+        "Confirmed reducing ceremony cannot remove evidence required by consequence and adding rigor requires a control objective.",
+        "Confirmed automated pass does not replace engineering judgment or authorized acceptance."
+      ],
+      "notes": "The evidence argument supports bounded pilot evaluation; it does not claim controlled experimental proof in an organizational setting."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Challenged tool-first adoption, whole-system scope, missing consumers, duplicate authority, diagram-as-model thinking and centralized ownership bottlenecks.",
+        "Reviewed giant packages, cycles, monthly merges, long-lived branches, semantic conflicts, unavailable reviewers and WIP overload.",
+        "Reviewed excessive profiles, weak onboarding, inaccessible stakeholder tools, generated-document shadow authority and brittle custom integrations.",
+        "Reviewed exploration versus baseline, low versus safety-critical consequence, automated-gate limits, dissent, exceptions and recovery.",
+        "Reviewed vanity metrics, critical gaps hidden by averages, selection/confounding/gaming, pilot champion dependence and enterprise-scale changes.",
+        "Reviewed supplier/federation/access constraints, schema/API failures, stale derivatives, transformation provenance and long-term tool exit.",
+        "Reviewed all ten examples and five complete answers for assumptions, intermediate reasoning, evidence limits and bounded conclusions."
+      ],
+      "notes": "Adoption still requires project-specific domain, human-factors, tool/API, configuration, cybersecurity, safety, assurance, supplier, records, contractual and decision-authority review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Confirmed every durable product requires decision/use, consumer, owner, authority/configuration, freshness and retirement context.",
+        "Confirmed one authority per fact context and visible provenance for derived views.",
+        "Confirmed stable identity, modular ownership and controlled contracts remain separate from diagram/package layout.",
+        "Confirmed small changes, frequent integration, semantic review, automated validation and explicit baseline/recovery recur throughout.",
+        "Confirmed measures retain raw dimensions and critical gates rather than optimizing artifact counts or one average.",
+        "Confirmed tailoring preserves required evidence and retrospectives can remove mechanisms only while retaining control objectives/history."
+      ],
+      "notes": "Workflow speed is never presented as compensating for missing safety, security, configuration, integrity or contractual evidence."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents a bounded evidence argument but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable result is labeled synthetic_flow_metadata_only and its limitations immediately follow it.",
+        "The flow-efficiency and utility expressions are labeled local diagnostic/prioritization models rather than universal laws.",
+        "NASA, OMG, GAO and NIST material is attributed without claiming that any source validates this local workflow.",
+        "The pilot evaluation explicitly requires baseline, confounders, missing data, adverse effects, adoption and sustainability checks.",
+        "No external review, causal improvement, enterprise scalability, compliance, certification or engineering-decision correctness is claimed."
+      ],
+      "notes": "Outcome claims remain conditional on project measurement and authorized review."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked MBSE, decision product/pull, minimum sufficient model, modeling increment, authority map, working agreement, gates, debt, flow efficiency, review latency and exit criteria. Rigor, ceremony, tool use, diagrams, models, generated views and authoritative facts remain distinct."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked value-stream diagnosis, pilot selection, decision contracts, scope, authority, boundaries, language subset, stakeholder views, small changes, done criteria, automation, semantic review, WIP, analysis, downstream contracts, document generation, enablement, health budget, measures, exploration, tailoring, scaling and retrospectives."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from decision need and workflow economics through implementation mechanisms, trade-offs and adoption evidence. Ten examples isolate recurrent adoption failures; five complete solutions cover a decision contract, overloaded workflow, federated CI/review, causal/sustainable pilot evaluation and controlled view retirement."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external NASA/NIST/OMG/GAO expert, MBSE transformation lead, domain owner, tool vendor, platform/API/data engineer, human-factors or organizational-change specialist, cybersecurity, supplier, configuration/records, software/hardware/test, safety, assurance, independent V&V, contractual, technical-authority or decision-authority review is claimed."
+}

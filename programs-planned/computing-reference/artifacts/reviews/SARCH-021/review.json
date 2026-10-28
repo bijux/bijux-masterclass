@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-021",
+  "chapter_digest": "343ee7a376dd0ee7be931859426ae97a3cc0fef6add7daf65d0d0ef3a7bc6ebd",
+  "review_date": "2026-09-06",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-06",
+    "notes": "Checked the official C4 system-context guidance, arc42 context-and-scope guidance, and NIST SP 800-160 Volume 1 Revision 1 record; each returned HTTP 200. The ISO 42010 catalogue endpoint returned HTTP 403 to the command-line client, so the current 2022 edition, status, and architecture-description scope were independently confirmed from the official catalogue record without claiming command-line reachability. Reviewed all seven references for viewpoints, context, interfaces, stakeholder concerns, cross-view correspondence, and trustworthy-system boundaries."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the labeled directed multigraph G=(V,E,s), distinguished system node, external-node partition, edge-label tuple, known scenario set, crossing function, coverage predicate, and responsibility sets.",
+        "Confirmed that direction, multiedges, subset relations, known-scenario scope, and the difference between model claims and implementation evidence are explicit."
+      ],
+      "notes": "The notation models one system in an environment without treating the graph as proof of discovery completeness or behavioral correctness."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter contains no numerical result, probability, measurement estimate, or arithmetic derivation requiring recomputation; numbered lists identify structure rather than quantitative evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified that V_ext=V\\{s} separates the distinguished system node from all modeled environmental nodes.",
+        "Verified that the coverage predicate holds exactly when each known scoped scenario's crossing set is a subset of E.",
+        "Recomputed Exercise 2: E1 lacks d for two scenarios, whereas E2 includes every crossing in all three known sets."
+      ],
+      "notes": "The multigraph permits distinct semantic crossings between the same pair of entities and does not collapse them into one ambiguous bidirectional relation."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed omitted people and operations, mixed internal detail, identity and authorization authority, sensitive analytics, shared DNS and identity, batch files, manual support, ambiguous payment timeout, dual-provider migration, and physical railway control.",
+        "Checked dormant, denied, asynchronous, batch, manual, offline, physical, failure, recovery, current, target, shared-responsibility, and high-consequence crossings."
+      ],
+      "notes": "The examples span logical, organizational, data, security, operational, lifecycle, and physical context boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced one named system, explicit purpose, responsibility-based boundaries, material-entity coverage, semantic directed crossings, authority and dependency, concern projections, scenario traceability, cross-view consistency, and lifecycle maintenance through exposition, examples, and answers.",
+        "Confirmed that external placement never removes end-to-end accountability, failure analysis, fallback, or reconciliation obligations."
+      ],
+      "notes": "Every projection must retain stable entity and relationship identity even when it intentionally omits concern-irrelevant detail."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the structural-coverage implication directly from the subset premise for every known scoped scenario.",
+        "Confirmed that the result does not infer scenario completeness, contract correctness, implementation existence, user outcome, quality response, or production currency."
+      ],
+      "notes": "The logical claim is appropriately limited to correspondence between two declared model sets."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of complete, prove, current, target, authority, trust, correct, observed, generated, guaranteed, and external review."
+      ],
+      "notes": "No proof sketch is presented; diagrams, discovered traffic, structural coverage, standard conformance, and internal review remain explicitly bounded."
+    },
+    "empirical_evidence_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No new production discovery, configuration comparison, user study, experiment, benchmark, executable snippet, or reproduced empirical result is presented. Suggested discovery and reconciliation activities are evidence procedures rather than claimed findings."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed system of interest, responsibility boundary, external entities, crossings, interfaces, viewpoints, views, abstraction, interaction modes, shared infrastructure, concern projections, scenario coverage, reconciliation, uncertainty, and evolution for conceptual coherence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed semantic edge labels, callers versus authorities, synchronous and asynchronous behavior, files, manual recovery, external suppliers, shared control planes, current-to-target migration, traffic discovery limits, ownership, contracts, fallback, and operational triggers. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles context-view vocabulary, derived multigraph and coverage model, thirteen misconceptions, ten distinct worked examples, and five progressive exercises with complete answers ending in unfamiliar drinking-water-control transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-035",
+  "chapter_digest": "43e9ba2a227321aee67cdd59b5387fe3d12d7fb2458e5024e8f3f59c472c508a",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed current PostgreSQL multicolumn, index-only, ordering, and scan documentation; official SQLite query-planning guidance; current MySQL 8.4 multicolumn/index guidance; Graefe; Chaudhuri-Narasayya; and the cited textbook. Five official destinations returned HTTP 200. Both MySQL and both Microsoft destinations returned automated-access HTTP 403; their official/primary content remained research-index readable. Product behavior is version scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked physical tuple key K, tie-breaker, per-part direction/NULL/collation, coverage sets R and I, visibility V, and scan/candidate/result/fetch/width/fan-out/height quantities.", "Checked boundary constraint, residual index condition, base recheck, payload, coverage, and index-only execution as distinct terms."],
+      "notes": "All ordering and interval claims are tied to one declared lexicographic comparator."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Independently sorted the seven-row fixture under both key orders.", "Recomputed matching IDs 2,3, good-order examined count 2, alternate-order count 4, covering heap fetches 0 under declared all-visible state, and noncovering fetches 2.", "Recomputed linear direction examples and the complete pagination tie-breaker behavior."],
+      "notes": "A separate implementation printed independent_counts=True."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Re-derived contiguity for a fixed leading prefix followed by the next-part range.", "Re-derived why an unconstrained earlier key partitions a later constraint into multiple groups.", "Re-derived forward/backward reversal of every unfixed key direction.", "Re-derived coverage as R subset I while base avoidance additionally needs engine visibility evidence."],
+      "notes": "Structural usability is not presented as proof of optimizer choice or performance."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Reviewed empty results, equality/range endpoints, missing leading columns, low/high distinct leading values, skip scan, duplicate ties, exclusive continuation, and mixed direction.", "Reviewed NULL/collation/type semantics, composite uniqueness, payload exclusion, implicit locators, lossy prefix/expression recheck, and tuple-size failure.", "Reviewed all-visible versus churned pages, wide/volatile payload, skew/correlation, stale statistics, parameter sensitivity, broad ranges, limits, cache, and concurrent writes.", "Reviewed redundant-index constraint roles, invisible/canary removal, build/rebuild resources, rollback, and workload drift."],
+      "notes": "Engine-specific skip scan, INCLUDE, locator, visibility, and optimizer behavior is explicitly scoped."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["The repository verifier matched exact seven-line stdout, empty stderr, and zero exit status.", "The model verifies equal logical results under both orders, exact examined-entry counts, declared coverage, all-visible avoidance, noncovering fetch count, and output order.", "Draft validation accepted exact front matter/section order, ten examples, five exercises/answers, local links, and snippet execution before stopping only for review evidence."],
+      "notes": "The model omits DBMS pages, optimizer costing, statistics, SQL NULL/collation, MVCC transitions, concurrency, WAL, and measured I/O."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed lexicographic interval argument and its missing-leading countercase.", "Reviewed output-order and backward-scan claims under fixed prefixes.", "Reviewed uniqueness boundary between key and payload.", "Reviewed all exercise answers for interval/residual classification, counts, visibility, consolidation safety, and production experiment design."],
+      "notes": "No proof of optimizer optimality, workload dominance, concurrency behavior, or universal index-only execution is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["The interval argument is labeled structural rather than an optimizer/performance proof.", "The executable artifact is labeled a finite all-visible in-memory model.", "Leftmost-prefix guidance is a baseline with current skip-scan qualification.", "Audited covering, index-only, selective, ordered, redundant, guaranteed, current, and optimal language for scope."],
+      "notes": "Coverage enables value return; the chapter does not equate it with zero base reads."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": ["The standard-library comparison model executed successfully through the repository verifier.", "Independent sorting reproduced candidate counts and results.", "Five official sources were retrieved; four automated vendor/publisher requests returned HTTP 403 and are recorded.", "All performance/design recommendations require actual plans, counters, workload replay, canaries, and thresholds."],
+      "notes": "No live DBMS, visibility map, heap, optimizer plan, concurrent workload, build, or benchmark was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter derives composite behavior from one lexicographic order and separates bounds, residuals, ordering, key semantics, payload coverage, visibility, and economic cost."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed query families, pagination, skip scan, INCLUDE/uniqueness, visibility, implicit locators, entry limits, fan-out/write amplification, skew/statistics, consolidation, canary, rollback, and observability."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, executable two-order comparison, ten distinct examples, and five exercises progress from interval derivation through production index selection and safe consolidation."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter does not certify an index definition, DBMS plan, collation/NULL rule, visibility state, write budget, workload result, or production fitness."
+}

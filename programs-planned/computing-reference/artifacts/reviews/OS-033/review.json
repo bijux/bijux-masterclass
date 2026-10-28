@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-033",
+  "chapter_digest": "2f694d7b7e06d946303e9a00a94e95c0fff2eecb41cfce05da7fa140ad7a762e",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 9, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux kernel documentation for TLB flushing and page tables; current RISC-V supervisor, hypervisor, and SBI remote-fence specifications; current Intel and Arm architecture documentation; the Linux performance-event man-page; and MIT's 2025 xv6 text. All nine cited URLs returned HTTP 200 after normal redirects; architecture, OS, implementation, empirical, and assurance claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked cached entry E=(c,V,P,F,perm,attr,g), entry counts n_i, page sizes P_i, nominal reach R, useful reach R_u, shootdown generation q, target set S_q, and acknowledgment set A_q.", "Reviewed TLB, hit, miss, refill, reach, ASID, PCID, global translation, invalidation, shootdown, page-walk cache, context generation, and nested translation terminology."],
+      "notes": "Notation separates entry matching, nominal capacity, workload-conditioned reach, address-space identity, and distributed invalidation completion."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed 64 base-page entries at 4 KiB and confirmed 256 KiB nominal base reach.", "Executed four 2 MiB entries and confirmed 8 MiB huge reach, 8.25 MiB combined reach, and 512 base pages per huge page."],
+      "notes": "The deterministic model omits associativity, partitions, conflicts, replacement, page walks, faults, invalidation, and workload locality."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived entry match from context plus V<=v<V+P and output F+(v-V) subject to cached permission.", "Checked nominal reach sum(n_i*P_i) and reclamation only when acknowledgment set A_q covers target set S_q under a no-unflushed-new-entrant protocol."],
+      "notes": "Useful reach and invalidation cost are explicitly empirical and architecture-dependent rather than derived from entry count alone."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed hits, misses, successful refills, faults, cached invalid entries, walk caches, instruction and data structures, mixed page sizes, set conflicts, ASID exhaustion and rollover, global entries, permission upgrades and revocations, and physical remapping.", "Reviewed local-only invalidation, CPU migration during target enumeration, target delay, hotplug, low-power return, huge promotion and split, speculative walks, nested stages, VM identity, IOMMU caches, outstanding DMA, shootdown storms, side channels, counter multiplexing, and instrumentation perturbation."],
+      "notes": "Cache, address-space, update, ordering, distributed completion, reclamation, virtualization, device, security, measurement, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced full context keys, revocation-before-reuse, complete invalidation scope, safe identifier reuse, page-size transition, shootdown generation, and scoped evidence through ten examples and five answers.", "Verified the toy combines page-size-class reach without implying effective hit rate and derives the 512 ratio exactly."],
+      "notes": "The chapter does not conflate page tables with caches, misses with faults, PTE stores with invalidation, request delivery with completion, nominal with useful reach, or CPU and IOMMU invalidation."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed architecture scope, transition classification, publication, invalidation, context switching, completion, identifier generations, huge and nested state, bounded shootdowns, and measurement obligations.", "Constructed counterexamples for local-only unmap, ASID reuse, deferred permission revoke, per-page shootdown storms, overlapping page-size translations, migration during enumeration, wrong-stage virtualization fence, fault-as-miss metrics, and delayed target latency."],
+      "notes": "The chapter supplies reusable translation-cache obligations, not a formal proof of a CPU, TLB hierarchy, ASID allocator, shootdown implementation, hypervisor, IOMMU, or side-channel mitigation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of valid, stale, complete, global, local, safe, current, exact, useful, faster, ordered, and certified.", "Confirmed architecture guarantees, kernel abstractions, abstract shootdown invariants, toy nominal reach, model-specific counter evidence, security claims, and human assurance remain separately scoped."],
+      "notes": "Invalidation is not presented as a generic memory barrier, nominal reach as a hit-rate guarantee, or fast measurements as safety evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-033/report.json records base, huge, total reach and base-per-huge ratio for toy-tlb-reach under Python 3.", "Reviewed invalidation scope, changed pages, targets, acknowledgment latency, batching, rollover, deferred frees, faults, walks, page transitions, migrations, counter definitions, affinity, NUMA, frequency, kernel mode, and raw results."],
+      "notes": "The passing toy excludes processors, TLBs, address spaces, table walks, operating-system behavior, and measurement uncertainty."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed cached translation state, hits, misses, refill, reach, walk caches, context switches, identity allocation, global mappings, update classification, ordering, local invalidation, shootdown, CPU tracking, batching, lazy invalidation, frame reuse, page-size changes, instruction and data sides, nesting, IOMMUs, speculation, scalability, side channels, measurement, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed PTE transition classification, local and remote invalidation scope, CPU masks, request generations, acknowledgments, delayed free, ASID rollover, whole-context thresholds, huge transition coverage, code publication, hypervisor fences, IOMMU completion, model-specific counters, and shootdown telemetry as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from hit and miss behavior through address-space tagging, safe mapping changes, multiprocessor and virtualization invalidation, performance and security evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux memory maintainer, Intel, Arm or RISC-V architect, kernel, hypervisor or IOMMU implementer, security or performance specialist, safety authority, independent verifier, or certification review is claimed."
+}

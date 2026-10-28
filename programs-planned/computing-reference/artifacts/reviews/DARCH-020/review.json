@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-020",
+  "chapter_digest": "0e874728d1eabdab87fe28435b7ed44eba8ae24ba6ded8f2d7efd4bcaa1cb9f8",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked ISO 704:2022, ISO/IEC 11179-3:2023, the W3C SKOS Recommendation, HL7 FHIR Release 5 ConceptMap, OMG QVT 1.3, the W3C R2RML Recommendation, the W3C PROV-O Recommendation, and the W3C SHACL Recommendation. Six destinations returned HTTP 200. Both official ISO records were retrievable through source review but rejected the command-line client with HTTP 403. Claims remain bounded to terminology, metadata registration and mapping, knowledge-organization correspondence, directional concept mapping, model transformation, relational-to-RDF mapping, provenance, or graph-validation scope."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the full assertion tuple, reconciliation-rule tuple, partial mapping result, assertion signature, collision set, mapping composition, and survivorship function.",
+        "Checked distinct concept, designation, object, identity, grain, context, time, authority, provenance, version, and protection coordinates.",
+        "Verified that exact, close, broader, narrower, related, conditional, disjoint, unmapped, unknown, and disputed relations remain distinguishable."
+      ],
+      "notes": "Notation preserves the distinction among local assertions, typed correspondences, executable transformations, loss, provenance, and purpose-specific selection."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed model-reconciliation-integrity with Python 3.14.4 and reproduced 4 mappings, 0 valid mappings, 4 sorted findings, and ready=false.",
+        "Recomputed the six-domain fully directed pairwise upper bound as 6 times 5 equals 30 mapping directions.",
+        "Checked the pounds-to-kilograms example's requirement for exact conversion followed by separately declared target rounding and source-precision retention."
+      ],
+      "notes": "The executable totals and graph-count calculation are exact under the stated fixtures; production conversion accuracy and reconciliation require measurement and population evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived non-invertibility when more than one source value occupies a target collision set.",
+        "Verified that approval of A-to-B and B-to-C mappings does not imply semantic approval of their composition A-to-C.",
+        "Checked that survivorship produces a bounded authorized view while leaving source assertions and competing alternatives intact."
+      ],
+      "notes": "The reasoning distinguishes relation direction, mapping totality, invertibility, path dependence, selection policy, and truth claims."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed lexical, identity, structural, grain, cardinality, semantic, code, measurement, temporal, authority, epistemic, quality, and protection conflicts.",
+        "Tested absence versus null and false, one-to-many and many-to-one mappings, ambiguous and unmapped values, precision and unit boundaries, current versus historical assertions, and conflicting authorities.",
+        "Reviewed false merges and splits, mapping cycles, non-transitive composition, partial failure, delayed corrections, catch-all rules, rollback after lossy writes, consent scope, inference, residency, deletion, and retired archives."
+      ],
+      "notes": "Boundary cases prevent matching labels, target conformance, equal counts, current consistency, or pipeline success from standing in for semantic reconciliation."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced model version, subject, predicate, value, identity, grain, context, valid and recorded time, authority, provenance, and protection through assertions.",
+        "Verified direction, relation, precondition, transformation, cardinality, loss, inverse behavior, authority, effectivity, provenance, evidence, and lifecycle through mapping records.",
+        "Checked perspective, conflict, correspondence, transformation, authority, validation, protection, operational, and evidence obligations across all ten gates."
+      ],
+      "notes": "The invariants preserve local meaning and source evidence while producing bounded, testable, purpose-specific interoperability."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the perspective, assertion, conflict, correspondence, transformation, authority, validation, protection, operational, and evidence gates as one assurance argument.",
+        "Checked counterexamples to same-label-means-same, canonical-is-truth, source-of-record-is-universal, mapping-is-reversible, mapping-composition-is-safe, target-validation-proves-meaning, and last-write-wins-reconciles reasoning.",
+        "Verified that acceptance requires exact versions, scoped definitions, typed relations, preserved loss and provenance, representative tests, protection controls, operational reconciliation, and accountable authority."
+      ],
+      "notes": "The chapter provides a reconciliation assurance structure, not proof that one canonical model, matching algorithm, mapping language, or survivorship rule fits all systems and uses."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of exact, equivalent, same, authoritative, valid, complete, total, reversible, canonical, golden, reconciled, correct, safe, and truth.",
+        "Confirmed that lexical match, conceptual correspondence, identity assertion, structural validation, semantic preservation, authority selection, and factual truth remain distinct.",
+        "Verified that the executable checker is labeled as four mapping-record predicates and excludes concept identity, conversion correctness, complete conflict discovery, protection, migration, or adjudication proof."
+      ],
+      "notes": "Claims remain bounded to named models, versions, assertions, relation types, directions, contexts, uses, authorities, populations, transformations, and evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated standards definitions, formal mapping properties, illustrative examples, executable fixture output, representative population tests, operational observations, source assertions, and adjudication evidence.",
+        "Confirmed that no production semantic equivalence, identity accuracy, authority determination, conversion accuracy, complete source inventory, safe migration, legal/privacy conclusion, or external review is claimed.",
+        "Checked that local adoption requires domain experts, exact artifacts, authorized representative data, identity and measurement review, privacy/security analysis, migration rehearsal, monitoring, recovery evidence, and accountable approval."
+      ],
+      "notes": "Standards conformance, internally checked notation, generated fixtures, operational evidence, domain truth, and independent assurance are not conflated."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed perspectives, assertions, conflict taxonomy, labels and concepts, correspondence types, direction, cardinality, identity, grain, structure, absence, vocabularies, measurements, time, authority, topology, mappings, provenance, validation, composition, operations, protection, adjudication, and purpose-specific products as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable model inventories, assertion signatures, crosswalks, identity mappings, grain statements, conversions, conditional mappings, mapping registries, provenance, constraints, quarantine, reconciliation, coexistence, cutover, rollback, observability, human review, and retirement. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from local perspectives through conflict classification, typed correspondences, transformations, authority, validation, operations, and protection. Ten examples, executable evidence, seventeen misconceptions, five exercises, and complete answers cover mechanics and assurance limitations."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, terminology, ontology, metadata-registry, standards-body, domain, identity-resolution, measurement, security, privacy, legal, records-management, migration, operational, accessibility, or practitioner review is claimed."
+}

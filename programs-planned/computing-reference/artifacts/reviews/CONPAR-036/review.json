@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-036",
+  "chapter_digest": "909d66460c0180d741477e09e442a4e27d227318b8ae1d84c000b2afd04dc27a",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Abort signaling was checked against WHATWG DOM; Java cancellation/interruption against Java 25 Future and Oracle concurrency guidance; .NET cooperative cancellation against current Microsoft documentation; Go context propagation against the official package; Python task cancellation/timeouts against Python documentation; Rust drop-based cancellation and Tokio timeout against official sources; distributed deadline propagation against gRPC; and monotonic clock semantics against POSIX. Claims remain API-specific."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation defines ordered lifecycle timestamps, deadline D, remaining R(t), child deadline D_c, terminal indicators, cancellation cut E_k, and owned resources O_k.",
+        "Request, public settlement, acknowledgement, underlying terminal state, and join are not conflated in formulas or prose."
+      ],
+      "notes": "Time ordering, nonnegative remaining budget, deadline ordering, indicator, and effect notation were checked."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "artifacts/snippets/CONPAR-036/report.json records timeout at logical time 10, late success at 11, and cancellation acknowledgement at 12.",
+        "Independent replay gives one public transition, two terminal attempts, one late outcome, and joined cleanup."
+      ],
+      "notes": "Logical event order, counts, flags, late list, stdout, and empty stderr match exact evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "R(t)=max(0,D-t) is nonnegative and D_c=min(D,t+s) cannot exceed the parent deadline.",
+        "Exactly one public outcome is expressed by S_o+F_o+C_o+T_o=1 while underlying termination remains a separate later variable."
+      ],
+      "notes": "The equations preserve end-to-end budget and one-winner semantics without implying external rollback."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed already-cancelled, zero/negative budget, operation-first, timer-first, ties, duplicate request, missing acknowledgement, late success/error, and timer/listener cleanup.",
+        "Reviewed pre/post-commit cancellation, remote ambiguity, retry identity, blocking non-response, shield timeout, cleanup failure, clock translation, shutdown, and safety-critical transfer."
+      ],
+      "notes": "Boundary review spans temporal, ownership, resource, distributed, clock, failure, security, and deployment risks."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Only the first public terminal attempt wins; losing paths retain responsibility for resources and evidence.",
+        "Deadlines never reset, cancellation follows owned edges, every commit cut has a recovery rule, and cleanup is idempotently joined or explicitly transferred."
+      ],
+      "notes": "Invariants were checked across success, failure, cancellation, timeout, duplicate signals, late completion, cleanup, retry, and shutdown."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "The terminal-arbitration argument maps all public paths through one PENDING transition and treats later paths as late evidence.",
+        "The cancellation-cut argument distinguishes destructible O_k from external E_k and shows why no general inverse effect follows."
+      ],
+      "notes": "Arguments are conditional on declared linearization, operation protocol, clock, and ownership; they do not prove remote cancellation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "WHATWG, Java, .NET, Go, Python, Rust/Tokio, gRPC, and POSIX semantics are scoped to their APIs.",
+        "Executable limitations exclude real clocks, concurrency, delivery, resources, failures, blocking, distributed effects, idempotency, and forced termination."
+      ],
+      "notes": "Specification facts, protocol reasoning, logical-time evidence, empirical timing, and external review requirements remain distinct."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-036 passed the exact logical trace with recorded Python version, stdout, and stderr.",
+        "Cancellation latency, timer lateness, interruption response, cleanup time, clock skew, remote effect, and physical behavior are identified as empirical."
+      ],
+      "notes": "The run validates one stipulated event sequence only and proves no runtime or deployment cancellation property."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed lifecycle events, public/underlying separation, arbitration, cooperative points, operation-specific safety, commit ambiguity, clocks, budgets, wrappers, propagation trees, exception handling, shielding, interruption, resources, retries, shutdown, and testing."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed loser ownership, absolute monotonic deadlines, stage reserves, listener/timer retirement, bounded reason propagation, cleanup masks, blocking-pool handling, idempotency/status recovery, late resource disposal, shutdown joining, placed barriers, and virtual clocks."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet separates request from stop; exposition proceeds from lifecycle through distributed effects; the executable trace makes late success visible; ten examples cover distinct mechanisms; and five exercises progress from timeline to aerospace transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring and verification evidence only; no external runtime, distributed-systems, database, security, medical, aerospace, regulatory, real-time, or functional-safety review is claimed. The logical-time model does not establish cancellation delivery, timer accuracy, cleanup, remote effects, idempotency, or deployment correctness."
+}

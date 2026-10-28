@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-076",
+  "chapter_digest": "87af12bcba77f5fdc7fdd1fff0508c4ed9287e47a265bdbf744012af33d95c92",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Crossref confirmed the exact Volkov-Demmel and Mei-Chu papers. Current NVIDIA CUDA programming and best-practices documentation, AMD HIP programming and memory-management documentation, unified OpenCL C, SYCL 2020 revision 12, and McCalpin's primary paper all resolve and support the scoped address-space, storage, cache, transfer, managed-memory, and bandwidth claims. No inaccessible quotation is used."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation consistently defines address space A, residency R, writer owner O_w, lifetime L, host and device regions H and D_j, group scratchpad S_b, radius r, tile dimensions, useful and transferred bytes, boundary intensity, tile cost, and completion event E.",
+        "Programming-model address space, physical backing, allocation kind, accessibility, lifetime, cache behavior, and synchronization scope remain distinct throughout."
+      ],
+      "notes": "Checked subscripts, units, byte quantities, half-open lifetimes, ownership language, intensity boundaries, and event ordering."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed six radius-one outputs as 6 times 3 equals 18 logical loads and the shared input interval as eight values, giving modeled reuse 18/8 equals 2.25.",
+        "Recomputed outputs for values zero through fifteen at indices four through nine as [12, 15, 18, 21, 24, 27].",
+        "Recomputed an 18 by 18 f32 tile as 324 values and 1296 bytes.",
+        "artifacts/snippets/CONPAR-076/report.json records exact output indices, load counts, reuse factor, outputs, reference equality, 32 shared bytes, empty stderr, and zero exit code."
+      ],
+      "notes": "These finite arithmetic results validate the teaching model only; they do not measure a GPU cache, bank, migration path, occupancy, or speedup."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived the radius-r tile requirement as (T_x+2r) by (T_y+2r), conditional on the declared boundary policy and complete cooperative loading.",
+        "Rechecked the tile proof: every read slot is initialized, the first barrier publishes loads, unique core ownership covers outputs once, and the second barrier precedes scratchpad reuse.",
+        "Rechecked publication and asynchronous-lifetime arguments against release/acquire or event dependencies and ordered last use.",
+        "Rechecked managed-residency independence: pointer identity and placement advice do not establish accessibility, coherence, ordering, or ownership."
+      ],
+      "notes": "The reuse inequality is an explicitly scoped decision model, not a universal performance theorem."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero/small inputs, tile-minus-one/tile/tile-plus-one extents, partial tiles, all halo edges/corners, pitches, subviews, maximum and overflow-rejected byte counts, and allocation failure.",
+        "Reviewed missing first/second barriers, divergent participation, uninitialized scratchpad slots, capacity and bank boundaries, register pressure/spills, cache/TLB assumptions, constant mutation, and numeric-order changes.",
+        "Reviewed pageable/pinned/mapped trade-offs, unified-address versus managed-memory confusion, CPU/GPU alternation, migration, oversubscription, peer topology/scope, multiple devices, reduced capability, delayed asynchronous use, cancellation, device loss, privacy, and high-stakes imaging/genomics."
+      ],
+      "notes": "Boundary analysis covers dimensions, bytes/strides, synchronization, resources, placement, lifecycle, topology, operational pressure, security/privacy, numeric behavior, and safety cases."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every allocation has one declared mutable owner, legal accessors, bounded byte ranges, and a release ordered after every asynchronous user.",
+        "Every scratchpad read is initialized; all required group members reach publication and reuse barriers; every logical output has exactly one owner.",
+        "Every cross-agent publication uses an observed event or atomic edge at scope containing all communicators; address equality and fences alone are rejected.",
+        "Managed placement remains a performance policy, while correctness is capability-checked and independent of residency and migration order with a bounded fallback."
+      ],
+      "notes": "Checked invariants across allocation, placement, loading, publication, compute, output, transfer/migration, completion, reuse, failure, and deallocation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Tile coverage explicitly requires valid global bounds, a declared boundary policy, complete loading, convergent barriers, and non-overlapping output ownership.",
+        "Publication proof requires a release/acquire observation or command dependency with adequate scope, rather than accessibility or presumed cache coherence.",
+        "Lifetime proof rejects submission as completion, and managed-residency proof rejects pointer stability as physical-location or ordering evidence."
+      ],
+      "notes": "No specification, source annotation, arithmetic model, successful snippet, profiler counter, or internal review is claimed as universal device performance, clinical validity, certification, or safety."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Formal-looking claims state their assumptions and boundaries; implementation-dependent backing and cache behavior use qualified language.",
+        "The executable fence explicitly disclaims GPU execution, caches, banks, barriers, migration, occupancy, and speed.",
+        "The medical-imaging and genomics cases name required human reviewers and explicitly state that no such review is claimed."
+      ],
+      "notes": "Programming-model guarantees, common physical implementations, runtime policies, measurements, and high-stakes domain evidence remain separately labeled."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-076 passed under the recorded Python toolchain with exact stdout, empty stderr, zero exit code, and retained artifacts.",
+        "The chapter separately requires compiler resource reports, generated-code inspection, guard/race tools, capacity and pitch tests, cache/TLB/bank/spill counters, migration/fault observations, capability matrices, and CPU/reference comparisons.",
+        "Performance evidence includes allocation, pinning, copies, faults, migration, kernel execution, synchronization, cleanup, cache state, ECC, topology, repetitions, uncertainty, and correctness."
+      ],
+      "notes": "The snippet demonstrates a deterministic load ledger and reference equality only; it supplies no real GPU compatibility, memory behavior, or speed evidence."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed address spaces versus backing, private/register/spill behavior, global caches/TLBs, scratchpad tiling/barriers/banks, constant/texture paths, explicit and pinned transfers, unified/managed/USM models, migration/oversubscription, multi-GPU topology, consistency, lifetime, verification, security, and operations."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed allocation ledgers, checked byte/pitch arithmetic, compiler reports, tile capacity and boundary tests, barrier convergence, explicit events, pool last-use rules, capability queries, managed-memory first-touch/prefetch/pressure matrices, topology checks, bounded chunked fallback, end-to-end profiling, monitoring, privacy controls, and device-loss recovery."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter first separates semantic and physical axes, then derives each memory mechanism, gives one exact stencil ledger, counters sixteen misconceptions, supplies ten distinct examples through medical imaging, and ends with five progressive exercises and complete answers including regulated genomics."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external CUDA/NVIDIA, HIP/AMD, OpenCL/Khronos, SYCL/Khronos, GPU compiler/runtime/driver, hardware/cache/memory/interconnect, numerical/scientific, bioinformatics/genomics, medical/radiology/medical-physics, security/privacy, regulatory/certification, operations/SRE, human-factors, or safety review is claimed. The chapter and teaching model establish neither a real GPU program's correctness or performance, device portability, biological or clinical validity, regulatory approval, nor deployment safety."
+}

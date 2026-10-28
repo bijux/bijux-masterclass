@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-044",
+  "chapter_digest": "d8aebdd5d37d59f00078cb39cdcdba33d60abb8c3fb9a35e64a0e11ef8f550d6",
+  "review_date": "2026-08-31",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked current NASA Decision Analysis, Design Solution Definition, and Technical Assessment pages; official NASA-HDBK-7009A; the official NASA RIDM record; official GAO representations for GAO-20-195G and GAO-16-89G; NIST Technical Note 1297 and the NIST/SEMATECH propagation guidance; and the official European Commission JRC record for Saltelli, Tarantola, and Chan. NASA web/standards, NIST, and JRC resources returned HTTP 200. The NASA NTRS record timed out and GAO pages returned HTTP 403 to the command-line client after their official representations had been inspected through the web retrieval path. The chapter distinguishes local coefficients, uncertainty contribution, global variance attribution, threshold sensitivity, decision robustness, and model credibility in accordance with the sources' bounded uses."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed local partial derivatives, central finite differences, elasticity, first-order and total-effect indices, conditional expectations, two-level orthogonal decomposition, score-difference boundaries, and failure indicators.",
+        "Confirmed QoI, factor domain/joint distribution, model structure, nominal point, step size, threshold direction, and input-exclusion notation are introduced before use.",
+        "Confirmed dimensionless elasticity limitations near zero and unit/range dependence of raw derivatives are explicit."
+      ],
+      "notes": "Notation preserves distinctions among model response, input uncertainty, output variance, threshold probability, score/rank switching, and causal or controllable importance."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed factorial-sensitivity-check and independently reproduced outputs 9, 7, 5, and 19; mean 10; population variance 29; main shares 0.138 and 0.310; interaction 0.552; total effects 0.690 and 0.862; and exact variance reconciliation.",
+        "Recomputed Exercise 2 fractions 4/29, 9/29, 16/29, 20/29, and 25/29; first-order sum 13/29 and total-effect sum 45/29.",
+        "Recomputed Exercise 3 break-even as 7/12 or about 0.5833, with B leading by 0.05 at weight 0.50 and A leading by 0.07 at weight 0.70.",
+        "Recomputed the derivative/range, thermal-boundary, EVM-free, and technical examples for all displayed deltas and margins."
+      ],
+      "notes": "All displayed arithmetic agrees with independent recomputation; exact teaching-case shares are rounded only for report output."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Differentiated the two interaction models and confirmed derivatives 4+3z and 2+3x in Exercise 1 and local slopes 2 and 3 for the embedded model at the origin.",
+        "Confirmed orthogonality of independent equiprobable coded factors makes variance equal to the sum of squared nonconstant coefficients for the declared teaching model.",
+        "Derived the trade-study score forms 0.45+0.40w and 0.80-0.20w and solved their equality at 7/12.",
+        "Confirmed the first-order and total-effect expressions are conditioned on the stated square-integrability and independence assumptions."
+      ],
+      "notes": "The variance decomposition is explicitly limited to its declared distribution/model and is not generalized to dependent inputs or causal attribution."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Challenged arbitrary ranges, incompatible units, near-zero elasticity, finite-difference cancellation/noise, nondifferentiability, discrete mode switches, nonlinearities, interactions, and physical infeasibility.",
+        "Reviewed dependent/correlated factors, common causes, categorical structures, vector/time/spatial outputs, threshold/tail metrics, stochastic simulation noise, surrogate boundary error, failed runs, and estimator non-convergence.",
+        "Reviewed preference normalization, rank reversal, low-variance but high-leverage controls, excluded factors, model-boundary choices, stakeholder distributions, and information actions that differ from variance ranking.",
+        "Reviewed all ten examples and five answers for domains, assumptions, dependence, computation, decision boundaries, actionability, and bounded conclusions."
+      ],
+      "notes": "High-stakes applications still require relevant domain, modeling, statistical, safety, security, human-factors, economic, ethics, regulatory, operational, and affected-stakeholder review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced decision/model/QoI identity, factor meaning/range/provenance/dependence, feasibility, method-QoI fit, structural challenge, computational record, action mapping, and bounded robustness throughout the review, exposition, examples, and answers.",
+        "Confirmed OAT/local results are never labeled global and global indices retain distribution/dependence assumptions.",
+        "Confirmed main effects, interactions, and total effects reconcile in the executable teaching case while total-effect double counting is explained.",
+        "Confirmed reproducibility, model-version identity, convergence, failed runs, surrogate error, and reopening triggers remain explicit controls."
+      ],
+      "notes": "No importance result is treated as portable beyond the declared model, QoI, domain, dependence structure, and decision context."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents established definitions, derivative relations, and an exact finite teaching decomposition but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed robust, credible, validated, influential, dominant, non-influential, global, converged, safe, representative, independent, and current language for declared evidence and scope.",
+        "artifacts/snippets/SYSENG-044/report.json records exact local execution evidence for the declared two-factor model only.",
+        "Historical data, experiments, simulations, supplier evidence, expert elicitation, surrogates, operational observations, and stakeholder preferences remain qualified by applicability, provenance, uncertainty, dependence, validation, and authority."
+      ],
+      "notes": "No external review is claimed. Stable rankings or small sensitivity coefficients are never presented as proof of model validity, safety, stakeholder legitimacy, or absence of omitted mechanisms."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked sensitivity versus uncertainty analysis, factors, QoIs, local/OAT/elasticity, global analysis, main/interaction/total effects, Sobol semantics, screening, break-even boundaries, robustness, and sensitivity audit. Mathematical influence, uncertainty contribution, controllability, causation, consequence, and information value remain distinct."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked scaling, finite-difference steps, hidden interactions, threshold boundaries, preference break-even, tail QoIs, correlated cost/schedule, surrogate errors, zero-variance controls, information value, weak-analysis recovery, and emergency communications. Each ties analytical output to feasible evidence, decision authority, action, and limits."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from charter/factor registry and QoI selection through local/OAT/break-even, factorial/screening/regression, variance/dependence/structure, stochastic/surrogate computation, adversarial audit, action, information value, and robustness reporting. Ten examples and five complete answers require calculus, variance arithmetic, trade-boundary analysis, audit design, and sociotechnical application."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, practitioner, sensitivity-analysis, uncertainty-quantification, statistical, systems, decision-science, cost, schedule, architecture, mechanical, electrical, thermal, software, data, control, reliability, safety, security, privacy, accessibility, human-factors, economics, ethics, supplier, operations, verification, validation, regulatory, emergency-management, community, or affected-stakeholder review is claimed."
+}

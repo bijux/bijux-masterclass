@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "module_id": "LSDS-036",
+  "chapter_digest": "bd85bd3c0ec82ae92cb91af710b6d12a5048e0741a64cf61658f96cf40064073",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked twelve current primary documentation sources from Apache Spark, Apache Flink, and Trino. All twelve URLs returned HTTP 200 on the retrieval date. Sources support repartition and shuffle semantics, shuffled-hash versus sort-merge strategy separation, adaptive skew handling, partition counts, hash-join spilling, partitioned versus broadcast distribution, and co-located join property reuse."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed left/right multisets L and R, serialized payloads B_L and B_R, destination count P, partition function p, buckets L_j and R_j, multiplicities m_x and n_x, reusable fractions f_L and f_R, and skew split count S.",
+        "Checked join predicate/equality, partition compatibility, logical bucket identity, physical placement, build/probe roles, and local hash versus sort-merge algorithms remain distinct.",
+        "Checked snapshot, plan, partition epoch, side, producer, destination, attempt, segment, accepted winner, skew map, and output commit identities are consistent."
+      ],
+      "notes": "Logical multiset semantics, distribution, local execution, physical locality, and resource accounting are not conflated."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed repartition-join-accounting with Python 3.14.4 and reproduced four inner rows, six left-outer rows, left bucket counts (1,2,1,0), and right bucket counts (1,2,0,1).",
+        "Recomputed full logical movement as 600+250=850 GiB and partially reusable movement as 0.65(600)+0.80(250)=590 GiB.",
+        "Recomputed 800 GiB across 4,000 destinations as a 204.8 MiB mean while confirming a 90 GiB hot key remains at least 90 GiB in one ordinary bucket.",
+        "Recomputed exercises as 1.7 TiB symmetric versus 1.1 TiB reusable movement, and a 60-way hot-key plan with 1,800 routed right rows and 27,000,000 required pairs."
+      ],
+      "notes": "The executable fixture validates deterministic toy routing, multiplicity, null behavior, and arithmetic only; it is not a hash-quality, shuffle, spill, concurrency, or performance benchmark."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified inner-join decomposition L join R equals the multiset union over local L_j join R_j when matchable keys co-locate and routing/completeness premises hold.",
+        "Verified key x contributes m_x n_x inner pairs, so partitioning and local build structures must preserve duplicate multiplicity.",
+        "Checked logical movement B_L+B_R and reusable movement (1-f_L)B_L+(1-f_R)B_R exclude physical amplification explicitly.",
+        "Verified one-side hot-key salting with complete opposite-group replication covers every pair exactly once, whereas independent two-side salting omits cross-salt pairs."
+      ],
+      "notes": "Mean bucket size and logical movement are accounting models, not safety bounds or exact physical I/O/network predictions."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty and one-sided-empty inputs, one partition, more partitions than rows, unique/duplicate/all-equal keys, null/null-safe keys, collisions, composite keys, coercion, Unicode/collation, NaNs, residual predicates, and all major join semantics.",
+        "Reviewed count, byte-width, build, probe, output, placement, and adversarial-hash skew; giant rows/groups; low parallelism; and fixed-overhead explosion at high P.",
+        "Reviewed disk full, short/corrupt/missing/duplicate blocks, fetch timeout, network partition, worker/shuffle-service loss, cancellation, retry, speculation, adaptive split/coalesce, and mixed partition epochs.",
+        "Reviewed mixed writer/hash versions, stale bucketing metadata, unauthorized tenant/region placement, telemetry leakage, retention/holds, and deletion races."
+      ],
+      "notes": "Relational correctness, contract compatibility, placement locality, resource safety, exchange completeness, retry fencing, and governance can fail independently."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced every input row through pinned normalization/partitioning, one destination, immutable producer block, accepted manifest, validated fetch, local join, attempt-scoped output, and one committed winner.",
+        "Checked matchable keys co-locate under one partition epoch while hash collisions still require full equality and residual-predicate evaluation.",
+        "Checked complete left/right bucket evidence precedes unmatched outer/semi/anti decisions and duplicate lists retain exact multiplicity.",
+        "Checked memory, disk, network, descriptors, tasks, metadata, spill recursion, skew replication, output buffering, retries, and cleanup are bounded and charged."
+      ],
+      "notes": "An authoritative accepted manifest, not a file name or equal bucket count, distinguishes compatible complete input from empty, missing, corrupt, stale, or losing output."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the ten-step audit from relational contract and source properties through distribution choice, pinned epoch, sizing, exchange, completeness, local semantics, commit, measurement, and deletion.",
+        "Checked soundness and completeness of bucket-local inner join plus multiset multiplicity and accepted-attempt uniqueness.",
+        "Checked outer/semi/anti extension requires complete opposite buckets and unique unmatched-row ownership under skew replication.",
+        "Reviewed counterexamples for equal bucket counts, average-size safety, more-partitions monotonicity, hash-equals-key, naive salting, empty/missing equivalence, spill universality, and generation mixing."
+      ],
+      "notes": "Correctness is conditional on exact compatible routing and complete accepted inputs; performance and capacity claims require observed distributions and enforced bounds."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of exact, compatible, complete, accepted, immutable, deterministic, trusted, reusable, local, expected, estimated, mean, bounded, and safe.",
+        "Confirmed the multiset theorem states routing, equality, completeness, and attempt premises rather than claiming partition labels prove correctness.",
+        "Confirmed engine-specific Spark/Flink/Trino behaviors are sourced and hints/configuration are not presented as portable guarantees."
+      ],
+      "notes": "Co-partitioning, salting, adaptive skew handling, spill, and locality claims retain their required conditions and limitations."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed proposed measurements for rows/bytes/distinctness/width, contract reuse, locality, per-bucket tails, producer blocks, compression/spill/files/descriptors, fetch/retry, build/sort/hash, duplicate/output groups, backpressure, and attempts.",
+        "Confirmed no universal partition count, target bucket size, hash, seed, spill threshold, skew threshold, salt count, build side, local algorithm, retry limit, or retention period is prescribed.",
+        "Checked estimated versus actual, mean versus maximum, logical versus physical movement, local versus remote bytes, and successful versus failed/losing attempts remain separate."
+      ],
+      "notes": "Production decisions require representative key/frequency/width/output distributions, exact runtime and connector contracts, topology, concurrency, storage, failure, threat, and policy evidence."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed repartition join as a distribution contract distinct from local shuffled-hash or sort-merge execution, spanning symmetric/one-sided/co-located paths, reusable physical properties, key/null/multiplicity semantics, movement and partition-count costs, skew repair, exchange completeness, retry, adaptation, security, and lifecycle."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed practical property discovery, filter/projection pushdown, partition selection, hash/sort spill, hot-key detection and salting, physical locality, immutable manifests, accepted attempts, mixed-version rejection, metrics, fault injection, regulated placement, and cleanup. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from relational and partition contracts through movement/reuse, local algorithms, skew, failure, validation, and governance. Ten examples and five complete exercises cover symmetric/reused bytes, false compatibility, average-versus-tail size, multiplicity, low parallelism, correct salting, outer ownership, spill fallback, proof, and co-partition audits."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external Spark, Flink, or Trino maintainer, database/query-optimization or distributed-algorithms researcher, runtime/network/storage/performance specialist, connector/table-format owner, adversarial-security reviewer, privacy/legal/records authority, affected-tenant reviewer, accessibility specialist, or certification review is claimed."
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-040",
+  "chapter_digest": "e3cf30abc663fde36e14250313e105943481ae2c2827340d201383f8dc9842af",
+  "review_date": "2026-09-06",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-06",
+    "notes": "Reviewed eight references for the current product-quality model, ATAM, Conway's law, software architecture practice, viewpoints, hard architectural trade-offs, architecture decision records, and software-engineering fallacies. ISO's official catalog confirms ISO/IEC 25010:2023 as edition 2, published November 2023 and the current product-quality-model revision at review time. The linked SEI, Conway, and Cognitect endpoints resolved; ISO's curl request returned access-control HTTP 403 while its official indexed record supplied the dated metadata."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed alternative and scenario sets, hard-constraint predicates, feasible set, normalized utility, weights, Pareto dominance, risk, and decision-record notation.",
+        "Confirmed universal quantifier, nonnegative normalized weights, products, ratios, true predicates, uncertainty qualifications, and trigger semantics are defined before use."
+      ],
+      "notes": "Feasibility, weighted preference, dominance, sensitivity, risk, and review are kept as distinct reasoning stages."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed Example 7 monolith utility as 0.6 + 0.2w and microservices utility as 0.9 - 0.4w; equality gives 0.6w = 0.3 and break-even w = 0.5.",
+        "Recomputed Exercise 2 alternative A as 0.5 + 0.4w and B as 0.8 - 0.2w; equality gives 0.6w = 0.3 and break-even w = 0.5.",
+        "Checked that Example 7 correctly assigns microservices above and monolith below the complementary side of the break-even through direct substitution."
+      ],
+      "notes": "Scores are explicitly discussion instruments with scale, independence, threshold, and uncertainty limitations."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified the feasible set retains exactly alternatives satisfying every hard-constraint predicate.",
+        "Verified Pareto dominance requires no-worse utility for every assessed criterion plus a strict improvement in at least one.",
+        "Verified weighted utilities preserve normalized nonnegative weights while the text prevents them from compensating for infeasibility."
+      ],
+      "notes": "Risk products are permitted only when scales support multiplication; no ordinal or uncertain score is presented as objective truth."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed premature microservices, staged media processing, hostile analyzer plugins, hard low-latency trading, long-lived heterogeneous insurance integration, disconnected mine safety, score sensitivity, hostile native conversion, hybrid commerce, and regulated mainframe migration.",
+        "Checked false hard constraints, straw alternatives, threshold failure, correlated criteria, shared-data bottlenecks, common-cause availability, plugin escape, indefinite option preservation, dual authority, and stale decisions."
+      ],
+      "notes": "Examples span formal scoring, safety, security, data, operations, organization, migration, real-time constraints, and hybrid composition."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced scope, feasibility, comparability, causal trace, dominance, sensitivity, evidence, composition, lifecycle, and review invariants through exposition and exercises.",
+        "Confirmed every style family is paired with mechanisms, recurring costs, warning evidence, and a credible alternative rather than a popularity ranking."
+      ],
+      "notes": "Selection is treated as bounded stakeholder judgment supported by evidence, not an algorithm that mechanically outputs architecture."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the Pareto-dominance argument and confirmed a dominated choice cannot improve an assessed criterion under identical assumptions.",
+        "Confirmed the text allows retention only for omitted value, materially different uncertainty, or model correction.",
+        "Reviewed both linear break-even derivations and verified coefficient collection, equality, and winner direction on either side of w = 0.5."
+      ],
+      "notes": "Dominance is bounded to assessed criteria and shared assumptions; sensitivity calculations do not establish stakeholder values."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of hard, feasible, proven, dominated, robust, sensitive, sufficient, safe, current, guarantee, proof, and evidence.",
+        "Verified standards, scores, estimates, prototypes, benchmarks, tests, fitness functions, and operational measures retain their claim limits."
+      ],
+      "notes": "No framework, fashion, adoption rate, calculation, prototype, or recorded decision is presented as universal correctness."
+    },
+    "empirical_evidence_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter explains how to gather experiments and operational evidence but presents no executed code, benchmark run, production dataset, or reproduced empirical study."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed vocabulary, system framing, forces, scenarios, constraints, thresholds, whole alternatives, comparability, causal mechanisms, recurring costs, feasibility, Pareto reasoning, weighted models, sensitivity, uncertainty, experiments, performance, availability, data, security, organization, style composition, simplicity, option value, migration, decision records, fitness functions, triggers, and market pressure for coherence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed workload evidence, bottleneck ownership, on-call surfaces, correlated failures, data authority, contract and rollback coexistence, hard safety and isolation constraints, platform readiness, total lifecycle cost, migration stop conditions, review triggers, and misleading proofs of concept. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles decision vocabulary, feasible-set and utility models, sixteen misconceptions, ten distinct cross-style worked examples, and five progressive exercises with complete answers ending in autonomous agricultural-equipment transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "module_id": "PLAT-012",
+  "chapter_digest": "08c15a12b0d8f738d819b11f059ca84b63302cea5446f6826c7e4b2934f34dc5",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked all ten structured references. Current DORA platform guidance, updated January 12, 2026, supports the internal-product, critical-journey, clear-feedback, independence, task-success, and balanced-measurement claims. The DORA metrics guide, updated January 5, 2026, defines change lead time from version-control commit to production deployment and jointly frames throughput and instability; the value-stream guide and 2025 survey instrument support the chapter's boundary distinction and measurement wording. The corrected DORA 2024 report is used with its survey limitations. Current Backstage documentation supports template, task, progress, cancellation, failure-log, repository, and catalog claims without being treated as deployment proof. Google Cloud guidance supports testing, validation, controlled rollout, observation, and rollback. The original Kaplan-Meier journal record and DOI metadata were verified, including the need to scrutinize censoring assumptions. Accelerate authorship, publisher, date, and research scope were cross-checked against the official publisher record."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked A_a=(U,W,K,t_0,M,E,Q,t_v,O), T_a, the eligible set, delta_a, C, F(D), P_p, milestone timestamps, and interval durations against first use and Definitions and Notation.",
+        "Checked set-builder notation, cardinality bars, subscripts, conditionals, inequalities, fractions, and display delimiters with the repository GitHub-math validator."
+      ],
+      "notes": "Every symbol is defined and scoped. Outcome indicator zero is explicitly bounded to observed completion calculations rather than mislabeled as permanent failure."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the synthetic cohort as eight eligible attempts, four verified attempts, completion 4/8=0.500, and three verified within 60 minutes for 3/8=0.375.",
+        "Sorted successful durations as 28, 34, 42, and 65 minutes and recomputed their median as (34+42)/2=38.0 minutes.",
+        "Executed ttfsd-cohort-summary under Python 3.14.4 with exact expected output after correcting the draft's initially detected median typo.",
+        "Recomputed Exercise 2 as ten eligible, four verified, completion 0.40, conditional median (18+21)/2=19.5 minutes, and deadline completion 3/10=0.30."
+      ],
+      "notes": "All published arithmetic now agrees with executable or manual recomputation. Conditional and denominator-based quantities remain separately labeled."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Expanded the nine-element attempt tuple against all prose definitions and verified that t_v exists only for a verified outcome.",
+        "Derived T_a=t_v-t_0 for verified attempts and C as verified indicators divided by eligible cardinality.",
+        "Expanded F(D) and confirmed its numerator is the subset both verified and no slower than the predeclared deadline, while its denominator remains all eligible attempts.",
+        "Checked conditional percentile notation and adjacent milestone interval subtraction against their stated validity assumptions."
+      ],
+      "notes": "The formulas define cohort summaries and do not imply causality, universal platform value, or a duration for unresolved attempts."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed trigger versus observable proxy, template versus deployment, controller versus application success, first-use unit, environment, workload profile, and contract-version boundaries.",
+        "Checked failure, abandonment, unsupported, duplicate, censored, missing event, duplicate event, out-of-order clock, retry, channel switch, preexisting assets, false-positive health, provider outage, rollback, and observation-window cases.",
+        "Checked novice/expert, voluntary/mandated, greenfield/migration, sandbox/production, ordinary/regulated, accessible/inaccessible, and workload-type segments.",
+        "Reviewed target gaming through late timer start, denominator exclusion, retry reset, weakened verification, hello-world optimization, and individual ranking."
+      ],
+      "notes": "The chapter keeps uncertain correlation and missingness visible, preserves right-censoring, and rejects proxy or population changes disguised as performance gains."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced denominator membership exactly once across eligible, verified, terminal failure, abandoned, unsupported, duplicate, and censored states.",
+        "Traced one durable attempt identity across portal, template, CLI retry, provider operation, application verification, and support.",
+        "Checked verification predicates for artifact, environment, rollout, behavior, controls, telemetry, ownership, and recovery across exposition, examples, and answers.",
+        "Checked application-owner authority and security, reliability, accessibility, cost, compliance, support, and operator-toil guardrails throughout improvement proposals."
+      ],
+      "notes": "Clock, denominator, verification, identity, authority, and guardrail invariants hold across the chapter's definitions, calculations, comparisons, and interventions."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter states no theorem and contains no deductive proof. It defines a measurement contract and bounded descriptive formulas."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No proof sketch is claimed. Mechanism and causal-evaluation guidance is explicitly separated from mathematical computation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable cohort is labeled synthetic and used only to demonstrate denominator and conditional-median interpretation.",
+        "DORA empirical findings, current product guidance, source-document behavior, narrative scenarios, and proposed local measures are distinguishable.",
+        "Before/after comparisons are labeled hypothesis checks rather than automatic causal proof; stronger comparison designs and mechanism evidence are requested.",
+        "The chapter does not claim that TTFSD is a DORA metric, an industry benchmark, a productivity score, or proof of organizational value."
+      ],
+      "notes": "No external empirical validation of the proposed local TTFSD contract is claimed. Current-source dates and the Kaplan-Meier assumption warning remain explicit."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently distinguishes first-deployment enablement from scaffolding, pipeline, rollout, DORA change lead time, and first business value. It treats success as a versioned workload-specific evidence contract and keeps initial platform enablement connected to later delivery and operational performance."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "A practitioner can apply the unit and eligibility checklist, start-boundary guidance, eight-part verification baseline, attempt/event schema, outcome taxonomy, completion and deadline formulas, metric card, privacy controls, segmentation strategy, intervention mechanisms, and causal-evaluation guardrails. Examples cover services, pipelines, approvals, channel retries, censoring, gaming, accessibility, migrations, and transferred toil."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The sequence moves from semantic boundaries through clocks, contracts, state and evidence, denominator-preserving calculations, decomposition, segmentation, intervention, guardrails, and operation. The executable typo was caught and corrected before completion. Ten examples remain distinct; five exercises progress from definition to calculation, instrumentation, intervention critique, and safety-critical transfer, with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

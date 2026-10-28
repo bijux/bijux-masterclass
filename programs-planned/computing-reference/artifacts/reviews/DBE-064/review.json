@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-064",
+  "chapter_digest": "d3c2dcd0d75a0a60abeaa10a5eec6ea3426ce837a8e0e57afdbeabd7f559b904",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 11,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Retrieved and reviewed primary join-error propagation, optimizer-evaluation, MSCN, NeuroCard, CardBench, and learned-CE readiness papers; PostgreSQL 18 row-estimation and CREATE STATISTICS documentation; current SQL Server CE and CE-feedback documentation; and current Calcite metadata interfaces. Checked model assumptions, row-goal interpretation, extended-statistics join limitation, learned estimator categories/coverage, feedback regression verification, and decision-aware evaluation limits."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked E/A, conditional selectivity, fanout, NDV, q-error, signed log error, intervals, OOD, and plan-regret definitions.",
+        "Checked total/per-loop/per-worker/group/batch/byte populations remain distinct.",
+        "Checked assumptions and estimator provenance accompany formulas."
+      ],
+      "notes": "Zero categories and row-goal consumption boundaries are explicit."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed 0.2 and 0.1 marginals, independence estimate 20, actual 160, and q-error 8.",
+        "Recomputed exact fanout estimate 60 versus actual 480 and ten groups.",
+        "Recomputed uniform/disjoint join, outer-join, and spill-threshold examples."
+      ],
+      "notes": "Independent arithmetic is retained in artifacts/reviews/DBE-064/independent-recomputation.txt."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived the uniform containment equijoin formula from per-key frequencies.",
+        "Reviewed semantic bounds for filters, join kinds, grouping, unions, and limits.",
+        "Reviewed error preservation under exact positive fanout and why arbitrary propagation is not monotone."
+      ],
+      "notes": "Uniformity, containment, independence, and correlation extremes are models rather than SQL identities."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/zero, null, heavy-hitter, out-of-range, disjoint/partial domains, duplicate fanout, outer/semi/anti/mark, group, set, recursion, and row-goal cases.",
+        "Reviewed parameter skew, cached/generic plans, stale/unsupported statistics, sample zero hits, join-crossing correlation, OOD operators/constants/shapes, model drift, inference failure, and fallback.",
+        "Reviewed template/time/database leakage, feedback censoring, tenant poisoning, label/model privacy, resource budgets, canaries, and rollback."
+      ],
+      "notes": "Fallback and unknown coverage are first-class states, not hidden predictions."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked every estimate binds node, population, parameters, inputs, generation, assumptions, bounds, and aggregation convention.",
+        "Checked exact facts/statistics/models/defaults obey precedence without double counting.",
+        "Checked evaluation aligns actual nodes/completion and deployment generations are immutable/rollbackable/resource-bounded."
+      ],
+      "notes": "Improved q-error cannot stand alone as evidence of improved plan or performance."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed uniform join derivation and correlated-marginals non-identifiability counterexample.",
+        "Reviewed outer-join matched-distinct requirement and group joint-NDV bound.",
+        "Reviewed evaluation separation from semantic correctness through plan decision and runtime outcomes."
+      ],
+      "notes": "Intervals and robust planning require calibrated coverage; no universal confidence is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable is labeled a finite correlated population, not a production CE benchmark.",
+        "Paper findings are scoped to their studied systems/benchmarks.",
+        "Classical formulas, learned approaches, heuristics, feedback, and operational policies are distinguished."
+      ],
+      "notes": "Product/version limitations are cited rather than generalized."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Repository verification passed one standard-library Python snippet with exact thirteen-line stdout, empty stderr, zero exit status, and recorded Python 3.14.4 toolchain.",
+        "Independent recomputation reproduced correlated, fanout, join-domain, outer-row, and threshold arithmetic.",
+        "All eleven source artifacts were retained under artifacts/references/DBE-064 and local links were checked."
+      ],
+      "notes": "No live database estimator, sample, learned model, feedback loop, alternative-plan execution, OOD detector, production workload, security test, or external review was run."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed estimated-event identity, operator formulas/bounds, correlations, join/group propagation, diagnosis, metrics, classical/sampling/learned/feedback approaches, uncertainty, parameters, and rollout."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed first-divergence diagnosis, shadow estimation, plan replay/alternatives, decision/resource metrics, OOD/fallback, immutable versions, tenant/privacy controls, canary cohorts, kill switches, and rollback."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter derives operator estimates and bounds, executes a correlated counterexample, covers fourteen failure modes and ten distinct examples, and advances five exercises to an elite CE evaluation/deployment system with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, executable-snippet, conceptual, practitioner, and pedagogical evidence only; no external optimizer researcher, statistician, learned-model specialist, database maintainer, security/privacy reviewer, platform operator, or educator review is claimed. The chapter and finite model prove neither all-query CE accuracy, learned-model generalization, calibrated uncertainty, optimal plan selection, representative performance, privacy, certification, nor deployment fitness."
+}

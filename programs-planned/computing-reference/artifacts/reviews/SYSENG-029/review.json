@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-029",
+  "chapter_digest": "e409f31677caa11bb0db180372431d50222dda54ef0e9543f657e7ee5431725e",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked current NASA Systems Engineering Handbook guidance for Design Solution Definition, Decision Analysis, and System Design Processes; SEBoK 2.14 Analysis and Selection between Alternative Solutions, System Analysis, and Synthesizing Possible Solutions; and official ISO metadata for ISO/IEC/IEEE 15288:2023 and 42010:2022. NASA and SEBoK references returned HTTP 200. ISO returned HTTP 403 to the command-line client, but current official web representations were inspected through the web retrieval path."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed candidate, hard-constraint, criterion, measure, value-function, weight, scenario, and uncertainty sets; feasible-set predicate; conditional additive-value expression; dominance relation; Pareto interpretation; and expected value of perfect information expression."
+      ],
+      "notes": "Natural measures, operational value scales, preferences, uncertainty, evidence quality, recommendation, and decision authority remain distinct. Additive aggregation is explicitly conditional on valid scales and preferential independence."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed architecture-alternative-record-check under Python and reproduced five records, one well-formed declared record, missing scope ALT-002, assumptions ALT-003, evidence ALT-004, migration ALT-005, and the expected unresolved set.",
+        "Independently recomputed Example and Exercise 2 weighted totals as A=73.5, B=75.8, and C=74.3; an early draft arithmetic discrepancy was corrected before review evidence was finalized.",
+        "Recomputed the B/C resilience-weight tie as r=2/14=1/7=0.142857 and Exercise 4 EVPI as 0.60(78)+0.40(84)-72=8.4 utility points."
+      ],
+      "notes": "Scores are conditional on the stated value functions, ranges, weights, and independence assumptions. EVPI is an upper bound under a valid probability/utility model, not the value of the proposed imperfect prototype."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Confirmed hard constraints form the feasible set before compensatory value calculations.",
+        "Verified dominance requires no-worse performance on all relevant comparable criteria and strict improvement on at least one, while a Pareto frontier does not select a preferred point.",
+        "Derived the Exercise 2 tie from 12r-2(1-r)=0 and verified weights outside resilience retain their original 7:4:4 proportions."
+      ],
+      "notes": "No weighted score, frontier position, expected value, or robustness model is presented as universal proof of the best architecture."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed favored-solution framing, cosmetic alternatives, status quo/no-action/defer, unequal maturity, candidate-dependent normalization, ordinal arithmetic, preference dependence, hard constraints, double counting, uncertainty/correlation, common cause, tail consequences, distributional effects, migration/coexistence, retirement, option value, and reversal criteria.",
+        "Challenged qualitative/formal, additive/outranking/constraint, expected/robust, commit/learn, single/staged, steady-state/transition, and nominal/robust alternatives.",
+        "Reviewed all ten examples and five answers for hidden constraints, evidence asymmetry, clinical/safety authority, unsupported independence, privacy/lifecycle omissions, unstable ranking, and mathematical overclaim."
+      ],
+      "notes": "High-consequence selection remains conditional on applicable safety, security, privacy, accessibility, human-factors, legal, regulatory, cost, schedule, supplier, operational, affected-community, and decision-authority evidence."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced common decision frame, coherent alternatives, status quo/defer/hybrids, mandatory screening, approved operational criteria, common units/conditions, valid value scales, lifecycle effects, uncertainty/correlation, sensitivity, dissent/distribution, decision record, and reversal criteria through exposition, examples, and answers.",
+        "Confirmed candidate maturity and evidence quality are explicitly equalized or represented rather than silently treated as comparable.",
+        "Checked that analysts recommend while the named authority decides and that lower-score selection requires durable rationale rather than retrospective weight manipulation."
+      ],
+      "notes": "The chapter treats architecture comparison as a governed evidence-and-value process, not as score production or tool output."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents conditional decision relations and algebra but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed best, optimal, feasible, dominated, robust, independent, complete, correct, mature, current, verified, and evidence language for bounded scope.",
+        "artifacts/snippets/SYSENG-029/report.json records exact local execution evidence for the declared-alternative checker."
+      ],
+      "notes": "Models, simulations, prototypes, user/operator trials, field data, cost estimates, and integrated tests are explicitly bounded by configuration, scale, scenarios, environments, populations, assumptions, calibration, and decision authority. No external review is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked architecture alternative, decision frame, criterion, hard constraint, measure, value model, trade space, dominance, Pareto frontier, uncertainty, variability, sensitivity, robustness, value of information, and reversal criterion. Feasibility, preference, evidence, recommendation, and decision remain distinct."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked regional warnings, spacecraft instruments, clinical decision support, warehouse scoring, water-utility normalization, platform suppliers, rail migration, autonomous inspection evidence, disaster networking, and data-platform privacy. Each example exposes architecture mechanism, decision defect or trade, evidence limits, and bounded conclusion."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from decision framing and alternative generation through common maturity, stakeholder criteria, hard constraints, value scales/weights, dominance/Pareto, uncertainty/risk/cost, migration/maturity, sensitivity/robustness/value of information, independent challenge, recommendation, decision, and governance. Ten examples and five complete answers require synthesis, score and threshold arithmetic, method critique, information-value reasoning, and platform-architecture assurance."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, practitioner, safety, security, privacy, accessibility, human-factors, legal, regulatory, economic, supplier, affected-community, or stakeholder review is claimed."
+}

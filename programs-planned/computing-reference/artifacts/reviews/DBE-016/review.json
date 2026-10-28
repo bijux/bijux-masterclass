@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-016",
+  "chapter_digest": "92571efc07d68d72f5a746a3444c667af8ad827f16a7fb688f5778c8600a6481",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed PostgreSQL 18 combining-query, type-resolution, SELECT, and type-conversion documentation; SQLite compound SELECT documentation; and MySQL 8.4 set-operation, parenthesized-expression, and UNION documentation. All eight official destinations returned HTTP 200. Multiplicity, precedence, null comparison, type resolution, ordering, limiting, and support claims are scoped by dialect and version."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked bag multiplicity m_A(x), union-all addition, intersect-all minimum, except-all truncated subtraction, and DISTINCT indicator definitions.",
+        "Checked that column position, type compatibility, domain meaning, row equality, entity identity, occurrence identity, and provenance remain distinct."
+      ],
+      "notes": "Equations are explicitly conditioned on a compatible row domain and operation-specific equality."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed left counts as a:2, b:1, c-null:1, null-3:1 and right counts as a:1, b:2, d:1, null-3:1.",
+        "Recomputed union-all counts as a:3, b:3, c:1, d:1, null-3:2 and distinct union as five rows.",
+        "Recomputed intersect-all as one each of a, b, and null-3.",
+        "Recomputed left-except-all as a:1 and c:1, distinct left difference as c, and reverse distinct difference as d."
+      ],
+      "notes": "All fixture multiplicities are finite nonnegative integers."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived union-all, intersect-all, and except-all multiplicities from addition, minimum, and truncated subtraction.",
+        "Re-derived DISTINCT variants by mapping every positive multiplicity to one.",
+        "Verified min(a,b)+max(a-b,0)=a for left reconstruction.",
+        "Constructed A={1}, B={2}, C={2} to distinguish A union (B intersect C) from (A union B) intersect C."
+      ],
+      "notes": "Output order, type resolution, and physical execution are excluded from the bag identities."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty, only-left, only-right, identical, all-null, partially null, unequal-multiplicity, and duplicate-looking rows.",
+        "Reviewed swapped same-typed columns, incompatible/lossy numeric and timestamp types, units, collations, normalization, domains, and unknown null literals.",
+        "Reviewed mixed precedence, branch and compound ordering/limits, volatile expressions, anti-join rewrites, and schema evolution.",
+        "Reviewed wide/high-cardinality/skewed inputs, memory, spill, snapshots, retries, security in every arm, cancellation, and upgrades."
+      ],
+      "notes": "Authority-sensitive digest comparison requires canonicalization version, collision policy, and payload confirmation."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Validated union-all total count equals the sum of five left and five right occurrences.",
+        "Validated each intersect-all plus left-except-all multiplicity reconstructs the left count.",
+        "Validated directional differences expose c only on the left and d only on the right under DISTINCT.",
+        "The verifier matched exact eight-line stdout, empty stderr, and zero exit status."
+      ],
+      "notes": "Python tuple and None behavior is only a bounded oracle, not SQL equality or collation evidence."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed every fixture row into left and right multiplicity maps.",
+        "Reviewed each output count through addition, minimum, or truncated subtraction.",
+        "Reviewed DISTINCT support as positive-count projection.",
+        "Reviewed directionality and nonassociativity cautions with explicit finite examples."
+      ],
+      "notes": "No proof of optimizer rewrite equivalence under volatility/errors or physical resource bounds is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated aliases from positional alignment, compatible types from compatible meaning, row equality from domain identity, and duplicate values from replayed occurrences.",
+        "Separated DISTINCT presence from ALL multiplicity, left difference from right difference, and set operators from anti-join rewrites.",
+        "Separated input order from final order, logical laws from physical algorithms, and portable parenthesized intent from dialect precedence."
+      ],
+      "notes": "Disjoint, distinct, identical, authoritative, compatible, deterministic, and efficient claims require their stated evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library finite multiset model executed successfully through the repository verifier.",
+        "All eight final official reference destinations returned HTTP 200 on 2026-08-30.",
+        "Front matter, exact section order, local links, ten examples, five exercises, five answers, and snippet expectations passed draft validation."
+      ],
+      "notes": "No live SQL compound query, type/coercion/collation case, anti-join rewrite, plan, hash/sort, memory, spill, concurrency, or distributed workload was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently derives combination and comparison from canonical schemas, row equality, multiplicity, provenance, grouping, and evidence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed explicit projections/casts, DISTINCT versus ALL, conflicts, null-safe comparison, precedence, ordering/limits, anti-joins, provenance, reconciliation, schema evolution, security, plans, spill, snapshots, retries, and upgrades."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, finite multiplicity fixture, ten distinct worked examples, and five derivation and production-design exercises progress from bag laws to operational reconciliation."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter and model do not certify any live SQL set operation, type resolution, cast, numeric/unit conversion, collation or null behavior, schema contract, source snapshot, anti-join rewrite, execution plan, hash/sort resource bound, spill, security policy, distributed reconciliation, performance result, upgrade compatibility, or production fitness."
+}
