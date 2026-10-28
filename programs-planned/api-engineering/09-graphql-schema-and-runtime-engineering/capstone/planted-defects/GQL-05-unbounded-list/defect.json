@@ -1,0 +1,7 @@
+{
+  "description": "list field has no enforced cardinality bound",
+  "expectedProof": "demand-proof",
+  "failure": "A list has no enforced cardinality or cost multiplier.",
+  "id": "GQL-05-unbounded-list",
+  "mustBeRejected": true
+}

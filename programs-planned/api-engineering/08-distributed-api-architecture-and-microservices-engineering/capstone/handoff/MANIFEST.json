@@ -1,0 +1,47 @@
+{
+  "file_count": 8,
+  "files": [
+    {
+      "path": "BOUNDARY.json",
+      "sha256": "5dfe4b4b6f49a01deaccfcbdbae09a71694c5607de87b7876a83847df0c8f6dd",
+      "size": 447
+    },
+    {
+      "path": "README.md",
+      "sha256": "b167460f70227246e083d743d9369c1bb0fa04004750edc226a01a482b7ca0b5",
+      "size": 218
+    },
+    {
+      "path": "consistency-policy.yaml",
+      "sha256": "eede4c18274a16c0fe644a4d7626ce3b66d3115bbace9cfd67532404f57ed4e9",
+      "size": 813
+    },
+    {
+      "path": "data-ownership.yaml",
+      "sha256": "873ded2fa35e0d85dda97c363533c219a98deea09990fe3bf87a3447bd076399",
+      "size": 913
+    },
+    {
+      "path": "dependency-graph.yaml",
+      "sha256": "bcd8cb534a1e7d7483954b01a655239650fd5fd4a248a1a817424b31604c2d64",
+      "size": 1041
+    },
+    {
+      "path": "graphql-boundary-brief.yaml",
+      "sha256": "db462fe93237513c805fd919313ce046ccf113edd5a500fbfe0eb809eff61b0b",
+      "size": 628
+    },
+    {
+      "path": "service-catalog.yaml",
+      "sha256": "32f35d4f382fe37c8c633601365a9e4cb4aa474a8d942520348d3a23fcd31f35",
+      "size": 1471
+    },
+    {
+      "path": "version-ledger.yaml",
+      "sha256": "63f2d873e3932dc75aa455de202b94d37b37071dc4255808068b2fde9952066d",
+      "size": 435
+    }
+  ],
+  "format": "bijux-course-manifest-v1",
+  "root": "handoff"
+}

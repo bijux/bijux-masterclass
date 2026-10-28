@@ -1,0 +1,25 @@
+version: "1.0"
+experiment: artifact-response-loss-after-commit
+hypothesis: >-
+  Retrying an upload with the same run, attempt, and checksum creates one
+  artifact effect, and the workflow either attaches it to the current run or
+  enters compensation without unexplained reconciliation findings.
+preconditions:
+  - run is running under attempt-1
+  - capability is valid and checksum-bound
+fault:
+  point: after-artifact-commit-before-response
+  duration_seconds: 5
+blast_radius:
+  tenants: [tenant-lab]
+  runs: [run-lab-1]
+expected:
+  artifacts: 1
+  duplicate_effects: 0
+  unexplained_reconciliation_findings: 0
+abort:
+  - cross-tenant effect
+  - more than one artifact publication
+cleanup:
+  - clear laboratory state
+  - rerun reconciliation

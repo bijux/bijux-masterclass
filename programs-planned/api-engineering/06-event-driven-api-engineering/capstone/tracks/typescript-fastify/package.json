@@ -1,0 +1,20 @@
+{
+  "name": "analysis-events-typescript-reference",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test:core": "npm run build && node --test test-event-core/*.test.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:event": "npm run build --silent && node --test test-event-core/*.test.mjs"
+  },
+  "optionalDependencies": {
+    "fastify": "5.5.0",
+    "@nats-io/transport-node": "3.4.0",
+    "@nats-io/jetstream": "3.4.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.2"
+  }
+}

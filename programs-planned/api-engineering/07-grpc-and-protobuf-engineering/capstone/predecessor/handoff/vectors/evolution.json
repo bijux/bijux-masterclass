@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "evolution",
+  "cases": [
+    {
+      "id": "EVO-001",
+      "description": "optional property addition is additive",
+      "expected": "accepted"
+    },
+    {
+      "id": "EVO-002",
+      "description": "new required property is breaking",
+      "expected": "rejected"
+    },
+    {
+      "id": "EVO-003",
+      "description": "property removal is breaking",
+      "expected": "rejected"
+    },
+    {
+      "id": "EVO-004",
+      "description": "type change is breaking",
+      "expected": "rejected"
+    },
+    {
+      "id": "EVO-005",
+      "description": "enum expansion requires review",
+      "expected": "review-required"
+    },
+    {
+      "id": "EVO-006",
+      "description": "semantic reuse of old type is forbidden",
+      "expected": "rejected"
+    }
+  ]
+}

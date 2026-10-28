@@ -1,0 +1,9 @@
+{
+  "candidate": "gateway-business-logic",
+  "defect": "gateway decides a run state transition",
+  "expected": "reject",
+  "id": "DIST-07",
+  "lesson": "The edge may route and compose, but business authority belongs to the service that owns the run invariant.",
+  "rejecting_gate": "boundary-evidence",
+  "title": "Gateway Business Logic"
+}

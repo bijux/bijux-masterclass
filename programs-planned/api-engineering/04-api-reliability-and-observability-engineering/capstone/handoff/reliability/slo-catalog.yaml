@@ -1,0 +1,51 @@
+catalogVersion: '1.0'
+slos:
+- id: SLO-API-AVAILABILITY
+  journeys:
+  - JRN-001
+  - JRN-002
+  - JRN-003
+  - JRN-004
+  - JRN-005
+  indicator: eligible successful requests / eligible requests
+  objective: 0.999
+  window: 28d
+  exclusions:
+  - invalid-authentication
+  - invalid-authorization
+  - contract-validation
+  - explicit-client-cancel
+- id: SLO-API-LATENCY
+  journeys:
+  - JRN-001
+  - JRN-004
+  indicator: eligible requests completed under operation threshold / eligible requests
+  objective: 0.99
+  window: 28d
+  thresholdsMs:
+    getProject: 250
+    getAnalysisRun: 250
+    listAnalysisRuns: 500
+- id: SLO-RUN-START-FRESHNESS
+  journeys:
+  - JRN-003
+  - JRN-004
+  indicator: accepted runs started within 30 seconds / accepted runs
+  objective: 0.995
+  window: 28d
+- id: SLO-RUN-TERMINAL-CORRECTNESS
+  journeys:
+  - JRN-003
+  - JRN-005
+  indicator: terminal runs with consistent job, event, artifact, and outbox state
+    / terminal runs
+  objective: 0.9999
+  window: 28d
+- id: SLO-WEBHOOK-FRESHNESS
+  journeys:
+  - JRN-006
+  indicator: terminal webhook deliveries acknowledged within 5 minutes / eligible
+    terminal deliveries
+  objective: 0.99
+  window: 28d
+  paging: false

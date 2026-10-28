@@ -1,0 +1,24 @@
+{
+  "events": [
+    {
+      "query": "submit analysis",
+      "results": 4,
+      "selected": "docs/tasks/submit-analysis.md"
+    },
+    {
+      "query": "grpc retry",
+      "results": 2,
+      "selected": "api:default/analysis-rpc"
+    },
+    {
+      "query": "retire api",
+      "results": 1,
+      "selected": "lifecycle-policy"
+    },
+    {
+      "query": "unsupported interface choice",
+      "results": 1,
+      "selected": "source/concepts/interface-selection.md"
+    }
+  ]
+}

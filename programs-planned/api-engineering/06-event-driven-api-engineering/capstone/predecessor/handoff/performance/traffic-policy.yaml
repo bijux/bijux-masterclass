@@ -1,0 +1,34 @@
+profileVersion: "1.0"
+costScale: microtokens
+operationCosts:
+  getProject: 1000000
+  listRuns: 2000000
+  createAnalysisRun: 5000000
+  uploadDatasetBase: 5000000
+  uploadDatasetPerMiB: 1000000
+  downloadArtifactBase: 1000000
+  downloadArtifactPerMiB: 500000
+  cancelRun: 500000
+  getRun: 500000
+buckets:
+  global:
+    capacity: 400000000
+    refillPerSecond: 200000000
+  tenant:
+    capacity: 100000000
+    refillPerSecond: 50000000
+  principal:
+    capacity: 40000000
+    refillPerSecond: 20000000
+concurrency:
+  uploadPerTenant: 4
+  artifactPerTenant: 10
+  analysisSubmissionPerTenant: 8
+protectedOperations:
+  - getRun
+  - cancelRun
+  - health
+  - reconcile
+distributedScope:
+  coreImplementation: single-process-exact
+  multiProcess: approximate-unless-shared-authority

@@ -1,0 +1,30 @@
+parameters:
+- $ref: ../components/parameters/ArtifactId.yaml
+get:
+  tags:
+  - Artifacts
+  summary: Retrieve artifact metadata
+  description: Returns metadata for one owned artifact.
+  operationId: getArtifact
+  security:
+  - OAuth2:
+    - artifacts:read
+  - ApiKey: []
+  responses:
+    '200':
+      description: Artifact metadata.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Artifact.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

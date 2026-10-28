@@ -1,0 +1,9 @@
+{
+  "candidate": "trusted-identity-header",
+  "defect": "service trusts x-user-id from the caller",
+  "expected": "reject",
+  "id": "DIST-08",
+  "lesson": "Internal reachability and caller-supplied headers are not authenticated end-user or tenant authority.",
+  "rejecting_gate": "service-auth",
+  "title": "Trusted Identity Header"
+}

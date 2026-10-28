@@ -1,0 +1,36 @@
+version: '1.0'
+facts:
+- fact: project
+  writer: analysis-control
+  replicas:
+  - edge-gateway-read-cache
+- fact: dataset-metadata
+  writer: analysis-control
+  replicas: []
+- fact: analysis-run
+  writer: analysis-control
+  replicas:
+  - notification-service-run-view
+- fact: idempotency-record
+  writer: analysis-control
+  replicas: []
+- fact: job-lease
+  writer: analysis-control
+  replicas:
+  - worker-plane-session-view
+- fact: artifact
+  writer: artifact-service
+  replicas:
+  - analysis-control-artifact-reference
+- fact: webhook-subscription
+  writer: notification-service
+  replicas:
+  - analysis-control-subscription-summary
+- fact: webhook-delivery
+  writer: notification-service
+  replicas: []
+rules:
+- one authoritative writer per fact
+- replicas are versioned and never written as authority
+- cross-service queries declare staleness and completeness
+- no service reads another service private database

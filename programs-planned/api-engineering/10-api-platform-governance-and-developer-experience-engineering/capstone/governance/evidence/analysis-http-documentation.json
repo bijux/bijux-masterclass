@@ -1,0 +1,7 @@
+{
+  "entityRef": "api:default/analysis-http",
+  "evidenceClass": "course-executed",
+  "kind": "documentation",
+  "status": "pass",
+  "summary": "documentation evidence for api:default/analysis-http"
+}

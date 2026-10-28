@@ -1,0 +1,28 @@
+version: 1.0
+services:
+  AnalysisControlService:
+    capability_owner: analysis-control
+    state_owner: analysis-control
+    data:
+      - projects
+      - datasets
+      - analysis_runs
+      - idempotency_records
+      - worker_leases
+      - event_outbox
+  DatasetTransferService:
+    capability_owner: dataset-transfer
+    state_owner: analysis-control
+    data:
+      - dataset_content
+      - artifact_content
+  WorkerPlaneService:
+    capability_owner: worker-plane
+    state_owner: analysis-control
+    data:
+      - worker_sessions
+      - job_attempts
+      - worker_leases
+decision:
+  deployment: one modular service in Course 7
+  extraction: deferred to Course 8 evidence review

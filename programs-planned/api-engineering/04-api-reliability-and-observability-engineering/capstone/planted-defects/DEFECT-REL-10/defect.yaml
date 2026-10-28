@@ -1,0 +1,8 @@
+id: DEFECT-REL-10
+module: 10
+name: No incident lead
+detector: incident-role-contract
+mutation: Remove the incident commander.
+oracle: role/timeline audit
+expectedCommand: make module-proof MODULE=10
+expectedFailure: Incident role validation rejects it.

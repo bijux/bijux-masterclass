@@ -1,0 +1,300 @@
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: analysis
+  namespace: default
+  title: Analysis Domain
+spec:
+  owner: analysis-leadership
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: analysis-platform
+  namespace: default
+  title: Analysis Runs Platform
+spec:
+  owner: analysis-leadership
+  domain: analysis
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: analysis-leadership
+  namespace: default
+  title: Analysis Platform Leadership
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: analysis-control-team
+  namespace: default
+  title: Analysis Control Team
+spec:
+  owner: analysis-leadership
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: artifact-team
+  namespace: default
+  title: Artifact Team
+spec:
+  owner: analysis-leadership
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: notification-team
+  namespace: default
+  title: Notification Team
+spec:
+  owner: analysis-leadership
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: api-platform-team
+  namespace: default
+  title: API Platform Team
+spec:
+  owner: analysis-leadership
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: analysis-control
+  namespace: default
+  title: Analysis Control Service
+spec:
+  owner: analysis-control-team
+  type: service
+  lifecycle: active
+  system: analysis-platform
+  providesApis:
+  - analysis-http
+  - analysis-rpc
+  - analysis-events
+  dependsOn:
+  - resource:default/analysis-postgres
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: artifact-service
+  namespace: default
+  title: Artifact Service
+spec:
+  owner: artifact-team
+  type: service
+  lifecycle: active
+  system: analysis-platform
+  providesApis:
+  - artifact-http
+  consumesApis:
+  - analysis-events
+  dependsOn:
+  - resource:default/artifact-store
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: notification-service
+  namespace: default
+  title: Notification Service
+spec:
+  owner: notification-team
+  type: service
+  lifecycle: active
+  system: analysis-platform
+  providesApis:
+  - notification-http
+  consumesApis:
+  - analysis-events
+  dependsOn:
+  - resource:default/notification-postgres
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: analysis-graph-gateway
+  namespace: default
+  title: Analysis Graph Gateway
+spec:
+  owner: api-platform-team
+  type: service
+  lifecycle: active
+  system: analysis-platform
+  providesApis:
+  - analysis-graph
+  consumesApis:
+  - analysis-http
+  - artifact-http
+  - notification-http
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: analysis-api-platform
+  namespace: default
+  title: Analysis API Platform
+spec:
+  owner: api-platform-team
+  type: service
+  lifecycle: active
+  system: analysis-platform
+  providesApis:
+  - platform-catalog
+  consumesApis:
+  - analysis-http
+  - analysis-events
+  - analysis-rpc
+  - analysis-graph
+  dependsOn:
+  - resource:default/platform-registry
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: analysis-http
+  namespace: default
+  title: Analysis HTTP API
+spec:
+  owner: analysis-control-team
+  lifecycle: active
+  system: analysis-platform
+  type: openapi
+  definition: '$text: ../contracts/http/analysis-http-api-1.2.openapi.yaml'
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: analysis-events
+  namespace: default
+  title: Analysis Events API
+spec:
+  owner: analysis-control-team
+  lifecycle: active
+  system: analysis-platform
+  type: asyncapi
+  definition: '$text: ../contracts/events/asyncapi.yaml'
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: analysis-rpc
+  namespace: default
+  title: Analysis RPC API
+spec:
+  owner: analysis-control-team
+  lifecycle: active
+  system: analysis-platform
+  type: protobuf
+  definition: '$text: ../contracts/rpc/bijux/analysis/v1/analysis.proto'
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: analysis-graph
+  namespace: default
+  title: Analysis Graph API
+spec:
+  owner: api-platform-team
+  lifecycle: active
+  system: analysis-platform
+  type: graphql
+  definition: '$text: ../contracts/graph/schema.graphql'
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: artifact-http
+  namespace: default
+  title: Artifact HTTP Capability
+spec:
+  owner: artifact-team
+  lifecycle: active
+  system: analysis-platform
+  type: openapi
+  definition: '$text: ../contracts/capabilities/artifact-http.openapi.yaml'
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: notification-http
+  namespace: default
+  title: Notification HTTP Capability
+spec:
+  owner: notification-team
+  lifecycle: active
+  system: analysis-platform
+  type: openapi
+  definition: '$text: ../contracts/capabilities/notification-http.openapi.yaml'
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: platform-catalog
+  namespace: default
+  title: Analysis Platform Catalog API
+spec:
+  owner: api-platform-team
+  lifecycle: active
+  system: analysis-platform
+  type: openapi
+  definition: '$text: ../contracts/platform/platform-catalog.openapi.yaml'
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: analysis-postgres
+  namespace: default
+  title: Analysis PostgreSQL
+spec:
+  owner: analysis-control-team
+  type: database
+  system: analysis-platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: artifact-store
+  namespace: default
+  title: Artifact Object Store
+spec:
+  owner: artifact-team
+  type: object-storage
+  system: analysis-platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: notification-postgres
+  namespace: default
+  title: Notification PostgreSQL
+spec:
+  owner: notification-team
+  type: database
+  system: analysis-platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: platform-registry
+  namespace: default
+  title: Platform Contract Registry
+spec:
+  owner: api-platform-team
+  type: registry
+  system: analysis-platform

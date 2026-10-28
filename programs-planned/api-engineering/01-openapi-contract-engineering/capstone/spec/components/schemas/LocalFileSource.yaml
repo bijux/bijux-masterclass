@@ -1,0 +1,24 @@
+type: object
+additionalProperties: false
+required:
+- kind
+- fileName
+- mediaType
+properties:
+  kind:
+    type: string
+    const: local-file
+  fileName:
+    type: string
+    minLength: 1
+    maxLength: 255
+  mediaType:
+    type: string
+    enum:
+    - text/csv
+    - application/json
+    - application/octet-stream
+examples:
+- kind: local-file
+  fileName: reads.csv
+  mediaType: text/csv

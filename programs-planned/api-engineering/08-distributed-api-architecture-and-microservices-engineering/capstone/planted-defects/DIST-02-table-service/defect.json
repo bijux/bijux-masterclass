@@ -1,0 +1,9 @@
+{
+  "candidate": "table-service",
+  "defect": "service boundary mirrors the projects table",
+  "expected": "reject",
+  "id": "DIST-02",
+  "lesson": "A storage noun is not a capability; the proposed service owns no independent decision or invariant.",
+  "rejecting_gate": "boundary-evidence",
+  "title": "Table Service"
+}

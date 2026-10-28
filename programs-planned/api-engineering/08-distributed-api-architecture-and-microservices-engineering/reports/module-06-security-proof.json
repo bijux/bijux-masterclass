@@ -1,0 +1,14 @@
+{
+  "evidence_class": "semantic",
+  "workload_identity_required": true,
+  "trusted_identity_headers": false,
+  "capability_profile": "artifact-upload",
+  "audience_bound": true,
+  "tenant_bound": true,
+  "attempt_bound": true,
+  "checksum_bound": true,
+  "size_bound": true,
+  "expiry_bound": true,
+  "cross_tenant_cases_rejected": true,
+  "status": "pass"
+}

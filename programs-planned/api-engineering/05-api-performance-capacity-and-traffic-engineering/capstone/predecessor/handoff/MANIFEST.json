@@ -1,0 +1,168 @@
+{
+  "algorithm": "sha256",
+  "files": [
+    {
+      "mode": "0644",
+      "path": "README.md",
+      "sha256": "aa2e01a58567db1fd1c2a74201bb73b3785bd6bbd164affc1a1a3e28b59c9679",
+      "size": 845
+    },
+    {
+      "mode": "0644",
+      "path": "contract/openapi-api-1.2.bundle.yaml",
+      "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+      "size": 355600
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "mode": "0644",
+      "path": "releases/reliability-1.0.yaml",
+      "sha256": "67ca81e3d7d6def3fc58532fc59c1d2598455dcb54534dd5608087fff7b5aadc",
+      "size": 273
+    },
+    {
+      "mode": "0644",
+      "path": "reliability/alert-catalog.yaml",
+      "sha256": "95c583133365d3a9d9fed980a7fede206afe858c0b4199eb0f5fd9e8b554ff68",
+      "size": 786
+    },
+    {
+      "mode": "0644",
+      "path": "reliability/dependency-policies.yaml",
+      "sha256": "0a36214548c705cb3e7aeef2b1e007a939f926e9cda1f4d5ed43bc128865215f",
+      "size": 919
+    },
+    {
+      "mode": "0644",
+      "path": "reliability/journeys.yaml",
+      "sha256": "85227fb850b86b07095bdbfd3ee532cb6d25d620dd6e4c0f2ff94d5dee3f99b7",
+      "size": 1663
+    },
+    {
+      "mode": "0644",
+      "path": "reliability/reliability-profile.yaml",
+      "sha256": "dd03dbba017a7259e80275bb851fd56e99fdb1864800814de9a73a309f662ad6",
+      "size": 264
+    },
+    {
+      "mode": "0644",
+      "path": "reliability/residual-risks.yaml",
+      "sha256": "99e232ea8478b59ccdfeb994296713b1d6805bbc9aed8c3b9cb7358359bc7654",
+      "size": 837
+    },
+    {
+      "mode": "0644",
+      "path": "reliability/slo-catalog.yaml",
+      "sha256": "6c6facddbbbecbbb9458183c925ecda31c175594c2a7b5cbef0508507867f0bc",
+      "size": 1184
+    },
+    {
+      "mode": "0644",
+      "path": "reliability/telemetry-schema.yaml",
+      "sha256": "e59129a567d184aad6c549f5c00bef94f78bd23db434374d8da8f3477cd2e206",
+      "size": 369
+    },
+    {
+      "mode": "0644",
+      "path": "reliability/trace-topology.yaml",
+      "sha256": "f411a4c46208cd1195be73c8d82a7930458f4994bab362eab58ab119f5f96ef2",
+      "size": 761
+    },
+    {
+      "mode": "0644",
+      "path": "runbooks/RB-API-ERROR-BUDGET.yaml",
+      "sha256": "50bc192b3d24c7d86af854f8760b9ee97c06120354a2de0b3f58947bacda54f2",
+      "size": 1814
+    },
+    {
+      "mode": "0644",
+      "path": "runbooks/RB-STATE-RECONCILIATION.yaml",
+      "sha256": "f55b7f09cbcc90127309662c8bd792f667451dd6731ec1862abc042c59ba63d1",
+      "size": 1669
+    },
+    {
+      "mode": "0644",
+      "path": "runbooks/RB-TELEMETRY-PIPELINE.yaml",
+      "sha256": "5c13ee4c00fabf35615c112aa9be0718e3bc809793eeee6740a33a1f03ff7967",
+      "size": 1744
+    },
+    {
+      "mode": "0644",
+      "path": "runbooks/RB-WORKER-BACKLOG.yaml",
+      "sha256": "5698ee94fc3497927dddf3ac6a864132116e6379ee44f38affbed101eb6b16e3",
+      "size": 1673
+    },
+    {
+      "mode": "0644",
+      "path": "security/security-profile.yaml",
+      "sha256": "f807eb05a16b47a29df44e56a19906066c25694684eca811d4437e646f0439fa",
+      "size": 741
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/alerts.json",
+      "sha256": "4a15d9a5a84373b75da7dcb11b275290065b7fc49bf099e5486dbfb92bc89337",
+      "size": 896
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/deadlines.json",
+      "sha256": "68fb7923d7e1263a09702bd6176b063732129f5bce857f8e70d2c1ceb8a9364a",
+      "size": 592
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/faults.json",
+      "sha256": "faaa5f611567f28d505623f8f50aaeeab0e745456a1cf3fdde9f481a7ca944e4",
+      "size": 482
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/health.json",
+      "sha256": "694450fdb44e4af73ce4355f2773176ed47084c4f32fbbf41627cae297127393",
+      "size": 1619
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/http-outcomes.json",
+      "sha256": "80c62bfb1de3360916100d9785fce53c474a3f7ae6d4fefa1e9efe87a8442e78",
+      "size": 1282
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/reconciliation.json",
+      "sha256": "33117dc0659d31ef943d3fbabbf1a513323e5b554f2e95a3a5d2de422cc7d521",
+      "size": 3687
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/retries.json",
+      "sha256": "fd167f14f1081dcf2b7c637c41633f54421aa76da3b64cd60734c3c96404f8c9",
+      "size": 2706
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/slo.json",
+      "sha256": "84b44c8bf6945fb5b70753742ac093430b646f393debf36696ca3fe004fcaa7e",
+      "size": 547
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/telemetry.json",
+      "sha256": "25009b30d8de2ba30e38116cf67377973dcfd291e6edba95bafebd44195a3315",
+      "size": 1194
+    },
+    {
+      "mode": "0644",
+      "path": "vectors/trace-context.json",
+      "sha256": "8189cbf693a1ef80c1b9a53aec0105770d03044fa9e65a555a3a22a2f3747257",
+      "size": 1112
+    }
+  ],
+  "root": "programs/api-engineering/04-api-reliability-and-observability-engineering/capstone/handoff"
+}

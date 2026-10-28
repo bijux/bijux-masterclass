@@ -1,0 +1,5 @@
+{
+  "expectedDecision": "rejected",
+  "id": "rejected-expiry-free-exception",
+  "reason": "A governance exception has no expiry or compensating control."
+}

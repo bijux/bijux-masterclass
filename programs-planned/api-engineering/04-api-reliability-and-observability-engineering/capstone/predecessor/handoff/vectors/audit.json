@@ -1,0 +1,22 @@
+{
+  "events": [
+    {
+      "action": "analysis.create",
+      "actor": "sub:5f4dcc",
+      "at": "2026-08-06T12:00:00Z",
+      "decision": "allow",
+      "reason": "policy.allow",
+      "sequence": 1,
+      "target": "run:01"
+    },
+    {
+      "action": "artifact.read",
+      "actor": "sub:5f4dcc",
+      "at": "2026-08-06T12:01:00Z",
+      "decision": "deny",
+      "reason": "relationship.foreign",
+      "sequence": 2,
+      "target": "artifact:01"
+    }
+  ]
+}

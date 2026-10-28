@@ -1,0 +1,14 @@
+{
+  "module": 9,
+  "status": "passed",
+  "claim": "source, descriptor, catalogue, generated interfaces, and runtime profile agree",
+  "evidence": {
+    "messages": 18,
+    "services": 3,
+    "methods": 7,
+    "typescript_build": "passed",
+    "protoc": "not-executed",
+    "buf": "not-executed",
+    "grpcurl": "not-executed"
+  }
+}

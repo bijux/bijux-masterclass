@@ -1,0 +1,16 @@
+{
+  "edgeMay": [
+    "terminate TLS",
+    "authenticate caller",
+    "enforce coarse rate and size limits",
+    "route by approved release",
+    "attach bounded correlation metadata"
+  ],
+  "edgeMayNot": [
+    "decide project ownership",
+    "change analysis state",
+    "invent business retries",
+    "rewrite contract semantics",
+    "grant tenant access"
+  ]
+}

@@ -1,0 +1,26 @@
+version: '1.0'
+views:
+- name: notification-run-view
+  source: analysis-events-1.0
+  guarantee: monotonic-versioned
+  gap_policy: pause-and-replay
+  staleness_target_seconds: 30
+- name: control-artifact-reference
+  source: artifact-events-1.0
+  guarantee: monotonic-versioned
+  gap_policy: reconcile-by-artifact-id
+  staleness_target_seconds: 10
+- name: gateway-project-cache
+  source: authoritative-http
+  guarantee: bounded-stale
+  gap_policy: bypass-cache
+  staleness_target_seconds: 5
+query_patterns:
+- query: run-with-artifacts
+  strategy: gateway-composition
+  consistency: run authoritative; artifacts independently authoritative
+  partial_policy: explicit artifactsUnavailable
+- query: delivery-status-summary
+  strategy: replicated-summary
+  consistency: eventually consistent
+  staleness_disclosed: true

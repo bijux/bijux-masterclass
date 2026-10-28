@@ -1,0 +1,7 @@
+{
+  "description": "active persisted operation is invalidated without migration",
+  "expectedProof": "release-proof",
+  "failure": "A supported persisted operation is invalidated by a promoted schema.",
+  "id": "GQL-10-breaking-schema-release",
+  "mustBeRejected": true
+}

@@ -1,0 +1,143 @@
+{
+  "classificationCases": [
+    {
+      "id": "retry-get-503",
+      "retry": true,
+      "safety": "safe",
+      "status": 503,
+      "transportError": false
+    },
+    {
+      "id": "retry-post-no-key-503",
+      "retry": false,
+      "safety": "unsafe",
+      "status": 503,
+      "transportError": false
+    },
+    {
+      "id": "retry-post-key-503",
+      "retry": true,
+      "safety": "idempotency-key",
+      "status": 503,
+      "transportError": false
+    },
+    {
+      "id": "retry-404",
+      "retry": false,
+      "safety": "safe",
+      "status": 404,
+      "transportError": false
+    },
+    {
+      "id": "retry-transport-safe",
+      "retry": true,
+      "safety": "idempotent",
+      "transportError": true
+    },
+    {
+      "id": "retry-transport-unsafe",
+      "retry": false,
+      "safety": "unsafe",
+      "transportError": true
+    }
+  ],
+  "fitCases": [
+    {
+      "deadlineMs": 1700,
+      "delays": [
+        100,
+        200,
+        300
+      ],
+      "expected": [
+        100,
+        200
+      ],
+      "id": "fit-reserves-attempt-time",
+      "minimumAttemptMs": 200,
+      "nowMs": 1000
+    },
+    {
+      "deadlineMs": 5150,
+      "delays": [
+        0,
+        10
+      ],
+      "expected": [],
+      "id": "fit-no-room-for-attempt",
+      "minimumAttemptMs": 200,
+      "nowMs": 5000
+    }
+  ],
+  "retryAfterCases": [
+    {
+      "expectedMs": 3000,
+      "id": "retry-after-seconds",
+      "nowMs": 0,
+      "value": "3"
+    },
+    {
+      "expectedMs": 5000,
+      "id": "retry-after-date",
+      "now": "2026-08-06T10:00:00+00:00",
+      "nowMs": 1786010400000,
+      "value": "Thu, 06 Aug 2026 10:00:05 GMT"
+    },
+    {
+      "expectedMs": null,
+      "id": "retry-after-invalid",
+      "nowMs": 0,
+      "value": "soon"
+    }
+  ],
+  "scheduleCases": [
+    {
+      "id": "schedule-python-seed7",
+      "policy": {
+        "initialDelayMs": 100,
+        "jitter": "full",
+        "maxAttempts": 4,
+        "maximumDelayMs": 1000,
+        "multiplier": 2
+      },
+      "pythonExpected": [
+        41,
+        38,
+        202
+      ],
+      "seed": 7
+    },
+    {
+      "id": "schedule-ts-seed7",
+      "policy": {
+        "initialDelayMs": 100,
+        "jitter": "full",
+        "maxAttempts": 4,
+        "maximumDelayMs": 1000,
+        "multiplier": 2
+      },
+      "seed": 7,
+      "typescriptExpected": [
+        24,
+        183,
+        245
+      ]
+    },
+    {
+      "expected": [
+        100,
+        200,
+        250
+      ],
+      "id": "schedule-no-jitter",
+      "policy": {
+        "initialDelayMs": 100,
+        "jitter": "none",
+        "maxAttempts": 4,
+        "maximumDelayMs": 250,
+        "multiplier": 2
+      },
+      "seed": 0
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "module": 6,
+  "status": "passed",
+  "claim": "stream protocols remain bounded and integrity-safe",
+  "evidence": {
+    "stream_cases": 7,
+    "flow_control_cases": 4,
+    "live_stream_shapes": [
+      "client-stream",
+      "server-stream",
+      "bidi-validation"
+    ]
+  }
+}

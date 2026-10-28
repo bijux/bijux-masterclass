@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "dataClass": "synthetic-only",
+      "expected": "allowed",
+      "name": "synthetic session",
+      "tenant": "sandbox-abc"
+    },
+    {
+      "dataClass": "production",
+      "error": "production-data-forbidden",
+      "name": "production import",
+      "tenant": "sandbox-abc"
+    }
+  ]
+}

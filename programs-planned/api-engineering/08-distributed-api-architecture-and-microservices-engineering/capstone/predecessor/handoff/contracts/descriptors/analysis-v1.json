@@ -1,0 +1,735 @@
+{
+  "file": "bijux/analysis/v1/analysis.proto",
+  "package": "bijux.analysis.v1",
+  "syntax": "proto3",
+  "enums": {
+    "RunState": [
+      {
+        "name": "RUN_STATE_UNSPECIFIED",
+        "number": 0
+      },
+      {
+        "name": "RUN_STATE_QUEUED",
+        "number": 1
+      },
+      {
+        "name": "RUN_STATE_RUNNING",
+        "number": 2
+      },
+      {
+        "name": "RUN_STATE_COMPLETED",
+        "number": 3
+      },
+      {
+        "name": "RUN_STATE_FAILED",
+        "number": 4
+      },
+      {
+        "name": "RUN_STATE_CANCELLED",
+        "number": 5
+      }
+    ]
+  },
+  "messages": {
+    "CreateRunRequest": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "parent",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "request_id",
+          "number": 2,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "dataset_name",
+          "number": 3,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "algorithm",
+          "number": 4,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "GetRunRequest": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "name",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "CancelRunRequest": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "name",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "etag",
+          "number": 2,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "request_id",
+          "number": 3,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "WatchRunRequest": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "name",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "resume_after_sequence",
+          "number": 2,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "AnalysisRun": {
+      "oneofs": [
+        "_result_summary",
+        "_failure_code"
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "project_name",
+          "number": 2,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "dataset_name",
+          "number": 3,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "state",
+          "number": 4,
+          "type": 14,
+          "type_name": ".bijux.analysis.v1.RunState",
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "progress_percent",
+          "number": 5,
+          "type": 5,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "etag",
+          "number": 6,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "result_summary",
+          "number": 7,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": 0,
+          "proto3_optional": true
+        },
+        {
+          "name": "failure_code",
+          "number": 8,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": 1,
+          "proto3_optional": true
+        },
+        {
+          "name": "revision",
+          "number": 9,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "RunEvent": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "event_id",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "run_name",
+          "number": 2,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "sequence",
+          "number": 3,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "snapshot",
+          "number": 4,
+          "type": 11,
+          "type_name": ".bijux.analysis.v1.AnalysisRun",
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "type",
+          "number": 5,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "UploadMetadata": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "parent",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "request_id",
+          "number": 2,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "filename",
+          "number": 3,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "media_type",
+          "number": 4,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "sha256",
+          "number": 5,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "expected_size_bytes",
+          "number": 6,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "UploadDatasetRequest": {
+      "oneofs": [
+        "frame"
+      ],
+      "fields": [
+        {
+          "name": "metadata",
+          "number": 1,
+          "type": 11,
+          "type_name": ".bijux.analysis.v1.UploadMetadata",
+          "oneof_index": 0,
+          "proto3_optional": false
+        },
+        {
+          "name": "chunk",
+          "number": 2,
+          "type": 12,
+          "type_name": null,
+          "oneof_index": 0,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "UploadDatasetResponse": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "dataset_name",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "size_bytes",
+          "number": 2,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "sha256",
+          "number": 3,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "DownloadArtifactRequest": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "name",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "offset",
+          "number": 2,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "limit",
+          "number": 3,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "ArtifactChunk": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "offset",
+          "number": 1,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "data",
+          "number": 2,
+          "type": 12,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "complete",
+          "number": 3,
+          "type": 8,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "sha256",
+          "number": 4,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "WorkerHello": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "worker_id",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "max_concurrency",
+          "number": 2,
+          "type": 5,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "tenant_id",
+          "number": 3,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "WorkerReady": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "worker_id",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "available_slots",
+          "number": 2,
+          "type": 5,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "WorkProgress": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "assignment_id",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "percent",
+          "number": 2,
+          "type": 5,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "lease_generation",
+          "number": 3,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "WorkResult": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "assignment_id",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "success",
+          "number": 2,
+          "type": 8,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "result_summary",
+          "number": 3,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "failure_code",
+          "number": 4,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "lease_generation",
+          "number": 5,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "WorkAssignment": {
+      "oneofs": [],
+      "fields": [
+        {
+          "name": "assignment_id",
+          "number": 1,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "run_name",
+          "number": 2,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "algorithm",
+          "number": 3,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "dataset_name",
+          "number": 4,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "lease_expires_unix_ms",
+          "number": 5,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        },
+        {
+          "name": "lease_generation",
+          "number": 6,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": null,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "WorkerToControl": {
+      "oneofs": [
+        "payload"
+      ],
+      "fields": [
+        {
+          "name": "hello",
+          "number": 1,
+          "type": 11,
+          "type_name": ".bijux.analysis.v1.WorkerHello",
+          "oneof_index": 0,
+          "proto3_optional": false
+        },
+        {
+          "name": "ready",
+          "number": 2,
+          "type": 11,
+          "type_name": ".bijux.analysis.v1.WorkerReady",
+          "oneof_index": 0,
+          "proto3_optional": false
+        },
+        {
+          "name": "progress",
+          "number": 3,
+          "type": 11,
+          "type_name": ".bijux.analysis.v1.WorkProgress",
+          "oneof_index": 0,
+          "proto3_optional": false
+        },
+        {
+          "name": "result",
+          "number": 4,
+          "type": 11,
+          "type_name": ".bijux.analysis.v1.WorkResult",
+          "oneof_index": 0,
+          "proto3_optional": false
+        }
+      ]
+    },
+    "ControlToWorker": {
+      "oneofs": [
+        "payload"
+      ],
+      "fields": [
+        {
+          "name": "assignment",
+          "number": 1,
+          "type": 11,
+          "type_name": ".bijux.analysis.v1.WorkAssignment",
+          "oneof_index": 0,
+          "proto3_optional": false
+        },
+        {
+          "name": "cancel_assignment_id",
+          "number": 2,
+          "type": 9,
+          "type_name": null,
+          "oneof_index": 0,
+          "proto3_optional": false
+        },
+        {
+          "name": "heartbeat_interval_ms",
+          "number": 3,
+          "type": 3,
+          "type_name": null,
+          "oneof_index": 0,
+          "proto3_optional": false
+        }
+      ]
+    }
+  },
+  "services": {
+    "AnalysisControlService": [
+      {
+        "name": "CreateRun",
+        "input": ".bijux.analysis.v1.CreateRunRequest",
+        "output": ".bijux.analysis.v1.AnalysisRun",
+        "client_streaming": false,
+        "server_streaming": false
+      },
+      {
+        "name": "GetRun",
+        "input": ".bijux.analysis.v1.GetRunRequest",
+        "output": ".bijux.analysis.v1.AnalysisRun",
+        "client_streaming": false,
+        "server_streaming": false
+      },
+      {
+        "name": "CancelRun",
+        "input": ".bijux.analysis.v1.CancelRunRequest",
+        "output": ".bijux.analysis.v1.AnalysisRun",
+        "client_streaming": false,
+        "server_streaming": false
+      },
+      {
+        "name": "WatchRun",
+        "input": ".bijux.analysis.v1.WatchRunRequest",
+        "output": ".bijux.analysis.v1.RunEvent",
+        "client_streaming": false,
+        "server_streaming": true
+      }
+    ],
+    "DatasetTransferService": [
+      {
+        "name": "UploadDataset",
+        "input": ".bijux.analysis.v1.UploadDatasetRequest",
+        "output": ".bijux.analysis.v1.UploadDatasetResponse",
+        "client_streaming": true,
+        "server_streaming": false
+      },
+      {
+        "name": "DownloadArtifact",
+        "input": ".bijux.analysis.v1.DownloadArtifactRequest",
+        "output": ".bijux.analysis.v1.ArtifactChunk",
+        "client_streaming": false,
+        "server_streaming": true
+      }
+    ],
+    "WorkerPlaneService": [
+      {
+        "name": "Work",
+        "input": ".bijux.analysis.v1.WorkerToControl",
+        "output": ".bijux.analysis.v1.ControlToWorker",
+        "client_streaming": true,
+        "server_streaming": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,3 @@
+query NodeLookup($by: NodeLookup!) {
+  node(by: $by) { __typename id }
+}

@@ -1,0 +1,53 @@
+{
+  "profile": "grpc-status-1.0",
+  "cases": [
+    {
+      "id": "STS-01",
+      "application": "invalid-algorithm",
+      "expected": "INVALID_ARGUMENT",
+      "reason": "invalid_argument"
+    },
+    {
+      "id": "STS-02",
+      "application": "concealed-resource",
+      "expected": "NOT_FOUND",
+      "reason": "not_found"
+    },
+    {
+      "id": "STS-03",
+      "application": "missing-credential",
+      "expected": "UNAUTHENTICATED",
+      "reason": "unauthenticated"
+    },
+    {
+      "id": "STS-04",
+      "application": "wrong-scope",
+      "expected": "PERMISSION_DENIED",
+      "reason": "permission_denied"
+    },
+    {
+      "id": "STS-05",
+      "application": "stale-etag",
+      "expected": "ABORTED",
+      "reason": "concurrency_conflict"
+    },
+    {
+      "id": "STS-06",
+      "application": "terminal-cancel",
+      "expected": "FAILED_PRECONDITION",
+      "reason": "failed_precondition"
+    },
+    {
+      "id": "STS-07",
+      "application": "changed-input-same-request-id",
+      "expected": "ALREADY_EXISTS",
+      "reason": "idempotency_conflict"
+    },
+    {
+      "id": "STS-08",
+      "application": "stream-budget",
+      "expected": "RESOURCE_EXHAUSTED",
+      "reason": "resource_exhausted"
+    }
+  ]
+}

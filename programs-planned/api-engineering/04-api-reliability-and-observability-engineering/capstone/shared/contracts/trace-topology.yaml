@@ -1,0 +1,37 @@
+topologyVersion: '1.0'
+edges:
+- id: TRACE-EDGE-01
+  from: client
+  to: api
+  kind: synchronous-http
+  relation: parent-child
+- id: TRACE-EDGE-02
+  from: api
+  to: postgres
+  kind: synchronous-db
+  relation: parent-child
+- id: TRACE-EDGE-03
+  from: api-accept
+  to: durable-job
+  kind: durable-queue
+  relation: link
+- id: TRACE-EDGE-04
+  from: durable-job
+  to: worker-attempt
+  kind: durable-queue
+  relation: link
+- id: TRACE-EDGE-05
+  from: worker-attempt
+  to: artifact-store
+  kind: synchronous-storage
+  relation: parent-child
+- id: TRACE-EDGE-06
+  from: terminal-transaction
+  to: outbox-delivery
+  kind: durable-outbox
+  relation: link
+- id: TRACE-EDGE-07
+  from: outbox-delivery
+  to: webhook-receiver
+  kind: synchronous-http
+  relation: parent-child

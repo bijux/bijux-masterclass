@@ -1,0 +1,445 @@
+{
+  "algorithm": "sha256",
+  "files": [
+    {
+      "path": "contract/openapi-api-1.2.bundle.yaml",
+      "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+      "size": 355600
+    },
+    {
+      "path": "migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "reference-tracks/python-fastapi/Dockerfile",
+      "sha256": "fc4a87a6bf14d1bde258c5b62da22d49a544093474c449b19dfefdda9eaba7ad",
+      "size": 352
+    },
+    {
+      "path": "reference-tracks/python-fastapi/README.md",
+      "sha256": "bdd098b5db762398bcaeaf34386427cbf51fcbae3a6781fd073f8f6cca077c50",
+      "size": 391
+    },
+    {
+      "path": "reference-tracks/python-fastapi/fixtures/remote/remote-dataset.json",
+      "sha256": "f4a6dd87f77c9164d4cea38d4a5dc82e779e6cec034c359d6361b46e70ced11a",
+      "size": 238
+    },
+    {
+      "path": "reference-tracks/python-fastapi/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "reference-tracks/python-fastapi/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "reference-tracks/python-fastapi/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "reference-tracks/python-fastapi/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "reference-tracks/python-fastapi/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "reference-tracks/python-fastapi/pyproject.toml",
+      "sha256": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
+      "size": 573
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/__init__.py",
+      "sha256": "ae3506a416e52bd9365fcd68e99482444860bf953e9471257e369b17f255c42c",
+      "size": 69
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/app.py",
+      "sha256": "42db700dae67f9bec174988c81a09dfa8c8547ecded68c87ec679a0d8d3f9504",
+      "size": 16845
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/artifacts.py",
+      "sha256": "271bdf7228964a112db3c38aa1924fdaf38aa6feda0d4bedd3aeadd3d757e16f",
+      "size": 6056
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/auth.py",
+      "sha256": "85effc24eed76c86d06e840f965208bf156f6c1b892a3767c636b1aa93444db9",
+      "size": 3134
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/cli.py",
+      "sha256": "f6ec33c1840dab2736277594dd66a9a37dd556c5b449c60d71766cb22e79ac57",
+      "size": 568
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/config.py",
+      "sha256": "f537cb71fa54cfc196c3f222f421b8d10fb5230fb2b1721bc1c190ac99d4471e",
+      "size": 3974
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/domain.py",
+      "sha256": "4995700ff68928c7dc5640dcf33c88ca772f83da360092f37212e1e9feb35b06",
+      "size": 7483
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/failures.py",
+      "sha256": "b94e9793a3fce822fc85eb747fb7ceee551c5e09f4be405e3c24eebb2270e08b",
+      "size": 447
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/migrations.py",
+      "sha256": "f21b16078725cc77d0832a51cb4e989c792b59aff707f0e27469c78facd3b3d3",
+      "size": 2978
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/models.py",
+      "sha256": "18b8acaa56501f7698dea7ea8a4078f6df18cf45f31e606282ee745a3ff0ad4e",
+      "size": 11103
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/ports.py",
+      "sha256": "280f0adb75e8e352f177dfc2f917ecab19eb8389c00a261efdb77ff91f7c360d",
+      "size": 5924
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/postgres.py",
+      "sha256": "fe5b8aff3c1d1cac88b56bbb0d0aa74ac82c4e760e3cb40f7644a4b67e1ae239",
+      "size": 72481
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/problems.py",
+      "sha256": "d48ee8f9907695eb89fe75f39b4312a548c7e8fb6820401328114d3989da8406",
+      "size": 2431
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/remote_fixtures.py",
+      "sha256": "b100916a229489de3efe552387665b694b88e0d284d2e6106e8a7b08a900f81b",
+      "size": 2646
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/server.py",
+      "sha256": "209548112a11627eda9a7a1ceef45468506424defc687a245dc78dbd37f2b03c",
+      "size": 83
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/service.py",
+      "sha256": "2951a8fde0c93b4ed08a08c51ac1832083095fa12c7d5700a1e0c2d202c9af9c",
+      "size": 5804
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/webhooks.py",
+      "sha256": "9ecf2f646b286359ec3a92488e08fef2248abb706952ad035666ec6d9c26fcc8",
+      "size": 1989
+    },
+    {
+      "path": "reference-tracks/python-fastapi/src/analysis_service/worker.py",
+      "sha256": "b91a787f4f879177b13224afc57502956d92e4d3143b34f895c55dfec9161b88",
+      "size": 8998
+    },
+    {
+      "path": "reference-tracks/python-fastapi/tests/test_artifacts.py",
+      "sha256": "874be4182b8b15f693f05b44e3fe5558d1f8624d6485647eb8b4c9eb2956ad35",
+      "size": 3348
+    },
+    {
+      "path": "reference-tracks/python-fastapi/tests/test_domain.py",
+      "sha256": "969ae95c1de37a14e6aa0e3fc02b3f653e43badeee29180c96677ff92f20f209",
+      "size": 3337
+    },
+    {
+      "path": "reference-tracks/python-fastapi/tests/test_models.py",
+      "sha256": "57893fa4275b33cbb999bfd1b8dfd03823bc3c950a05c35401c2efb456752d06",
+      "size": 1911
+    },
+    {
+      "path": "reference-tracks/python-fastapi/tests/test_operation_map.py",
+      "sha256": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
+      "size": 751
+    },
+    {
+      "path": "reference-tracks/python-fastapi/tests/test_postgres_integration.py",
+      "sha256": "24812dff35e5a4de84983ce8ba6bcd516cd43404d949649811908989360d624f",
+      "size": 724
+    },
+    {
+      "path": "reference-tracks/python-fastapi/tests/test_remote_fixtures.py",
+      "sha256": "f1417a5a95b45f70925d3d8fe51ced13b47bd96a3a4a900ba9ec7ef753a14061",
+      "size": 2550
+    },
+    {
+      "path": "reference-tracks/python-fastapi/tests/test_webhooks.py",
+      "sha256": "00b35553701194142ac1495863e4839440332d933696353f892d8e2f0fc041ca",
+      "size": 1051
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/Dockerfile",
+      "sha256": "494c94a5d3fd6b51b41269961cd5caa235381e32558767b718fb56519a0182e7",
+      "size": 639
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/README.md",
+      "sha256": "dcd98afc1c779641e27b391bd89f1ba569281de71d65964a36da6aefee2ee73f",
+      "size": 856
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/fixtures/remote/remote-dataset.json",
+      "sha256": "f4a6dd87f77c9164d4cea38d4a5dc82e779e6cec034c359d6361b46e70ced11a",
+      "size": 238
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/package.json",
+      "sha256": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
+      "size": 925
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/app.ts",
+      "sha256": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
+      "size": 17896
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/artifacts.ts",
+      "sha256": "a3bb1cc7ffe94e2a2774635a35f3bb3406fde5f0f3c06e74e16be183d95dcf6d",
+      "size": 5566
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/auth.ts",
+      "sha256": "9a34ce2b89b4ff69a5387bce56f736ade3a13a93f423186a7dcd6911b8d5b140",
+      "size": 3375
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/config.ts",
+      "sha256": "476e10793a9a13e95fb22ed15a22bb4f791b35c1a1d36d3cfcc324d4e985c870",
+      "size": 3335
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/core/domain.ts",
+      "sha256": "fc1167a542070994bdab14433874f9b1f925886167bea14ae1405eb43c4812bd",
+      "size": 5347
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/db.ts",
+      "sha256": "e40608df7ca4ff7591256fe3c46ed0377baf8bfc8b2d72550eb60572c54ac1de",
+      "size": 1342
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/domain.ts",
+      "sha256": "db63b0089b148d36f90cc877c956aa5a5578b8d381ed9a13ed4809aa8143036f",
+      "size": 1381
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/migrate.ts",
+      "sha256": "272acac33ad10227d8f15ab17616e0ab030a30b47e303807cab46dac58109a52",
+      "size": 432
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/migrations.ts",
+      "sha256": "29596bffa48b9a042959511633a13cf742ab44e81b945819174e27a184637c05",
+      "size": 3029
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/problems.ts",
+      "sha256": "f8328a49e23da7140c3beff7506fecf45740bbf92d6e1bff0b1f494598da6136",
+      "size": 3943
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/remoteFixtures.ts",
+      "sha256": "bb02bda3fa0ef50b2283d995b46f19a0ae65db78b3f17ed2221415518347c757",
+      "size": 2149
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/repository.ts",
+      "sha256": "67b70693c764dfcd9d3626c941153866c946cbb0c7b894c7f4ebda08ecfca74c",
+      "size": 58443
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/schemas.ts",
+      "sha256": "3030c6719463b20b945337959e375cfdf60898144db59bd2eb0dccfeacbefe6d",
+      "size": 11944
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/server.ts",
+      "sha256": "e8eaee700946b55294a56523b9245731e10065ac5c46d66b7f067d1651fc690f",
+      "size": 810
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/service.ts",
+      "sha256": "7706b193b66f6791b7a33516357df58c97f19c9cd858ebbac2b78d903cd01f93",
+      "size": 5266
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/types.ts",
+      "sha256": "b81421faed12ba017ac43c84bc7b92e39bf9548f628eba61fe11ef888c601601",
+      "size": 3832
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/webhooks.ts",
+      "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+      "size": 2458
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/src/worker.ts",
+      "sha256": "e605eb8a0f09c7981c5507ad256ef27ef4fcbaa41a2449aa0312e9d05f80fc8d",
+      "size": 8357
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/test/artifacts.test.ts",
+      "sha256": "c31bd9082e44365031c14d88cd08bd312f5817b6b71c356ac4cc1f9492f1e3cb",
+      "size": 2758
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/test/domain.test.ts",
+      "sha256": "f757c89e72510400610c92401b700825cd10a82ff82f36f5e4cf4ab0f7996f90",
+      "size": 2652
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/test/operation-map.test.ts",
+      "sha256": "ac7f3818c094f72a654839ba11078b4eed75f6552cd8e7de65deedce285ad648",
+      "size": 1155
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/test/postgres.integration.test.ts",
+      "sha256": "1e0b18bd5099d8a82cc3c54cbe4a5ae2a6f5ebbd6881108fb5f6aab94af1daf4",
+      "size": 668
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/test-core/artifacts.test.mjs",
+      "sha256": "ba5dc4e38d8a7ee534cc8e6c39789735c0192e528085999749cd0df4e6e65c47",
+      "size": 2421
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/test-core/domain.test.mjs",
+      "sha256": "3b115d3586af17d94455e28bca8a4a59e7cbeca652dd67ce8d883bb0171a7be5",
+      "size": 1452
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/test-core/remote-fixtures.test.mjs",
+      "sha256": "d0a7d2cd15f9d5a0341ca60077021a36ee5420a533a2ac7e39da998b30fe4f31",
+      "size": 2023
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/test-core/webhooks.test.mjs",
+      "sha256": "b47bd6222ac6a2b2b4c8d105d9464aa4c243c31c23171417b2111e6fa5cb7048",
+      "size": 1172
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/tsconfig.audit.json",
+      "sha256": "df4b3c352ab9ecbc016bb1d9b19be007880698a6edd7ed31af124df1663e8762",
+      "size": 578
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/tsconfig.core.json",
+      "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+      "size": 605
+    },
+    {
+      "path": "reference-tracks/typescript-fastify/tsconfig.json",
+      "sha256": "0238be9dceaba53cf261b2f1a7ece2cc50da6f66a633a2c89fd25f69d6385d03",
+      "size": 546
+    },
+    {
+      "path": "reference-tracks/webhook-receiver/Dockerfile",
+      "sha256": "4aad1bef9af498b6559d920301349c9fae5a8bb64b78da82c9210c0eb38e5c66",
+      "size": 285
+    },
+    {
+      "path": "reference-tracks/webhook-receiver/README.md",
+      "sha256": "b1bdcf7682d4806481ce149740a066601eb9e87834d198c86f1f77e719a1aa40",
+      "size": 690
+    },
+    {
+      "path": "reference-tracks/webhook-receiver/receiver.py",
+      "sha256": "a94700726ea02fc6e906b5f0a1480240b6661c23c41afc0c143a0997e197ee8a",
+      "size": 9636
+    },
+    {
+      "path": "reference-tracks/webhook-receiver/test_receiver.py",
+      "sha256": "6281ec8b7d59677af89a04c097bae980580e4a422b262d154a2e2fa2996028db",
+      "size": 804
+    },
+    {
+      "path": "shared/cursor-vectors.json",
+      "sha256": "7b0c1f7a99af718e6d104fe9e61c716f4eedbe0e7ec4f80d801cd10050664427",
+      "size": 672
+    },
+    {
+      "path": "shared/error-catalog.json",
+      "sha256": "5d26459e62dc024239da5e0bec69808252aa421a90606f6bcfb234c28cd84c7d",
+      "size": 600
+    },
+    {
+      "path": "shared/idempotency-vectors.json",
+      "sha256": "1235ebaa5cd379c287e733e2b7dacb8ec1bd63d255a8b16b26883d96c5f823f1",
+      "size": 868
+    },
+    {
+      "path": "shared/operation-map.yaml",
+      "sha256": "b7af9cc78b271fb492d94880ec18322d4d0d9e3e29e9d03064b8fbbf3da2247f",
+      "size": 1385
+    },
+    {
+      "path": "shared/state-machine.json",
+      "sha256": "6cf362fdce5ab23914064319c8be4aaaa32c01a89334558ae421bdc8bca9a9fb",
+      "size": 1087
+    },
+    {
+      "path": "shared/webhook-signature-vectors.json",
+      "sha256": "8f1a96fadb815f3a437ae892fa308450d2072e61416205f41feb00df195f8fc0",
+      "size": 427
+    }
+  ]
+}

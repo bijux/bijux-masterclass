@@ -1,0 +1,7 @@
+{
+  "entityRef": "api:default/analysis-rpc",
+  "evidenceClass": "course-executed",
+  "kind": "ownership",
+  "status": "pass",
+  "summary": "ownership evidence for api:default/analysis-rpc"
+}

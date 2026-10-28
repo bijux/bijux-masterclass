@@ -1,0 +1,18 @@
+{
+  "files": [
+    "README.md",
+    "client-catalog.yaml",
+    "evidence-summary.json",
+    "field-ownership.yaml",
+    "persisted-operations.json",
+    "platform-boundary-brief.yaml",
+    "query-budget-policy.yaml",
+    "release-policy.yaml",
+    "schema-catalog.json",
+    "schema.graphql",
+    "version-ledger.yaml"
+  ],
+  "from": "09-graphql-schema-and-runtime-engineering",
+  "schemaRelease": "1.0.0",
+  "to": "10-api-platform-governance-and-developer-experience-engineering"
+}

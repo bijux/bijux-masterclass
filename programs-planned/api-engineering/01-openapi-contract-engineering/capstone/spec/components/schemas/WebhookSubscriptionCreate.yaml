@@ -1,0 +1,31 @@
+type: object
+additionalProperties: false
+required:
+- targetUrl
+- eventTypes
+- secret
+properties:
+  targetUrl:
+    type: string
+    format: uri
+    pattern: '^https://hooks\.example\.test(?:/[^#\s]*)?$'
+  eventTypes:
+    type: array
+    minItems: 1
+    maxItems: 2
+    uniqueItems: true
+    items:
+      type: string
+      enum:
+      - analysis.completed
+      - analysis.failed
+  secret:
+    type: string
+    minLength: 16
+    maxLength: 128
+    writeOnly: true
+examples:
+- targetUrl: https://hooks.example.test/team-a
+  eventTypes:
+  - analysis.completed
+  secret: training-secret-0001

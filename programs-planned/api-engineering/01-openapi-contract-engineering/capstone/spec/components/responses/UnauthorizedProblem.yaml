@@ -1,0 +1,15 @@
+description: Authentication required
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: https://api.example.test/problems/unauthorized
+      title: Authentication required
+      status: 401
+      detail: Valid authentication credentials are required.
+      instance: /example
+      requestId: req_012345abcdef

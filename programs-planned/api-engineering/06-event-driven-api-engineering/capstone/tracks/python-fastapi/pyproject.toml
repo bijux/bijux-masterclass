@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "analysis-events-python-reference"
+version = "1.0.0"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest==8.4.1", "jsonschema==4.26.0", "PyYAML==6.0.3"]
+api = ["fastapi==0.116.1", "uvicorn==0.35.0"]
+nats = ["nats-py==2.15.0"]
+postgres = ["psycopg[binary]==3.2.9"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

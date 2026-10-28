@@ -1,0 +1,8 @@
+id: DEFECT-REL-03
+module: 3
+name: Global circuit
+detector: dependency-circuit-scope
+mutation: Share one global circuit across unrelated dependencies.
+oracle: operation-scoped state
+expectedCommand: make module-proof MODULE=03
+expectedFailure: Circuit scope other than dependency is rejected.

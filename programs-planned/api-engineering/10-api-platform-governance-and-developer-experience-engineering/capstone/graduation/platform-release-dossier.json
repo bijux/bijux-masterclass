@@ -1,0 +1,297 @@
+{
+  "catalog": {
+    "apis": 7,
+    "entities": 23
+  },
+  "documentation": {
+    "documents": 15,
+    "portalDigest": "1b9c1498b4bcfafdfc7d09ac7cc65e07077eeb0b76155412b3e99aa08ed86e56"
+  },
+  "evidenceBoundary": [
+    "dependency-light semantic proof executed",
+    "operated Backstage, package registry, identity platform, and cloud gateway not executed",
+    "SLSA and CycloneDX files are course profiles, not third-party attestations"
+  ],
+  "goldenPath": {
+    "generatedFiles": [
+      "README.md",
+      "catalog-info.yaml",
+      "contracts/contract.stub",
+      "docs/quickstart.md",
+      "policy/api-metadata.json",
+      "tests/test_contract_presence.py"
+    ]
+  },
+  "governance": {
+    "activeExceptions": 1,
+    "scorecards": [
+      {
+        "blockers": [],
+        "dimensions": {
+          "compatibility": "pass",
+          "documentation": "pass",
+          "ownership": "pass",
+          "performance": "pass",
+          "reliability": "pass",
+          "sandbox": "pass",
+          "security": "pass",
+          "support": "pass"
+        },
+        "entityRef": "api:default/analysis-events",
+        "reviews": [],
+        "status": "ready"
+      },
+      {
+        "blockers": [],
+        "dimensions": {
+          "compatibility": "pass",
+          "documentation": "pass",
+          "ownership": "pass",
+          "performance": "pass",
+          "reliability": "pass",
+          "sandbox": "pass",
+          "security": "pass",
+          "support": "pass"
+        },
+        "entityRef": "api:default/analysis-graph",
+        "reviews": [],
+        "status": "ready"
+      },
+      {
+        "blockers": [],
+        "dimensions": {
+          "compatibility": "pass",
+          "documentation": "pass",
+          "ownership": "pass",
+          "performance": "pass",
+          "reliability": "pass",
+          "sandbox": "pass",
+          "security": "pass",
+          "support": "pass"
+        },
+        "entityRef": "api:default/analysis-http",
+        "reviews": [],
+        "status": "ready"
+      },
+      {
+        "blockers": [],
+        "dimensions": {
+          "compatibility": "pass",
+          "documentation": "pass",
+          "ownership": "pass",
+          "performance": "pass",
+          "reliability": "pass",
+          "sandbox": "pass",
+          "security": "pass",
+          "support": "pass"
+        },
+        "entityRef": "api:default/analysis-rpc",
+        "reviews": [],
+        "status": "ready"
+      },
+      {
+        "blockers": [],
+        "dimensions": {
+          "compatibility": "pass",
+          "documentation": "pass",
+          "ownership": "pass",
+          "performance": "pass",
+          "reliability": "pass",
+          "sandbox": "pass",
+          "security": "pass",
+          "support": "pass"
+        },
+        "entityRef": "api:default/artifact-http",
+        "reviews": [],
+        "status": "ready"
+      },
+      {
+        "blockers": [],
+        "dimensions": {
+          "compatibility": "pass",
+          "documentation": "pass",
+          "ownership": "pass",
+          "performance": "pass",
+          "reliability": "pass",
+          "sandbox": "pass",
+          "security": "pass",
+          "support": "pass"
+        },
+        "entityRef": "api:default/notification-http",
+        "reviews": [],
+        "status": "ready"
+      },
+      {
+        "blockers": [],
+        "dimensions": {
+          "compatibility": "pass",
+          "documentation": "pass",
+          "ownership": "pass",
+          "performance": "pass",
+          "reliability": "pass",
+          "sandbox": "pass",
+          "security": "pass",
+          "support": "pass"
+        },
+        "entityRef": "api:default/platform-catalog",
+        "reviews": [],
+        "status": "ready"
+      }
+    ]
+  },
+  "lifecycle": {
+    "affectedConsumers": [
+      "consumer-legacy-cli"
+    ],
+    "apiRef": "api:default/analysis-http",
+    "blockingConsumers": [
+      "consumer-legacy-cli"
+    ],
+    "retirementDecision": "blocked",
+    "version": "1.1.0"
+  },
+  "platformRelease": "1.0.0",
+  "productMetrics": {
+    "activeConsumers": 5,
+    "deprecatedVersionUses": 1,
+    "medianTimeToFirstSuccessSeconds": 240.0,
+    "search": {
+      "queries": 4,
+      "zeroResultRate": 0.0
+    }
+  },
+  "registry": {
+    "verifiedReleases": [
+      {
+        "apiRef": "api:default/analysis-events",
+        "sha256": "43410d220996bd5dd1f86242ab36916bac3817febda716b39023aceb9cf3c37a",
+        "version": "1.0.0"
+      },
+      {
+        "apiRef": "api:default/analysis-graph",
+        "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9",
+        "version": "1.0.0"
+      },
+      {
+        "apiRef": "api:default/analysis-http",
+        "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+        "version": "1.2.0"
+      },
+      {
+        "apiRef": "api:default/analysis-rpc",
+        "sha256": "871307a4cfd2b34658fe5a7506ca1f8a127816c4186ef426163869dd2dbbda27",
+        "version": "1.0.0"
+      },
+      {
+        "apiRef": "api:default/artifact-http",
+        "sha256": "72a95928e6ee1b053b8bfe76a8032ac0d1012df86962c36138402283a89caa7f",
+        "version": "1.0.0"
+      },
+      {
+        "apiRef": "api:default/notification-http",
+        "sha256": "db729a97a723c84b96b8871e88771b06f1e830c1f1df5af2984f0adf68047f40",
+        "version": "1.0.0"
+      },
+      {
+        "apiRef": "api:default/platform-catalog",
+        "sha256": "bda58d7af7e33e2cdc058b901f43ef107d935dd5d297841bb4aea1304f4bbb8f",
+        "version": "1.0.0"
+      }
+    ]
+  },
+  "releaseDecisions": [
+    {
+      "decision": "accepted",
+      "id": "accepted-platform-1.0",
+      "reasons": []
+    },
+    {
+      "decision": "review",
+      "id": "review-doc-exception",
+      "reasons": [
+        "approved-exception-or-human-judgment-required"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-unowned-api",
+      "reasons": [
+        "catalog"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-mutable-release",
+      "reasons": [
+        "registry"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-retirement-with-consumer",
+      "reasons": [
+        "lifecycle"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-secret-template",
+      "reasons": [
+        "template"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-sdk-without-provenance",
+      "reasons": [
+        "sdk"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-gateway-domain-policy",
+      "reasons": [
+        "runtime"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-production-sandbox-data",
+      "reasons": [
+        "sandbox"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-score-average",
+      "reasons": [
+        "policy"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-expiry-free-exception",
+      "reasons": [
+        "policy"
+      ]
+    }
+  ],
+  "runtime": {
+    "changed": [],
+    "extra": [],
+    "inSync": true,
+    "missing": []
+  },
+  "sdk": {
+    "reason": "verified",
+    "verified": true
+  },
+  "support": {
+    "contractOwner": "group:default/analysis-control-team",
+    "platformOwner": "group:default/api-platform-team",
+    "responseSeconds": {
+      "SUP-001": 4500.0,
+      "SUP-002": 10800.0
+    }
+  }
+}

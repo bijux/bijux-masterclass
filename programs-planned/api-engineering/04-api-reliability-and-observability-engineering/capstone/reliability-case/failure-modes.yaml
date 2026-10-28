@@ -1,0 +1,61 @@
+failureModes:
+- id: FAIL-001
+  name: PostgreSQL connection acquisition timeout
+  boundary: api-to-postgres
+  customerEffect: eligible requests cannot complete
+  containment: bounded pool wait, request deadline, readiness transition
+- id: FAIL-002
+  name: PostgreSQL slow query
+  boundary: api-to-postgres
+  customerEffect: tail latency and deadline exhaustion
+  containment: statement timeout, span evidence, query-specific runbook
+- id: FAIL-003
+  name: worker process termination after claim
+  boundary: worker-to-postgres
+  customerEffect: run stalls until lease recovery
+  containment: lease expiry, fencing, recovery event
+- id: FAIL-004
+  name: artifact storage unavailable
+  boundary: worker-to-artifact-store
+  customerEffect: run cannot publish durable output
+  containment: bounded retry, terminal failure, no false completion
+- id: FAIL-005
+  name: webhook destination returns 503
+  boundary: dispatcher-to-receiver
+  customerEffect: notification freshness degrades
+  containment: deadline, safe retry, jitter, durable outbox
+- id: FAIL-006
+  name: telemetry collector unavailable
+  boundary: service-to-collector
+  customerEffect: diagnostic visibility degrades without changing API correctness
+  containment: bounded exporter queue, drop accounting, no request blocking
+- id: FAIL-007
+  name: clock skew between processes
+  boundary: cross-process-time
+  customerEffect: misleading durations or lease decisions
+  containment: monotonic local timing, database time for leases, skew alert
+- id: FAIL-008
+  name: invalid deployment enters readiness too early
+  boundary: orchestrator-to-service
+  customerEffect: requests reach an uninitialized instance
+  containment: startup gate and dependency readiness
+- id: FAIL-009
+  name: retry amplification across layers
+  boundary: client-api-dependency
+  customerEffect: dependency outage becomes traffic storm
+  containment: single retry owner, budgets, jitter, attempt telemetry
+- id: FAIL-010
+  name: cross-table state divergence
+  boundary: transactional-state
+  customerEffect: run, job, artifact, or outbox disagree
+  containment: transaction design, reconciliation, idempotent repair
+- id: FAIL-011
+  name: high-cardinality telemetry
+  boundary: service-to-observability
+  customerEffect: telemetry cost or backend instability
+  containment: label allowlists and series budgets
+- id: FAIL-012
+  name: alert fires without actionable customer impact
+  boundary: monitoring-to-human
+  customerEffect: pager fatigue and slower real response
+  containment: SLO burn-rate alerting and runbook requirement

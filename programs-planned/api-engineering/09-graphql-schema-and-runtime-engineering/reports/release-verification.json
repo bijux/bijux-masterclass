@@ -1,0 +1,77 @@
+{
+  "course": "09-graphql-schema-and-runtime-engineering",
+  "release": "1.0.0",
+  "verified_at": "2026-08-08",
+  "status": "passed-with-explicit-environment-boundary",
+  "inventory": {
+    "course_book_pages": 59,
+    "course_book_words": 33576,
+    "numbered_modules": 10,
+    "orientation_modules": 1,
+    "exercises": 120,
+    "worked_answers": 120,
+    "labs": 10,
+    "checkpoints": 10,
+    "predecessor_files": 8,
+    "successor_handoff_files": 12,
+    "active_operations": 10,
+    "field_coordinates": 15,
+    "shared_vector_files": 10,
+    "shared_vector_cases": 36,
+    "graphql_documents": 26,
+    "json_documents": 59,
+    "yaml_documents": 25,
+    "toml_documents": 1,
+    "python_files": 28,
+    "typescript_files": 19,
+    "javascript_test_files": 3,
+    "sql_files": 4
+  },
+  "executed": {
+    "core_proof": "passed",
+    "capstone_tour": "passed",
+    "python_semantic_tests": {
+      "status": "passed",
+      "count": 29
+    },
+    "typescript_semantic_tests": {
+      "status": "passed",
+      "count": 15
+    },
+    "typescript_strict_compilation": "passed",
+    "loopback_network_tests": {
+      "status": "passed",
+      "count": 1
+    },
+    "schema_proof": "passed",
+    "ownership_proof": "passed",
+    "batching_proof": "passed",
+    "pagination_proof": "passed",
+    "mutation_proof": "passed",
+    "authorization_proof": "passed",
+    "demand_proof": "passed",
+    "error_proof": "passed",
+    "subscription_proof": "passed",
+    "release_proof": "passed",
+    "migration_proof": "passed",
+    "vector_proof": "passed",
+    "planted_defect_proof": "passed",
+    "final_defense_proof": "passed",
+    "handoff_proof": "passed",
+    "education_proof": "passed",
+    "repository_hygiene": "passed"
+  },
+  "not_executed": {
+    "independent_graphql_implementation": "graphql-core and GraphQL.js unavailable",
+    "live_strawberry_server": "optional framework dependency unavailable",
+    "live_graphql_yoga_server": "optional framework dependency unavailable",
+    "production_subscription_transport": "external transport topology unavailable",
+    "apollo_federation_composition": "external federation toolchain unavailable",
+    "strict_mkdocs_build": "mkdocs unavailable"
+  },
+  "toolchain": {
+    "python": "3.13.5",
+    "node": "22.16.0",
+    "typescript": "5.8.3"
+  }
+}

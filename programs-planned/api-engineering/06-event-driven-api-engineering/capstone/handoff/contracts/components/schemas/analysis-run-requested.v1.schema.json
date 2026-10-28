@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bijux.dev/events/analysis-run-requested.v1",
+  "title": "Analysis run requested data",
+  "type": "object",
+  "properties": {
+    "runId": {
+      "type": "string"
+    },
+    "datasetId": {
+      "type": "string"
+    },
+    "requestedBy": {
+      "type": "string"
+    },
+    "requestedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "runId",
+    "datasetId",
+    "requestedBy",
+    "requestedAt"
+  ],
+  "additionalProperties": false
+}

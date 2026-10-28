@@ -1,0 +1,241 @@
+proofs:
+- requirement: R-01
+  module: '02'
+  positive: PY/TS vector suite for R-01
+  negative: hostile case for R-01
+  plantedDefect: control-removal check for R-01
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-02
+  module: '02'
+  positive: PY/TS vector suite for R-02
+  negative: hostile case for R-02
+  plantedDefect: control-removal check for R-02
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-03
+  module: '02'
+  positive: PY/TS vector suite for R-03
+  negative: hostile case for R-03
+  plantedDefect: control-removal check for R-03
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-04
+  module: '02'
+  positive: PY/TS vector suite for R-04
+  negative: hostile case for R-04
+  plantedDefect: control-removal check for R-04
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-05
+  module: '02'
+  positive: PY/TS vector suite for R-05
+  negative: hostile case for R-05
+  plantedDefect: control-removal check for R-05
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-06
+  module: '03'
+  positive: PY/TS vector suite for R-06
+  negative: hostile case for R-06
+  plantedDefect: control-removal check for R-06
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-07
+  module: '03'
+  positive: PY/TS vector suite for R-07
+  negative: hostile case for R-07
+  plantedDefect: control-removal check for R-07
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-08
+  module: '03'
+  positive: PY/TS vector suite for R-08
+  negative: hostile case for R-08
+  plantedDefect: control-removal check for R-08
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-09
+  module: '03'
+  positive: PY/TS vector suite for R-09
+  negative: hostile case for R-09
+  plantedDefect: control-removal check for R-09
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-10
+  module: '03'
+  positive: PY/TS vector suite for R-10
+  negative: hostile case for R-10
+  plantedDefect: control-removal check for R-10
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-11
+  module: '03'
+  positive: PY/TS vector suite for R-11
+  negative: hostile case for R-11
+  plantedDefect: control-removal check for R-11
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-12
+  module: '03'
+  positive: PY/TS vector suite for R-12
+  negative: hostile case for R-12
+  plantedDefect: control-removal check for R-12
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-13
+  module: '04'
+  positive: PY/TS vector suite for R-13
+  negative: hostile case for R-13
+  plantedDefect: control-removal check for R-13
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-14
+  module: '04'
+  positive: PY/TS vector suite for R-14
+  negative: hostile case for R-14
+  plantedDefect: control-removal check for R-14
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-15
+  module: '04'
+  positive: PY/TS vector suite for R-15
+  negative: hostile case for R-15
+  plantedDefect: control-removal check for R-15
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-16
+  module: '04'
+  positive: PY/TS vector suite for R-16
+  negative: hostile case for R-16
+  plantedDefect: control-removal check for R-16
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-17
+  module: '04'
+  positive: PY/TS vector suite for R-17
+  negative: hostile case for R-17
+  plantedDefect: control-removal check for R-17
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-18
+  module: '05'
+  positive: PY/TS vector suite for R-18
+  negative: hostile case for R-18
+  plantedDefect: control-removal check for R-18
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-19
+  module: '05'
+  positive: PY/TS vector suite for R-19
+  negative: hostile case for R-19
+  plantedDefect: control-removal check for R-19
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-20
+  module: '05'
+  positive: PY/TS vector suite for R-20
+  negative: hostile case for R-20
+  plantedDefect: control-removal check for R-20
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-21
+  module: '05'
+  positive: PY/TS vector suite for R-21
+  negative: hostile case for R-21
+  plantedDefect: control-removal check for R-21
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-22
+  module: '05'
+  positive: PY/TS vector suite for R-22
+  negative: hostile case for R-22
+  plantedDefect: control-removal check for R-22
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-23
+  module: '06'
+  positive: PY/TS vector suite for R-23
+  negative: hostile case for R-23
+  plantedDefect: control-removal check for R-23
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-24
+  module: '06'
+  positive: PY/TS vector suite for R-24
+  negative: hostile case for R-24
+  plantedDefect: control-removal check for R-24
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-25
+  module: '06'
+  positive: PY/TS vector suite for R-25
+  negative: hostile case for R-25
+  plantedDefect: control-removal check for R-25
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-26
+  module: '06'
+  positive: PY/TS vector suite for R-26
+  negative: hostile case for R-26
+  plantedDefect: control-removal check for R-26
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-27
+  module: '06'
+  positive: PY/TS vector suite for R-27
+  negative: hostile case for R-27
+  plantedDefect: control-removal check for R-27
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-28
+  module: '06'
+  positive: PY/TS vector suite for R-28
+  negative: hostile case for R-28
+  plantedDefect: control-removal check for R-28
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-29
+  module: '07'
+  positive: PY/TS vector suite for R-29
+  negative: hostile case for R-29
+  plantedDefect: control-removal check for R-29
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-30
+  module: '07'
+  positive: PY/TS vector suite for R-30
+  negative: hostile case for R-30
+  plantedDefect: control-removal check for R-30
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-31
+  module: '07'
+  positive: PY/TS vector suite for R-31
+  negative: hostile case for R-31
+  plantedDefect: control-removal check for R-31
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-32
+  module: 08
+  positive: PY/TS vector suite for R-32
+  negative: hostile case for R-32
+  plantedDefect: control-removal check for R-32
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-33
+  module: 08
+  positive: PY/TS vector suite for R-33
+  negative: hostile case for R-33
+  plantedDefect: control-removal check for R-33
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-34
+  module: 09
+  positive: PY/TS vector suite for R-34
+  negative: hostile case for R-34
+  plantedDefect: control-removal check for R-34
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-35
+  module: 09
+  positive: PY/TS vector suite for R-35
+  negative: hostile case for R-35
+  plantedDefect: control-removal check for R-35
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-36
+  module: '10'
+  positive: PY/TS vector suite for R-36
+  negative: hostile case for R-36
+  plantedDefect: control-removal check for R-36
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-37
+  module: '10'
+  positive: PY/TS vector suite for R-37
+  negative: hostile case for R-37
+  plantedDefect: control-removal check for R-37
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-38
+  module: '07'
+  positive: PY/TS vector suite for R-38
+  negative: hostile case for R-38
+  plantedDefect: control-removal check for R-38
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-39
+  module: 09
+  positive: PY/TS vector suite for R-39
+  negative: hostile case for R-39
+  plantedDefect: control-removal check for R-39
+  environment: dependency-light unless explicitly marked by module
+- requirement: R-40
+  module: 09
+  positive: PY/TS vector suite for R-40
+  negative: hostile case for R-40
+  plantedDefect: control-removal check for R-40
+  environment: dependency-light unless explicitly marked by module

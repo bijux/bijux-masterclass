@@ -1,0 +1,97 @@
+{
+  "cases": [
+    {
+      "addresses": [
+        "93.184.216.34"
+      ],
+      "id": "ssrf-public",
+      "url": "https://hooks.example.test/events",
+      "valid": true
+    },
+    {
+      "addresses": [
+        "127.0.0.1"
+      ],
+      "error": "forbidden-address",
+      "id": "ssrf-loopback",
+      "url": "https://hooks.example.test/events",
+      "valid": false
+    },
+    {
+      "addresses": [
+        "10.0.0.2"
+      ],
+      "error": "forbidden-address",
+      "id": "ssrf-private",
+      "url": "https://hooks.example.test/events",
+      "valid": false
+    },
+    {
+      "addresses": [
+        "169.254.169.254"
+      ],
+      "error": "forbidden-address",
+      "id": "ssrf-link-local",
+      "url": "https://hooks.example.test/events",
+      "valid": false
+    },
+    {
+      "addresses": [
+        "93.184.216.34",
+        "10.0.0.2"
+      ],
+      "error": "mixed-or-forbidden-address",
+      "id": "ssrf-mixed",
+      "url": "https://hooks.example.test/events",
+      "valid": false
+    },
+    {
+      "addresses": [
+        "93.184.216.34"
+      ],
+      "error": "userinfo",
+      "id": "ssrf-userinfo",
+      "url": "https://user:pass@hooks.example.test/events",
+      "valid": false
+    },
+    {
+      "addresses": [
+        "93.184.216.34"
+      ],
+      "error": "scheme",
+      "id": "ssrf-http",
+      "url": "http://hooks.example.test/events",
+      "valid": false
+    },
+    {
+      "addresses": [
+        "93.184.216.34"
+      ],
+      "error": "fragment",
+      "id": "ssrf-fragment",
+      "url": "https://hooks.example.test/events#x",
+      "valid": false
+    },
+    {
+      "addresses": [
+        "93.184.216.34"
+      ],
+      "allowedPorts": [
+        443
+      ],
+      "error": "port",
+      "id": "ssrf-bad-port",
+      "url": "https://hooks.example.test:444/events",
+      "valid": false
+    },
+    {
+      "addresses": [
+        "::ffff:127.0.0.1"
+      ],
+      "error": "forbidden-address",
+      "id": "ssrf-ipv4-mapped",
+      "url": "https://hooks.example.test/events",
+      "valid": false
+    }
+  ]
+}

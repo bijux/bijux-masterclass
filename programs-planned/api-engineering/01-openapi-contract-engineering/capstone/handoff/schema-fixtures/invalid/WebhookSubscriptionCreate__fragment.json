@@ -1,0 +1,5 @@
+{
+  "targetUrl": "https://hooks.example.test/team-a#fragment",
+  "eventTypes": ["analysis.completed"],
+  "secret": "0123456789abcdef"
+}

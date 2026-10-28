@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 2,
+  "id": "api-engineering",
+  "title": "API Engineering",
+  "courseCount": 10,
+  "numberedModuleCount": 100,
+  "orientationModuleCount": 10,
+  "capstone": "Analysis Runs Platform",
+  "primaryProduct": "course-books",
+  "courses": [
+    {
+      "number": 1,
+      "directory": "01-openapi-contract-engineering",
+      "id": "openapi-contract-engineering",
+      "title": "OpenAPI Contract Engineering",
+      "stage": "Specify the public promise",
+      "centralQuestion": "What exactly does the API promise, and how can providers and consumers verify that promise?",
+      "incomingBoundary": "Basic programming ability, command-line familiarity, and no assumed OpenAPI experience.",
+      "outgoingBoundary": "A frozen API 1.1 contract, operation ledger, schema fixtures, security decisions, workflow description, compatibility policy, and provider-neutral behavioral scenarios."
+    },
+    {
+      "number": 2,
+      "directory": "02-contract-driven-api-service-engineering",
+      "id": "contract-driven-api-service-engineering",
+      "title": "Contract-Driven API Service Engineering",
+      "stage": "Implement the promise durably",
+      "centralQuestion": "Which application, database, worker, storage, and release mechanisms keep the public contract true under concurrency, restart, and partial failure?",
+      "incomingBoundary": "The immutable Course 1 API 1.1 handoff and its provider-neutral proof corpus.",
+      "outgoingBoundary": "A durable API 1.2 service with migrations 001–005, persistent idempotency, atomic conditional updates, stable pagination, worker recovery, artifact integrity, transactional webhook delivery, and compatible-release evidence."
+    },
+    {
+      "number": 3,
+      "directory": "03-api-security-engineering",
+      "id": "api-security-engineering",
+      "title": "API Security Engineering",
+      "stage": "Defend the promise",
+      "centralQuestion": "How does the API remain trustworthy when callers, credentials, inputs, destinations, dependencies, and networks cannot be trusted by default?",
+      "incomingBoundary": "The Course 2 API 1.2 durable-service handoff and migrations 001–005.",
+      "outgoingBoundary": "Security Profile 1.0, migrations 006–007, a threat-to-requirement security case, identity and authorization policy, hostile-input vectors, SSRF and webhook protections, abuse controls, and incident evidence."
+    },
+    {
+      "number": 4,
+      "directory": "04-api-reliability-and-observability-engineering",
+      "id": "api-reliability-and-observability-engineering",
+      "title": "API Reliability and Observability Engineering",
+      "stage": "Observe, diagnose, contain, and recover the promise",
+      "centralQuestion": "How do operators know whether the user promise is still true, and how do they recover it without making the incident worse?",
+      "incomingBoundary": "The Course 3 API 1.2 service protected by Security Profile 1.0 and migrations 001–007.",
+      "outgoingBoundary": "Reliability Profile 1.0, migration 008, critical journeys, deadline and resilience policies, lifecycle controls, telemetry contracts, SLOs, alerts, runbooks, game-day evidence, and reconciliation plans."
+    },
+    {
+      "number": 5,
+      "directory": "05-api-performance-capacity-and-traffic-engineering",
+      "id": "api-performance-capacity-and-traffic-engineering",
+      "title": "API Performance, Capacity, and Traffic Engineering",
+      "stage": "Sustain the promise under pressure",
+      "centralQuestion": "Where do time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening correctness?",
+      "incomingBoundary": "The Course 4 observable and recoverable API 1.2 service with Security and Reliability Profiles 1.0 and migrations 001–008.",
+      "outgoingBoundary": "Performance Profile 1.0, migration 009, workload identities, benchmark evidence, HTTP and query optimizations, concurrency and cache policy, traffic controls, capacity models, and performance release gates."
+    },
+    {
+      "number": 6,
+      "directory": "06-event-driven-api-engineering",
+      "id": "event-driven-api-engineering",
+      "title": "Event-Driven API Engineering",
+      "stage": "Extend the promise across asynchronous time",
+      "centralQuestion": "How can independent producers and consumers share durable facts without confusing intent, delivery attempts, processing effects, and historical truth?",
+      "incomingBoundary": "The Course 5 API 1.2 service with Security, Reliability, and Performance Profiles 1.0 and migrations 001–009.",
+      "outgoingBoundary": "Analysis Events API 1.0, Event Profile 1.0, AsyncAPI 3.1.0 contract, CloudEvents 1.0 profile, migrations 010–012, replay and dead-letter policy, and governed consumer declarations."
+    },
+    {
+      "number": 7,
+      "directory": "07-grpc-and-protobuf-engineering",
+      "id": "grpc-and-protobuf-engineering",
+      "title": "gRPC and Protobuf Engineering",
+      "stage": "Engineer typed internal invocation and streaming",
+      "centralQuestion": "How should typed internal capabilities be modeled and operated when remote calls can fail ambiguously, stream for long periods, and evolve across language boundaries?",
+      "incomingBoundary": "The Course 6 HTTP API 1.2 and Analysis Events API 1.0 handoff with profiles and migrations through 012.",
+      "outgoingBoundary": "Analysis RPC API 1.0, gRPC Profile 1.0, proto3 executable baseline, Edition 2024 frontier, migrations 013–015, streaming protocols, method policy, and compatibility evidence."
+    },
+    {
+      "number": 8,
+      "directory": "08-distributed-api-architecture-and-microservices-engineering",
+      "id": "distributed-api-architecture-and-microservices-engineering",
+      "title": "Distributed API Architecture and Microservices Engineering",
+      "stage": "Distribute ownership deliberately",
+      "centralQuestion": "When does a remote service boundary create more value than the coordination, latency, consistency, security, release, and operational costs it introduces?",
+      "incomingBoundary": "The Course 7 platform with governed HTTP, event, and RPC interfaces and migration history through 015.",
+      "outgoingBoundary": "Distributed Architecture Profile 1.0, explicit service and data ownership, versioned projections, saga and trust policies, independent release choreography, extraction evidence, and a GraphQL boundary brief."
+    },
+    {
+      "number": 9,
+      "directory": "09-graphql-schema-and-runtime-engineering",
+      "id": "graphql-schema-and-runtime-engineering",
+      "title": "GraphQL Schema and Runtime Engineering",
+      "stage": "Compose governed client-shaped capabilities",
+      "centralQuestion": "How can clients select graph-shaped data and operations without moving business ownership, authorization, cost, or consistency into an uncontrolled gateway?",
+      "incomingBoundary": "The Course 8 distributed architecture handoff with explicit service, data, contract, and trust boundaries.",
+      "outgoingBoundary": "Analysis Graph API 1.0, GraphQL September 2025 schema, persisted operation registry, resolver ownership, demand policy, resumable subscriptions, compatibility gates, and platform-publication metadata."
+    },
+    {
+      "number": 10,
+      "directory": "10-api-platform-governance-and-developer-experience-engineering",
+      "id": "api-platform-governance-and-developer-experience-engineering",
+      "title": "API Platform, Governance, and Developer Experience Engineering",
+      "stage": "Operate APIs as an organizational platform",
+      "centralQuestion": "How can an organization make trustworthy API work easier to discover, create, publish, consume, evolve, support, and retire without centralizing domain ownership?",
+      "incomingBoundary": "The Course 9 handoff containing HTTP, event, RPC, distributed-service, and GraphQL contracts with explicit ownership and release evidence.",
+      "outgoingBoundary": "Analysis API Platform 1.0, a governed catalog and registry, lifecycle and policy engine, golden path, documentation and sandbox, SDK and provenance publication, runtime reconciliation, support model, and a ten-course graduation dossier."
+    }
+  ]
+}

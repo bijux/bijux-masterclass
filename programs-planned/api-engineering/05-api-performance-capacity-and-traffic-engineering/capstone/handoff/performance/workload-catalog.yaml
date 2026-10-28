@@ -1,0 +1,93 @@
+catalogVersion: "1.0"
+workloads:
+  - id: WL-PROJECT-READ
+    journey: retrieve-project
+    model: open
+    datasetId: DS-MEDIUM
+    ratePerSecond: 200
+    durationSeconds: 120
+    requestMix:
+      getProject: 1.0
+    correctness:
+      - response-conforms
+      - owner-isolation
+      - etag-consistent
+    primaryResources: [api-cpu, database-read, network]
+  - id: WL-RUN-LIST
+    journey: list-analysis-runs
+    model: open
+    datasetId: DS-RUNS-1M
+    ratePerSecond: 120
+    durationSeconds: 180
+    requestMix:
+      listRuns: 1.0
+    parameters:
+      pageSize: 50
+      statusDistribution:
+        completed: 0.55
+        running: 0.10
+        failed: 0.15
+        queued: 0.20
+    correctness:
+      - response-conforms
+      - owner-isolation
+      - stable-high-water-pagination
+    primaryResources: [database-read, api-cpu, serialization]
+  - id: WL-RUN-SUBMIT
+    journey: submit-analysis
+    model: mixed
+    datasetId: DS-MEDIUM
+    ratePerSecond: 40
+    durationSeconds: 180
+    maxOutstandingPerClient: 2
+    requestMix:
+      createAnalysisRun: 1.0
+    duplicateKeyFraction: 0.10
+    correctness:
+      - idempotent-single-logical-run
+      - durable-job-created
+      - documented-overload
+    primaryResources: [database-write, durable-queue, api-cpu]
+  - id: WL-DATASET-UPLOAD
+    journey: upload-dataset-content
+    model: closed
+    datasetId: DS-UPLOAD-MIX
+    users: 20
+    durationSeconds: 180
+    payloadBytes:
+      p50: 10485760
+      p95: 268435456
+      maximum: 1073741824
+    correctness:
+      - bounded-memory
+      - checksum-exact
+      - interrupted-upload-not-published
+    primaryResources: [network, memory, storage-write]
+  - id: WL-ARTIFACT-DOWNLOAD
+    journey: retrieve-artifact
+    model: open
+    datasetId: DS-ARTIFACT-MIX
+    ratePerSecond: 60
+    durationSeconds: 180
+    requestMix:
+      full: 0.50
+      conditional: 0.25
+      range: 0.25
+    correctness:
+      - owner-isolation
+      - exact-bytes
+      - range-reconstruction
+      - validator-consistent
+    primaryResources: [storage-read, network, stream-permits]
+  - id: WL-WEBHOOK-DRAIN
+    journey: deliver-webhook
+    model: closed
+    datasetId: DS-WEBHOOK-BACKLOG
+    workers: 16
+    backlog: 10000
+    correctness:
+      - exact-byte-signature
+      - durable-delivery-id
+      - receiver-deduplication
+      - bounded-retry
+    primaryResources: [outbound-network, dispatcher-concurrency, receiver]

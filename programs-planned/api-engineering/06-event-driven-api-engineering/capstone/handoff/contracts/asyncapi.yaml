@@ -1,0 +1,72 @@
+asyncapi: 3.1.0
+info:
+  title: Bijux Analysis Events
+  version: 1.0.0
+  description: Asynchronous contracts for the Analysis Runs platform. HTTP API 1.2 remains the public synchronous
+    boundary.
+defaultContentType: application/cloudevents+json
+servers:
+  localNats:
+    host: localhost:4222
+    protocol: nats
+    description: Optional local JetStream transport. Dependency-light proofs use the deterministic broker.
+    security:
+    - $ref: '#/components/securitySchemes/natsCredentials'
+channels:
+  startAnalysisCommands:
+    address: analysis.commands.start.v1
+    messages:
+      startAnalysis:
+        $ref: components/messages/StartAnalysis.yaml
+  analysisRunLifecycle:
+    address: analysis.events.run.lifecycle.v1
+    messages:
+      analysisRunRequested:
+        $ref: components/messages/AnalysisRunRequested.yaml
+      analysisRunStarted:
+        $ref: components/messages/AnalysisRunStarted.yaml
+      analysisRunProgressed:
+        $ref: components/messages/AnalysisRunProgressed.yaml
+      analysisRunCompleted:
+        $ref: components/messages/AnalysisRunCompleted.yaml
+      analysisRunFailed:
+        $ref: components/messages/AnalysisRunFailed.yaml
+  artifactLifecycle:
+    address: analysis.events.artifact.v1
+    messages:
+      artifactPublished:
+        $ref: components/messages/ArtifactPublished.yaml
+operations:
+  sendStartAnalysis:
+    action: send
+    channel:
+      $ref: '#/channels/startAnalysisCommands'
+    summary: Request durable analysis execution
+    messages:
+    - $ref: '#/channels/startAnalysisCommands/messages/startAnalysis'
+  receiveAnalysisLifecycle:
+    action: receive
+    channel:
+      $ref: '#/channels/analysisRunLifecycle'
+    summary: Consume analysis lifecycle facts
+    messages:
+    - $ref: '#/channels/analysisRunLifecycle/messages/analysisRunRequested'
+    - $ref: '#/channels/analysisRunLifecycle/messages/analysisRunStarted'
+    - $ref: '#/channels/analysisRunLifecycle/messages/analysisRunProgressed'
+    - $ref: '#/channels/analysisRunLifecycle/messages/analysisRunCompleted'
+    - $ref: '#/channels/analysisRunLifecycle/messages/analysisRunFailed'
+  receiveArtifactLifecycle:
+    action: receive
+    channel:
+      $ref: '#/channels/artifactLifecycle'
+    summary: Consume artifact publication facts
+    messages:
+    - $ref: '#/channels/artifactLifecycle/messages/artifactPublished'
+components:
+  securitySchemes:
+    natsCredentials:
+      type: userPassword
+      description: Fixture credentials only. Operated deployments use managed identities or rotated credentials.
+x-event-profile: '1.0'
+x-public-http-api: '1.2'
+x-cloud-events-version: '1.0'

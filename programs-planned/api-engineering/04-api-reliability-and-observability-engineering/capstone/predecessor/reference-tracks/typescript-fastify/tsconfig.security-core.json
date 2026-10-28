@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "outDir": "dist-security",
+    "rootDir": "src",
+    "lib": ["ES2023", "DOM"],
+    "types": [],
+    "skipLibCheck": true
+  },
+  "files": ["../../scripts/typescript_audit_shims.d.ts"],
+  "include": ["src/security/**/*.ts"],
+  "exclude": ["src/security/fastify-app.ts"]
+}
