@@ -1,0 +1,1 @@
+trait N{fn n(&self)->u8;}struct A;struct B;impl N for A{fn n(&self)->u8{1}}impl N for B{fn n(&self)->u8{2}}fn main(){let v:Vec<Box<dyn N>>=vec![Box::new(A),Box::new(B)];assert_eq!(v.iter().map(|x|x.n()).sum::<u8>(),3);}

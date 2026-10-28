@@ -1,0 +1,9 @@
+[package]
+name = "course6-lab58-module-08-c-abi-archive-validator-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[lib]
+crate-type = ["rlib", "cdylib"]

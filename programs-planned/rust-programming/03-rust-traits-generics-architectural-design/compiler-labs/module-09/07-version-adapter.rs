@@ -1,0 +1,1 @@
+trait V1{fn run(&self)->String;}trait V2{fn id(&self)->&str;fn run(&self)->Result<String,()>;}struct A<T>{id:String,inner:T}impl<T:V1>V2 for A<T>{fn id(&self)->&str{&self.id}fn run(&self)->Result<String,()>{Ok(self.inner.run())}}struct X;impl V1 for X{fn run(&self)->String{"x".into()}}fn main(){let a=A{id:"x".into(),inner:X};assert_eq!(a.id(),"x");}

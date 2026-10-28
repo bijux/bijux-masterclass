@@ -1,0 +1,15 @@
+[package]
+name = "memory-workspace"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[lib]
+name = "memory_workspace"
+path = "src/lib.rs"
+
+[dependencies]
+
+[lints]
+workspace = true
