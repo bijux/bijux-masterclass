@@ -2,16 +2,16 @@
   "schema_version": 1,
   "source_repository": "bijux/bijux-courses",
   "source_branch": "master",
-  "source_commit": "1a585c5ac73272477fb82efc6c08c572285fc880",
+  "source_commit": "cf2fcdac3cb86df74238b0252218ada196c9b809",
   "captured_source_tip": "71f14e0a9ff959e0dbd5ef87720ce3d0b8e6ee7c",
   "captured_source_commit_count": 1486,
   "history_complete": false,
-  "destination_base": "36a3ee4ae538967b483ae6eab24f43af27fc9574",
+  "destination_base": "8671e12681582fd88dae5e97b5b8de1d937c23a4",
   "original_destination_base": "3c776dde16320dc85e4c5f223d77a6abc510ded5",
   "status": "planned",
   "publication_qualification": "not-assessed",
-  "original_commit_count": 570,
-  "history_access": "git show 1a585c5ac73272477fb82efc6c08c572285fc880:<source_path>",
+  "original_commit_count": 760,
+  "history_access": "git show cf2fcdac3cb86df74238b0252218ada196c9b809:<source_path>",
   "meta_boundary": "The production backlog TODO.md remains recoverable in the original Git history; it is not a product backlog.",
   "files": [
     {
@@ -127,15 +127,631 @@
       "disposition": "imported-unchanged"
     },
     {
+      "source_path": "artifacts/reviews/DE-003/review.json",
+      "source_blob": "2414ff4638708fcb79c6600316cbdd9b7113432b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/DE-003/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/DE-004/review.json",
+      "source_blob": "6c33497d7489b1016e4436a648eafe875db2b9d7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/DE-004/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/DE-005/review.json",
+      "source_blob": "5409b9821316c19b37f29ef7ccd4d98ed7e6d490",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/DE-005/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/DE-006/review.json",
+      "source_blob": "ab1909d60d556ce44fe1d351b8d52a1edc3fbdc7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/DE-006/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/DE-007/review.json",
+      "source_blob": "f4427c0fb866e82cf52a66943c7d1361284843d6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/DE-007/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/DE-008/review.json",
+      "source_blob": "c95571f5ba3bd512ab1f5e851c318795c0a0bd62",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/DE-008/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/DE-009/review.json",
+      "source_blob": "e9c2c5771aeb2adfc523a88d6d8195e235a1d79a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/DE-009/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-020/review.json",
+      "source_blob": "cf77712bcb0e4ebd4654887bb68c7b9920ac1fe5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-020/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-021/review.json",
+      "source_blob": "8f429659971517978103774d6bbaf639b3e2d98d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-021/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-022/review.json",
+      "source_blob": "49477fdc7cafc1282ca3578bbc4a2e70970b8ca5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-022/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-023/review.json",
+      "source_blob": "373c7498461198c159a4ef2493e4b8929f427202",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-023/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-024/review.json",
+      "source_blob": "4444e5881267bb8ac96cfd9fe7a8bb6a35eab4fa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-024/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-025/review.json",
+      "source_blob": "0f263becd1c3c819851b2a91f15ed29464b7755b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-025/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-026/review.json",
+      "source_blob": "bde15ef5c77e32f70e9ce2422e93eaa47dc1b251",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-026/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-027/review.json",
+      "source_blob": "ee8c99362716748656dfce55b8315898b8d00d57",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-027/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-028/review.json",
+      "source_blob": "ab497da9fc2560bbf3c2b86218b7a332951fdfce",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-028/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-029/review.json",
+      "source_blob": "c986fb0b60c6db2e6ac48d09f87a79c3dfd52755",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-029/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-030/review.json",
+      "source_blob": "85672b588e16d9b2a61b7073f4a0e163fa6484e5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-030/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-031/review.json",
+      "source_blob": "bd94eedf9b1650262dd8d4224f7dd73e1b4afbf4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-031/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-032/review.json",
+      "source_blob": "d9154b46569eff31a0f83a84de4fb561ffa99eca",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-032/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-033/review.json",
+      "source_blob": "6a998aa2cd15247248448c01547afc9541b25fde",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-033/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-034/review.json",
+      "source_blob": "7c1cd8134fc9867621f9b5bd86d766990a9a0d1c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-034/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-035/review.json",
+      "source_blob": "8f0613eebc31d4e4e12813edcc4de5b30ef98203",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-035/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-036/review.json",
+      "source_blob": "35d7a6c026eef49a91760d69f921459911f5f845",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-036/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-037/review.json",
+      "source_blob": "53f4b49ccfb6db4b869ed677e311c659f4183f95",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-037/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-038/review.json",
+      "source_blob": "88605b2c0fb5837f8139b6478ce003a775472e51",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-038/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-039/review.json",
+      "source_blob": "d316f9ec17e85f889f606d5c2232bf1747ee9a39",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-039/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-040/review.json",
+      "source_blob": "7d6a6da8bcb3e1c3855e99cb9f56e2a90f6dc5b1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-040/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-041/review.json",
+      "source_blob": "dafb9e5dc463c46091197fd689268eab4d7346d9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-041/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-042/review.json",
+      "source_blob": "03c2ed8fcae97a7d658ac0da36dd40d5b056ddc8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-042/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-043/review.json",
+      "source_blob": "54b6b9903315a6df32b7946fcc63344e072cf55b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-043/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-044/review.json",
+      "source_blob": "2aab763ee4f8b930cbfc9e48322fded4d449d536",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-044/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-045/review.json",
+      "source_blob": "b865ddef61523b40c825f19119cb45cf2daffca0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-045/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-046/review.json",
+      "source_blob": "c80b27be8da91bd973883ced865a579c47cc67f8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-046/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-047/review.json",
+      "source_blob": "5e372fbc9c73761452f6e7aa9f373eaed0dad322",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-047/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-048/review.json",
+      "source_blob": "5f08980ce67c25b0d537d5f96d142c084b3bd8dc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-048/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-049/review.json",
+      "source_blob": "8290df2a9ac387c2c2acd3758c36796c0d23a16b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-049/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-050/review.json",
+      "source_blob": "bff0abbd7ce07640b7f213278579b739d2c499a8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-050/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-051/review.json",
+      "source_blob": "33ddcb730966592f2bc8824c3e86a8e99aa2dce5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-051/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-052/review.json",
+      "source_blob": "2ab75e602906a6f363ffd20e20f72643f8b77258",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-052/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-053/review.json",
+      "source_blob": "b7f906a264b6152c8c90180787260ed790793b85",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-053/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-054/review.json",
+      "source_blob": "de96f2a7e06d1fea8bad3dc1983ac3cbf94414dc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-054/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-055/review.json",
+      "source_blob": "29df3384cf8621ad944a7b4ea00a61860916d1c1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-055/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-056/review.json",
+      "source_blob": "87631ffa861c122d4b79ef429eae2e7ed5883520",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-056/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-057/review.json",
+      "source_blob": "bbd27c5cfabbfdf8ff0f100eeebe657d99d01dac",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-057/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-058/review.json",
+      "source_blob": "736405b91650b6dc11355372c737d3e900360496",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-058/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-059/review.json",
+      "source_blob": "15828cf27e7ac5ae5d83200873c991ec83a1da20",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-059/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-060/review.json",
+      "source_blob": "b25d606bf3c9e129e1acff6125f70760f92bc5b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-060/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-061/review.json",
+      "source_blob": "a554fa4e264b3f04816c182de23ae531cbdb4cf2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-061/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-062/review.json",
+      "source_blob": "1ec1303b53a2bf935e00e05a6d2bded5a2d6f5c7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-062/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-063/review.json",
+      "source_blob": "7b70f54e807fe88892b7eabd628210f2e9da333d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-063/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-064/review.json",
+      "source_blob": "80bc905eb1df4de0e2cec4da6b056644534b3183",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-064/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-065/review.json",
+      "source_blob": "77ee6dd760e68064b0a5c93ed79a8aff6b5c94cb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-065/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-066/review.json",
+      "source_blob": "0f3060f1835b16e0cf072dd893f43a86b141df4d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-066/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-067/review.json",
+      "source_blob": "e1139a8aec93d63a83d736886a5fd5b874c210b2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-067/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-068/review.json",
+      "source_blob": "cc3b66118b4ab7e4e5e0b1e37b6b73cb5ed4a727",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-068/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-069/review.json",
+      "source_blob": "aaeaa015b100e080534366b18cd7037b6935caa0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-069/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-070/review.json",
+      "source_blob": "1155114df9b81c90c14b87b3c1c5d5237fda9931",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-070/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-071/review.json",
+      "source_blob": "67e201c487b967c39c0a8fb7101817b379bd8fea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-071/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-072/review.json",
+      "source_blob": "64fe5813d5291eaa9bd25593728ee2e97ed973f3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-072/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-073/review.json",
+      "source_blob": "c9f130cea74f79f458dfa7e8fe8626210ad86bdb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-073/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-074/review.json",
+      "source_blob": "2f41e0af529b309709c3ac6918bf65b1f3c05871",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-074/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-075/review.json",
+      "source_blob": "d8c6fd8010a85f15a66e4e9691ca6c5609aed9ed",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-075/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-076/review.json",
+      "source_blob": "043fb5f7561addbea49b43df40255027a0d3029a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-076/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-077/review.json",
+      "source_blob": "3fc4d768e41b538ee54463e23a654efcaa8b87b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-077/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-078/review.json",
+      "source_blob": "78a4972df3599e973a65ad68881b3f400c1bb982",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-078/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-079/review.json",
+      "source_blob": "9680369b68ef2b13056c23de4a4670e0cca7a93b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-079/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-080/review.json",
+      "source_blob": "87359dd739498b2213bcb3c56f212a21108a716d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-080/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-081/review.json",
+      "source_blob": "7df68e353cd92ca540ebbd7bcf6a67ac6802aa6c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-081/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-082/review.json",
+      "source_blob": "8df6f667551ad2b71e865fa296bcb930a43fcd3b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-082/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-083/review.json",
+      "source_blob": "a6a60935e7c4e526742f439bacde73ac816adb91",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-083/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-084/review.json",
+      "source_blob": "007de7315628a6054425b4d2f39979c429595057",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-084/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-085/review.json",
+      "source_blob": "2c2408a1feff355277506b5dc7c9435fe5337a05",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-085/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-086/review.json",
+      "source_blob": "12103fd8162311636a136c79746b31684123077c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-086/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-087/review.json",
+      "source_blob": "ec32f4aede617e20856ad4d5c01fb65d78036873",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-087/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-088/review.json",
+      "source_blob": "4ae9d268145c88156a2a9fe4dad2a4019f38bbe5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-088/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-089/review.json",
+      "source_blob": "9523657179d0a6478e347636c95e26d80f2d7aca",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-089/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-090/review.json",
+      "source_blob": "7b430dafbdf5d34f2438c5337c8dbeaf4f2a052b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-090/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-091/review.json",
+      "source_blob": "16810cd0bf2b3a770f5ef75d51a37c5322d2b3a1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-091/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-092/review.json",
+      "source_blob": "84bc81f5695633254aaa7f69da06421f93d1b118",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-092/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-093/review.json",
+      "source_blob": "2cd4f832934d0be3e4b43cd8e01336092d8e297f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-093/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-094/review.json",
+      "source_blob": "7200835f532f97c3b2a9defd405474675388de9f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-094/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-095/review.json",
+      "source_blob": "234809800c2eac845d3e310885806515b1193fba",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-095/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-096/review.json",
+      "source_blob": "06a348ec0c24b4b77ff8f9e0e7e636b8f448e643",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-096/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-097/review.json",
+      "source_blob": "11d9b0f3913cfe92e46266c6be445ffd71833e0c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-097/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-098/review.json",
+      "source_blob": "e6b0167a59336dcb28fc7cedc4474d07d1bbca45",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-098/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-099/review.json",
+      "source_blob": "511ece9091c19a8b13888990513e7ff222778c29",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-099/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "artifacts/reviews/PLAT-100/review.json",
+      "source_blob": "21906ce2f8a558fc8e8a83a424275e4e96de2b0c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/artifacts/reviews/PLAT-100/review.json",
+      "disposition": "imported-unchanged"
+    },
+    {
       "source_path": "manifests/modules.csv",
-      "source_blob": "8b222afd053bee2aaf9526e45d7ee2db7b8c85c8",
+      "source_blob": "defb3da8629c59e758d9620e6f5254376b96084c",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/manifests/modules.csv",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "manifests/modules.jsonl",
-      "source_blob": "6fe39bdd99e29f5b7aad00f3b8aef2f2ea0413fa",
+      "source_blob": "251b2069cb8b0fb58c78703605c193b290b7c351",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/manifests/modules.jsonl",
       "disposition": "imported-unchanged"
@@ -3165,6 +3781,55 @@
       "disposition": "imported-unchanged"
     },
     {
+      "source_path": "programs/19-data-engineering/modules/003-csv-json-and-line-oriented-formats.md",
+      "source_blob": "5446454aed361c8c21882125c9c3856879ea21d5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/003-csv-json-and-line-oriented-formats.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/modules/004-avro-protocol-buffers-and-schema-aware-serialization.md",
+      "source_blob": "2f6f7e097a719ebce6bf15017940dd86d7c52ef6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/004-avro-protocol-buffers-and-schema-aware-serialization.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/modules/005-arrow-and-in-memory-columnar-representation.md",
+      "source_blob": "8aba8d74c1c020707b15c1c5ee7397b08f8116a4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/005-arrow-and-in-memory-columnar-representation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/modules/006-parquet-and-columnar-files.md",
+      "source_blob": "d96b4a113c7d91cfbcb6fae3902acd69aa1a0c4c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/006-parquet-and-columnar-files.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/modules/007-compression-and-encoding-choices.md",
+      "source_blob": "d37b81d3394053007240bd0d993d90490f77c26f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/007-compression-and-encoding-choices.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/modules/008-schemas-nullability-and-type-fidelity.md",
+      "source_blob": "265cbd845b431b15785ecd2c7b35e436ac87c94b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/008-schemas-nullability-and-type-fidelity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/modules/009-time-time-zones-and-event-timestamps.md",
+      "source_blob": "0153da9f8f971c03244108644db32b7fbed987fa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/009-time-time-zones-and-event-timestamps.md",
+      "disposition": "imported-unchanged"
+    },
+    {
       "source_path": "programs/20-data-architecture-engineering/ROADMAP.md",
       "source_blob": "71f54e39a5495d9bd51342a8058c112652769e6d",
       "mode": "100644",
@@ -3956,6 +4621,48 @@
       "disposition": "imported-unchanged"
     },
     {
+      "source_path": "programs/26-systems-engineering/modules/095-emergent-risk.md",
+      "source_blob": "4e94d4d634cf26b12f00e86a7984e0b55a96c7a9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/095-emergent-risk.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/096-human-factors-and-cognitive-work.md",
+      "source_blob": "3429e59b39175eeebca1be4ee8c729610a80eaf2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/096-human-factors-and-cognitive-work.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/097-organizations-as-part-of-the-system.md",
+      "source_blob": "3fd66766b324981da78297bfd9f8ee9bd40f3227",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/097-organizations-as-part-of-the-system.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/098-policy-regulation-and-ethics.md",
+      "source_blob": "88d60301e81f3513a0c3895dfdb31f82734b4dab",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/098-policy-regulation-and-ethics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/099-adaptive-and-learning-systems.md",
+      "source_blob": "5c06f3a199b70d2dfa82deff17a154d586a90ad2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/099-adaptive-and-learning-systems.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/100-conducting-a-whole-system-review-of-a-software-intensive-capability.md",
+      "source_blob": "2c882644690aee6d22e39e8fce0a41a55cb81ba1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/100-conducting-a-whole-system-review-of-a-software-intensive-capability.md",
+      "disposition": "imported-unchanged"
+    },
+    {
       "source_path": "programs/27-distributed-systems-engineering/ROADMAP.md",
       "source_blob": "e1728a96e429814d6be7ed2bdbcfb3d31b49f950",
       "mode": "100644",
@@ -4131,6 +4838,559 @@
       "disposition": "imported-unchanged"
     },
     {
+      "source_path": "programs/28-api-and-service-engineering/modules/022-json-schema.md",
+      "source_blob": "d65c4d8b94d0666f3579fcb5fd26c74b1402cb14",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/022-json-schema.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/023-openapi-structure.md",
+      "source_blob": "172eea8a7910d226c62c7ce670a7e53fb3e5bfe2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/023-openapi-structure.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/024-request-and-response-modeling.md",
+      "source_blob": "9aca4ea6f4f3f069458a8072e4817486be610ba2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/024-request-and-response-modeling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/025-validation-constraints.md",
+      "source_blob": "2b01da9bcac45fcb07057df87cddb1aaae8b6bb2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/025-validation-constraints.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/026-reusable-schema-components.md",
+      "source_blob": "928c27b085240e4ea58058146b63201ef7417291",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/026-reusable-schema-components.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/027-examples-and-executable-documentation.md",
+      "source_blob": "950d46b64116cd6f2010722702318cc0696cfe14",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/027-examples-and-executable-documentation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/028-contract-first-and-code-first-workflows.md",
+      "source_blob": "39035cf5be84d785a1e827798dfa8470655e3732",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/028-contract-first-and-code-first-workflows.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/029-mocking-and-consumer-exploration.md",
+      "source_blob": "46148fb7b1c1769df2b8c92956c82cf3dcf99015",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/029-mocking-and-consumer-exploration.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/030-reviewing-a-contract-for-ambiguity-and-incompleteness.md",
+      "source_blob": "0f26f2ab4021ca3231cf6b7065df9934c7b20c6c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/030-reviewing-a-contract-for-ambiguity-and-incompleteness.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/031-transport-application-and-domain-boundaries.md",
+      "source_blob": "9fa14265fe5b78fc90369a1a637db3c56da7a23f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/031-transport-application-and-domain-boundaries.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/032-request-parsing-and-validation.md",
+      "source_blob": "84babbf3d28e24403c8f7e3329fd06487769d477",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/032-request-parsing-and-validation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/033-authentication-context-propagation.md",
+      "source_blob": "1d5f95f9737198664de04590afea78cf4a963b50",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/033-authentication-context-propagation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/034-authorization-checks.md",
+      "source_blob": "2aa9281470848b96a3a4c9a418fb66749da26da4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/034-authorization-checks.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/035-error-translation.md",
+      "source_blob": "eb422e05ab7bcfbafe9473738d28977f7768e465",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/035-error-translation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/036-request-scoped-transaction-boundaries.md",
+      "source_blob": "863de6986e13ef61cfaa07831cf67c94328f440f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/036-request-scoped-transaction-boundaries.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/037-idempotency-keys.md",
+      "source_blob": "9164d0d9229515bcdb0f7a1c25d62de2f10997ab",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/037-idempotency-keys.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/038-concurrency-control-at-the-api-boundary.md",
+      "source_blob": "0f9c9d7d7d7300bc111a0a4d2368ff66ff474865",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/038-concurrency-control-at-the-api-boundary.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/039-rate-limits-and-quotas.md",
+      "source_blob": "15084d3f03fb1d51850ae7353f87dab9060055e3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/039-rate-limits-and-quotas.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/040-implementing-a-predictable-service-endpoint.md",
+      "source_blob": "f3c82613ff1416ee40a7ed71b9bc84bd3ace64f8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/040-implementing-a-predictable-service-endpoint.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/041-api-threat-modeling.md",
+      "source_blob": "0618cf6dd5261639de27c34f90f196ddc006fd12",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/041-api-threat-modeling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/042-credential-and-token-handling.md",
+      "source_blob": "47f8163bbbee0346793dc94352a6c6662a107f98",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/042-credential-and-token-handling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/043-oauth-authorization-flows.md",
+      "source_blob": "23804fce07fee9a09737d1af43bcd63c64e2f1c6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/043-oauth-authorization-flows.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/044-applying-openid-connect-at-api-boundaries.md",
+      "source_blob": "db8c7e13aec606fc557660cf88eb0158637f2d2c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/044-applying-openid-connect-at-api-boundaries.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/045-scope-and-permission-design.md",
+      "source_blob": "a84aaaa612446b2d90c2de1e8712acc64cd622ad",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/045-scope-and-permission-design.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/046-object-level-authorization.md",
+      "source_blob": "860eb6a446e57b5a3e5ced48e7d4cfa9924d5053",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/046-object-level-authorization.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/047-mass-assignment-and-overposting.md",
+      "source_blob": "56158c70bc016d3adf02cc8e5c517b1398ff84e6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/047-mass-assignment-and-overposting.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/048-enumeration-and-data-exposure.md",
+      "source_blob": "cff1e202d1da5f750a67b1b474d62d31443263ee",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/048-enumeration-and-data-exposure.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/049-replay-and-request-signing.md",
+      "source_blob": "7cc46fc47f3f3f05dcd6d5d94722212b69d6f8ac",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/049-replay-and-request-signing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/050-designing-an-api-against-expected-abuse-cases.md",
+      "source_blob": "ae00a92ed4dccbed82020779c62fd427873ee782",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/050-designing-an-api-against-expected-abuse-cases.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/051-remote-procedure-call-semantics.md",
+      "source_blob": "69dc8f3f66fe1b90284e38ce2133dace6975c095",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/051-remote-procedure-call-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/052-protocol-buffers-and-schema-evolution.md",
+      "source_blob": "3bdab23d92644c54b043dbc76cb5be43311760b2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/052-protocol-buffers-and-schema-evolution.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/053-unary-and-streaming-grpc.md",
+      "source_blob": "dec5d95c98a55bb408a2b0f129b8e7dfa8445eb2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/053-unary-and-streaming-grpc.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/054-deadlines-cancellation-and-metadata.md",
+      "source_blob": "d2de9b062d0553680384d7a7e8cb5a0f534aa4ea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/054-deadlines-cancellation-and-metadata.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/055-graphql-schema-design.md",
+      "source_blob": "55fea857fae8efd586ce33bbf7b2413aa24f4aad",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/055-graphql-schema-design.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/056-graphql-execution-resolvers-and-batching.md",
+      "source_blob": "9d04875be82c754734dee1a256d6e454738e6a7a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/056-graphql-execution-resolvers-and-batching.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/057-graphql-pagination-and-incremental-delivery.md",
+      "source_blob": "88bd4b978021115dc57de27adb153ae862b8090a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/057-graphql-pagination-and-incremental-delivery.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/058-graphql-authorization-and-cost-control.md",
+      "source_blob": "9ccae18e0d8b64267e7aa1dc18ea908918d55c0c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/058-graphql-authorization-and-cost-control.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/059-webhooks-server-sent-events-and-websockets.md",
+      "source_blob": "04a320f061d40bb25dc3a8cceb17298d5fab475a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/059-webhooks-server-sent-events-and-websockets.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/060-choosing-an-interface-style-from-interaction-semantics.md",
+      "source_blob": "67aa1a4288120b515cb4b113f928a59e92e1c2c0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/060-choosing-an-interface-style-from-interaction-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/061-commands-events-and-messages.md",
+      "source_blob": "d99e1a210f6fa989d09b7d6920a4c854cab84775",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/061-commands-events-and-messages.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/062-event-schema-design.md",
+      "source_blob": "1d1627fa40d69c9e308ce8360e6ee29994b3a57a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/062-event-schema-design.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/063-asyncapi-contracts.md",
+      "source_blob": "1793fe11b3537be2502470ef49bd9896da336d86",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/063-asyncapi-contracts.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/064-topic-and-channel-design.md",
+      "source_blob": "22cb329baf4e6a4cfc118499f9b294a9564603b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/064-topic-and-channel-design.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/065-ordering-and-partition-keys.md",
+      "source_blob": "c89772b571cc279a706a1a362f77b127ae6b1757",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/065-ordering-and-partition-keys.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/066-delivery-and-acknowledgment.md",
+      "source_blob": "7a0b2af0fd57305628c545586127baace7998566",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/066-delivery-and-acknowledgment.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/067-idempotent-consumers.md",
+      "source_blob": "6c6c9f8bb76c75624bb3a3ce7aea93849df62d8d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/067-idempotent-consumers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/068-dead-letter-handling.md",
+      "source_blob": "e674bc28d9fd2d6a1d0251fc7ff822dee4d1c89f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/068-dead-letter-handling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/069-event-versioning.md",
+      "source_blob": "6021f06cf4cd67e750dcb43a7422de80505034a0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/069-event-versioning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/070-designing-an-asynchronous-api-for-replay-and-evolution.md",
+      "source_blob": "65cb1a9308f19458fa061c649ccfd395d06ec45d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/070-designing-an-asynchronous-api-for-replay-and-evolution.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/071-timeout-and-deadline-budgets.md",
+      "source_blob": "acfb5dc89a75261dcdf9afcb4dcda72dac507e19",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/071-timeout-and-deadline-budgets.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/072-retries-and-backoff.md",
+      "source_blob": "639c588e70b045f5e450e151f8d2541697be98c1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/072-retries-and-backoff.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/073-circuit-breaking-and-bulkheads.md",
+      "source_blob": "615cc7e2410144f7307264d7029d07355439aa95",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/073-circuit-breaking-and-bulkheads.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/074-api-level-load-shedding.md",
+      "source_blob": "bfb237f81e1b15cd76ebde764e29b7905bd057b5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/074-api-level-load-shedding.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/075-backpressure-across-service-boundaries.md",
+      "source_blob": "f229960190a3c7bf9a0ff672dbf5e21b4f03c069",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/075-backpressure-across-service-boundaries.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/076-api-caching-and-invalidation.md",
+      "source_blob": "6ceaa7814a66ddf463685ffd40573e38a64e9008",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/076-api-caching-and-invalidation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/077-fan-out-and-tail-latency.md",
+      "source_blob": "2fc6b36ddd8e8a52cffc2d13f2b689ea8855b576",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/077-fan-out-and-tail-latency.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/078-partial-results-and-graceful-degradation.md",
+      "source_blob": "b343a14b5fbf53becc8e2a4f4b3875ca21e8d6e9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/078-partial-results-and-graceful-degradation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/079-consistency-and-read-after-write-expectations.md",
+      "source_blob": "2a591986c9132a2028d7c54d792b4a335441a5ac",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/079-consistency-and-read-after-write-expectations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/080-preventing-failure-amplification-across-service-calls.md",
+      "source_blob": "61bdb45011fe773604c6bc8bd332829b9281d90e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/080-preventing-failure-amplification-across-service-calls.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/081-backward-and-forward-compatibility.md",
+      "source_blob": "8af4abca2fed04f522634601560d006d366f2ec7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/081-backward-and-forward-compatibility.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/082-additive-and-breaking-changes.md",
+      "source_blob": "c9817f41d95d26bd05a53eb0b4c5b2e52f1d4667",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/082-additive-and-breaking-changes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/083-versioning-strategies.md",
+      "source_blob": "9393c95ba1749453176914cca6d6cb3786ccd7f0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/083-versioning-strategies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/084-deprecation-and-sunset.md",
+      "source_blob": "a13d5a09e73494a05b88864e9ba4b4a050728068",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/084-deprecation-and-sunset.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/085-consumer-inventory-and-usage-evidence.md",
+      "source_blob": "e848902decde8df969a920b03530672409ec628d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/085-consumer-inventory-and-usage-evidence.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/086-api-style-guides.md",
+      "source_blob": "18da262cda7fdb864c1d13e62e519ed8cdee85b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/086-api-style-guides.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/087-design-reviews.md",
+      "source_blob": "1d7a97a08c38b6ca87dc12e15bc6e4e2598d5540",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/087-design-reviews.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/088-schema-registries-and-contract-governance.md",
+      "source_blob": "c90d99b6fd97645ab0eb45a4272994a37835a60b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/088-schema-registries-and-contract-governance.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/089-api-product-ownership.md",
+      "source_blob": "87e97ebb55a3002e5ed840936987efd8b2e1c977",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/089-api-product-ownership.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/090-evolving-an-api-without-coordinated-consumer-releases.md",
+      "source_blob": "1327c0e2d6dfe58e7d69b7782a4d121df751f616",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/090-evolving-an-api-without-coordinated-consumer-releases.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/091-api-gateways-and-edge-responsibilities.md",
+      "source_blob": "cd242936869dd94ab1446e0929efeddb2c58a954",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/091-api-gateways-and-edge-responsibilities.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/092-service-discovery-and-routing.md",
+      "source_blob": "ad5be18af5e6c6c0b48c56066655398c117d1d57",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/092-service-discovery-and-routing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/093-service-mesh-relationships.md",
+      "source_blob": "7d770e34cc48057edc445e45d21814405d07770b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/093-service-mesh-relationships.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/094-contract-testing.md",
+      "source_blob": "9ddedccc7a3331c63330e3a7dcfdfae12b1c3fcd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/094-contract-testing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/095-integration-and-end-to-end-api-testing.md",
+      "source_blob": "ea1ff53405a106bb953ca3f9a25613cb903d31ec",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/095-integration-and-end-to-end-api-testing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/096-fuzzing-and-robustness-testing.md",
+      "source_blob": "5edb68c6844509a99e4ed46512b372a2eb966eeb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/096-fuzzing-and-robustness-testing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/097-api-metrics-logs-and-traces.md",
+      "source_blob": "9f2c6367888a1394f1d6c86d6c17a795b1c4a7c8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/097-api-metrics-logs-and-traces.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/098-latency-and-capacity-testing.md",
+      "source_blob": "3427077b476470c299f551af68011582f30b4021",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/098-latency-and-capacity-testing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/099-developer-portals-and-onboarding.md",
+      "source_blob": "2cf4ed3a5ee6e0404c6ed7e12e0f88f77e75ef7f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/099-developer-portals-and-onboarding.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/100-conducting-a-production-api-and-service-readiness-review.md",
+      "source_blob": "3e86261c617b45d54e2886ae50e6643c7b0c8c17",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/100-conducting-a-production-api-and-service-readiness-review.md",
+      "disposition": "imported-unchanged"
+    },
+    {
       "source_path": "programs/29-platform-engineering/ROADMAP.md",
       "source_blob": "dd95b8339c04cd10cbd83f3c06a382908339d4c4",
       "mode": "100644",
@@ -4149,6 +5409,692 @@
       "source_blob": "356e2c806d6317728e32b963c50da34dba66c014",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/002-platform-consumers-and-jobs-to-be-done.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/003-developer-cognitive-load.md",
+      "source_blob": "82afee2ce607a3fe85316a2a12a5e49ea65b7719",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/003-developer-cognitive-load.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/004-platform-as-product.md",
+      "source_blob": "5ee4d68225ca8ec518e275e67f0df2e0b8962e9d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/004-platform-as-product.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/005-self-service-and-guardrails.md",
+      "source_blob": "7601aa5efa15972b9fe5aa31f311ed425d64a0d3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/005-self-service-and-guardrails.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/006-paved-roads-and-escape-hatches.md",
+      "source_blob": "3f78a80da5e2f68b9335ff1407ba562a61fed687",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/006-paved-roads-and-escape-hatches.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/007-platform-capabilities-versus-tool-catalogs.md",
+      "source_blob": "7f3fae0bd35c87f7069c538dd4e97906af34a599",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/007-platform-capabilities-versus-tool-catalogs.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/008-internal-platforms-and-external-cloud-services.md",
+      "source_blob": "0292792ee7a96dbdbe598c022a16edd524680ed3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/008-internal-platforms-and-external-cloud-services.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/009-platform-team-boundaries.md",
+      "source_blob": "7d9bc4713439a527a0b77b6fb62abf8f14d0af4b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/009-platform-team-boundaries.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/010-defining-a-platform-s-value-proposition.md",
+      "source_blob": "fd49c5a08ff06bed846440d9deef59762276f316",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/010-defining-a-platform-s-value-proposition.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/011-developer-journeys.md",
+      "source_blob": "6b184352bf2cb246d24dfc431ccaf75fcc843c81",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/011-developer-journeys.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/012-time-to-first-successful-deployment.md",
+      "source_blob": "f9476b0d0af58c83e96ade62ad904025c4182f2f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/012-time-to-first-successful-deployment.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/013-command-line-interfaces.md",
+      "source_blob": "fa11ce63ad12915dc74adad8778d7bb9da3b3f4e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/013-command-line-interfaces.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/014-web-portals.md",
+      "source_blob": "9cd1bece8941a55705ba93836f5d47e899466b0e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/014-web-portals.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/015-apis-and-declarative-resources.md",
+      "source_blob": "3b33001f5be64440d2d88986ef5c19f7b4eab993",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/015-apis-and-declarative-resources.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/016-templates-and-scaffolding.md",
+      "source_blob": "a36a4803c77e626255caa1885315d28e7d7e3180",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/016-templates-and-scaffolding.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/017-documentation-and-discoverability.md",
+      "source_blob": "74a5574e6567cf04d8badb9469cb93ac9dfbd3cb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/017-documentation-and-discoverability.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/018-feedback-and-error-diagnostics.md",
+      "source_blob": "02b12fa7ad1a84b17d57474c6670018a5406199e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/018-feedback-and-error-diagnostics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/019-golden-path-versioning.md",
+      "source_blob": "bbda5e631c0a96bc144fd3e5aa7482c0572e5f63",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/019-golden-path-versioning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/020-measuring-developer-experience-without-vanity-metrics.md",
+      "source_blob": "ce310ca29200b32f6ea73a5d031e20b71ef2f724",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/020-measuring-developer-experience-without-vanity-metrics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/021-container-images-as-platform-artifacts.md",
+      "source_blob": "0f4ae6cc625b6692a915bf6a029899fb0768cd45",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/021-container-images-as-platform-artifacts.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/022-runtime-isolation-and-resource-controls.md",
+      "source_blob": "1648ce4a80c9a55c1d81b2b7f6c112a53f5f959f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/022-runtime-isolation-and-resource-controls.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/023-kubernetes-declarative-resources.md",
+      "source_blob": "2a29d5f61fa6ffa583e9353736c91ce8287a509e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/023-kubernetes-declarative-resources.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/024-pods-workloads-and-controllers.md",
+      "source_blob": "cf2d8fb7f84b01ccdff2b71ed9542c67b0c7d796",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/024-pods-workloads-and-controllers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/025-services-and-ingress.md",
+      "source_blob": "c9992b1121a1b29d23a92c4b17d8e1fdd0557995",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/025-services-and-ingress.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/026-configuration-and-secrets.md",
+      "source_blob": "56fac46b4e6ee3075ea823ec826cc9587e69642f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/026-configuration-and-secrets.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/027-storage-and-stateful-workloads.md",
+      "source_blob": "96a1eb9a72f0bc11bdda535bfdb3b74c3878aa90",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/027-storage-and-stateful-workloads.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/028-scheduling-and-placement.md",
+      "source_blob": "a86cd3a34797ea16859bf346f40ec27055aea1df",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/028-scheduling-and-placement.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/029-health-readiness-and-lifecycle.md",
+      "source_blob": "47da761d7518787f592dae7441b47d441d7d0147",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/029-health-readiness-and-lifecycle.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/030-mapping-application-needs-to-kubernetes-primitives.md",
+      "source_blob": "636d0dd9859b45eaf5a66d6f8ff6bee0fe20085e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/030-mapping-application-needs-to-kubernetes-primitives.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/031-application-build-capability.md",
+      "source_blob": "320e0f40fcc3e8effb1041e9d5a936fb09fb999e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/031-application-build-capability.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/032-artifact-and-image-management.md",
+      "source_blob": "e59074b2ed16645259be4840e2c83e8327860775",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/032-artifact-and-image-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/033-environment-provisioning.md",
+      "source_blob": "dd4e922eb8d49c4c50d8c9ef96a70f7a6a180ec6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/033-environment-provisioning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/034-deployment-capability.md",
+      "source_blob": "ed8d1929c10c818184bd18d3ee5f1a5f86f6c1a0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/034-deployment-capability.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/035-configuration-management.md",
+      "source_blob": "f9afdb9513a877a53d91a848718e5d13c59eb542",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/035-configuration-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/036-secret-delivery.md",
+      "source_blob": "dfd963cc6063534d3d02abfbfe40f3230e43b2d5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/036-secret-delivery.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/037-service-connectivity.md",
+      "source_blob": "c79b1220d7a9bc0e55dc9b70501064690e167dce",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/037-service-connectivity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/038-observability-provisioning.md",
+      "source_blob": "ed3024604a7762675dbf4f6d29e9667658bf6947",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/038-observability-provisioning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/039-database-and-data-service-access.md",
+      "source_blob": "3de0f8b68dcd212f7744b7bd35c02ba805ae1467",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/039-database-and-data-service-access.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/040-designing-a-coherent-minimum-viable-platform.md",
+      "source_blob": "786225e4c392b8be6a21f830c0845377e7202cd6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/040-designing-a-coherent-minimum-viable-platform.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/041-workload-archetypes.md",
+      "source_blob": "440d742e06e63740cba08931d5bc0c91bc9604c1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/041-workload-archetypes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/042-service-templates.md",
+      "source_blob": "1ac92e5ee2cd766bc2b26203b2557be9812a5e77",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/042-service-templates.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/043-batch-and-scheduled-workload-templates.md",
+      "source_blob": "617d497f2711467eb92cfc5f7323555177fdc456",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/043-batch-and-scheduled-workload-templates.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/044-event-driven-workload-templates.md",
+      "source_blob": "ce5856dd0eb0ea419de550c50f36f02f804079e4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/044-event-driven-workload-templates.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/045-stateful-workload-standards.md",
+      "source_blob": "d348391d4dd141e45775f8917ba172c9dfc83e9e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/045-stateful-workload-standards.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/046-runtime-and-language-baselines.md",
+      "source_blob": "a1bddf5ef0c820480213c1ed32f29266ac1ec4b7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/046-runtime-and-language-baselines.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/047-health-and-telemetry-contracts.md",
+      "source_blob": "373b63ecdb31819898ca1c06721b4b1a0f26693c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/047-health-and-telemetry-contracts.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/048-security-and-compliance-defaults.md",
+      "source_blob": "e641cff97dc583bbafd9b2865ca19f2ae8c8c501",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/048-security-and-compliance-defaults.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/049-upgrade-and-deprecation-policies.md",
+      "source_blob": "996076c3390b6dc2a93c92bf6a1eb00ea23baa32",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/049-upgrade-and-deprecation-policies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/050-designing-a-golden-path-that-remains-optional-but-attractive.md",
+      "source_blob": "9f4049c237e23ca75a4bb183cd647413fd455aec",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/050-designing-a-golden-path-that-remains-optional-but-attractive.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/051-control-plane-and-data-plane-separation.md",
+      "source_blob": "0b0d5139bb297fadcbf5b02090d90724fd65ddaf",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/051-control-plane-and-data-plane-separation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/052-desired-state-and-reconciliation.md",
+      "source_blob": "9490a8a321a2c67978c84ef52deb1b5b44d29f4f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/052-desired-state-and-reconciliation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/053-custom-resource-definitions.md",
+      "source_blob": "c6a1886a7118ecb941f65f12c6260daf444e1eef",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/053-custom-resource-definitions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/054-operator-state-machines.md",
+      "source_blob": "7dfceb9e8bc3e07524915bcdcb609be57d76dc8e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/054-operator-state-machines.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/055-idempotent-reconciliation.md",
+      "source_blob": "308a129c1345576964fb31fe7065d36fed62f2ca",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/055-idempotent-reconciliation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/056-finalizers-and-deletion.md",
+      "source_blob": "eba9a9893d105757bbd8152539287245b78f074c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/056-finalizers-and-deletion.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/057-status-conditions-and-drift.md",
+      "source_blob": "79aabdcb0c6ca233adda45723cd8af15df851370",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/057-status-conditions-and-drift.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/058-cross-resource-dependencies.md",
+      "source_blob": "f6a9284756a018dcab7472eba5d9fa7a525e99a2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/058-cross-resource-dependencies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/059-control-plane-failure-and-recovery.md",
+      "source_blob": "db0d4daf9bded625a566129783443f56d30c0b69",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/059-control-plane-failure-and-recovery.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/060-designing-a-domain-specific-platform-api.md",
+      "source_blob": "5b2d89c6d91cab51433129d4e22984072c3d3a22",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/060-designing-a-domain-specific-platform-api.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/061-platform-api-layers.md",
+      "source_blob": "23b5123d76152225dc36e6b337a14c5bc6d48017",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/061-platform-api-layers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/062-developer-portal-architecture.md",
+      "source_blob": "fb4c7496d327ceafd7e511387118ffc8671d777f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/062-developer-portal-architecture.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/063-software-catalogs.md",
+      "source_blob": "17432bcb11ace63ea9d785855b138ae697330539",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/063-software-catalogs.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/064-ownership-and-metadata.md",
+      "source_blob": "f88d48e1416229b928c137397861cd0c62e9de3c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/064-ownership-and-metadata.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/065-workflow-and-orchestration-layers.md",
+      "source_blob": "260c4f562bf2f9b04efc391623e82a33bc6468c1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/065-workflow-and-orchestration-layers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/066-policy-decision-and-enforcement-points.md",
+      "source_blob": "23718f39c36d3e9942977ca8a99b32af1285e5ea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/066-policy-decision-and-enforcement-points.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/067-environment-and-account-vending.md",
+      "source_blob": "754b89bbbcd518d6f9af82418cf06a3fdd6bf595",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/067-environment-and-account-vending.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/068-service-broker-and-marketplace-models.md",
+      "source_blob": "e2512177fd46ccff2a49825d05bb0f1ec6f0b91d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/068-service-broker-and-marketplace-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/069-platform-eventing.md",
+      "source_blob": "6ef5f9d35f82ee6c5e896c0ad98e9b69dd8623de",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/069-platform-eventing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/070-integrating-platform-components-without-creating-a-portal-monolith.md",
+      "source_blob": "1572a7d2d95df29cfa03750f398a83ea789049ca",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/070-integrating-platform-components-without-creating-a-portal-monolith.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/071-tenant-models.md",
+      "source_blob": "1b78bcdb9ed155f3f85240a4d7dce44d2c67369e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/071-tenant-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/072-namespace-account-and-cluster-isolation.md",
+      "source_blob": "08a497a789cb1abc7088655819a38ee6be424e4f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/072-namespace-account-and-cluster-isolation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/073-resource-quotas.md",
+      "source_blob": "2a59e0113c35edbf54881bef300e55a5a9bf8999",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/073-resource-quotas.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/074-identity-federation.md",
+      "source_blob": "bef121aa0baffb517330c422ff2ae82e4855cb48",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/074-identity-federation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/075-workload-identity.md",
+      "source_blob": "0451cf0ff53e545408f8f877dbd4b5b9d59b785e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/075-workload-identity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/076-platform-policy-as-code.md",
+      "source_blob": "6383fd45de7a8a9ecaeeccdc454518c955d874c2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/076-platform-policy-as-code.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/077-admission-control.md",
+      "source_blob": "610a8009489b7185b1f007088a7df7b9f52ae95a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/077-admission-control.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/078-supply-chain-policy.md",
+      "source_blob": "2fe78b3db45f39a8eed73d5f60fc593edcc7ee51",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/078-supply-chain-policy.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/079-audit-and-evidence.md",
+      "source_blob": "aa89457f44093287b1247dd3f51f96d8bfcd3d97",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/079-audit-and-evidence.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/080-balancing-central-guardrails-with-team-autonomy.md",
+      "source_blob": "261bc2cb920d47f5bf898ac8e428d7827ae09b0b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/080-balancing-central-guardrails-with-team-autonomy.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/081-platform-service-level-objectives.md",
+      "source_blob": "eeefbee7ccedbc46b420fac4a1831be0f1044f3f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/081-platform-service-level-objectives.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/082-control-plane-capacity.md",
+      "source_blob": "5af3f7b9402788cdeca7822709e4fe0f31d30e67",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/082-control-plane-capacity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/083-cluster-and-fleet-management.md",
+      "source_blob": "7e3cc663db383635ac7db01d976d4e9eb664e534",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/083-cluster-and-fleet-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/084-platform-dependency-mapping.md",
+      "source_blob": "23fec8ccd34771dd4ad3bb47f953dac30ae1eee6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/084-platform-dependency-mapping.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/085-upgrade-orchestration.md",
+      "source_blob": "a9396aa117cdf913d03087d4e5c32523f1341667",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/085-upgrade-orchestration.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/086-backup-and-restore-of-platform-state.md",
+      "source_blob": "7e7940cc94e2713ecea12d47e910d1858474ca4e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/086-backup-and-restore-of-platform-state.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/087-incident-response-for-shared-platforms.md",
+      "source_blob": "a05d18ae5bff56eed797cd659545080bfb5187ae",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/087-incident-response-for-shared-platforms.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/088-regional-and-multi-cluster-platforms.md",
+      "source_blob": "65afb865d21583eded5931bfd4e3a8633c5e385d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/088-regional-and-multi-cluster-platforms.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/089-cost-allocation-and-efficiency.md",
+      "source_blob": "8fb4f057757f09068017013156e6fd53b3e94886",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/089-cost-allocation-and-efficiency.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/090-reviewing-platform-failure-blast-radius.md",
+      "source_blob": "bea343a4c2eef5369725a42f504c06cd06e1a195",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/090-reviewing-platform-failure-blast-radius.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/091-platform-discovery-and-product-research.md",
+      "source_blob": "7be158ff0e3cab3e9c8849823f47ebf57bd84631",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/091-platform-discovery-and-product-research.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/092-adoption-funnels.md",
+      "source_blob": "44927c6b2c82c3c340a3ba13cc9084a98ecf17e1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/092-adoption-funnels.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/093-migration-to-the-platform.md",
+      "source_blob": "d75792dfdc45364d6171307fd9a4a7b02c53cdac",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/093-migration-to-the-platform.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/094-support-models-and-enabling-teams.md",
+      "source_blob": "1a789ab849c82ad35bdde982afb1aaa7c1d40a88",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/094-support-models-and-enabling-teams.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/095-platform-roadmaps.md",
+      "source_blob": "d72a0649cf3170f795a920e1545a62c9f05b3539",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/095-platform-roadmaps.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/096-build-versus-buy.md",
+      "source_blob": "dc926c53db2456d6110dbddd32a389e899b2f676",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/096-build-versus-buy.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/097-capability-lifecycle-and-retirement.md",
+      "source_blob": "af250b27efb3e7014b4d834174f9fca02f5e2e28",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/097-capability-lifecycle-and-retirement.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/098-measuring-platform-outcomes.md",
+      "source_blob": "d87d223525a5e72a9a662a27b11c58f0bb3623b6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/098-measuring-platform-outcomes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/099-avoiding-platform-monopolies-and-forced-abstractions.md",
+      "source_blob": "5773754bf332bc6c59be8adc5036590983d3f10c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/099-avoiding-platform-monopolies-and-forced-abstractions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/100-defending-a-platform-strategy-to-developers-security-and-leadership.md",
+      "source_blob": "1525913e0bf2616b7fa7f185af2bcc8b1f999e40",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/100-defending-a-platform-strategy-to-developers-security-and-leadership.md",
       "disposition": "imported-unchanged"
     },
     {
