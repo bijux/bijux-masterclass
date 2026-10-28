@@ -1,0 +1,23 @@
+{
+  "version": "TASK_HARBOR_V1",
+  "tasks": [
+    {
+      "id": "bad",
+      "kind": "fail",
+      "message": "planned failure"
+    },
+    {
+      "id": "blocked",
+      "kind": "echo",
+      "text": "never",
+      "dependsOn": [
+        "bad"
+      ]
+    },
+    {
+      "id": "free",
+      "kind": "uppercase",
+      "text": "independent"
+    }
+  ]
+}

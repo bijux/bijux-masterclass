@@ -1,0 +1,83 @@
+site_name: Async Node.js and Event-Driven Architecture
+site_description: Course 4 of the reader-first Node.js programming curriculum
+docs_dir: .
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.indexes
+  - content.code.copy
+nav:
+- Course start: README.md
+- Course book: course-book/index.md
+- Outcomes: course-book/outcomes.md
+- Ten-day plan: course-book/study-plan.md
+- Module 31 — Event Loop, Scheduling, Fairness, and Blocking:
+  - Chapter: course-book/module-31-event-loop-scheduling-fairness-and-blocking/index.md
+  - Workbook: course-book/module-31-event-loop-scheduling-fairness-and-blocking/workbook.md
+  - Reasoned solutions: course-book/module-31-event-loop-scheduling-fairness-and-blocking/solutions.md
+- Module 32 — Promises, Async Functions, and Task Ownership:
+  - Chapter: course-book/module-32-promises-async-functions-and-task-ownership/index.md
+  - Workbook: course-book/module-32-promises-async-functions-and-task-ownership/workbook.md
+  - Reasoned solutions: course-book/module-32-promises-async-functions-and-task-ownership/solutions.md
+- Module 33 — Cancellation, Abort Signals, Deadlines, and Time Budgets:
+  - Chapter: course-book/module-33-cancellation-abort-signals-deadlines-and-time-budgets/index.md
+  - Workbook: course-book/module-33-cancellation-abort-signals-deadlines-and-time-budgets/workbook.md
+  - Reasoned solutions: course-book/module-33-cancellation-abort-signals-deadlines-and-time-budgets/solutions.md
+- Module 34 — EventEmitter and Typed Event Contracts:
+  - Chapter: course-book/module-34-event-emitter-and-typed-event-contracts/index.md
+  - Workbook: course-book/module-34-event-emitter-and-typed-event-contracts/workbook.md
+  - Reasoned solutions: course-book/module-34-event-emitter-and-typed-event-contracts/solutions.md
+- Module 35 — Timers, Clocks, Rate Control, and Deterministic Time:
+  - Chapter: course-book/module-35-timers-clocks-rate-control-and-deterministic-time/index.md
+  - Workbook: course-book/module-35-timers-clocks-rate-control-and-deterministic-time/workbook.md
+  - Reasoned solutions: course-book/module-35-timers-clocks-rate-control-and-deterministic-time/solutions.md
+- Module 36 — Async Iterables, Generators, and Pull-Based Sequences:
+  - Chapter: course-book/module-36-async-iterables-generators-and-pull-based-sequences/index.md
+  - Workbook: course-book/module-36-async-iterables-generators-and-pull-based-sequences/workbook.md
+  - Reasoned solutions: course-book/module-36-async-iterables-generators-and-pull-based-sequences/solutions.md
+- Module 37 — Async Context, Correlation, and Diagnostic Boundaries:
+  - Chapter: course-book/module-37-async-context-correlation-and-diagnostic-boundaries/index.md
+  - Workbook: course-book/module-37-async-context-correlation-and-diagnostic-boundaries/workbook.md
+  - Reasoned solutions: course-book/module-37-async-context-correlation-and-diagnostic-boundaries/solutions.md
+- Module 38 — Task Supervision, Failure Policies, and Bounded Concurrency:
+  - Chapter: course-book/module-38-task-supervision-failure-policies-and-bounded-concurrency/index.md
+  - Workbook: course-book/module-38-task-supervision-failure-policies-and-bounded-concurrency/workbook.md
+  - Reasoned solutions: course-book/module-38-task-supervision-failure-policies-and-bounded-concurrency/solutions.md
+- Module 39 — Process Lifecycle, Signals, Cleanup, and Graceful Shutdown:
+  - Chapter: course-book/module-39-process-lifecycle-signals-cleanup-and-graceful-shutdown/index.md
+  - Workbook: course-book/module-39-process-lifecycle-signals-cleanup-and-graceful-shutdown/workbook.md
+  - Reasoned solutions: course-book/module-39-process-lifecycle-signals-cleanup-and-graceful-shutdown/solutions.md
+- Module 40 — Integrated Event-Driven Architecture and Independent Change:
+  - Chapter: course-book/module-40-integrated-event-driven-architecture-and-independent-change/index.md
+  - Workbook: course-book/module-40-integrated-event-driven-architecture-and-independent-change/workbook.md
+  - Reasoned solutions: course-book/module-40-integrated-event-driven-architecture-and-independent-change/solutions.md
+- TaskHarbor engineering guide: course-book/capstone.md
+- Final review: course-book/final-review.md
+- Final review solutions: course-book/final-review-solutions.md
+- Reference desk: course-book/reference.md
+- Laboratories:
+  - Laboratory system: labs/README.md
+  - Laboratory 31 — Event Loop Observatory: labs/module-31-event-loop-observatory/README.md
+  - Laboratory 32 — Owned Promise Nursery: labs/module-32-owned-promise-nursery/README.md
+  - Laboratory 33 — Deadline Budget: labs/module-33-deadline-budget/README.md
+  - Laboratory 34 — Typed Event Hub: labs/module-34-typed-event-hub/README.md
+  - Laboratory 35 — Deterministic Scheduler: labs/module-35-deterministic-scheduler/README.md
+  - Laboratory 36 — Bounded Async Queue: labs/module-36-bounded-async-queue/README.md
+  - Laboratory 37 — Correlation Context: labs/module-37-correlation-context/README.md
+  - Laboratory 38 — Supervised Task Group: labs/module-38-supervised-task-group/README.md
+  - Laboratory 39 — Graceful Lifecycle Harness: labs/module-39-graceful-lifecycle-harness/README.md
+  - Laboratory 40 — Event-Driven Job Engine: labs/module-40-event-driven-job-engine/README.md
+- Investigations: compiler-labs/README.md
+- TaskHarbor implementation: capstone/README.md
+exclude_docs: |
+  **/node_modules/**
+  **/dist/**
+  **/site/**
+  **/starter/**
+  **/reference/**
+  **/compiler-labs/module-*/**
+  **/capstone/src/**
+  **/capstone/tests/**

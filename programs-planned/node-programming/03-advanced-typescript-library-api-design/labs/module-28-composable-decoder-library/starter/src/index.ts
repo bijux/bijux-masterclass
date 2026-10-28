@@ -1,0 +1,1 @@
+export type Result<T>={readonly ok:true;readonly value:T}|{readonly ok:false;readonly message:string};export function decodeString(input:unknown):Result<string>{return typeof input==='string'?{ok:true,value:input}:{ok:false,message:'expected string'};}

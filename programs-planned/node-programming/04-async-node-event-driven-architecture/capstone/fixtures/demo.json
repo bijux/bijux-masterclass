@@ -1,0 +1,28 @@
+{
+  "version": "TASK_HARBOR_V1",
+  "tasks": [
+    {
+      "id": "warmup",
+      "kind": "delay",
+      "milliseconds": 5,
+      "priority": "normal"
+    },
+    {
+      "id": "message",
+      "kind": "uppercase",
+      "text": "harbor",
+      "dependsOn": [
+        "warmup"
+      ],
+      "priority": "high"
+    },
+    {
+      "id": "audit",
+      "kind": "echo",
+      "text": "complete",
+      "dependsOn": [
+        "message"
+      ]
+    }
+  ]
+}

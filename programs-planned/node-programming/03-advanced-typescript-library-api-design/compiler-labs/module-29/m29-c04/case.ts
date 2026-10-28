@@ -1,0 +1,1 @@
+type Result={kind:'ok'}|{kind:'error'}|{kind:'cancelled'};function label(value:Result):string{switch(value.kind){case'ok':return'ok';case'error':return'error';}const impossible:never=value;return impossible;}console.log(label({kind:'ok'}));
