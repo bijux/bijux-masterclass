@@ -1,0 +1,37 @@
+{
+  "name": "@bijux-masterclass/schemakit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.19.0 <25"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    },
+    "./json": {
+      "types": "./dist/src/json.d.ts",
+      "import": "./dist/src/json.js"
+    },
+    "./testing": {
+      "types": "./dist/src/testing.d.ts",
+      "import": "./dist/src/testing.js"
+    }
+  },
+  "bin": {
+    "schemakit": "./dist/src/main.js"
+  },
+  "files": [
+    "dist/src",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build --silent && node --test dist/tests/*.test.js"
+  },
+  "types": "./dist/src/index.d.ts",
+  "sideEffects": false
+}

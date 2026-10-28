@@ -1,0 +1,91 @@
+site_name: Node.js and TypeScript Foundations
+site_description: A reader-first, runtime-literate first course in Node.js and TypeScript
+docs_dir: .
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.indexes
+  - content.code.copy
+nav:
+- Course overview: README.md
+- Course-book start: course-book/index.md
+- Outcomes: course-book/outcomes.md
+- Ten-day plan: course-book/study-plan.md
+- Module 1 — Runtime, Toolchain, ESM, and the JavaScript/TypeScript Boundary:
+  - Chapter: course-book/module-01-runtime-toolchain-and-execution/index.md
+  - Workbook: course-book/module-01-runtime-toolchain-and-execution/workbook.md
+  - Reasoned solutions: course-book/module-01-runtime-toolchain-and-execution/solutions.md
+- Module 2 — Values, Coercion, Equality, Control Flow, and Invariants:
+  - Chapter: course-book/module-02-values-coercion-equality-and-control/index.md
+  - Workbook: course-book/module-02-values-coercion-equality-and-control/workbook.md
+  - Reasoned solutions: course-book/module-02-values-coercion-equality-and-control/solutions.md
+- Module 3 — Functions, Scope, Closures, Callbacks, and `this`:
+  - Chapter: course-book/module-03-functions-scope-closures-and-this/index.md
+  - Workbook: course-book/module-03-functions-scope-closures-and-this/workbook.md
+  - Reasoned solutions: course-book/module-03-functions-scope-closures-and-this/solutions.md
+- Module 4 — Objects, Arrays, Identity, Mutation, and Immutable Updates:
+  - Chapter: course-book/module-04-objects-arrays-identity-and-mutation/index.md
+  - Workbook: course-book/module-04-objects-arrays-identity-and-mutation/workbook.md
+  - Reasoned solutions: course-book/module-04-objects-arrays-identity-and-mutation/solutions.md
+- Module 5 — TypeScript Modeling, Unions, Narrowing, `unknown`, and `never`:
+  - Chapter: course-book/module-05-typescript-modeling-and-narrowing/index.md
+  - Workbook: course-book/module-05-typescript-modeling-and-narrowing/workbook.md
+  - Reasoned solutions: course-book/module-05-typescript-modeling-and-narrowing/solutions.md
+- Module 6 — Collections, Iteration, Generic Relationships, and Deterministic Data:
+  - Chapter: course-book/module-06-collections-iteration-and-generics/index.md
+  - Workbook: course-book/module-06-collections-iteration-and-generics/workbook.md
+  - Reasoned solutions: course-book/module-06-collections-iteration-and-generics/solutions.md
+- Module 7 — Modules, Packages, Resolution, and Public API Boundaries:
+  - Chapter: course-book/module-07-modules-packages-and-public-apis/index.md
+  - Workbook: course-book/module-07-modules-packages-and-public-apis/workbook.md
+  - Reasoned solutions: course-book/module-07-modules-packages-and-public-apis/solutions.md
+- Module 8 — Errors, JSON, Runtime Validation, and Persistence Contracts:
+  - Chapter: course-book/module-08-errors-json-validation-and-persistence/index.md
+  - Workbook: course-book/module-08-errors-json-validation-and-persistence/workbook.md
+  - Reasoned solutions: course-book/module-08-errors-json-validation-and-persistence/solutions.md
+- Module 9 — Promises, Event-Loop Ordering, CLI Boundaries, and Async Files:
+  - Chapter: course-book/module-09-promises-event-loop-cli-and-files/index.md
+  - Workbook: course-book/module-09-promises-event-loop-cli-and-files/workbook.md
+  - Reasoned solutions: course-book/module-09-promises-event-loop-cli-and-files/solutions.md
+- Module 10 — Testing, Architecture, Integration, and Independent Change:
+  - Chapter: course-book/module-10-testing-architecture-and-change/index.md
+  - Workbook: course-book/module-10-testing-architecture-and-change/workbook.md
+  - Reasoned solutions: course-book/module-10-testing-architecture-and-change/solutions.md
+- StudyLedger engineering guide: course-book/capstone.md
+- Final review: course-book/final-review.md
+- Final review solutions: course-book/final-review-solutions.md
+- Reference desk: course-book/reference.md
+- Independent laboratories:
+  - Laboratory system: labs/README.md
+  - Laboratory 1 — Runtime Report: labs/module-01-runtime-report/README.md
+  - Laboratory 2 — Usage Quote Policy: labs/module-02-usage-quote-policy/README.md
+  - Laboratory 3 — Callback Budget: labs/module-03-callback-budget/README.md
+  - Laboratory 4 — Inventory Transform: labs/module-04-inventory-transform/README.md
+  - Laboratory 5 — Review Workflow: labs/module-05-review-workflow/README.md
+  - Laboratory 6 — Record Query: labs/module-06-record-query/README.md
+  - Laboratory 7 — Package Boundary: labs/module-07-package-boundary/README.md
+  - Laboratory 8 — Validated Configuration: labs/module-08-validated-configuration/README.md
+  - Laboratory 9 — Async File Index: labs/module-09-async-file-index/README.md
+  - Laboratory 10 — Reading Ledger: labs/module-10-reading-ledger/README.md
+- Type-checker and runtime investigations: compiler-labs/README.md
+- StudyLedger implementation: capstone/README.md
+exclude_docs: '**/node_modules/**
+
+  **/dist/**
+
+  **/site/**
+
+  **/starter/**
+
+  **/reference/**
+
+  capstone/src/**
+
+  capstone/tests/**
+
+  compiler-labs/module-*/**
+
+  '
