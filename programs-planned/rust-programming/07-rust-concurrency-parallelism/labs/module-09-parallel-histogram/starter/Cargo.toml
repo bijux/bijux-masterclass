@@ -1,0 +1,9 @@
+[package]
+name = "course7-lab69-09-parallel-histogram-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+rayon = "=1.12.0"

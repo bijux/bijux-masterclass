@@ -1,0 +1,12 @@
+[package]
+name = "c5-m08-c08"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+course5-metacases-macros = { path = "../../support/metacases-macros" }
+
+[workspace]
+

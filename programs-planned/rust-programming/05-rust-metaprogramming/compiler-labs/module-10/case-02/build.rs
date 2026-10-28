@@ -1,0 +1,1 @@
+use std::{collections::BTreeSet,fs}; fn main(){println!("cargo::rerun-if-changed=codes.tsv");let mut seen=BTreeSet::new();for line in fs::read_to_string("codes.tsv").unwrap().lines(){let code=line.split('	').nth(1).unwrap();if !seen.insert(code.to_owned()){panic!("duplicate code {code}");}}}

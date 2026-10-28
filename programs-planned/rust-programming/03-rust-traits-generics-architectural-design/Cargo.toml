@@ -1,0 +1,46 @@
+[workspace]
+resolver = "3"
+members = [
+    "capstone",
+    "labs/module-01-contract-boundaries/solution",
+    "labs/module-02-associated-families/solution",
+    "labs/module-03-coherence-adapters/solution",
+    "labs/module-04-static-pipeline/solution",
+    "labs/module-05-dynamic-command-bus/solution",
+    "labs/module-06-composed-renderer/solution",
+    "labs/module-07-typestate-publication/solution",
+    "labs/module-08-boundary-ports/solution",
+    "labs/module-09-evolvable-sdk/solution",
+    "labs/module-10-inspection-platform/solution",
+]
+exclude = [
+    "labs/module-01-contract-boundaries/starter",
+    "labs/module-02-associated-families/starter",
+    "labs/module-03-coherence-adapters/starter",
+    "labs/module-04-static-pipeline/starter",
+    "labs/module-05-dynamic-command-bus/starter",
+    "labs/module-06-composed-renderer/starter",
+    "labs/module-07-typestate-publication/starter",
+    "labs/module-08-boundary-ports/starter",
+    "labs/module-09-evolvable-sdk/starter",
+    "labs/module-10-inspection-platform/starter",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+publish = false
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+correctness = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

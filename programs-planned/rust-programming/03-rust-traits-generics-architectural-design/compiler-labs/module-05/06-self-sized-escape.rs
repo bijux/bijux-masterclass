@@ -1,0 +1,1 @@
+trait Name{fn name(&self)->&str;fn boxed(self)->Box<dyn Name>where Self:Sized+'static{Box::new(self)}}struct X;impl Name for X{fn name(&self)->&str{"x"}}fn main(){let x=X.boxed();assert_eq!(x.name(),"x");}

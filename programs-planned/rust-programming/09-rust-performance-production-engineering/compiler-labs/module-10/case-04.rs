@@ -1,0 +1,1 @@
+#[derive(Clone,Copy)] enum Stage{Canary,Half,Full} fn next(s:Stage)->Option<Stage>{match s{Stage::Canary=>Some(Stage::Half),Stage::Half=>Some(Stage::Full),Stage::Full=>None}} fn main(){assert!(matches!(next(Stage::Canary),Some(Stage::Half)));}

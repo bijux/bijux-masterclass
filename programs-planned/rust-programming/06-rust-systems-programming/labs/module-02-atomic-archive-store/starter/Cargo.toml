@@ -1,0 +1,6 @@
+[package]
+name = "course6-lab52-module-02-atomic-archive-store-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false

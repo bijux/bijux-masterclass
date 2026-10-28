@@ -1,0 +1,19 @@
+[package]
+name = "ledgerflow"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+license = "MIT"
+description = "Course 4 capstone: deterministic ledger-event analysis"
+publish = false
+
+[lib]
+name = "ledgerflow"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ledgerflow"
+path = "src/main.rs"
+
+[lints]
+workspace = true

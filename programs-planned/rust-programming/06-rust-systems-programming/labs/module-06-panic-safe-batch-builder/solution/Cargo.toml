@@ -1,0 +1,10 @@
+[package]
+name = "course6-lab56-module-06-panic-safe-batch-builder"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true

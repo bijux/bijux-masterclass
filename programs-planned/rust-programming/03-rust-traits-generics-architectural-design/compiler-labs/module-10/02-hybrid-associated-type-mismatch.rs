@@ -1,0 +1,1 @@
+trait S{type Item;fn load(self)->Vec<Self::Item>;}fn run<T:S<Item=u8>>(s:T)->u8{s.load()[0]}struct X;impl S for X{type Item=String;fn load(self)->Vec<String>{vec!["x".into()]}}fn main(){let _=run(X);}
