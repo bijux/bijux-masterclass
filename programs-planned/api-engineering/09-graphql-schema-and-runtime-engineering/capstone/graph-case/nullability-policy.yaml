@@ -1,0 +1,10 @@
+version: '1.0'
+principles:
+  - non-null means the runtime can sustain the guarantee through expected dependency failure
+  - unavailable optional service data remains nullable and produces a path-specific error
+  - empty list means authoritative empty, not dependency unavailable
+  - mutation payloads remain non-null while domain outcomes use explicit result unions
+examples:
+  Project.analysisRuns: non-null-authoritative
+  AnalysisRun.artifacts: nullable-on-artifact-service-failure
+  AnalysisRun.deliverySummary: nullable-eventually-consistent

@@ -1,0 +1,121 @@
+proofs:
+- requirement: REL-001
+  module: module-01
+  evidence: course-book/module-01-reliability-model-and-critical-journeys/checkpoint.md
+  executable: make module-proof MODULE=01
+- requirement: REL-002
+  module: module-02
+  evidence: course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md
+  executable: make module-proof MODULE=02
+- requirement: REL-003
+  module: module-02
+  evidence: course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md
+  executable: make module-proof MODULE=02
+- requirement: REL-004
+  module: module-02
+  evidence: course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md
+  executable: make module-proof MODULE=02
+- requirement: REL-005
+  module: module-02
+  evidence: course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md
+  executable: make module-proof MODULE=02
+- requirement: REL-006
+  module: module-02
+  evidence: course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md
+  executable: make module-proof MODULE=02
+- requirement: REL-007
+  module: module-03
+  evidence: course-book/module-03-dependency-resilience-and-graceful-degradation/checkpoint.md
+  executable: make module-proof MODULE=03
+- requirement: REL-008
+  module: module-03
+  evidence: course-book/module-03-dependency-resilience-and-graceful-degradation/checkpoint.md
+  executable: make module-proof MODULE=03
+- requirement: REL-009
+  module: module-04
+  evidence: course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/checkpoint.md
+  executable: make module-proof MODULE=04
+- requirement: REL-010
+  module: module-04
+  evidence: course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/checkpoint.md
+  executable: make module-proof MODULE=04
+- requirement: REL-011
+  module: module-04
+  evidence: course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/checkpoint.md
+  executable: make module-proof MODULE=04
+- requirement: REL-012
+  module: module-05
+  evidence: course-book/module-05-telemetry-architecture-and-structured-operational-events/checkpoint.md
+  executable: make module-proof MODULE=05
+- requirement: REL-013
+  module: module-05
+  evidence: course-book/module-05-telemetry-architecture-and-structured-operational-events/checkpoint.md
+  executable: make module-proof MODULE=05
+- requirement: REL-014
+  module: module-05
+  evidence: course-book/module-05-telemetry-architecture-and-structured-operational-events/checkpoint.md
+  executable: make module-proof MODULE=05
+- requirement: REL-015
+  module: module-06
+  evidence: course-book/module-06-metrics-and-service-level-indicators/checkpoint.md
+  executable: make module-proof MODULE=06
+- requirement: REL-016
+  module: module-06
+  evidence: course-book/module-06-metrics-and-service-level-indicators/checkpoint.md
+  executable: make module-proof MODULE=06
+- requirement: REL-017
+  module: module-06
+  evidence: course-book/module-06-metrics-and-service-level-indicators/checkpoint.md
+  executable: make module-proof MODULE=06
+- requirement: REL-018
+  module: module-07
+  evidence: course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/checkpoint.md
+  executable: make module-proof MODULE=07
+- requirement: REL-019
+  module: module-07
+  evidence: course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/checkpoint.md
+  executable: make module-proof MODULE=07
+- requirement: REL-020
+  module: module-07
+  evidence: course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/checkpoint.md
+  executable: make module-proof MODULE=07
+- requirement: REL-021
+  module: module-07
+  evidence: course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/checkpoint.md
+  executable: make module-proof MODULE=07
+- requirement: REL-022
+  module: module-08
+  evidence: course-book/module-08-slos-error-budgets-dashboards-and-alerts/checkpoint.md
+  executable: make module-proof MODULE=08
+- requirement: REL-023
+  module: module-08
+  evidence: course-book/module-08-slos-error-budgets-dashboards-and-alerts/checkpoint.md
+  executable: make module-proof MODULE=08
+- requirement: REL-024
+  module: module-09
+  evidence: course-book/module-09-fault-injection-troubleshooting-and-game-days/checkpoint.md
+  executable: make module-proof MODULE=09
+- requirement: REL-025
+  module: module-09
+  evidence: course-book/module-09-fault-injection-troubleshooting-and-game-days/checkpoint.md
+  executable: make module-proof MODULE=09
+- requirement: REL-026
+  module: module-10
+  evidence: course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/checkpoint.md
+  executable: make module-proof MODULE=10
+- requirement: REL-027
+  module: module-10
+  evidence: course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/checkpoint.md
+  executable: make module-proof MODULE=10
+- requirement: REL-028
+  module: module-10
+  evidence: course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/checkpoint.md
+  executable: make module-proof MODULE=10
+- requirement: REL-029
+  module: module-10
+  evidence: course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/checkpoint.md
+  executable: make module-proof MODULE=10
+- requirement: REL-030
+  module: module-10
+  evidence: course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/checkpoint.md
+  executable: make module-proof MODULE=10

@@ -1,0 +1,5 @@
+description: Request correlation identifier.
+schema:
+  type: string
+  pattern: ^req_[a-f0-9]{12}$
+example: req_012345abcdef

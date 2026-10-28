@@ -1,0 +1,8 @@
+id: DEFECT-REL-09
+module: 9
+name: No hypothesis
+detector: fault-plan-hypothesis
+mutation: Run a fault experiment with no falsifiable hypothesis.
+oracle: plan validation
+expectedCommand: make module-proof MODULE=09
+expectedFailure: Fault plan validation rejects it.

@@ -1,0 +1,7 @@
+{
+  "entityRef": "api:default/analysis-events",
+  "evidenceClass": "course-executed",
+  "kind": "ownership",
+  "status": "pass",
+  "summary": "ownership evidence for api:default/analysis-events"
+}

@@ -1,0 +1,1 @@
+trait L{type V<'a> where Self:'a;fn get<'a>(&'a self)->Self::V<'a>;}struct S(String);impl L for S{type V<'a>=&'a str where Self:'a;fn get<'a>(&'a self)->&'a str{&self.0}}fn main(){let s=S("x".into());assert_eq!(s.get(),"x");}

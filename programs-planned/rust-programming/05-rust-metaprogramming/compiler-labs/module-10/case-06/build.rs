@@ -1,0 +1,1 @@
+use std::fs;fn main(){println!("cargo::rerun-if-changed=rows.tsv");for (i,line) in fs::read_to_string("rows.tsv").unwrap().lines().enumerate(){if line.split('	').count()!=2{panic!("line {} must contain two fields",i+1);}}}

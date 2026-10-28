@@ -1,0 +1,14 @@
+[project]
+name = "analysis-rpc-course"
+version = "1.0.0"
+requires-python = ">=3.11"
+dependencies = [
+  "grpcio==1.83.0",
+  "protobuf==7.35.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "grpcio-tools==1.83.0",
+  "pytest==8.4.1",
+]

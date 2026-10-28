@@ -1,0 +1,13 @@
+[project]
+name = "contract-driven-api-service-engineering-course"
+version = "1.0.0"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+markers = [
+  "postgres: requires a disposable PostgreSQL database",
+  "process: requires process control or Docker",
+  "release: requires release-proof topology",
+]

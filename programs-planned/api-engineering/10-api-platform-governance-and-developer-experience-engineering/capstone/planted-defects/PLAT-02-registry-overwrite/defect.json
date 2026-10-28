@@ -1,0 +1,5 @@
+{
+  "defect": "A published version is overwritten with different bytes",
+  "expectedRejectingProof": "registry-proof",
+  "id": "PLAT-02-registry-overwrite"
+}

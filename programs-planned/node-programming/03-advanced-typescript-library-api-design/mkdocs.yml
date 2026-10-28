@@ -1,0 +1,91 @@
+site_name: Advanced TypeScript and Library API Design
+site_description: Course 3 of the Node.js Programming program
+docs_dir: .
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.indexes
+  - content.code.copy
+nav:
+- Course overview: README.md
+- Course-book start: course-book/index.md
+- Outcomes: course-book/outcomes.md
+- Ten-day plan: course-book/study-plan.md
+- "Module 21 \u2014 Structural Typing, Assignability, and Public Shape":
+  - Chapter: course-book/module-21-structural-typing-assignability-and-public-shape/index.md
+  - Workbook: course-book/module-21-structural-typing-assignability-and-public-shape/workbook.md
+  - Reasoned solutions: course-book/module-21-structural-typing-assignability-and-public-shape/solutions.md
+- "Module 22 \u2014 Generic Relationships, Inference, and Indexed Access":
+  - Chapter: course-book/module-22-generic-relationships-inference-and-indexed-access/index.md
+  - Workbook: course-book/module-22-generic-relationships-inference-and-indexed-access/workbook.md
+  - Reasoned solutions: course-book/module-22-generic-relationships-inference-and-indexed-access/solutions.md
+- "Module 23 \u2014 Conditional Types, infer, and Type-Level Control Flow":
+  - Chapter: course-book/module-23-conditional-types-infer-and-type-level-control-flow/index.md
+  - Workbook: course-book/module-23-conditional-types-infer-and-type-level-control-flow/workbook.md
+  - Reasoned solutions: course-book/module-23-conditional-types-infer-and-type-level-control-flow/solutions.md
+- "Module 24 \u2014 Mapped Types, Key Remapping, and Template-Literal Types":
+  - Chapter: course-book/module-24-mapped-types-key-remapping-and-template-literals/index.md
+  - Workbook: course-book/module-24-mapped-types-key-remapping-and-template-literals/workbook.md
+  - Reasoned solutions: course-book/module-24-mapped-types-key-remapping-and-template-literals/solutions.md
+- "Module 25 \u2014 Variance, Function Types, and Callback Safety":
+  - Chapter: course-book/module-25-variance-function-types-and-callback-safety/index.md
+  - Workbook: course-book/module-25-variance-function-types-and-callback-safety/workbook.md
+  - Reasoned solutions: course-book/module-25-variance-function-types-and-callback-safety/solutions.md
+- "Module 26 \u2014 Declaration Files, Declaration Emission, and Type Tests":
+  - Chapter: course-book/module-26-declaration-files-emission-and-type-tests/index.md
+  - Workbook: course-book/module-26-declaration-files-emission-and-type-tests/workbook.md
+  - Reasoned solutions: course-book/module-26-declaration-files-emission-and-type-tests/solutions.md
+- "Module 27 \u2014 Node ESM Packages, Exports, and Consumer Contracts":
+  - Chapter: course-book/module-27-node-esm-packages-exports-and-consumer-contracts/index.md
+  - Workbook: course-book/module-27-node-esm-packages-exports-and-consumer-contracts/workbook.md
+  - Reasoned solutions: course-book/module-27-node-esm-packages-exports-and-consumer-contracts/solutions.md
+- "Module 28 \u2014 Runtime Schemas, Static Inference, and Validation Algebra":
+  - Chapter: course-book/module-28-runtime-schemas-static-inference-and-validation-algebra/index.md
+  - Workbook: course-book/module-28-runtime-schemas-static-inference-and-validation-algebra/workbook.md
+  - Reasoned solutions: course-book/module-28-runtime-schemas-static-inference-and-validation-algebra/solutions.md
+- "Module 29 \u2014 API Compatibility, Semantic Versioning, and Migration":
+  - Chapter: course-book/module-29-api-compatibility-semver-and-migration/index.md
+  - Workbook: course-book/module-29-api-compatibility-semver-and-migration/workbook.md
+  - Reasoned solutions: course-book/module-29-api-compatibility-semver-and-migration/solutions.md
+- "Module 30 \u2014 Integrated Library Architecture and Independent Change":
+  - Chapter: course-book/module-30-integrated-library-architecture-and-independent-change/index.md
+  - Workbook: course-book/module-30-integrated-library-architecture-and-independent-change/workbook.md
+  - Reasoned solutions: course-book/module-30-integrated-library-architecture-and-independent-change/solutions.md
+- SchemaKit engineering guide: course-book/capstone.md
+- Final review: course-book/final-review.md
+- Final review solutions: course-book/final-review-solutions.md
+- Reference desk: course-book/reference.md
+- Laboratories:
+  - Laboratory system: labs/README.md
+  - "Laboratory 21 \u2014 Structural Contract Catalog": labs/module-21-structural-contract-catalog/README.md
+  - "Laboratory 22 \u2014 Typed Projection Engine": labs/module-22-typed-projection-engine/README.md
+  - "Laboratory 23 \u2014 Command Outcome Matrix": labs/module-23-command-outcome-matrix/README.md
+  - "Laboratory 24 \u2014 Typed Change Event Surface": labs/module-24-typed-change-event-surface/README.md
+  - "Laboratory 25 \u2014 Variance-Safe Event Router": labs/module-25-variance-safe-event-router/README.md
+  - "Laboratory 26 \u2014 Legacy Runtime Declaration Facade": labs/module-26-legacy-runtime-declaration-facade/README.md
+  - "Laboratory 27 \u2014 Encapsulated ESM Library Surface": labs/module-27-encapsulated-esm-library-surface/README.md
+  - "Laboratory 28 \u2014 Composable Decoder Library": labs/module-28-composable-decoder-library/README.md
+  - "Laboratory 29 \u2014 Evolvable Client SDK": labs/module-29-evolvable-client-sdk/README.md
+  - "Laboratory 30 \u2014 Typed Library Architecture Audit": labs/module-30-typed-library-architecture-audit/README.md
+- Investigations: compiler-labs/README.md
+- SchemaKit implementation: capstone/README.md
+exclude_docs: '**/node_modules/**
+
+  **/dist/**
+
+  **/site/**
+
+  **/starter/**
+
+  **/reference/**
+
+  **/compiler-labs/module-*/**
+
+  **/capstone/src/**
+
+  **/capstone/tests/**
+
+  '

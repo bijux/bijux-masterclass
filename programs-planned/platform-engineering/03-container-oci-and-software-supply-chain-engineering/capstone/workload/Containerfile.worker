@@ -1,0 +1,16 @@
+# syntax=docker.io/docker/dockerfile-upstream:1.26.0
+ARG GO_BASE=golang:1.26.0-bookworm
+FROM --platform=$BUILDPLATFORM ${GO_BASE} AS build
+ARG TARGETOS
+ARG TARGETARCH
+WORKDIR /src
+COPY go.mod ./
+COPY cmd/atlas-worker ./cmd/atlas-worker
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
+    go build -trimpath -ldflags='-s -w -buildid=' -o /out/atlas-worker ./cmd/atlas-worker
+
+FROM scratch
+COPY --from=build /out/atlas-worker /usr/local/bin/atlas-worker
+USER 65532:65532
+ENTRYPOINT ["/usr/local/bin/atlas-worker"]

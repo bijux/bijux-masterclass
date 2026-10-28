@@ -1,0 +1,23 @@
+residualRisks:
+- id: RISK-001
+  statement: The local topology does not demonstrate multi-zone infrastructure failure.
+  owner: platform
+  disposition: accepted-for-course
+- id: RISK-002
+  statement: Dependency-light telemetry is an educational sink, not an operated backend.
+  owner: course
+  disposition: named-external-proof
+- id: RISK-003
+  statement: The course does not claim a universal SLO target for every organization.
+  owner: service-owner
+  disposition: context-dependent
+- id: RISK-004
+  statement: Circuit breaker thresholds require production calibration from real failure
+    distributions.
+  owner: service-owner
+  disposition: calibration-required
+- id: RISK-005
+  statement: Backup restore and regional disaster recovery require target-platform
+    execution.
+  owner: platform
+  disposition: out-of-scope-environment

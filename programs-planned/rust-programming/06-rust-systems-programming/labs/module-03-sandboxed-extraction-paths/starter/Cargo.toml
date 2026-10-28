@@ -1,0 +1,6 @@
+[package]
+name = "course6-lab53-module-03-sandboxed-extraction-paths-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false

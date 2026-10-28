@@ -1,0 +1,31 @@
+{
+  "lineage": "migrate-1",
+  "resources": [
+    {
+      "address": "aws_vpc.atlas",
+      "attributes": {
+        "cidr": "10.64.0.0/16",
+        "dns": true
+      },
+      "remote_id": "vpc-001",
+      "replace_on_change": [
+        "cidr"
+      ],
+      "type": "aws_vpc"
+    },
+    {
+      "address": "aws_subnet.private_a",
+      "attributes": {
+        "azId": "euc1-az1",
+        "cidr": "10.64.16.0/20"
+      },
+      "remote_id": "subnet-001",
+      "replace_on_change": [
+        "cidr",
+        "azId"
+      ],
+      "type": "aws_subnet"
+    }
+  ],
+  "serial": 10
+}

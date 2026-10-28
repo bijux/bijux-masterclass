@@ -1,0 +1,47 @@
+post:
+  tags:
+  - Webhooks
+  summary: Analysis completed event
+  description: The provider sends this event to registered webhook destinations.
+  operationId: analysisCompletedWebhook
+  security:
+  - WebhookSignature: []
+  parameters:
+  - name: X-Webhook-Id
+    in: header
+    required: true
+    schema:
+      type: string
+      pattern: ^evt_[0-9]{4,18}$
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/RunCompletedEvent.yaml
+        example:
+          eventId: evt_0003
+          eventType: analysis.completed
+          occurredAt: '2026-08-05T10:12:00Z'
+          run:
+            id: run_0001
+            projectId: prj_0001
+            datasetId: dts_0001
+            ownerId: learner
+            status: completed
+            parameters:
+              algorithm: quality-summary
+              priority: normal
+            progress: 100
+            createdAt: '2026-08-05T10:10:00Z'
+            updatedAt: '2026-08-05T10:12:00Z'
+            completedAt: '2026-08-05T10:12:00Z'
+            artifactIds:
+            - art_0001
+  responses:
+    '204':
+      description: Event accepted.
+    '400':
+      $ref: ../components/responses/BadRequestProblem.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml

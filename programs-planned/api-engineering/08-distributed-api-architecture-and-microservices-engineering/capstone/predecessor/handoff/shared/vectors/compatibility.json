@@ -1,0 +1,45 @@
+{
+  "profile": "protobuf-compatibility-1.0",
+  "cases": [
+    {
+      "id": "CMP-01",
+      "change": "add-optional-response-field-new-tag",
+      "wire": "compatible",
+      "source": "compatible",
+      "protojson": "additive",
+      "behavior": "review"
+    },
+    {
+      "id": "CMP-02",
+      "change": "reuse-removed-field-tag",
+      "wire": "breaking",
+      "source": "breaking",
+      "protojson": "breaking",
+      "behavior": "breaking"
+    },
+    {
+      "id": "CMP-03",
+      "change": "rename-field-keep-tag",
+      "wire": "compatible",
+      "source": "breaking",
+      "protojson": "breaking",
+      "behavior": "review"
+    },
+    {
+      "id": "CMP-04",
+      "change": "add-enum-value",
+      "wire": "compatible",
+      "source": "review",
+      "protojson": "review",
+      "behavior": "review"
+    },
+    {
+      "id": "CMP-05",
+      "change": "unary-to-server-stream",
+      "wire": "breaking-method-shape",
+      "source": "breaking",
+      "protojson": "n/a",
+      "behavior": "breaking"
+    }
+  ]
+}

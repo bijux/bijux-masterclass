@@ -1,0 +1,8 @@
+{
+  "id": "EVT-05",
+  "slug": "EVT-05-inbox-identity-too-small",
+  "summary": "Inbox deduplicates only by eventId",
+  "mustBeRejected": true,
+  "expectedOracle": "tenant and effect-version vectors demonstrate false suppression",
+  "proofFamily": "inbox"
+}

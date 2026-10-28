@@ -1,0 +1,823 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "m01-c01",
+      "module": 1,
+      "title": "Runtime version remains a string",
+      "category": "typecheck-pass",
+      "path": "module-01/m01-c01/case.ts",
+      "target": "Static types describe the Node runtime value without changing it.",
+      "principledRepair": "Keep the runtime string and parse only the component the program needs.",
+      "weakRepair": "Assert that process.version is a number."
+    },
+    {
+      "id": "m01-c02",
+      "module": 1,
+      "title": "Runtime string assigned to a number",
+      "category": "typecheck-fail",
+      "path": "module-01/m01-c02/case.ts",
+      "target": "The declaration for process.version is string.",
+      "principledRepair": "Declare version as string, then validate and convert a selected component.",
+      "weakRepair": "Use `as unknown as number`, which changes only the checker story."
+    },
+    {
+      "id": "m01-c03",
+      "module": 1,
+      "title": "Satisfies checks a package-shaped value",
+      "category": "typecheck-pass",
+      "path": "module-01/m01-c03/case.ts",
+      "target": "`satisfies` checks compatibility while retaining useful literal information.",
+      "principledRepair": "Use `satisfies` when the value should keep its inferred literal shape.",
+      "weakRepair": "Annotate everything as `Record<string, unknown>`, erasing useful information."
+    },
+    {
+      "id": "m01-c04",
+      "module": 1,
+      "title": "Type-only import used as a runtime value",
+      "category": "typecheck-fail",
+      "path": "module-01/m01-c04/case.ts",
+      "target": "Type-only imports are erased and cannot supply runtime values.",
+      "principledRepair": "Import a runtime value when one exists, or use the imported name only in type positions.",
+      "weakRepair": "Disable verbatim module syntax and depend on ambiguous import elision."
+    },
+    {
+      "id": "m01-c05",
+      "module": 1,
+      "title": "Type annotations erase before execution",
+      "category": "typecheck-pass",
+      "path": "module-01/m01-c05/case.ts",
+      "target": "TypeScript annotations do not exist in emitted JavaScript.",
+      "principledRepair": "Use types to check source relationships and runtime code to produce behavior.",
+      "weakRepair": "Expect interfaces to perform runtime validation."
+    },
+    {
+      "id": "m01-c06",
+      "module": 1,
+      "title": "Unsafe assertion at an external boundary",
+      "category": "run-fail",
+      "path": "module-01/m01-c06/case.ts",
+      "target": "A type assertion does not validate parsed JSON.",
+      "principledRepair": "Parse as unknown and validate that port is a finite integer before use.",
+      "weakRepair": "Add optional chaining and silently continue without a valid configuration.",
+      "expectedStdout": "",
+      "expectedStderrContains": "toFixed"
+    },
+    {
+      "id": "m01-c07",
+      "module": 1,
+      "title": "Top-level await in an ESM module",
+      "category": "typecheck-pass",
+      "path": "module-01/m01-c07/case.ts",
+      "target": "ESM supports top-level await under the selected module target.",
+      "principledRepair": "Keep top-level await at a deliberate module boundary.",
+      "weakRepair": "Wrap every module in an unnecessary async IIFE."
+    },
+    {
+      "id": "m01-c08",
+      "module": 1,
+      "title": "Nonexistent named Node export",
+      "category": "typecheck-fail",
+      "path": "module-01/m01-c08/case.ts",
+      "target": "Built-in module declarations define the available named exports.",
+      "principledRepair": "Import a real documented export or implement the required local function.",
+      "weakRepair": "Cast the entire imported module to any."
+    },
+    {
+      "id": "m02-c01",
+      "module": 2,
+      "title": "Restricted decimal parsing",
+      "category": "typecheck-pass",
+      "path": "module-02/m02-c01/case.ts",
+      "target": "Conversion follows an explicit acceptance grammar.",
+      "principledRepair": "Validate syntax and numeric range before returning the value.",
+      "weakRepair": "Rely only on `Number(raw)` and accept empty strings or exponent notation."
+    },
+    {
+      "id": "m02-c02",
+      "module": 2,
+      "title": "String concatenation mistaken for arithmetic",
+      "category": "typecheck-fail",
+      "path": "module-02/m02-c02/case.ts",
+      "target": "The `+` result is string when one operand is string.",
+      "principledRepair": "Parse raw under an explicit numeric policy before addition.",
+      "weakRepair": "Assert the concatenated string is a number."
+    },
+    {
+      "id": "m02-c03",
+      "module": 2,
+      "title": "Object.is exposes special number semantics",
+      "category": "typecheck-pass",
+      "path": "module-02/m02-c03/case.ts",
+      "target": "NaN and signed zero have deliberate equality behavior.",
+      "principledRepair": "Choose equality according to the product rule, not habit.",
+      "weakRepair": "Use loose equality to blur representation differences."
+    },
+    {
+      "id": "m02-c04",
+      "module": 2,
+      "title": "Unchecked property after null JSON",
+      "category": "run-fail",
+      "path": "module-02/m02-c04/case.ts",
+      "target": "A JSON value can be null even when an assertion claims an object.",
+      "principledRepair": "Treat parsed data as unknown and reject null before property access.",
+      "weakRepair": "Catch the TypeError and replace the configuration with arbitrary defaults.",
+      "expectedStdout": "",
+      "expectedStderrContains": "enabled"
+    },
+    {
+      "id": "m02-c05",
+      "module": 2,
+      "title": "Indexed access can be absent",
+      "category": "typecheck-fail",
+      "path": "module-02/m02-c05/case.ts",
+      "target": "`noUncheckedIndexedAccess` includes undefined for an unchecked index.",
+      "principledRepair": "Check the result or use an operation whose contract guarantees an element.",
+      "weakRepair": "Use a non-null assertion without proving the collection is nonempty."
+    },
+    {
+      "id": "m02-c06",
+      "module": 2,
+      "title": "Guarded indexed access",
+      "category": "typecheck-pass",
+      "path": "module-02/m02-c06/case.ts",
+      "target": "A local undefined check narrows the indexed value.",
+      "principledRepair": "Narrow the retrieved value once and use that binding.",
+      "weakRepair": "Index the array repeatedly and scatter non-null assertions."
+    },
+    {
+      "id": "m02-c07",
+      "module": 2,
+      "title": "Truthiness does not choose a union member",
+      "category": "typecheck-fail",
+      "path": "module-02/m02-c07/case.ts",
+      "target": "Both nonempty strings and nonzero numbers are truthy.",
+      "principledRepair": "Use `typeof input === \"string\"` when the branch requires a string.",
+      "weakRepair": "Convert every value with String and erase the semantic distinction."
+    },
+    {
+      "id": "m02-c08",
+      "module": 2,
+      "title": "Explicit total control flow",
+      "category": "typecheck-pass",
+      "path": "module-02/m02-c08/case.ts",
+      "target": "Every union member receives an explicit branch.",
+      "principledRepair": "Model alternatives explicitly and handle each branch.",
+      "weakRepair": "Use a bag of optional fields and guess which one is present."
+    },
+    {
+      "id": "m03-c01",
+      "module": 3,
+      "title": "Closure owns private mutable state",
+      "category": "typecheck-pass",
+      "path": "module-03/m03-c01/case.ts",
+      "target": "A closure can preserve state without exposing the variable.",
+      "principledRepair": "Use closure state when one callable should own the mutation.",
+      "weakRepair": "Store the counter in a global variable shared by unrelated callers."
+    },
+    {
+      "id": "m03-c02",
+      "module": 3,
+      "title": "Callback result contract mismatch",
+      "category": "typecheck-fail",
+      "path": "module-03/m03-c02/case.ts",
+      "target": "The callback must return the type promised by the higher-order function.",
+      "principledRepair": "Return a number or change the higher-order function contract intentionally.",
+      "weakRepair": "Cast the string-producing callback to the required function type."
+    },
+    {
+      "id": "m03-c03",
+      "module": 3,
+      "title": "Explicit receiver method",
+      "category": "typecheck-pass",
+      "path": "module-03/m03-c03/case.ts",
+      "target": "A method call supplies the object as its receiver.",
+      "principledRepair": "Call receiver-dependent functions through the owning object or bind them explicitly.",
+      "weakRepair": "Assume an extracted method remembers its original object."
+    },
+    {
+      "id": "m03-c04",
+      "module": 3,
+      "title": "Extracted method loses its receiver",
+      "category": "run-fail",
+      "path": "module-03/m03-c04/case.ts",
+      "target": "A plain function call does not restore the original method receiver.",
+      "principledRepair": "Use `meter.read()` or bind the method to meter before extraction.",
+      "weakRepair": "Replace every method with an arrow property without considering allocation or API meaning.",
+      "expectedStdout": "",
+      "expectedStderrContains": "value"
+    },
+    {
+      "id": "m03-c05",
+      "module": 3,
+      "title": "Implicit this is not a contract",
+      "category": "typecheck-fail",
+      "path": "module-03/m03-c05/case.ts",
+      "target": "A standalone function has no typed receiver under strict checking.",
+      "principledRepair": "Declare an explicit `this` parameter or remove receiver dependence.",
+      "weakRepair": "Disable `noImplicitThis`."
+    },
+    {
+      "id": "m03-c06",
+      "module": 3,
+      "title": "Explicit this parameter",
+      "category": "typecheck-pass",
+      "path": "module-03/m03-c06/case.ts",
+      "target": "The pseudo-parameter documents the required receiver without existing at runtime.",
+      "principledRepair": "State the receiver contract and invoke the function with a matching receiver.",
+      "weakRepair": "Cast `this` inside the function after untyped access."
+    },
+    {
+      "id": "m03-c07",
+      "module": 3,
+      "title": "Variable may be used before assignment",
+      "category": "typecheck-fail",
+      "path": "module-03/m03-c07/case.ts",
+      "target": "Control flow does not guarantee that the closure target was initialized.",
+      "principledRepair": "Initialize every branch or represent absence explicitly.",
+      "weakRepair": "Use a definite-assignment assertion and preserve the runtime failure."
+    },
+    {
+      "id": "m03-c08",
+      "module": 3,
+      "title": "Bounded callback invocation",
+      "category": "typecheck-pass",
+      "path": "module-03/m03-c08/case.ts",
+      "target": "The higher-order function exposes invocation count as an explicit policy.",
+      "principledRepair": "Make call budget and stopping rules part of the callable contract.",
+      "weakRepair": "Invoke the callback speculatively and ignore side effects."
+    },
+    {
+      "id": "m04-c01",
+      "module": 4,
+      "title": "Readonly public object view",
+      "category": "typecheck-pass",
+      "path": "module-04/m04-c01/case.ts",
+      "target": "Readonly fields prevent writes through this static view.",
+      "principledRepair": "Expose readonly views when callers should observe rather than mutate.",
+      "weakRepair": "Assume readonly recursively freezes all runtime objects."
+    },
+    {
+      "id": "m04-c02",
+      "module": 4,
+      "title": "Mutation through readonly field",
+      "category": "typecheck-fail",
+      "path": "module-04/m04-c02/case.ts",
+      "target": "A readonly property cannot be assigned through that type.",
+      "principledRepair": "Return an updated object when mutation is not part of the API.",
+      "weakRepair": "Cast the object to a mutable type."
+    },
+    {
+      "id": "m04-c03",
+      "module": 4,
+      "title": "Aliases observe the same object",
+      "category": "typecheck-pass",
+      "path": "module-04/m04-c03/case.ts",
+      "target": "Assignment copies an object reference, not the object.",
+      "principledRepair": "Track identity and mutation explicitly when aliases exist.",
+      "weakRepair": "Describe assignment as copying the object."
+    },
+    {
+      "id": "m04-c04",
+      "module": 4,
+      "title": "Shallow copy does not isolate nested state",
+      "category": "run-fail",
+      "path": "module-04/m04-c04/case.ts",
+      "target": "Object spread copies the nested reference.",
+      "principledRepair": "Copy each changed path or use a domain operation that owns the update.",
+      "weakRepair": "Call the top-level spread an immutable deep copy.",
+      "expectedStdout": "",
+      "expectedStderrContains": "original changed"
+    },
+    {
+      "id": "m04-c05",
+      "module": 4,
+      "title": "Readonly array passed to mutating API",
+      "category": "typecheck-fail",
+      "path": "module-04/m04-c05/case.ts",
+      "target": "A readonly array does not satisfy a mutable array parameter.",
+      "principledRepair": "Copy at the boundary or change the function to return a sorted copy.",
+      "weakRepair": "Cast away readonly and mutate a caller-owned value."
+    },
+    {
+      "id": "m04-c06",
+      "module": 4,
+      "title": "Path-local immutable update",
+      "category": "typecheck-pass",
+      "path": "module-04/m04-c06/case.ts",
+      "target": "Only the changed object path receives new identity.",
+      "principledRepair": "Copy the changed path and preserve untouched identities.",
+      "weakRepair": "Deep-clone the entire graph for every small update."
+    },
+    {
+      "id": "m04-c07",
+      "module": 4,
+      "title": "Unchecked array element mutation",
+      "category": "typecheck-fail",
+      "path": "module-04/m04-c07/case.ts",
+      "target": "The indexed element may be undefined.",
+      "principledRepair": "Retrieve, check, and then mutate the element or use a keyed domain operation.",
+      "weakRepair": "Use `rows[0]!` without an invariant that guarantees the element."
+    },
+    {
+      "id": "m04-c08",
+      "module": 4,
+      "title": "Freeze is shallow at runtime",
+      "category": "typecheck-pass",
+      "path": "module-04/m04-c08/case.ts",
+      "target": "`Object.freeze` freezes the supplied object, not every reachable object.",
+      "principledRepair": "Treat shallow freezing and deep immutability as different contracts.",
+      "weakRepair": "Claim Object.freeze makes the complete graph immutable."
+    },
+    {
+      "id": "m05-c01",
+      "module": 5,
+      "title": "Exhaustive discriminated union",
+      "category": "typecheck-pass",
+      "path": "module-05/m05-c01/case.ts",
+      "target": "A discriminant narrows each state-specific shape.",
+      "principledRepair": "Use one discriminant and state-specific fields.",
+      "weakRepair": "Use optional fields and non-null assertions."
+    },
+    {
+      "id": "m05-c02",
+      "module": 5,
+      "title": "State-specific field without narrowing",
+      "category": "typecheck-fail",
+      "path": "module-05/m05-c02/case.ts",
+      "target": "Not every union member contains the field.",
+      "principledRepair": "Narrow on state before reading finishedAt.",
+      "weakRepair": "Add finishedAt as an optional field to every state."
+    },
+    {
+      "id": "m05-c03",
+      "module": 5,
+      "title": "Unknown narrowed by a runtime guard",
+      "category": "typecheck-pass",
+      "path": "module-05/m05-c03/case.ts",
+      "target": "A runtime predicate can establish a local static fact.",
+      "principledRepair": "Validate the exact property before use.",
+      "weakRepair": "Assert external data as the desired interface."
+    },
+    {
+      "id": "m05-c04",
+      "module": 5,
+      "title": "Property access on unknown",
+      "category": "typecheck-fail",
+      "path": "module-05/m05-c04/case.ts",
+      "target": "Unknown requires proof before property access.",
+      "principledRepair": "Check object-ness and property type first.",
+      "weakRepair": "Replace unknown with any."
+    },
+    {
+      "id": "m05-c05",
+      "module": 5,
+      "title": "Literal preservation with satisfies",
+      "category": "typecheck-pass",
+      "path": "module-05/m05-c05/case.ts",
+      "target": "`satisfies` checks the wider contract while retaining the literal discriminant.",
+      "principledRepair": "Use satisfies when both validation and precise inference matter.",
+      "weakRepair": "Annotate with the broad union and lose the literal unnecessarily."
+    },
+    {
+      "id": "m05-c06",
+      "module": 5,
+      "title": "Missing union branch reaches assertNever",
+      "category": "typecheck-fail",
+      "path": "module-05/m05-c06/case.ts",
+      "target": "The unhandled variant is not assignable to never.",
+      "principledRepair": "Handle the c branch explicitly.",
+      "weakRepair": "Cast state to never in the default branch."
+    },
+    {
+      "id": "m05-c07",
+      "module": 5,
+      "title": "Broad string is not a closed vocabulary",
+      "category": "typecheck-fail",
+      "path": "module-05/m05-c07/case.ts",
+      "target": "An arbitrary string cannot satisfy a finite literal union.",
+      "principledRepair": "Validate raw against the supported values and narrow it.",
+      "weakRepair": "Assert raw as Level."
+    },
+    {
+      "id": "m05-c08",
+      "module": 5,
+      "title": "Assertion allows impossible runtime state",
+      "category": "run-fail",
+      "path": "module-05/m05-c08/case.ts",
+      "target": "An assertion can forge a union member that runtime data does not satisfy.",
+      "principledRepair": "Decode unknown data and require text for the message variant.",
+      "weakRepair": "Add optional chaining and accept malformed events.",
+      "expectedStdout": "",
+      "expectedStderrContains": "toUpperCase"
+    },
+    {
+      "id": "m06-c01",
+      "module": 6,
+      "title": "Generic key index preserves relationships",
+      "category": "typecheck-pass",
+      "path": "module-06/m06-c01/case.ts",
+      "target": "The key parameter is constrained to actual keys of the object.",
+      "principledRepair": "Express the relationship among object, key, and result.",
+      "weakRepair": "Return unknown and cast at every call site."
+    },
+    {
+      "id": "m06-c02",
+      "module": 6,
+      "title": "Generic result unrelated to input",
+      "category": "typecheck-fail",
+      "path": "module-06/m06-c02/case.ts",
+      "target": "A generic function cannot manufacture an arbitrary T.",
+      "principledRepair": "Accept a constructor/default or return a concrete known type.",
+      "weakRepair": "Cast the empty object to T."
+    },
+    {
+      "id": "m06-c03",
+      "module": 6,
+      "title": "Map lookup remains optional",
+      "category": "typecheck-fail",
+      "path": "module-06/m06-c03/case.ts",
+      "target": "A missing key produces undefined.",
+      "principledRepair": "Handle absence or use a helper that establishes the key first.",
+      "weakRepair": "Use a non-null assertion for every lookup."
+    },
+    {
+      "id": "m06-c04",
+      "module": 6,
+      "title": "Duplicate-key policy is observable",
+      "category": "run-fail",
+      "path": "module-06/m06-c04/case.ts",
+      "target": "Building an index requires an explicit duplicate policy.",
+      "principledRepair": "Reject, merge, or replace duplicates under a named product policy.",
+      "weakRepair": "Let Map.set silently keep the last row.",
+      "expectedStdout": "",
+      "expectedStderrContains": "duplicate 1"
+    },
+    {
+      "id": "m06-c05",
+      "module": 6,
+      "title": "Stable sorted copy",
+      "category": "typecheck-pass",
+      "path": "module-06/m06-c05/case.ts",
+      "target": "Sorting a copy preserves the source array.",
+      "principledRepair": "Copy before an in-place algorithm when the source is caller-owned.",
+      "weakRepair": "Sort the readonly source by casting it to mutable."
+    },
+    {
+      "id": "m06-c06",
+      "module": 6,
+      "title": "Reduce accumulator type mismatch",
+      "category": "typecheck-fail",
+      "path": "module-06/m06-c06/case.ts",
+      "target": "The reducer result must match the accumulator type.",
+      "principledRepair": "Return a number from every reducer step or choose a string accumulator.",
+      "weakRepair": "Cast each intermediate result to number."
+    },
+    {
+      "id": "m06-c07",
+      "module": 6,
+      "title": "Deterministic grouping order",
+      "category": "typecheck-pass",
+      "path": "module-06/m06-c07/case.ts",
+      "target": "A sorted key list separates grouping from presentation order.",
+      "principledRepair": "Define presentation order independently from insertion accidents.",
+      "weakRepair": "Assume every producer inserts Map keys in the same order."
+    },
+    {
+      "id": "m06-c08",
+      "module": 6,
+      "title": "Generic predicate keeps element type",
+      "category": "typecheck-pass",
+      "path": "module-06/m06-c08/case.ts",
+      "target": "The generic relationship does not erase the element.",
+      "principledRepair": "Preserve T from source through callback to result.",
+      "weakRepair": "Use any for callback values and return values."
+    },
+    {
+      "id": "m07-c01",
+      "module": 7,
+      "title": "Explicit JavaScript import specifier",
+      "category": "typecheck-pass",
+      "path": "module-07/m07-c01/case.ts",
+      "target": "NodeNext resolves a .js output specifier to the TypeScript source during checking.",
+      "principledRepair": "Write the specifier that emitted ESM will load.",
+      "weakRepair": "Use extensionless imports that only a bundler understands."
+    },
+    {
+      "id": "m07-c02",
+      "module": 7,
+      "title": "Extensionless relative ESM import",
+      "category": "typecheck-fail",
+      "path": "module-07/m07-c02/case.ts",
+      "target": "NodeNext requires explicit output extensions for relative ESM imports.",
+      "principledRepair": "Import `./value.js` from TypeScript source.",
+      "weakRepair": "Switch module resolution to a bundler mode while still claiming direct Node execution."
+    },
+    {
+      "id": "m07-c03",
+      "module": 7,
+      "title": "Type-only module edge",
+      "category": "typecheck-pass",
+      "path": "module-07/m07-c03/case.ts",
+      "target": "A type-only import creates no runtime dependency.",
+      "principledRepair": "Use import type when only the static declaration is needed.",
+      "weakRepair": "Import a runtime module and depend on elision heuristics."
+    },
+    {
+      "id": "m07-c04",
+      "module": 7,
+      "title": "Type-only name used at runtime",
+      "category": "typecheck-fail",
+      "path": "module-07/m07-c04/case.ts",
+      "target": "The imported interface is erased.",
+      "principledRepair": "Use User only as a type or export a real runtime constructor/value.",
+      "weakRepair": "Cast the erased name through any."
+    },
+    {
+      "id": "m07-c05",
+      "module": 7,
+      "title": "Named export has no default",
+      "category": "typecheck-fail",
+      "path": "module-07/m07-c05/case.ts",
+      "target": "A module with only named exports does not provide a default export.",
+      "principledRepair": "Use `import { answer }` or deliberately add a default export.",
+      "weakRepair": "Enable synthetic defaults and obscure the actual module contract."
+    },
+    {
+      "id": "m07-c06",
+      "module": 7,
+      "title": "Re-exported public surface",
+      "category": "typecheck-pass",
+      "path": "module-07/m07-c06/case.ts",
+      "target": "A package entry module can expose a deliberate subset.",
+      "principledRepair": "Re-export only the intended public value.",
+      "weakRepair": "Export every internal module through a wildcard barrel."
+    },
+    {
+      "id": "m07-c07",
+      "module": 7,
+      "title": "Live ESM binding",
+      "category": "run-pass",
+      "path": "module-07/m07-c07/case.ts",
+      "target": "Imported ESM bindings observe updates made by the exporting module.",
+      "principledRepair": "Understand exports as live bindings rather than copied values.",
+      "weakRepair": "Assume every import is a frozen snapshot.",
+      "expectedStdout": "1\n"
+    },
+    {
+      "id": "m07-c08",
+      "module": 7,
+      "title": "Circular initialization hazard avoided by contract",
+      "category": "typecheck-pass",
+      "path": "module-07/m07-c08/case.ts",
+      "target": "Acyclic module ownership makes initialization order explainable.",
+      "principledRepair": "Move shared primitives to a lower-level module and keep dependencies acyclic.",
+      "weakRepair": "Rely on circular initialization timing and patch undefined values."
+    },
+    {
+      "id": "m08-c01",
+      "module": 8,
+      "title": "Unknown configuration validation",
+      "category": "typecheck-pass",
+      "path": "module-08/m08-c01/case.ts",
+      "target": "Runtime checks establish a trusted local configuration.",
+      "principledRepair": "Validate the exact runtime shape and value constraints.",
+      "weakRepair": "Declare JSON.parse to return Config."
+    },
+    {
+      "id": "m08-c02",
+      "module": 8,
+      "title": "Unknown catch value property access",
+      "category": "typecheck-fail",
+      "path": "module-08/m08-c02/case.ts",
+      "target": "Catch variables are unknown under strict checking.",
+      "principledRepair": "Use `error instanceof Error` before reading message.",
+      "weakRepair": "Change the catch variable to any."
+    },
+    {
+      "id": "m08-c03",
+      "module": 8,
+      "title": "Unsafe configuration assertion",
+      "category": "run-fail",
+      "path": "module-08/m08-c03/case.ts",
+      "target": "A static assertion cannot create the missing runtime property.",
+      "principledRepair": "Decode unknown data and reject null output before property access.",
+      "weakRepair": "Wrap access in try/catch and continue with an incomplete configuration.",
+      "expectedStdout": "",
+      "expectedStderrContains": "directory"
+    },
+    {
+      "id": "m08-c04",
+      "module": 8,
+      "title": "Error narrowed before causal wrapping",
+      "category": "typecheck-pass",
+      "path": "module-08/m08-c04/case.ts",
+      "target": "Runtime narrowing preserves the original cause safely.",
+      "principledRepair": "Narrow unknown failures and preserve cause when crossing layers.",
+      "weakRepair": "Assume all thrown values are Error instances."
+    },
+    {
+      "id": "m08-c05",
+      "module": 8,
+      "title": "Exact optional property rejects explicit undefined",
+      "category": "typecheck-fail",
+      "path": "module-08/m08-c05/case.ts",
+      "target": "An optional string property means absent or string, not explicitly undefined.",
+      "principledRepair": "Omit note when absent or declare `string | undefined` deliberately.",
+      "weakRepair": "Disable exactOptionalPropertyTypes."
+    },
+    {
+      "id": "m08-c06",
+      "module": 8,
+      "title": "Absent optional property omitted",
+      "category": "typecheck-pass",
+      "path": "module-08/m08-c06/case.ts",
+      "target": "Omission matches the declared optional contract.",
+      "principledRepair": "Represent absence through omission when that is the contract.",
+      "weakRepair": "Populate every optional field with undefined."
+    },
+    {
+      "id": "m08-c07",
+      "module": 8,
+      "title": "Validation result requires narrowing",
+      "category": "typecheck-fail",
+      "path": "module-08/m08-c07/case.ts",
+      "target": "The error variant has no value field.",
+      "principledRepair": "Check result.ok before reading value.",
+      "weakRepair": "Add value as optional to the failure variant."
+    },
+    {
+      "id": "m08-c08",
+      "module": 8,
+      "title": "Collected validation issues",
+      "category": "typecheck-pass",
+      "path": "module-08/m08-c08/case.ts",
+      "target": "Independent field errors can be accumulated without manufacturing a value.",
+      "principledRepair": "Collect independent issues and construct no trusted value until prerequisites pass.",
+      "weakRepair": "Return a partially valid object with fallback fields."
+    },
+    {
+      "id": "m09-c01",
+      "module": 9,
+      "title": "Promise reaction ordering",
+      "category": "run-pass",
+      "path": "module-09/m09-c01/case.ts",
+      "target": "Promise reactions run after the synchronous stack and before a zero-delay timer.",
+      "principledRepair": "Predict ordering by queue and scheduling contract.",
+      "weakRepair": "Describe async callbacks as simply running later.",
+      "expectedStdout": "sync\npromise\ntimer\n"
+    },
+    {
+      "id": "m09-c02",
+      "module": 9,
+      "title": "Async function return annotation",
+      "category": "typecheck-fail",
+      "path": "module-09/m09-c02/case.ts",
+      "target": "An async function returns a Promise.",
+      "principledRepair": "Annotate Promise<number> or omit the annotation and inspect inference.",
+      "weakRepair": "Remove async while keeping asynchronous operations inside."
+    },
+    {
+      "id": "m09-c03",
+      "module": 9,
+      "title": "Forgotten await changes the value type",
+      "category": "typecheck-fail",
+      "path": "module-09/m09-c03/case.ts",
+      "target": "The call produces Promise<number>, not number.",
+      "principledRepair": "Await inside an async boundary or return the promise to the caller.",
+      "weakRepair": "Cast the promise to number."
+    },
+    {
+      "id": "m09-c04",
+      "module": 9,
+      "title": "Promise.all preserves tuple positions",
+      "category": "typecheck-pass",
+      "path": "module-09/m09-c04/case.ts",
+      "target": "A const tuple lets Promise.all retain positional result types.",
+      "principledRepair": "Use tuple inference when positions have different contracts.",
+      "weakRepair": "Treat the result as any[]."
+    },
+    {
+      "id": "m09-c05",
+      "module": 9,
+      "title": "Rejected top-level operation",
+      "category": "typecheck-pass",
+      "path": "module-09/m09-c05/case.ts",
+      "target": "A promise rejection is represented in the async return type, not prevented by it.",
+      "principledRepair": "Observe or propagate every promise according to ownership.",
+      "weakRepair": "Prefix every promise with void and ignore rejections."
+    },
+    {
+      "id": "m09-c06",
+      "module": 9,
+      "title": "AbortSignal is an explicit input",
+      "category": "typecheck-pass",
+      "path": "module-09/m09-c06/case.ts",
+      "target": "Cancellation is part of the function contract rather than hidden global state.",
+      "principledRepair": "Pass cancellation through the operations that own cancellable work.",
+      "weakRepair": "Check one global boolean occasionally."
+    },
+    {
+      "id": "m09-c07",
+      "module": 9,
+      "title": "Callback API does not return a promise",
+      "category": "typecheck-fail",
+      "path": "module-09/m09-c07/case.ts",
+      "target": "The callback-based readFile overload returns void.",
+      "principledRepair": "Use node:fs/promises or wrap the callback API exactly once.",
+      "weakRepair": "Cast void to Promise<string>."
+    },
+    {
+      "id": "m09-c08",
+      "module": 9,
+      "title": "Promise filesystem boundary",
+      "category": "typecheck-pass",
+      "path": "module-09/m09-c08/case.ts",
+      "target": "The promise API composes with await and typed rejection propagation.",
+      "principledRepair": "Use the promise-based boundary when the application is promise-oriented.",
+      "weakRepair": "Mix callbacks and promises at every call site."
+    },
+    {
+      "id": "m10-c01",
+      "module": 10,
+      "title": "Dependency shape supports deterministic testing",
+      "category": "typecheck-pass",
+      "path": "module-10/m10-c01/case.ts",
+      "target": "A minimal dependency contract lets tests supply controlled effects.",
+      "principledRepair": "Inject the smallest nondeterministic capability.",
+      "weakRepair": "Mock the global Date constructor across the whole process."
+    },
+    {
+      "id": "m10-c02",
+      "module": 10,
+      "title": "Missing return path",
+      "category": "typecheck-fail",
+      "path": "module-10/m10-c02/case.ts",
+      "target": "`noImplicitReturns` requires every reachable path to return.",
+      "principledRepair": "Handle zero and negative values explicitly.",
+      "weakRepair": "Add `return undefined as unknown as string`."
+    },
+    {
+      "id": "m10-c03",
+      "module": 10,
+      "title": "Fake implements the real boundary",
+      "category": "typecheck-pass",
+      "path": "module-10/m10-c03/case.ts",
+      "target": "A test double should satisfy the same narrow interface as production.",
+      "principledRepair": "Define the boundary around observable behavior and implement it in the fake.",
+      "weakRepair": "Give tests a different helper API than production uses."
+    },
+    {
+      "id": "m10-c04",
+      "module": 10,
+      "title": "Test oracle detects a violated invariant",
+      "category": "run-fail",
+      "path": "module-10/m10-c04/case.ts",
+      "target": "A test should fail when the claimed invariant is false.",
+      "principledRepair": "Create a new object when the contract promises immutable history.",
+      "weakRepair": "Delete the assertion because the code otherwise runs.",
+      "expectedStdout": "",
+      "expectedStderrContains": "prior value must remain unchanged"
+    },
+    {
+      "id": "m10-c05",
+      "module": 10,
+      "title": "Mock has the wrong asynchronous signature",
+      "category": "typecheck-fail",
+      "path": "module-10/m10-c05/case.ts",
+      "target": "The fake must return the promise required by the real dependency.",
+      "principledRepair": "Return Promise.resolve() or use an async function.",
+      "weakRepair": "Cast the fake as Store."
+    },
+    {
+      "id": "m10-c06",
+      "module": 10,
+      "title": "Exhaustive application result",
+      "category": "typecheck-pass",
+      "path": "module-10/m10-c06/case.ts",
+      "target": "A closed result union lets the shell render every outcome deliberately.",
+      "principledRepair": "Keep the result vocabulary closed and render each variant.",
+      "weakRepair": "Return arbitrary objects and inspect properties dynamically."
+    },
+    {
+      "id": "m10-c07",
+      "module": 10,
+      "title": "Readonly dependency cannot be replaced",
+      "category": "typecheck-fail",
+      "path": "module-10/m10-c07/case.ts",
+      "target": "A readonly dependency property is stable after construction.",
+      "principledRepair": "Construct a new application dependency object for a different test.",
+      "weakRepair": "Cast the property to mutable and alter a shared fixture."
+    },
+    {
+      "id": "m10-c08",
+      "module": 10,
+      "title": "Orchestration preserves effect order",
+      "category": "typecheck-pass",
+      "path": "module-10/m10-c08/case.ts",
+      "target": "Await establishes the required save-before-report sequence.",
+      "principledRepair": "Await the committing effect before emitting success.",
+      "weakRepair": "Start save and immediately report success."
+    }
+  ]
+}

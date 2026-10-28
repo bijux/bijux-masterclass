@@ -1,0 +1,10 @@
+name: limit
+in: query
+required: false
+description: Maximum number of records to return.
+schema:
+  type: integer
+  minimum: 1
+  maximum: 50
+  default: 20
+example: 20

@@ -1,0 +1,63 @@
+{
+  "cases": [
+    {
+      "edges": [
+        [
+          "gateway",
+          "control"
+        ],
+        [
+          "gateway",
+          "artifact"
+        ]
+      ],
+      "expected_cycle": false,
+      "id": "D-01",
+      "max_depth": 1
+    },
+    {
+      "edges": [
+        [
+          "gateway",
+          "control"
+        ],
+        [
+          "control",
+          "artifact"
+        ]
+      ],
+      "expected_cycle": false,
+      "id": "D-02",
+      "max_depth": 2
+    },
+    {
+      "edges": [
+        [
+          "control",
+          "artifact"
+        ],
+        [
+          "artifact",
+          "control"
+        ]
+      ],
+      "expected_cycle": true,
+      "id": "D-03"
+    },
+    {
+      "edges": [
+        [
+          "gateway",
+          "control"
+        ],
+        [
+          "control",
+          "notification"
+        ]
+      ],
+      "expected": "forbidden-edge",
+      "id": "D-04"
+    }
+  ],
+  "profile": "sync-graph-1.0"
+}

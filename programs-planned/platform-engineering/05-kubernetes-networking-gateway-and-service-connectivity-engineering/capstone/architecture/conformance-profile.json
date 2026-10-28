@@ -1,0 +1,28 @@
+{
+  "cni": {
+    "commands": [
+      "ADD",
+      "CHECK",
+      "DEL",
+      "GC",
+      "STATUS",
+      "VERSION"
+    ],
+    "spec": "1.1.0"
+  },
+  "gatewayAPI": {
+    "channel": "standard",
+    "environmentEvidence": "not-executed",
+    "required": [
+      "GatewayClass",
+      "Gateway",
+      "HTTPRoute",
+      "ReferenceGrant"
+    ],
+    "version": "1.6.1"
+  },
+  "networkPolicy": {
+    "api": "networking.k8s.io/v1",
+    "implementationEvidence": "not-executed"
+  }
+}

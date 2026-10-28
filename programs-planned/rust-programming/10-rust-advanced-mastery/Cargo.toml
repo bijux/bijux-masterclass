@@ -1,0 +1,48 @@
+[workspace]
+resolver = "3"
+members = [
+    "capstone",
+    "labs/module-01-compiler-evidence-notebook/solution",
+    "labs/module-02-projection-driven-pipeline/solution",
+    "labs/module-03-lending-table/solution",
+    "labs/module-04-bounded-matrix/solution",
+    "labs/module-05-erased-validator-registry/solution",
+    "labs/module-06-inline-batch/solution",
+    "labs/module-07-dispatch-observatory/solution",
+    "labs/module-08-model-checked-log/solution",
+    "labs/module-09-versioned-sdk/solution",
+    "labs/module-10-architecture-council/solution",
+]
+exclude = [
+    "labs/module-01-compiler-evidence-notebook/starter",
+    "labs/module-02-projection-driven-pipeline/starter",
+    "labs/module-03-lending-table/starter",
+    "labs/module-04-bounded-matrix/starter",
+    "labs/module-05-erased-validator-registry/starter",
+    "labs/module-06-inline-batch/starter",
+    "labs/module-07-dispatch-observatory/starter",
+    "labs/module-08-model-checked-log/starter",
+    "labs/module-09-versioned-sdk/starter",
+    "labs/module-10-architecture-council/starter",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+publish = false
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+missing_docs = "allow"
+
+[workspace.lints.clippy]
+correctness = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+undocumented_unsafe_blocks = "deny"
+missing_safety_doc = "deny"
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

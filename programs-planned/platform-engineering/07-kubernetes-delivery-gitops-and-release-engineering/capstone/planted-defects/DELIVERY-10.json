@@ -1,0 +1,6 @@
+{
+  "expectedControl": "journey and data correctness gates",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-10",
+  "title": "Controller reports Synced and release is declared correct"
+}

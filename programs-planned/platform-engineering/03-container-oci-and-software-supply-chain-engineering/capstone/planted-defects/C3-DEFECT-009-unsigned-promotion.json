@@ -1,0 +1,10 @@
+{
+  "defect": "release is promoted without a valid trusted signature",
+  "expectedDecision": "rejected",
+  "expectedGate": "signature-proof",
+  "expectedProof": "signature-proof",
+  "id": "C3-DEFECT-009",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "The release moves to the production reference without a valid trusted signer.",
+  "title": "Promotion without trusted signature"
+}

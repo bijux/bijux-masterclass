@@ -1,0 +1,32 @@
+catalogVersion: "1.0"
+classes:
+  - id: project-metadata
+    keyFields: [tenantId, policyPartition, projectId, version, representation]
+    authorization: enforce-before-reuse
+    freshness: version-keyed
+    ttlSeconds: 300
+    staleAllowed: false
+    invalidation: version-change-plus-outbox-cleanup
+    maxEntryBytes: 65536
+    originFailure: fall-back-with-admission
+  - id: artifact-metadata
+    keyFields: [tenantId, policyPartition, artifactId, checksum, representation]
+    authorization: enforce-before-reuse
+    freshness: immutable-by-checksum
+    ttlSeconds: 3600
+    staleAllowed: true
+    invalidation: unreachable-after-version-change
+    maxEntryBytes: 65536
+    originFailure: serve-only-if-authorization-remains-valid
+  - id: authoritative-not-found
+    keyFields: [tenantId, policyPartition, resourceType, resourceId]
+    authorization: preserve-existence-concealment
+    freshness: short
+    ttlSeconds: 5
+    staleAllowed: false
+    invalidation: create-event-or-expiry
+    maxEntryBytes: 1024
+    originFailure: never-cache-timeout-or-5xx
+excluded:
+  - mutable-authorization-decision
+  - arbitrary-list-query-page

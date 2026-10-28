@@ -1,0 +1,38 @@
+type: object
+additionalProperties: true
+required:
+- type
+- title
+- status
+- detail
+- instance
+- requestId
+properties:
+  type:
+    type: string
+    format: uri-reference
+  title:
+    type: string
+    minLength: 1
+    maxLength: 120
+  status:
+    type: integer
+    minimum: 400
+    maximum: 599
+  detail:
+    type: string
+    minLength: 1
+    maxLength: 1000
+  instance:
+    type: string
+    format: uri-reference
+  requestId:
+    type: string
+    pattern: ^req_[a-f0-9]{12}$
+examples:
+- type: https://api.example.test/problems/not-found
+  title: Resource not found
+  status: 404
+  detail: The requested resource does not exist.
+  instance: /projects/prj_9999
+  requestId: req_012345abcdef

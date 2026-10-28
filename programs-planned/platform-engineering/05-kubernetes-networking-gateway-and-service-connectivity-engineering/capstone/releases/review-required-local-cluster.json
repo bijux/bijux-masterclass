@@ -1,0 +1,9 @@
+{
+  "name": "local-cluster-extension-candidate",
+  "expected": "review-required",
+  "gates": [
+    {"name": "dependency-light-proof", "state": "pass"},
+    {"name": "kind-cilium-proof", "state": "pass"},
+    {"name": "implementation-portability", "state": "review", "blocker": false}
+  ]
+}

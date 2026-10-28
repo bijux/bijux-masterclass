@@ -1,0 +1,10 @@
+{
+  "candidate": "delete-production-pv",
+  "evidence": {
+    "migration_compatibility": "fail",
+    "predecessor": "pass",
+    "restore_drill": "pass",
+    "single_writer": "pass"
+  },
+  "expected": "rejected"
+}

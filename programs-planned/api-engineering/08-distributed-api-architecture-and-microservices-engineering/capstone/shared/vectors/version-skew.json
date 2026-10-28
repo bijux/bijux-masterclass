@@ -1,0 +1,29 @@
+{
+  "cases": [
+    {
+      "consumer": "1.0",
+      "expected": "compatible",
+      "id": "V-01",
+      "provider": "1.0"
+    },
+    {
+      "consumer": "1.0",
+      "expected": "compatible",
+      "id": "V-02",
+      "provider": "1.1"
+    },
+    {
+      "consumer": "1.1",
+      "expected": "compatible-with-feature-disabled",
+      "id": "V-03",
+      "provider": "1.0"
+    },
+    {
+      "consumer": "2.0",
+      "expected": "reject",
+      "id": "V-04",
+      "provider": "1.0"
+    }
+  ],
+  "profile": "version-skew-1.0"
+}

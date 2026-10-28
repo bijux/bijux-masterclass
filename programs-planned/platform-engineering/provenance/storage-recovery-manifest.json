@@ -1,0 +1,1542 @@
+{
+  "files": [
+    {
+      "bytes": 126,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/.gitignore",
+      "sha256": "3c2d960d62c2b269113d2a380229c76f5ee1ecc98ebfa9271a9200d9a50ded48"
+    },
+    {
+      "bytes": 1012,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/CHANGELOG.md",
+      "sha256": "7ccafbea59e84a55d8d013729849373ebecb469c924962ce5153f1a527a1ff84"
+    },
+    {
+      "bytes": 1625,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/COURSE-CONTENTS.md",
+      "sha256": "22d3cbd5fc1cd173255af95f80130665f63f0e0eef5e14013598bbaa8a5eefd5"
+    },
+    {
+      "bytes": 2046,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/FINAL-VERIFICATION.md",
+      "sha256": "22f5d35361ac9acd6078e826094808801c6cf6e2f229422bdf0d527fe27bb84f"
+    },
+    {
+      "bytes": 49322,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/MANIFEST.json",
+      "sha256": "c3adccfed99f4b314c8457e77e87f15e8400411709777a7da52d4f99385edc28"
+    },
+    {
+      "bytes": 80,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/MANIFEST.sha256",
+      "sha256": "82c9abfe5cfb3bb7c530e6b679de0c83aaa38ec7391f8e5a62a6a922feea192d"
+    },
+    {
+      "bytes": 2284,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/Makefile",
+      "sha256": "1b9626659aeb7460e7499d083fc441caaf9b0e03d3eee0b607acfbccaa14ce80"
+    },
+    {
+      "bytes": 478,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/NEXT-COURSE-HANDOFF.md",
+      "sha256": "28900a4c166c4fa66b310b2b84ea5ea50a7fb12e15afb7222939efa84463696f"
+    },
+    {
+      "bytes": 439,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/PREDECESSOR-HANDOFF.md",
+      "sha256": "67faae5a9ce07196c28f6333aaab7240364bcf9f7a0c761aebb24d85d093bb93"
+    },
+    {
+      "bytes": 1409,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/PRODUCTION-CLAIMS.md",
+      "sha256": "24157a5d0da70c87a60441b0256284833945590091efb345b89341dccb88da05"
+    },
+    {
+      "bytes": 943,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/README.md",
+      "sha256": "d94a59d6dfea63677186d43aec7b791037fa9299d8b7ed8012cdc19dc49c084b"
+    },
+    {
+      "bytes": 617,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/README.md",
+      "sha256": "7b36ff1faf4f49f02daa20d835f36357cb5ec1641f86c8b51cd978c23bb7de8e"
+    },
+    {
+      "bytes": 457,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/architecture/data-authority.md",
+      "sha256": "125de0e7e666d6a434c7d331ed6fcb0b8056c6e702ec9ec5d65807b685252bf2"
+    },
+    {
+      "bytes": 660,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/architecture/failure-domains.md",
+      "sha256": "5f50a3d0af9fb27c2bd7ac75675d95924404246d963eff2e6069d03ab9e62599"
+    },
+    {
+      "bytes": 58,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/__init__.py",
+      "sha256": "134c056ce786685ece8135d2b435b4507cf4b627e29997e08a4c1d86e4cc7c07"
+    },
+    {
+      "bytes": 1025,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/architecture.py",
+      "sha256": "b9e83bec24d747bcc29b8b42d7ab3f90d1f8e47f4578d3f7a62d7c324a4bc8d6"
+    },
+    {
+      "bytes": 7062,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/backup.py",
+      "sha256": "f75d6a38469d3b0ab16d3934eaa78cb38db58f307b6868b21b5039692bb59949"
+    },
+    {
+      "bytes": 3564,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/binding.py",
+      "sha256": "1c3a14452cd8adf44f12695910cb2701cbed2d4b8c65dc32abd053b8201f3931"
+    },
+    {
+      "bytes": 900,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/catalog.py",
+      "sha256": "9cbc182d41539df18adf6a9ec562e1a5286f94c8437f4d6ebc10a20b1530c097"
+    },
+    {
+      "bytes": 4836,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/csi.py",
+      "sha256": "e095eb5c89dc780d671b742e0c1dd588455b38545c628993b836110ae3cb5e62"
+    },
+    {
+      "bytes": 711,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/durability.py",
+      "sha256": "44bc5e39b71ce3e1e1a18134b544514575319027f8a16a9f0272000d91c7eccd"
+    },
+    {
+      "bytes": 1067,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/fencing.py",
+      "sha256": "eec10f69e7560896e61b8d71379173b842516f6bd9b15c2971a24f3f8db3b1ef"
+    },
+    {
+      "bytes": 1809,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/ledger.py",
+      "sha256": "6816e2420619faaf6d214255143cedd6ccbbdf289f441ec68b2c9b9cf64432c2"
+    },
+    {
+      "bytes": 1102,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/migration.py",
+      "sha256": "d9a71b8c4badd05337e1723577262a75bfd6355316bba2882c65695536b765db"
+    },
+    {
+      "bytes": 3881,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/models.py",
+      "sha256": "c161522503c9847912a08cc44537439718b08d97983a9745d6e1ea99c6a6eb1d"
+    },
+    {
+      "bytes": 647,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/performance.py",
+      "sha256": "3132b76690d08f1de44b19a8743870660417a356fd181755435d1b160abed17c"
+    },
+    {
+      "bytes": 837,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/release.py",
+      "sha256": "b7e5de97482c4d1ffd7e4508001c9510883abb4e54c862cd41945db4cc24db9b"
+    },
+    {
+      "bytes": 1717,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/snapshots.py",
+      "sha256": "7899992087d7debbd5d2247869897513e50858d1441d0573b4f8c9b57685cde8"
+    },
+    {
+      "bytes": 1252,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/stateful.py",
+      "sha256": "1423447ee7130e967f605ce5d506cc8f4de4e38756310c615a2c21047139bbc9"
+    },
+    {
+      "bytes": 1531,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/atlas_data/topology.py",
+      "sha256": "8bbc26032a15ba1c48cf741641a338e17bee5b33712fd5369cd62337012f8972"
+    },
+    {
+      "bytes": 977,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/csi-capability-matrix.json",
+      "sha256": "26df33a958ae2a7bc89f9c6b12b327f3caff36857500d578d61591e4822d10df"
+    },
+    {
+      "bytes": 952,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/data-catalogue.json",
+      "sha256": "eb41c884b9bd3d39f97f1700c63c0664366d35865a195864676c1d8ece14efbd"
+    },
+    {
+      "bytes": 754,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/data-service-decisions.json",
+      "sha256": "a2607ef28415274544c135cdaec6f69f2109b7cc8e8c1f7545778b759c66168a"
+    },
+    {
+      "bytes": 1600,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/MANIFEST.json",
+      "sha256": "7dbc95108853ec35fb2e88bdad3dfabe5708890baed3d963c4f84eb81b585b5e"
+    },
+    {
+      "bytes": 365,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/README.md",
+      "sha256": "73386e78f78015d517c07133dc4a4d5fe7bd65c437cb00b5c293fa23f77fb651"
+    },
+    {
+      "bytes": 328,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/data-release-order.yaml",
+      "sha256": "68c05a1d64da73c9f3c85e64d13f846ccb7307f095e2eb879c396657cd40bd96"
+    },
+    {
+      "bytes": 358,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/evidence-boundary.yaml",
+      "sha256": "29ceba26751045772f701bc3eed4ddb4f9b8dbf7c2492ed763c16f00d7799939"
+    },
+    {
+      "bytes": 283,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/known-risks.json",
+      "sha256": "733ed6f08fbc9274e2c362763ad4aecf405dcf6307e0ce8e1db7ad49e3fefbac"
+    },
+    {
+      "bytes": 319,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/network-and-security-obligations.yaml",
+      "sha256": "376c319fadb54d8f34e2254d11d2649b804293e98264183f42def34ecb71d809"
+    },
+    {
+      "bytes": 334,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/protected-resources.yaml",
+      "sha256": "069df8736a3693b499e69cccd1d508802f2b8c7c0cdebd5214ce91ecdca8c6d8"
+    },
+    {
+      "bytes": 263,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/recovery-gates.yaml",
+      "sha256": "7ea6dc30f89502a3026d8e4ec70e9c074d711b57b4c2771dbc871a94907ab880"
+    },
+    {
+      "bytes": 304,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/stateful-workloads.yaml",
+      "sha256": "b240e785ea68a93942f6e32dc23fd90ef4b0c79f9e2a8fa9f58a8111c250b69d"
+    },
+    {
+      "bytes": 295,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/storage-catalogue.yaml",
+      "sha256": "787d32fe11e9d6b5b3c76f39b2564b2ad7940f7957cbbdda8d7f0f255bdc9bb0"
+    },
+    {
+      "bytes": 130,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/handoff/version-ledger.json",
+      "sha256": "72223a3147a66190d8d727410b3f002431ffc2f9e034eaadf192b6d9a473e896"
+    },
+    {
+      "bytes": 338,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/kind/README.md",
+      "sha256": "cb1d6dd67d0eb50963c4d2772cd05bce3cd103539c63d9f2f51c5dc52250ac3e"
+    },
+    {
+      "bytes": 470,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/kind/cluster_proof.sh",
+      "sha256": "36fcda4b711379aa67e9ca6f1bd536efa4dfc573655cf12ab2d252d79f98d0a9"
+    },
+    {
+      "bytes": 109,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/00-namespace.yaml",
+      "sha256": "96ac1fae7a72687bec4898c9009f23f89562a2d3ee6124be9487120964586260"
+    },
+    {
+      "bytes": 672,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/10-storageclasses.yaml",
+      "sha256": "6b7513e5442982166096e0ebe80ab647adee34d975d1ab94a7f8a7a88869c5e3"
+    },
+    {
+      "bytes": 287,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/11-volume-attributes-class.yaml",
+      "sha256": "433713e439a5d6e613be493b87a8119370e3a9c2afe30ac425b373a947b878c6"
+    },
+    {
+      "bytes": 485,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/12-csi-contract.yaml",
+      "sha256": "844ad8e08a18e780429c884db619fc017728916294130611c83a72014e55c488"
+    },
+    {
+      "bytes": 263,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/20-database-service.yaml",
+      "sha256": "b952f540d4a8cca5c71e66110872de481fe3c1ea6df888788479f33181df1507"
+    },
+    {
+      "bytes": 2065,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/21-database-statefulset.yaml",
+      "sha256": "608e2e64e907e349f46cb3e30b26eb8b53915b15788a5214c96e6d1b6fc315c3"
+    },
+    {
+      "bytes": 193,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/22-database-pdb.yaml",
+      "sha256": "de30b54d32acad15a7bcd27820f81a8c651a2522006b46ed27840c1f1504631c"
+    },
+    {
+      "bytes": 999,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/30-backup-cronjob.yaml",
+      "sha256": "faef25c232b6627c881daca70ad4f96e29853572f870775ce082fd62cc5d5111"
+    },
+    {
+      "bytes": 871,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/base/40-networkpolicy-storage.yaml",
+      "sha256": "a5539aeab6acc8157b9954ea52ad42eb1427c21bac73f1e14734d8e3977313db"
+    },
+    {
+      "bytes": 303,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/labs/immediate-binding-class.yaml",
+      "sha256": "7de4ff2ffb96064220312a8513beacc06bd9a8d18b52b81ee8d65a84b7e64dc0"
+    },
+    {
+      "bytes": 337,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/labs/restore-pvc.yaml",
+      "sha256": "bb7128b30a99b47ef6c6deefb690292c2628d8a40f6959513a2e31f4e080ca37"
+    },
+    {
+      "bytes": 399,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/snapshots/10-snapshot-classes.yaml",
+      "sha256": "4e0690003899ed7de7256e884a3642ca7b204e61ba513b7e336e052bd9223915"
+    },
+    {
+      "bytes": 359,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/snapshots/20-snapshot-request.yaml",
+      "sha256": "6f4d8e25bdbdc038a9bff54909a6b0ad400cb14d5ce8b5da0eedfaefc640d970"
+    },
+    {
+      "bytes": 443,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/manifests/snapshots/21-group-snapshot-request.yaml",
+      "sha256": "c36af583cb6be10a7ad50c6654356e3c943b3b2253ecdbb8f7902c083df7cb58"
+    },
+    {
+      "bytes": 171,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-01.json",
+      "sha256": "3fcb61288a42661bc73d3ae33bc9240ba55d80f94feb34f5c10ba6410df7e5a6"
+    },
+    {
+      "bytes": 168,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-02.json",
+      "sha256": "3cd92c466bbf8b35e8723455c8181ea37b8e752070293162ceada8c737ebb8c6"
+    },
+    {
+      "bytes": 168,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-03.json",
+      "sha256": "4655675d8e5ca22d48d337022f73110192326949d9b3d6d3c6376a88b5c7bad8"
+    },
+    {
+      "bytes": 179,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-04.json",
+      "sha256": "450addcd5117eec4a82e5baf298cbe4d7cfd9ec69a5c6ba65ea02b02be667f32"
+    },
+    {
+      "bytes": 160,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-05.json",
+      "sha256": "5e322572cea49dd3ac352746bc59e48a69ab7ff5692679816bebd0dcb9f80c00"
+    },
+    {
+      "bytes": 157,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-06.json",
+      "sha256": "d104ea6e66f9fda50f01648c3e413049e763c9f67ef847baf496121366f15621"
+    },
+    {
+      "bytes": 180,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-07.json",
+      "sha256": "7e2bb523bcfa755d4a5a5f8e1dbda60062835f9197c5ff32ac7f7e1d87e5a718"
+    },
+    {
+      "bytes": 159,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-08.json",
+      "sha256": "d05c9b36456fb3cdf2f7f2c0db632a0f7e84f59ee093de01738dc675c089a473"
+    },
+    {
+      "bytes": 173,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-09.json",
+      "sha256": "602d4c2716443f0dde5b42d207ac41403f5fb6dcfd8e949f555a4207d91adee8"
+    },
+    {
+      "bytes": 186,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/data-10.json",
+      "sha256": "cc67223c2ba6c35fd2e3fa7684224cb0bbae7beac141ce0197a3f5db0049b3b5"
+    },
+    {
+      "bytes": 1533,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/planted-defects/defects.json",
+      "sha256": "e28f749494b44f79a6f4f4763f2418a46279531381a04db2e87d34bb7ae3c002"
+    },
+    {
+      "bytes": 1638,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/MANIFEST.json",
+      "sha256": "2859a98fa7ce8b23f4e4fe40e219f86d9c69bd669f7f1bc6b0f5818d2043ab5a"
+    },
+    {
+      "bytes": 319,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/README.md",
+      "sha256": "846ee44b159a6a11014017884f47ba516d4ab523f2dc905087fca1753b1599ba"
+    },
+    {
+      "bytes": 525,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/egress-contract.yaml",
+      "sha256": "c597415f9ebcbe4e0d2f83ed4980c13feac30d35748ef1557af8abb1470b844e"
+    },
+    {
+      "bytes": 485,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/gateway-and-tls-contract.yaml",
+      "sha256": "344c950edf968fd7ef199b92d49c4ac3517f0963c2c1c937b19cd44005efc1b7"
+    },
+    {
+      "bytes": 228,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/known-risks.json",
+      "sha256": "e93373553aef10459e355dfb72543ad6d217dc091a5800ba9aa9ede3a7ac7f14"
+    },
+    {
+      "bytes": 535,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/network-policy-baseline.yaml",
+      "sha256": "db1b29ddd2e26f2145272ae5701d8833be4735a2cf3a9ee8bebcdaef46867a27"
+    },
+    {
+      "bytes": 450,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/service-and-dns-contract.yaml",
+      "sha256": "0274edc07decc0d594b3ebeffc77f1a314de30b39b4c870f1168b57c9742fbc7"
+    },
+    {
+      "bytes": 527,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/storage-network-requirements.yaml",
+      "sha256": "fa4412c8cc1bcd23dfbd7a062926391485fd5ede659fb67fd24d20a895e06dfe"
+    },
+    {
+      "bytes": 499,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/topology-and-traffic-contract.yaml",
+      "sha256": "b0bdbbe56bd731a0ff41d1191adb8d09bee8be1738c1238487f3bd303dc943b8"
+    },
+    {
+      "bytes": 162,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/version-ledger.json",
+      "sha256": "9c7b0c881c5431a8d2cddcc8471abc492087d13da906f6c39844092bdf91ee78"
+    },
+    {
+      "bytes": 378,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/predecessor/handoff/workload-and-service-inventory.json",
+      "sha256": "daf941bae217ebc8c97e65a30f846c76b2b38c060ac044ed97cf820fe7cb31ad"
+    },
+    {
+      "bytes": 240,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/releases/accepted.json",
+      "sha256": "87db1903981ec4bec82e84f160f6e33775de002fd543f7fc74b4c478dfefa6b5"
+    },
+    {
+      "bytes": 245,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/releases/not-executed-regional-dr.json",
+      "sha256": "d0cbe295844931fcde0df546a605ff2b70e6170955d037ac07ecb52b59ea0eb3"
+    },
+    {
+      "bytes": 212,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/releases/rejected-destructive-reclaim.json",
+      "sha256": "7f357f323d2dccc6689c2e60a9549a26dc3bc213acd1a4aadd661713ed0ee1e3"
+    },
+    {
+      "bytes": 202,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/releases/rejected-no-restore.json",
+      "sha256": "d5589faefbe8341342fc442a9b87561bf02eb80e0ca89589f59de0fae7d017b4"
+    },
+    {
+      "bytes": 205,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/releases/rejected-snapshot-as-backup.json",
+      "sha256": "fed2e91bbf1b6d244695b3339fe6b514bb0b70ffbcafb1e280845ae91968881c"
+    },
+    {
+      "bytes": 203,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/releases/rejected-two-writers.json",
+      "sha256": "04fa7c8135b478713cd9689b9b816ccdd9fdd0885fb8c951545d8dcb083a3d73"
+    },
+    {
+      "bytes": 264,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/releases/review-required-native-csi.json",
+      "sha256": "21f3d7f47eeb1257adde9062515bb905c4387a58a095b2bcbda43ff7e413ce8a"
+    },
+    {
+      "bytes": 176,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/runbooks/attach-or-mount-failure.md",
+      "sha256": "7931d8f1745ca747ef7b296b9f8da23452627f02ae948f14c0ee6b6705f0b9b7"
+    },
+    {
+      "bytes": 165,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/runbooks/backup-restore-failure.md",
+      "sha256": "1f1345c024b6adf5e8259d9372386882d46fee37f0840fbaf8e3cc2169b196cb"
+    },
+    {
+      "bytes": 182,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/runbooks/capacity-exhaustion.md",
+      "sha256": "e44615a86ada0ba1841680dae224ff6047cd3f2424f48051084c012a0774a14e"
+    },
+    {
+      "bytes": 182,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/runbooks/pvc-pending.md",
+      "sha256": "24a2927df41beaf70ed297f8c5307bae118936002fd91cc40bbd3b0b62cdd2ca"
+    },
+    {
+      "bytes": 172,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/runbooks/snapshot-failure.md",
+      "sha256": "9b481c83c19f011a281d961ce39e65465860c5e31a27a350d50ba4123b3cd8cf"
+    },
+    {
+      "bytes": 172,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/runbooks/stale-writer.md",
+      "sha256": "578302f5191bf8613784f5da6839efd336dc16651d0d99841cc821e41cdfefe4"
+    },
+    {
+      "bytes": 6952,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/scripts/capstone_tour.py",
+      "sha256": "ed55c2a6b154e8725c74ad12ff62699ee6a34e2e959926b775ecdd7cb6baeb55"
+    },
+    {
+      "bytes": 471,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/scripts/clean.py",
+      "sha256": "dc1cb413ef6620a69b4ac570cdf2d7e10f5100c6e060d9d380466c8a93e557d6"
+    },
+    {
+      "bytes": 296,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/backup.json",
+      "sha256": "9f6bbfb01649753915ef9d268b42eba58b0ec02b29fd501c726ec3a875d34d3e"
+    },
+    {
+      "bytes": 273,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/binding.json",
+      "sha256": "4fd465a9edaf9fb79a65337d1a3a2d7fb657fe2a4a2f89fff2c14f608634e1a5"
+    },
+    {
+      "bytes": 408,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/csi.json",
+      "sha256": "5d4e726f3c1746b3b515b38fcf5f3e4d8d0afd0fca8d9956eb7461db0ea573f1"
+    },
+    {
+      "bytes": 218,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/data-services.json",
+      "sha256": "36e56d3c0f37d1391fb554a0fa52cf07e3a36e05b21d742d3eb99792d489486b"
+    },
+    {
+      "bytes": 243,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/fencing.json",
+      "sha256": "c75f81ea5b8a57b538141b6268fe3db3bfd650277325544557cd645fb346d39d"
+    },
+    {
+      "bytes": 329,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/migration.json",
+      "sha256": "3a3781d2d9f5f70be9ba9a7a44b152c7fff7ac55c6667e947b6cd2fc9da21125"
+    },
+    {
+      "bytes": 201,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/performance.json",
+      "sha256": "9d9f61ecc72a6be9d6043fe83aa834e15f3c77c9e3544554f46a10e603c5a5e0"
+    },
+    {
+      "bytes": 537,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/release.json",
+      "sha256": "c189a8ae4cc51a6ccf20de5056523ce6d36b294c4bb6bf98ff2e522df69d4fbd"
+    },
+    {
+      "bytes": 242,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/snapshots.json",
+      "sha256": "8f5d88cce10453160f9ff10c67da221d4c499f898d38e86728c3779bf30cfef6"
+    },
+    {
+      "bytes": 274,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/shared/vectors/topology.json",
+      "sha256": "4c7c8d203f39666b43a7ca922f57340198bb4ae5712e5557acb4013f883b4985"
+    },
+    {
+      "bytes": 1033,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/storageprobe-go/atomicfile/atomicfile.go",
+      "sha256": "1b8cb73d2c0049bf42d41db85949f6792cb4c32d421d38640d20e2998dd4623e"
+    },
+    {
+      "bytes": 461,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/storageprobe-go/atomicfile/atomicfile_test.go",
+      "sha256": "26bc4259a657db016ea6a541d11320bf8f7c7af2848f63552c9639060bb25ef1"
+    },
+    {
+      "bytes": 702,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/storageprobe-go/cmd/atlas-storage-probe/main.go",
+      "sha256": "785795ec54958af50f0b0ed679378bfc6ab3e3fa672e95fa69d5b8ccad3d076b"
+    },
+    {
+      "bytes": 51,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/storageprobe-go/go.mod",
+      "sha256": "df0f690504c202e8d5720693495a735d03f6a10d65433767fbad53b479503c21"
+    },
+    {
+      "bytes": 261,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/tests/README.md",
+      "sha256": "eb63fc3cbe5fe7b22755143105f64df5bcbe86d465b2959da905768561b64504"
+    },
+    {
+      "bytes": 1,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/tests/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "bytes": 2531,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/tests/test_architecture_performance_release.py",
+      "sha256": "8480f1b45a46869ab57776359d2fbd00836a3f5a5b9d6768e7e98c0715e65fe7"
+    },
+    {
+      "bytes": 3145,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/tests/test_binding_topology.py",
+      "sha256": "fa4e10d89aa04dc5825270cbf777435b4bff60f54394de308695876c775e6469"
+    },
+    {
+      "bytes": 2256,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/tests/test_csi.py",
+      "sha256": "3cc49656794ebfc58b5a009d191285fe512caab5b7d0ed68723404395626893f"
+    },
+    {
+      "bytes": 1474,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/tests/test_models_catalog.py",
+      "sha256": "f105af6e3a1a2c3be40e453845a438a93b993104845477a0b92ed13519f9b5e6"
+    },
+    {
+      "bytes": 5006,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/tests/test_snapshots_backup.py",
+      "sha256": "97bcb73d2fa8d3b5c3f871fc10fc068487702f5a29afb50fe23b54be1e624688"
+    },
+    {
+      "bytes": 1913,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/capstone/tests/test_stateful_fencing_ledger.py",
+      "sha256": "37f33a0d4f2bdb82602108bee379692a157526af3c62cc952c1fdea248da7789"
+    },
+    {
+      "bytes": 1369,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/assessment/final-defense.md",
+      "sha256": "d7a40f14c80a137292c893f9d5be2976f6642894b07d0eb4aba02d95cdae40a9"
+    },
+    {
+      "bytes": 1278,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/assessment/rubric.md",
+      "sha256": "960f912e0e708980c0ab1529b38db547556904bf9f555b444bd7f1359de91450"
+    },
+    {
+      "bytes": 1483,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/capstone/architecture.md",
+      "sha256": "caa7ea164896c71be90b4d8694ba2f2950fa907e4356003d37d54207973aeca9"
+    },
+    {
+      "bytes": 1226,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/capstone/evidence-dossier.md",
+      "sha256": "409c1becb90f84dfa026147615045de8e8db3a1a53f0555e0ab9173a9bca7423"
+    },
+    {
+      "bytes": 1586,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/capstone/implementation-map.md",
+      "sha256": "fdc4880bb21ab3d9196d193d6eaeff9fe8af184564ae7e29d3109a6c58c20d46"
+    },
+    {
+      "bytes": 1302,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/capstone/release-process.md",
+      "sha256": "2904b7922bf9ef4055ddbd05d7a3fbc617d54ed77a50f78d5f73ab2109ed6b24"
+    },
+    {
+      "bytes": 1015,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/capstone.md",
+      "sha256": "80e92fd3627b29549c4b5a3047d99b1b1ea50deaa4fcb73826815e3107682dfe"
+    },
+    {
+      "bytes": 1323,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/casebook/case-01-bound-but-not-usable.md",
+      "sha256": "39887f9c83af9889317afa7e7056558f3516c5ddd00735da533deb13c390e660"
+    },
+    {
+      "bytes": 1364,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/casebook/case-02-force-detach-split-brain.md",
+      "sha256": "82d13403065150117eede8baee6128c5645c66b0ba0d355030d99218be28e41b"
+    },
+    {
+      "bytes": 1153,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/casebook/case-03-ready-snapshot-broken-restore.md",
+      "sha256": "936da8d379d005685afc5538e98b97a31b35f8ff8a81fa00cc98db85821b1283"
+    },
+    {
+      "bytes": 1143,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/casebook/case-04-backup-without-key.md",
+      "sha256": "ce842443e78d5296a1aaaf2d2227b3a5cffac18fec2a4ca8480f837640415d5c"
+    },
+    {
+      "bytes": 1101,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/casebook/case-05-expansion-half-complete.md",
+      "sha256": "f71ad57b884d43ae9a9e4eac6b4d5f9f8c44f0478752974c2f62bbd35bbe29ef"
+    },
+    {
+      "bytes": 1197,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/casebook/case-06-gitops-pruned-recovery.md",
+      "sha256": "b38b481cacf0d823d8352d515ed5570bc60544101974cc02973d5d52cfe834ba"
+    },
+    {
+      "bytes": 1189,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/evidence-model.md",
+      "sha256": "fa4148f35f5973f9686d72641a027ef14732c7cfb0e157d0a8be6eee08236976"
+    },
+    {
+      "bytes": 2492,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/glossary.md",
+      "sha256": "11f09fcae1af1dfc8db4765e5ab8091fa4ac35f90d79c10e0c6882557fdc2095"
+    },
+    {
+      "bytes": 1346,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/backup-restore-drill.md",
+      "sha256": "8156002759a5583073143ae4c354c5c05bb9cb847ca5cbad7a33f7831e673450"
+    },
+    {
+      "bytes": 1157,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/capacity-and-performance.md",
+      "sha256": "87b7785b929a8372435e9218d80f60c3afd78177d66198261594dc2c1b10b99f"
+    },
+    {
+      "bytes": 1409,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/csi-lifecycle-review.md",
+      "sha256": "0f3b703187d832410c91faaaa8971044eaaa890a4651d5b25bc873a9c36c3849"
+    },
+    {
+      "bytes": 1266,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/data-migration-review.md",
+      "sha256": "f89e673b4633caade8a5f87d5fd50af28243eb592b82ad5189457c5699afbe60"
+    },
+    {
+      "bytes": 1300,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/local-cluster-lane.md",
+      "sha256": "5230ce963d271beca742589d800abadfe8a920138a8759d50fa7245d0dbf9be9"
+    },
+    {
+      "bytes": 1483,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/managed-versus-incluster.md",
+      "sha256": "3ef5e277824af393080110bc88ffc6ea5283d3c2b0cb8db10392468691c69068"
+    },
+    {
+      "bytes": 1075,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/snapshot-consistency-review.md",
+      "sha256": "0fe8d64e2d4a42fde465ea1de0f78720b76803fbd7a45958d1bff7be03bd55a0"
+    },
+    {
+      "bytes": 1300,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/stateful-workload-review.md",
+      "sha256": "fd1edacb60068b69485ce462d8271ae6a62f88f5cb35b4c0b29755859e4b6390"
+    },
+    {
+      "bytes": 1943,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/guides/storage-diagnosis.md",
+      "sha256": "967f43b12cbe973c32816d4cdc4a82e38befae043ea36c0dd6c096d3ecd6a53b"
+    },
+    {
+      "bytes": 835,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/index.md",
+      "sha256": "39e0b62006cdaba3b458e7f244f2185cac34ed68a0a44c4524edeb2fd924a7b1"
+    },
+    {
+      "bytes": 1297,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/instructor/facilitation-guide.md",
+      "sha256": "39ea9ca91f339c39bcdb716c8a1415c8e0536cfd6227473fbdaf268cf379771a"
+    },
+    {
+      "bytes": 1143,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/instructor/planted-defect-map.md",
+      "sha256": "c79434247fa92f5ed71442b2e80182b5d4467df62fab2b380b0e4d9aea71801f"
+    },
+    {
+      "bytes": 1203,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/instructor/review-questions.md",
+      "sha256": "4820f8c1609bf9418ee2924ed3f82b3ec05ab08b1117e3cfd9611d56f17a09d5"
+    },
+    {
+      "bytes": 730,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/language-strategy.md",
+      "sha256": "e655ed92362e7a6a5da7a198b6fcb388f95020dc96da1aa8225db38ce1bdc6e7"
+    },
+    {
+      "bytes": 342,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-00-orientation/checkpoint.md",
+      "sha256": "f2991e2500af5cfbc3420dcb0f2b074166d0c85e4f55d5bb74ed0b6d301f14d1"
+    },
+    {
+      "bytes": 6585,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-00-orientation/index.md",
+      "sha256": "9894be4b4548e87029e4fabcd45f1247f243290020cf9f6062dcbc39804c1df2"
+    },
+    {
+      "bytes": 1291,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-00-orientation/lab.md",
+      "sha256": "eeca42ff35fd2a182ebd0221f2bd802690d3a6d9b2b6933b918e6eb39077e0e3"
+    },
+    {
+      "bytes": 972,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-01-data-lifetimes-durability-and-storage-responsibility/checkpoint.md",
+      "sha256": "d4aadf779d4e8107cb988ce4ca45c764bdefcc007cd92edc4c2cde91b8773f0e"
+    },
+    {
+      "bytes": 10161,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-01-data-lifetimes-durability-and-storage-responsibility/exercise-answers.md",
+      "sha256": "78c66d661e334e825ce149420fee455d49f14c0e12740a765b6a8c3d6c8334b4"
+    },
+    {
+      "bytes": 2886,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-01-data-lifetimes-durability-and-storage-responsibility/exercises.md",
+      "sha256": "2e0ee51515515ca8ac54fdd7a87f99f48822ac3feea191c3ff3aff1af5c0baf4"
+    },
+    {
+      "bytes": 19869,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-01-data-lifetimes-durability-and-storage-responsibility/index.md",
+      "sha256": "3b3eef18644b0606d7c8cb10af4a72a94611f9cd25b6ded2db0c194ebf0254e8"
+    },
+    {
+      "bytes": 1798,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-01-data-lifetimes-durability-and-storage-responsibility/lab.md",
+      "sha256": "d4571dabe3ec08258dff8770a418a4ab5c9fd94bbffc0644b45ced57598b37d6"
+    },
+    {
+      "bytes": 1010,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-02-persistentvolumes-claims-storageclasses-and-binding/checkpoint.md",
+      "sha256": "5a5029665f5de3a097597404027129c6966007fe7b3a6aa0a7ad363e59becb19"
+    },
+    {
+      "bytes": 9742,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-02-persistentvolumes-claims-storageclasses-and-binding/exercise-answers.md",
+      "sha256": "016ede69e0c04f53cd3e7c23bcac17e34e6c920ce970173a81c6480b54995266"
+    },
+    {
+      "bytes": 2305,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-02-persistentvolumes-claims-storageclasses-and-binding/exercises.md",
+      "sha256": "91dbee31651494eb868ce712ea7980a1406d3e07ab5f86a3504056999f49246a"
+    },
+    {
+      "bytes": 20322,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-02-persistentvolumes-claims-storageclasses-and-binding/index.md",
+      "sha256": "f9651a735607c602cf689edf4fd50718e1b6a261d9d8264796400a4d3473ff97"
+    },
+    {
+      "bytes": 1749,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-02-persistentvolumes-claims-storageclasses-and-binding/lab.md",
+      "sha256": "2f0893eff9fe21f5e58ce30a03e755dd6adb08633de7fb5a8c06f61ef9cc97c2"
+    },
+    {
+      "bytes": 994,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-03-csi-architecture-and-volume-lifecycle/checkpoint.md",
+      "sha256": "2702256df82021f2e8c8cb106832d97fd466608e6f142a63a67ab8959ec97651"
+    },
+    {
+      "bytes": 9563,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-03-csi-architecture-and-volume-lifecycle/exercise-answers.md",
+      "sha256": "e55f78e51a3c2d85df3cf2f0498ad2eeb5ad338c6f2fbba79227b2bea9601f19"
+    },
+    {
+      "bytes": 2109,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-03-csi-architecture-and-volume-lifecycle/exercises.md",
+      "sha256": "88f14da5973dcecc6b89f848da3e156c64114a5ae348ce63ae0a21f29b349bda"
+    },
+    {
+      "bytes": 19387,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-03-csi-architecture-and-volume-lifecycle/index.md",
+      "sha256": "1092b7fb508a3ca1f30410510ca58384ccfd23a1232ed0172c6fb738b882069a"
+    },
+    {
+      "bytes": 1702,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-03-csi-architecture-and-volume-lifecycle/lab.md",
+      "sha256": "5cf74f799c4a7d12e4f6ed943f81fb4c276d9cdee93508640ee997a0f548bf5a"
+    },
+    {
+      "bytes": 1027,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-04-topology-scheduling-capacity-expansion-and-storage-qos/checkpoint.md",
+      "sha256": "01ee9b3659a468dee208e5121c4dd73345999eba36fa1ca1fce0edfa3744e94c"
+    },
+    {
+      "bytes": 9430,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-04-topology-scheduling-capacity-expansion-and-storage-qos/exercise-answers.md",
+      "sha256": "d89bd9cc884e58d0c9cab96b288d0e47e8267d558ce5b8c3727951601fbf9be2"
+    },
+    {
+      "bytes": 2108,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-04-topology-scheduling-capacity-expansion-and-storage-qos/exercises.md",
+      "sha256": "d2b475f9d6c95fafed0baaaea63a5416b30c8f4f3d3049c09b938d7064a6dca6"
+    },
+    {
+      "bytes": 19039,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-04-topology-scheduling-capacity-expansion-and-storage-qos/index.md",
+      "sha256": "1d7ee5e267bf5453fc7f167d1b73648686f67457559c57cb616f7c6cf6c915ed"
+    },
+    {
+      "bytes": 1662,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-04-topology-scheduling-capacity-expansion-and-storage-qos/lab.md",
+      "sha256": "48b6d16be10b603d05ac192839a09f5f34fd7b7651009e646851ec184b6a0fde"
+    },
+    {
+      "bytes": 1047,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-05-statefulsets-stable-identity-quorum-and-fencing/checkpoint.md",
+      "sha256": "df84517dc49d89b17f06791ea878571666f2ae518f9a04e712b5d627b57fa11c"
+    },
+    {
+      "bytes": 9166,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-05-statefulsets-stable-identity-quorum-and-fencing/exercise-answers.md",
+      "sha256": "c7637c28b29fa08bd0abb15cd3110550c35514663e09a6c669e235a72d36e2f9"
+    },
+    {
+      "bytes": 2062,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-05-statefulsets-stable-identity-quorum-and-fencing/exercises.md",
+      "sha256": "6d8cd9f79878235fac95858f2329db37b678ba93ab08847b30495d0ce5ed6b48"
+    },
+    {
+      "bytes": 18970,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-05-statefulsets-stable-identity-quorum-and-fencing/index.md",
+      "sha256": "75e4422bb4f3b967734973ff24b5f21f9c13e05583b1029c016a57d1c5a43d2a"
+    },
+    {
+      "bytes": 1656,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-05-statefulsets-stable-identity-quorum-and-fencing/lab.md",
+      "sha256": "29cff34a3d01f86707c916c590a474701eefc80c5c95080f0e6071e84ebfce6e"
+    },
+    {
+      "bytes": 1046,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-06-databases-object-storage-and-operator-boundaries/checkpoint.md",
+      "sha256": "e836950d63f8c16b60ecd68ee77d3007c486e79f23d0cce2f9dda681a69090b6"
+    },
+    {
+      "bytes": 9417,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-06-databases-object-storage-and-operator-boundaries/exercise-answers.md",
+      "sha256": "f29d27018c7dfcf0e0152e6586c90f1e4127e2b733da6854d98249da8101915e"
+    },
+    {
+      "bytes": 2139,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-06-databases-object-storage-and-operator-boundaries/exercises.md",
+      "sha256": "4253566e74be97779200326d8332c299c928e568738775091f22a4ddb2590db4"
+    },
+    {
+      "bytes": 19669,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-06-databases-object-storage-and-operator-boundaries/index.md",
+      "sha256": "1d960a152063c9af1ddccc9ddebc75b8bd3c1ee514ed5d8c602bfa3561c766ec"
+    },
+    {
+      "bytes": 1662,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-06-databases-object-storage-and-operator-boundaries/lab.md",
+      "sha256": "68d571223a3150c56bf36fd47baaf512e817d4ec6a94565c21ea8d05d71cf993"
+    },
+    {
+      "bytes": 1013,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-07-snapshots-clones-populators-and-consistency/checkpoint.md",
+      "sha256": "928285f5c2eafe6f787dc93c9910e62699e312500a93b98265b56f8b90e8b095"
+    },
+    {
+      "bytes": 8696,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-07-snapshots-clones-populators-and-consistency/exercise-answers.md",
+      "sha256": "a103f9f4e2a6518ee2e80d510667d603b8709cbf51dbdc0ffacc45e838177c6d"
+    },
+    {
+      "bytes": 1853,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-07-snapshots-clones-populators-and-consistency/exercises.md",
+      "sha256": "adc72749b9226125e41e5a7f56077767c1c68e8c461fa5462b54a947d9ef4759"
+    },
+    {
+      "bytes": 18004,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-07-snapshots-clones-populators-and-consistency/index.md",
+      "sha256": "da34c8b59f72ec6134bd724c3e5d9f65583424a00e1aad5b1002840093082e7e"
+    },
+    {
+      "bytes": 1643,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-07-snapshots-clones-populators-and-consistency/lab.md",
+      "sha256": "66402fb9dacbb73a55d4a3969a1a5fa11488cef82b76f2c5b7427143d465e936"
+    },
+    {
+      "bytes": 1033,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-08-backup-restore-rpo-rto-and-disaster-recovery/checkpoint.md",
+      "sha256": "f0050090f94720d295dbd49b862e3332f6531f36367cf0d3ec9041852e39b0e0"
+    },
+    {
+      "bytes": 8806,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-08-backup-restore-rpo-rto-and-disaster-recovery/exercise-answers.md",
+      "sha256": "1a41b7d83c208ca8646e9d6f696d3ad13de7616b43d48e381e47f04a60070f0c"
+    },
+    {
+      "bytes": 1951,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-08-backup-restore-rpo-rto-and-disaster-recovery/exercises.md",
+      "sha256": "5fc3992b2aac7ee1b5af93d40473025853558dbd35504f1a945010b017cdf979"
+    },
+    {
+      "bytes": 17629,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-08-backup-restore-rpo-rto-and-disaster-recovery/index.md",
+      "sha256": "7f7ab4ed79e60144d121397a8bc709ad074dd62552460bc789243c8995203d29"
+    },
+    {
+      "bytes": 1669,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-08-backup-restore-rpo-rto-and-disaster-recovery/lab.md",
+      "sha256": "1cb047a3214e722bec726cba3afbf3b75027370abee661108c81a21846dc6da5"
+    },
+    {
+      "bytes": 1057,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-09-storage-performance-observability-quotas-and-failure-diagnosis/checkpoint.md",
+      "sha256": "dc03d867b8e494823d9e9badcb4edafe2a55a7ce0f4121850bf062505c3520aa"
+    },
+    {
+      "bytes": 8457,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-09-storage-performance-observability-quotas-and-failure-diagnosis/exercise-answers.md",
+      "sha256": "a7c1f14470a723dc8505a5361d090fc61e7122d55407edcaf3b467d819780d2a"
+    },
+    {
+      "bytes": 2158,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-09-storage-performance-observability-quotas-and-failure-diagnosis/exercises.md",
+      "sha256": "d565a8555c2e647a7f85a6111a491031fd746c48253d03189887292732ea4850"
+    },
+    {
+      "bytes": 17443,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-09-storage-performance-observability-quotas-and-failure-diagnosis/index.md",
+      "sha256": "a710d57c2da5bf2e1a3551d8906296ab9798f700287ff4427ae38febbf579df4"
+    },
+    {
+      "bytes": 1689,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-09-storage-performance-observability-quotas-and-failure-diagnosis/lab.md",
+      "sha256": "98cb22b3722cae01f91d884ea59983e11b8a8ff8c317d1af403b28a69551c3ff"
+    },
+    {
+      "bytes": 1051,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-10-data-migration-maintenance-release-and-gitops-handoff/checkpoint.md",
+      "sha256": "5b9587fb47deebecf654398a78c13dfa515aab32d0f15ba08851f8eb06245143"
+    },
+    {
+      "bytes": 8775,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-10-data-migration-maintenance-release-and-gitops-handoff/exercise-answers.md",
+      "sha256": "565725c93f959d8bd103d0cc01ebbd6d87066857a0e78f08f7eaafe3574043bd"
+    },
+    {
+      "bytes": 1971,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-10-data-migration-maintenance-release-and-gitops-handoff/exercises.md",
+      "sha256": "3dd77cbf66fb0ea58860d181e5122b396025949c5cf6bee43691f654424258ab"
+    },
+    {
+      "bytes": 17985,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-10-data-migration-maintenance-release-and-gitops-handoff/index.md",
+      "sha256": "4863fbfbb09f2aed1194672defe51901795c0cc7ab75d66f3912e42a4a5e7879"
+    },
+    {
+      "bytes": 1703,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/module-10-data-migration-maintenance-release-and-gitops-handoff/lab.md",
+      "sha256": "ee2c728fe957f191fcbb3f8cc3aa46171153c8f9d0e3e4c794a46d5c5dd1bc2e"
+    },
+    {
+      "bytes": 1719,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/access-modes-and-authority.md",
+      "sha256": "68dcae7bcbf31931efaeead7b48418ce5f63cab4226587ee68473dd8cb2422c5"
+    },
+    {
+      "bytes": 1582,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/backup-versus-snapshot.md",
+      "sha256": "531522f427d2f59e79b311c441ab9df2d4b70de1f7e528a2a6cc630e3f4f6944"
+    },
+    {
+      "bytes": 1469,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/csi-rpc-map.md",
+      "sha256": "1ebcc94eb140679912f092c0edd45d39343c82f44054d38f4b45bf9e86b2b27e"
+    },
+    {
+      "bytes": 1781,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/failure-signature-catalogue.md",
+      "sha256": "00c8551673a55be28834cda7f50e6efbc6f6ffcc0d1eb6f0d8a4212c02161ee1"
+    },
+    {
+      "bytes": 1854,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/feature-and-evidence-matrix.md",
+      "sha256": "7c4c9fa032ca53ec7473b8e056d44f45534e0c725dca3882eb8ed580a1313757"
+    },
+    {
+      "bytes": 1318,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/fencing-and-split-brain.md",
+      "sha256": "7ae22d164c8362c7eb018dd5b412fd2e6d49aea78f756e664bd257dda90a078c"
+    },
+    {
+      "bytes": 1367,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/group-snapshot-profile.md",
+      "sha256": "e47fc8bedc91a5fc68a9c314e3fd0997d0d2647dde02c0b5ca360d4b00d8c080"
+    },
+    {
+      "bytes": 1547,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/pv-pvc-state-map.md",
+      "sha256": "ff143660012fe1f0ac58e7960b9c3a7fb26ca42d1d25c4a942d7e130fb54f695"
+    },
+    {
+      "bytes": 1348,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/rpo-rto-math.md",
+      "sha256": "b612e4993e83d5c82dd821bde4c75437e52d19ae423b482d8864a3797ff7b7cf"
+    },
+    {
+      "bytes": 1362,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/statefulset-semantics.md",
+      "sha256": "cf2f4d3219497a6a94383280ce1d637ff413f21e5a4e79f7df0e37bc226273f0"
+    },
+    {
+      "bytes": 1523,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/storage-performance-math.md",
+      "sha256": "a6c297a01a0695ab0ffcf5b45a914c39316a2ae7c0216c7064fe1fe2759b5ef4"
+    },
+    {
+      "bytes": 1498,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/storageclass-contract.md",
+      "sha256": "e94655991abcce397134bf970eafc5c52420140b4e50d4f2159784f79d0e5ca1"
+    },
+    {
+      "bytes": 1255,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/topology-and-scheduling.md",
+      "sha256": "da813a139040e66a31a902f20cca2c822d5604ee123fa6e6cf54b17ae993f6a6"
+    },
+    {
+      "bytes": 1540,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/volume-lifetime-atlas.md",
+      "sha256": "aab5c39811d100f97d65fc0747cf799c133d31969b3e5f98722223350e035e02"
+    },
+    {
+      "bytes": 1287,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/reference/volume-snapshot-map.md",
+      "sha256": "5d7767b1d14cf19459f939ce52f969be0cab2ffe131f8180d90ba5a716051fe5"
+    },
+    {
+      "bytes": 1191,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/standards.md",
+      "sha256": "f7e3ff58c7ed92396ab4d2493b00a7d30b6a2fe267f8f032c5e59b5c3f371303"
+    },
+    {
+      "bytes": 2139,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/start-here.md",
+      "sha256": "7cdf645f1c02096b29efd0fcb898bfe92847476a613dc96d10cf5625446509cf"
+    },
+    {
+      "bytes": 1397,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course-book/study-plan.md",
+      "sha256": "7f01b28668661191bd31da8b5b7746289c0e14355000680f68f2640a175cef23"
+    },
+    {
+      "bytes": 616,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/course.json",
+      "sha256": "fda39f1186b97a51adaa0a94c424f82e0f06dcce16c9374ced6c20d1d2961d17"
+    },
+    {
+      "bytes": 8090,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/mkdocs.yml",
+      "sha256": "773203657ad181b70497558bd442c760239bf87594836f1925217817b1fea620"
+    },
+    {
+      "bytes": 1712,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/reports/release-verification.json",
+      "sha256": "bced05b18b1a6065552654a543d03b9266e2642ede30b8fac6fb0053f0f4a72f"
+    },
+    {
+      "bytes": 38,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/requirements-docs.txt",
+      "sha256": "8273111904a6926ff7f7428b0a3fd4c949d13ffbb833464a8f201439b8e7bac0"
+    },
+    {
+      "bytes": 15,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/requirements.txt",
+      "sha256": "b4603b9468ade4d639d2c6f73b89d50e1fa5d227c73ab15be0382cca478513e6"
+    },
+    {
+      "bytes": 736,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/common.py",
+      "sha256": "5a8d1e9545dcaef2587876ce837d7b58eaa733a5323352bf8e3fec53ac8b4c6f"
+    },
+    {
+      "bytes": 642,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/doctor.py",
+      "sha256": "f956d6ca9fb613f3a53a47b3681a72823de29814cc74d895e12d07a8d71ddee4"
+    },
+    {
+      "bytes": 1430,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/manifest.py",
+      "sha256": "958dd01ecf9b7012457f8e2e85477bd1c7f23214198a52784bfad1b5c07a942b"
+    },
+    {
+      "bytes": 1478,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/manifest_proof.py",
+      "sha256": "4b2eefb1286c42ec8f0792de3c60de5e64662d59b93f3b11d55c3e0e97a1e9c8"
+    },
+    {
+      "bytes": 813,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_code.py",
+      "sha256": "f54071e19a9fe1e11c6a358bdedb16fd058a030b2ffe41c093ed69568eb4f717"
+    },
+    {
+      "bytes": 1713,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_data.py",
+      "sha256": "1a9ac6251081bc5f7c2d9ba1db2e2d55da0c6689169ca46cc4b55fc4f15a9107"
+    },
+    {
+      "bytes": 609,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_defects.py",
+      "sha256": "fe6c3aa6cebf0c3a3190f65ab5c930266f1e14904455cf7fa053d5438e120997"
+    },
+    {
+      "bytes": 1493,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_documents.py",
+      "sha256": "ac7d2e8218ef5cd1869cf3b55c0bf84866cb24a37ea7c76faa2d3d94b7525f2b"
+    },
+    {
+      "bytes": 1998,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_educational_quality.py",
+      "sha256": "8da3259eeaabc0bdad045f6c90ec39a896aafccb3e15a5560cd254d472a16d1c"
+    },
+    {
+      "bytes": 506,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_handoff.py",
+      "sha256": "4cb95ab1a8968d6848c6d94c018f2627cc0ed2cd9c8fc47b57730843b4e05a39"
+    },
+    {
+      "bytes": 1030,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_links.py",
+      "sha256": "60a31256f57fca8d7adc0bbf0711d5eaecdec9ae021f89e358a4305348da590c"
+    },
+    {
+      "bytes": 1545,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_manifests.py",
+      "sha256": "12b34a6098600ea31ff88fa0c451d715c9b1b5199ebaed08eb918c36485ac999"
+    },
+    {
+      "bytes": 928,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_nav.py",
+      "sha256": "3b9c2edaf1f5e731bddbed2cedd33bc420ed796f42f10790635a750d7f107c41"
+    },
+    {
+      "bytes": 650,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_predecessor.py",
+      "sha256": "ab12d035ae8fc8c5d7518a70e62731bd2cd8b61f26d3181960b8bab83a2ee004"
+    },
+    {
+      "bytes": 868,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_releases.py",
+      "sha256": "60c1b29d3c406202e269132f21bf420730334eed5b8265682e3a910ab588348b"
+    },
+    {
+      "bytes": 1135,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_structure.py",
+      "sha256": "dcfbc0e2cfd400041713d3af3aeed0b6f921132789d781b78d08c5d729eba3b0"
+    },
+    {
+      "bytes": 827,
+      "mode": "0o755",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/scripts/verify_vectors.py",
+      "sha256": "7a596231fdca367e7ba2e593bf06408d1904b2c96aafa9b232aa81e595d5ba63"
+    },
+    {
+      "bytes": 942,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/standards-profile.json",
+      "sha256": "a04e45873d668470c5fb4820bf4dd60d05b168ee7d2bc3be84368cef4a90bd3f"
+    },
+    {
+      "bytes": 361,
+      "mode": "0o644",
+      "path": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/tool-versions.json",
+      "sha256": "843d32004c3e113a9dba5ecbffb5b7f97048dcb070dbf344eba3b6c3dd600796"
+    },
+    {
+      "bytes": 611,
+      "mode": "0o644",
+      "path": "Makefile",
+      "sha256": "8e117e5a323c605922dc03021af52973f98e40dbe5382c704d634e00315a10c3"
+    },
+    {
+      "bytes": 1523,
+      "mode": "0o644",
+      "path": "README.md",
+      "sha256": "e1ffb05bd586ace3e968790da53501f2bb8107cfe3cd8c797939ed4a8ad417a2"
+    },
+    {
+      "bytes": 429,
+      "mode": "0o644",
+      "path": "mkdocs.yml",
+      "sha256": "dbd707e123271cea5298c16c8f64fefaac5731481ac7e36c8d3f229f883667dd"
+    },
+    {
+      "bytes": 679,
+      "mode": "0o644",
+      "path": "program-book/capstone-evolution.md",
+      "sha256": "79bc177312671518faeefc57b5ba3d56fe144b72e732c563a1a408611bdb54fd"
+    },
+    {
+      "bytes": 1149,
+      "mode": "0o644",
+      "path": "program-book/course-06-bridge.md",
+      "sha256": "7fb993a0b4ce3f320c6d64d0480f9bbc384614f18432015f6ea2ad7c6a7a9e80"
+    },
+    {
+      "bytes": 1007,
+      "mode": "0o644",
+      "path": "program-book/evidence-ladder.md",
+      "sha256": "35374da1ca71b4e0cf717d7af4c3d6ef4f18c06b66b00828dab4b5cfd3b5ad9d"
+    },
+    {
+      "bytes": 883,
+      "mode": "0o644",
+      "path": "program-book/program-standards.md",
+      "sha256": "702e1d25b29bb62550acc175796ec2878f945a6c2766b08ffda7f643228c5f89"
+    },
+    {
+      "bytes": 1292,
+      "mode": "0o644",
+      "path": "program-book/start-here.md",
+      "sha256": "17bec5e1dceaa9b8f3c569210795833348c57d234127d63a74ef66957193760b"
+    },
+    {
+      "bytes": 921,
+      "mode": "0o644",
+      "path": "program-book/ten-course-journey.md",
+      "sha256": "7015ba8427800890e4bf9f7a526150b2025c5ea91b604ab29f1f80afee1a610f"
+    },
+    {
+      "bytes": 744,
+      "mode": "0o644",
+      "path": "program-book/tool-and-language-strategy.md",
+      "sha256": "bad61c75f38772bd41a2c2ba05864833444dc4122ca5135609a9f9daddc8b1d7"
+    },
+    {
+      "bytes": 2092,
+      "mode": "0o644",
+      "path": "program.json",
+      "sha256": "2132ea1fc93314d429dc3b1376c2fd46db2595a981b1c7b0701683de54d60362"
+    },
+    {
+      "bytes": 1227,
+      "mode": "0o755",
+      "path": "scripts/program_manifest.py",
+      "sha256": "a17aec270b42d7b7267af2fbcbf39e4d9450dad087272d7fd9529b258ba0877d"
+    },
+    {
+      "bytes": 1249,
+      "mode": "0o755",
+      "path": "scripts/program_manifest_proof.py",
+      "sha256": "80ebfd1f71c7df6d0d5219b44ad58e4da4775452db80522cfe32b499075e1807"
+    }
+  ],
+  "program": "platform-engineering-course-06-overlay",
+  "schemaVersion": "1.0"
+}

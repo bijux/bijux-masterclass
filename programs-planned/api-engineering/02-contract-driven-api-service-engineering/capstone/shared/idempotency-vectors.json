@@ -1,0 +1,35 @@
+{
+  "canonicalization": {
+    "encoding": "UTF-8",
+    "nonFiniteNumbers": "rejected",
+    "numbers": "JavaScript-safe integers only; floating-point values rejected",
+    "objectKeys": "lexicographic",
+    "whitespace": "none"
+  },
+  "vectors": [
+    {
+      "body": {
+        "datasetId": "dts_0001",
+        "parameters": {
+          "algorithm": "quality-summary"
+        },
+        "projectId": "prj_0001"
+      },
+      "operationId": "createAnalysisRun",
+      "ownerId": "learner",
+      "sameAsReorderedObject": true
+    },
+    {
+      "case": "same key, same body, same owner",
+      "outcome": "stored 202 response with Idempotent-Replay: true"
+    },
+    {
+      "case": "same key, changed body",
+      "outcome": "409 idempotency-conflict"
+    },
+    {
+      "case": "same key, same body, different owner",
+      "outcome": "independent scope"
+    }
+  ]
+}

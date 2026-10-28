@@ -1,0 +1,22 @@
+[
+  {
+    "change": "add optional field",
+    "classification": "additive"
+  },
+  {
+    "change": "remove active field",
+    "classification": "breaking"
+  },
+  {
+    "change": "add required argument",
+    "classification": "breaking"
+  },
+  {
+    "change": "add enum value",
+    "classification": "review-required"
+  },
+  {
+    "change": "output non-null to nullable",
+    "classification": "breaking"
+  }
+]

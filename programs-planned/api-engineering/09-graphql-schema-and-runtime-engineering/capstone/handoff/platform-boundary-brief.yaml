@@ -1,0 +1,19 @@
+version: '1.0'
+next_course: 10-api-platform-governance-and-developer-experience-engineering
+platform_may:
+- catalogue and publish governed API definitions
+- generate documentation and client assets
+- score ownership, lifecycle, security, reliability, and compatibility evidence
+- manage sandbox and consumer onboarding workflows
+platform_may_not:
+- own project, run, artifact, or notification business facts
+- rewrite private source contracts without the owning service
+- convert a review-required GraphQL change into an automatic pass
+- publish unowned or unbounded graph capabilities
+required_platform_capabilities:
+- software and API catalogue
+- contract registry
+- policy-as-code checks
+- lifecycle and deprecation workflows
+- consumer and SDK publication
+- evidence-backed scorecards

@@ -1,0 +1,11 @@
+{
+  "candidateRelease": "atlas-workload-release-1.0.0",
+  "condition": "Deployment selects platform/atlas-api:1.0.0 without recording the resolved digest.",
+  "evidenceClass": "dependency-light",
+  "expectedDecision": "rejected",
+  "failedGate": "immutable-subject",
+  "id": "rejected-mutable-tag",
+  "reviewQuestion": "What exact evidence would be required to change this decision without weakening another gate?",
+  "schemaVersion": "1.0",
+  "title": "Mutable tag used as deployment authority"
+}

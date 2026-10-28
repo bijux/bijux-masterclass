@@ -1,0 +1,3 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.11", import: ["@key", "@external"])
+type AnalysisRun @key(fields: "id") { id: ID! @external, artifacts: [Artifact!] }
+type Artifact @key(fields: "id") { id: ID!, runId: ID!, mediaType: String!, size: Int!, sha256: String! }

@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: atlas-db
+  namespace: atlas-system
+spec:
+  serviceName: atlas-db
+  replicas: 1
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: atlas-db
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: atlas-db
+        app.kubernetes.io/part-of: atlas
+    spec:
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+      containers:
+        - name: database
+          image: registry.example.invalid/atlas/db@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          ports:
+            - name: database
+              containerPort: 5432
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/atlas
+          startupProbe:
+            exec:
+              command: ["/atlas/probe", "startup"]
+            failureThreshold: 60
+            periodSeconds: 5
+          readinessProbe:
+            exec:
+              command: ["/atlas/probe", "ready"]
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command: ["/atlas/probe", "live"]
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app.kubernetes.io/name: atlas-db
+          atlas.example.invalid/snapshot-group: atlas-db
+      spec:
+        accessModes: ["ReadWriteOncePod"]
+        storageClassName: atlas-rwo-durable
+        resources:
+          requests:
+            storage: 20Gi

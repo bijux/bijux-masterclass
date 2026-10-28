@@ -1,0 +1,54 @@
+id: GD-001
+title: Stalled analyses with partial telemetry loss
+objective: Prove that accepted work remains durable, worker recovery is safe, and
+  telemetry loss does not become a customer-facing failure.
+roles:
+  incidentCommander: Controls scope, severity, and abort decisions.
+  operationsLead: Executes runbooks and records operational actions.
+  observer: Maintains the fact/inference/action timeline.
+  faultController: Injects only the approved staged fault.
+steadyState:
+- API availability burn rate below 1.
+- Run-start freshness burn rate below 1.
+- No reconciliation findings for the target runs.
+stages:
+- id: stage-1-worker-loss
+  fault: Terminate one worker after it has claimed a job.
+  duration: Until the lease expires and another worker safely recovers the job.
+  oracle:
+  - Submission remains durable.
+  - Exactly one terminal artifact and event exist.
+  - The stale worker cannot complete after recovery.
+- id: stage-2-telemetry-loss
+  precondition: Stage 1 is understood and the primary failure is contained.
+  fault: Make the telemetry collector unavailable for five minutes.
+  duration: Five minutes or until an abort condition fires.
+  oracle:
+  - API liveness and readiness remain independent of the collector.
+  - Application drop evidence increases in a bounded way.
+  - Durable state remains queryable.
+- id: stage-3-webhook-degradation
+  optional: true
+  precondition: Stages 1 and 2 have separate explanations.
+  fault: Return HTTP 503 from the controlled webhook receiver.
+  duration: Two delivery attempts.
+  oracle:
+  - The same logical event identifier is retried.
+  - Run completion is not rolled back.
+  - Delivery retry remains deadline- and attempt-bounded.
+abortConditions:
+- Eligible customer write failures exceed 5 percent for two minutes.
+- Any security control is disabled.
+- Queue growth becomes unbounded.
+- The fault controller cannot prove which stage is active.
+cleanup:
+- Disable every fault profile.
+- Restore the baseline worker and collector topology.
+- Run reconciliation.
+- Verify all alert and SLO windows recover.
+requiredEvidence:
+- Trace or durable correlation for the affected run.
+- Metrics before, during, and after each stage.
+- Observation/inference/action timeline.
+- Read-only reconciliation report.
+- Runbook actions and stop decisions.

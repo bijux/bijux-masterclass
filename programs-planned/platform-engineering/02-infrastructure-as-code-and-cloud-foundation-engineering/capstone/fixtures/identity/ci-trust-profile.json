@@ -1,0 +1,8 @@
+{
+  "audience": "sts.amazonaws.com",
+  "environment": "dev",
+  "longLivedKey": false,
+  "provider": "github-actions",
+  "repository": "bijux/atlas",
+  "sessionSeconds": 1800
+}

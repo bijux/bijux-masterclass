@@ -1,0 +1,7 @@
+{
+  "entityRef": "api:default/analysis-http",
+  "evidenceClass": "course-executed",
+  "kind": "compatibility",
+  "status": "pass",
+  "summary": "compatibility evidence for api:default/analysis-http"
+}

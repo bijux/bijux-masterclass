@@ -1,0 +1,10 @@
+{
+  "defect": "attestation subject digest does not match image index",
+  "expectedDecision": "rejected",
+  "expectedGate": "attachment-proof",
+  "expectedProof": "attachment-proof",
+  "id": "C3-DEFECT-008",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "Evidence is valid but binds to a different image digest.",
+  "title": "Attestation subject mismatch"
+}

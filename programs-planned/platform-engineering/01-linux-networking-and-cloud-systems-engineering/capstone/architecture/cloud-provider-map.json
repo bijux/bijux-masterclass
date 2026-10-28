@@ -1,0 +1,47 @@
+{
+  "computeInstance": {
+    "aws": "EC2 instance",
+    "gcp": "Compute Engine VM",
+    "azure": "Azure Virtual Machine"
+  },
+  "virtualNetwork": {
+    "aws": "VPC",
+    "gcp": "VPC network",
+    "azure": "Virtual Network"
+  },
+  "subnet": {
+    "aws": "subnet",
+    "gcp": "subnetwork",
+    "azure": "subnet"
+  },
+  "workloadIdentity": {
+    "aws": "instance profile / IAM role",
+    "gcp": "attached service account",
+    "azure": "managed identity"
+  },
+  "blockStorage": {
+    "aws": "EBS",
+    "gcp": "Persistent Disk / Hyperdisk",
+    "azure": "Managed Disk"
+  },
+  "objectStorage": {
+    "aws": "S3",
+    "gcp": "Cloud Storage",
+    "azure": "Blob Storage"
+  },
+  "dns": {
+    "aws": "Route 53",
+    "gcp": "Cloud DNS",
+    "azure": "Azure DNS"
+  },
+  "loadBalancer": {
+    "aws": "ELB family",
+    "gcp": "Cloud Load Balancing",
+    "azure": "Azure Load Balancer / Application Gateway"
+  },
+  "metadata": {
+    "aws": "IMDSv2 required",
+    "gcp": "metadata server with Metadata-Flavor header",
+    "azure": "IMDS with Metadata header"
+  }
+}

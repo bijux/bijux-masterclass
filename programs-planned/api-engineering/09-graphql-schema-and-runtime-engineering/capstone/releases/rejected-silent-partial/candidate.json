@@ -1,0 +1,9 @@
+{
+  "activeOperationsValid": true,
+  "budgetsPass": true,
+  "change": "artifact outage returns [] without error",
+  "expected": "breaking-semantics",
+  "oldClientPasses": false,
+  "ownershipComplete": true,
+  "runtimePolicy": "silent-empty-fallback"
+}

@@ -1,0 +1,52 @@
+{
+  "profile": "grpc-lifecycle-1.0",
+  "cases": [
+    {
+      "id": "LFC-01",
+      "sequence": [
+        "start"
+      ],
+      "expected_phase": "accepting",
+      "serving": true
+    },
+    {
+      "id": "LFC-02",
+      "sequence": [
+        "start",
+        "admit",
+        "drain"
+      ],
+      "expected_phase": "draining",
+      "serving": false,
+      "active": 1
+    },
+    {
+      "id": "LFC-03",
+      "sequence": [
+        "start",
+        "admit",
+        "drain",
+        "stop"
+      ],
+      "expected_phase": "stopping",
+      "active": 1
+    },
+    {
+      "id": "LFC-04",
+      "sequence": [
+        "start",
+        "admit",
+        "drain",
+        "stop",
+        "release"
+      ],
+      "expected_phase": "stopped",
+      "active": 0
+    },
+    {
+      "id": "LFC-05",
+      "new_call_during_drain": true,
+      "expected": "reject"
+    }
+  ]
+}

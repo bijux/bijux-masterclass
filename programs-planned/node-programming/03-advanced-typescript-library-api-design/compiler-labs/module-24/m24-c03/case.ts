@@ -1,0 +1,1 @@
+type Events<T>={[K in keyof T&string as `${K}Changed`]:(value:T[K])=>void};const events:Events<{name:string;active:boolean}>={nameChanged:value=>console.log(value),activeChanged:value=>console.log(value)};void events;

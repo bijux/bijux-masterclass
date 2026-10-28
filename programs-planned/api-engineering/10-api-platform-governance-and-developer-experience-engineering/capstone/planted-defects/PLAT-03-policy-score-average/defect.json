@@ -1,0 +1,5 @@
+{
+  "defect": "A critical failure is hidden inside an average score",
+  "expectedRejectingProof": "policy-proof",
+  "id": "PLAT-03-policy-score-average"
+}

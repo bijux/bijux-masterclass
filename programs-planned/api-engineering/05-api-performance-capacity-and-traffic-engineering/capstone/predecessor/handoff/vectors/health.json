@@ -1,0 +1,76 @@
+{
+  "cases": [
+    {
+      "components": [],
+      "eventLoopProgressing": true,
+      "id": "health-starting",
+      "live": true,
+      "phase": "starting",
+      "ready": false,
+      "startupComplete": false
+    },
+    {
+      "components": [
+        {
+          "available": true,
+          "name": "postgres",
+          "requiredForReadiness": true
+        }
+      ],
+      "eventLoopProgressing": true,
+      "id": "health-ready",
+      "live": true,
+      "phase": "accepting",
+      "ready": true,
+      "startupComplete": true
+    },
+    {
+      "components": [
+        {
+          "available": false,
+          "name": "postgres",
+          "requiredForReadiness": true
+        }
+      ],
+      "eventLoopProgressing": true,
+      "id": "health-db-down",
+      "live": true,
+      "phase": "accepting",
+      "ready": false,
+      "startupComplete": true
+    },
+    {
+      "components": [
+        {
+          "available": false,
+          "name": "otel",
+          "requiredForReadiness": false
+        }
+      ],
+      "eventLoopProgressing": true,
+      "id": "health-collector-down",
+      "live": true,
+      "phase": "accepting",
+      "ready": true,
+      "startupComplete": true
+    },
+    {
+      "components": [],
+      "eventLoopProgressing": true,
+      "id": "health-draining",
+      "live": true,
+      "phase": "draining",
+      "ready": false,
+      "startupComplete": true
+    },
+    {
+      "components": [],
+      "eventLoopProgressing": false,
+      "id": "health-deadlock",
+      "live": false,
+      "phase": "accepting",
+      "ready": false,
+      "startupComplete": true
+    }
+  ]
+}

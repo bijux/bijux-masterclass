@@ -1,0 +1,27 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: atlas-rwo-durable
+  annotations:
+    atlas.example.invalid/profile-version: "1.0"
+provisioner: csi.atlas.example.invalid
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  encrypted: "true"
+  durability-tier: regional
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: atlas-rwx-shared
+  annotations:
+    atlas.example.invalid/profile-version: "1.0"
+provisioner: csi.atlas.example.invalid
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  encrypted: "true"
+  protocol: filesystem

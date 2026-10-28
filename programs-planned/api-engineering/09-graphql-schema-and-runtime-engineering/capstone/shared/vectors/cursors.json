@@ -1,0 +1,79 @@
+{
+  "profile": "analysis-graph-keyset-cursor-v1",
+  "cases": [
+    {
+      "name": "valid-continuation",
+      "tenantId": "tenant-a",
+      "audience": {
+        "subject": "learner",
+        "permissions": ["RUN_READ"]
+      },
+      "scope": "Query.analysisRuns",
+      "filter": {"status": "RUNNING"},
+      "after": ["2026-08-02T10:00:00Z", "run-2"],
+      "highWater": ["2026-08-03T10:00:00Z", "run-3"],
+      "expiresAt": 2000000000,
+      "valid": true
+    },
+    {
+      "name": "tenant-mismatch",
+      "tenantId": "tenant-b",
+      "audience": {
+        "subject": "learner",
+        "permissions": ["RUN_READ"]
+      },
+      "scope": "Query.analysisRuns",
+      "filter": {"status": "RUNNING"},
+      "after": ["2026-08-02T10:00:00Z", "run-2"],
+      "highWater": ["2026-08-03T10:00:00Z", "run-3"],
+      "expiresAt": 2000000000,
+      "valid": false,
+      "reason": "tenant-mismatch"
+    },
+    {
+      "name": "filter-mismatch",
+      "tenantId": "tenant-a",
+      "audience": {
+        "subject": "learner",
+        "permissions": ["RUN_READ"]
+      },
+      "scope": "Query.analysisRuns",
+      "filter": {"status": "FAILED"},
+      "after": ["2026-08-02T10:00:00Z", "run-2"],
+      "highWater": ["2026-08-03T10:00:00Z", "run-3"],
+      "expiresAt": 2000000000,
+      "valid": false,
+      "reason": "filter-mismatch"
+    },
+    {
+      "name": "scope-mismatch",
+      "tenantId": "tenant-a",
+      "audience": {
+        "subject": "learner",
+        "permissions": ["RUN_READ"]
+      },
+      "scope": "Project.analysisRuns",
+      "filter": {"status": "RUNNING"},
+      "after": ["2026-08-02T10:00:00Z", "run-2"],
+      "highWater": ["2026-08-03T10:00:00Z", "run-3"],
+      "expiresAt": 2000000000,
+      "valid": false,
+      "reason": "scope-mismatch"
+    },
+    {
+      "name": "continuation-above-high-water",
+      "tenantId": "tenant-a",
+      "audience": {
+        "subject": "learner",
+        "permissions": ["RUN_READ"]
+      },
+      "scope": "Query.analysisRuns",
+      "filter": {"status": "RUNNING"},
+      "after": ["2026-08-04T10:00:00Z", "run-4"],
+      "highWater": ["2026-08-03T10:00:00Z", "run-3"],
+      "expiresAt": 2000000000,
+      "valid": false,
+      "reason": "invalid-key-order"
+    }
+  ]
+}

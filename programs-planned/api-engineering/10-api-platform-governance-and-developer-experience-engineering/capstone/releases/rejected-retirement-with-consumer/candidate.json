@@ -1,0 +1,5 @@
+{
+  "expectedDecision": "rejected",
+  "id": "rejected-retirement-with-consumer",
+  "reason": "A critical active consumer remains on the retiring version."
+}

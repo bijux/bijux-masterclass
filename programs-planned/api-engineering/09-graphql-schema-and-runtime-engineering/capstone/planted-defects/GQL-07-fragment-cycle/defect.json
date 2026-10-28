@@ -1,0 +1,7 @@
+{
+  "description": "operation analyzer expands cyclic fragments forever",
+  "expectedProof": "demand-proof",
+  "failure": "Cyclic fragment expansion fails to terminate or is admitted.",
+  "id": "GQL-07-fragment-cycle",
+  "mustBeRejected": true
+}

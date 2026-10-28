@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "images": [
+    {
+      "name": "go-builder",
+      "reference": "golang:1.26.0-bookworm",
+      "digest": null,
+      "policy": "A native release build must resolve and record the registry digest before approval. The checked dependency-light release compiles with the captured host compiler instead."
+    }
+  ]
+}

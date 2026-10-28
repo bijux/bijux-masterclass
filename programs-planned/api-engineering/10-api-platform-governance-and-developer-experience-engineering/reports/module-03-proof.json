@@ -1,0 +1,8 @@
+{
+  "module": 3,
+  "proofs": [
+    "contract_proof",
+    "registry_proof"
+  ],
+  "status": "pass"
+}

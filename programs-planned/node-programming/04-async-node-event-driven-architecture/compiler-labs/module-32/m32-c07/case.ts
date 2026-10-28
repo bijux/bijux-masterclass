@@ -1,0 +1,1 @@
+const trace: string[]=[]; const a=new Promise<void>(r=>setTimeout(()=>{trace.push('slow');r();},8)); const b=Promise.resolve().then(()=>{trace.push('fast');}); await Promise.all([a,b]); console.log(trace.join(','));

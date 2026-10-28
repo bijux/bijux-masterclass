@@ -1,0 +1,9 @@
+{
+  "architecture": "amd64",
+  "base": "debian-13",
+  "buildIdentity": "atlas-image-pipeline",
+  "imageId": "latest",
+  "mutableAlias": "latest",
+  "sourceDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "testReport": "reports/image-v1.json"
+}

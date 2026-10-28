@@ -1,0 +1,1 @@
+trait S{type I;type O;fn run(&self,x:Self::I)->Self::O;}struct A;impl S for A{type I=u8;type O=u16;fn run(&self,x:u8)->u16{x.into()}}fn use_stage<T:S<I=u8,O=u16>>(s:&T){assert_eq!(s.run(2),2);}fn main(){use_stage(&A);}

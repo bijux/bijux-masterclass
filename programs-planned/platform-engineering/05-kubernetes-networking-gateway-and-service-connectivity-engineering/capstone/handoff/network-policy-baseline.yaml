@@ -1,0 +1,16 @@
+version: atlas-network-policy-baseline-1.0
+namespace: atlas-system
+isolationTarget: default deny ingress and egress
+approvedFlows:
+  - from: atlas-gateway Gateway data plane
+    to: atlas-api Pods
+    protocol: TCP
+    port: 8080
+  - from: Atlas workloads
+    to: cluster DNS
+    protocols: [UDP, TCP]
+    port: 53
+course6Obligation:
+  - enumerate CSI controller and node-plugin traffic before enforcement
+  - enumerate database, snapshot, backup, and object-storage egress
+  - preserve identity checks independently of IP allow rules

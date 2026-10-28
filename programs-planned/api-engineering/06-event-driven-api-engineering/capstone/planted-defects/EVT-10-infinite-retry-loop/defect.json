@@ -1,0 +1,8 @@
+{
+  "id": "EVT-10",
+  "slug": "EVT-10-infinite-retry-loop",
+  "summary": "Permanent failure retries forever in the hot partition",
+  "mustBeRejected": true,
+  "expectedOracle": "reliability proof requires a finite attempt budget and dead-letter custody",
+  "proofFamily": "reliability"
+}

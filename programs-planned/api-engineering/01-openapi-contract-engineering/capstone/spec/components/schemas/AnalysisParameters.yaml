@@ -1,0 +1,30 @@
+type: object
+additionalProperties: false
+required:
+- algorithm
+properties:
+  algorithm:
+    type: string
+    enum:
+    - quality-summary
+    - line-count
+    - checksum
+  priority:
+    type: string
+    enum:
+    - normal
+    - high
+    default: normal
+  labels:
+    type: object
+    maxProperties: 10
+    propertyNames:
+      pattern: ^[a-z][a-z0-9_.-]{0,31}$
+    additionalProperties:
+      type: string
+      maxLength: 80
+examples:
+- algorithm: quality-summary
+  priority: normal
+  labels:
+    cohort: summer

@@ -1,0 +1,6 @@
+BATCHWEAVE-V1
+# id<TAB>operation<TAB>payload
+checksum-readme	checksum	reader-first concurrency
+count-words	word-count	one two three four
+sort-values	sort-integers	9,-4,7,0
+count-primes	prime-count	100

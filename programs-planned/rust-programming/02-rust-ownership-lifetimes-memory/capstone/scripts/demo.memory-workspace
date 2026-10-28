@@ -1,0 +1,12 @@
+# Tab-separated deterministic capstone scenario.
+ADD	doc	Memory contracts	Ownership makes cleanup explicit.
+SHOW	doc
+SNAPSHOT	snap0	doc
+WATCH	watch0	snap0
+EDIT	doc	0	Ownership, lifetimes, and memory make cleanup explicit.
+SEARCH	cleanup
+MEMORY
+EVICT	doc	0
+DROP-SNAPSHOT	snap0
+CHECK-WATCH	watch0
+SHOW	doc

@@ -1,0 +1,10 @@
+[
+  {
+    "from": "aws_vpc.atlas",
+    "to": "module.network.aws_vpc.this"
+  },
+  {
+    "from": "aws_subnet.private_a",
+    "to": "module.network.aws_subnet.private[\"euc1-az1\"]"
+  }
+]

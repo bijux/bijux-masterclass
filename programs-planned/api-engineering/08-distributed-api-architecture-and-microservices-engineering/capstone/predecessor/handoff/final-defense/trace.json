@@ -1,0 +1,55 @@
+{
+  "journey": "public-http-create-to-rpc-to-event-to-worker-to-artifact",
+  "steps": [
+    {
+      "n": 1,
+      "surface": "HTTP",
+      "action": "authenticated CreateRun request",
+      "authority": "public contract"
+    },
+    {
+      "n": 2,
+      "surface": "gRPC",
+      "action": "CreateRun with deadline and request identity",
+      "authority": "analysis control"
+    },
+    {
+      "n": 3,
+      "surface": "database",
+      "action": "run, idempotency outcome, and outbox commit",
+      "authority": "transaction"
+    },
+    {
+      "n": 4,
+      "surface": "event",
+      "action": "AnalysisRunRequested publication",
+      "authority": "event API"
+    },
+    {
+      "n": 5,
+      "surface": "gRPC stream",
+      "action": "assignment with lease generation",
+      "authority": "durable lease"
+    },
+    {
+      "n": 6,
+      "surface": "gRPC stream",
+      "action": "stale result rejected; current result accepted",
+      "authority": "analysis control"
+    },
+    {
+      "n": 7,
+      "surface": "HTTP/gRPC",
+      "action": "artifact and observation delivered",
+      "authority": "documented surfaces"
+    }
+  ],
+  "faults": [
+    "post-commit-response-loss",
+    "stale-worker-result",
+    "slow-watch-consumer",
+    "server-drain",
+    "rollback"
+  ],
+  "expected": "one durable effect, truthful event history, bounded streams, reversible routing"
+}

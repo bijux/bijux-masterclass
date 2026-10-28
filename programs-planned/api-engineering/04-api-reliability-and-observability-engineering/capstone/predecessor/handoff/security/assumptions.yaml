@@ -1,0 +1,21 @@
+assumptions:
+- id: AS-01
+  statement: Production TLS termination and proxy topology are configured outside
+    the dependency-light course proof.
+  review: before deployment
+- id: AS-02
+  statement: Fixture issuer private keys remain confined to the local laboratory and
+    are not production credentials.
+  review: every release
+- id: AS-03
+  statement: PostgreSQL role and network isolation are configured by the environment
+    owner.
+  review: before live database proof
+- id: AS-04
+  statement: Application-level SSRF policy is backed by deployment egress controls
+    in production.
+  review: before deployment
+- id: AS-05
+  statement: System clocks used for token/webhook validation are synchronized within
+    configured skew.
+  review: operational readiness

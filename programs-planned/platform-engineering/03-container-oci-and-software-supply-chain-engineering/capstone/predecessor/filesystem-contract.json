@@ -1,0 +1,44 @@
+{
+  "paths": [
+    {
+      "path": "/var/lib/atlas/spool",
+      "class": "durable",
+      "writer": [
+        "atlas-api",
+        "atlas-worker"
+      ]
+    },
+    {
+      "path": "/var/lib/atlas/results",
+      "class": "durable",
+      "writer": [
+        "atlas-worker"
+      ]
+    },
+    {
+      "path": "/run/atlas",
+      "class": "ephemeral",
+      "writer": [
+        "atlas-api",
+        "atlas-worker"
+      ]
+    },
+    {
+      "path": "/var/log/atlas",
+      "class": "telemetry-buffer",
+      "writer": [
+        "atlas-api",
+        "atlas-worker",
+        "atlas-edge"
+      ]
+    },
+    {
+      "path": "/etc/atlas",
+      "class": "configuration",
+      "writer": [
+        "image-or-platform"
+      ]
+    }
+  ],
+  "rootFilesystem": "replaceable"
+}

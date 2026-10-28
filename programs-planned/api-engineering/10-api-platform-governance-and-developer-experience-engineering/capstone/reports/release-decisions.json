@@ -1,0 +1,80 @@
+{
+  "results": [
+    {
+      "decision": "accepted",
+      "id": "accepted-platform-1.0",
+      "reasons": []
+    },
+    {
+      "decision": "review",
+      "id": "review-doc-exception",
+      "reasons": [
+        "approved-exception-or-human-judgment-required"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-unowned-api",
+      "reasons": [
+        "catalog"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-mutable-release",
+      "reasons": [
+        "registry"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-retirement-with-consumer",
+      "reasons": [
+        "lifecycle"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-secret-template",
+      "reasons": [
+        "template"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-sdk-without-provenance",
+      "reasons": [
+        "sdk"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-gateway-domain-policy",
+      "reasons": [
+        "runtime"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-production-sandbox-data",
+      "reasons": [
+        "sandbox"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-score-average",
+      "reasons": [
+        "policy"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "id": "rejected-expiry-free-exception",
+      "reasons": [
+        "policy"
+      ]
+    }
+  ],
+  "version": "1.0"
+}

@@ -1,0 +1,62 @@
+additionalOperations:
+  QUERY:
+    tags:
+    - Analysis Runs
+    summary: Query analysis runs with one structured query string
+    description: 'OpenAPI 3.2 experiment using the HTTP QUERY method and one in: querystring parameter.
+      The executable 3.1 baseline retains GET /analysis-runs.'
+    operationId: queryAnalysisRuns
+    security:
+    - OAuth2:
+      - runs:read
+    - ApiKey: []
+    parameters:
+    - name: query
+      in: querystring
+      required: false
+      description: Entire application/x-www-form-urlencoded query string.
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              status:
+                type: string
+                enum:
+                - queued
+                - running
+                - completed
+                - failed
+                - canceled
+              algorithm:
+                type: string
+                enum:
+                - quality-summary
+                - line-count
+                - checksum
+              limit:
+                type: integer
+                minimum: 1
+                maximum: 50
+          examples:
+            completedQualityRuns:
+              dataValue:
+                status: completed
+                algorithm: quality-summary
+                limit: 10
+              serializedValue: status=completed&algorithm=quality-summary&limit=10
+    responses:
+      '200':
+        description: Runs matching the structured query.
+        headers:
+          X-Request-Id:
+            $ref: ../components/headers/RequestId.yaml
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/AnalysisRunPage.yaml
+      '401':
+        $ref: ../components/responses/UnauthorizedProblem.yaml
+      '403':
+        $ref: ../components/responses/ForbiddenProblem.yaml

@@ -1,0 +1,15 @@
+description: Precondition required
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: https://api.example.test/problems/precondition-required
+      title: Precondition required
+      status: 428
+      detail: This operation requires an If-Match header.
+      instance: /example
+      requestId: req_012345abcdef

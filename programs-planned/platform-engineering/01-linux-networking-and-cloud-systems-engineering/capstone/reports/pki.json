@@ -1,0 +1,11 @@
+{
+  "caLoaded": true,
+  "courseMinimumTls": "TLSv1_3",
+  "fixtureOnly": true,
+  "subjectAltNames": [
+    "127.0.0.1",
+    "::1",
+    "atlas.test",
+    "localhost"
+  ]
+}

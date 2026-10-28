@@ -1,0 +1,32 @@
+{
+  "courseReleaseDate": "2026-08-06",
+  "python": "3.13.5",
+  "node": "22.16.0",
+  "typescript": "5.9.2",
+  "fastapi": "0.128.2",
+  "pydantic": "2.13.4",
+  "psycopg": "3.3.4",
+  "httpx": "0.28.1",
+  "uvicorn": "0.48.0",
+  "pytest": "9.0.2",
+  "fastify": "5.11.2",
+  "fastifyMultipart": "10.1.0",
+  "fastifySwagger": "9.8.1",
+  "fastifySwaggerUi": "6.1.1",
+  "typebox": "0.34.52",
+  "nodePostgres": "8.22.0",
+  "vitest": "4.1.10",
+  "opentelemetryPythonSdk": "1.44.0",
+  "opentelemetryPythonInstrumentation": "0.65b0",
+  "opentelemetryJsApi": "1.9.1",
+  "opentelemetryJsSdkNode": "0.221.0",
+  "otelCollectorContrib": "0.136.0",
+  "prometheus": "3.6.0",
+  "jaeger": "2.9.0",
+  "openMetrics": "1.0",
+  "traceContext": "W3C Trace Context Recommendation, version-00 profile",
+  "documentation": {
+    "mkdocs": "1.6.1",
+    "mkdocsMaterial": "9.6.18"
+  }
+}

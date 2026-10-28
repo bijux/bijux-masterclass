@@ -1,0 +1,67 @@
+{
+  "claimBoundary": "Dependency-light and local Linux mechanism evidence; no privileged-VM or real-cloud operational claim.",
+  "course": "01-linux-networking-and-cloud-systems-engineering",
+  "courseRelease": "1.0.0",
+  "environment": {
+    "capNetAdmin": false,
+    "capSysAdmin": false,
+    "cgroupV2": true,
+    "effectiveUid": 0,
+    "kernel": "Linux 6.18.35 x86_64",
+    "nginx": "1.26.3",
+    "openssl": "3.5.5",
+    "pid1": "supervisord",
+    "python": "3.13.5",
+    "systemdTools": "257"
+  },
+  "executed": {
+    "capstoneTour": {
+      "allProcessesStopped": true,
+      "checks": 7,
+      "status": "passed"
+    },
+    "coreProof": {
+      "pythonTests": 21,
+      "status": "passed"
+    },
+    "course2Handoff": {
+      "files": 9,
+      "requirements": 14,
+      "status": "passed"
+    },
+    "localMarkdownLinks": {
+      "links": 54,
+      "status": "passed"
+    },
+    "mkdocsNavigationCoverage": {
+      "pages": 67,
+      "status": "passed"
+    },
+    "nginxSyntaxVerification": {
+      "status": "passed",
+      "tool": "nginx 1.26.3"
+    },
+    "pkiVerification": {
+      "fixtureOnly": true,
+      "minimumTls": "TLSv1.3",
+      "status": "passed"
+    },
+    "readerQualityGuard": {
+      "status": "passed"
+    },
+    "systemdUnitVerification": {
+      "status": "passed",
+      "tool": "systemd-analyze 257"
+    }
+  },
+  "notExecuted": {
+    "cloudInitNativeValidation": "cloud-init was unavailable.",
+    "nativeNftablesValidation": "nft was unavailable.",
+    "privilegedNamespaceFirewallLab": "The environment lacked CAP_NET_ADMIN and CAP_SYS_ADMIN.",
+    "realCloudProof": "No cloud account or billed provider resources were used.",
+    "strictMkdocsRender": "MkDocs dependencies were unavailable in the build environment.",
+    "systemdResourceLab": "systemd was not PID 1 and no delegated service-manager environment was available."
+  },
+  "schemaVersion": 1,
+  "verificationDate": "2026-08-09"
+}

@@ -1,0 +1,35 @@
+{
+  "profile": "rpc-boundary-1.0",
+  "cases": [
+    {
+      "id": "BND-01",
+      "interaction": "public-run-list",
+      "expected": "HTTP",
+      "reason": "public-resource"
+    },
+    {
+      "id": "BND-02",
+      "interaction": "committed-run-completed",
+      "expected": "durable-event",
+      "reason": "independent-replayable-consumers"
+    },
+    {
+      "id": "BND-03",
+      "interaction": "domain-transition-inside-transaction",
+      "expected": "local-call",
+      "reason": "single-owner-transaction"
+    },
+    {
+      "id": "BND-04",
+      "interaction": "internal-run-control",
+      "expected": "gRPC",
+      "reason": "immediate-controlled-authority"
+    },
+    {
+      "id": "BND-05",
+      "interaction": "worker-session",
+      "expected": "gRPC-bidi",
+      "reason": "duplex-session-with-durable-lease"
+    }
+  ]
+}

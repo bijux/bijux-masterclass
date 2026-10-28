@@ -1,0 +1,38 @@
+type: object
+additionalProperties: false
+required:
+- eventId
+- eventType
+- occurredAt
+- run
+properties:
+  eventId:
+    type: string
+    pattern: ^evt_[0-9]{4,18}$
+  eventType:
+    type: string
+    const: analysis.completed
+  occurredAt:
+    type: string
+    format: date-time
+  run:
+    $ref: ./AnalysisRun.yaml
+examples:
+- eventId: evt_0003
+  eventType: analysis.completed
+  occurredAt: '2026-08-05T10:12:00Z'
+  run:
+    id: run_0001
+    projectId: prj_0001
+    datasetId: dts_0001
+    ownerId: learner
+    status: completed
+    parameters:
+      algorithm: quality-summary
+      priority: normal
+    progress: 100
+    createdAt: '2026-08-05T10:10:00Z'
+    updatedAt: '2026-08-05T10:12:00Z'
+    completedAt: '2026-08-05T10:12:00Z'
+    artifactIds:
+    - art_0001

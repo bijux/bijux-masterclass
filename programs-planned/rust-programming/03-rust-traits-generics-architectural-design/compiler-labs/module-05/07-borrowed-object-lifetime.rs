@@ -1,0 +1,1 @@
+trait Name{fn name(&self)->&str;}struct Borrowed<'a>(&'a str);impl Name for Borrowed<'_>{fn name(&self)->&str{self.0}}fn make<'a>(s:&'a str)->Box<dyn Name+'a>{Box::new(Borrowed(s))}fn main(){let s=String::from("x");assert_eq!(make(&s).name(),"x");}

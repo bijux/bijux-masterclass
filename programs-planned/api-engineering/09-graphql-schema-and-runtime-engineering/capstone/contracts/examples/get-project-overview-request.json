@@ -1,0 +1,7 @@
+{
+  "operationName": "GetProjectOverview",
+  "variables": {
+    "first": 2,
+    "projectId": "UHJvamVjdDpwcm9qLTE"
+  }
+}

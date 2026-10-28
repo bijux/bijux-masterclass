@@ -1,0 +1,22 @@
+{
+  "course": "01-linux-networking-and-cloud-systems-engineering",
+  "course2HandoffFiles": 9,
+  "courseBookPages": 67,
+  "courseBookWordsApproximate": 42186,
+  "courseRelease": "1.0.0",
+  "markdownFiles": 90,
+  "markdownWordsApproximate": 45533,
+  "numberedCheckpoints": 10,
+  "numberedExercises": 120,
+  "numberedLabs": 10,
+  "numberedModules": 10,
+  "orientationModules": 1,
+  "payloadFilesBeforeManifests": 202,
+  "primaryProduct": "course-book",
+  "pythonFiles": 32,
+  "schemaVersion": 1,
+  "shellEntryPoints": 8,
+  "systemdServices": 4,
+  "systemdTimers": 1,
+  "workedAnswers": 120
+}

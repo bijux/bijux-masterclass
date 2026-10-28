@@ -1,0 +1,122 @@
+version: 1
+states:
+  - supported
+  - partial
+  - transformed
+  - unsupported
+  - not-executed
+rules:
+  - A successful version command proves installation only.
+  - A parser success is not rendering, generation, mock, or runtime support.
+  - A missing executable is not-executed, never unsupported.
+  - Partial and transformed results must name the lost or changed semantics.
+  - Every supported claim records a command, tool version, artifact digest, and observable assertion.
+cases:
+  - id: baseline-parse
+    artifact: spec/openapi.yaml
+    feature: OpenAPI 3.1.2 version and multi-document references
+    stages: [parse, lint, bundle, render, generate, mock, test]
+    requiredAssertions:
+      - all external references resolve offline
+      - all 19 path operations remain present
+  - id: json-schema-null-union
+    artifact: spec/components/schemas/DatasetCreate.yaml
+    feature: JSON Schema 2020-12 oneOf, const, null, and closed objects
+    stages: [lint, generate, mock, test]
+    requiredAssertions:
+      - union branches remain distinguishable
+      - extra properties remain rejected
+      - missing and null are not conflated
+  - id: multipart-encoding
+    artifact: spec/paths/dataset-content.yaml
+    feature: multipart/form-data file upload and bounded content
+    stages: [render, generate, mock, test]
+    requiredAssertions:
+      - binary part remains a file body
+      - empty and oversized content retain documented failures
+  - id: callback-runtime-expression
+    artifact: spec/paths/analysis-runs.yaml
+    feature: callback URL and runtime-expression evaluation
+    stages: [parse, lint, render, generate, mock]
+    requiredAssertions:
+      - callback key expression is preserved
+      - callback operation and request schema remain present
+  - id: root-webhook
+    artifact: spec/openapi.yaml
+    feature: root-level analysis completion webhook
+    stages: [parse, lint, render, generate, mock]
+    requiredAssertions:
+      - webhook operation is not mistaken for a path operation
+      - event schema remains reachable
+  - id: response-links
+    artifact: spec/paths/analysis-runs.yaml
+    feature: Link Objects from accepted run to status and artifacts operations
+    stages: [parse, render, generate, workflow]
+    requiredAssertions:
+      - operationId references resolve
+      - response-body expressions select required properties
+  - id: overlay-actions
+    artifact: spec/overlays/public.overlay.yaml
+    feature: Overlay 1.1 ordered update and remove actions
+    stages: [apply, validate]
+    requiredAssertions:
+      - internal diagnostics is absent
+      - all required public operations remain
+      - output is deterministic
+  - id: arazo-workflow
+    artifact: spec/workflows/analysis-run.arazzo.yaml
+    feature: Arazzo 1.1 source, steps, dependencies, and outputs
+    stages: [parse, validate, execute]
+    requiredAssertions:
+      - every operationId resolves to the source description
+      - captured IDs flow to later steps
+      - unsupported waiting behavior is named
+  - id: frontier-version
+    artifact: spec/openapi-3.2.yaml
+    feature: OpenAPI 3.2.0 version and 3.1-compatible shared surface
+    stages: [parse, lint, bundle, render, generate, mock, test]
+    requiredAssertions:
+      - the common operationId set remains stable
+      - 3.2-only fields are not silently discarded
+  - id: enhanced-tags
+    artifact: spec/openapi-3.2.yaml
+    feature: tag summary, parent, and kind
+    stages: [parse, lint, render]
+    requiredAssertions:
+      - every parent resolves
+      - hierarchy is acyclic
+      - renderer behavior is reported separately from parsing
+  - id: query-additional-operation
+    artifact: spec/paths/analysis-query-3.2.yaml
+    feature: additionalOperations with HTTP QUERY
+    stages: [parse, lint, render, generate, mock, runtime]
+    requiredAssertions:
+      - QUERY operationId is retained
+      - unsupported routing is not called supported
+      - the 3.1 POST fallback is identified
+  - id: complete-querystring
+    artifact: spec/paths/analysis-query-3.2.yaml
+    feature: Parameter Object with in querystring
+    stages: [parse, lint, render, generate, mock, runtime]
+    requiredAssertions:
+      - the complete query component remains one value
+      - normalization losses are reported
+  - id: sequential-item-schema
+    artifact: spec/paths/analysis-run-events-3.2.yaml
+    feature: Media Type Object itemSchema for NDJSON/SSE items
+    stages: [parse, lint, render, generate, mock, test]
+    requiredAssertions:
+      - each event item retains ProgressEvent semantics
+      - framing is tested independently from item validation
+reportFields:
+  - caseId
+  - tool
+  - toolVersion
+  - stage
+  - state
+  - command
+  - exitCode
+  - artifactSha256
+  - observation
+  - lostOrTransformedSemantics
+  - evidencePath

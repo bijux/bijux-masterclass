@@ -1,0 +1,23 @@
+{
+  "cases": [
+    {
+      "expectedVolumes": 1,
+      "name": "create-replay",
+      "operation": "CreateVolume"
+    },
+    {
+      "expected": "error",
+      "name": "multi-attach",
+      "operation": "ControllerPublishVolume"
+    },
+    {
+      "name": "safe-delete",
+      "operation": "DeleteVolume",
+      "requires": [
+        "unpublished",
+        "unstaged",
+        "detached"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+version: '1.0'
+purpose: Course 8 boundary evidence; not a microservice prescription
+candidates:
+- capability: Analysis Control
+  recommendation: keep-cohesive
+  reasons:
+  - owns run/idempotency/lease/outbox transaction
+  - high consistency coupling
+  open_questions:
+  - team ownership
+  - independent scaling
+- capability: Dataset Transfer
+  recommendation: review
+  reasons:
+  - distinct binary workload
+  - possible independent scaling
+  risks:
+  - shared authorization and metadata transaction
+- capability: Worker Plane
+  recommendation: protocol-boundary-now
+  reasons:
+  - controlled streaming clients
+  - independent worker ecosystem
+  deployment: may remain with analysis control until evidence justifies split
+- capability: Artifact Delivery
+  recommendation: review
+  reasons:
+  - large egress and storage policy
+  risks:
+  - authorization and metadata authority
+- capability: Notification Delivery
+  recommendation: event-consumer-candidate
+  reasons:
+  - already asynchronous and independently retryable
+  risks:
+  - operational overhead
+required_course8_evidence:
+- data ownership
+- transaction boundaries
+- failure isolation
+- independent scaling
+- security boundary
+- team ownership
+- release independence
+- rollback

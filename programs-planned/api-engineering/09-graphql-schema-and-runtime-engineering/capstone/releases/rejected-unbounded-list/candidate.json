@@ -1,0 +1,8 @@
+{
+  "activeOperationsValid": false,
+  "budgetsPass": false,
+  "change": "Project.analysisRuns becomes unbounded list",
+  "expected": "breaking-policy",
+  "oldClientPasses": false,
+  "ownershipComplete": true
+}

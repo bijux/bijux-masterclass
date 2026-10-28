@@ -1,0 +1,15 @@
+{
+  "Statement": [
+    {
+      "Action": [
+        "cloudtrail:StopLogging",
+        "cloudtrail:DeleteTrail",
+        "config:StopConfigurationRecorder"
+      ],
+      "Effect": "Deny",
+      "Resource": "*",
+      "Sid": "DenyAuditDisable"
+    }
+  ],
+  "Version": "2012-10-17"
+}

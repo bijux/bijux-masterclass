@@ -1,0 +1,45 @@
+modelVersion: "1.0"
+resources:
+  - id: api-cpu
+    capacityUnits: "8"
+    targetUtilization: "0.70"
+  - id: database-cpu
+    capacityUnits: "4"
+    targetUtilization: "0.65"
+  - id: artifact-network-gib-per-second
+    capacityUnits: "1.25"
+    targetUtilization: "0.70"
+  - id: worker-slots
+    capacityUnits: "32"
+    targetUtilization: "0.75"
+scenarios:
+  - id: expected-12-month
+    growthSourceDate: "2026-08-07"
+    multipliers:
+      WL-PROJECT-READ: "2.0"
+      WL-RUN-LIST: "2.5"
+      WL-RUN-SUBMIT: "2.0"
+      WL-DATASET-UPLOAD: "1.5"
+      WL-ARTIFACT-DOWNLOAD: "2.2"
+      WL-WEBHOOK-DRAIN: "2.0"
+    instanceAvailability: "N"
+  - id: high-payload
+    growthSourceDate: "2026-08-07"
+    multipliers:
+      WL-PROJECT-READ: "2.0"
+      WL-RUN-LIST: "2.5"
+      WL-RUN-SUBMIT: "2.0"
+      WL-DATASET-UPLOAD: "3.0"
+      WL-ARTIFACT-DOWNLOAD: "4.0"
+      WL-WEBHOOK-DRAIN: "2.0"
+    instanceAvailability: "N"
+  - id: degraded-n-minus-one
+    growthSourceDate: "2026-08-07"
+    multipliers:
+      WL-PROJECT-READ: "2.0"
+      WL-RUN-LIST: "2.5"
+      WL-RUN-SUBMIT: "2.0"
+      WL-DATASET-UPLOAD: "1.5"
+      WL-ARTIFACT-DOWNLOAD: "2.2"
+      WL-WEBHOOK-DRAIN: "2.0"
+    instanceAvailability: "N-1"

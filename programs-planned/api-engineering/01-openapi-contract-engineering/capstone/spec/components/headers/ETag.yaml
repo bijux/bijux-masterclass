@@ -1,0 +1,5 @@
+description: Strong entity tag for conditional project updates.
+schema:
+  type: string
+  pattern: ^"prj_[0-9]{4,18}:[0-9]+"$
+example: '"prj_0001:1"'

@@ -1,0 +1,28 @@
+boundaries:
+- id: B-01
+  name: client to HTTP edge
+  change: untrusted bytes become one bounded request
+- id: B-02
+  name: edge to credential validator
+  change: credential channel becomes candidate identity
+- id: B-03
+  name: validator to authorization
+  change: verified claims become principal context
+- id: B-04
+  name: authorization to application
+  change: policy decision permits exact use case/resource
+- id: B-05
+  name: application to PostgreSQL
+  change: typed intent becomes durable state
+- id: B-06
+  name: upload stream to artifact store
+  change: untrusted bytes become published content
+- id: B-07
+  name: service to outbound network
+  change: tenant URL becomes network capability
+- id: B-08
+  name: runtime to logs/audit
+  change: sensitive execution state becomes retained evidence
+- id: B-09
+  name: source/dependencies to build artifact
+  change: inputs become executable release

@@ -1,0 +1,6 @@
+{
+  "candidate": "missing-compensation",
+  "expected": "reject",
+  "issue": "stored artifact cannot be handled after stale completion",
+  "rejecting_gate": "saga-recovery"
+}

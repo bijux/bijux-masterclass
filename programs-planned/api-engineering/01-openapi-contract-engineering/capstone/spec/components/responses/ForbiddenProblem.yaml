@@ -1,0 +1,15 @@
+description: Permission denied
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: https://api.example.test/problems/forbidden
+      title: Permission denied
+      status: 403
+      detail: The authenticated principal lacks the required permission.
+      instance: /example
+      requestId: req_012345abcdef

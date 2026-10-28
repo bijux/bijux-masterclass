@@ -1,0 +1,9 @@
+{
+  "activeConsumers": 5,
+  "deprecatedVersionUses": 1,
+  "medianTimeToFirstSuccessSeconds": 240.0,
+  "search": {
+    "queries": 4,
+    "zeroResultRate": 0.0
+  }
+}

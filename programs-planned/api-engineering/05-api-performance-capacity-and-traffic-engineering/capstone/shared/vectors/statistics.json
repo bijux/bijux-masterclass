@@ -1,0 +1,67 @@
+{
+  "profile": "1.0",
+  "cases": [
+    {
+      "id": "basic",
+      "samples": [
+        2,
+        4,
+        4,
+        8,
+        20
+      ],
+      "expected": {
+        "count": 5,
+        "minimum": 2.0,
+        "maximum": 20.0,
+        "mean": 7.6,
+        "p50": 4.0,
+        "p90": 20.0,
+        "p95": 20.0,
+        "p99": 20.0,
+        "algorithm": "nearest-rank"
+      }
+    },
+    {
+      "id": "tail",
+      "samples": [
+        11,
+        12,
+        13,
+        15,
+        90
+      ],
+      "expected": {
+        "count": 5,
+        "minimum": 11.0,
+        "maximum": 90.0,
+        "mean": 28.2,
+        "p50": 13.0,
+        "p90": 90.0,
+        "p95": 90.0,
+        "p99": 90.0,
+        "algorithm": "nearest-rank"
+      }
+    },
+    {
+      "id": "ties",
+      "samples": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "expected": {
+        "count": 4,
+        "minimum": 5.0,
+        "maximum": 5.0,
+        "mean": 5.0,
+        "p50": 5.0,
+        "p90": 5.0,
+        "p95": 5.0,
+        "p99": 5.0,
+        "algorithm": "nearest-rank"
+      }
+    }
+  ]
+}

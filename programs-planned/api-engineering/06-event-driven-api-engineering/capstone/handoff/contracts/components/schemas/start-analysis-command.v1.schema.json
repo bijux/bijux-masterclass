@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bijux.dev/events/start-analysis-command.v1",
+  "title": "Start analysis command data",
+  "type": "object",
+  "properties": {
+    "runId": {
+      "type": "string",
+      "pattern": "^run-[0-9]{3}$"
+    },
+    "datasetId": {
+      "type": "string",
+      "pattern": "^dataset-[0-9]{3}$"
+    },
+    "algorithm": {
+      "type": "string",
+      "enum": [
+        "baseline",
+        "sensitive"
+      ]
+    },
+    "requestedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "runId",
+    "datasetId",
+    "algorithm",
+    "requestedAt"
+  ],
+  "additionalProperties": false
+}

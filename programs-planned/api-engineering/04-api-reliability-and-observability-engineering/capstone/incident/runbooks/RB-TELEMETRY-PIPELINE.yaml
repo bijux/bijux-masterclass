@@ -1,0 +1,37 @@
+id: RB-TELEMETRY-PIPELINE
+title: Telemetry pipeline degradation
+owner: Observability platform owner
+trigger: Sustained application drops, collector refusal, or missing known signal
+customerImpact: Diagnostic visibility is reduced; customer correctness cannot be inferred
+  from telemetry alone.
+prerequisites:
+- Independent durable-state and synthetic checks.
+- Access to exporter and collector self-observability.
+immediateActions:
+- Verify customer-facing journeys from independent evidence.
+- Do not restart healthy API instances solely to restore telemetry.
+stopConditions:
+- Do not make collector availability a liveness dependency.
+- Stop increasing telemetry volume while exporter queues are saturated.
+diagnosis:
+- Inspect exporter queue, collector memory limiter, refusal, and drop metrics.
+- Check endpoint, TLS, authentication, and schema compatibility.
+- Identify missing signal types and time ranges.
+mitigation:
+- Reduce nonessential telemetry volume.
+- Restore collector capacity or endpoint connectivity.
+- Preserve bounded structured local events while export is unavailable.
+rollback:
+- Restore the normal sampling and batching policy after recovery.
+- Remove emergency local retention before it becomes unbounded.
+recoveryValidation:
+- Collector accepts data without sustained refusal.
+- Application drop counters stop increasing.
+- A known trace, metric, and structured event arrive end to end.
+closureCriteria:
+- No unexplained telemetry gap remains in the incident interval.
+- Any lost evidence is documented as a proof limitation.
+- Follow-up capacity or configuration work is owned.
+escalation:
+- Escalate to platform owner for collector or backend defects.
+- Escalate to security when telemetry loss may be deliberate.

@@ -1,0 +1,13 @@
+name: status
+in: query
+required: false
+description: Return runs in one lifecycle state.
+schema:
+  type: string
+  enum:
+  - queued
+  - running
+  - completed
+  - failed
+  - canceled
+example: running

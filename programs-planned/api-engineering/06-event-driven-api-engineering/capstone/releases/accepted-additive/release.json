@@ -1,0 +1,14 @@
+{
+  "candidateId": "accepted-additive",
+  "eventType": "org.bijux.analysis.run.completed.v1",
+  "eventApiVersion": "1.1.0",
+  "expectedDecision": "accepted",
+  "gates": {
+    "contractValid": true,
+    "replaySafe": true,
+    "catalogComplete": true,
+    "securityValid": true,
+    "reliabilityReady": true
+  },
+  "rationale": "Optional digest can be ignored by tolerant consumers and is replay safe."
+}

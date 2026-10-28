@@ -1,0 +1,1 @@
+use std::{env,fs,path::PathBuf}; fn main(){println!("cargo::rerun-if-changed=build.rs");let out=PathBuf::from(env::var("OUT_DIR").unwrap());fs::write(out.join("generated.rs"),"pub const VALUE:u32=42;\n").unwrap();}

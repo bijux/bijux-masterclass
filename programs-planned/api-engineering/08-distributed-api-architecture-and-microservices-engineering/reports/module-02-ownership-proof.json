@@ -1,0 +1,11 @@
+{
+  "evidence_class": "structural-and-semantic",
+  "service_count": 5,
+  "business_services": ["analysis-control", "artifact-service", "notification-service"],
+  "edge_components": ["edge-gateway"],
+  "compute_planes": ["worker-plane"],
+  "facts_with_exactly_one_writer": 8,
+  "ownerless_services": [],
+  "duplicate_writers": [],
+  "status": "pass"
+}

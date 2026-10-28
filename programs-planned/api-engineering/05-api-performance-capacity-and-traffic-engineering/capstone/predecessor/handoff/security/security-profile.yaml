@@ -1,0 +1,41 @@
+profile: api-security-profile-1.0
+publicApi: 1.2.0
+jwt:
+  algorithms:
+  - RS256
+  typ: at+jwt
+  issuer: https://issuer.security.test
+  audience: analysis-runs-api
+  requiredClaims:
+  - iss
+  - aud
+  - sub
+  - exp
+  - iat
+  - jti
+  - tenant
+  - scope
+  clockSkewSeconds: 30
+  maxLifetimeSeconds: 900
+webhook:
+  version: v1
+  algorithm: HMAC-SHA256
+  header: X-Analysis-Signature
+  timestampHeader: X-Analysis-Timestamp
+  deliveryHeader: X-Analysis-Delivery
+  keyIdHeader: X-Analysis-Key-Id
+  maxAgeSeconds: 300
+edge:
+  maxJsonBytes: 1048576
+  maxJsonDepth: 32
+  trustedProxyDefault: deny
+  allowedHosts:
+  - api.example.test
+outbound:
+  schemes:
+  - https
+  ports:
+  - 443
+  maxRedirects: 2
+  rejectMixedDns: true
+  verifyConnectedPeer: true
