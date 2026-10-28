@@ -4,6 +4,11 @@ This repository is the permanent home for the Bijux Masterclass program collecti
 Each program keeps its own full git history while living inside one repository,
 so new programs can be added without duplicating repo-level setup.
 
+Unfinished teaching material lives in [planned programs](programs-planned/README.md).
+It is retained for further work and is separate from the supported programs below.
+Planned material is excluded from course validation, qualification inputs and the
+published course catalogue.
+
 ## Repository Layout
 
 ```mermaid
