@@ -1,0 +1,9 @@
+{
+  "candidate": "missing-compensation",
+  "defect": "stored artifact cannot be handled after stale completion",
+  "expected": "reject",
+  "id": "DIST-06",
+  "lesson": "A completed remote effect needs a defined semantic response when the parent workflow can no longer accept it.",
+  "rejecting_gate": "saga-recovery",
+  "title": "Missing Compensation"
+}

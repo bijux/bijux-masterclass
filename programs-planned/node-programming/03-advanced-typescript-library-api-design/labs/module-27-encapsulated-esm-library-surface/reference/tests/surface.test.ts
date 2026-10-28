@@ -1,0 +1,3 @@
+import assert from'node:assert/strict';import test from'node:test';import{readFile}from'node:fs/promises';import{greet}from'../src/index.js';import{greetingText}from'../src/testing.js';
+test('public entry points work without exposing normalization',()=>{const value=greet(' Ada  Lovelace ');assert.equal(greetingText(value),'Hello, Ada Lovelace');});
+test('package exports exactly supported paths',async()=>{const text=await readFile(new URL('../../package.json',import.meta.url),'utf8');const value=JSON.parse(text)as{exports:Record<string,unknown>};assert.deepEqual(Object.keys(value.exports).sort(),['.','./testing']);});

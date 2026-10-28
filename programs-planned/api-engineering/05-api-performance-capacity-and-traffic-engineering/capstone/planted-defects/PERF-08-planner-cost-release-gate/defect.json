@@ -1,0 +1,7 @@
+{
+  "description": "Version-dependent planner cost is treated as stable latency evidence.",
+  "expectedOracle": "plan-policy-review",
+  "id": "PERF-08",
+  "mustBeRejected": true,
+  "slug": "planner-cost-release-gate"
+}

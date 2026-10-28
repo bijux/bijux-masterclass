@@ -1,0 +1,8 @@
+{
+  "activeOperationsValid": false,
+  "budgetsPass": true,
+  "change": "add required Query.project(region: String!)",
+  "expected": "breaking",
+  "oldClientPasses": false,
+  "ownershipComplete": true
+}

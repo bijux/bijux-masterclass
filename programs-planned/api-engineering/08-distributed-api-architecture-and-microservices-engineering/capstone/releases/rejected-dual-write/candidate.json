@@ -1,0 +1,6 @@
+{
+  "candidate": "dual-write",
+  "expected": "reject",
+  "issue": "legacy and artifact service are written independently",
+  "rejecting_gate": "saga-recovery"
+}

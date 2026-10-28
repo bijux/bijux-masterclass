@@ -1,0 +1,22 @@
+{
+  "data": {
+    "analysisRun": {
+      "artifacts": null,
+      "id": "QW5hbHlzaXNSdW46cnVuLTE",
+      "status": "COMPLETED"
+    }
+  },
+  "errors": [
+    {
+      "extensions": {
+        "code": "DOWNSTREAM_UNAVAILABLE",
+        "service": "artifact-service"
+      },
+      "message": "Artifact data is temporarily unavailable",
+      "path": [
+        "analysisRun",
+        "artifacts"
+      ]
+    }
+  ]
+}

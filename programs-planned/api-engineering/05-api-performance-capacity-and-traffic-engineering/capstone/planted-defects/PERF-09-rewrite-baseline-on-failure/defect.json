@@ -1,0 +1,7 @@
+{
+  "description": "A failed candidate silently becomes the new baseline.",
+  "expectedOracle": "baseline-registry-proof",
+  "id": "PERF-09",
+  "mustBeRejected": true,
+  "slug": "rewrite-baseline-on-failure"
+}

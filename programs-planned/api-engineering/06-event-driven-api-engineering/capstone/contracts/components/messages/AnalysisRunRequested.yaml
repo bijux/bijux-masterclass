@@ -1,0 +1,25 @@
+name: AnalysisRunRequested
+title: Analysis run requested
+summary: Analysis run requested under event profile 1.0
+contentType: application/cloudevents+json
+payload:
+  allOf:
+  - $ref: ../schemas/event-envelope.v1.schema.json
+  - type: object
+    properties:
+      type:
+        const: org.bijux.analysis.run.requested.v1
+      dataschema:
+        const: https://schemas.bijux.dev/events/analysis-run-requested.v1
+      data:
+        $ref: ../schemas/analysis-run-requested.v1.schema.json
+    required:
+    - type
+    - dataschema
+    - data
+x-event-type: org.bijux.analysis.run.requested.v1
+x-data-schema: ../schemas/analysis-run-requested.v1.schema.json
+x-example: ../../examples/analysis-run-requested.v1.json
+x-owner: urn:bijux:analysis-control
+x-partition-key: partitionkey
+x-event-profile: '1.0'

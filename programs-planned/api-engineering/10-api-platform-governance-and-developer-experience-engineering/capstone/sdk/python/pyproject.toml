@@ -1,0 +1,5 @@
+[project]
+name = "analysis-api-client"
+version = "1.2.0"
+description = "Course reference client for Analysis HTTP API 1.2"
+requires-python = ">=3.11"

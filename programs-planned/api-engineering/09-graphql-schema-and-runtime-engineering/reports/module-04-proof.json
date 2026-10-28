@@ -1,0 +1,16 @@
+{
+  "audience_mismatch_rejected": true,
+  "cursor_bound_to": [
+    "tenant",
+    "audience",
+    "field-scope",
+    "normalized-filter",
+    "continuation-key",
+    "high-water-key",
+    "expiry",
+    "version"
+  ],
+  "fresh_traversal_observes_newer_insert": true,
+  "newer_insert_excluded_from_existing_traversal": true,
+  "status": "pass"
+}

@@ -1,0 +1,115 @@
+{
+  "panels": [
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "targets": [
+        {
+          "expr": "analysis:sli_api_availability:bad_ratio_rate5m",
+          "legendFormat": "5m bad ratio"
+        }
+      ],
+      "title": "Eligible API bad-event ratio",
+      "type": "timeseries"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "targets": [
+        {
+          "expr": "analysis:sli_run_start_freshness:bad_ratio_rate5m",
+          "legendFormat": "5m late ratio"
+        }
+      ],
+      "title": "Run-start freshness bad-event ratio",
+      "type": "timeseries"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum by (le, operation) (rate(analysis_http_server_duration_seconds_bucket[5m])))",
+          "legendFormat": "p99 {{operation}}"
+        }
+      ],
+      "title": "HTTP duration distribution",
+      "type": "timeseries"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "targets": [
+        {
+          "expr": "max(analysis_worker_oldest_queued_age_seconds)",
+          "legendFormat": "oldest queued age"
+        }
+      ],
+      "title": "Worker queue age",
+      "type": "timeseries"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "targets": [
+        {
+          "expr": "sum(rate(analysis_telemetry_dropped_total[5m]))",
+          "legendFormat": "events/s"
+        }
+      ],
+      "title": "Dropped operational events",
+      "type": "timeseries"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 6,
+      "targets": [
+        {
+          "expr": "sum(analysis_http_server_active_requests)",
+          "legendFormat": "active"
+        }
+      ],
+      "title": "Active HTTP requests",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 40,
+  "tags": [
+    "api-engineering",
+    "course-4"
+  ],
+  "title": "Analysis Runs Reliability Overview",
+  "uid": "analysis-reliability",
+  "version": 1
+}

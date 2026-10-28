@@ -1,0 +1,39 @@
+{
+  "profile": "1.0",
+  "cases": [
+    {
+      "id": "sorted-keys",
+      "value": {
+        "b": 2,
+        "a": {
+          "y": 2,
+          "x": 1
+        }
+      },
+      "canonical": "{\"a\":{\"x\":1,\"y\":2},\"b\":2}",
+      "identity": "sha256:a357b74a066b211d9bc4f054cd6a83d05194afe0804ca9c438f8d06be617fd19"
+    },
+    {
+      "id": "unicode",
+      "value": {
+        "name": "M\u00fcnchen",
+        "active": true
+      },
+      "canonical": "{\"active\":true,\"name\":\"M\u00fcnchen\"}",
+      "identity": "sha256:49ca63772af2c9d738303c3856c9599d73b961759c1358e77c1c94b57e243ffd"
+    },
+    {
+      "id": "array",
+      "value": {
+        "items": [
+          3,
+          2,
+          1
+        ],
+        "label": "x"
+      },
+      "canonical": "{\"items\":[3,2,1],\"label\":\"x\"}",
+      "identity": "sha256:684b3a8a82ce11c639e714ced3be801f4ba0a47285aa5a4d66d62ab682564115"
+    }
+  ]
+}

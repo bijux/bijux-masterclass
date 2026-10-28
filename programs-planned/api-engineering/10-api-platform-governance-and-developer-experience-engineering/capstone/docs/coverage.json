@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "apis": [
+    {"apiRef":"api:default/analysis-http","overview":"source/apis/analysis-http.md","quickstart":"source/quickstart.md","taskGuide":"source/tasks/submit-analysis.md","reference":"../contracts/http/analysis-http-api-1.2.openapi.yaml","support":"source/support.md","changelog":"../../CHANGELOG.md"},
+    {"apiRef":"api:default/analysis-events","overview":"source/apis/analysis-events.md","quickstart":"source/quickstart.md","taskGuide":"source/tasks/observe-analysis.md","reference":"../contracts/events/asyncapi.yaml","support":"source/support.md","changelog":"../../CHANGELOG.md"},
+    {"apiRef":"api:default/analysis-rpc","overview":"source/apis/analysis-rpc.md","quickstart":"source/quickstart.md","taskGuide":"source/tasks/observe-analysis.md","reference":"../contracts/rpc/bijux/analysis/v1/analysis.proto","support":"source/support.md","changelog":"../../CHANGELOG.md"},
+    {"apiRef":"api:default/analysis-graph","overview":"source/apis/analysis-graph.md","quickstart":"source/quickstart.md","taskGuide":"source/tasks/submit-analysis.md","reference":"../contracts/graph/schema.graphql","support":"source/support.md","changelog":"../../CHANGELOG.md"},
+    {"apiRef":"api:default/artifact-http","overview":"source/apis/artifact-http.md","quickstart":"source/quickstart.md","taskGuide":"source/tasks/download-artifact.md","reference":"../contracts/capabilities/artifact-http.openapi.yaml","support":"source/support.md","changelog":"../../CHANGELOG.md"},
+    {"apiRef":"api:default/notification-http","overview":"source/apis/notification-http.md","quickstart":"source/quickstart.md","taskGuide":"source/tasks/observe-analysis.md","reference":"../contracts/capabilities/notification-http.openapi.yaml","support":"source/support.md","changelog":"../../CHANGELOG.md"},
+    {"apiRef":"api:default/platform-catalog","overview":"source/apis/platform-catalog.md","quickstart":"source/quickstart.md","taskGuide":"source/tasks/migrate-http-1.1-to-1.2.md","reference":"../contracts/platform/platform-catalog.openapi.yaml","support":"source/support.md","changelog":"../../CHANGELOG.md"}
+  ]
+}

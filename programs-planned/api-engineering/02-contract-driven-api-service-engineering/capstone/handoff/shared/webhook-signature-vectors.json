@@ -1,0 +1,16 @@
+{
+  "algorithm": "HMAC-SHA256",
+  "header": "X-Webhook-Signature: sha256=<hex>",
+  "receiverRules": [
+    "reject stale timestamp",
+    "constant-time signature comparison",
+    "deduplicate by event ID",
+    "same ID with changed payload is conflict"
+  ],
+  "requiredHeaders": [
+    "X-Event-Id",
+    "X-Webhook-Timestamp",
+    "X-Webhook-Signature"
+  ],
+  "signedBytes": "ASCII(timestamp) + period + exact HTTP body bytes"
+}

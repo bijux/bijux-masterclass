@@ -1,0 +1,15 @@
+description: Resource not found
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: https://api.example.test/problems/notfound
+      title: Resource not found
+      status: 404
+      detail: The requested resource does not exist.
+      instance: /example
+      requestId: req_012345abcdef

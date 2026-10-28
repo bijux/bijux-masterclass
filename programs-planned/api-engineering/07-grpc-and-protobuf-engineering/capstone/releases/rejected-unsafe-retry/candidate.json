@@ -1,0 +1,5 @@
+{
+  "change": "configure CreateRun retry without idempotency",
+  "expected": "reject",
+  "reason": "duplicate durable effects"
+}

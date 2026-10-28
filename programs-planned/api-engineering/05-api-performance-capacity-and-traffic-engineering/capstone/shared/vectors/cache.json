@@ -1,0 +1,48 @@
+{
+  "cases": [
+    {
+      "different": {
+        "operation": "getProject",
+        "principal": "user-b",
+        "representation": "json",
+        "resource": "project-1",
+        "tenant": "tenant-a"
+      },
+      "id": "CACHE-OWNER-BOUND",
+      "key": {
+        "operation": "getProject",
+        "principal": "user-a",
+        "representation": "json",
+        "resource": "project-1",
+        "tenant": "tenant-a"
+      },
+      "sameKeyExpected": false
+    },
+    {
+      "different": {
+        "operation": "getArtifact",
+        "principal": "user-a",
+        "representation": "application/json",
+        "resource": "artifact-1",
+        "tenant": "tenant-a"
+      },
+      "id": "CACHE-VARIANT-BOUND",
+      "key": {
+        "operation": "getArtifact",
+        "principal": "user-a",
+        "representation": "application/octet-stream",
+        "resource": "artifact-1",
+        "tenant": "tenant-a"
+      },
+      "sameKeyExpected": false
+    },
+    {
+      "id": "CACHE-VERSION-INVALIDATION",
+      "sameKeyExpected": false,
+      "versions": [
+        7,
+        8
+      ]
+    }
+  ]
+}

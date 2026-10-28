@@ -1,0 +1,3 @@
+import assert from 'node:assert/strict'; import test from 'node:test'; import { inspect } from 'node:util'; import { Distance } from '../src/index.js';
+test('implements separate conversion surfaces',()=>{const d=new Distance(1250);assert.equal(Number(d),1250);assert.equal(String(d),'1.250 m');assert.equal(`${d}`,'1.250 m');assert.equal(Object.prototype.toString.call(d),'[object Distance]');assert.deepEqual([...d],[['metres',1],['millimetres',250]]);assert.equal(JSON.stringify(d),'{"format":"DISTANCE_V1","millimetres":1250}');assert.equal(inspect(d),'Distance { millimetres: 1250 }');});
+test('creates a fresh iterator',()=>{const d=new Distance(5);assert.notEqual(d[Symbol.iterator](),d[Symbol.iterator]());});

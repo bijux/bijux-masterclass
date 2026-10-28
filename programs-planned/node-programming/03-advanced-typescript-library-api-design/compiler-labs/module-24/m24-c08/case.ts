@@ -1,0 +1,1 @@
+const handlers={nameChanged:(value:string)=>value.toUpperCase()};const name='roleChanged';const selected=(handlers as Record<string,(value:string)=>string>)[name];if(selected===undefined)throw new Error('unknown generated event');console.log(selected('admin'));

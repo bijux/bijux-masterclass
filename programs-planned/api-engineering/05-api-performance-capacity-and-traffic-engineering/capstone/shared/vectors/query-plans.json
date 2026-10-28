@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "after": "database/plans/run-list-after.json",
+      "before": "database/plans/run-list-before.json",
+      "expected": {
+        "actualRowDelta": 0,
+        "addedIndexes": [
+          "idx_analysis_runs_owner_status_created_id"
+        ],
+        "readBlockDeltaMaximum": -4000,
+        "removedSequentialScans": [
+          "analysis_runs"
+        ]
+      },
+      "id": "PLAN-RUN-LIST-IMPROVES"
+    },
+    {
+      "after": "database/plans/job-claim-after.json",
+      "before": "database/plans/job-claim-before.json",
+      "expected": {
+        "actualRowDelta": 0,
+        "addedIndexes": [
+          "idx_run_jobs_available_claim"
+        ],
+        "readBlockDeltaMaximum": -900,
+        "removedSequentialScans": [
+          "run_jobs"
+        ]
+      },
+      "id": "PLAN-JOB-CLAIM-IMPROVES"
+    }
+  ]
+}

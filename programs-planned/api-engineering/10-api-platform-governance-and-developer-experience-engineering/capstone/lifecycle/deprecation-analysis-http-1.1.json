@@ -1,0 +1,13 @@
+{
+  "announcedAt": "2026-05-01T00:00:00Z",
+  "apiRef": "api:default/analysis-http",
+  "blockingConsumers": [
+    "consumer-legacy-cli"
+  ],
+  "migrationGuide": "docs/tasks/migrate-http-1.1-to-1.2.md",
+  "noticeEndsAt": "2026-09-01T00:00:00Z",
+  "replacement": "1.2.0",
+  "retirementDecision": "blocked",
+  "state": "deprecated",
+  "version": "1.1.0"
+}

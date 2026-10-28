@@ -1,0 +1,3 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.11", import: ["@key"])
+type Project @key(fields: "id") { id: ID!, name: String!, analysisRuns(first: Int = 20, after: Cursor): AnalysisRunConnection! }
+type AnalysisRun @key(fields: "id") { id: ID!, status: RunStatus!, version: Version! }

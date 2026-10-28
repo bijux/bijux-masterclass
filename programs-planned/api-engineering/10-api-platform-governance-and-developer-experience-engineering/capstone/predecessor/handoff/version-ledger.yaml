@@ -1,0 +1,14 @@
+version: '1.0'
+public_http_api: '1.2'
+analysis_events_api: '1.0'
+analysis_rpc_api: '1.0'
+distributed_architecture_profile: '1.0'
+analysis_graph_api: '1.0'
+graphql_specification: September 2025
+graphql_over_http_profile: course-profile-1.0-stage-2-draft
+service_versions:
+  graph-gateway: 1.0.0
+  analysis-control: 1.0.0
+  artifact-service: 1.0.0
+  notification-service: 1.0.0
+platform_catalog_migration_head: '004'

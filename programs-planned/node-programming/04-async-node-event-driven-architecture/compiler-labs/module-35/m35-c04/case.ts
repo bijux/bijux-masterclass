@@ -1,0 +1,1 @@
+setTimeout(()=>undefined,'soon'); export {};

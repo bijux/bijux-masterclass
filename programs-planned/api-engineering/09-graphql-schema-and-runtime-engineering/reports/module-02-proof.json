@@ -1,0 +1,6 @@
+{
+  "nonnull_artifacts_bubbles": true,
+  "nullable_artifacts_preserves_run": true,
+  "oneof_invalid_cases": 3,
+  "status": "pass"
+}

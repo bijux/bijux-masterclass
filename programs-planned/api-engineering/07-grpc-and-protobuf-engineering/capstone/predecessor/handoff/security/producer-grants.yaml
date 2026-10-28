@@ -1,0 +1,38 @@
+version: '1.0'
+grants:
+  - producerId: analysis-control
+    sources: [urn:bijux:analysis-control]
+    channels: [analysis.commands.start.v1, analysis.events.run.lifecycle.v1]
+    eventTypes:
+      - com.bijux.analysis.command.start.v1
+      - org.bijux.analysis.run.requested.v1
+    tenantScope: delegated
+  - producerId: analysis-worker
+    sources: [urn:bijux:analysis-worker]
+    channels: [analysis.events.run.lifecycle.v1]
+    eventTypes:
+      - org.bijux.analysis.run.started.v1
+      - org.bijux.analysis.run.progressed.v1
+      - org.bijux.analysis.run.completed.v1
+      - org.bijux.analysis.run.failed.v1
+    tenantScope: job-bound
+  - producerId: artifact-service
+    sources: [urn:bijux:artifact-service]
+    channels: [analysis.events.artifact.v1]
+    eventTypes: [org.bijux.analysis.artifact.published.v1]
+    tenantScope: artifact-owner-bound
+prohibitedPayloadFields:
+  - accessToken
+  - refreshToken
+  - password
+  - authorization
+  - rawDataset
+  - webhookSecret
+  - leaseToken
+  - stackTrace
+signatureProfile:
+  algorithm: HMAC-SHA256
+  input: timestamp + newline + canonical event bytes
+  header: sha256=<lowercase hexadecimal digest>
+  keyIdRequired: true
+  freshnessSeconds: 300

@@ -1,0 +1,20 @@
+[
+  {
+    "bubble_to": "artifacts",
+    "data": null,
+    "downstream": "unavailable",
+    "field": "AnalysisRun.artifacts"
+  },
+  {
+    "bubble_to": "project",
+    "data": null,
+    "downstream": "unavailable",
+    "field": "Project.analysisRuns"
+  },
+  {
+    "bubble_to": "deliverySummary",
+    "data": null,
+    "downstream": "unavailable",
+    "field": "AnalysisRun.deliverySummary"
+  }
+]

@@ -1,0 +1,7 @@
+subscription RunUpdates($runId: ID!, $afterSequence: String) {
+  analysisRunUpdated(runId: $runId, afterSequence: $afterSequence) {
+    sequence
+    occurredAt
+    run { id status version resultSummary }
+  }
+}

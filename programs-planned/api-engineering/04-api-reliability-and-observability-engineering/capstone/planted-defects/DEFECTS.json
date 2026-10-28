@@ -1,0 +1,104 @@
+{
+  "defects": [
+    {
+      "detector": "journey-slo-coverage",
+      "expectedCommand": "make module-proof MODULE=01",
+      "expectedFailure": "SLO without a critical journey is rejected.",
+      "id": "DEFECT-REL-01",
+      "module": 1,
+      "mutation": "Remove all journey references from one SLO.",
+      "name": "Component-only dashboard",
+      "oracle": "journey SLI and durable-state check"
+    },
+    {
+      "detector": "deadline-parent-bound",
+      "expectedCommand": "make module-proof MODULE=02",
+      "expectedFailure": "Child deadline extension is rejected.",
+      "id": "DEFECT-REL-02",
+      "module": 2,
+      "mutation": "Reset a child expiry beyond the parent deadline.",
+      "name": "Relative timeout reset",
+      "oracle": "absolute expiry assertion"
+    },
+    {
+      "detector": "dependency-circuit-scope",
+      "expectedCommand": "make module-proof MODULE=03",
+      "expectedFailure": "Circuit scope other than dependency is rejected.",
+      "id": "DEFECT-REL-03",
+      "module": 3,
+      "mutation": "Share one global circuit across unrelated dependencies.",
+      "name": "Global circuit",
+      "oracle": "operation-scoped state"
+    },
+    {
+      "detector": "distinct-health-contracts",
+      "expectedCommand": "make module-proof MODULE=04",
+      "expectedFailure": "Identical liveness/readiness semantics are rejected.",
+      "id": "DEFECT-REL-04",
+      "module": 4,
+      "mutation": "Route liveness and readiness to one collapsed decision.",
+      "name": "Collapsed health endpoint",
+      "oracle": "separate state and probe tests"
+    },
+    {
+      "detector": "telemetry-event-schema",
+      "expectedCommand": "make module-proof MODULE=05",
+      "expectedFailure": "Structured telemetry event validation rejects it.",
+      "id": "DEFECT-REL-05",
+      "module": 5,
+      "mutation": "Emit a free-form event name with spaces and capitals.",
+      "name": "Free-form event vocabulary",
+      "oracle": "schema conformance"
+    },
+    {
+      "detector": "metric-identifier-label-policy",
+      "expectedCommand": "make module-proof MODULE=06",
+      "expectedFailure": "Metric descriptor validation rejects identifier labels.",
+      "id": "DEFECT-REL-06",
+      "module": 6,
+      "mutation": "Add run_id as a metric label.",
+      "name": "Unique-ID label",
+      "oracle": "series cardinality test"
+    },
+    {
+      "detector": "durable-trace-link-policy",
+      "expectedCommand": "make module-proof MODULE=07",
+      "expectedFailure": "Durable boundaries require a trace link.",
+      "id": "DEFECT-REL-07",
+      "module": 7,
+      "mutation": "Represent durable queue delay as one synchronous child span.",
+      "name": "Async child misuse",
+      "oracle": "topology review"
+    },
+    {
+      "detector": "slo-catalog-version",
+      "expectedCommand": "make module-proof MODULE=08",
+      "expectedFailure": "Unversioned objective catalogs are rejected.",
+      "id": "DEFECT-REL-08",
+      "module": 8,
+      "mutation": "Remove catalogVersion from the SLO catalog.",
+      "name": "Unversioned objective",
+      "oracle": "catalog history"
+    },
+    {
+      "detector": "fault-plan-hypothesis",
+      "expectedCommand": "make module-proof MODULE=09",
+      "expectedFailure": "Fault plan validation rejects it.",
+      "id": "DEFECT-REL-09",
+      "module": 9,
+      "mutation": "Run a fault experiment with no falsifiable hypothesis.",
+      "name": "No hypothesis",
+      "oracle": "plan validation"
+    },
+    {
+      "detector": "incident-role-contract",
+      "expectedCommand": "make module-proof MODULE=10",
+      "expectedFailure": "Incident role validation rejects it.",
+      "id": "DEFECT-REL-10",
+      "module": 10,
+      "mutation": "Remove the incident commander.",
+      "name": "No incident lead",
+      "oracle": "role/timeline audit"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+type: object
+additionalProperties: false
+required:
+- items
+- nextCursor
+properties:
+  items:
+    type: array
+    maxItems: 50
+    items:
+      $ref: ./Project.yaml
+  nextCursor:
+    type:
+    - string
+    - 'null'
+    pattern: ^[0-9]+$
+examples:
+- items:
+  - id: prj_0001
+    ownerId: learner
+    name: Summer cohort
+    description: Quality analysis for the August cohort.
+    version: 1
+    createdAt: '2026-08-05T10:00:00Z'
+    updatedAt: '2026-08-05T10:00:00Z'
+  nextCursor: null

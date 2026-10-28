@@ -1,0 +1,71 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "envelope",
+  "cases": [
+    {
+      "id": "ENV-001",
+      "description": "canonical object keys are sorted",
+      "expected": "accepted"
+    },
+    {
+      "id": "ENV-002",
+      "description": "non-finite number is rejected",
+      "expected": "rejected"
+    },
+    {
+      "id": "ENV-003",
+      "description": "integer beyond JavaScript safe range is rejected",
+      "expected": "rejected"
+    },
+    {
+      "id": "ENV-004",
+      "description": "event type requires a major suffix",
+      "expected": "rejected"
+    },
+    {
+      "id": "ENV-005",
+      "description": "absolute source URI is required",
+      "expected": "rejected"
+    },
+    {
+      "id": "ENV-006",
+      "description": "same envelope yields identical bytes",
+      "expected": "accepted"
+    },
+    {
+      "id": "ENV-007",
+      "description": "binary floating-point values are rejected to preserve cross-language bytes",
+      "expected": "rejected"
+    }
+  ],
+  "canonicalExamples": [
+    {
+      "file": "analysis-run-completed.v1.json",
+      "sha256": "1c5bb79bba931f8c902478a2ebf0805d3f665103412d405ab0146a1ee45570a4"
+    },
+    {
+      "file": "analysis-run-failed.v1.json",
+      "sha256": "e73edf7a72dff926990a0a924c5c88cd86f7a6a65da5698500011c440bbecd5b"
+    },
+    {
+      "file": "analysis-run-progressed.v1.json",
+      "sha256": "1dc7c174a19bb0af45cd8cb63271cc06cc9391018d0e6a1ed49e7e04b177717f"
+    },
+    {
+      "file": "analysis-run-requested.v1.json",
+      "sha256": "b20e6f300a63bc361f9eb104cfa83b260f0610077a760bb63902d7c9b6f16daa"
+    },
+    {
+      "file": "analysis-run-started.v1.json",
+      "sha256": "cbb390d71e6ca9b26de152b8036090f836c1c152472a8335c7414cdb9b97e2b3"
+    },
+    {
+      "file": "artifact-published.v1.json",
+      "sha256": "39ae875d8a046529c9f9b8d9da73c6d7a5f85633732401593cc0f95aefdc77d6"
+    },
+    {
+      "file": "start-analysis-command.v1.json",
+      "sha256": "0e916f6d1d3a9fc70e9c5773f2f4abb73c8de34bb22186a8c3bf4fd0a1006309"
+    }
+  ]
+}

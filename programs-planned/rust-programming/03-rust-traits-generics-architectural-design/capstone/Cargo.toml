@@ -1,0 +1,17 @@
+[package]
+name = "review-engine"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[lib]
+name = "review_engine"
+path = "src/lib.rs"
+
+[[bin]]
+name = "review-engine"
+path = "src/main.rs"
+
+[lints]
+workspace = true

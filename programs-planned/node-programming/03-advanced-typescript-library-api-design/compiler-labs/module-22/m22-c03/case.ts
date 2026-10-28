@@ -1,0 +1,1 @@
+type Values<T,K extends readonly(keyof T)[]>={[I in keyof K]:K[I] extends keyof T?T[K[I]]:never};function values<T,const K extends readonly(keyof T)[]>(v:T,k:K):Values<T,K>{return k.map(x=>v[x])as Values<T,K>;}const x=values({name:'Ada',age:37},['age','name']as const);const y:readonly[number,string]=x;console.log(y);

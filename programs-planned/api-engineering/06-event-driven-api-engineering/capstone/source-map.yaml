@@ -1,0 +1,30 @@
+version: '1.0'
+mechanisms:
+  envelope:
+    python: tracks/python-fastapi/src/event_engineering/envelope.py
+    typescript: tracks/typescript-fastify/src/event-engineering/envelope.ts
+    evidence: shared/vectors/envelope.json
+  delivery:
+    python: tracks/python-fastapi/src/event_engineering/broker.py
+    typescript: tracks/typescript-fastify/src/event-engineering/broker.ts
+    evidence: shared/vectors/delivery.json
+  outboxInbox:
+    python: tracks/python-fastapi/src/event_engineering/outbox.py
+    typescript: tracks/typescript-fastify/src/event-engineering/outbox.ts
+    evidence: shared/vectors/outbox-inbox.json
+  evolutionReplay:
+    python: tracks/python-fastapi/src/event_engineering/evolution.py
+    typescript: tracks/typescript-fastify/src/event-engineering/evolution.ts
+    evidence: shared/vectors/evolution.json
+  eventTime:
+    python: tracks/python-fastapi/src/event_engineering/stream.py
+    typescript: tracks/typescript-fastify/src/event-engineering/stream.ts
+    evidence: shared/vectors/stream-time.json
+  security:
+    python: tracks/python-fastapi/src/event_engineering/security.py
+    typescript: tracks/typescript-fastify/src/event-engineering/security.ts
+    evidence: shared/vectors/security.json
+  reliability:
+    python: tracks/python-fastapi/src/event_engineering/reliability.py
+    typescript: tracks/typescript-fastify/src/event-engineering/reliability.ts
+    evidence: shared/vectors/reliability.json

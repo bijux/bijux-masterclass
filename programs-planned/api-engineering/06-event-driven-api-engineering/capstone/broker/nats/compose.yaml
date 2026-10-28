@@ -1,0 +1,17 @@
+services:
+  nats:
+    image: nats:2.14.4-alpine
+    command: ["-c", "/etc/nats/nats-server.conf"]
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - ./nats-server.conf:/etc/nats/nats-server.conf:ro
+      - nats-data:/data/jetstream
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8222/healthz"]
+      interval: 2s
+      timeout: 1s
+      retries: 20
+volumes:
+  nats-data: {}

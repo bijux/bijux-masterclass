@@ -1,0 +1,32 @@
+{
+  "profile": "1.0",
+  "cases": [
+    {
+      "id": "refill-boundary",
+      "capacity": "10000000",
+      "refillPerSecond": "2000000",
+      "initialTokens": "5000000",
+      "steps": [
+        {
+          "nowNs": "0",
+          "cost": "5000000",
+          "expectedAllowed": true,
+          "expectedRemaining": "0"
+        },
+        {
+          "nowNs": "2000000000",
+          "cost": "5000000",
+          "expectedAllowed": false,
+          "expectedRemaining": "4000000",
+          "expectedRetryAfterNs": "500000000"
+        },
+        {
+          "nowNs": "2500000000",
+          "cost": "5000000",
+          "expectedAllowed": true,
+          "expectedRemaining": "0"
+        }
+      ]
+    }
+  ]
+}

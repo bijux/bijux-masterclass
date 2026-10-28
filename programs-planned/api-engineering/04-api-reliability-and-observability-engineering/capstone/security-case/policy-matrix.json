@@ -1,0 +1,284 @@
+{
+  "policies": [
+    {
+      "assurance": "baseline",
+      "audit": false,
+      "concealment": "public",
+      "credential": "anonymous",
+      "freshAuthentication": false,
+      "operationId": "getHealth",
+      "relationship": "none",
+      "roles": [],
+      "scopes": [],
+      "tenantBound": false
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "listProjects",
+      "relationship": "tenant-query",
+      "roles": [],
+      "scopes": [
+        "projects:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "explicit",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "createProject",
+      "relationship": "tenant-create",
+      "roles": [],
+      "scopes": [
+        "projects:write"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "getProject",
+      "relationship": "owner-or-member",
+      "roles": [],
+      "scopes": [
+        "projects:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "updateProject",
+      "relationship": "owner",
+      "roles": [],
+      "scopes": [
+        "projects:write"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "listProjectDatasets",
+      "relationship": "project-member",
+      "roles": [],
+      "scopes": [
+        "datasets:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "createDataset",
+      "relationship": "project-owner-or-writer",
+      "roles": [],
+      "scopes": [
+        "datasets:write"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "getDataset",
+      "relationship": "project-member",
+      "roles": [],
+      "scopes": [
+        "datasets:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "deleteDataset",
+      "relationship": "project-owner",
+      "roles": [],
+      "scopes": [
+        "datasets:write"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "uploadDatasetContent",
+      "relationship": "project-owner-or-writer",
+      "roles": [],
+      "scopes": [
+        "datasets:write"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "listAnalysisRuns",
+      "relationship": "tenant-query",
+      "roles": [],
+      "scopes": [
+        "runs:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "createAnalysisRun",
+      "relationship": "project-member-and-dataset",
+      "roles": [],
+      "scopes": [
+        "runs:write"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "getAnalysisRun",
+      "relationship": "project-member",
+      "roles": [],
+      "scopes": [
+        "runs:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "cancelAnalysisRun",
+      "relationship": "project-owner-or-run-creator",
+      "roles": [],
+      "scopes": [
+        "runs:write"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "listRunArtifacts",
+      "relationship": "project-member-completed-run",
+      "roles": [],
+      "scopes": [
+        "artifacts:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "streamAnalysisRunEvents",
+      "relationship": "project-member",
+      "roles": [],
+      "scopes": [
+        "runs:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "getArtifact",
+      "relationship": "project-member",
+      "roles": [],
+      "scopes": [
+        "artifacts:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "explicit",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "createWebhookSubscription",
+      "relationship": "tenant-owner",
+      "roles": [],
+      "scopes": [
+        "webhooks:write"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "high",
+      "audit": true,
+      "concealment": "explicit",
+      "credential": "bearer",
+      "freshAuthentication": true,
+      "operationId": "getInternalDiagnostics",
+      "relationship": "fresh-high-assurance",
+      "roles": [
+        "operator"
+      ],
+      "scopes": [
+        "diagnostics:read"
+      ],
+      "tenantBound": true
+    },
+    {
+      "assurance": "baseline",
+      "audit": true,
+      "concealment": "concealed",
+      "credential": "bearer",
+      "freshAuthentication": false,
+      "operationId": "downloadArtifactContent",
+      "relationship": "project-member",
+      "roles": [],
+      "scopes": [
+        "artifacts:read"
+      ],
+      "tenantBound": true
+    }
+  ]
+}

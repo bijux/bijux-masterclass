@@ -1,0 +1,116 @@
+{
+  "normalization": "exact-utf8-bytes",
+  "operations": {
+    "1320d7764acfb437ae05f2ec8b81ccdb2e36c2dc2e47783058b30ce9194ab460": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/StartAnalysis.graphql",
+      "name": "StartAnalysis",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "2d83c3f19f0c091d8a858a8d94278c0d9dd3cdbbd1f8b6a1f770800857cd6787": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/CreateProject.graphql",
+      "name": "CreateProject",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "2e4505d91d632b5da472e56e26eaec419e95f9ba1b4ecc69eb70f64e2c9d3f59": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/RunUpdates.graphql",
+      "name": "RunUpdates",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "629ddc83561d89ffd1bac3746676629f55007854a5485f1445c0aa4822447a4a": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/Viewer.graphql",
+      "name": "Viewer",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "6cfa56e1ba11ae96a5819f52385a6d2b6a02945a34e7e25e4e130ea1eaa96cbf": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/GetProjectOverview.graphql",
+      "name": "GetProjectOverview",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "726a381179aab4bc2306ba3b1357f83078e9a3f1545a2ba3228f59fbefd3b3ff": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/SearchPlatform.graphql",
+      "name": "SearchPlatform",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "9da3efa92ca78014b8a12ea7781e63865bfad2d72562c2b01d9942c59543823b": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/ListRuns.graphql",
+      "name": "ListRuns",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "aeb6916baa168291129ffe0164babe2fc86eec683ac43d2b88458d6b9728054f": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/NodeLookup.graphql",
+      "name": "NodeLookup",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "b7f9165463d24958db4c0f86a1c5b62a157a3c8efd227e02c04bfc2b7c6d7bc8": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/CancelAnalysis.graphql",
+      "name": "CancelAnalysis",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    },
+    "eb8e33d3c31143f74cbe2918a2ccef0bf14f84e8e9eae094ea38be7b2b7935d4": {
+      "clients": [
+        "analysis-web-1.x",
+        "analysis-cli-1.x"
+      ],
+      "file": "operations/GetRun.graphql",
+      "name": "GetRun",
+      "owner": "analysis-platform-clients",
+      "schemaRelease": "1.0.0",
+      "status": "active"
+    }
+  },
+  "version": "1.0"
+}

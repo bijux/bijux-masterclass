@@ -1,0 +1,19 @@
+{
+  "evidence_class": "combined-release",
+  "profile": "distributed-architecture-1.0",
+  "extracted": ["notification-service", "artifact-service"],
+  "retained": ["analysis-control"],
+  "rejected": ["project-service", "dataset-table-service", "idempotency-service", "shared-data-service"],
+  "single_writer": true,
+  "sync_cycles": 0,
+  "max_public_sync_depth": 2,
+  "saga_recovery": "pass",
+  "security": "pass",
+  "version_skew": "pass",
+  "shadow_compare": "pass",
+  "reconciliation": "pass",
+  "rollback": "pass",
+  "decommission_plan": "present",
+  "merge_back_criteria": "present",
+  "status": "pass"
+}

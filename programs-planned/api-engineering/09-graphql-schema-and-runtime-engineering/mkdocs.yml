@@ -1,0 +1,95 @@
+site_name: GraphQL Schema and Runtime Engineering
+site_description: Course 9 of the API Engineering program
+docs_dir: course-book
+site_dir: site
+use_directory_urls: false
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - navigation.indexes
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
+nav:
+- Course Introduction: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Standards: standards.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Glossary: glossary.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — Graph Interface Placement and the Operation Lifecycle:
+  - Chapter: module-01-graph-interface-placement-and-operation-lifecycle/index.md
+  - Exercises: module-01-graph-interface-placement-and-operation-lifecycle/exercises.md
+  - Worked Answers: module-01-graph-interface-placement-and-operation-lifecycle/exercise-answers.md
+  - Lab: module-01-graph-interface-placement-and-operation-lifecycle/lab.md
+  - Checkpoint: module-01-graph-interface-placement-and-operation-lifecycle/checkpoint.md
+- Module 02 — Type System, Nullability, and Semantic Modeling:
+  - Chapter: module-02-type-system-nullability-and-semantic-modeling/index.md
+  - Exercises: module-02-type-system-nullability-and-semantic-modeling/exercises.md
+  - Worked Answers: module-02-type-system-nullability-and-semantic-modeling/exercise-answers.md
+  - Lab: module-02-type-system-nullability-and-semantic-modeling/lab.md
+  - Checkpoint: module-02-type-system-nullability-and-semantic-modeling/checkpoint.md
+- Module 03 — Resolver Architecture, Batching, and Source Ownership:
+  - Chapter: module-03-resolver-architecture-batching-and-source-ownership/index.md
+  - Exercises: module-03-resolver-architecture-batching-and-source-ownership/exercises.md
+  - Worked Answers: module-03-resolver-architecture-batching-and-source-ownership/exercise-answers.md
+  - Lab: module-03-resolver-architecture-batching-and-source-ownership/lab.md
+  - Checkpoint: module-03-resolver-architecture-batching-and-source-ownership/checkpoint.md
+- Module 04 — Queries, Identifiers, Connections, and Pagination:
+  - Chapter: module-04-queries-identifiers-connections-and-pagination/index.md
+  - Exercises: module-04-queries-identifiers-connections-and-pagination/exercises.md
+  - Worked Answers: module-04-queries-identifiers-connections-and-pagination/exercise-answers.md
+  - Lab: module-04-queries-identifiers-connections-and-pagination/lab.md
+  - Checkpoint: module-04-queries-identifiers-connections-and-pagination/checkpoint.md
+- Module 05 — Mutations, Idempotency, Concurrency, and Domain Results:
+  - Chapter: module-05-mutations-idempotency-concurrency-and-domain-results/index.md
+  - Exercises: module-05-mutations-idempotency-concurrency-and-domain-results/exercises.md
+  - Worked Answers: module-05-mutations-idempotency-concurrency-and-domain-results/exercise-answers.md
+  - Lab: module-05-mutations-idempotency-concurrency-and-domain-results/lab.md
+  - Checkpoint: module-05-mutations-idempotency-concurrency-and-domain-results/checkpoint.md
+- Module 06 — Authorization, Tenancy, and Schema Exposure:
+  - Chapter: module-06-authorization-tenancy-and-schema-exposure/index.md
+  - Exercises: module-06-authorization-tenancy-and-schema-exposure/exercises.md
+  - Worked Answers: module-06-authorization-tenancy-and-schema-exposure/exercise-answers.md
+  - Lab: module-06-authorization-tenancy-and-schema-exposure/lab.md
+  - Checkpoint: module-06-authorization-tenancy-and-schema-exposure/checkpoint.md
+- Module 07 — Demand Control, Persisted Operations, and Caching:
+  - Chapter: module-07-demand-control-persisted-operations-and-caching/index.md
+  - Exercises: module-07-demand-control-persisted-operations-and-caching/exercises.md
+  - Worked Answers: module-07-demand-control-persisted-operations-and-caching/exercise-answers.md
+  - Lab: module-07-demand-control-persisted-operations-and-caching/lab.md
+  - Checkpoint: module-07-demand-control-persisted-operations-and-caching/checkpoint.md
+- Module 08 — Errors, Partial Data, Consistency, and Observability:
+  - Chapter: module-08-errors-partial-data-consistency-and-observability/index.md
+  - Exercises: module-08-errors-partial-data-consistency-and-observability/exercises.md
+  - Worked Answers: module-08-errors-partial-data-consistency-and-observability/exercise-answers.md
+  - Lab: module-08-errors-partial-data-consistency-and-observability/lab.md
+  - Checkpoint: module-08-errors-partial-data-consistency-and-observability/checkpoint.md
+- Module 09 — Subscriptions, Resume, and Incremental Delivery:
+  - Chapter: module-09-subscriptions-resume-and-incremental-delivery/index.md
+  - Exercises: module-09-subscriptions-resume-and-incremental-delivery/exercises.md
+  - Worked Answers: module-09-subscriptions-resume-and-incremental-delivery/exercise-answers.md
+  - Lab: module-09-subscriptions-resume-and-incremental-delivery/lab.md
+  - Checkpoint: module-09-subscriptions-resume-and-incremental-delivery/checkpoint.md
+- Module 10 — Schema Evolution, Federation, Governance, and Final Defense:
+  - Chapter: module-10-schema-evolution-federation-governance-and-final-defense/index.md
+  - Exercises: module-10-schema-evolution-federation-governance-and-final-defense/exercises.md
+  - Worked Answers: module-10-schema-evolution-federation-governance-and-final-defense/exercise-answers.md
+  - Lab: module-10-schema-evolution-federation-governance-and-final-defense/lab.md
+  - Checkpoint: module-10-schema-evolution-federation-governance-and-final-defense/checkpoint.md

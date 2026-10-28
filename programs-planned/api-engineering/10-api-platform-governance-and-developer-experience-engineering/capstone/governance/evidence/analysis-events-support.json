@@ -1,0 +1,7 @@
+{
+  "entityRef": "api:default/analysis-events",
+  "evidenceClass": "course-executed",
+  "kind": "support",
+  "status": "pass",
+  "summary": "support evidence for api:default/analysis-events"
+}

@@ -1,0 +1,47 @@
+{
+  "file_count": 8,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "f83d70d01a7ccc5b5d9ee47a6bd8196f370d6b9c3ac3ac45f694e7f8d77a5b9d",
+      "size": 533
+    },
+    {
+      "path": "api-portfolio.json",
+      "sha256": "f73bd61879a155d693e61cc5277c5dc8127491f16cf4f70624e8042f733d383b",
+      "size": 12875
+    },
+    {
+      "path": "consumer-lifecycle-summary.json",
+      "sha256": "f6e5c593e21311a065c25743411a99c823729ec0b9e2d762b4bf21218fea3f34",
+      "size": 3352
+    },
+    {
+      "path": "governance-summary.json",
+      "sha256": "8042ef09f5c4c67922d198bea09f96d911b4cee3537bfd8afd6add863efa0893",
+      "size": 8030
+    },
+    {
+      "path": "platform-charter.md",
+      "sha256": "0fb9739d7f129bef13752af8d7e208368c374cb612d497c5eb754f6b10c1fc33",
+      "size": 962
+    },
+    {
+      "path": "platform-release-dossier.json",
+      "sha256": "6dbe35648cb4e2ac2cfddc4b5e39b9624a68c0be46a5107f6b83c5d0539f271d",
+      "size": 7387
+    },
+    {
+      "path": "runtime-product-summary.json",
+      "sha256": "bd4ed0c32123ac9802b22cf3d86fd4b2b4ed2777da2f8195f902a4f1d1d0c25f",
+      "size": 520
+    },
+    {
+      "path": "version-ledger.yaml",
+      "sha256": "ce1c0edd8bc91baa21896585981a4e633222f1d679d5ac93976e71822a8b5236",
+      "size": 793
+    }
+  ],
+  "format": "bijux-course-manifest-v1",
+  "root": "graduation"
+}

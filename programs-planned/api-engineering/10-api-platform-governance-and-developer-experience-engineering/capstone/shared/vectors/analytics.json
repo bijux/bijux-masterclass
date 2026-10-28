@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "expectedSeconds": 240,
+      "issued": "2026-08-01T09:00:00Z",
+      "name": "time to first success",
+      "success": "2026-08-01T09:04:00Z"
+    },
+    {
+      "deprecated": true,
+      "expected": "migration-impact",
+      "name": "deprecated active use",
+      "version": "1.1.0"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+version: '1.0'
+rules:
+- providers support current and previous contract during rollout
+- consumers tolerate additive response and event fields
+- database schema expands before new writers and contracts after old writers are removed
+- route cutover requires shadow comparison and rollback target
+- a service may release independently only if its owned data and interfaces satisfy
+  the matrix
+supported_skew:
+  edge-gateway:
+  - '1.0'
+  - '1.1'
+  analysis-control:
+  - '1.0'
+  - '1.1'
+  artifact-service:
+  - '1.0'
+  - '1.1'
+  notification-service:
+  - '1.0'
+  - '1.1'
+  worker-plane:
+  - '1.0'
+  - '1.1'

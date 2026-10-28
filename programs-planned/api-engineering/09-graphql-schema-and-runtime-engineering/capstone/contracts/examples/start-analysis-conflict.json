@@ -1,0 +1,10 @@
+{
+  "data": {
+    "startAnalysis": {
+      "clientMutationId": "client-7",
+      "code": "CONFLICT",
+      "field": "idempotencyKey",
+      "message": "Idempotency key is bound to another input"
+    }
+  }
+}

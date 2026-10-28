@@ -1,0 +1,56 @@
+parameters:
+- $ref: ../components/parameters/DatasetId.yaml
+get:
+  tags:
+  - Datasets
+  summary: Retrieve a dataset
+  description: Returns metadata for one owned dataset.
+  operationId: getDataset
+  security:
+  - OAuth2:
+    - datasets:read
+  - ApiKey: []
+  responses:
+    '200':
+      description: Dataset metadata.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Dataset.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml
+delete:
+  tags:
+  - Datasets
+  summary: Delete a dataset
+  description: Marks a dataset deleted when no active run depends on it.
+  operationId: deleteDataset
+  security:
+  - OAuth2:
+    - datasets:write
+  - ApiKey: []
+  responses:
+    '204':
+      description: Dataset deleted.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '409':
+      $ref: ../components/responses/ConflictProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

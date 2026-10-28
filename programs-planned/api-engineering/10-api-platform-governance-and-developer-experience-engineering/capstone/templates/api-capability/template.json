@@ -1,0 +1,49 @@
+{
+  "id": "api-capability-v1",
+  "outputs": [
+    "README.md",
+    "catalog-info.yaml",
+    "docs/quickstart.md",
+    "contracts/contract.stub",
+    "policy/api-metadata.json",
+    "tests/test_contract_presence.py"
+  ],
+  "owner": "group:default/api-platform-team",
+  "parameters": [
+    {
+      "name": "api_name",
+      "pattern": "^[a-z][a-z0-9-]{2,48}$"
+    },
+    {
+      "minLength": 3,
+      "name": "title"
+    },
+    {
+      "name": "owner",
+      "pattern": "^group:default/[a-z0-9-]+$"
+    },
+    {
+      "enum": [
+        "openapi",
+        "asyncapi",
+        "protobuf",
+        "graphql"
+      ],
+      "name": "protocol"
+    },
+    {
+      "name": "system",
+      "pattern": "^system:default/[a-z0-9-]+$"
+    }
+  ],
+  "qualityHooks": [
+    "owner",
+    "contract",
+    "docs",
+    "compatibility",
+    "security",
+    "reliability",
+    "support"
+  ],
+  "version": "1.0.0"
+}

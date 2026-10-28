@@ -1,0 +1,26 @@
+type: object
+additionalProperties: false
+required:
+- datasetId
+- contentLength
+- checksumSha256
+- uploadedAt
+properties:
+  datasetId:
+    type: string
+    pattern: ^dts_[0-9]{4,18}$
+  contentLength:
+    type: integer
+    minimum: 1
+    maximum: 1048576
+  checksumSha256:
+    type: string
+    pattern: ^[a-f0-9]{64}$
+  uploadedAt:
+    type: string
+    format: date-time
+examples:
+- datasetId: dts_0001
+  contentLength: 19
+  checksumSha256: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  uploadedAt: '2026-08-05T10:06:00Z'

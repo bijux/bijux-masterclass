@@ -1,0 +1,17 @@
+{
+  "business_services": 3,
+  "compute_planes": 1,
+  "edge_components": 1,
+  "extracted": [
+    "notification-service",
+    "artifact-service"
+  ],
+  "max_public_sync_depth": 2,
+  "outcome": "accepted",
+  "retained": [
+    "analysis-control"
+  ],
+  "services": 5,
+  "shared_databases": 0,
+  "sync_cycles": 0
+}

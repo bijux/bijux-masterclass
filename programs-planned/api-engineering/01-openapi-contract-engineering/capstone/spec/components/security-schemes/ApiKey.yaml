@@ -1,0 +1,4 @@
+type: apiKey
+in: header
+name: X-API-Key
+description: Alternative training credential. Use demo-api-key.

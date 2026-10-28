@@ -1,0 +1,1 @@
+type V1={format:'V1';name:string};type V2={format:'V2';name:string;tags:readonly string[]};function migrate(v:V1|V2):V2{return v.format==='V2'?v:{format:'V2',name:v.name,tags:[]};}console.log(migrate({format:'V1',name:'Ada'}));

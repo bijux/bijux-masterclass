@@ -1,0 +1,7 @@
+profile: analysis-runs-reliability-1.0
+publicApi: 1.2.0
+securityProfile: '1.0'
+serviceRelease: reliability-1.0.0
+requirements: ../../reliability-case/requirements.yaml
+slos: ../../reliability-case/slo-catalog.yaml
+alerts: ../../reliability-case/alert-catalog.yaml

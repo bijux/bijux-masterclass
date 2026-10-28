@@ -1,0 +1,14 @@
+{
+  "claims": {
+    "analysis_control": "cohesive",
+    "artifact_service": "extracted",
+    "notification_service": "extracted",
+    "worker_plane": "separate deployment, not state owner"
+  },
+  "distributed_architecture_profile": "1.0",
+  "event_api": "1.0",
+  "from_course": "08-distributed-api-architecture-and-microservices-engineering",
+  "public_api": "1.2",
+  "rpc_api": "1.0",
+  "to_course": "09-graphql-schema-and-runtime-engineering"
+}

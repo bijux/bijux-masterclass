@@ -1,0 +1,7 @@
+{
+  "description": "artifact resolver performs one call per run",
+  "expectedProof": "batching-proof",
+  "failure": "Downstream call count grows with parent cardinality.",
+  "id": "GQL-02-n-plus-one",
+  "mustBeRejected": true
+}

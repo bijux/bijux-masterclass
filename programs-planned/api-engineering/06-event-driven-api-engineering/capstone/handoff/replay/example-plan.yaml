@@ -1,0 +1,15 @@
+replayId: 00000000-0000-4000-8000-000000009001
+requestedBy: operator-course6
+consumer: analytics-v2
+effectVersion: v2
+mode: dry-run
+tenantId: tenant-a
+allowedEventTypes:
+  - org.bijux.analysis.run.completed.v1
+  - org.bijux.analysis.run.failed.v1
+fromTime: '2026-08-01T00:00:00Z'
+toTime: '2026-08-07T23:59:59Z'
+maximumEvents: 10000
+sideEffects: disabled
+checkpointEvery: 500
+expectedProjection: analysis-outcomes-v2

@@ -1,0 +1,27 @@
+{
+  "correctness": {
+    "checks": {
+      "authorization": true,
+      "contract": true,
+      "idempotency": true
+    },
+    "passed": true
+  },
+  "environmentHash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "outcomes": {
+    "admitted": 29800,
+    "completed": 30000,
+    "failed": 0,
+    "missing": 0,
+    "offered": 30000,
+    "rejected": 200,
+    "started": 30000
+  },
+  "profileVersion": "1.0",
+  "summary": {
+    "p95LatencyMs": "175",
+    "peakResidentBytes": "310000000",
+    "throughputPerSecond": "112"
+  },
+  "workloadHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+}

@@ -1,0 +1,30 @@
+program: API Engineering
+completedCourses: 10
+courses:
+- number: 1
+  responsibility: specify public promises
+- number: 2
+  responsibility: implement promises durably
+- number: 3
+  responsibility: defend promises
+- number: 4
+  responsibility: observe and recover promises
+- number: 5
+  responsibility: sustain promises under pressure
+- number: 6
+  responsibility: extend promises asynchronously
+- number: 7
+  responsibility: engineer typed RPC and streaming
+- number: 8
+  responsibility: distribute ownership deliberately
+- number: 9
+  responsibility: compose governed graph capabilities
+- number: 10
+  responsibility: operate APIs as an organizational platform
+finalProfiles:
+  publicApi: '1.2'
+  eventApi: '1.0'
+  rpcApi: '1.0'
+  graphApi: '1.0'
+  platformApi: '1.0'
+  platformRelease: 1.0.0

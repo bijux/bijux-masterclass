@@ -1,0 +1,16 @@
+[
+  {
+    "run_ids": [
+      "run-1",
+      "run-2",
+      "run-1"
+    ],
+    "service_calls": 1,
+    "unique_keys": 2
+  },
+  {
+    "cross_request_cache_hits": 0,
+    "requests": 2,
+    "same_key": true
+  }
+]

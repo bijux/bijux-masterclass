@@ -1,0 +1,27 @@
+version: 1.0
+mappings:
+  invalid_argument: INVALID_ARGUMENT
+  concealed_or_missing_resource: NOT_FOUND
+  unauthenticated: UNAUTHENTICATED
+  unauthorized: PERMISSION_DENIED
+  invalid_transition: FAILED_PRECONDITION
+  optimistic_concurrency_conflict: ABORTED
+  idempotency_key_changed_input: ALREADY_EXISTS
+  resource_budget_exhausted: RESOURCE_EXHAUSTED
+  caller_cancelled: CANCELLED
+  deadline_expired: DEADLINE_EXCEEDED
+  transient_dependency_unavailable: UNAVAILABLE
+  unexpected_defect: INTERNAL
+details:
+  allowed:
+    - stable_reason
+    - public_field_path
+    - public_precondition
+    - bounded_retry_guidance
+  forbidden:
+    - stack_trace
+    - sql
+    - filesystem_path
+    - hostname
+    - credential
+    - foreign_tenant_resource

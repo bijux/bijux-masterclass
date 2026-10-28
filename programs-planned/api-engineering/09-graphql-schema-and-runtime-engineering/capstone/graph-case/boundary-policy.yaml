@@ -1,0 +1,19 @@
+version: '1.0'
+gateway_owns:
+  - graph schema
+  - persisted operation registry
+  - query budgets
+  - request-scoped batching
+  - response composition
+  - graph telemetry
+gateway_does_not_own:
+  - project state
+  - analysis run state
+  - artifact metadata or bytes
+  - webhook subscriptions or deliveries
+forbidden:
+  - private database reads
+  - cross-service writes
+  - authorization inferred from parent visibility
+  - silent partial data
+  - resolver-created unbounded fan-out

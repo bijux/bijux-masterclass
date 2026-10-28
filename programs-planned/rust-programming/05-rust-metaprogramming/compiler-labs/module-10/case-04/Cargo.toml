@@ -1,0 +1,10 @@
+[package]
+name = "c5-m10-c04"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+build = "build.rs"
+
+[workspace]
+

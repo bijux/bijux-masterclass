@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+package bijux.analysis.v1;
+
+option java_multiple_files = true;
+option java_package = "org.bijux.analysis.v1";
+
+// Internal typed control-plane contract. It does not replace the public HTTP API
+// or the durable Analysis Events API.
+
+enum RunState {
+  RUN_STATE_UNSPECIFIED = 0;
+  RUN_STATE_QUEUED = 1;
+  RUN_STATE_RUNNING = 2;
+  RUN_STATE_COMPLETED = 3;
+  RUN_STATE_FAILED = 4;
+  RUN_STATE_CANCELLED = 5;
+}
+
+message CreateRunRequest {
+  string parent = 1;         // projects/{project_id}
+  string request_id = 2;     // durable idempotency identity
+  string dataset_name = 3;   // datasets/{dataset_id}
+  string algorithm = 4;
+}
+
+message GetRunRequest {
+  string name = 1;           // projects/{project_id}/runs/{run_id}
+}
+
+message CancelRunRequest {
+  string name = 1;
+  string etag = 2;
+  string request_id = 3;
+}
+
+message WatchRunRequest {
+  string name = 1;
+  int64 resume_after_sequence = 2;
+}
+
+message AnalysisRun {
+  string name = 1;
+  string project_name = 2;
+  string dataset_name = 3;
+  RunState state = 4;
+  int32 progress_percent = 5;
+  string etag = 6;
+  optional string result_summary = 7;
+  optional string failure_code = 8;
+  int64 revision = 9;
+}
+
+message RunEvent {
+  string event_id = 1;
+  string run_name = 2;
+  int64 sequence = 3;
+  AnalysisRun snapshot = 4;
+  string type = 5;
+}
+
+message UploadMetadata {
+  string parent = 1;
+  string request_id = 2;
+  string filename = 3;
+  string media_type = 4;
+  string sha256 = 5;
+  int64 expected_size_bytes = 6;
+}
+
+message UploadDatasetRequest {
+  oneof frame {
+    UploadMetadata metadata = 1;
+    bytes chunk = 2;
+  }
+}
+
+message UploadDatasetResponse {
+  string dataset_name = 1;
+  int64 size_bytes = 2;
+  string sha256 = 3;
+}
+
+message DownloadArtifactRequest {
+  string name = 1;
+  int64 offset = 2;
+  int64 limit = 3;
+}
+
+message ArtifactChunk {
+  int64 offset = 1;
+  bytes data = 2;
+  bool complete = 3;
+  string sha256 = 4;
+}
+
+message WorkerHello {
+  string worker_id = 1;
+  int32 max_concurrency = 2;
+  string tenant_id = 3;
+}
+
+message WorkerReady {
+  string worker_id = 1;
+  int32 available_slots = 2;
+}
+
+message WorkProgress {
+  string assignment_id = 1;
+  int32 percent = 2;
+  int64 lease_generation = 3;
+}
+
+message WorkResult {
+  string assignment_id = 1;
+  bool success = 2;
+  string result_summary = 3;
+  string failure_code = 4;
+  int64 lease_generation = 5;
+}
+
+message WorkAssignment {
+  string assignment_id = 1;
+  string run_name = 2;
+  string algorithm = 3;
+  string dataset_name = 4;
+  int64 lease_expires_unix_ms = 5;
+  int64 lease_generation = 6;
+}
+
+message WorkerToControl {
+  oneof payload {
+    WorkerHello hello = 1;
+    WorkerReady ready = 2;
+    WorkProgress progress = 3;
+    WorkResult result = 4;
+  }
+}
+
+message ControlToWorker {
+  oneof payload {
+    WorkAssignment assignment = 1;
+    string cancel_assignment_id = 2;
+    int64 heartbeat_interval_ms = 3;
+  }
+}
+
+service AnalysisControlService {
+  rpc CreateRun(CreateRunRequest) returns (AnalysisRun);
+  rpc GetRun(GetRunRequest) returns (AnalysisRun);
+  rpc CancelRun(CancelRunRequest) returns (AnalysisRun);
+  rpc WatchRun(WatchRunRequest) returns (stream RunEvent);
+}
+
+service DatasetTransferService {
+  rpc UploadDataset(stream UploadDatasetRequest) returns (UploadDatasetResponse);
+  rpc DownloadArtifact(DownloadArtifactRequest) returns (stream ArtifactChunk);
+}
+
+service WorkerPlaneService {
+  rpc Work(stream WorkerToControl) returns (stream ControlToWorker);
+}

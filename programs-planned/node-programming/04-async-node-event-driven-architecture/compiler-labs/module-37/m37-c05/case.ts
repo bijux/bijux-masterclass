@@ -1,0 +1,1 @@
+import{channel,type ChannelListener}from'node:diagnostics_channel';interface Message{readonly runId:string}const c=channel('x');const publish=(message:Message):void=>c.publish(message);const listen=(listener:(message:Message)=>void):void=>c.subscribe(listener as ChannelListener);publish({runId:'r'});listen(()=>undefined);export {};

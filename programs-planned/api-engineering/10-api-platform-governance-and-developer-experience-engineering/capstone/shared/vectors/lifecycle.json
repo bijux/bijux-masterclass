@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "evidence": [
+        "replacementOrExitPlan",
+        "consumerInventory",
+        "migrationGuide",
+        "noticeEnd"
+      ],
+      "expected": "allowed",
+      "from": "active",
+      "name": "active to deprecated with evidence",
+      "to": "deprecated"
+    },
+    {
+      "blockingConsumers": 1,
+      "error": "blocking-consumers",
+      "evidence": [
+        "retirementApproval",
+        "runtimeRemovalPlan",
+        "archivePlan"
+      ],
+      "from": "deprecated",
+      "name": "retire with blocker",
+      "to": "retired"
+    }
+  ]
+}
