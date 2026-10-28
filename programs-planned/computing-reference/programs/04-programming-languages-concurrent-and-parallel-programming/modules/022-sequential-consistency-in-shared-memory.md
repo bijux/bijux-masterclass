@@ -1,0 +1,538 @@
+---
+module_id: CONPAR-022
+program: Programming Languages: Concurrent & Parallel Programming
+level: 1
+module_number: 22
+title: Sequential Consistency in Shared Memory
+status: complete
+last_verified: 2026-08-29
+---
+
+# Sequential Consistency in Shared Memory
+
+## One-Page Review
+
+### Governing question
+
+When can a concurrent shared-memory execution be explained by one legal sequence of atomic actions that preserves every thread's program order?
+
+### Essential definitions
+
+- **sequential consistency (SC)** requires a single total order over modeled actions, consistent with each thread's program order.
+- A **total order** compares every pair of distinct actions; a **partial order** need not.
+- A **legal read** observes the latest preceding write to its location in the chosen SC order.
+- An **SC witness** is one total order explaining an observed result.
+- A **forbidden outcome** has no SC witness.
+- A **cycle proof** derives ordering constraints from program order and read values, then finds a directed cycle.
+- **interleaving semantics** represents concurrency through legal sequences of atomic actions.
+- **serial execution** runs whole threads or transactions without interleaving; it is stronger and different.
+- **SC atomics** participate in a language-defined global order whose exact scope is specified by that language.
+- **DRF-SC** is a language theorem giving sequentially consistent explanations to qualifying data-race-free programs.
+
+### Central model, mechanism, or theorem
+
+Lamport's model requires the result to match some sequential order of all processors' operations, with each processor's operations appearing in its specified order. For reads and writes:
+
+1. choose a total order (<sc) extending every program-order edge;
+2. for every read R(x), choose the most recent W(x) before it in <sc>, or the initial write; and
+3. reject the execution if no such total order satisfies all observed values.
+
+For independent writes x=1 and y=1, one reader cannot observe x then y as (1,0) while another, reading y then x, observes (1,0): those observations require Wx<R2x<R2y<Wy<R3y<R3x<Wx, a cycle.
+
+### Critical invariants
+
+Every action occurs once in the witness. Program order is preserved. Every read observes exactly one same-location write, and no intervening same-location write precedes the read. Initial writes precede ordinary actions. A witness explains values, not physical timing. SC permits arbitrary legal interleavings and does not make compound operations atomic. Source-language races must be ruled out before applying a DRF-SC theorem. A seq_cst order may cover only specified atomics and fences, not every plain or device action. Safety does not imply fairness, progress, deadlines, bounded memory, or failure recovery.
+
+### Common failures
+
+Teams equate SC with one core or literal instruction order; accept a read merely because some matching write exists; ignore an intervening write; preserve each location's order but miss a cross-location cycle; assume individual atomic loads/stores make read-modify-write atomic; use SC to hide an ownership bug; conflate SC with linearizability or serializability; apply a DRF theorem to racy code; infer SC from an unobserved weak outcome; or claim safety and liveness from an ordering model alone.
+
+### Compact example
+
+Initially x=0. Thread A performs x=1. Thread B reads x into r1, then r2. Under SC, r1=1 and r2=0 is impossible when no other write exists: observing 1 places W(x=1) before the first read, and program order places the first read before the second, so the latest preceding write for the second read is still 1.
+
+### Connections
+
+[Compiler and Processor Reordering](021-compiler-and-processor-reordering.md) explains why real implementations expose weaker mechanisms; [Interleavings and State-Space Explosion](003-interleavings-and-state-space-explosion.md) supplies enumeration. The [program roadmap](../ROADMAP.md) next replaces a single total order with happens-before reasoning, then develops publication and atomics.
+
+## Governing Question
+
+How do we decide rigorously whether an observed shared-memory result is sequentially consistent, and what does that result prove—or fail to prove—about the program?
+
+The method is constructive: find a total-order witness that preserves program order and explains each read, or derive a cycle showing no witness exists. The discipline prevents “it looks sequential” from substituting for a proof.
+
+## Why This Matters
+
+SC is the reference model behind ordinary interleaving intuition. It lets a programmer imagine that threads take turns performing atomic actions in one global sequence. The model accommodates concurrency because actions from different threads may interleave in many ways; it does not require the processor to execute one instruction at a time.
+
+That simplicity makes SC valuable for specifications, model checking, teaching, and correctly synchronized programming. Modern language memory models often promise an SC explanation for data-race-free programs, allowing application developers to avoid reasoning directly about store buffers and compiler transformations.
+
+SC is also frequently overclaimed. A check-then-act sequence can race under SC. Two atomic increments implemented as load plus store can lose an update. A thread can starve. Two locks can deadlock. An unbounded queue can exhaust memory. A remote write can commit after a local timeout. SC constrains observable order; it does not supply compound atomicity, ownership, progress, resource bounds, durability, or domain safety.
+
+## Prerequisites and Retrieval
+
+Retrieve:
+
+- interleaving enumeration and partial orders from [Interleavings and State-Space Explosion](003-interleavings-and-state-space-explosion.md);
+- safety versus liveness from [Safety, Liveness, and Progress](004-safety-liveness-and-progress.md);
+- race and atomicity distinctions from [Race Conditions and Atomicity Violations](005-race-conditions-and-atomicity-violations.md);
+- linearizability from [Safety, Liveness, and Linearizability](004-safety-liveness-and-progress.md);
+- shared-state invariants from [Critical Sections and Shared-State Invariants](008-critical-sections-and-shared-state-invariants.md); and
+- compiler, processor, and store-buffer models from [Compiler and Processor Reordering](021-compiler-and-processor-reordering.md).
+
+Retrieval prompt: for two threads performing x=1; read y and y=1; read x, write all total-order constraints implied by both reads returning zero and identify the cycle.
+
+## Learning Objectives
+
+After completing this module, a learner can:
+
+1. state Lamport's sequential-consistency definition precisely;
+2. distinguish SC from serial execution, coherence, linearizability, and serializability;
+3. construct a legal SC total-order witness;
+4. derive read-from, latest-write, program-order, and initial-write constraints;
+5. prove an outcome non-SC by finding a cycle;
+6. analyze store-buffering, message-passing, repeated-read, lost-update, and IRIW tests;
+7. interpret SC atomics and DRF-SC without expanding their specified scope;
+8. explain why SC does not establish compound atomicity or liveness; and
+9. validate finite models without claiming real-platform or safety-critical proof.
+
+## Core Exposition
+
+### Lamport's two-part definition
+
+An execution is sequentially consistent when its result is the same as some sequential execution of all processors' operations and each processor's operations appear in that sequence in program order. Both clauses matter.
+
+“Some” means the witness need not match wall-clock start, pipeline completion, cache propagation, or an observer's guess. Different witnesses may explain the same read results. “Sequential” means a total order over the modeled atomic actions, not that whole thread bodies run serially. “Program order” prevents a witness from swapping a thread's specified actions merely to explain a convenient result.
+
+The definition assumes the granularity of an operation is known. If `x += 1` decomposes into load, arithmetic, and store, those memory operations may interleave. A language atomic read-modify-write may instead be one modeled action.
+
+### Build the execution vocabulary
+
+Include initial writes I(x=0), ordinary or atomic writes W_i(x=v), reads R_i(x)->v, and any modeled read-modify-write actions. Add a directed program-order edge from each action to its successor within a thread.
+
+For a proposed read result, add constraints:
+
+- the observed write must precede the read;
+- every later same-location write that precedes the read would supersede the observed write;
+- if the read observes the initial value, every noninitial write to that location must follow the read; and
+- each action's per-thread predecessors remain before it.
+
+A legal witness is a topological ordering of all required constraints that also satisfies the latest-write rule. Acyclic constraints are necessary, but if read selection depends on which writes intervene, validate the completed order rather than stopping at a partial graph.
+
+### Reads observe the latest prior write
+
+SC is not “a read may see any write somewhere in the total order.” Suppose x starts at 0, then the proposed order is W(x=1), W(x=2), R(x)->1. Although W(x=1) precedes the read, W(x=2) intervenes, so the read must see 2. Either move W(x=2) after the read or reject the observation.
+
+Multiple writes make this rule central. A witness must record write identity, not just value: two writes of value 1 can differ in ordering and causality even when the read's integer is identical.
+
+### Witness construction
+
+To prove an outcome allowed, provide one order. For the store-buffering program:
+
+Thread 0: Wx=1; R0y
+Thread 1: Wy=1; R1x
+
+Outcome (r0,r1)=(0,1) has witness:
+
+Wx=1 < R0y=0 < Wy=1 < R1x=1.
+
+Program orders hold. R0y precedes the only noninitial y write and therefore sees initial 0. R1x follows Wx and sees 1. One witness is sufficient to prove SC possibility; it says nothing about probability or scheduler fairness.
+
+### Cycle proofs
+
+For outcome (0,0), program order gives Wx<R0y and Wy<R1x. Reading initial y gives R0y<Wy; reading initial x gives R1x<Wx. Combining:
+
+(Wx < R0y < Wy < R1x < Wx).
+
+A strict order cannot contain a cycle, so no SC witness exists. Cycle proofs scale better than hand-enumeration and reveal exactly which observations conflict.
+
+<!-- bijux-verify: {"id":"sc-cycle-graph","mode":"schematic","language":"text","toolchain":"none","reason":"The edge list is a mathematical contradiction certificate, not an executable program."} -->
+```text
+Wx -> R0y        program order
+R0y -> Wy        R0y observes initial y
+Wy -> R1x        program order
+R1x -> Wx        R1x observes initial x
+```
+
+### Independent reads of independent writes
+
+The IRIW test has independent writers Wx=1 and Wy=1. Reader 2 reads x then y; Reader 3 reads y then x. The outcome R2=(1,0), R3=(1,0) says Reader 2 placed x before y while Reader 3 placed y before x.
+
+Under SC:
+
+Wx<R2x<R2y<Wy
+
+and
+
+Wy<R3y<R3x<Wx.
+
+Together they form a cycle. Per-location coherence alone can allow each reader's observations to look locally plausible; the single SC order across locations forbids their disagreement.
+
+### Repeated reads and monotonic observation
+
+With one writer Wx=1 and a reader R1x<R2x, outcome (1,0) is not SC if there is no later write of 0. Wx must precede R1x to supply 1. Program order places R1x before R2x, so Wx also precedes R2x and remains the latest write.
+
+If another thread writes x=0 between the reads, (1,0) can be SC. Always include all writes and their identities before declaring monotonicity.
+
+### SC does not make compound actions atomic
+
+Initially counter=0. Two threads each perform a separate load then store of load+1. The legal SC witness can be:
+
+R0=0 < R1=0 < W0=1 < W1=1.
+
+Final counter is 1, even though both threads “incremented.” Every individual access is SC, but the read-modify-write sequence is not indivisible. Use a lock or atomic fetch-add/compare-exchange protocol whose operation and retry invariant match the requirement.
+
+The same issue affects check-then-act, multi-field snapshots, balance transfers, and state transitions. Ordering all component accesses does not create a transaction.
+
+### SC, coherence, and cache behavior
+
+Coherence orders modifications to one location and constrains how they are observed. SC adds one order across all modeled locations and actions. A coherent machine can admit outcomes that SC forbids. Conversely, an SC specification does not say caches are absent or every physical write becomes instantly visible; implementations may optimize as long as exposed behavior has an SC witness.
+
+Avoid phrases such as “SC flushes every cache.” They confuse an abstract allowed-execution contract with an implementation mechanism.
+
+### SC versus linearizability
+
+Both properties use sequential explanations, but their ordering constraints differ. SC preserves each client's or thread's program order. Linearizability additionally respects real-time precedence: if operation A returns before nonoverlapping B is invoked, A must precede B in the linearization.
+
+SC can therefore reorder nonoverlapping operations from different clients when no per-client program-order edge connects them. Linearizability cannot. Linearizability is local/compositional across independently linearizable objects; sequential consistency is not generally a local property because separately selected object orders may form a global program-order cycle.
+
+For shared registers, the distinction depends on the history and operation boundaries. Do not label an implementation linearizable merely because a total-order witness exists.
+
+### SC versus database serializability
+
+Serializability orders whole transactions so their reads and writes match some serial transaction execution. SC orders modeled memory actions while allowing interleaving. Strict serializability adds real-time constraints analogous in spirit to linearizability for transactions.
+
+The words share a sequential-witness idea but differ in granularity, legality rules, failure semantics, and real-time requirements. A thread-safe in-memory counter does not establish transaction isolation; a serializable database does not order arbitrary process memory.
+
+### Sequentially consistent atomics
+
+In current C++ and Rust models, seq_cst atomic operations participate in a single total order subject to specified happens-before and coherence constraints. That statement concerns the defined set of seq_cst operations and fences. It does not pull racy plain accesses, relaxed operations, I/O, devices, or remote systems into an intuitive global order.
+
+Java volatile actions have synchronization and total-order properties defined by the Java memory model, but Java terminology and constraints should be read directly rather than mapped mechanically to C++ enum names. A mutex or channel may give an application an SC explanation through a DRF theorem without every access being an explicit SC atomic.
+
+Mixing seq_cst and weaker atomics requires the exact language rules. The single SC order can be less intuitive when non-SC operations contribute reads-from or modification-order edges. Prove the mixed protocol rather than assuming the strongest operations dominate all others.
+
+### DRF-SC
+
+A DRF-SC theorem gives qualifying data-race-free programs executions explainable by SC. The theorem's premise is essential. “It usually has no race” is insufficient; every conflicting ordinary access must be ordered as the language requires.
+
+Java SE 26 states that correctly synchronized programs appear sequentially consistent and explicitly warns that correct synchronization does not guarantee overall program correctness. Go states that data-race-free programs have outcomes explained by sequentially consistent interleavings. C++ and Rust have their own formal definitions and atomic rules.
+
+Do not transplant the behavior of racy Go or Java programs into C++, where a data race can make behavior undefined. Do not infer that DRF-SC makes a compound protocol atomic. It simplifies memory-order reasoning after synchronization correctness is established.
+
+### SC and refinement
+
+An implementation refines an SC specification if every observable implementation behavior corresponds to a legal SC execution of the abstract actions. The abstraction function must state operation boundaries and hide only unobservable internal steps.
+
+For a lock implementation, for example, showing mutual exclusion is not enough to refine a lock API: acquisition ordering, failure, cancellation, and release ownership matter. For a register, torn access or uninitialized publication can prevent an atomic action abstraction.
+
+### What SC does not prove
+
+SC is a safety property about allowed observations. It does not ensure a runnable thread is scheduled, a lock is fair, a loop terminates, a deadline is met, a queue is bounded, a task has one terminal outcome, or failure is contained.
+
+SC also does not cure logical races. Two valid actions can occur in the wrong application order because no protocol connected them. An authorization check and later use can interleave with revocation while remaining sequentially consistent.
+
+Security side channels and device ordering require additional models. Speculative traces can leak without changing architectural SC results. DMA and MMIO agents may require cache maintenance and I/O barriers outside an ordinary language SC model.
+
+### Verification strategy
+
+For small tests, enumerate program-order-preserving permutations and simulate each read from the latest preceding write. For larger tests, encode constraints and use topological search, SAT/SMT, a model checker, or a language/architecture memory-model tool.
+
+Validate the model itself: action granularity, initial writes, values, write identities, read-from choices, and language assumptions. Compare allowed outcomes with authoritative specifications. Inspect compiler mappings and run litmus tests only as supporting evidence.
+
+Stress frequency is not semantic proof. A forbidden outcome observed once demands investigation; a forbidden outcome never observed remains unproved absent formal/specification evidence. Record versions and targets.
+
+## Definitions and Notation
+
+Let A be the finite set of modeled actions. Program order (po) is the union of each thread's strict order. An SC witness is a strict total order (<sc) over A such that po is a subset of <sc.
+
+For read r of location x, W(r) is its source write. Legality requires W(r)<sc r and no write w' to x satisfies W(r)<sc w'<sc r. Initial write I_x precedes all noninitial actions on x for this model.
+
+The constraint graph G=(A,E) contains program-order and observation-derived edges. A directed cycle proves no strict total order extends E. An acyclic graph has a topological order, but read legality must still be checked when the graph did not encode every intervening-write alternative.
+
+A history records operation invocations and responses; an execution additionally represents internal memory actions and read values. Real-time order (rt) relates nonoverlapping operations. SC preserves po; linearizability preserves po/legality and rt at object-operation granularity.
+
+## Mechanisms, Invariants, or Proof Structure
+
+Use this proof workflow:
+
+1. **Declare actions and granularity.** Split compound source expressions unless the model makes them atomic.
+2. **Add initial writes.** Every read must have a possible source.
+3. **Add program-order edges.** Preserve each thread's specified order.
+4. **Assign read sources.** Name write identity, not only value.
+5. **Enforce latest-write legality.** Exclude intervening same-location writes.
+6. **Search for a witness.** Enumerate or topologically order constraints.
+7. **Prove impossibility by cycle.** Record the edge reason for review.
+8. **Apply the source model.** Establish data-race freedom or valid atomic operations.
+9. **Separate other properties.** Check compound atomicity, progress, bounds, failure, real time, and devices independently.
+10. **Bind evidence to scope.** A finite model proves only its declared executions.
+
+The executable model enumerates IRIW total orders. Writers have one action each; each reader's two actions retain program order.
+
+<!-- bijux-verify: {"id":"sc-iriw-enumeration","mode":"run","language":"python","toolchain":"python3","expect":{"exit_code":0,"stdout":"candidate_orders=720\nsc_orders=180\ndistinct_read_vectors=15\nopposite_write_orders=0\nall_zero_schedules=18\nall_one_schedules=18\n","stderr":""}} -->
+```python
+events = ("WX", "WY", "R2X", "R2Y", "R3Y", "R3X")
+candidate_orders = 0
+sc_orders = 0
+opposite_write_orders = 0
+all_zero_schedules = 0
+all_one_schedules = 0
+read_vectors = []
+
+def evaluate(order):
+    global candidate_orders, sc_orders, opposite_write_orders
+    global all_zero_schedules, all_one_schedules
+    candidate_orders += 1
+    seen_r2x = False
+    seen_r3y = False
+    x = 0
+    y = 0
+    r2x = -1
+    r2y = -1
+    r3y = -1
+    r3x = -1
+    valid = True
+
+    for event in order:
+        if event == "WX":
+            x = 1
+        elif event == "WY":
+            y = 1
+        elif event == "R2X":
+            seen_r2x = True
+            r2x = x
+        elif event == "R2Y":
+            if not seen_r2x:
+                valid = False
+            r2y = y
+        elif event == "R3Y":
+            seen_r3y = True
+            r3y = y
+        elif event == "R3X":
+            if not seen_r3y:
+                valid = False
+            r3x = x
+
+    if valid:
+        sc_orders += 1
+        vector = (r2x, r2y, r3y, r3x)
+        if vector not in read_vectors:
+            read_vectors.append(vector)
+        if vector == (1, 0, 1, 0):
+            opposite_write_orders += 1
+        if vector == (0, 0, 0, 0):
+            all_zero_schedules += 1
+        if vector == (1, 1, 1, 1):
+            all_one_schedules += 1
+
+def enumerate_orders(prefix, remaining):
+    if len(remaining) == 0:
+        evaluate(prefix)
+        return
+    for position in range(len(remaining)):
+        enumerate_orders(
+            prefix + (remaining[position],),
+            remaining[:position] + remaining[position + 1:],
+        )
+
+enumerate_orders((), events)
+print(f"candidate_orders={candidate_orders}")
+print(f"sc_orders={sc_orders}")
+print(f"distinct_read_vectors={len(read_vectors)}")
+print(f"opposite_write_orders={opposite_write_orders}")
+print(f"all_zero_schedules={all_zero_schedules}")
+print(f"all_one_schedules={all_one_schedules}")
+```
+
+Limitations: the model contains two single writes, four single reads, initial zeros, atomic abstract actions, and only two reader program-order constraints. It has no real threads, compiler, cache, failure, progress, mixed atomic ordering, source-language race semantics, or devices. Counts are schedule multiplicities, not probabilities.
+
+## Alternatives and Trade-Offs
+
+**SC specifications** are intuitive and expose all interleavings, but state spaces grow combinatorially.
+
+**Linearizable object specifications** add real-time order and compose locally, making them preferable for concurrent APIs when feasible.
+
+**Acquire/release models** avoid a global order and can map efficiently, but proofs require explicit reads-from and happens-before edges.
+
+**Relaxed atomics** support independent statistics and specialized algorithms, with substantially greater proof burden for cross-location behavior.
+
+**Mutexes, channels, and ownership transfer** often recover SC reasoning through DRF while expressing lifecycle and blocking policy.
+
+**Transactional models** group multiple reads/writes into serializable units but add conflict, retry, isolation, and durability semantics.
+
+**Architecture-specific models** describe actual target guarantees more closely but sacrifice source portability and require mapping proofs.
+
+## Failure Modes and Misconceptions
+
+1. **SC means one operation per wall-clock instant.** It requires an explanatory total order, not physical serialization.
+2. **Any earlier matching write is legal.** The read sees the latest preceding same-location write.
+3. **Acyclic program order alone proves SC.** Read-from and intervening-write constraints also matter.
+4. **Per-location coherence implies SC.** Cross-location cycles can remain.
+5. **SC loads and stores make a transaction.** Compound sequences still interleave.
+6. **SC prevents data races.** The source model must make accesses atomic or synchronized.
+7. **Seq_cst orders every system effect.** Its language-defined order has a limited membership.
+8. **SC and linearizability are synonyms.** Linearizability also preserves nonoverlap real time and is local.
+9. **SC and database serializability are synonyms.** Their operation granularity and failure models differ.
+10. **DRF-SC proves the algorithm correct.** It simplifies executions after its premise; invariants can still fail.
+11. **SC guarantees progress.** Deadlock, livelock, starvation, and infinite loops remain.
+12. **SC guarantees deterministic results.** Many total-order witnesses can yield different legal results.
+13. **A stress test can prove SC.** It samples executions and may perturb ordering.
+14. **Strongest ordering repairs ownership.** Duplicate operations and lifetime bugs remain.
+15. **SC covers devices and speculative security.** Those need target-specific models.
+
+## Worked Examples
+
+### Example 1
+
+**Situation.** Wx=1 and then Rx returns 1 in the same thread.
+
+**Reasoning.** Program order gives Wx<Rx. With no intervening write, Rx legally sees Wx. The order itself is a witness.
+
+**Conclusion.** A minimal legal SC execution preserves program order and latest-write semantics.
+
+### Example 2
+
+**Situation.** Proposed order is Wx=1, Wx=2, Rx->1.
+
+**Reasoning.** The second write is the latest prior write, so the read must return 2. A matching earlier value is insufficient.
+
+**Conclusion.** Track write identity and intervening writes.
+
+### Example 3
+
+**Situation.** Store-buffering produces r0=0,r1=1.
+
+**Reasoning.** Witness Wx<R0y<Wy<R1x preserves both program orders. R0y precedes Wy and sees initial 0; R1x follows Wx and sees 1.
+
+**Conclusion.** One explicit witness proves the result SC-allowed.
+
+### Example 4
+
+**Situation.** Store-buffering claims r0=0,r1=0.
+
+**Reasoning.** Program order and initial-value observations yield Wx<R0y<Wy<R1x<Wx, an impossible cycle.
+
+**Conclusion.** The all-zero result is not SC for these atomic abstract actions.
+
+### Example 5
+
+**Situation.** A reader sees x values 1 then 0 with only one noninitial write x=1.
+
+**Reasoning.** Wx must precede the first read, which precedes the second. Wx remains the latest write, so the second cannot see initial 0.
+
+**Conclusion.** SC forbids reversal without another write.
+
+### Example 6
+
+**Situation.** Two load-plus-store increments finish at 1.
+
+**Reasoning.** Both reads can legally occur before either store, and both compute 1. SC orders all four actions but does not merge each pair.
+
+**Conclusion.** Use atomic read-modify-write or locking for an indivisible increment.
+
+### Example 7
+
+**Situation.** IRIW readers claim opposite orders for independent writes.
+
+**Reasoning.** Each read vector creates a chain from one write to the other. Joining the two chains creates a cycle, so no single total order exists.
+
+**Conclusion.** Coherent per-location explanations can fail global SC.
+
+### Example 8
+
+**Situation.** Operation A returns before another client invokes B, but an SC witness places B before A.
+
+**Reasoning.** If no thread program-order edge relates the clients, SC may allow the order. Linearizability rejects it because real-time precedence must be preserved.
+
+**Conclusion.** A sequential witness alone is not a linearizability proof.
+
+### Example 9
+
+**Situation.** Every shared access is under locks, yet two threads deadlock.
+
+**Reasoning.** Lock actions and protected accesses may have SC explanations up to the blocked state. SC does not guarantee an acyclic wait-for graph or eventual scheduling.
+
+**Conclusion.** Memory consistency and progress require separate proofs.
+
+### Example 10
+
+**Situation.** An aircraft controller uses seq_cst atomics and claims this proves deadline and actuator safety.
+
+**Reasoning.** SC can simplify state-observation analysis but does not establish worst-case timing, hardware I/O order, sensor validity, fault containment, actuator physics, security, or assurance compliance.
+
+**Conclusion.** Named avionics, controls, hardware, real-time, security, and functional-safety reviewers need target evidence; this chapter provides no deployment approval.
+
+## Cross-Program Connections
+
+- **Programming-language semantics:** DRF theorems connect source synchronization to simple execution explanations.
+- **Algorithms:** witness construction and cycle detection reduce consistency questions to graph problems.
+- **Formal methods:** model checking enumerates linear extensions and validates invariants over SC transitions.
+- **Distributed systems:** consistency and linearizability use related history reasoning, but network failure changes the model.
+- **Databases:** serializability groups operations into transactions rather than individual memory actions.
+- **Operating systems:** schedulers and locks affect progress independently of memory consistency.
+- **Security and safety:** observable-order correctness is only one layer of an assurance argument.
+
+## References
+
+1. Leslie Lamport. “How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs.” *IEEE Transactions on Computers* C-28(9), 1979.
+2. Leslie Lamport. “How to Make a Correct Multiprocess Program Execute Correctly on a Multiprocessor.” *IEEE Transactions on Computers* 46(7), 1997.
+3. Sarita V. Adve and Kourosh Gharachorloo. “Shared Memory Consistency Models: A Tutorial.” *Computer* 29(12), 1996.
+4. Hagit Attiya and Jennifer Welch. *Distributed Computing: Fundamentals, Simulations, and Advanced Topics*, second edition. Wiley, 2004.
+5. Maurice P. Herlihy and Jeannette M. Wing. “Linearizability: A Correctness Condition for Concurrent Objects.” *ACM TOPLAS* 12(3), 1990.
+6. Hans-J. Boehm and Sarita V. Adve. “Foundations of the C++ Concurrency Memory Model.” PLDI, 2008.
+7. Oracle. *Java Language Specification, Java SE 26*, Sections 17.4.3 and 17.4.5, 2026. Accessed 2026-08-29.
+8. ISO C++ working draft. “Order and consistency.” Current draft accessed 2026-08-29.
+9. Rust Project. “`core::sync::atomic::Ordering`, Rust 1.98.0.” 2026. Accessed 2026-08-29.
+10. The Go Authors. “The Go Memory Model,” version of 2022-06-06. Accessed 2026-08-29.
+
+## Exercises
+
+### Exercise 1
+
+State the two clauses of sequential consistency and the latest-write rule for a read.
+
+### Exercise 2
+
+For Wx=1; R0y and Wy=1; R1x, give witnesses for outcomes 01, 10, and 11, then prove 00 impossible.
+
+### Exercise 3
+
+Analyze two threads that each implement counter increment as an SC load followed by an SC store. Enumerate a witness for lost update and repair the protocol.
+
+### Exercise 4
+
+Compare SC, linearizability, and strict serializability by action granularity, ordering preserved, legality rule, compositionality, and typical use.
+
+### Exercise 5
+
+A medical telemetry controller uses only seq_cst flags but sometimes loses records and can block forever during shutdown. Explain which claims SC supports, diagnose the other proof obligations, and name the required review boundary.
+
+## Answers to the Exercises
+
+### Answer 1
+
+An execution result must equal some sequential execution of all modeled operations, and each thread's operations must occur in that sequence in its program order. For read r of x, its source W(r) must precede r, and no other write to x may occur between W(r) and r in the chosen order. An initial write supplies the value only when no noninitial write to x precedes r.
+
+### Answer 2
+
+For 01, use Wx<R0y<Wy<R1x. For 10, use Wy<R1x<Wx<R0y. For 11, use Wx<Wy<R0y<R1x (many variants work). Program order is preserved and each read sees the latest prior same-location write.
+
+For 00, Wx<R0y and Wy<R1x come from program order. R0y seeing initial y requires R0y<Wy; R1x seeing initial x requires R1x<Wx. Thus Wx<R0y<Wy<R1x<Wx, a cycle. No strict total order can extend it.
+
+### Answer 3
+
+Let R0 and W0 be Thread 0's load/store and R1/W1 Thread 1's. The witness R0=0<R1=0<W0=1<W1=1 preserves R0<W0 and R1<W1; both stores legitimately write their locally computed 1, so the final value is 1.
+
+Repair with one atomic fetch-add, whose read and write form one atomic read-modify-write, or guard the load/compute/store sequence with the same mutex. A compare-exchange loop also works if it retries after interference and handles ordering/progress correctly. Merely making both accesses seq_cst does not combine them.
+
+### Answer 4
+
+SC orders modeled memory actions in one total order preserving per-thread program order and latest-write legality; it is not generally local across objects. Linearizability orders abstract object operations, preserves their sequential specification and nonoverlap real-time order, and composes across objects. Strict serializability orders whole transactions according to a legal serial database execution and preserves real-time transaction order; it additionally inherits transaction failure, abort, and isolation semantics.
+
+Use SC for shared-memory execution models and DRF reasoning, linearizability for concurrent object APIs, and strict serializability for transactional systems. A system may satisfy more than one only after operation boundaries and histories are mapped explicitly.
+
+### Answer 5
+
+Seq_cst flags can supply one total order among the specified atomic actions and may simplify state-observation reasoning. They do not prove that record payloads are safely owned, each accepted record has one terminal outcome, multi-step state changes are atomic, queues are bounded, workers make progress, shutdown wakes waiters, joins complete, storage is durable, or external delivery is idempotent.
+
+Audit record identity and ownership; payload publication; queue item/byte bounds; atomic state-machine transitions; worker failure containment; dependency cycles; cancellation; close, wake, drain, join, and final reconciliation; storage and delivery semantics; and operational evidence. If telemetry affects medical decisions, named clinical/domain, software, concurrency, hardware, real-time, cybersecurity, quality, regulatory, and safety reviewers must approve the system-specific claims. This model answer does not establish clinical or deployment fitness.

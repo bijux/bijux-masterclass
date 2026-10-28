@@ -53,6 +53,17 @@ class CatalogueSourceTests(unittest.TestCase):
         write_documents(self.plan, self.root)
         write_configuration(self.plan, self.root)
 
+    def test_planned_content_is_outside_publication_inputs(self):
+        original = capture_sources(self.root)
+        planned = self.root / 'programs-planned/computing-reference'
+        planned.mkdir(parents=True)
+        (planned / 'mkdocs.yml').write_text('unfinished: [invalid configuration')
+        (planned / 'README.md').write_text('[Unfinished](missing.md)\n')
+        self.assertEqual(capture_sources(self.root), original)
+        (planned / 'README.md').write_text('Changed unfinished content\n')
+        verify_sources(self.plan, self.root)
+        self.assertEqual(build_plan(capture_sources(self.root)), self.plan)
+
     def test_pure_plan_needs_no_files_environment_process_or_clock(self):
         with patch.object(Path, 'read_bytes', side_effect=AssertionError('filesystem input')), patch('os.getenv', side_effect=AssertionError('hidden environment')):
             self.assertEqual(build_plan(list(reversed(list(self.originals.items())))), self.plan)

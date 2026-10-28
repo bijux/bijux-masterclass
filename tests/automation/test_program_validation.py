@@ -17,6 +17,25 @@ from scripts.program_validation import (
 
 
 class ProgramValidationSelectionTests(unittest.TestCase):
+    def test_planned_changes_select_no_course_or_publication_jobs(self) -> None:
+        paths = [
+            "programs-planned/computing-reference/programs/domain/modules/chapter.md",
+            "programs-planned/computing-reference/tools/check.py",
+            "programs-planned/computing-reference/Makefile",
+            "programs-planned/computing-reference/mkdocs.yml",
+        ]
+        self.assertEqual(select_validation_targets(paths), [])
+        active = ["programs/python-programming/python-functional-programming/README.md"]
+        self.assertEqual(
+            select_validation_targets(active + paths), select_validation_targets(active)
+        )
+        self.assertFalse(
+            any(
+                "programs-planned" in str(target)
+                for target in select_validation_targets(paths, select_all=True)
+            )
+        )
+
     def names(self, paths: list[str], *, select_all: bool = False) -> list[str]:
         return [
             target["name"]
