@@ -1,0 +1,83 @@
+{
+  "profile": "1.0",
+  "rangeCases": [
+    {
+      "id": "fixed",
+      "range": "bytes=100-199",
+      "completeLength": "1000",
+      "expected": {
+        "start": "100",
+        "endExclusive": "200",
+        "length": "100",
+        "contentRange": "bytes 100-199/1000"
+      }
+    },
+    {
+      "id": "open",
+      "range": "bytes=900-",
+      "completeLength": "1000",
+      "expected": {
+        "start": "900",
+        "endExclusive": "1000",
+        "length": "100",
+        "contentRange": "bytes 900-999/1000"
+      }
+    },
+    {
+      "id": "suffix",
+      "range": "bytes=-200",
+      "completeLength": "1000",
+      "expected": {
+        "start": "800",
+        "endExclusive": "1000",
+        "length": "200",
+        "contentRange": "bytes 800-999/1000"
+      }
+    },
+    {
+      "id": "clamped",
+      "range": "bytes=900-1200",
+      "completeLength": "1000",
+      "expected": {
+        "start": "900",
+        "endExclusive": "1000",
+        "length": "100",
+        "contentRange": "bytes 900-999/1000"
+      }
+    }
+  ],
+  "compressionCases": [
+    {
+      "id": "json-gzip",
+      "acceptEncoding": "gzip, br",
+      "mediaType": "application/json",
+      "bodyLength": 5000,
+      "rangeRequested": false,
+      "expected": "gzip"
+    },
+    {
+      "id": "small",
+      "acceptEncoding": "gzip",
+      "mediaType": "application/json",
+      "bodyLength": 100,
+      "rangeRequested": false,
+      "expected": "identity"
+    },
+    {
+      "id": "range",
+      "acceptEncoding": "gzip",
+      "mediaType": "application/json",
+      "bodyLength": 5000,
+      "rangeRequested": true,
+      "expected": "identity"
+    },
+    {
+      "id": "binary",
+      "acceptEncoding": "gzip",
+      "mediaType": "application/octet-stream",
+      "bodyLength": 5000,
+      "rangeRequested": false,
+      "expected": "identity"
+    }
+  ]
+}

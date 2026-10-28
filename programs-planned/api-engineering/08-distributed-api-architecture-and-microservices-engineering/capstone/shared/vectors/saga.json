@@ -1,0 +1,54 @@
+{
+  "cases": [
+    {
+      "expected": "completed",
+      "id": "S-01",
+      "schedule": [
+        "store-ok",
+        "complete-ok"
+      ]
+    },
+    {
+      "expected": "completed",
+      "id": "S-02",
+      "schedule": [
+        "store-duplicate",
+        "complete-ok"
+      ]
+    },
+    {
+      "expected": "compensated",
+      "id": "S-03",
+      "schedule": [
+        "store-ok",
+        "stale-lease"
+      ]
+    },
+    {
+      "expected": "completed",
+      "id": "S-04",
+      "schedule": [
+        "store-timeout",
+        "reconcile-stored",
+        "complete-ok"
+      ]
+    },
+    {
+      "expected": "completed",
+      "id": "S-05",
+      "schedule": [
+        "store-ok",
+        "complete-timeout",
+        "reconcile-completed"
+      ]
+    },
+    {
+      "expected": "failed",
+      "id": "S-06",
+      "schedule": [
+        "store-invalid"
+      ]
+    }
+  ],
+  "profile": "artifact-completion-saga-1.0"
+}

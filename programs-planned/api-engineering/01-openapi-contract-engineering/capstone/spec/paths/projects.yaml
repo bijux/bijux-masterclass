@@ -1,0 +1,77 @@
+get:
+  tags:
+  - Projects
+  summary: List projects
+  description: Returns only projects owned by the authenticated principal.
+  operationId: listProjects
+  security:
+  - OAuth2:
+    - projects:read
+  - ApiKey: []
+  parameters:
+  - $ref: ../components/parameters/Limit.yaml
+  - $ref: ../components/parameters/Cursor.yaml
+  - $ref: ../components/parameters/ProjectNameFilter.yaml
+  responses:
+    '200':
+      description: A cursor-paginated project page.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ProjectPage.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml
+post:
+  tags:
+  - Projects
+  summary: Create a project
+  description: Creates a project owned by the authenticated principal.
+  operationId: createProject
+  security:
+  - OAuth2:
+    - projects:write
+  - ApiKey: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ProjectCreate.yaml
+        example:
+          name: Summer cohort
+          description: Quality analysis for the August cohort.
+  responses:
+    '201':
+      description: Project created.
+      headers:
+        Location:
+          $ref: ../components/headers/Location.yaml
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Project.yaml
+          example:
+            id: prj_0001
+            ownerId: learner
+            name: Summer cohort
+            description: Quality analysis for the August cohort.
+            version: 1
+            createdAt: '2026-08-05T10:00:00Z'
+            updatedAt: '2026-08-05T10:00:00Z'
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

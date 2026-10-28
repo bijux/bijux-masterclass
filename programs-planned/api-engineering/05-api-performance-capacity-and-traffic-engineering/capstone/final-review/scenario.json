@@ -1,0 +1,33 @@
+{
+  "candidateChanges": [
+    {
+      "change": "apply migration 009 owner/status/keyset index",
+      "expectedMechanism": "reduce scanned and sorted rows",
+      "id": "C1"
+    },
+    {
+      "change": "remove owner predicate",
+      "expectedMechanism": "faster but invalid",
+      "id": "C2"
+    },
+    {
+      "change": "double API process count",
+      "expectedMechanism": "unlikely because API CPU is not limiting",
+      "id": "C3"
+    }
+  ],
+  "id": "FINAL-PERF-REVIEW-01",
+  "requiredDecision": [
+    "bottleneck",
+    "candidate",
+    "proof",
+    "sideEffects",
+    "releaseStatus"
+  ],
+  "symptoms": [
+    "WL-RUN-LIST p95 increases from 170 ms to 410 ms at 160 offered requests/s",
+    "database shared reads rise sharply while API CPU remains below 35%",
+    "worker backlog is stable and artifact egress is below 20% of budget",
+    "wrong-owner and cursor correctness vectors still pass"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "analysisRuns": [],
+  "dataClass": "synthetic-only",
+  "datasets": [
+    {
+      "id": "ds-sandbox-1",
+      "name": "Synthetic Reads",
+      "projectId": "prj-sandbox-1"
+    }
+  ],
+  "projects": [
+    {
+      "id": "prj-sandbox-1",
+      "name": "Intro Project"
+    }
+  ]
+}

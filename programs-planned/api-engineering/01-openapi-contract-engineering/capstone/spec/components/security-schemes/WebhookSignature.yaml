@@ -1,0 +1,4 @@
+type: apiKey
+in: header
+name: X-Webhook-Signature
+description: HMAC-style delivery signature described for webhook receivers.

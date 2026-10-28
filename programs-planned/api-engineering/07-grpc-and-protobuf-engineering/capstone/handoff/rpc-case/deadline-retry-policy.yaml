@@ -1,0 +1,37 @@
+version: 1.0
+absolute_deadline:
+  owner: caller-that-knows-when-result-loses-value
+  clock: monotonic-for-elapsed-budget
+  child_calls: remaining-budget-only
+methods:
+  CreateRun:
+    retryable: true
+    requires: durable-idempotency
+    statuses: [UNAVAILABLE]
+    max_attempts: 3
+  GetRun:
+    retryable: true
+    requires: safe-read
+    statuses: [UNAVAILABLE]
+    max_attempts: 3
+  CancelRun:
+    retryable: true
+    requires: durable-idempotency
+    statuses: [UNAVAILABLE, ABORTED]
+    max_attempts: 2
+  WatchRun:
+    reconnect: bounded-with-resume-sequence
+  UploadDataset:
+    retryable: only-with-request-id-and-content-digest
+  DownloadArtifact:
+    reconnect: bounded-with-byte-offset-and-digest
+  Work:
+    reconnect: bounded-with-durable-lease-reconciliation
+backoff:
+  algorithm: exponential-with-jitter
+  initial_seconds: 0.1
+  multiplier: 2
+  maximum_seconds: 2
+wait_for_ready:
+  default: false
+  always_requires_deadline: true

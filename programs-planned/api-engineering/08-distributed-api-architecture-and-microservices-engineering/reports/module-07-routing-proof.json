@@ -1,0 +1,10 @@
+{
+  "evidence_class": "semantic-and-topology",
+  "healthy_instance_only": true,
+  "round_robin_fixture": true,
+  "gateway_business_state": false,
+  "deterministic_canary": true,
+  "shadow_side_effects_suppressed": true,
+  "retry_owner_declared": true,
+  "status": "pass"
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bijux.dev/events/analysis-run-progressed.v1",
+  "title": "Analysis run progress changed data",
+  "type": "object",
+  "properties": {
+    "runId": {
+      "type": "string"
+    },
+    "progress": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "loading",
+        "computing",
+        "writing"
+      ]
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "runId",
+    "progress",
+    "stage",
+    "occurredAt"
+  ],
+  "additionalProperties": false
+}

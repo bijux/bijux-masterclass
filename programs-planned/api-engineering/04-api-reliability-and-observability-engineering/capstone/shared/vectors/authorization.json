@@ -1,0 +1,118 @@
+{
+  "cases": [
+    {
+      "allow": true,
+      "id": "auth-health",
+      "operationId": "getHealth",
+      "principal": null,
+      "resource": {}
+    },
+    {
+      "allow": true,
+      "id": "auth-project-own",
+      "operationId": "getProject",
+      "principal": {
+        "roles": [],
+        "scopes": [
+          "projects:read"
+        ],
+        "sub": "u1",
+        "tenant": "t1"
+      },
+      "resource": {
+        "owner": "u1",
+        "tenant": "t1"
+      }
+    },
+    {
+      "allow": false,
+      "conceal": true,
+      "id": "auth-project-foreign",
+      "operationId": "getProject",
+      "principal": {
+        "roles": [],
+        "scopes": [
+          "projects:read"
+        ],
+        "sub": "u1",
+        "tenant": "t1"
+      },
+      "resource": {
+        "owner": "u2",
+        "tenant": "t2"
+      }
+    },
+    {
+      "allow": false,
+      "id": "auth-missing-scope",
+      "operationId": "createProject",
+      "principal": {
+        "roles": [],
+        "scopes": [
+          "projects:read"
+        ],
+        "sub": "u1",
+        "tenant": "t1"
+      },
+      "resource": {
+        "tenant": "t1"
+      }
+    },
+    {
+      "allow": true,
+      "id": "auth-diagnostics-role",
+      "operationId": "getInternalDiagnostics",
+      "principal": {
+        "assurance": "high",
+        "authAgeSeconds": 60,
+        "roles": [
+          "operator"
+        ],
+        "scopes": [
+          "diagnostics:read"
+        ],
+        "sub": "op1",
+        "tenant": "ops"
+      },
+      "resource": {}
+    },
+    {
+      "allow": false,
+      "id": "auth-diagnostics-stale",
+      "operationId": "getInternalDiagnostics",
+      "principal": {
+        "assurance": "high",
+        "authAgeSeconds": 4000,
+        "roles": [
+          "operator"
+        ],
+        "scopes": [
+          "diagnostics:read"
+        ],
+        "sub": "op1",
+        "tenant": "ops"
+      },
+      "resource": {}
+    },
+    {
+      "allow": true,
+      "id": "auth-artifact-member",
+      "operationId": "getArtifact",
+      "principal": {
+        "roles": [],
+        "scopes": [
+          "artifacts:read"
+        ],
+        "sub": "u2",
+        "tenant": "t1"
+      },
+      "resource": {
+        "members": [
+          "u2"
+        ],
+        "owner": "u1",
+        "tenant": "t1"
+      }
+    }
+  ]
+}

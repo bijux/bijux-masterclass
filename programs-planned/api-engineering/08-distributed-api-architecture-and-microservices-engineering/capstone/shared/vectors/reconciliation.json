@@ -1,0 +1,57 @@
+{
+  "cases": [
+    {
+      "artifacts": [
+        "a1"
+      ],
+      "completed_runs": [
+        "r1"
+      ],
+      "control_refs": [
+        "a1"
+      ],
+      "expected": [],
+      "id": "Q-01",
+      "notifications": [
+        "r1"
+      ]
+    },
+    {
+      "artifacts": [
+        "a1"
+      ],
+      "completed_runs": [],
+      "control_refs": [],
+      "expected": [
+        "orphan-artifact:a1"
+      ],
+      "id": "Q-02",
+      "notifications": []
+    },
+    {
+      "artifacts": [],
+      "completed_runs": [],
+      "control_refs": [
+        "a1"
+      ],
+      "expected": [
+        "missing-artifact:a1"
+      ],
+      "id": "Q-03",
+      "notifications": []
+    },
+    {
+      "artifacts": [],
+      "completed_runs": [
+        "r1"
+      ],
+      "control_refs": [],
+      "expected": [
+        "missing-notification:r1"
+      ],
+      "id": "Q-04",
+      "notifications": []
+    }
+  ],
+  "profile": "distributed-reconciliation-1.0"
+}

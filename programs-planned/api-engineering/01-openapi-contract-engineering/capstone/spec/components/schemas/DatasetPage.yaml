@@ -1,0 +1,16 @@
+type: object
+additionalProperties: false
+required:
+- items
+- nextCursor
+properties:
+  items:
+    type: array
+    maxItems: 50
+    items:
+      $ref: ./Dataset.yaml
+  nextCursor:
+    type:
+    - string
+    - 'null'
+    pattern: ^[0-9]+$

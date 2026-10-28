@@ -1,0 +1,55 @@
+{
+  "emergencyChangePolicy": "security emergency may shorten notice only with incident, owner, consumer-impact, and executive risk acceptance evidence",
+  "minimumNoticeDays": 90,
+  "states": [
+    "proposed",
+    "experimental",
+    "active",
+    "deprecated",
+    "retired"
+  ],
+  "transitions": [
+    {
+      "from": "proposed",
+      "requires": [
+        "owner",
+        "contract",
+        "riskReview",
+        "sandbox"
+      ],
+      "to": "experimental"
+    },
+    {
+      "from": "experimental",
+      "requires": [
+        "compatibilityEvidence",
+        "securityEvidence",
+        "reliabilityEvidence",
+        "documentation",
+        "supportOwner"
+      ],
+      "to": "active"
+    },
+    {
+      "from": "active",
+      "requires": [
+        "replacementOrExitPlan",
+        "consumerInventory",
+        "migrationGuide",
+        "noticeEnd"
+      ],
+      "to": "deprecated"
+    },
+    {
+      "from": "deprecated",
+      "requires": [
+        "zeroBlockingConsumers",
+        "retirementApproval",
+        "runtimeRemovalPlan",
+        "archivePlan"
+      ],
+      "to": "retired"
+    }
+  ],
+  "version": "1.0"
+}

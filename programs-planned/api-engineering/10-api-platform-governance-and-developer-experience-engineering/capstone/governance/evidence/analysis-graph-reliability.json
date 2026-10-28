@@ -1,0 +1,7 @@
+{
+  "entityRef": "api:default/analysis-graph",
+  "evidenceClass": "course-executed",
+  "kind": "reliability",
+  "status": "pass",
+  "summary": "reliability evidence for api:default/analysis-graph"
+}

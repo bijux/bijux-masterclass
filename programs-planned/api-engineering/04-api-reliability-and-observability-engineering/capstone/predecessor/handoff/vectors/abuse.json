@@ -1,0 +1,90 @@
+{
+  "bucketCases": [
+    {
+      "capacity": 5,
+      "events": [
+        {
+          "allow": true,
+          "atMs": 0,
+          "cost": 1
+        },
+        {
+          "allow": true,
+          "atMs": 0,
+          "cost": 4
+        },
+        {
+          "allow": false,
+          "atMs": 0,
+          "cost": 1
+        }
+      ],
+      "id": "bucket-initial",
+      "refillPerSecond": 1
+    },
+    {
+      "capacity": 2,
+      "events": [
+        {
+          "allow": true,
+          "atMs": 0,
+          "cost": 2
+        },
+        {
+          "allow": false,
+          "atMs": 500,
+          "cost": 1
+        },
+        {
+          "allow": true,
+          "atMs": 1000,
+          "cost": 1
+        }
+      ],
+      "id": "bucket-refill",
+      "refillPerSecond": 1
+    },
+    {
+      "capacity": 10,
+      "events": [
+        {
+          "allow": true,
+          "atMs": 0,
+          "cost": 7
+        },
+        {
+          "allow": false,
+          "atMs": 0,
+          "cost": 4
+        },
+        {
+          "allow": true,
+          "atMs": 2000,
+          "cost": 4
+        }
+      ],
+      "id": "bucket-cost",
+      "refillPerSecond": 2
+    }
+  ],
+  "permitCases": [
+    {
+      "id": "permits",
+      "limit": 2,
+      "results": [
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "sequence": [
+        "acquire",
+        "acquire",
+        "reject",
+        "release",
+        "acquire"
+      ]
+    }
+  ]
+}

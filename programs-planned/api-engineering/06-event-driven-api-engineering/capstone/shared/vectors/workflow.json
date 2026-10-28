@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "workflow",
+  "cases": [
+    {
+      "id": "WF-001",
+      "description": "requested fact creates stable start command identity",
+      "expected": "accepted"
+    },
+    {
+      "id": "WF-002",
+      "description": "duplicate requested fact creates no second command",
+      "expected": "accepted"
+    },
+    {
+      "id": "WF-003",
+      "description": "started follows requested",
+      "expected": "accepted"
+    },
+    {
+      "id": "WF-004",
+      "description": "completion from impossible state is rejected",
+      "expected": "rejected"
+    },
+    {
+      "id": "WF-005",
+      "description": "stale timeout generation is ignored",
+      "expected": "accepted"
+    },
+    {
+      "id": "WF-006",
+      "description": "terminal state is monotonic",
+      "expected": "accepted"
+    }
+  ]
+}

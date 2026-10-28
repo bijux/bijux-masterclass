@@ -1,0 +1,44 @@
+profile: artifact-capability-1.0
+status: course-specific
+purpose: authorize one bounded artifact upload across a service boundary
+wire_format:
+  token: cap1.<base64url(canonical-json)>.<base64url(hmac-sha256(payload-segment))>
+  canonical_json:
+    encoding: UTF-8
+    object_member_order: lexicographic by Unicode code point for the ASCII field names in this profile
+    separators: compact comma and colon
+    duplicate_members: reject
+    non_finite_numbers: reject
+  signature_input: exact ASCII bytes of the base64url payload segment
+  key_requirement: at least 16 bytes in the executable teaching profile
+required_claims:
+  - jti
+  - issuer
+  - audience
+  - subject
+  - tenant
+  - resource
+  - action
+  - issued_at
+  - expires_at
+optional_claims:
+  - sha256
+  - max_bytes
+validation:
+  unknown_claims: reject
+  strings: non-empty
+  integers: JavaScript-safe integers
+  lifetime: issued_at <= now < expires_at
+  max_bytes: positive when present
+  signature_comparison: constant-time
+security_boundary:
+  provides:
+    - audience-bound delegated authority
+    - tenant- and resource-bound authorization
+    - bounded lifetime
+    - optional checksum and size constraints
+  does_not_provide:
+    - workload authentication
+    - confidentiality
+    - global revocation infrastructure
+    - Internet-standard token interoperability

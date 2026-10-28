@@ -1,0 +1,34 @@
+[
+  {
+    "admit": true,
+    "aliases": 0,
+    "cost": 2,
+    "depth": 2,
+    "fanout": 0,
+    "operation": "Viewer"
+  },
+  {
+    "admit": true,
+    "aliases": 0,
+    "cost": 161,
+    "depth": 6,
+    "fanout": 3,
+    "operation": "GetProjectOverview"
+  },
+  {
+    "admit": false,
+    "aliases": 40,
+    "cost": 400,
+    "depth": 3,
+    "fanout": 1,
+    "operation": "AliasStorm"
+  },
+  {
+    "admit": false,
+    "aliases": 0,
+    "cost": 0,
+    "depth": 0,
+    "fanout": 0,
+    "operation": "FragmentCycle"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "id": "EVT-03",
+  "slug": "EVT-03-partition-key-drift",
+  "summary": "Producer changes partition key from runId to eventId",
+  "mustBeRejected": true,
+  "expectedOracle": "ordering proof rejects two lifecycle facts for one run landing in different partitions",
+  "proofFamily": "partitioning"
+}

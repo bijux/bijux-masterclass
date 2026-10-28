@@ -1,0 +1,13 @@
+{
+  "activeOperations": 10,
+  "evidenceBoundary": [
+    "dependency-light semantic core executed",
+    "loopback multi-process composition executed",
+    "complete external framework conformance environment-backed"
+  ],
+  "fieldCoordinates": 15,
+  "pythonSemanticTests": 27,
+  "releaseCandidates": 10,
+  "schemaRelease": "1.0.0",
+  "typescriptSemanticTests": 15
+}

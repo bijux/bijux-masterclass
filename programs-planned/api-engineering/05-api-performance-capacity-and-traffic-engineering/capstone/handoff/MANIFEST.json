@@ -1,0 +1,48 @@
+{
+  "files": [
+    {
+      "mode": "0644",
+      "path": "README.md",
+      "sha256": "9590ab4bafa6ff0ce7489d8ea98cddae81c934fa862c1b537518f1f00b60deb9",
+      "size": 525
+    },
+    {
+      "mode": "0644",
+      "path": "migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "mode": "0644",
+      "path": "performance/concurrency-budget.yaml",
+      "sha256": "6fe7910dbbc02023c016013fc455d898cb0fa2f759bb7804b8f87f79a058d840",
+      "size": 706
+    },
+    {
+      "mode": "0644",
+      "path": "performance/performance-profile.yaml",
+      "sha256": "fceafe0bfd68bc55f1c2c549cb46301feb27bfcc9e3768c604e440484dabdfc2",
+      "size": 1344
+    },
+    {
+      "mode": "0644",
+      "path": "performance/traffic-policy.yaml",
+      "sha256": "930d6a9f42f879f47389e864949dd148ba5174c06a5167f5d8e46a1dac62396d",
+      "size": 773
+    },
+    {
+      "mode": "0644",
+      "path": "performance/workload-catalog.yaml",
+      "sha256": "5723a1693f7afef29df016a7dceabb3aad5b4075238ae3942820ae50a82d5df7",
+      "size": 2420
+    },
+    {
+      "mode": "0644",
+      "path": "releases/performance-1.0.json",
+      "sha256": "6680784641df7d58762ad55a6a5c7afe652c2911c200c9b2ad8b244435c4563f",
+      "size": 241
+    }
+  ],
+  "handoff": "course-5-to-course-6",
+  "schema": "bijux-handoff-manifest-1"
+}

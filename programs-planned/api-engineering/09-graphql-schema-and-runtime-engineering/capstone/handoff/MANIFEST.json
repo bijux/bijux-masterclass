@@ -1,0 +1,65 @@
+{
+  "files": [
+    {
+      "bytes": 483,
+      "path": "BOUNDARY.json",
+      "sha256": "3068951f4cd1f1ebe9cc6a3ea4f65ee5016373f59cf3b8865cb98b8c8e3a37c7"
+    },
+    {
+      "bytes": 500,
+      "path": "README.md",
+      "sha256": "0c11c3a741d3f4cf891f259ddd227029932a199c7226884af6631a180480b288"
+    },
+    {
+      "bytes": 429,
+      "path": "client-catalog.yaml",
+      "sha256": "10279ba74ca8d89524b8a8d5c072d7266ce8e4020a8b3eb6e12cda0193c46635"
+    },
+    {
+      "bytes": 364,
+      "path": "evidence-summary.json",
+      "sha256": "5f5710e6dcae1a180c959132cf0582caadda5e486a9093ea542cc4ac1f20dddf"
+    },
+    {
+      "bytes": 885,
+      "path": "field-ownership.yaml",
+      "sha256": "88cb16d6be5092efe81de523c1aa367674cca70c43ade427eaf928bc4f5e1967"
+    },
+    {
+      "bytes": 3508,
+      "path": "persisted-operations.json",
+      "sha256": "d76fcee69b2458119e42f424da42a4f04ee429e976f05b795944de764f46b351"
+    },
+    {
+      "bytes": 789,
+      "path": "platform-boundary-brief.yaml",
+      "sha256": "a702e9846b877a0d77b4da78d2b5f1c8641c3104c7c06ca1c1347fa8d2a7496b"
+    },
+    {
+      "bytes": 466,
+      "path": "query-budget-policy.yaml",
+      "sha256": "d7c148ef19555892580a8f0379b3536c9e2723ed7a42a7ce5f2f838115b43890"
+    },
+    {
+      "bytes": 661,
+      "path": "release-policy.yaml",
+      "sha256": "e3f83cc57b9016f2c0c56df05cd1950efe26f3f8dddde2829f96a69285e128fd"
+    },
+    {
+      "bytes": 1710,
+      "path": "schema-catalog.json",
+      "sha256": "c134fe359f0e733b2e028384bca835d9d8150c19ef0168b9c8cb623a96475998"
+    },
+    {
+      "bytes": 4790,
+      "path": "schema.graphql",
+      "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9"
+    },
+    {
+      "bytes": 415,
+      "path": "version-ledger.yaml",
+      "sha256": "25aab152ba0e0e3c0239074a197738357156e9a96b471afd6055833a3e155208"
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "partitioning",
+  "cases": [
+    {
+      "id": "PAR-001",
+      "description": "same key and partition count select same partition",
+      "expected": "accepted"
+    },
+    {
+      "id": "PAR-002",
+      "description": "blank key is rejected",
+      "expected": "rejected"
+    },
+    {
+      "id": "PAR-003",
+      "description": "zero partitions are rejected",
+      "expected": "rejected"
+    },
+    {
+      "id": "PAR-004",
+      "description": "different keys may share a partition without implying equality",
+      "expected": "accepted"
+    },
+    {
+      "id": "PAR-005",
+      "description": "changing partition count may move keys",
+      "expected": "review"
+    },
+    {
+      "id": "PAR-006",
+      "description": "transport key must equal envelope partition key",
+      "expected": "rejected"
+    }
+  ]
+}

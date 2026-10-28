@@ -1,0 +1,17 @@
+type: oauth2
+description: Documentation-only OAuth 2.0 authorization-code flow. The training providers accept deterministic
+  bearer tokens instead of hosting an authorization server.
+flows:
+  authorizationCode:
+    authorizationUrl: https://auth.example.test/authorize
+    tokenUrl: https://auth.example.test/token
+    scopes:
+      projects:read: Read owned projects.
+      projects:write: Create and modify owned projects.
+      datasets:read: Read owned datasets.
+      datasets:write: Create, upload, and delete owned datasets.
+      runs:read: Read and stream owned analysis runs.
+      runs:write: Create and cancel owned analysis runs.
+      artifacts:read: Read artifacts produced by owned runs.
+      webhooks:write: Create webhook subscriptions.
+      admin: Read internal training diagnostics.

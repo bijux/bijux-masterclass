@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 2,
+  "program": "api-engineering",
+  "number": 6,
+  "id": "event-driven-api-engineering",
+  "directory": "06-event-driven-api-engineering",
+  "title": "Event-Driven API Engineering",
+  "stage": "Extend the promise across asynchronous time",
+  "centralQuestion": "How can independent producers and consumers share durable facts without confusing intent, delivery attempts, processing effects, and historical truth?",
+  "responsibility": "Design, evolve, secure, operate, and verify asynchronous message contracts under delay, duplication, reordering, replay, and consumer failure.",
+  "duration": {
+    "calendarWeeks": 2,
+    "teachingDays": 10,
+    "orientationCounted": false
+  },
+  "incomingBoundary": "The Course 5 API 1.2 service with Security, Reliability, and Performance Profiles 1.0 and migrations 001–009.",
+  "outgoingBoundary": "Analysis Events API 1.0, Event Profile 1.0, AsyncAPI 3.1.0 contract, CloudEvents 1.0 profile, migrations 010–012, replay and dead-letter policy, and governed consumer declarations.",
+  "versionState": "HTTP API 1.2 preserved; Analysis Events API 1.0 introduced; AsyncAPI 3.1.0; CloudEvents 1.0-compatible profile; migrations 001–012.",
+  "predecessor": "05-api-performance-capacity-and-traffic-engineering",
+  "successor": "07-grpc-and-protobuf-engineering",
+  "primaryProduct": "course-book",
+  "languageStrategy": "one primary implementation track plus one comparative reference track",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-event-thinking-and-ownership",
+      "title": "Event Thinking, Ownership, and Message Taxonomy",
+      "centralQuestion": "Which interactions are commands, immutable facts, queries, notifications, or private domain events, and who owns each public fact?",
+      "capstoneIncrement": "Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary.",
+      "learningOutcomes": [
+        "separate commands, events, queries, notifications, domain events, and integration events",
+        "name events as immutable facts rather than implementation instructions",
+        "assign one authoritative producer to every event type",
+        "decide whether an asynchronous boundary creates useful temporal or ownership separation",
+        "design event granularity without leaking database rows or private implementation models",
+        "use subject, correlation, causation, and process identity for distinct purposes",
+        "reject event-driven designs that merely replace an ordinary function call with a queue"
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-asyncapi-and-contract-architecture",
+      "title": "AsyncAPI, CloudEvents, and Contract Architecture",
+      "centralQuestion": "How do AsyncAPI, CloudEvents, schemas, channels, operations, bindings, and examples form one governed event contract?",
+      "capstoneIncrement": "Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles.",
+      "learningOutcomes": [
+        "navigate the AsyncAPI 3.1 document model: servers, channels, operations, messages, components, and bindings",
+        "model producer and consumer perspectives without reversing send and receive semantics",
+        "apply a constrained CloudEvents 1.0 envelope with course-specific extension attributes",
+        "separate envelope validation from payload-schema validation",
+        "use JSON Schema identifiers and examples that remain stable after bundling or relocation",
+        "distinguish logical channel identity from physical broker address and event type",
+        "construct a multi-document contract with offline reference resolution",
+        "state exactly what local validation proves and what requires an independent tool or live transport"
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-delivery-ordering-and-acknowledgement",
+      "title": "Delivery Semantics, Ordering, Partitioning, and Acknowledgement",
+      "centralQuestion": "What do acknowledgement, redelivery, ordering, partitioning, lag, and consumer groups actually guarantee?",
+      "capstoneIncrement": "Implement deterministic delivery attempts, partition order, group independence, acknowledgement expiry, negative acknowledgement, and redelivery.",
+      "learningOutcomes": [
+        "distinguish storage, publication, delivery, processing, effect, and acknowledgement",
+        "state at-most-once and at-least-once semantics without hiding loss or duplication",
+        "explain why broker-level exactly-once does not automatically create exactly-once business effects",
+        "choose a partition key from the smallest domain requiring order",
+        "reason about per-partition ordering and cross-partition interleaving",
+        "model consumer groups, offsets, in-flight records, acknowledgement deadlines, and redelivery",
+        "bound retry and distinguish negative acknowledgement from terminal rejection",
+        "measure lag as both record count and age rather than one misleading number"
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-transactional-publication-and-idempotent-effects",
+      "title": "Transactional Publication, Inbox Deduplication, and Exactly-Once Effects",
+      "centralQuestion": "How do producers avoid dual writes and consumers obtain exactly-once effects on top of at-least-once delivery?",
+      "capstoneIncrement": "Implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects.",
+      "learningOutcomes": [
+        "explain the producer dual-write problem and why ordinary exception handling cannot close it",
+        "design an outbox row with stable event identity, payload bytes, state, attempts, and leasing",
+        "separate broker acceptance from outbox publication completion",
+        "make relay retries safe under crash after broker acceptance",
+        "design an inbox uniqueness key from event and effect identity",
+        "commit inbox state and projection/effect in one local transaction",
+        "distinguish one handler invocation, one message delivery, and one committed business effect",
+        "extend idempotency across external side effects using a downstream key or another outbox"
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-evolution-replay-and-historical-truth",
+      "title": "Schema Evolution, Compatibility, Replay, and Historical Truth",
+      "centralQuestion": "How do event schemas evolve while retained historical events remain immutable and replay remains intelligible?",
+      "capstoneIncrement": "Classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay.",
+      "learningOutcomes": [
+        "evaluate event-schema changes from producer, current-consumer, and historical-record perspectives",
+        "distinguish structural compatibility from semantic compatibility",
+        "choose between additive evolution, new major event type, and upcasting",
+        "keep immutable historical events separate from corrected projections",
+        "design deterministic upcaster chains with explicit source and target versions",
+        "plan replay with event bounds, consumer/effect version, checkpoints, and side-effect policy",
+        "build new projections alongside old ones and verify before cutover",
+        "gate releases on contract validity, compatibility, catalogue completeness, and replay safety"
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-consumer-architecture-and-workflows",
+      "title": "Consumer Architecture and Asynchronous Workflows",
+      "centralQuestion": "How do idempotent consumers, projections, and process managers coordinate asynchronous workflows without hidden synchronous coupling?",
+      "capstoneIncrement": "Build notification, analytics, audit, and orchestration consumers with stable derived-command identities and explicit state.",
+      "learningOutcomes": [
+        "treat a consumer as a versioned application rather than a handler function",
+        "separate projections, external effects, and process coordination",
+        "choose orchestration, choreography, or a hybrid from ownership and failure needs",
+        "model process-manager transitions idempotently from facts",
+        "emit commands without assuming that the requested action succeeded",
+        "use correlation and causation to reconstruct asynchronous workflows",
+        "handle out-of-order facts without inventing global broker order",
+        "define timeouts and compensations as explicit process decisions"
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-event-time-stream-processing",
+      "title": "Event-Time Stream Processing, Windows, Watermarks, and Corrections",
+      "centralQuestion": "How do event time, processing time, windows, watermarks, lateness, and corrections affect derived results?",
+      "capstoneIncrement": "Implement windowed analysis metrics, watermark progression, late-event correction revisions, and quarantine.",
+      "learningOutcomes": [
+        "distinguish event time, ingestion time, processing time, and observation time",
+        "choose tumbling, sliding, or session windows from the business question",
+        "define a watermark as a completeness heuristic rather than a fact that no earlier event exists",
+        "handle allowed lateness with revisioned outputs",
+        "record beyond-lateness events instead of silently discarding them",
+        "deduplicate event-time aggregates by stable event identity",
+        "make window state and checkpoints replayable and versioned",
+        "explain the difference between operational metrics and business stream projections"
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-event-security-and-multitenancy",
+      "title": "Event Security, Multi-Tenancy, Privacy, and Trust",
+      "centralQuestion": "How are producers authenticated, consumers authorized, tenants isolated, payloads minimized, and event bytes protected?",
+      "capstoneIncrement": "Add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules.",
+      "learningOutcomes": [
+        "authenticate producers and consumers independently of message content",
+        "authorize publication by producer, source, channel, event type, and tenant",
+        "authorize subscriptions by consumer effect and data classification",
+        "preserve tenant isolation in subjects, envelopes, partition keys, storage, and projections",
+        "minimize sensitive information in long-lived event payloads",
+        "sign and verify exact canonical bytes with key identity and freshness policy",
+        "distinguish duplicate delivery from hostile message injection or replay",
+        "design key rotation and revocation without making retained history unverifiable"
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-event-reliability-and-recovery",
+      "title": "Event Reliability, Backpressure, Dead Letters, and Recovery",
+      "centralQuestion": "How do lag, backpressure, retry, poison messages, dead-letter custody, broker failure, and replay storms affect recovery?",
+      "capstoneIncrement": "Implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks.",
+      "learningOutcomes": [
+        "classify broker, relay, consumer, dependency, schema, security, and capacity failures",
+        "apply retry only to transient failures under one budget",
+        "bound producer and consumer pressure with admission and backpressure",
+        "diagnose lag using count, age, partition distribution, and drain rate",
+        "design dead-letter records and repair workflows as controlled operational state",
+        "recover from consumer crashes and broker interruption without corrupting effects",
+        "prevent replay storms from overwhelming live traffic",
+        "reconcile broker progress, inboxes, projections, outboxes, and source truth after incidents"
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-governance-release-and-final-defense",
+      "title": "Event Platform Governance, Release, and Final Defense",
+      "centralQuestion": "How are event ownership, compatibility, retention, replay, consumers, evidence, and release decisions governed as a platform capability?",
+      "capstoneIncrement": "Publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff.",
+      "learningOutcomes": [
+        "treat the event catalogue as an owned product rather than a topic inventory",
+        "define lifecycle stages for draft, active, deprecated, last-published, and retired event versions",
+        "gate producer releases on contract, compatibility, catalogue, security, replay, and operational evidence",
+        "gate consumer releases on accepted versions, idempotency, lag, dead-letter, replay, and rollback evidence",
+        "version partitioning, retention, and schema meaning as public operational commitments",
+        "design deprecation and retirement around retained records and consumer migration",
+        "produce a minimal sanitized handoff for the next course",
+        "defend the complete asynchronous workflow under named failure windows"
+      ]
+    }
+  ]
+}

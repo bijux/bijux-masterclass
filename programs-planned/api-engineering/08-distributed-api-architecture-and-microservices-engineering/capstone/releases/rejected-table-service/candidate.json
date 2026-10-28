@@ -1,0 +1,6 @@
+{
+  "candidate": "table-service",
+  "expected": "reject",
+  "issue": "service boundary mirrors projects table",
+  "rejecting_gate": "boundary-evidence"
+}

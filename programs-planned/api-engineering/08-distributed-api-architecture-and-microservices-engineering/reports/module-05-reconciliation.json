@@ -1,0 +1,8 @@
+{
+  "evidence_class": "semantic",
+  "scenario": "completed-run-artifact-notification",
+  "findings": [],
+  "unexplained_findings": 0,
+  "read_only_comparison": true,
+  "status": "pass"
+}

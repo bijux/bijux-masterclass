@@ -1,0 +1,40 @@
+actors:
+- id: ACT-01
+  name: anonymous network client
+  capabilities:
+  - send arbitrary HTTP within lab
+  - control headers and bodies
+- id: ACT-02
+  name: authenticated tenant reader
+  capabilities:
+  - valid token
+  - read scopes
+  - guess resource identifiers
+- id: ACT-03
+  name: authenticated tenant writer
+  capabilities:
+  - valid token
+  - write scopes
+  - submit uploads and URLs
+- id: ACT-04
+  name: compromised credential holder
+  capabilities:
+  - replay a stolen token or API key until contained
+- id: ACT-05
+  name: malicious webhook receiver
+  capabilities:
+  - control HTTP responses
+  - delay, redirect, replay
+- id: ACT-06
+  name: dependency or build attacker
+  capabilities:
+  - influence compromised package or build input
+- id: ACT-07
+  name: support operator
+  capabilities:
+  - time-bounded delegated access
+- id: ACT-08
+  name: privileged service operator
+  capabilities:
+  - configuration and runtime access
+  - not assumed malicious in normal model

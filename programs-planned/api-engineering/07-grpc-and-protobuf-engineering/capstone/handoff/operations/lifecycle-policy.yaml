@@ -1,0 +1,23 @@
+version: 1.0
+states: [starting, accepting, draining, stopping, stopped]
+health:
+  starting: NOT_SERVING
+  accepting: SERVING
+  draining: NOT_SERVING
+  stopping: NOT_SERVING
+  stopped: unavailable
+drain:
+  stop_new_calls: true
+  stop_new_worker_assignments: true
+  maximum_seconds: 30
+  uploads:
+    finish_if_within_budget: true
+    otherwise: cancel-and-clean-stage
+  watches:
+    terminate_with: UNAVAILABLE
+    client_action: reconnect-with-resume
+  worker_streams:
+    client_action: reconnect-and-reconcile-leases
+reflection:
+  development: enabled
+  production: authenticated-or-disabled

@@ -1,0 +1,20 @@
+query GetProjectOverview($projectId: ID!, $first: Int = 20, $after: Cursor) {
+  project(id: $projectId) {
+    id
+    name
+    version
+    analysisRuns(first: $first, after: $after) {
+      edges {
+        cursor
+        node {
+          id
+          status
+          version
+          artifacts { id mediaType size sha256 }
+          deliverySummary { delivered pending failed stalenessSeconds }
+        }
+      }
+      pageInfo { hasNextPage endCursor }
+    }
+  }
+}

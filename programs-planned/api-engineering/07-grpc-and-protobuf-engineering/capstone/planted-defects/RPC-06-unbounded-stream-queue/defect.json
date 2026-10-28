@@ -1,0 +1,5 @@
+{
+  "id": "RPC-06",
+  "title": "Buffer all WatchRun events for a slow client",
+  "expected_rejection": "streaming-proof"
+}

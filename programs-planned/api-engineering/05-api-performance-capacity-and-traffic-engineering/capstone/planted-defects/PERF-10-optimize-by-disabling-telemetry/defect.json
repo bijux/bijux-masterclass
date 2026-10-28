@@ -1,0 +1,7 @@
+{
+  "description": "The candidate appears faster by removing inherited reliability evidence.",
+  "expectedOracle": "profile-freeze-proof",
+  "id": "PERF-10",
+  "mustBeRejected": true,
+  "slug": "optimize-by-disabling-telemetry"
+}

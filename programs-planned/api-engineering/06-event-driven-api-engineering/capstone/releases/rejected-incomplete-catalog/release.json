@@ -1,0 +1,14 @@
+{
+  "candidateId": "rejected-incomplete-catalog",
+  "eventType": "org.bijux.analysis.run.completed.v1",
+  "eventApiVersion": "1.1.0-rejected",
+  "expectedDecision": "rejected",
+  "gates": {
+    "contractValid": true,
+    "replaySafe": true,
+    "catalogComplete": false,
+    "securityValid": true,
+    "reliabilityReady": true
+  },
+  "rationale": "The event catalogue and consumer ownership records are incomplete."
+}

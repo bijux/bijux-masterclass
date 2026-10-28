@@ -1,0 +1,23 @@
+{
+  "executed": {
+    "course_structure": "passed",
+    "course_book_depth": "passed",
+    "predecessor_manifest": "passed",
+    "proto_local_profile": "passed",
+    "descriptor_semantic_parity": "passed",
+    "python_live_grpc": "31 tests passed",
+    "typescript_dependency_light": "18 tests passed",
+    "migrations_001_015": "passed",
+    "release_and_defects": "passed",
+    "handoff_manifest": "passed"
+  },
+  "not_executed": {
+    "protoc_independent_generation": "protoc unavailable",
+    "buf_lint_breaking": "buf unavailable",
+    "grpcurl_reflection": "grpcurl unavailable",
+    "typescript_grpc_js_network": "registry dependencies unavailable",
+    "live_mtls": "certificate topology not provisioned",
+    "postgresql_concurrency": "PostgreSQL not provisioned",
+    "strict_mkdocs": "mkdocs unavailable"
+  }
+}

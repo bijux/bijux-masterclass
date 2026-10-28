@@ -1,0 +1,34 @@
+[
+  {
+    "allow": true,
+    "field": "Query.project",
+    "permissions": [
+      "PROJECT_READ"
+    ],
+    "tenant_match": true
+  },
+  {
+    "allow": false,
+    "field": "AnalysisRun.artifacts",
+    "permissions": [
+      "RUN_READ"
+    ],
+    "tenant_match": true
+  },
+  {
+    "allow": false,
+    "field": "AnalysisRun.artifacts",
+    "permissions": [
+      "ARTIFACT_READ"
+    ],
+    "tenant_match": false
+  },
+  {
+    "allow": true,
+    "field": "AnalysisRun.artifacts",
+    "permissions": [
+      "ARTIFACT_READ"
+    ],
+    "tenant_match": true
+  }
+]

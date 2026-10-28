@@ -1,0 +1,29 @@
+{
+  "profile": "grpc-deadline-1.0",
+  "cases": [
+    {
+      "id": "DDL-01",
+      "edge_seconds": 5.0,
+      "elapsed": 2.0,
+      "reserve": 0.5,
+      "cap": 10.0,
+      "expected_child": 2.5
+    },
+    {
+      "id": "DDL-02",
+      "edge_seconds": 2.0,
+      "elapsed": 1.9,
+      "reserve": 0.2,
+      "cap": 1.0,
+      "expected_child": 0.0
+    },
+    {
+      "id": "DDL-03",
+      "edge_seconds": 5.0,
+      "elapsed": 1.0,
+      "reserve": 0.0,
+      "cap": 2.0,
+      "expected_child": 2.0
+    }
+  ]
+}

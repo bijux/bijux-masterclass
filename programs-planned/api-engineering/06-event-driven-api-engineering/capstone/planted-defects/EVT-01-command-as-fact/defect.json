@@ -1,0 +1,8 @@
+{
+  "id": "EVT-01",
+  "slug": "EVT-01-command-as-fact",
+  "summary": "A command is published as though it were an immutable fact",
+  "mustBeRejected": true,
+  "expectedOracle": "message taxonomy rejects intent disguised as an event",
+  "proofFamily": "taxonomy"
+}

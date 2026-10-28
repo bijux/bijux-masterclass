@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "expiresAtMs": 1500,
+      "id": "deadline-remaining",
+      "nowMs": 1000,
+      "remainingMs": 500
+    },
+    {
+      "expiresAtMs": 1500,
+      "id": "deadline-expired",
+      "nowMs": 1500,
+      "remainingMs": 0
+    },
+    {
+      "childExpiresAtMs": 1300,
+      "childMaximumMs": 300,
+      "id": "deadline-child-shorter",
+      "nowMs": 1000,
+      "parentExpiresAtMs": 2000
+    },
+    {
+      "childExpiresAtMs": 1200,
+      "childMaximumMs": 1000,
+      "id": "deadline-child-parent-bound",
+      "nowMs": 1000,
+      "parentExpiresAtMs": 1200
+    }
+  ]
+}

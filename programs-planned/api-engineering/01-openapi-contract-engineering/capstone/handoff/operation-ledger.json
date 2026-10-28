@@ -1,0 +1,373 @@
+[
+  {
+    "path": "/analysis-runs",
+    "method": "GET",
+    "operationId": "listAnalysisRuns",
+    "summary": "List analysis runs",
+    "tags": [
+      "Analysis Runs"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "runs:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/analysis-runs",
+    "method": "POST",
+    "operationId": "createAnalysisRun",
+    "summary": "Start an analysis run",
+    "tags": [
+      "Analysis Runs"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "runs:write"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/analysis-runs/{runId}",
+    "method": "GET",
+    "operationId": "getAnalysisRun",
+    "summary": "Retrieve an analysis run",
+    "tags": [
+      "Analysis Runs"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "runs:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/analysis-runs/{runId}/artifacts",
+    "method": "GET",
+    "operationId": "listRunArtifacts",
+    "summary": "List run artifacts",
+    "tags": [
+      "Artifacts"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "artifacts:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/analysis-runs/{runId}/cancellation",
+    "method": "POST",
+    "operationId": "cancelAnalysisRun",
+    "summary": "Cancel an analysis run",
+    "tags": [
+      "Analysis Runs"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "runs:write"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/analysis-runs/{runId}/events",
+    "method": "GET",
+    "operationId": "streamAnalysisRunEvents",
+    "summary": "Stream analysis progress",
+    "tags": [
+      "Analysis Runs"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "runs:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/artifacts/{artifactId}",
+    "method": "GET",
+    "operationId": "getArtifact",
+    "summary": "Retrieve artifact metadata",
+    "tags": [
+      "Artifacts"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "artifacts:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/datasets/{datasetId}",
+    "method": "DELETE",
+    "operationId": "deleteDataset",
+    "summary": "Delete a dataset",
+    "tags": [
+      "Datasets"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "datasets:write"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/datasets/{datasetId}",
+    "method": "GET",
+    "operationId": "getDataset",
+    "summary": "Retrieve a dataset",
+    "tags": [
+      "Datasets"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "datasets:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/datasets/{datasetId}/content",
+    "method": "POST",
+    "operationId": "uploadDatasetContent",
+    "summary": "Upload local dataset content",
+    "tags": [
+      "Datasets"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "datasets:write"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/health",
+    "method": "GET",
+    "operationId": "getHealth",
+    "summary": "Check service health",
+    "tags": [
+      "System"
+    ],
+    "security": []
+  },
+  {
+    "path": "/internal/diagnostics",
+    "method": "GET",
+    "operationId": "getInternalDiagnostics",
+    "summary": "Inspect deterministic training state",
+    "tags": [
+      "Internal"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "admin"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/projects",
+    "method": "GET",
+    "operationId": "listProjects",
+    "summary": "List projects",
+    "tags": [
+      "Projects"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "projects:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/projects",
+    "method": "POST",
+    "operationId": "createProject",
+    "summary": "Create a project",
+    "tags": [
+      "Projects"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "projects:write"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/projects/{projectId}",
+    "method": "GET",
+    "operationId": "getProject",
+    "summary": "Retrieve a project",
+    "tags": [
+      "Projects"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "projects:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/projects/{projectId}",
+    "method": "PATCH",
+    "operationId": "updateProject",
+    "summary": "Conditionally update a project",
+    "tags": [
+      "Projects"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "projects:write"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/projects/{projectId}/datasets",
+    "method": "GET",
+    "operationId": "listProjectDatasets",
+    "summary": "List project datasets",
+    "tags": [
+      "Datasets"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "datasets:read"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/projects/{projectId}/datasets",
+    "method": "POST",
+    "operationId": "createDataset",
+    "summary": "Register a dataset",
+    "tags": [
+      "Datasets"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "datasets:write"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "/webhook-subscriptions",
+    "method": "POST",
+    "operationId": "createWebhookSubscription",
+    "summary": "Create a webhook subscription",
+    "tags": [
+      "Webhooks"
+    ],
+    "security": [
+      {
+        "OAuth2": [
+          "webhooks:write"
+        ]
+      },
+      {
+        "ApiKey": []
+      }
+    ]
+  },
+  {
+    "path": "POST /analysis-runs callback:onCompletion:{$request.body#/callbackUrl}",
+    "method": "POST",
+    "operationId": "analysisCompletionCallback",
+    "summary": "Notify the request-specific callback destination.",
+    "tags": [],
+    "security": []
+  },
+  {
+    "path": "webhook:analysisCompleted",
+    "method": "POST",
+    "operationId": "analysisCompletedWebhook",
+    "summary": "Analysis completed event",
+    "tags": [
+      "Webhooks"
+    ],
+    "security": [
+      {
+        "WebhookSignature": []
+      }
+    ]
+  }
+]

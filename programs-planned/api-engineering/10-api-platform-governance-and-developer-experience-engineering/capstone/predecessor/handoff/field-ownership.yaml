@@ -1,0 +1,21 @@
+version: '1.0'
+fields:
+  Query.viewer: graph-gateway-context
+  Query.node: graph-gateway-dispatch
+  Query.project: analysis-control
+  Query.analysisRun: analysis-control
+  Query.artifact: artifact-service
+  Query.deliverySummary: notification-service
+  Query.analysisRuns: analysis-control
+  Query.search: graph-gateway-composition
+  Project.analysisRuns: analysis-control
+  AnalysisRun.artifacts: artifact-service
+  AnalysisRun.deliverySummary: notification-service
+  Mutation.createProject: analysis-control
+  Mutation.startAnalysis: analysis-control
+  Mutation.cancelAnalysis: analysis-control
+  Subscription.analysisRunUpdated: analysis-events-1.0
+rules:
+- every field has one source authority or explicit composition owner
+- graph-gateway-dispatch selects an owner but never becomes the fact owner
+- graph-gateway-composition is bounded and may not read private service databases

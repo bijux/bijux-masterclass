@@ -1,0 +1,32 @@
+{
+  "artifacts": [
+    {
+      "name": "pyproject.toml",
+      "path": "python/pyproject.toml",
+      "sha256": "b3623fd2529147479d99d3ec375ee1dd28b48c5638a34183a2f278a5ee22a74e"
+    },
+    {
+      "name": "__init__.py",
+      "path": "python/analysis_api_client/__init__.py",
+      "sha256": "06e88935e461940cc43bda53f40f93f063d6a900766665ecfc34045e7061425c"
+    },
+    {
+      "name": "package.json",
+      "path": "typescript/package.json",
+      "sha256": "e9ad871c6d427625c8cb6285a6083611bec7bbb22f504fd98927a49fd1642149"
+    },
+    {
+      "name": "index.js",
+      "path": "typescript/src/index.js",
+      "sha256": "6f29a5a9c3c7f260e9cad9d12717e0fdc4f28985723d4c5c5df78000de88347d"
+    }
+  ],
+  "requires": [
+    "sbom",
+    "provenance",
+    "contractDigest",
+    "tests",
+    "changelog"
+  ],
+  "version": "1.0"
+}

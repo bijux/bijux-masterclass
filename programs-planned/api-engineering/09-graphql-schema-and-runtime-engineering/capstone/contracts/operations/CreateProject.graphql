@@ -1,0 +1,6 @@
+mutation CreateProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    ... on CreateProjectSuccess { clientMutationId replayed project { id name version } }
+    ... on MutationProblem { clientMutationId code message field }
+  }
+}

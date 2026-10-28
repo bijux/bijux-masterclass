@@ -1,0 +1,12 @@
+query GetRun($runId: ID!) {
+  analysisRun(id: $runId) {
+    id
+    projectId
+    datasetId
+    status
+    version
+    resultSummary
+    artifacts { id mediaType size sha256 downloadUrl }
+    deliverySummary { delivered pending failed observedAt stalenessSeconds }
+  }
+}

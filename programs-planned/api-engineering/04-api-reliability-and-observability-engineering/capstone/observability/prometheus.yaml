@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/recording-rules.yaml
+  - /etc/prometheus/alerts.yaml
+
+scrape_configs:
+  - job_name: analysis-python-api
+    metrics_path: /internal/metrics
+    static_configs:
+      - targets: [python-api:8000]
+  - job_name: analysis-typescript-api
+    metrics_path: /internal/metrics
+    static_configs:
+      - targets: [typescript-api:8001]
+  - job_name: otel-collector-exporter
+    static_configs:
+      - targets: [otel-collector:8889]
+  - job_name: otel-collector-internal
+    static_configs:
+      - targets: [otel-collector:8888]

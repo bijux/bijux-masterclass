@@ -1,0 +1,2461 @@
+{
+  "files": [
+    {
+      "bytes": 412,
+      "mode": "0644",
+      "path": ".gitignore",
+      "sha256": "7df172f4a53669d16d5b5c97167977c6a1cc8094c1815228d56ecd9b43e0c237"
+    },
+    {
+      "bytes": 552,
+      "mode": "0644",
+      "path": ".spectral.yaml",
+      "sha256": "2854356211976a95ab76ad6c259e93555dcbe2a18131569e6a75e6fc97d08a3a"
+    },
+    {
+      "bytes": 2956,
+      "mode": "0644",
+      "path": "Makefile",
+      "sha256": "ca908b5436d10bcc3eae42bdd2639b586e040492c66d744cfbdbdc63a631c196"
+    },
+    {
+      "bytes": 1036,
+      "mode": "0644",
+      "path": "README.md",
+      "sha256": "1b034d37154cc003de7702558ac07cdbff4b2a66cb47c1ed17bd7c1a5544bac4"
+    },
+    {
+      "bytes": 122,
+      "mode": "0644",
+      "path": "capstone/.env.example",
+      "sha256": "4438e4d205d5e7f5efa37205095561b2817042db710f7cec79cdf4bba821e11b"
+    },
+    {
+      "bytes": 12675,
+      "mode": "0644",
+      "path": "capstone/Makefile",
+      "sha256": "433cf44c561ebdce077ed36dea0140edfa7b6e6906057c2abe359e14dae4f8a5"
+    },
+    {
+      "bytes": 5303,
+      "mode": "0644",
+      "path": "capstone/README.md",
+      "sha256": "cb5363c41ff1e2d07af93706cefad681b6a7984f3f05f9c79ac4bcea2166038b"
+    },
+    {
+      "bytes": 931,
+      "mode": "0644",
+      "path": "capstone/ci/github-actions.yml",
+      "sha256": "3d0a10560fcd8ec9a9ad50ee34f2b941d5a241830a562029b62785d2e6acb724"
+    },
+    {
+      "bytes": 479,
+      "mode": "0644",
+      "path": "capstone/clients/python/README.md",
+      "sha256": "c594e8982d04047f63e53ebab1ef21906af134bf1c8c27c461148184119273d7"
+    },
+    {
+      "bytes": 573,
+      "mode": "0644",
+      "path": "capstone/clients/python/generated/README.md",
+      "sha256": "15aa29cc55a89e358dc28fcc35a1d9ec986c1b9ea029fc1d6c76f2b60e741af3"
+    },
+    {
+      "bytes": 260,
+      "mode": "0644",
+      "path": "capstone/clients/python/pyproject.toml",
+      "sha256": "70c7713c5e10705ea1bfcafe3443ff1327092033af259ba1c15918a8da0123e5"
+    },
+    {
+      "bytes": 149,
+      "mode": "0644",
+      "path": "capstone/clients/python/src/analysis_client/__init__.py",
+      "sha256": "1e3a2175c57202dfe61ce75873fe954ef53f3eefdcb511250edcff18315b279f"
+    },
+    {
+      "bytes": 1111,
+      "mode": "0644",
+      "path": "capstone/clients/python/src/analysis_client/__main__.py",
+      "sha256": "7ba4357118eaf6ffc051c32887335495f5629237254235b33fab1c591b1af486"
+    },
+    {
+      "bytes": 6889,
+      "mode": "0644",
+      "path": "capstone/clients/python/src/analysis_client/client.py",
+      "sha256": "178d72c7d392818ffaea3d14706ab715afb5a642a4f218c08d8f8e9eab50981e"
+    },
+    {
+      "bytes": 7295,
+      "mode": "0644",
+      "path": "capstone/clients/python/tests/test_client.py",
+      "sha256": "7ebc873c43d1df25f78f15f8a09a52ac915b1c68d292b26d484169b9546ccfad"
+    },
+    {
+      "bytes": 563,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/README.md",
+      "sha256": "5be0e5d5d76cbdae8dec512410441260b2f837f4ad80b250809960f279b7154d"
+    },
+    {
+      "bytes": 656,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/generated/README.md",
+      "sha256": "9ecb6abb937089c5a8aea481aa66159773d56d5fe2c67a2c16c535c7780cc264"
+    },
+    {
+      "bytes": 2350,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/generated/schema.reference.d.ts",
+      "sha256": "f35c847552bcde4c59eb772834d0a4cc27b06d4143936698702e51cf31a7af62"
+    },
+    {
+      "bytes": 463,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/package.json",
+      "sha256": "3605e530a14a2cb15b2f57cfa319079f180c7dff169668b2acc9269560a8753b"
+    },
+    {
+      "bytes": 770,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/src/cli.ts",
+      "sha256": "adeb22d80f08706b177330626b056e34476ae07aa69d8f4cf82826669edc361c"
+    },
+    {
+      "bytes": 6826,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/src/client.ts",
+      "sha256": "c99441ff0eef128751d08ecd8468e041ceb2471cae696e5c858b3af0f6149cb7"
+    },
+    {
+      "bytes": 186,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/src/index.ts",
+      "sha256": "41965280fe1cfba78674d60a32b0d904c19fe7d2ec2c5f1a624f3a469b35e28e"
+    },
+    {
+      "bytes": 1779,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/src/types.ts",
+      "sha256": "e20409d0d0369f602df7d48b65d6160dfce3c3b7f3456e5005f91a5644cf9a2d"
+    },
+    {
+      "bytes": 5512,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/test/client.test.ts",
+      "sha256": "e625e388605f821296e8386ea7890e7281e5ed40438a343bfd0bde7b454d65e6"
+    },
+    {
+      "bytes": 469,
+      "mode": "0644",
+      "path": "capstone/clients/typescript/tsconfig.json",
+      "sha256": "3a6f3ad6b4bf4b0f81e67811a495535524c2e4e1b0c5d5074204674a5422f229"
+    },
+    {
+      "bytes": 246,
+      "mode": "0644",
+      "path": "capstone/compose.yaml",
+      "sha256": "1fccfe62caadffec73200690fe1ba63bbcb14272f952bedffbf1636a5d1f89d7"
+    },
+    {
+      "bytes": 814,
+      "mode": "0644",
+      "path": "capstone/docs/adr/0001-contract-first-source.md",
+      "sha256": "fca637f5a0aea3942960583c575d038ddee5abc63b8895e25dda48540d17d469"
+    },
+    {
+      "bytes": 596,
+      "mode": "0644",
+      "path": "capstone/docs/adr/0002-deterministic-in-memory-state.md",
+      "sha256": "957b932d625ee1780a2743af40208b9b36552c58a6899b4f6f3fc1df52f7870d"
+    },
+    {
+      "bytes": 583,
+      "mode": "0644",
+      "path": "capstone/docs/adr/0003-separate-31-and-32.md",
+      "sha256": "95ed3cd6cf53195ed5f6013c6a25198625adea1cc09c04412b1aa322f6d416c0"
+    },
+    {
+      "bytes": 2854,
+      "mode": "0644",
+      "path": "capstone/docs/architecture.md",
+      "sha256": "5de18811db0bef46b80d49a51403485fec098be04feb30050d97aa67c1a4c177"
+    },
+    {
+      "bytes": 1162,
+      "mode": "0644",
+      "path": "capstone/docs/compatibility.md",
+      "sha256": "2d450c45ec9b0db781c67c6dc1a2561f1bc0e5067c1afaef87f6b76a51a2d273"
+    },
+    {
+      "bytes": 2475,
+      "mode": "0644",
+      "path": "capstone/docs/contract-decisions.md",
+      "sha256": "e0ecb99a5892b823d6f256930beb4a01819ef92fb107722fe69f2503d32a9ce4"
+    },
+    {
+      "bytes": 1174,
+      "mode": "0644",
+      "path": "capstone/docs/evidence-tour.md",
+      "sha256": "4caeea361d13eb0ef466b70d8f171b507093cb3360315c0cbaf649b6284f39bb"
+    },
+    {
+      "bytes": 1010,
+      "mode": "0644",
+      "path": "capstone/docs/extension-guide.md",
+      "sha256": "8a1c34df723cdabf342bc5ce42e2431db1b57dd83344d3dfd5fbf2ceb8683550"
+    },
+    {
+      "bytes": 829,
+      "mode": "0644",
+      "path": "capstone/docs/operations.md",
+      "sha256": "50277e2456af1d29b374e05ee43c1fce0d86f85c0e21c4d89b8789be24c0c2b9"
+    },
+    {
+      "bytes": 1540,
+      "mode": "0644",
+      "path": "capstone/docs/security-model.md",
+      "sha256": "38a7a093310d7698f8b6a68cfead722d98c3999c272aafe817cd607b0f301e11"
+    },
+    {
+      "bytes": 1214,
+      "mode": "0644",
+      "path": "capstone/docs/state-machine.md",
+      "sha256": "8ed60b2a5f2fe6efe620610cfbad2fec3f6b36fb91ad6d94f3f163082ea18193"
+    },
+    {
+      "bytes": 983,
+      "mode": "0644",
+      "path": "capstone/docs/tooling-boundaries.md",
+      "sha256": "87bb346b0c1267252e522c243947630092b986881c1f29bf525161d1aefe65af"
+    },
+    {
+      "bytes": 25,
+      "mode": "0644",
+      "path": "capstone/fixtures/demo/measurements.csv",
+      "sha256": "f5b4af9584ae254d26fcc2aa11dc66bd4a0691f9632d97fc4a115b2def9f539f"
+    },
+    {
+      "bytes": 238,
+      "mode": "0644",
+      "path": "capstone/fixtures/demo/remote-dataset.json",
+      "sha256": "f4a6dd87f77c9164d4cea38d4a5dc82e779e6cec034c359d6361b46e70ced11a"
+    },
+    {
+      "bytes": 15664,
+      "mode": "0644",
+      "path": "capstone/handoff/MANIFEST.json",
+      "sha256": "013ac34db8b54614b2b6abaefd30e9aecc4e92eb4959dfb783b5c2024fdc820e"
+    },
+    {
+      "bytes": 80,
+      "mode": "0644",
+      "path": "capstone/handoff/MANIFEST.sha256",
+      "sha256": "85fff00b8c8ad3a8190e07bfa5e13e905892ba802c6ca0a204f9fc56080bb54d"
+    },
+    {
+      "bytes": 507,
+      "mode": "0644",
+      "path": "capstone/handoff/README.md",
+      "sha256": "45982f2594f171545d03f5bcf9b003da595a76d0a754f2eb7de999b91d3af191"
+    },
+    {
+      "bytes": 1693,
+      "mode": "0644",
+      "path": "capstone/handoff/behavioral-scenarios.yaml",
+      "sha256": "a02cf2e00c75f0a923fe57d55535593e2c83b3a733b699fcdf3abc4d00aa3c5e"
+    },
+    {
+      "bytes": 2475,
+      "mode": "0644",
+      "path": "capstone/handoff/contract-decisions.md",
+      "sha256": "e0ecb99a5892b823d6f256930beb4a01819ef92fb107722fe69f2503d32a9ce4"
+    },
+    {
+      "bytes": 6467,
+      "mode": "0644",
+      "path": "capstone/handoff/operation-ledger.json",
+      "sha256": "0e8385cf676f9c9d7438fc41156ef29af796a48e171ce9d00a11429700593999"
+    },
+    {
+      "bytes": 829,
+      "mode": "0644",
+      "path": "capstone/handoff/operations.md",
+      "sha256": "50277e2456af1d29b374e05ee43c1fce0d86f85c0e21c4d89b8789be24c0c2b9"
+    },
+    {
+      "bytes": 2854,
+      "mode": "0644",
+      "path": "capstone/handoff/predecessor-architecture.md",
+      "sha256": "5de18811db0bef46b80d49a51403485fec098be04feb30050d97aa67c1a4c177"
+    },
+    {
+      "bytes": 68,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisParameters__bad-label-key.json",
+      "sha256": "a2a2c037306212377cee2f6b6ee9cf99b9288e713c7af39d293e7ef862156ff5"
+    },
+    {
+      "bytes": 54,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisParameters__bad-priority.json",
+      "sha256": "292426aa250e1ea33fabf12ade4058ae33efc1d8c9acaff8fef7613b20855a78"
+    },
+    {
+      "bytes": 214,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisParameters__too-many-labels.json",
+      "sha256": "a33cef076b0e026fd7734c0f9dc0aa8c07dd7ff66f825d58e2f0e172d1fd5acb"
+    },
+    {
+      "bytes": 28,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisParameters__unknown-algorithm.json",
+      "sha256": "39d197ae7a94b8635cf945114f35da22289da6d20c52f9da79817c56f0369679"
+    },
+    {
+      "bytes": 112,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRunCreate__bad-dataset-id.json",
+      "sha256": "e389860cfe2058c5f8ac49030e4503b08e6e3b519d37a2a1aa054230fc86f5e2"
+    },
+    {
+      "bytes": 116,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRunCreate__bad-project-id.json",
+      "sha256": "71cd60254f13c1a270d689c52609a13304d9b734bb1597552e39e5b9deeeeb87"
+    },
+    {
+      "bytes": 189,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRunCreate__fragment-callback.json",
+      "sha256": "11ffa8d7f5422037a9e130013c90c3c64ef5516a84b24c817da05993f1a41ee2"
+    },
+    {
+      "bytes": 166,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRunCreate__http-callback.json",
+      "sha256": "139feade930287913a95d58324111ffc6534c654e9aa056b4f794444733936b0"
+    },
+    {
+      "bytes": 57,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRunCreate__missing-parameters.json",
+      "sha256": "25454cd33a316f488e2ec8239a31ed82262397fe1626945681521d864dcb1871"
+    },
+    {
+      "bytes": 168,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRunCreate__untrusted-callback.json",
+      "sha256": "ac05a2f5a7d927fc8db378001761c40d0577e0f472e35f6d95d2f21a6ab4cc71"
+    },
+    {
+      "bytes": 366,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRun__bad-artifact-id.json",
+      "sha256": "93170a3eaee176d864b670695a084959f63cffc4e1fc69c4849906ddf4a31e14"
+    },
+    {
+      "bytes": 348,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRun__over-progress.json",
+      "sha256": "1214f1603124b2e8a655cf5324c2c507379a7bfe2bca6dc75d5b03e60dfa34a6"
+    },
+    {
+      "bytes": 347,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/AnalysisRun__unknown-status.json",
+      "sha256": "3ec0e0e13608edd56672ac4455e304fb3cbbd989f753fcebcaee92d65b061eb8"
+    },
+    {
+      "bytes": 161,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/DatasetCreate__ambiguous-source.json",
+      "sha256": "a5a5282e64e96227fdb9eeab29f3e4f42269088b36311b22fdc1c02199de00e8"
+    },
+    {
+      "bytes": 135,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/DatasetCreate__extra-top-level.json",
+      "sha256": "f8d436919d09fb19c74263562bf7573bfb32a5d91be3ecbf474f76ad3c9f5071"
+    },
+    {
+      "bytes": 22,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/DatasetCreate__missing-source.json",
+      "sha256": "84a3fed3ee1c7de9d98013d4a3989d6f030cbdaa268a018e059de3e72c657d0d"
+    },
+    {
+      "bytes": 107,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/DatasetCreate__unknown-source-kind.json",
+      "sha256": "be1ee201ed31281651555897899ef184c86eff9ab234f930ecfca4c5502e2ab4"
+    },
+    {
+      "bytes": 409,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/Dataset__bad-status.json",
+      "sha256": "86a5708ba02934d9494d76426f022d83f11f38918f710fde36b1f262f7b84360"
+    },
+    {
+      "bytes": 403,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/Dataset__negative-length.json",
+      "sha256": "789e4573227b6ce812e59a69c75de2037c48d59ff89b3672537d4f7d416c69b6"
+    },
+    {
+      "bytes": 82,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/LocalFileSource__unsupported-media.json",
+      "sha256": "61f8fc8b1d844e77c8483b51dd980341cac78ee8aef7dfac93393109a9b2c4d1"
+    },
+    {
+      "bytes": 84,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/LocalFileSource__wrong-kind.json",
+      "sha256": "dff98b722d3dba952c9fc697aa10746b95f49a96cbf42a29347dc9c81e2f2e96"
+    },
+    {
+      "bytes": 192,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/Problem__bad-request-id.json",
+      "sha256": "150ddcce9faad8dc823ad8ee914ac779725d51021cf8a4678ed5db0080898ba1"
+    },
+    {
+      "bytes": 205,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/Problem__status-too-low.json",
+      "sha256": "e990ec4219790d209cf584019062c80bd85bc63c0ae953a49c40dae3870ec8d1"
+    },
+    {
+      "bytes": 17,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/ProjectCreate__blank-name.json",
+      "sha256": "c004439d939a0dc115cf7ba5c80a3f70a89bf899a2edca6a9149fe444c893c71"
+    },
+    {
+      "bytes": 43,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/ProjectCreate__extra-field.json",
+      "sha256": "1421efc7461e883a239263399ff9067af025d1b736906fad18e16602293be2a5"
+    },
+    {
+      "bytes": 98,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/ProjectCreate__long-name.json",
+      "sha256": "2b2f6e64d419e3c28babc91bb66afd4ba02b0ca13dc81fca6e32e09655a49b4c"
+    },
+    {
+      "bytes": 25,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/ProjectCreate__missing-name.json",
+      "sha256": "49fbc44e9fe5ebc850271128ec77bd5c5418c80e86823bdeac29e532ac0e35cd"
+    },
+    {
+      "bytes": 20,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/ProjectCreate__whitespace-name.json",
+      "sha256": "61079d01876e40fd1a3cf5aff477610cbff6a00547d916037858e39864a3dd8d"
+    },
+    {
+      "bytes": 17,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/ProjectPatch__blank-name.json",
+      "sha256": "c004439d939a0dc115cf7ba5c80a3f70a89bf899a2edca6a9149fe444c893c71"
+    },
+    {
+      "bytes": 3,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/ProjectPatch__empty.json",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    {
+      "bytes": 19,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/ProjectPatch__unknown.json",
+      "sha256": "2a69456156f1914df3e31a7c8af90991c160e5519adee7fb2d9b40236308e3ba"
+    },
+    {
+      "bytes": 173,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/Project__bad-time.json",
+      "sha256": "fa123f6f165a3ac68b825801f4f3e9c9f3239ead7ef5d9e2c8a66bc458943730"
+    },
+    {
+      "bytes": 201,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/Project__internal-extra.json",
+      "sha256": "153199713ea11af83dc78c48a1fd82c74545034b727ca52e3fe0daa1000c4c61"
+    },
+    {
+      "bytes": 168,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/Project__missing-version.json",
+      "sha256": "9c8d45dc97d9778c0d8d9d537bde62178d21a1f7a16f1398e0f3e7854d7b8873"
+    },
+    {
+      "bytes": 184,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/Project__zero-version.json",
+      "sha256": "8e6fc7046192231fd911f0fc8187db5f7a1372f673b92b2cf783d4870c6069cf"
+    },
+    {
+      "bytes": 93,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/RemoteObjectSource__fragment.json",
+      "sha256": "abc5ac22821dfa1f37ecd107c77c95fb88eb85ff4ec4c26bf6425b21a7c2ede5"
+    },
+    {
+      "bytes": 76,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/RemoteObjectSource__http.json",
+      "sha256": "997bdba0f501cd926f62157f8b1d53d92dd30c07f7987091e55c1fcdb4eda1ad"
+    },
+    {
+      "bytes": 98,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/RemoteObjectSource__query.json",
+      "sha256": "6224856ece9b4b4a01f55bfa5210f1f47e03694264f63dba1419fd1aa0c0eb48"
+    },
+    {
+      "bytes": 104,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/RemoteObjectSource__short-checksum.json",
+      "sha256": "7181469c013192c60ea93ccb97ca4d50148ee12f771a9d4158d53cc14ccb9855"
+    },
+    {
+      "bytes": 85,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/RemoteObjectSource__untrusted-host.json",
+      "sha256": "d1d17a3e667044e83c7bebbbabf17d50eee96a538d2c43fdaff9403321e801bd"
+    },
+    {
+      "bytes": 125,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/RunProgressEvent__bad-event-id.json",
+      "sha256": "7ea3ab6649021d70c8771b2195fd95e35d5e1ad648f64e8c54a14736953063f9"
+    },
+    {
+      "bytes": 132,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/RunProgressEvent__negative-progress.json",
+      "sha256": "48e7ffb2305258850a600eb0cfc1ec35b8d1cee2198c4b77711e0030acf2f509"
+    },
+    {
+      "bytes": 180,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/UploadReceipt__empty.json",
+      "sha256": "05b53e37f4a482aa543ddd6db3e6364d463627f9444cd7c0f8433e7863a08b56"
+    },
+    {
+      "bytes": 186,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/UploadReceipt__too-large.json",
+      "sha256": "f138254c6a922b1280014be92a970734ef14ab56718973f69f2080c0d8b9a894"
+    },
+    {
+      "bytes": 131,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/WebhookSubscriptionCreate__bad-host.json",
+      "sha256": "9684eb96c363e309b910b108302b66cd4884e99e8a824d0cdb7e37a8b2c879c2"
+    },
+    {
+      "bytes": 165,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/WebhookSubscriptionCreate__duplicate-events.json",
+      "sha256": "10246b8f53fd8a0d8e3e4c0065da5e0492a35d26bf0834b8551cd368d693c716"
+    },
+    {
+      "bytes": 136,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/WebhookSubscriptionCreate__fragment.json",
+      "sha256": "85710bc0ec978cda7c5fea08b54a1307a583b5e93c61f475340edf514f3d2c62"
+    },
+    {
+      "bytes": 124,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/WebhookSubscriptionCreate__short-secret.json",
+      "sha256": "1c2adc67996ab0d1b2b6e3acf0397c7dcd5da75f46a0e980530f476bd6dabaee"
+    },
+    {
+      "bytes": 137,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/invalid/WebhookSubscriptionCreate__unknown-event.json",
+      "sha256": "9fb56944d0e9aca4d3266e51cd9a3ad8139b44ca27644139a2623dcd7f27f69b"
+    },
+    {
+      "bytes": 8888,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/manifest.yaml",
+      "sha256": "2ab7c67f4cb5c222be29b8009f7522d4067f9dfb7bce916a573b7b27122dde79"
+    },
+    {
+      "bytes": 91,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/AnalysisParameters__labels.json",
+      "sha256": "fa9e8a8d3f09cea9e8b13ef42f59feac4142ac31d3c35660401fffb4e1726553"
+    },
+    {
+      "bytes": 30,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/AnalysisParameters__minimal.json",
+      "sha256": "460b386c18a4a9db5558161753dba3b4f54934b04cc41a7603934742fc7d1b97"
+    },
+    {
+      "bytes": 169,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/AnalysisRunCreate__callback.json",
+      "sha256": "88fd3a88d81731ef0796dd03c2853e6c86d3714074d2888984df9fb021e38df9"
+    },
+    {
+      "bytes": 115,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/AnalysisRunCreate__minimal.json",
+      "sha256": "bb3ecb989d9dfdd3fbd975bc2592069fd7ba9feda4d3db7a5ff25cc46da70d8d"
+    },
+    {
+      "bytes": 387,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/AnalysisRun__completed.json",
+      "sha256": "8aef2e8f40c9db6d0712c3ce29a36af1351f771f82dfba8218e1699c748ed91c"
+    },
+    {
+      "bytes": 346,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/AnalysisRun__queued.json",
+      "sha256": "588edad88fab45eb696cb651e77dd91ca12527b9e4c8361548b792d9d67e3da6"
+    },
+    {
+      "bytes": 124,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/DatasetCreate__local.json",
+      "sha256": "4a14c5fef25f2e90cdec3d24d69efe41d48463c7a4cd7de6530d7b0bb5a1716c"
+    },
+    {
+      "bytes": 122,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/DatasetCreate__remote.json",
+      "sha256": "dd92e68d3150f01125a4bb7729b243415f49e1281d81fb733ceac7b94532f096"
+    },
+    {
+      "bytes": 355,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/Dataset__awaiting.json",
+      "sha256": "da092538a2005c693bc147c85d6b936e6e0881fbce5a874ea45134973ea58e90"
+    },
+    {
+      "bytes": 404,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/Dataset__ready.json",
+      "sha256": "9dddd1bb9dce69513ae79cd14ada00a6498d15fc91c55ac4a69570da0cac934e"
+    },
+    {
+      "bytes": 81,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/LocalFileSource__csv.json",
+      "sha256": "3e6747cb45218377ed098c5dca455e5c1dee327e7ee6d5df7b8e71d7829be059"
+    },
+    {
+      "bytes": 205,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/Problem__not-found.json",
+      "sha256": "cd85bc8d58f775e9fbe44b80f5c28e38108f899649da13720ae30f4f797ee272"
+    },
+    {
+      "bytes": 91,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/ProjectCreate__full.json",
+      "sha256": "488df811829d2e6eb7993cb17e9ff82e69944ac14cd44c32f81b34f450718afe"
+    },
+    {
+      "bytes": 18,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/ProjectCreate__minimal.json",
+      "sha256": "fd20830552ed1874089b1e03595cd4ffa954813747bb007140f4caf3ac46ee89"
+    },
+    {
+      "bytes": 26,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/ProjectPatch__clear-description.json",
+      "sha256": "121a722d77248c1995610abbdcd3cf3b44c832339d3ef31530d7027d09d80d8b"
+    },
+    {
+      "bytes": 24,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/ProjectPatch__name.json",
+      "sha256": "ba07560d178453de254245cf40c4db28cab75cc2c1e4894d958d787e14de70e0"
+    },
+    {
+      "bytes": 184,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/Project__current.json",
+      "sha256": "ccbe303cce4699f43cc0f11c243adc784e70ea21c4e23f1cfbe3654ea2a28d8f"
+    },
+    {
+      "bytes": 165,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/RemoteObjectSource__checksum.json",
+      "sha256": "581253e8285ec1024063f4fd8d64a1e4464639260221e6ea9f2c6d4f49b451de"
+    },
+    {
+      "bytes": 77,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/RemoteObjectSource__https.json",
+      "sha256": "e25652f1000116da9199cb19a3f5da8ff7bfd1f1671b9d0e7ccc7f6976a3dfcc"
+    },
+    {
+      "bytes": 132,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/RunProgressEvent__running.json",
+      "sha256": "2813820702967cf02f4695affa490fdad3a9d560eb48bd884651bf6a3fb21954"
+    },
+    {
+      "bytes": 181,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/UploadReceipt__small.json",
+      "sha256": "7dde59256b79e9b1654fa6fe91c1ced0a3eb01b55b18ba16d52b29d48bdb155a"
+    },
+    {
+      "bytes": 162,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/WebhookSubscriptionCreate__both.json",
+      "sha256": "f9344b3961d90427f179daaf43f378c46a6736ea10f0ba4800942f32d016fa9c"
+    },
+    {
+      "bytes": 139,
+      "mode": "0644",
+      "path": "capstone/handoff/schema-fixtures/valid/WebhookSubscriptionCreate__completed.json",
+      "sha256": "955b930b3b1ac5a895b612feef9a27ec94784ec04960b7eead0bab3c4cf2060f"
+    },
+    {
+      "bytes": 1667,
+      "mode": "0644",
+      "path": "capstone/handoff/scope-matrix.yaml",
+      "sha256": "1e11ec069e9268dda34be08589c620a433518da98a0ac3f3666ac59c6c16c879"
+    },
+    {
+      "bytes": 1540,
+      "mode": "0644",
+      "path": "capstone/handoff/security-model.md",
+      "sha256": "38a7a093310d7698f8b6a68cfead722d98c3999c272aafe817cd607b0f301e11"
+    },
+    {
+      "bytes": 345018,
+      "mode": "0644",
+      "path": "capstone/handoff/spec/dist/openapi.bundle.yaml",
+      "sha256": "7aeb53d2af5f63805bf39ef45a490450a45f910c6694741c3be15d243922acf4"
+    },
+    {
+      "bytes": 6874,
+      "mode": "0644",
+      "path": "capstone/handoff/spec/openapi-3.2.yaml",
+      "sha256": "c0776e6c3b15343ab300cffe36cc83ea47457fd462d6090925518c365da0d0a8"
+    },
+    {
+      "bytes": 6438,
+      "mode": "0644",
+      "path": "capstone/handoff/spec/openapi.yaml",
+      "sha256": "cbfe5ae5fbc3cd632996a8d3be5e89b1e99867b893e8924babc46acc486d27a6"
+    },
+    {
+      "bytes": 1214,
+      "mode": "0644",
+      "path": "capstone/handoff/state-machine.md",
+      "sha256": "8ed60b2a5f2fe6efe620610cfbad2fec3f6b36fb91ad6d94f3f163082ea18193"
+    },
+    {
+      "bytes": 652,
+      "mode": "0644",
+      "path": "capstone/releases/README.md",
+      "sha256": "778086b7262f73cf84fae776887e5de8a99fa91bb2e3a626a7c87d7d39f42c91"
+    },
+    {
+      "bytes": 287,
+      "mode": "0644",
+      "path": "capstone/releases/attempted-v1.2-breaking/REVIEW.md",
+      "sha256": "d2cac43e33f5e940d6589cba4cc9e3bf194e369fd141f66069cfd6419afdbdff"
+    },
+    {
+      "bytes": 343039,
+      "mode": "0644",
+      "path": "capstone/releases/attempted-v1.2-breaking/openapi.yaml",
+      "sha256": "f85b44cabb805c66f6503bf5b2afe85f7fd9adea92f5b0567c6810ba56a423a4"
+    },
+    {
+      "bytes": 155,
+      "mode": "0644",
+      "path": "capstone/releases/v1.0/CHANGELOG.md",
+      "sha256": "a4d83dace69301f8f3f54edbfb0c099a893305f9f58e709b359929ffc86c1ee9"
+    },
+    {
+      "bytes": 333820,
+      "mode": "0644",
+      "path": "capstone/releases/v1.0/openapi.yaml",
+      "sha256": "6afc3d9a433b744736e2cd5f1b74d8f72b70a56678ff89020b83312c7a1fae22"
+    },
+    {
+      "bytes": 283,
+      "mode": "0644",
+      "path": "capstone/releases/v1.1/CHANGELOG.md",
+      "sha256": "1364b3989a545eb2e94374d385c77683d8d58e17cdc4d2e4e890072059f2e3f6"
+    },
+    {
+      "bytes": 344948,
+      "mode": "0644",
+      "path": "capstone/releases/v1.1/openapi.yaml",
+      "sha256": "f2a1bc250b89e4f12ddfe3da62463cb37b6921f6f8d9e806a5ba5585cb041d3f"
+    },
+    {
+      "bytes": 630,
+      "mode": "0644",
+      "path": "capstone/releases/v2.0/MIGRATION.md",
+      "sha256": "b8b420b7df4e5da286158e44e2b6608b6f49581314722072660f3839d5ba5faa"
+    },
+    {
+      "bytes": 318574,
+      "mode": "0644",
+      "path": "capstone/releases/v2.0/openapi.yaml",
+      "sha256": "8df3d95b9370504c2e75ebbe4252c74d01bf536b9e3155116ce432506d7bf2b9"
+    },
+    {
+      "bytes": 0,
+      "mode": "0644",
+      "path": "capstone/reports/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 39,
+      "mode": "0644",
+      "path": "capstone/scripts/__init__.py",
+      "sha256": "d5059d3119fd5e5e8d3eef5b5e2905b0ac53e128b9b9c5f7bc6c5d7127b9b56b"
+    },
+    {
+      "bytes": 951,
+      "mode": "0755",
+      "path": "capstone/scripts/client_view.py",
+      "sha256": "78e483958727551cf8a686aa666719dc9d33e840739d8baa8d989d82d1c00ac3"
+    },
+    {
+      "bytes": 3987,
+      "mode": "0755",
+      "path": "capstone/scripts/course_manifest.py",
+      "sha256": "3cb40f59eff9bcc7b8cb1dec1f1dcbaa9d0330bae9f329a72ded3fc3e5c1f65c"
+    },
+    {
+      "bytes": 18815,
+      "mode": "0755",
+      "path": "capstone/scripts/course_tool.py",
+      "sha256": "3dab3b7858c7b4dccc4d0d5a1af2b949124870a18fd6f767faafd8e862c7f115"
+    },
+    {
+      "bytes": 3238,
+      "mode": "0755",
+      "path": "capstone/scripts/doctor.py",
+      "sha256": "3da2b0e3627811b2a477c7205569056a3e8e345bd29fc3df51cd7e918c4278bb"
+    },
+    {
+      "bytes": 3349,
+      "mode": "0755",
+      "path": "capstone/scripts/export_handoff.py",
+      "sha256": "3637ee95f0ea1f3d90fffc26e6659e435751831b78a225bde3cd1a8d691e2017"
+    },
+    {
+      "bytes": 5843,
+      "mode": "0755",
+      "path": "capstone/scripts/install_oasdiff.py",
+      "sha256": "7a22a5fabfb0b25ba3ea7cc9d7fbcd80a621da66723dfe8d4446c2c163803354"
+    },
+    {
+      "bytes": 997,
+      "mode": "0755",
+      "path": "capstone/scripts/prism_smoke.py",
+      "sha256": "e8a6a2698940de52817f1490270ee1850c91198bcccef9708fea5eb5aae45e73"
+    },
+    {
+      "bytes": 1612,
+      "mode": "0755",
+      "path": "capstone/scripts/proof.py",
+      "sha256": "c382d3424d177b86ae28e6c8a22ee5cb1e4d7e4d03124b5179a01b1caa849c12"
+    },
+    {
+      "bytes": 3820,
+      "mode": "0755",
+      "path": "capstone/scripts/run_inprocess_tour.py",
+      "sha256": "5e9c65b16e687bea09484fc5378e21fc4af11d67bbb3b91db1a964590e97eb08"
+    },
+    {
+      "bytes": 10777,
+      "mode": "0755",
+      "path": "capstone/scripts/run_live_conformance.py",
+      "sha256": "154da516e356bf81c1a35a3f79979de8eca35c64b6485ee41e3c51b373acda21"
+    },
+    {
+      "bytes": 39536,
+      "mode": "0644",
+      "path": "capstone/scripts/spec_tools.py",
+      "sha256": "2a900aa2f1498fb91d781c6df688c67bed6e3011c66c5d3c91ece023b7ec90fc"
+    },
+    {
+      "bytes": 8086,
+      "mode": "0644",
+      "path": "capstone/scripts/typescript_audit_shims.d.ts",
+      "sha256": "36def07b593245e30a8de89d7a1b02643b544915f424584da8ea8528768fbc1c"
+    },
+    {
+      "bytes": 725,
+      "mode": "0755",
+      "path": "capstone/scripts/wait_for_http.py",
+      "sha256": "ebb5a5bd3de380071666c0a07de711b1174a4f0c92dd724392c50b4924d34c84"
+    },
+    {
+      "bytes": 310,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/Dockerfile",
+      "sha256": "5cfab6cc8a309db784757e4f32540af1490424148a2e05c6fe5a3179e4c590fc"
+    },
+    {
+      "bytes": 802,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/README.md",
+      "sha256": "077d10bb0f8375bf13d557c146bd837886caaa7fc03e45e497359fa2ec49128b"
+    },
+    {
+      "bytes": 273,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/pyproject.toml",
+      "sha256": "034e87e4322e17f63c69f84cf02410b8c4869d65d251337729f841990dd8b59e"
+    },
+    {
+      "bytes": 72,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/src/analysis_api/__init__.py",
+      "sha256": "550512445f8472211df1f0f4fb0cc6ad020a40de475071fe6c66f1a635d49276"
+    },
+    {
+      "bytes": 13820,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/src/analysis_api/app.py",
+      "sha256": "3aa7439a151f239c4bec539b14ebc84aa0e330e7affdfae4a3f407a08205ffe7"
+    },
+    {
+      "bytes": 2782,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/src/analysis_api/auth.py",
+      "sha256": "2fa867e7f6830ac3b9e120110e9d991878da149b864013048674ff91a00c8d74"
+    },
+    {
+      "bytes": 2368,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/src/analysis_api/errors.py",
+      "sha256": "b68823ea2fcc9e1b582c57b68017e93c8c6bdd30d2206cc2b75912f06c1f9b62"
+    },
+    {
+      "bytes": 9006,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/src/analysis_api/models.py",
+      "sha256": "6ee9ac558c41abe73cb57dd089a91057f473960dfa004e869abc5d31f8de7b4f"
+    },
+    {
+      "bytes": 20345,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/src/analysis_api/store.py",
+      "sha256": "e3e3708a261d03e6a42a806e8377472f6a2d3408a4fb26788547963ce51cd543"
+    },
+    {
+      "bytes": 1542,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/tests/conftest.py",
+      "sha256": "26d061c215d26f15b27f20ef3d14e2b58173938accf8bd112bad8c53dfc76b46"
+    },
+    {
+      "bytes": 759,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/tests/test_operation_map.py",
+      "sha256": "f24ce69d06944a2c6869a6e9456fcf79d73af731a1eb19757b5a012236027bd4"
+    },
+    {
+      "bytes": 4084,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/tests/test_projects.py",
+      "sha256": "7a0ef12af1e15567eb532ba75c98f848d2d4760ea2976278a006cb8412306611"
+    },
+    {
+      "bytes": 2280,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/tests/test_security.py",
+      "sha256": "dc45025a1a8e9d56d5ef3a31d572c52e0e2d1456b455f5fcee670783bb931689"
+    },
+    {
+      "bytes": 4677,
+      "mode": "0644",
+      "path": "capstone/services/python-fastapi/tests/test_workflow.py",
+      "sha256": "6f2d9dc7afe6cbe44652a6d9d9c56f068a2a636a2026dca535198f121c40edc1"
+    },
+    {
+      "bytes": 162,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/Dockerfile",
+      "sha256": "5b9a820846e900e844eaa71cd011ed5d6faa643140ef97e470c09f7c7f48e265"
+    },
+    {
+      "bytes": 332,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/README.md",
+      "sha256": "b8fbc92e76fabc37a89c62c2c9f7062bd40f70594610e03fef60ae5cee6ed11f"
+    },
+    {
+      "bytes": 695,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/package.json",
+      "sha256": "6ae99adde92661f0ecd4369f92452118db8193e68742ace76e6c70128f8eeac5"
+    },
+    {
+      "bytes": 18056,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/src/app.ts",
+      "sha256": "9405a97957518f28fc58840a71e7e2a02c1a299be30c79ac3633475103a5b148"
+    },
+    {
+      "bytes": 3271,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/src/auth.ts",
+      "sha256": "ba2e61a301efd1723a8cdd2a3903b707ff0f493f293539fae3e818e2cff3196e"
+    },
+    {
+      "bytes": 3803,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/src/problems.ts",
+      "sha256": "3997bb5c39698d21fde01842d5b31e0e041a3968d9463cc913f0662276de8996"
+    },
+    {
+      "bytes": 10307,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/src/schemas.ts",
+      "sha256": "3e916d31f751b57e432742dab41a50afe79a4bba146099123fde9edeec6dc4e3"
+    },
+    {
+      "bytes": 293,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/src/server.ts",
+      "sha256": "4103827c0069cfc13737ddbfa27dbd1bbe8c3e9f3e74867aa3da01845bbf829d"
+    },
+    {
+      "bytes": 17713,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/src/store.ts",
+      "sha256": "0919001734d2524d14b10860c86acd9182afd3d91bb938529c9a4dae7cb30d66"
+    },
+    {
+      "bytes": 2687,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/src/types.ts",
+      "sha256": "cbd930f72e2adcb941526bbb25ffd177614f8164c084768596982c604addbb0b"
+    },
+    {
+      "bytes": 3349,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/test/app.test.ts",
+      "sha256": "d174de3645ee786719266c85b12bb52e8371b62dca35a75dba766e37e4f62f96"
+    },
+    {
+      "bytes": 1960,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/test/helpers.ts",
+      "sha256": "ff41701700b4c42fee9e52360abb8bcda383c6aa774ac29ac9deb8cf05a89951"
+    },
+    {
+      "bytes": 1282,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/test/operation-map.test.ts",
+      "sha256": "e245433ba94112a5a530f489c0e36786a9fa6e8a3842100dd4773670e9e561bb"
+    },
+    {
+      "bytes": 4727,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/test/workflow.test.ts",
+      "sha256": "0e0d9bbaeee479974ac96ac13c8c3ce3be4236593940e14b5818f73c6678f877"
+    },
+    {
+      "bytes": 516,
+      "mode": "0644",
+      "path": "capstone/services/typescript-fastify/tsconfig.json",
+      "sha256": "a45f7d788e8af757a6db8c4d34b843d7bf6b5bfa1c87a27ed4dc566e83f5e940"
+    },
+    {
+      "bytes": 149,
+      "mode": "0644",
+      "path": "capstone/spec/components/headers/ETag.yaml",
+      "sha256": "62fedec61a5c74109fcde925717b92e243aff7a192f9a97cce8c33f554aeec50"
+    },
+    {
+      "bytes": 132,
+      "mode": "0644",
+      "path": "capstone/spec/components/headers/IdempotentReplay.yaml",
+      "sha256": "a00199f68dde684e4eccf107593e813d603164ecf136a75f8dbc56b362e67537"
+    },
+    {
+      "bytes": 144,
+      "mode": "0644",
+      "path": "capstone/spec/components/headers/Location.yaml",
+      "sha256": "84bcd8e6cc19da0b128045a5f42d07f3e03c3688c0a672ecac886fe6423d3a17"
+    },
+    {
+      "bytes": 124,
+      "mode": "0644",
+      "path": "capstone/spec/components/headers/RequestId.yaml",
+      "sha256": "f88b47cd12890c1684443473c034af155a771d19cac10af488ddb108119830da"
+    },
+    {
+      "bytes": 125,
+      "mode": "0644",
+      "path": "capstone/spec/components/headers/RetryAfter.yaml",
+      "sha256": "5b5949ba61e196306946593075d1b0c4e4f42f22f955fa83ab56443b7b551854"
+    },
+    {
+      "bytes": 152,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/ArtifactId.yaml",
+      "sha256": "8891a43d65b9cbb13aa5476e4f3fdbc470c6e645c0b827e79164248c86b8ca7a"
+    },
+    {
+      "bytes": 168,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/Cursor.yaml",
+      "sha256": "ca898b7deaaaf5debbab9d9ce10ea62f76c84f361c34ed7d92bcfa7974838d81"
+    },
+    {
+      "bytes": 150,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/DatasetId.yaml",
+      "sha256": "260681c1e8cc03191bfe1bb3eab628aac159954f654a9226839d5671f8c26acd"
+    },
+    {
+      "bytes": 168,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/DatasetStatusFilter.yaml",
+      "sha256": "143649e9a183310dbea2e7933d3cd3a4be74ceb8ef3aa94674e4b62f0f55d284"
+    },
+    {
+      "bytes": 238,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/IdempotencyKey.yaml",
+      "sha256": "fea6efcff1170f45d2051c40e7ef77e6b02de57d9ecd45d4a75e44b30f642fda"
+    },
+    {
+      "bytes": 206,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/IfMatch.yaml",
+      "sha256": "1ca1139acdd6662d65332948d1e8f63439dbc2efe2f0ea5932fc999e0c017159"
+    },
+    {
+      "bytes": 165,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/Limit.yaml",
+      "sha256": "f2a5698235c8be7d4dbec9c166b1c6f1adc7df105d328fc4448a57049a217c71"
+    },
+    {
+      "bytes": 150,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/ProjectId.yaml",
+      "sha256": "a156b97c3d7a79baf48d2a68d4177642979a26a971a99da36af56d827d886118"
+    },
+    {
+      "bytes": 161,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/ProjectNameFilter.yaml",
+      "sha256": "3a2bd9f20a5a07da430e18ec97af77b5d2c59bdc35ba45282384ee88151762bc"
+    },
+    {
+      "bytes": 151,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/RunId.yaml",
+      "sha256": "904a698cc9cbac5f4ab5cf8a188b48444c17507bb30fce565234dc1e2fcfd814"
+    },
+    {
+      "bytes": 197,
+      "mode": "0644",
+      "path": "capstone/spec/components/parameters/RunStatusFilter.yaml",
+      "sha256": "f9daf8b18ec7ea11cf0fa2a6a1e8f955161b59c280ee4b7d2cdeff20d19203eb"
+    },
+    {
+      "bytes": 402,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/BadRequestProblem.yaml",
+      "sha256": "73ccac196b0c230659a5f0d79b27c302557ae29b6ebf5b50165f610edcd331c7"
+    },
+    {
+      "bytes": 416,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/ConflictProblem.yaml",
+      "sha256": "b906f38f1096c9769ba920c1ea358f650c66061dd5a73ae45a090f856a8974e2"
+    },
+    {
+      "bytes": 427,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/ForbiddenProblem.yaml",
+      "sha256": "b7dc104c20879032edbdb910ca8e6a83d5475ad1bbf86bd1296df07574a35a08"
+    },
+    {
+      "bytes": 408,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/NotFoundProblem.yaml",
+      "sha256": "198e2a96dad726314a91991d89a999ba63b299c444469a2b9b99e6606d53f305"
+    },
+    {
+      "bytes": 425,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/PayloadTooLargeProblem.yaml",
+      "sha256": "c131cdbd1de22d01147613e97eb3ba8a6bac05f1bddaa2da46c622a7878a4bc9"
+    },
+    {
+      "bytes": 442,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/PreconditionProblem.yaml",
+      "sha256": "00c86660a85b7e3fa49a76cd4c7eeea6ebff23a4e36372f538f1665cdba838a9"
+    },
+    {
+      "bytes": 432,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/PreconditionRequiredProblem.yaml",
+      "sha256": "0905ed20818f6d955189feea03004a3a4213ceb6a3c9bac53aecd015b2256693"
+    },
+    {
+      "bytes": 430,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/UnauthorizedProblem.yaml",
+      "sha256": "79cc3b525ce6fee4121e0242c06e59428024200695666118fa001689b7a1de85"
+    },
+    {
+      "bytes": 430,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/UnsupportedMediaTypeProblem.yaml",
+      "sha256": "734ea0c69cc7ecaf50429d7a300f8b916acd08eb028e2ae53db5f0c6b3e96360"
+    },
+    {
+      "bytes": 587,
+      "mode": "0644",
+      "path": "capstone/spec/components/responses/ValidationProblemResponse.yaml",
+      "sha256": "a9d5d13a5d6814b293bc5bed03918b2bd2af65cf56fe1ec50b892bc85f4e9960"
+    },
+    {
+      "bytes": 512,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/AnalysisParameters.yaml",
+      "sha256": "baac26be6249c929ad0b9f6efee318c1500ef0f8a8401b2613e069862970a909"
+    },
+    {
+      "bytes": 1530,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/AnalysisRun.yaml",
+      "sha256": "84c5a7fcfeb82b149592710216d6e95c8bdfb9486d97164cfe76c0e4362478b4"
+    },
+    {
+      "bytes": 646,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/AnalysisRunCreate.yaml",
+      "sha256": "e86c7bf6446fad085e288d751c0a233b9ba16ed39f188a2766428085a3eaeabd"
+    },
+    {
+      "bytes": 240,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/AnalysisRunPage.yaml",
+      "sha256": "7326448ab0b2e93e5ad54d9d59315488e22125c44ff89e38ab5859438fca3623"
+    },
+    {
+      "bytes": 921,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/Artifact.yaml",
+      "sha256": "888b2a8d066805ac42de946ce25c893942587c759a27297493d1e8e211db08e2"
+    },
+    {
+      "bytes": 152,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/ArtifactPage.yaml",
+      "sha256": "01f328b5839db7ef8709da875b4924bd116543c34434e373a12eca6bce04c19a"
+    },
+    {
+      "bytes": 1356,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/Dataset.yaml",
+      "sha256": "460424b4f5da4a76b2076baa2b83b6a293318efac84a968dbaf95d55df91e649"
+    },
+    {
+      "bytes": 488,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/DatasetCreate.yaml",
+      "sha256": "521b6f3b015f50952d5c7a6360728ddba8a3513cac6b5ef5a343d79a2f99ed1c"
+    },
+    {
+      "bytes": 236,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/DatasetPage.yaml",
+      "sha256": "535b2c924f369d5fbc46847348185855acd12555f43d77bdf3f9e7bd1e0618c4"
+    },
+    {
+      "bytes": 624,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/Diagnostics.yaml",
+      "sha256": "22c73245e8272245023284ffbbe6b87333b7880fdb5b1f524e2537d7b0efd8b1"
+    },
+    {
+      "bytes": 410,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/Health.yaml",
+      "sha256": "1e71267967e076dbc723f9b60b72ae1859e6268ea65dfcb8a117b3d69bb09714"
+    },
+    {
+      "bytes": 387,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/LocalFileSource.yaml",
+      "sha256": "dd6e004d663c08ba9105a44e1c49519d584fac866c957fdb4a766d863c328b7d"
+    },
+    {
+      "bytes": 688,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/Problem.yaml",
+      "sha256": "ad8abccab2fd94a2e825e8608a841c2831319cc76fbd467867a47b45f285cd9b"
+    },
+    {
+      "bytes": 830,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/Project.yaml",
+      "sha256": "9f1efc7eca9a5d3d3721e0240c79f913f4ab0d27ea5eaa370e84d810d0ecd279"
+    },
+    {
+      "bytes": 295,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/ProjectCreate.yaml",
+      "sha256": "ab12c27c71bb059a610c453398e85a8e4589e774ff5ad8b2ce3befb2fb277ced"
+    },
+    {
+      "bytes": 484,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/ProjectPage.yaml",
+      "sha256": "090c6156a8e736cf74d6a2d115bdd573a508dc4e593f40b0fd9c3f725a4a9743"
+    },
+    {
+      "bytes": 280,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/ProjectPatch.yaml",
+      "sha256": "701219bc55dce64abcde4c4cac2cb706a3b4a77c40cf5cc4c191a14b5978d0a4"
+    },
+    {
+      "bytes": 452,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/RemoteObjectSource.yaml",
+      "sha256": "c5623c19048a3ab5104416e336cf4396dab9250c571ee0a70419554b760a62d5"
+    },
+    {
+      "bytes": 764,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/RunCompletedEvent.yaml",
+      "sha256": "7280089a1862f53732ecbb1d054771c69e1014277c3e5b1322c1dd56729bc158"
+    },
+    {
+      "bytes": 453,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/RunProgressEvent.yaml",
+      "sha256": "9138753ca1b3ac47da7e1619ab08ed3983f2d88b26c2f18aa85a67ab1040b8be"
+    },
+    {
+      "bytes": 541,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/UploadReceipt.yaml",
+      "sha256": "7c234b3a8502757a12aea37bd4ed450126be47d368d9958eb91d6ec02421cb5d"
+    },
+    {
+      "bytes": 313,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/ValidationIssue.yaml",
+      "sha256": "50efd3e954e65dee5c770513b8a875bb0e93b0bae45433c338f9f77d711e918a"
+    },
+    {
+      "bytes": 911,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/ValidationProblem.yaml",
+      "sha256": "b7a220fbb9532c5f9baaf15cb31fe1d5f217b870bca1e913fd8238028ad7bee9"
+    },
+    {
+      "bytes": 712,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/WebhookSubscription.yaml",
+      "sha256": "b6363374f0805c2e31836f2050a3bf9c7cb8cc57d8efc3decd463a4182e0adef"
+    },
+    {
+      "bytes": 588,
+      "mode": "0644",
+      "path": "capstone/spec/components/schemas/WebhookSubscriptionCreate.yaml",
+      "sha256": "8a4f756c927455fb4a00ed5bb6869f0ab3043d29300d2487da563284902f68cc"
+    },
+    {
+      "bytes": 104,
+      "mode": "0644",
+      "path": "capstone/spec/components/security-schemes/ApiKey.yaml",
+      "sha256": "215e70f53a275f44584dbfeb1fcbcd92db519a31a5697ed5dde755a31b96c770"
+    },
+    {
+      "bytes": 806,
+      "mode": "0644",
+      "path": "capstone/spec/components/security-schemes/OAuth2.yaml",
+      "sha256": "b73d8bdee76d2e073a946541a62ed0bb44281769df8815fcf7845c7ece30bc95"
+    },
+    {
+      "bytes": 126,
+      "mode": "0644",
+      "path": "capstone/spec/components/security-schemes/WebhookSignature.yaml",
+      "sha256": "433d7709828f7b5777e893e24310d89c3414d0bb5c0d3e44edba33218e16924e"
+    },
+    {
+      "bytes": 0,
+      "mode": "0644",
+      "path": "capstone/spec/dist/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 6874,
+      "mode": "0644",
+      "path": "capstone/spec/openapi-3.2.yaml",
+      "sha256": "c0776e6c3b15343ab300cffe36cc83ea47457fd462d6090925518c365da0d0a8"
+    },
+    {
+      "bytes": 6438,
+      "mode": "0644",
+      "path": "capstone/spec/openapi.yaml",
+      "sha256": "cbfe5ae5fbc3cd632996a8d3be5e89b1e99867b893e8924babc46acc486d27a6"
+    },
+    {
+      "bytes": 777,
+      "mode": "0644",
+      "path": "capstone/spec/overlays/partner.overlay.yaml",
+      "sha256": "caab3a54ea4c3719cc20587dce3641beb2d0c180fa67e6a5b2fb9706203b6784"
+    },
+    {
+      "bytes": 578,
+      "mode": "0644",
+      "path": "capstone/spec/overlays/public.overlay.yaml",
+      "sha256": "a4e81af1e0bd9dd0441eac804bd7c243e96f4575c39140435e9e530d56c1e75c"
+    },
+    {
+      "bytes": 918,
+      "mode": "0644",
+      "path": "capstone/spec/paths/analysis-run-artifacts.yaml",
+      "sha256": "0d76d1e33a28edb2c5b89f1c4ed249254d7259a9c1ec8b35445670f21d79c718"
+    },
+    {
+      "bytes": 941,
+      "mode": "0644",
+      "path": "capstone/spec/paths/analysis-run-cancellation.yaml",
+      "sha256": "833534604197444e502d0f11ff727ef7ac3a687c9f1994619ff495c616106af4"
+    },
+    {
+      "bytes": 1626,
+      "mode": "0644",
+      "path": "capstone/spec/paths/analysis-run-events-3.2.yaml",
+      "sha256": "d4db86638692fca7022993606acc3c4517fe444ff53cf36e2da2231b84a09e07"
+    },
+    {
+      "bytes": 1520,
+      "mode": "0644",
+      "path": "capstone/spec/paths/analysis-run-events.yaml",
+      "sha256": "7f293c70038f8ad46b6b86fd608405ab82a600cb8a0d8e52a15baab23bb92305"
+    },
+    {
+      "bytes": 1908,
+      "mode": "0644",
+      "path": "capstone/spec/paths/analysis-run-query-3.2.yaml",
+      "sha256": "ecc24758802cae0f9818b30073081e0ca7c00b53cd63b3239f5d566dcdf49f34"
+    },
+    {
+      "bytes": 1012,
+      "mode": "0644",
+      "path": "capstone/spec/paths/analysis-run.yaml",
+      "sha256": "f72545d9c41148c06e82afa293cfdb44a032f7f8b0dda283d93e1e9355e455b1"
+    },
+    {
+      "bytes": 4653,
+      "mode": "0644",
+      "path": "capstone/spec/paths/analysis-runs.yaml",
+      "sha256": "39c1a0d4f3b01c48d11ff6b6238cf5d658f76019b73f658b841d52260211050a"
+    },
+    {
+      "bytes": 821,
+      "mode": "0644",
+      "path": "capstone/spec/paths/artifact.yaml",
+      "sha256": "cf419bb96064506244c92f0e23ca7b489a7c91d60b5b0e001e9215916302c11f"
+    },
+    {
+      "bytes": 1807,
+      "mode": "0644",
+      "path": "capstone/spec/paths/dataset-content.yaml",
+      "sha256": "f869a3453ea6c0662754e44352c2fcf92a5fd23efbf27ea0325839a67210a9b5"
+    },
+    {
+      "bytes": 1530,
+      "mode": "0644",
+      "path": "capstone/spec/paths/dataset.yaml",
+      "sha256": "297a65023d59abc86b1a56d1e8fc20a16d1e282fbe9602d3247ce2bf3bad6b3a"
+    },
+    {
+      "bytes": 590,
+      "mode": "0644",
+      "path": "capstone/spec/paths/health.yaml",
+      "sha256": "0a5153693ca01a4bb5395950aecb197dcecb6e9b524f79de3c35e28617a73f46"
+    },
+    {
+      "bytes": 705,
+      "mode": "0644",
+      "path": "capstone/spec/paths/internal-diagnostics.yaml",
+      "sha256": "ced70edceee70c48c0ec556c7f5814bf47ff2f18beb628b1fd1f3b4eac61c790"
+    },
+    {
+      "bytes": 2627,
+      "mode": "0644",
+      "path": "capstone/spec/paths/project-datasets.yaml",
+      "sha256": "fbc3cb68ab89c81f07e414a8e63c624b97cdf14b8581e82bcd559e1fc016034c"
+    },
+    {
+      "bytes": 2499,
+      "mode": "0644",
+      "path": "capstone/spec/paths/project.yaml",
+      "sha256": "707b6d6218969dcc65cc65e77a3885760710b5d07d7dacebf849573f10401ddb"
+    },
+    {
+      "bytes": 2246,
+      "mode": "0644",
+      "path": "capstone/spec/paths/projects.yaml",
+      "sha256": "df6a95ad639bd0f8a7dfed73ea85598a8d2b3db0d503f2d36e0c3f9c66ca8286"
+    },
+    {
+      "bytes": 1308,
+      "mode": "0644",
+      "path": "capstone/spec/paths/webhook-analysis-completed.yaml",
+      "sha256": "c8a41e9635ee9e869ad8f23760d3b6a6352ab28ded9c63ec1531b07c5f3095ba"
+    },
+    {
+      "bytes": 1168,
+      "mode": "0644",
+      "path": "capstone/spec/paths/webhook-subscriptions.yaml",
+      "sha256": "88c3973062f245106e7076c01dfeeb4d94d46e07a3e3f81e80649004b49362a2"
+    },
+    {
+      "bytes": 4174,
+      "mode": "0644",
+      "path": "capstone/spec/workflows/analysis-run.arazzo.yaml",
+      "sha256": "86a2ac1d0df2b09d33cc4119a99f89679cdc543539de8bc37f46ce269ceb9bf2"
+    },
+    {
+      "bytes": 1081,
+      "mode": "0644",
+      "path": "capstone/tests/compatibility/change-cases.yaml",
+      "sha256": "005e6bb6e7def0bd2e9800bb133ebc74fa89a0c40e24681ab485b9ec5aae1904"
+    },
+    {
+      "bytes": 1693,
+      "mode": "0644",
+      "path": "capstone/tests/conformance/behavioral-scenarios.yaml",
+      "sha256": "a02cf2e00c75f0a923fe57d55535593e2c83b3a733b699fcdf3abc4d00aa3c5e"
+    },
+    {
+      "bytes": 445,
+      "mode": "0644",
+      "path": "capstone/tests/conformance/test_live_contract.py",
+      "sha256": "27fa15c69d459525a683535f57261c69b8efdaff6eaf03de5772d5251a40cf92"
+    },
+    {
+      "bytes": 68,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisParameters__bad-label-key.json",
+      "sha256": "a2a2c037306212377cee2f6b6ee9cf99b9288e713c7af39d293e7ef862156ff5"
+    },
+    {
+      "bytes": 54,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisParameters__bad-priority.json",
+      "sha256": "292426aa250e1ea33fabf12ade4058ae33efc1d8c9acaff8fef7613b20855a78"
+    },
+    {
+      "bytes": 214,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisParameters__too-many-labels.json",
+      "sha256": "a33cef076b0e026fd7734c0f9dc0aa8c07dd7ff66f825d58e2f0e172d1fd5acb"
+    },
+    {
+      "bytes": 28,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisParameters__unknown-algorithm.json",
+      "sha256": "39d197ae7a94b8635cf945114f35da22289da6d20c52f9da79817c56f0369679"
+    },
+    {
+      "bytes": 112,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRunCreate__bad-dataset-id.json",
+      "sha256": "e389860cfe2058c5f8ac49030e4503b08e6e3b519d37a2a1aa054230fc86f5e2"
+    },
+    {
+      "bytes": 116,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRunCreate__bad-project-id.json",
+      "sha256": "71cd60254f13c1a270d689c52609a13304d9b734bb1597552e39e5b9deeeeb87"
+    },
+    {
+      "bytes": 189,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRunCreate__fragment-callback.json",
+      "sha256": "11ffa8d7f5422037a9e130013c90c3c64ef5516a84b24c817da05993f1a41ee2"
+    },
+    {
+      "bytes": 166,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRunCreate__http-callback.json",
+      "sha256": "139feade930287913a95d58324111ffc6534c654e9aa056b4f794444733936b0"
+    },
+    {
+      "bytes": 57,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRunCreate__missing-parameters.json",
+      "sha256": "25454cd33a316f488e2ec8239a31ed82262397fe1626945681521d864dcb1871"
+    },
+    {
+      "bytes": 168,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRunCreate__untrusted-callback.json",
+      "sha256": "ac05a2f5a7d927fc8db378001761c40d0577e0f472e35f6d95d2f21a6ab4cc71"
+    },
+    {
+      "bytes": 366,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRun__bad-artifact-id.json",
+      "sha256": "93170a3eaee176d864b670695a084959f63cffc4e1fc69c4849906ddf4a31e14"
+    },
+    {
+      "bytes": 348,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRun__over-progress.json",
+      "sha256": "1214f1603124b2e8a655cf5324c2c507379a7bfe2bca6dc75d5b03e60dfa34a6"
+    },
+    {
+      "bytes": 347,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/AnalysisRun__unknown-status.json",
+      "sha256": "3ec0e0e13608edd56672ac4455e304fb3cbbd989f753fcebcaee92d65b061eb8"
+    },
+    {
+      "bytes": 161,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/DatasetCreate__ambiguous-source.json",
+      "sha256": "a5a5282e64e96227fdb9eeab29f3e4f42269088b36311b22fdc1c02199de00e8"
+    },
+    {
+      "bytes": 135,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/DatasetCreate__extra-top-level.json",
+      "sha256": "f8d436919d09fb19c74263562bf7573bfb32a5d91be3ecbf474f76ad3c9f5071"
+    },
+    {
+      "bytes": 22,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/DatasetCreate__missing-source.json",
+      "sha256": "84a3fed3ee1c7de9d98013d4a3989d6f030cbdaa268a018e059de3e72c657d0d"
+    },
+    {
+      "bytes": 107,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/DatasetCreate__unknown-source-kind.json",
+      "sha256": "be1ee201ed31281651555897899ef184c86eff9ab234f930ecfca4c5502e2ab4"
+    },
+    {
+      "bytes": 409,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/Dataset__bad-status.json",
+      "sha256": "86a5708ba02934d9494d76426f022d83f11f38918f710fde36b1f262f7b84360"
+    },
+    {
+      "bytes": 403,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/Dataset__negative-length.json",
+      "sha256": "789e4573227b6ce812e59a69c75de2037c48d59ff89b3672537d4f7d416c69b6"
+    },
+    {
+      "bytes": 82,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/LocalFileSource__unsupported-media.json",
+      "sha256": "61f8fc8b1d844e77c8483b51dd980341cac78ee8aef7dfac93393109a9b2c4d1"
+    },
+    {
+      "bytes": 84,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/LocalFileSource__wrong-kind.json",
+      "sha256": "dff98b722d3dba952c9fc697aa10746b95f49a96cbf42a29347dc9c81e2f2e96"
+    },
+    {
+      "bytes": 192,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/Problem__bad-request-id.json",
+      "sha256": "150ddcce9faad8dc823ad8ee914ac779725d51021cf8a4678ed5db0080898ba1"
+    },
+    {
+      "bytes": 205,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/Problem__status-too-low.json",
+      "sha256": "e990ec4219790d209cf584019062c80bd85bc63c0ae953a49c40dae3870ec8d1"
+    },
+    {
+      "bytes": 17,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/ProjectCreate__blank-name.json",
+      "sha256": "c004439d939a0dc115cf7ba5c80a3f70a89bf899a2edca6a9149fe444c893c71"
+    },
+    {
+      "bytes": 43,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/ProjectCreate__extra-field.json",
+      "sha256": "1421efc7461e883a239263399ff9067af025d1b736906fad18e16602293be2a5"
+    },
+    {
+      "bytes": 98,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/ProjectCreate__long-name.json",
+      "sha256": "2b2f6e64d419e3c28babc91bb66afd4ba02b0ca13dc81fca6e32e09655a49b4c"
+    },
+    {
+      "bytes": 25,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/ProjectCreate__missing-name.json",
+      "sha256": "49fbc44e9fe5ebc850271128ec77bd5c5418c80e86823bdeac29e532ac0e35cd"
+    },
+    {
+      "bytes": 20,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/ProjectCreate__whitespace-name.json",
+      "sha256": "61079d01876e40fd1a3cf5aff477610cbff6a00547d916037858e39864a3dd8d"
+    },
+    {
+      "bytes": 17,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/ProjectPatch__blank-name.json",
+      "sha256": "c004439d939a0dc115cf7ba5c80a3f70a89bf899a2edca6a9149fe444c893c71"
+    },
+    {
+      "bytes": 3,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/ProjectPatch__empty.json",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    {
+      "bytes": 19,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/ProjectPatch__unknown.json",
+      "sha256": "2a69456156f1914df3e31a7c8af90991c160e5519adee7fb2d9b40236308e3ba"
+    },
+    {
+      "bytes": 173,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/Project__bad-time.json",
+      "sha256": "fa123f6f165a3ac68b825801f4f3e9c9f3239ead7ef5d9e2c8a66bc458943730"
+    },
+    {
+      "bytes": 201,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/Project__internal-extra.json",
+      "sha256": "153199713ea11af83dc78c48a1fd82c74545034b727ca52e3fe0daa1000c4c61"
+    },
+    {
+      "bytes": 168,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/Project__missing-version.json",
+      "sha256": "9c8d45dc97d9778c0d8d9d537bde62178d21a1f7a16f1398e0f3e7854d7b8873"
+    },
+    {
+      "bytes": 184,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/Project__zero-version.json",
+      "sha256": "8e6fc7046192231fd911f0fc8187db5f7a1372f673b92b2cf783d4870c6069cf"
+    },
+    {
+      "bytes": 93,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/RemoteObjectSource__fragment.json",
+      "sha256": "abc5ac22821dfa1f37ecd107c77c95fb88eb85ff4ec4c26bf6425b21a7c2ede5"
+    },
+    {
+      "bytes": 76,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/RemoteObjectSource__http.json",
+      "sha256": "997bdba0f501cd926f62157f8b1d53d92dd30c07f7987091e55c1fcdb4eda1ad"
+    },
+    {
+      "bytes": 98,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/RemoteObjectSource__query.json",
+      "sha256": "6224856ece9b4b4a01f55bfa5210f1f47e03694264f63dba1419fd1aa0c0eb48"
+    },
+    {
+      "bytes": 104,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/RemoteObjectSource__short-checksum.json",
+      "sha256": "7181469c013192c60ea93ccb97ca4d50148ee12f771a9d4158d53cc14ccb9855"
+    },
+    {
+      "bytes": 85,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/RemoteObjectSource__untrusted-host.json",
+      "sha256": "d1d17a3e667044e83c7bebbbabf17d50eee96a538d2c43fdaff9403321e801bd"
+    },
+    {
+      "bytes": 125,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/RunProgressEvent__bad-event-id.json",
+      "sha256": "7ea3ab6649021d70c8771b2195fd95e35d5e1ad648f64e8c54a14736953063f9"
+    },
+    {
+      "bytes": 132,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/RunProgressEvent__negative-progress.json",
+      "sha256": "48e7ffb2305258850a600eb0cfc1ec35b8d1cee2198c4b77711e0030acf2f509"
+    },
+    {
+      "bytes": 180,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/UploadReceipt__empty.json",
+      "sha256": "05b53e37f4a482aa543ddd6db3e6364d463627f9444cd7c0f8433e7863a08b56"
+    },
+    {
+      "bytes": 186,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/UploadReceipt__too-large.json",
+      "sha256": "f138254c6a922b1280014be92a970734ef14ab56718973f69f2080c0d8b9a894"
+    },
+    {
+      "bytes": 131,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/WebhookSubscriptionCreate__bad-host.json",
+      "sha256": "9684eb96c363e309b910b108302b66cd4884e99e8a824d0cdb7e37a8b2c879c2"
+    },
+    {
+      "bytes": 165,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/WebhookSubscriptionCreate__duplicate-events.json",
+      "sha256": "10246b8f53fd8a0d8e3e4c0065da5e0492a35d26bf0834b8551cd368d693c716"
+    },
+    {
+      "bytes": 136,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/WebhookSubscriptionCreate__fragment.json",
+      "sha256": "85710bc0ec978cda7c5fea08b54a1307a583b5e93c61f475340edf514f3d2c62"
+    },
+    {
+      "bytes": 124,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/WebhookSubscriptionCreate__short-secret.json",
+      "sha256": "1c2adc67996ab0d1b2b6e3acf0397c7dcd5da75f46a0e980530f476bd6dabaee"
+    },
+    {
+      "bytes": 137,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/invalid/WebhookSubscriptionCreate__unknown-event.json",
+      "sha256": "9fb56944d0e9aca4d3266e51cd9a3ad8139b44ca27644139a2623dcd7f27f69b"
+    },
+    {
+      "bytes": 8888,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/manifest.yaml",
+      "sha256": "2ab7c67f4cb5c222be29b8009f7522d4067f9dfb7bce916a573b7b27122dde79"
+    },
+    {
+      "bytes": 91,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/AnalysisParameters__labels.json",
+      "sha256": "fa9e8a8d3f09cea9e8b13ef42f59feac4142ac31d3c35660401fffb4e1726553"
+    },
+    {
+      "bytes": 30,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/AnalysisParameters__minimal.json",
+      "sha256": "460b386c18a4a9db5558161753dba3b4f54934b04cc41a7603934742fc7d1b97"
+    },
+    {
+      "bytes": 169,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/AnalysisRunCreate__callback.json",
+      "sha256": "88fd3a88d81731ef0796dd03c2853e6c86d3714074d2888984df9fb021e38df9"
+    },
+    {
+      "bytes": 115,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/AnalysisRunCreate__minimal.json",
+      "sha256": "bb3ecb989d9dfdd3fbd975bc2592069fd7ba9feda4d3db7a5ff25cc46da70d8d"
+    },
+    {
+      "bytes": 387,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/AnalysisRun__completed.json",
+      "sha256": "8aef2e8f40c9db6d0712c3ce29a36af1351f771f82dfba8218e1699c748ed91c"
+    },
+    {
+      "bytes": 346,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/AnalysisRun__queued.json",
+      "sha256": "588edad88fab45eb696cb651e77dd91ca12527b9e4c8361548b792d9d67e3da6"
+    },
+    {
+      "bytes": 124,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/DatasetCreate__local.json",
+      "sha256": "4a14c5fef25f2e90cdec3d24d69efe41d48463c7a4cd7de6530d7b0bb5a1716c"
+    },
+    {
+      "bytes": 122,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/DatasetCreate__remote.json",
+      "sha256": "dd92e68d3150f01125a4bb7729b243415f49e1281d81fb733ceac7b94532f096"
+    },
+    {
+      "bytes": 355,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/Dataset__awaiting.json",
+      "sha256": "da092538a2005c693bc147c85d6b936e6e0881fbce5a874ea45134973ea58e90"
+    },
+    {
+      "bytes": 404,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/Dataset__ready.json",
+      "sha256": "9dddd1bb9dce69513ae79cd14ada00a6498d15fc91c55ac4a69570da0cac934e"
+    },
+    {
+      "bytes": 81,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/LocalFileSource__csv.json",
+      "sha256": "3e6747cb45218377ed098c5dca455e5c1dee327e7ee6d5df7b8e71d7829be059"
+    },
+    {
+      "bytes": 205,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/Problem__not-found.json",
+      "sha256": "cd85bc8d58f775e9fbe44b80f5c28e38108f899649da13720ae30f4f797ee272"
+    },
+    {
+      "bytes": 91,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/ProjectCreate__full.json",
+      "sha256": "488df811829d2e6eb7993cb17e9ff82e69944ac14cd44c32f81b34f450718afe"
+    },
+    {
+      "bytes": 18,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/ProjectCreate__minimal.json",
+      "sha256": "fd20830552ed1874089b1e03595cd4ffa954813747bb007140f4caf3ac46ee89"
+    },
+    {
+      "bytes": 26,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/ProjectPatch__clear-description.json",
+      "sha256": "121a722d77248c1995610abbdcd3cf3b44c832339d3ef31530d7027d09d80d8b"
+    },
+    {
+      "bytes": 24,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/ProjectPatch__name.json",
+      "sha256": "ba07560d178453de254245cf40c4db28cab75cc2c1e4894d958d787e14de70e0"
+    },
+    {
+      "bytes": 184,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/Project__current.json",
+      "sha256": "ccbe303cce4699f43cc0f11c243adc784e70ea21c4e23f1cfbe3654ea2a28d8f"
+    },
+    {
+      "bytes": 165,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/RemoteObjectSource__checksum.json",
+      "sha256": "581253e8285ec1024063f4fd8d64a1e4464639260221e6ea9f2c6d4f49b451de"
+    },
+    {
+      "bytes": 77,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/RemoteObjectSource__https.json",
+      "sha256": "e25652f1000116da9199cb19a3f5da8ff7bfd1f1671b9d0e7ccc7f6976a3dfcc"
+    },
+    {
+      "bytes": 132,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/RunProgressEvent__running.json",
+      "sha256": "2813820702967cf02f4695affa490fdad3a9d560eb48bd884651bf6a3fb21954"
+    },
+    {
+      "bytes": 181,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/UploadReceipt__small.json",
+      "sha256": "7dde59256b79e9b1654fa6fe91c1ced0a3eb01b55b18ba16d52b29d48bdb155a"
+    },
+    {
+      "bytes": 162,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/WebhookSubscriptionCreate__both.json",
+      "sha256": "f9344b3961d90427f179daaf43f378c46a6736ea10f0ba4800942f32d016fa9c"
+    },
+    {
+      "bytes": 139,
+      "mode": "0644",
+      "path": "capstone/tests/fixtures/schema/valid/WebhookSubscriptionCreate__completed.json",
+      "sha256": "955b930b3b1ac5a895b612feef9a27ec94784ec04960b7eead0bab3c4cf2060f"
+    },
+    {
+      "bytes": 1667,
+      "mode": "0644",
+      "path": "capstone/tests/security/scope-matrix.yaml",
+      "sha256": "1e11ec069e9268dda34be08589c620a433518da98a0ac3f3666ac59c6c16c879"
+    },
+    {
+      "bytes": 2460,
+      "mode": "0644",
+      "path": "capstone/tests/test_contract_assets.py",
+      "sha256": "76df7fc634febdb67ef92b00b54bbd36681057f5db46c34ae7f299de13471085"
+    },
+    {
+      "bytes": 1544,
+      "mode": "0644",
+      "path": "capstone/tests/test_install_oasdiff.py",
+      "sha256": "325103a33ab65d748cf8149bfbb7b3ced3bae0aade1bfbb7e6f920ae2da5a5ed"
+    },
+    {
+      "bytes": 1519,
+      "mode": "0644",
+      "path": "capstone/tests/tooling/README.md",
+      "sha256": "079e2c15a3059e484279cbed1e1e11d212758115e5dcdcadae490b3a2b0998c1"
+    },
+    {
+      "bytes": 4804,
+      "mode": "0644",
+      "path": "capstone/tests/tooling/capability-cases.yaml",
+      "sha256": "9a5050f13fd427ceeab1ff6aea46b454f874c729fdf365f6c0323b7b3e4a20f0"
+    },
+    {
+      "bytes": 573,
+      "mode": "0644",
+      "path": "capstone/tests/workflows/README.md",
+      "sha256": "4a8c6aacfad65bbde5e8969d93ea2859d3fa69b6fd6031865c6c1b99ed956876"
+    },
+    {
+      "bytes": 689,
+      "mode": "0644",
+      "path": "capstone/tsconfig.audit.json",
+      "sha256": "888dad0aea461546ccd63dc696a4e4deaf52302b352cc570587f30b7fc5a99ab"
+    },
+    {
+      "bytes": 3381,
+      "mode": "0644",
+      "path": "course-book/capstone.md",
+      "sha256": "ced203708c1e31cc07bb79ac6ca58a9dc37414e6f106b9ff0f8eb76ccae87585"
+    },
+    {
+      "bytes": 1607,
+      "mode": "0644",
+      "path": "course-book/evidence-model.md",
+      "sha256": "91a51726e24a7a673ce771a9e775f5e0c238b04f48984947732f4c91506c2e93"
+    },
+    {
+      "bytes": 3009,
+      "mode": "0644",
+      "path": "course-book/glossary.md",
+      "sha256": "a659c655cf648aa24f874cdb2c9945d3038bcc5dbccebf8d95c5ba0966eebafc"
+    },
+    {
+      "bytes": 6002,
+      "mode": "0644",
+      "path": "course-book/index.md",
+      "sha256": "d8aa3faebee9266f45ad9a147b2f75e95ff16a5bc1fc07a8575bfa8124078a32"
+    },
+    {
+      "bytes": 1440,
+      "mode": "0644",
+      "path": "course-book/language-strategy.md",
+      "sha256": "b0b3316aea14cbbe3dd21e2eaa605f4d7993dab96f2479ffef9e9b363024b287"
+    },
+    {
+      "bytes": 1648,
+      "mode": "0644",
+      "path": "course-book/module-00-orientation/checkpoint.md",
+      "sha256": "b417242e8aaa103598c3de1d175db82b74c8e305e0e46f083be991701f530f93"
+    },
+    {
+      "bytes": 3447,
+      "mode": "0644",
+      "path": "course-book/module-00-orientation/index.md",
+      "sha256": "afe7d38856f2ea68435877400e27367a66d3fde1f3a4443b40481819156a2c32"
+    },
+    {
+      "bytes": 3199,
+      "mode": "0644",
+      "path": "course-book/module-00-orientation/lab.md",
+      "sha256": "8ed34415e86d6b05b704a2f3fc8861e0fe50370d3d76933b1950935c35d6c7ed"
+    },
+    {
+      "bytes": 2401,
+      "mode": "0644",
+      "path": "course-book/module-01-http-openapi-foundations/checkpoint.md",
+      "sha256": "6bae1f386912cc06d3ffa892b5210df305813fdb0dff0088109b9567ec57f528"
+    },
+    {
+      "bytes": 8173,
+      "mode": "0644",
+      "path": "course-book/module-01-http-openapi-foundations/exercise-answers.md",
+      "sha256": "7d6c3f40c76110767ac7ead1995da12fc644b27a6eafc85374451ed567c6e3ed"
+    },
+    {
+      "bytes": 2096,
+      "mode": "0644",
+      "path": "course-book/module-01-http-openapi-foundations/exercises.md",
+      "sha256": "91fb5fe1dc2e62c6641b12658ba691ed454560334cfa7539f0e916dc2b1bb4da"
+    },
+    {
+      "bytes": 19534,
+      "mode": "0644",
+      "path": "course-book/module-01-http-openapi-foundations/index.md",
+      "sha256": "3560d6e6930fc5ae0210190b1ae77d7a45e8b4baf86ddad8189c40a2f293ce59"
+    },
+    {
+      "bytes": 6587,
+      "mode": "0644",
+      "path": "course-book/module-01-http-openapi-foundations/lab.md",
+      "sha256": "df54676dcef004454ef7fd8277d77830645d103320f8db423ef6eb495e9ccec7"
+    },
+    {
+      "bytes": 2462,
+      "mode": "0644",
+      "path": "course-book/module-02-operations-parameters-messages/checkpoint.md",
+      "sha256": "f9d8cb69772b994826819ceed354a01223450286b281d4f4948f8fdbeefc1261"
+    },
+    {
+      "bytes": 8282,
+      "mode": "0644",
+      "path": "course-book/module-02-operations-parameters-messages/exercise-answers.md",
+      "sha256": "b120c065aa29f5a263e39e699e3cfb50fc3ead5ed8bb112a46edee616ab66c08"
+    },
+    {
+      "bytes": 2077,
+      "mode": "0644",
+      "path": "course-book/module-02-operations-parameters-messages/exercises.md",
+      "sha256": "7b473061ee02e0fdc8e9f6e9c8d307b4d65c782cdb6b6b17cb862b14148918c9"
+    },
+    {
+      "bytes": 19792,
+      "mode": "0644",
+      "path": "course-book/module-02-operations-parameters-messages/index.md",
+      "sha256": "664f4c5e0662c15797affab8146c71d427690cda662a94fd8f569f89aa1a2945"
+    },
+    {
+      "bytes": 6600,
+      "mode": "0644",
+      "path": "course-book/module-02-operations-parameters-messages/lab.md",
+      "sha256": "59c9b0883dabeff90f93fa490bd8570184be86389a659382ae479294ecc89570"
+    },
+    {
+      "bytes": 2383,
+      "mode": "0644",
+      "path": "course-book/module-03-json-schema-contract-modeling/checkpoint.md",
+      "sha256": "1d465c9d272801b7143617d7708f0542c8cf4485f94603791310e84639baa543"
+    },
+    {
+      "bytes": 8036,
+      "mode": "0644",
+      "path": "course-book/module-03-json-schema-contract-modeling/exercise-answers.md",
+      "sha256": "6440fd1ff4f078693eb632f92125949f1f5b5aa19c9bfcd0638da8f20517f3ed"
+    },
+    {
+      "bytes": 1978,
+      "mode": "0644",
+      "path": "course-book/module-03-json-schema-contract-modeling/exercises.md",
+      "sha256": "ab0a67acf1fae6b55dfe46c3435bdda4abe211375a48385c88697d872f4ff20e"
+    },
+    {
+      "bytes": 19292,
+      "mode": "0644",
+      "path": "course-book/module-03-json-schema-contract-modeling/index.md",
+      "sha256": "c7a0206b208561a2826afdd5177415b2dd9c218ae66612566c64cbdfafdc7ccc"
+    },
+    {
+      "bytes": 6682,
+      "mode": "0644",
+      "path": "course-book/module-03-json-schema-contract-modeling/lab.md",
+      "sha256": "652ca8d2668d12a02335a66f0f1bda52fad88d274fc85baca28b3f4dad5efcc9"
+    },
+    {
+      "bytes": 2456,
+      "mode": "0644",
+      "path": "course-book/module-04-references-multi-document-architecture/checkpoint.md",
+      "sha256": "fbfb712ee77a30250af671c71a2addcb6794172aa85ee9495c13f273f6b4025b"
+    },
+    {
+      "bytes": 7845,
+      "mode": "0644",
+      "path": "course-book/module-04-references-multi-document-architecture/exercise-answers.md",
+      "sha256": "44dcad862cd5792a623f63a3569ae546b4446a891f90e75f80b5116405fadb13"
+    },
+    {
+      "bytes": 1830,
+      "mode": "0644",
+      "path": "course-book/module-04-references-multi-document-architecture/exercises.md",
+      "sha256": "bf8fde2d957a23b7c6854be3c9ffb1ae69377b0a60fbb0d115fa638346b0c5f5"
+    },
+    {
+      "bytes": 18407,
+      "mode": "0644",
+      "path": "course-book/module-04-references-multi-document-architecture/index.md",
+      "sha256": "83b02edd8aa48a56d8ac44c1731e884ab3b5c1eaf7c90b08984fd91f19800c8f"
+    },
+    {
+      "bytes": 6608,
+      "mode": "0644",
+      "path": "course-book/module-04-references-multi-document-architecture/lab.md",
+      "sha256": "53319543f31765c6212e88ae6ee9a69fead5cee59a747b4fbbb42aefeecbf212"
+    },
+    {
+      "bytes": 2363,
+      "mode": "0644",
+      "path": "course-book/module-05-production-http-api-design/checkpoint.md",
+      "sha256": "b9a797cd4a09a648aa7852a952181a7320e1e48eb189722a667728f9b8b87081"
+    },
+    {
+      "bytes": 7763,
+      "mode": "0644",
+      "path": "course-book/module-05-production-http-api-design/exercise-answers.md",
+      "sha256": "bda09f495882e83ebfd82e5c13f0ccd3699f2a3949fcc4aa0fbd90ef7f3741ad"
+    },
+    {
+      "bytes": 1800,
+      "mode": "0644",
+      "path": "course-book/module-05-production-http-api-design/exercises.md",
+      "sha256": "a8b059634ccdc9abb227179af274bab6192cb71017298c8ffcfe88e24cf2b9b1"
+    },
+    {
+      "bytes": 19812,
+      "mode": "0644",
+      "path": "course-book/module-05-production-http-api-design/index.md",
+      "sha256": "5d6d0828172eec052c022f773ae440bd4db2bdb9ff8634a59107f4070b99fc29"
+    },
+    {
+      "bytes": 6628,
+      "mode": "0644",
+      "path": "course-book/module-05-production-http-api-design/lab.md",
+      "sha256": "f3981735a68263948f1a27cc4c662ff15a26533395a12034f6d5269dae1d8dc6"
+    },
+    {
+      "bytes": 2432,
+      "mode": "0644",
+      "path": "course-book/module-06-contract-first-code-first-runtime/checkpoint.md",
+      "sha256": "8a8f74c2f24f02afe7d0a0dcb0098dc23d488302435fb1f3fb524d6141139058"
+    },
+    {
+      "bytes": 8484,
+      "mode": "0644",
+      "path": "course-book/module-06-contract-first-code-first-runtime/exercise-answers.md",
+      "sha256": "b718fb99f11607f67eac93c14ca353904e02673613bf5a294f1c1f5034d732d6"
+    },
+    {
+      "bytes": 1910,
+      "mode": "0644",
+      "path": "course-book/module-06-contract-first-code-first-runtime/exercises.md",
+      "sha256": "22b60a4cb9305be8fb1368fcb83550e8f7ec6dd3c5f4bbbeff2a6a434c473f2f"
+    },
+    {
+      "bytes": 22556,
+      "mode": "0644",
+      "path": "course-book/module-06-contract-first-code-first-runtime/index.md",
+      "sha256": "56deca1fad397ad4cfe35454de002fbd4fe5db8303d3b4d6c27abf29828b87fd"
+    },
+    {
+      "bytes": 6945,
+      "mode": "0644",
+      "path": "course-book/module-06-contract-first-code-first-runtime/lab.md",
+      "sha256": "52a02d73713b68fe2475df7abdf26cc7b03387259c7bbbc1eb01e95a259d398a"
+    },
+    {
+      "bytes": 2499,
+      "mode": "0644",
+      "path": "course-book/module-07-mocking-clients-contract-testing/checkpoint.md",
+      "sha256": "e96699e196e1a9ec17d0ac86ad9f644bfc0477b013e9db320f1cbf2cbcff78bb"
+    },
+    {
+      "bytes": 8088,
+      "mode": "0644",
+      "path": "course-book/module-07-mocking-clients-contract-testing/exercise-answers.md",
+      "sha256": "a955b89f32c94a3299f8b0d311f2bd498945167ed10132fba90c2204133a2d21"
+    },
+    {
+      "bytes": 1876,
+      "mode": "0644",
+      "path": "course-book/module-07-mocking-clients-contract-testing/exercises.md",
+      "sha256": "24a627791df40797c8b112bc5bb93c04a5ba5dd178071d0c8ceb1834bfce5bef"
+    },
+    {
+      "bytes": 22355,
+      "mode": "0644",
+      "path": "course-book/module-07-mocking-clients-contract-testing/index.md",
+      "sha256": "4b4cd1c679dba052bd4db7aa9be2c105acbfb596b91d4c9820d1115e67dcda58"
+    },
+    {
+      "bytes": 6775,
+      "mode": "0644",
+      "path": "course-book/module-07-mocking-clients-contract-testing/lab.md",
+      "sha256": "6a3bb76a13cc8bea48fd8b9ffe85dd1c1506ce8921da99d620817a2d6c4f684c"
+    },
+    {
+      "bytes": 2444,
+      "mode": "0644",
+      "path": "course-book/module-08-security-authentication-authorization/checkpoint.md",
+      "sha256": "bd95a32602500d17e5a869f81d571ca7f25211dd2611e9b299885d70d4769da3"
+    },
+    {
+      "bytes": 8011,
+      "mode": "0644",
+      "path": "course-book/module-08-security-authentication-authorization/exercise-answers.md",
+      "sha256": "35c86b38fcceb44f7ffcff845c45bcadd4a57f82c95b88555f58c763d1cdfe23"
+    },
+    {
+      "bytes": 1856,
+      "mode": "0644",
+      "path": "course-book/module-08-security-authentication-authorization/exercises.md",
+      "sha256": "1bd04aa34415acf814a8708b853138e64fca5b731e93ba16e9f5b53aae156081"
+    },
+    {
+      "bytes": 22102,
+      "mode": "0644",
+      "path": "course-book/module-08-security-authentication-authorization/index.md",
+      "sha256": "e1e5eaff2d436680731e9adc6a3234b6790631613d5f6dd3c09e72437b0d2662"
+    },
+    {
+      "bytes": 6857,
+      "mode": "0644",
+      "path": "course-book/module-08-security-authentication-authorization/lab.md",
+      "sha256": "232678ed69764042575c15bf70a4a60cb8a77afb81bfb3108eaf3c4096074b64"
+    },
+    {
+      "bytes": 2537,
+      "mode": "0644",
+      "path": "course-book/module-09-evolution-compatibility-overlays-ci/checkpoint.md",
+      "sha256": "12c20862c8504be41ac2e765aa2fdf1270229ecda94958187d2b184590432355"
+    },
+    {
+      "bytes": 8155,
+      "mode": "0644",
+      "path": "course-book/module-09-evolution-compatibility-overlays-ci/exercise-answers.md",
+      "sha256": "0bd7f2afeecb9405eaf598d4fe0e0b64b1ee6ba89341f60c236e5bc03d5156d7"
+    },
+    {
+      "bytes": 1819,
+      "mode": "0644",
+      "path": "course-book/module-09-evolution-compatibility-overlays-ci/exercises.md",
+      "sha256": "29d145107d1ddfd178ae4ef888e54c946959c8e66b01324d6ac82d2bc57298af"
+    },
+    {
+      "bytes": 20937,
+      "mode": "0644",
+      "path": "course-book/module-09-evolution-compatibility-overlays-ci/index.md",
+      "sha256": "b768ee3be51c6448b06733e4eae04cd64da8147560402acb4a859ae32127dc60"
+    },
+    {
+      "bytes": 6942,
+      "mode": "0644",
+      "path": "course-book/module-09-evolution-compatibility-overlays-ci/lab.md",
+      "sha256": "c11e59c1b8005c22a61a4bd30ef49215def7f2d231b642a46bd80a714a41ef58"
+    },
+    {
+      "bytes": 2546,
+      "mode": "0644",
+      "path": "course-book/module-10-openapi-32-workflows-advanced/checkpoint.md",
+      "sha256": "b13e5c983513d753479487e6c9a2065f42c60afd7eba71c13a50f07a572b8126"
+    },
+    {
+      "bytes": 7863,
+      "mode": "0644",
+      "path": "course-book/module-10-openapi-32-workflows-advanced/exercise-answers.md",
+      "sha256": "3c528d7a56ea82e9d55e7eea445da14dc180582fd289415eb31dfcf4c2fea6a6"
+    },
+    {
+      "bytes": 1822,
+      "mode": "0644",
+      "path": "course-book/module-10-openapi-32-workflows-advanced/exercises.md",
+      "sha256": "c956f676aa649ba50c1a5cf8da517711c65312f0bb805ab58fd7bedf075fe8b8"
+    },
+    {
+      "bytes": 23892,
+      "mode": "0644",
+      "path": "course-book/module-10-openapi-32-workflows-advanced/index.md",
+      "sha256": "8d793920c21036c4d9fbfa92fc004229d0041e1e371271801ecdcb3ecd22d7c3"
+    },
+    {
+      "bytes": 7089,
+      "mode": "0644",
+      "path": "course-book/module-10-openapi-32-workflows-advanced/lab.md",
+      "sha256": "9811ca2b64762b7b9e71f6037e57c98f621005b5e628e3d0a119c743f0c83cdb"
+    },
+    {
+      "bytes": 1811,
+      "mode": "0644",
+      "path": "course-book/standards.md",
+      "sha256": "73f9c0d95e08fb5540947db0cc6d2dd4d519a9d8bbbc28209348b0c8b8d1ed14"
+    },
+    {
+      "bytes": 2379,
+      "mode": "0644",
+      "path": "course-book/start-here.md",
+      "sha256": "3fea18e58d3871fc50f176ada24998651760eeb9bcf0f5732ee5114c2c64c740"
+    },
+    {
+      "bytes": 3642,
+      "mode": "0644",
+      "path": "course-book/study-plan.md",
+      "sha256": "444d47a2e8c2ecaf94895a785ca950a2a2765e418818f2be04388aaf6e26fe07"
+    },
+    {
+      "bytes": 9103,
+      "mode": "0644",
+      "path": "course.json",
+      "sha256": "92167e266dc0fb90801e8951f39431edbe962e80f4fe2fa2ce54b83310578f85"
+    },
+    {
+      "bytes": 4847,
+      "mode": "0644",
+      "path": "mkdocs.yml",
+      "sha256": "53cbda87d42e1e6f487125b56a9e0a0ed85171813d55b22a1f710f6a3c49cae2"
+    },
+    {
+      "bytes": 1195,
+      "mode": "0644",
+      "path": "package.json",
+      "sha256": "0791ba7361504cd70c0f8025741b9d03101eb1a5f6d0040fc12e4b089e575cad"
+    },
+    {
+      "bytes": 988,
+      "mode": "0644",
+      "path": "pyproject.toml",
+      "sha256": "54a2a8cf17c2dab877ae75cd272ca33a20e4a085b6456d0e885e047007ba0f3c"
+    },
+    {
+      "bytes": 456,
+      "mode": "0644",
+      "path": "redocly.yaml",
+      "sha256": "f1c73751c7c349a0a4ca3599e82ac2b4d7e405ec88cce1ce6145f3ac567ef206"
+    },
+    {
+      "bytes": 238,
+      "mode": "0644",
+      "path": "requirements.txt",
+      "sha256": "e88da7be4bda12d2bd808bd080dfa9f1223655a0ede2a8e843666cc7c053ce57"
+    },
+    {
+      "bytes": 332,
+      "mode": "0644",
+      "path": "schemathesis.toml",
+      "sha256": "5445d006f0522bc6ce2b6789c0e277c0879ea7cafc12d410a635a913e73151e6"
+    },
+    {
+      "bytes": 1106,
+      "mode": "0644",
+      "path": "tool-versions.json",
+      "sha256": "a74c9e1bdb55407d781c2696d89dae8c7bf3f844d9bf5546e55b8a6196bc91fd"
+    }
+  ],
+  "format": 1,
+  "root": "01-openapi-contract-engineering",
+  "scope": "All distributable payload files except this manifest pair and generated dependency/cache/site directories."
+}

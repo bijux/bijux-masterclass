@@ -1,0 +1,24 @@
+version: '1.0'
+purpose: Course 9 graph access without bypassing service ownership
+safe_roots:
+- field: project
+  authority: analysis-control
+- field: analysisRun
+  authority: analysis-control
+- field: artifact
+  authority: artifact-service
+- field: deliverySummary
+  authority: notification-service
+  consistency: eventually-consistent
+forbidden:
+- direct database joins across services
+- unbounded list fan-out
+- gateway-owned domain state
+- authorization inferred from graph traversal
+- silent partial data
+required_controls:
+- batching
+- query budgets
+- field authorization
+- staleness disclosure
+- traceable service fan-out

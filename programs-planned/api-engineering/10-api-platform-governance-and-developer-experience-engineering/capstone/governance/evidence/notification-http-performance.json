@@ -1,0 +1,11 @@
+{
+  "apiRef": "api:default/notification-http",
+  "collectedAt": "2026-08-08T08:30:00Z",
+  "expiresAt": "2026-11-08T08:30:00Z",
+  "id": "notification-http-performance-1",
+  "kind": "performance",
+  "owner": "group:default/notification-team",
+  "sourceContract": "contracts/capabilities/notification-http.openapi.yaml",
+  "statement": "performance evidence for api:default/notification-http in the bounded Course 10 profile.",
+  "status": "pass"
+}

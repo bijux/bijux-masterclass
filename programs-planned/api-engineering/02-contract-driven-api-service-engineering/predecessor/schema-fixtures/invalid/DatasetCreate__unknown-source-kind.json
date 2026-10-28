@@ -1,0 +1,7 @@
+{
+  "name": "reads",
+  "source": {
+    "kind": "bucket",
+    "uri": "https://objects.example.test/a"
+  }
+}

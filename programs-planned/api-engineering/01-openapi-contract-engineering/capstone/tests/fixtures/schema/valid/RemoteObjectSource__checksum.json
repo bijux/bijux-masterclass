@@ -1,0 +1,5 @@
+{
+  "kind": "remote-object",
+  "uri": "https://objects.example.test/a.csv",
+  "checksumSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

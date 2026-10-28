@@ -1,0 +1,9 @@
+{
+  "candidate": "breaking-version-skew",
+  "defect": "new consumer requires a field absent from the old provider",
+  "expected": "reject",
+  "id": "DIST-09",
+  "lesson": "Rolling release is unsafe when a new consumer cannot operate with the previous supported provider.",
+  "rejecting_gate": "version-skew",
+  "title": "Breaking Version Skew"
+}

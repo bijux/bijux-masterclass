@@ -1,0 +1,7 @@
+{
+  "description": "nullable dependency field declared non-null without fallback",
+  "expectedProof": "error-proof",
+  "failure": "A routine dependency outage bubbles through a falsely non-null field.",
+  "id": "GQL-03-nullability-lie",
+  "mustBeRejected": true
+}

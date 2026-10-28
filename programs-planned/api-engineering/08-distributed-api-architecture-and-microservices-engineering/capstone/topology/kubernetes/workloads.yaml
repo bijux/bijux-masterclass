@@ -1,0 +1,213 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: edge-gateway
+  namespace: analysis-platform
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: analysis-control
+  namespace: analysis-platform
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: artifact-service
+  namespace: analysis-platform
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: notification-service
+  namespace: analysis-platform
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: worker-plane
+  namespace: analysis-platform
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analysis-control
+  namespace: analysis-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: analysis-control}
+  template:
+    metadata:
+      labels: {app: analysis-control}
+    spec:
+      serviceAccountName: analysis-control
+      containers:
+        - name: service
+          image: course8/distributed-network-lab:1.0
+          args: ["control", "--host", "0.0.0.0", "--port", "8081"]
+          env:
+            - {name: COURSE8_LAB_KEY, valueFrom: {secretKeyRef: {name: course8-lab-key, key: key}}}
+          ports: [{name: http, containerPort: 8081}]
+          readinessProbe: {httpGet: {path: /health, port: http}}
+          livenessProbe: {httpGet: {path: /health, port: http}}
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analysis-control
+  namespace: analysis-platform
+spec:
+  selector: {app: analysis-control}
+  ports: [{name: http, port: 8081, targetPort: http}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: artifact-service
+  namespace: analysis-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: artifact-service}
+  template:
+    metadata:
+      labels: {app: artifact-service}
+    spec:
+      serviceAccountName: artifact-service
+      containers:
+        - name: service
+          image: course8/distributed-network-lab:1.0
+          args: ["artifact", "--host", "0.0.0.0", "--port", "8082"]
+          env:
+            - {name: COURSE8_LAB_KEY, valueFrom: {secretKeyRef: {name: course8-lab-key, key: key}}}
+          ports: [{name: http, containerPort: 8082}]
+          readinessProbe: {httpGet: {path: /health, port: http}}
+          livenessProbe: {httpGet: {path: /health, port: http}}
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: "1", memory: 512Mi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: artifact-service
+  namespace: analysis-platform
+spec:
+  selector: {app: artifact-service}
+  ports: [{name: http, port: 8082, targetPort: http}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  namespace: analysis-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: notification-service}
+  template:
+    metadata:
+      labels: {app: notification-service}
+    spec:
+      serviceAccountName: notification-service
+      containers:
+        - name: service
+          image: course8/distributed-network-lab:1.0
+          args: ["notification", "--host", "0.0.0.0", "--port", "8083"]
+          env:
+            - {name: COURSE8_LAB_KEY, valueFrom: {secretKeyRef: {name: course8-lab-key, key: key}}}
+          ports: [{name: http, containerPort: 8083}]
+          readinessProbe: {httpGet: {path: /health, port: http}}
+          livenessProbe: {httpGet: {path: /health, port: http}}
+          resources:
+            requests: {cpu: 25m, memory: 48Mi}
+            limits: {cpu: 250m, memory: 192Mi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+  namespace: analysis-platform
+spec:
+  selector: {app: notification-service}
+  ports: [{name: http, port: 8083, targetPort: http}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-plane
+  namespace: analysis-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: worker-plane}
+  template:
+    metadata:
+      labels: {app: worker-plane}
+    spec:
+      serviceAccountName: worker-plane
+      containers:
+        - name: worker
+          image: course8/distributed-network-lab:1.0
+          args: ["worker", "--host", "0.0.0.0", "--port", "8084"]
+          env:
+            - {name: COURSE8_LAB_KEY, valueFrom: {secretKeyRef: {name: course8-lab-key, key: key}}}
+            - {name: CONTROL_URL, value: "http://analysis-control:8081"}
+            - {name: ARTIFACT_URL, value: "http://artifact-service:8082"}
+          ports: [{name: http, containerPort: 8084}]
+          readinessProbe: {httpGet: {path: /health, port: http}}
+          livenessProbe: {httpGet: {path: /health, port: http}}
+          resources:
+            requests: {cpu: 100m, memory: 96Mi}
+            limits: {cpu: "2", memory: 1Gi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: worker-plane
+  namespace: analysis-platform
+spec:
+  selector: {app: worker-plane}
+  ports: [{name: http, port: 8084, targetPort: http}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-gateway
+  namespace: analysis-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: edge-gateway}
+  template:
+    metadata:
+      labels: {app: edge-gateway}
+    spec:
+      serviceAccountName: edge-gateway
+      containers:
+        - name: gateway
+          image: course8/distributed-network-lab:1.0
+          args: ["gateway", "--host", "0.0.0.0", "--port", "8080"]
+          env:
+            - {name: COURSE8_LAB_KEY, valueFrom: {secretKeyRef: {name: course8-lab-key, key: key}}}
+            - {name: CONTROL_URL, value: "http://analysis-control:8081"}
+            - {name: ARTIFACT_URL, value: "http://artifact-service:8082"}
+          ports: [{name: http, containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /health, port: http}}
+          livenessProbe: {httpGet: {path: /health, port: http}}
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-gateway
+  namespace: analysis-platform
+spec:
+  selector: {app: edge-gateway}
+  ports: [{name: http, port: 8080, targetPort: http}]

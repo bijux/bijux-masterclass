@@ -1,0 +1,37 @@
+{
+  "name": "analysis-service-typescript-security",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/src/server.js",
+    "worker": "node dist/src/worker.js",
+    "migrate": "node dist/src/migrate.js",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "core:build": "tsc -p tsconfig.core.json",
+    "core:test": "npm run core:build && node --test test-core/*.test.mjs",
+    "security:build": "tsc -p tsconfig.security-core.json",
+    "security:test": "npm run security:build && node --test test-security-core/*.test.mjs"
+  },
+  "dependencies": {
+    "@fastify/multipart": "10.1.0",
+    "@fastify/swagger": "9.8.1",
+    "@fastify/swagger-ui": "6.1.1",
+    "@sinclair/typebox": "0.34.52",
+    "fastify": "5.11.2",
+    "pg": "8.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.2",
+    "@types/pg": "8.20.4",
+    "tsx": "4.23.5",
+    "typescript": "5.9.2",
+    "vitest": "4.1.10"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "profile": "performance-1.0",
+  "publicApi": "1.2",
+  "securityProfile": "1.0",
+  "reliabilityProfile": "1.0",
+  "migrationHead": "009",
+  "claimBoundary": "dependency-light and fixture-backed evidence unless a live route is attached"
+}

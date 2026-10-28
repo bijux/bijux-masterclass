@@ -1,0 +1,22 @@
+version: '1.0'
+defaultMode: dry-run
+requirements:
+  approvalRequired: true
+  maximumEventsRequired: true
+  explicitTenantScope: true
+  explicitEventTypes: true
+  externalSideEffects: disabled
+  newEffectVersionForRebuild: true
+  checkpointRequired: true
+  beforeAfterEvidence: true
+abortConditions:
+  - selected event count exceeds approved maximum
+  - consumer rejects an unknown major event version
+  - projection invariant fails
+  - observed output diverges from dry-run expectation
+  - database or broker health becomes degraded
+prohibited:
+  - replaying notifications with their original external side effects
+  - changing historical event bytes in place
+  - bypassing inbox identity
+  - using replay as an undocumented data migration

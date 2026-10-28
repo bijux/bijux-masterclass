@@ -1,0 +1,27 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "name": "analysis-api-client",
+      "purl": "pkg:pypi/analysis-api-client@1.2.0",
+      "type": "library",
+      "version": "1.2.0"
+    },
+    {
+      "name": "@analysis-platform/api-client",
+      "purl": "pkg:npm/%40analysis-platform/api-client@1.2.0",
+      "type": "library",
+      "version": "1.2.0"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "name": "analysis-api-client-publication",
+      "type": "application",
+      "version": "1.2.0"
+    }
+  },
+  "serialNumber": "urn:uuid:3da75780-2811-4bc0-89ea-0d522cd9569d",
+  "specVersion": "1.7",
+  "version": 1
+}

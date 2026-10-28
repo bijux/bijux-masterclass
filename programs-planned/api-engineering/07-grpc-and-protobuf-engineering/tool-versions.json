@@ -1,0 +1,25 @@
+{
+  "release_policy": {
+    "python": "3.13",
+    "node": "22",
+    "typescript": "5.8.3"
+  },
+  "full_environment_pins": {
+    "grpcio": "1.83.0",
+    "grpcio-tools": "1.83.0",
+    "protobuf-python": "7.35.1",
+    "@grpc/grpc-js": "1.14.4",
+    "@grpc/proto-loader": "0.8.1",
+    "protobufjs": "8.7.1"
+  },
+  "build_environment_observed": {
+    "python": "3.13.5",
+    "node": "22.16.0",
+    "typescript": "5.8.3",
+    "grpcio": "1.80.0",
+    "protobuf-python": "6.33.6",
+    "protoc": "not-available",
+    "buf": "not-available",
+    "grpcurl": "not-available"
+  }
+}
