@@ -1,0 +1,10 @@
+{
+  "cniSpec": "1.1.0",
+  "course1HostRuntime": "1.0.0",
+  "course2CloudFoundation": "1.0.0",
+  "course3WorkloadRelease": "1.0.0",
+  "course4KubernetesRuntime": "1.0.0",
+  "course5ConnectivityPlane": "1.0.0",
+  "gatewayAPI": "1.6.1",
+  "kubernetes": "1.36.2"
+}

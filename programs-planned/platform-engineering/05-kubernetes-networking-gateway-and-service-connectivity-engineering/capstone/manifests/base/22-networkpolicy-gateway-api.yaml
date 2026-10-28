@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-approved-clients-to-api
+  namespace: atlas-system
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: atlas-api
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              platform.bijux.dev/network-role: gateway
+        - namespaceSelector:
+            matchLabels:
+              platform.bijux.dev/network-role: client
+      ports:
+        - protocol: TCP
+          port: 8080

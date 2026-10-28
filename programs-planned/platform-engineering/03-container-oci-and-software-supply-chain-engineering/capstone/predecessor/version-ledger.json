@@ -1,0 +1,7 @@
+{
+  "course1HostRuntime": "1.0.0",
+  "course2CloudFoundation": "1.0.0",
+  "course3Target": "container-oci-supply-chain-1.0.0",
+  "opentofu": "1.12.5",
+  "awsProvider": "6.58.0"
+}

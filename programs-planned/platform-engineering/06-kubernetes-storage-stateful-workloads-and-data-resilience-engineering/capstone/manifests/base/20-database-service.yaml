@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlas-db
+  namespace: atlas-system
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: false
+  selector:
+    app.kubernetes.io/name: atlas-db
+  ports:
+    - name: database
+      port: 5432
+      targetPort: database

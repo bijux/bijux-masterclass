@@ -1,0 +1,10 @@
+{
+  "candidate": "two-writers",
+  "evidence": {
+    "migration_compatibility": "pass",
+    "predecessor": "pass",
+    "restore_drill": "pass",
+    "single_writer": "fail"
+  },
+  "expected": "rejected"
+}

@@ -1,0 +1,20 @@
+{
+  "cases": [
+    {
+      "expectedEqual": true,
+      "name": "comments-do-not-change-render"
+    },
+    {
+      "expectedEqual": false,
+      "name": "scalar-string-versus-integer"
+    },
+    {
+      "expectedEqual": true,
+      "name": "status-does-not-change-desired-digest"
+    },
+    {
+      "expectedEqual": false,
+      "name": "image-digest-changes-render"
+    }
+  ]
+}

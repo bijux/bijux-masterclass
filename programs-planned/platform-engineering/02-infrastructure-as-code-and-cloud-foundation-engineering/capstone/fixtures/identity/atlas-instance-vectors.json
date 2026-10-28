@@ -1,0 +1,50 @@
+[
+  {
+    "action": "ssm:GetParameter",
+    "expected": "allow",
+    "name": "read-own-config",
+    "resource": "arn:aws:ssm:eu-central-1:100000000005:parameter/atlas/dev/api"
+  },
+  {
+    "action": "ssm:GetParameter",
+    "expected": "deny",
+    "name": "read-prod-config-denied",
+    "resource": "arn:aws:ssm:eu-central-1:100000000006:parameter/atlas/prod/api"
+  },
+  {
+    "action": "secretsmanager:GetSecretValue",
+    "context": {
+      "aws:ResourceTag/atlas:environment": "dev"
+    },
+    "expected": "allow",
+    "name": "read-dev-secret-tag",
+    "resource": "arn:aws:secretsmanager:eu-central-1:100000000005:secret:atlas/dev/db"
+  },
+  {
+    "action": "secretsmanager:GetSecretValue",
+    "context": {
+      "aws:ResourceTag/atlas:environment": "prod"
+    },
+    "expected": "deny",
+    "name": "read-secret-wrong-tag",
+    "resource": "arn:aws:secretsmanager:eu-central-1:100000000005:secret:atlas/dev/db"
+  },
+  {
+    "action": "s3:PutObject",
+    "context": {
+      "aws:SecureTransport": "true"
+    },
+    "expected": "allow",
+    "name": "backup-over-tls",
+    "resource": "arn:aws:s3:::atlas-dev-backup/results/r1"
+  },
+  {
+    "action": "s3:PutObject",
+    "context": {
+      "aws:SecureTransport": "false"
+    },
+    "expected": "deny",
+    "name": "backup-without-tls",
+    "resource": "arn:aws:s3:::atlas-dev-backup/results/r1"
+  }
+]

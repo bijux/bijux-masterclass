@@ -1,0 +1,47 @@
+{
+  "course": "Kubernetes Delivery, GitOps, and Release Engineering",
+  "courseProfiles": [
+    "Atlas desired-state identity 1.0",
+    "Atlas protected-resource policy 1.0",
+    "Atlas promotion evidence 1.0",
+    "Atlas delivery release 1.0"
+  ],
+  "normativeAndReferenceProfiles": [
+    {
+      "name": "OpenGitOps principles",
+      "role": "vendor-neutral GitOps principles",
+      "version": "1.0"
+    },
+    {
+      "name": "Kubernetes",
+      "role": "workload and API baseline",
+      "version": "1.36.2"
+    },
+    {
+      "name": "Kubernetes Resource Model",
+      "role": "declarative resource model",
+      "version": "current with Kubernetes 1.36"
+    },
+    {
+      "name": "Helm",
+      "role": "chart and package reference lane",
+      "version": "4.2.3"
+    },
+    {
+      "name": "Argo CD",
+      "role": "primary GitOps implementation lane",
+      "version": "3.5.0"
+    },
+    {
+      "name": "Flux",
+      "role": "comparative controller-oriented lane",
+      "version": "2.9.4"
+    },
+    {
+      "name": "Argo Rollouts",
+      "role": "progressive-delivery reference lane",
+      "version": "1.9.1"
+    }
+  ],
+  "schemaVersion": "1.0"
+}

@@ -1,0 +1,8 @@
+version: atlas-topology-handoff-1.0
+api:
+  desiredReplicas: 3
+  intendedDomains: 2
+  hardGuarantee: none until feasible capacity and network paths are proven
+worker:
+  desiredReplicas: 1
+  reason: storage and effect-concurrency proof deferred to Course 6

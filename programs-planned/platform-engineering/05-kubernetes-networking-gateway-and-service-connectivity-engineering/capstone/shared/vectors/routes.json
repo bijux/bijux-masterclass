@@ -1,0 +1,12 @@
+{
+  "cases": [
+    {
+      "destination": "10.244.2.19",
+      "expected": "10.244.2.0/24"
+    },
+    {
+      "destination": "8.8.8.8",
+      "expected": "0.0.0.0/0"
+    }
+  ]
+}

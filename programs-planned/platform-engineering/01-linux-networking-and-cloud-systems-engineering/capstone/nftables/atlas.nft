@@ -1,0 +1,24 @@
+#!/usr/sbin/nft -f
+# This file owns only table inet atlas_filter. It intentionally does not flush
+# the host ruleset. Integrate management access separately for the environment.
+
+table inet atlas_filter {
+  chain input {
+    type filter hook input priority filter; policy drop;
+    ct state invalid drop
+    ct state established,related accept
+    iifname "lo" accept
+    ip protocol icmp accept
+    ip6 nexthdr icmpv6 accept
+    tcp dport 8443 accept comment "Atlas teaching HTTPS edge"
+    counter drop
+  }
+
+  chain forward {
+    type filter hook forward priority filter; policy drop;
+  }
+
+  chain output {
+    type filter hook output priority filter; policy accept;
+  }
+}

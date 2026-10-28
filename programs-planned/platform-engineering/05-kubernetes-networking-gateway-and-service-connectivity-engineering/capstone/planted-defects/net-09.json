@@ -1,0 +1,6 @@
+{
+  "id": "NET-09",
+  "title": "Retries multiply at every hop",
+  "description": "Gateway and service proxies each perform independent retries without one budget.",
+  "expectedProof": "retry-amplification-proof"
+}

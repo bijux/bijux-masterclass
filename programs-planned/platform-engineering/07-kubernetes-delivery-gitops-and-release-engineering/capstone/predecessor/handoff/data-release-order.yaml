@@ -1,0 +1,9 @@
+version: atlas-data-release-order-1.0
+phases:
+  - expand schema and storage interfaces
+  - deploy readers compatible with old and new state
+  - backfill with stable operation identity
+  - verify counts, generations, and restore
+  - cut over writer authority
+  - remove old writers
+  - contract only after rollback window closes

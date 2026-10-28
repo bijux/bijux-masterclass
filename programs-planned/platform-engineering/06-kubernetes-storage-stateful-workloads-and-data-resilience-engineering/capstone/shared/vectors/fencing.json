@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "accepted": false,
+      "attempt": 1,
+      "current": 2,
+      "name": "stale-generation"
+    },
+    {
+      "accepted": true,
+      "attempt": 2,
+      "current": 2,
+      "name": "current-generation"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "decision": "not-executed",
+  "name": "atlas-managed-kubernetes-proof",
+  "reason": "no managed cluster, cloud networking, CSI, or production admission environment in release build"
+}

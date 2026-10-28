@@ -1,0 +1,38 @@
+{
+  "course": "platform-engineering-course-07",
+  "evidenceBoundary": "Static and dependency-light executable evidence is not represented as live-controller or production evidence.",
+  "executed": {
+    "capstoneTourChecks": 13,
+    "checkpoints": 10,
+    "courseBookPages": 103,
+    "courseBookWords": 44937,
+    "exercises": 120,
+    "goTestPackagesPassed": 1,
+    "kubernetesResourcesParsed": 40,
+    "labs": 10,
+    "mkdocsNavPages": 103,
+    "plantedDefectsRejected": 10,
+    "predecessorFilesVerified": 10,
+    "pythonTestsPassed": 55,
+    "releaseCandidatesClassified": 7,
+    "sharedVectorCases": 17,
+    "sharedVectorFiles": 5,
+    "successorFilesVerified": 11,
+    "workedAnswers": 120
+  },
+  "notExecuted": [
+    "strict MkDocs rendering",
+    "native Kustomize build and independent render comparison",
+    "native Helm lint, template, install, upgrade, rollback, and uninstall",
+    "live Argo CD and ApplicationSet reconciliation",
+    "live Flux source, Kustomization, HelmRelease, and image automation",
+    "SOPS decryption using an operated key authority",
+    "External Secrets integration with an operated secret source",
+    "Argo Rollouts or Flagger traffic-provider integration",
+    "kind or managed-cluster failure exercises",
+    "multi-cluster fleet and repository disaster recovery"
+  ],
+  "schemaVersion": "1.0",
+  "status": "dependency-light-proof-passed",
+  "title": "Kubernetes Delivery, GitOps, and Release Engineering"
+}

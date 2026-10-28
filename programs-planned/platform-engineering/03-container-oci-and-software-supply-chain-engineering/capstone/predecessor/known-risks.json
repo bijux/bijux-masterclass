@@ -1,0 +1,28 @@
+{
+  "risks": [
+    {
+      "id": "C3-RISK-001",
+      "risk": "container filesystem mistaken for durable Atlas storage"
+    },
+    {
+      "id": "C3-RISK-002",
+      "risk": "image contains cloud credentials or secret material"
+    },
+    {
+      "id": "C3-RISK-003",
+      "risk": "container runs as root and erases Course 1 identity boundaries"
+    },
+    {
+      "id": "C3-RISK-004",
+      "risk": "health semantics collapse into process existence"
+    },
+    {
+      "id": "C3-RISK-005",
+      "risk": "public exposure bypasses the foundation edge"
+    },
+    {
+      "id": "C3-RISK-006",
+      "risk": "multi-architecture image labels do not match executable binaries"
+    }
+  ]
+}

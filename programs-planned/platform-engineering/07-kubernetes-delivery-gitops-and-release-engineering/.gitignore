@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+site/
+reports/generated/
+capstone/reports/generated/
+.tmp/

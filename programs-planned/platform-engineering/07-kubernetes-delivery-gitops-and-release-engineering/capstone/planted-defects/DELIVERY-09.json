@@ -1,0 +1,6 @@
+{
+  "expectedControl": "fleet source-availability distinction",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-09",
+  "title": "ApplicationSet removes unreachable cluster target"
+}

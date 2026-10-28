@@ -1,0 +1,35 @@
+{
+  "processes": [
+    {
+      "name": "atlas-api",
+      "user": "atlas-api",
+      "ports": [
+        8080
+      ],
+      "gracefulSignal": "SIGTERM",
+      "health": [
+        "/live",
+        "/ready",
+        "/edge-health"
+      ]
+    },
+    {
+      "name": "atlas-worker",
+      "user": "atlas-worker",
+      "ports": [],
+      "gracefulSignal": "SIGTERM",
+      "health": [
+        "heartbeat"
+      ]
+    },
+    {
+      "name": "atlas-edge",
+      "user": "atlas-edge",
+      "ports": [
+        8443
+      ],
+      "course3Disposition": "external-edge-or-sidecar-decision-required"
+    }
+  ],
+  "sharedGroup": "atlas-spool"
+}

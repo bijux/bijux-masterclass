@@ -1,0 +1,8 @@
+protectedKinds:
+- PersistentVolume
+- PersistentVolumeClaim
+- VolumeSnapshotContent
+- VolumeGroupSnapshotContent
+requiredAnnotations:
+  delivery.atlas.dev/prune-protected: 'true'
+retirementAuthority: data-owner

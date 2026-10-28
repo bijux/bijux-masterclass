@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "defects": [
+    {
+      "id": "SYS-01",
+      "module": 1,
+      "title": "Processes, System Calls, Files, and Signals",
+      "defect": "The worker acknowledges a job before durable completion and exits immediately on `SIGTERM`, losing the in-flight result.",
+      "requiredOracle": "Graceful case: clean exit, no claim after the signal, and a completed or explicitly recoverable job. Abrupt case: signal termination, no graceful-stop event, and recovery from durable spool state without losing the job."
+    },
+    {
+      "id": "SYS-02",
+      "module": 2,
+      "title": "Identity, Permissions, Capabilities, and Service Supervision",
+      "defect": "The API runs as root and its executable directory is writable by the service account, allowing configuration compromise to become code execution.",
+      "requiredOracle": "Required writes succeed; code, unit, and private-key writes fail; effective UID/GID and capability sets match policy; no service has a login shell; the units stop cleanly."
+    },
+    {
+      "id": "SYS-03",
+      "module": 3,
+      "title": "CPU, Memory, Scheduling, Namespaces, and cgroups",
+      "defect": "The worker has no memory ceiling, and readiness remains green while host memory pressure causes unrelated services to stall.",
+      "requiredOracle": "Effective controls are visible in the cgroup, throttling or memory events change as predicted, the experiment exits within its bound, and unrelated Atlas components remain observable."
+    },
+    {
+      "id": "SYS-04",
+      "module": 4,
+      "title": "Storage, Filesystems, I/O, and Durability",
+      "defect": "A result is renamed into place but the parent directory is never synchronized, so the program overstates its crash-durability guarantee.",
+      "requiredOracle": "Readers observe only complete old or new results; failed staging leaves no final partial object; restore reproduces expected state without reading the live directory."
+    },
+    {
+      "id": "SYS-05",
+      "module": 5,
+      "title": "IP, Routing, Transport, and Sockets",
+      "defect": "An administrative endpoint binds to `0.0.0.0` because the developer confused \u201creachable by the proxy\u201d with \u201creachable by every interface.\u201d",
+      "requiredOracle": "Listener address and route evidence predict success or refusal; no administrative or worker listener becomes external; IPv4 and IPv6 behavior are recorded separately."
+    },
+    {
+      "id": "SYS-06",
+      "module": 6,
+      "title": "DNS, HTTP, TLS, and PKI",
+      "defect": "The client disables certificate verification to \u201cfix\u201d a hostname mismatch, converting a naming error into loss of peer authentication.",
+      "requiredOracle": "Each failure is classified as DNS, TCP, TLS chain, validity, hostname, or HTTP host policy. No repair uses `-k` or an unverified context."
+    },
+    {
+      "id": "SYS-07",
+      "module": 7,
+      "title": "Firewalls, NAT, Proxies, and Load Balancing",
+      "defect": "The API trusts any client-supplied `X-Forwarded-For`, allowing an external caller to impersonate a private source address.",
+      "requiredOracle": "Spoofed identity is absent, GET attempts are bounded, POST has one attempt, the edge returns 503, and firewall results match the declared flow matrix."
+    },
+    {
+      "id": "SYS-08",
+      "module": 8,
+      "title": "Virtualization, Images, Boot, and Cloud Compute",
+      "defect": "A startup script writes a long-lived cloud credential from user data into a world-readable file and assumes the instance hostname is permanent identity.",
+      "requiredOracle": "Replacement has a new instance identity, exact release/config identity, restored durable results, no secret in user data, and a passing verified request."
+    },
+    {
+      "id": "SYS-09",
+      "module": 9,
+      "title": "Cloud Primitives, Identity, and Failure Domains",
+      "defect": "The architecture calls a single-zone VM and attached disk \u201chighly available\u201d because the cloud provider itself operates multiple zones.",
+      "requiredOracle": "No provider name is treated as semantic equivalence; static keys are rejected; single-zone dependencies block zone-tolerance claims; each resource has an owner and evidence route."
+    },
+    {
+      "id": "SYS-10",
+      "module": 10,
+      "title": "Production Host Engineering and Final Defense",
+      "defect": "Readiness reports success while durable storage is read-only, so the proxy continues to send mutating traffic to a process that cannot keep its promise.",
+      "requiredOracle": "Readiness and routing react truthfully, durable jobs remain complete or recoverable, verified TLS returns, baseline tour passes, and post-clean manifests verify exactly."
+    }
+  ]
+}

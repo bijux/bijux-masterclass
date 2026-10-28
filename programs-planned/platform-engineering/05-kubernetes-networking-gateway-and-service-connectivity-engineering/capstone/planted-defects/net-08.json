@@ -1,0 +1,6 @@
+{
+  "id": "NET-08",
+  "title": "Egress policy trusts DNS only",
+  "description": "A connection is allowed after DNS resolution without verifying the connected peer.",
+  "expectedProof": "egress-peer-pinning-proof"
+}

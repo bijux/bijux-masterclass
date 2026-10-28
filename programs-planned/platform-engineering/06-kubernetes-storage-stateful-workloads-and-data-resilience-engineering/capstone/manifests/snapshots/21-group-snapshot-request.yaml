@@ -1,0 +1,14 @@
+apiVersion: groupsnapshot.storage.k8s.io/v1beta2
+kind: VolumeGroupSnapshot
+metadata:
+  name: atlas-db-group-manual
+  namespace: atlas-system
+  annotations:
+    atlas.example.invalid/consistency: application
+    atlas.example.invalid/implementation-profile: external-snapshotter-v1beta2
+spec:
+  volumeGroupSnapshotClassName: atlas-retained-group
+  source:
+    selector:
+      matchLabels:
+        atlas.example.invalid/snapshot-group: atlas-db

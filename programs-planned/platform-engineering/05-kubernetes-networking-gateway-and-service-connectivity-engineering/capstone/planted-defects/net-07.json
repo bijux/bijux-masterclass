@@ -1,0 +1,6 @@
+{
+  "id": "NET-07",
+  "title": "TLS verification is disabled",
+  "description": "The gateway certificate is accepted without SAN or trust-chain validation.",
+  "expectedProof": "tls-hostname-proof"
+}

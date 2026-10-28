@@ -1,0 +1,14 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: atlas-environment
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://git.example.invalid/atlas/environment.git
+  ref:
+    commit: 2222222222222222222222222222222222222222
+  verify:
+    mode: HEAD
+    secretRef:
+      name: atlas-git-verify

@@ -1,0 +1,6 @@
+{
+  "expectedControl": "promotion authority boundary",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-06",
+  "title": "Flux image automation writes directly to production branch"
+}

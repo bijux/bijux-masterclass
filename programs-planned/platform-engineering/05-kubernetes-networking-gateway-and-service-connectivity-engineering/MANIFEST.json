@@ -1,0 +1,1728 @@
+{
+  "course": "platform-engineering-course-05",
+  "files": [
+    {
+      "bytes": 111,
+      "mode": "0o644",
+      "path": ".gitignore",
+      "sha256": "baaa063f76a9030df7cac5d2f708ef42617bc518b480ca8ff6227b655f883abf"
+    },
+    {
+      "bytes": 1225,
+      "mode": "0o644",
+      "path": "CHANGELOG.md",
+      "sha256": "f98310319201ee596bac1922a925d0bf14720a57d81e4915f53fd67ea25b9577"
+    },
+    {
+      "bytes": 2485,
+      "mode": "0o644",
+      "path": "COURSE-CONTENTS.md",
+      "sha256": "3a9c3d5dfade03226f71f811d95e8eb41d58b89cd4bb50f2fe5802a848db2f71"
+    },
+    {
+      "bytes": 3333,
+      "mode": "0o644",
+      "path": "FINAL-VERIFICATION.md",
+      "sha256": "1705cf2f8ef7dd1b1ebc0ecba5d7c14f4e485e711481e2634115877e8cb66dc6"
+    },
+    {
+      "bytes": 2289,
+      "mode": "0o644",
+      "path": "Makefile",
+      "sha256": "cf2877d6811d7ce0fd2f136cd546bf88dc0c76f3b0c5836e5f7e6055589a3089"
+    },
+    {
+      "bytes": 999,
+      "mode": "0o644",
+      "path": "NEXT-COURSE-HANDOFF.md",
+      "sha256": "6538f1fcfb1617cfe6ef9991a10916ed7aa40028572fb4267150d5feedec6511"
+    },
+    {
+      "bytes": 1009,
+      "mode": "0o644",
+      "path": "PREDECESSOR-HANDOFF.md",
+      "sha256": "3976233ea24f4f2c04936ec3a6c5553d5043654f42079eebdab9c423ed1847b1"
+    },
+    {
+      "bytes": 1114,
+      "mode": "0o644",
+      "path": "PRODUCTION-CLAIMS.md",
+      "sha256": "0cfeddc4dd24ba924767fac5430ba4d3d13c34f6a8f8b5cadee76d4046abdec1"
+    },
+    {
+      "bytes": 3129,
+      "mode": "0o644",
+      "path": "README.md",
+      "sha256": "d7178a840112f0e036fb7da3f75bbe8c98c8e5f256345111d016595adeee0647"
+    },
+    {
+      "bytes": 1439,
+      "mode": "0o644",
+      "path": "assessment/final-project.md",
+      "sha256": "459336daff36d1281827b69efe4276d4bc09ca3ab5973b972ac7512df6ffa505"
+    },
+    {
+      "bytes": 396,
+      "mode": "0o644",
+      "path": "assessment/rubric.json",
+      "sha256": "2ef3fd42782b6225d48872d376fa322a3407164bb9337164955dd37a39e079c2"
+    },
+    {
+      "bytes": 213,
+      "mode": "0o644",
+      "path": "capstone/Makefile",
+      "sha256": "745b208690313b6ab25622172c5d1c4cfd9eda36ec6c7345ecb586b5d6864403"
+    },
+    {
+      "bytes": 374,
+      "mode": "0o644",
+      "path": "capstone/README.md",
+      "sha256": "2f825080e0b2d3f0e3d745694977ca81f9681c0722ee25a1c91f1b4d598e25aa"
+    },
+    {
+      "bytes": 357,
+      "mode": "0o644",
+      "path": "capstone/architecture/address-domains.yaml",
+      "sha256": "0f1adfb68ccb4b84ac3bf60de9051f91b904345e42ff69d7eaf834952764fa6d"
+    },
+    {
+      "bytes": 477,
+      "mode": "0o644",
+      "path": "capstone/architecture/conformance-profile.json",
+      "sha256": "be8bd775e359b1e2a6348d3c15f7056d7e92fb5108680c794740b0a34e2c39dc"
+    },
+    {
+      "bytes": 336,
+      "mode": "0o644",
+      "path": "capstone/architecture/deferred-responsibilities.json",
+      "sha256": "06754a7e5e70115d7891efffc6a2a38769d07b16855e44e9200a70a77fff221f"
+    },
+    {
+      "bytes": 780,
+      "mode": "0o644",
+      "path": "capstone/architecture/deferred-responsibilities.yaml",
+      "sha256": "d444876bba00832dfd562f17f0f40ec8db52f857bcc73b459094661b1d1bf605"
+    },
+    {
+      "bytes": 1406,
+      "mode": "0o644",
+      "path": "capstone/architecture/network-ownership.yaml",
+      "sha256": "3451c6a4fba38676722680dc658cc7577317d2516c30a3e281b9e9d856ee54c6"
+    },
+    {
+      "bytes": 284,
+      "mode": "0o644",
+      "path": "capstone/architecture/network-release-contract.json",
+      "sha256": "6cec4e2ce5c7bfce52e3409d74e27c84c14e38e1d7efb6145d4f5314d32a604e"
+    },
+    {
+      "bytes": 292,
+      "mode": "0o644",
+      "path": "capstone/architecture/ownership.yaml",
+      "sha256": "79e77432821e8b6123616d57d2fbdb28914a4c82ef2d83010358b60462170a3f"
+    },
+    {
+      "bytes": 187,
+      "mode": "0o644",
+      "path": "capstone/architecture/packet-paths.yaml",
+      "sha256": "076d19c3e206d2616a9d22e5a43dc74b9ca0827428c5baa26dc9fe1289a145cd"
+    },
+    {
+      "bytes": 261,
+      "mode": "0o644",
+      "path": "capstone/architecture/version-ledger.json",
+      "sha256": "23a3a80853711d396181907e5f0fc61378f67e0e5dabb5a082d0fa3176bda3a8"
+    },
+    {
+      "bytes": 73,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/__init__.py",
+      "sha256": "2cff1e9e5f96e700d2f8357eaacdd34c649a2d4830755a7bf4aa968a0a45a740"
+    },
+    {
+      "bytes": 5449,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/cni.py",
+      "sha256": "2f5d92a4e0223dc22bcf7807e14ef0137596a8d9aaba8cf9e562cda01967c536"
+    },
+    {
+      "bytes": 2488,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/dns.py",
+      "sha256": "36679286c49a945bb2ceb4c4423470b773cefbe755f9558909420a9403bc179f"
+    },
+    {
+      "bytes": 2361,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/egress.py",
+      "sha256": "60aaed543096e168a282ea4331c36dde67e8d7477f6f17aa82010f0e69e3f3c8"
+    },
+    {
+      "bytes": 5121,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/gateway.py",
+      "sha256": "df4925ec197d9ca90f41690a99030d78baf4b229bf3ff401ae451f2c2c0e0952"
+    },
+    {
+      "bytes": 1566,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/locality.py",
+      "sha256": "c0234ceb44448a744ed213c3723073bda22cf75239c48b7e6a9ac8e6daf282f7"
+    },
+    {
+      "bytes": 3725,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/localnet.py",
+      "sha256": "282a9d34ccd4011887ddd87835f6a047dff4f560cfea317968f3a1634fc760dd"
+    },
+    {
+      "bytes": 3634,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/models.py",
+      "sha256": "8d69c675c3439bede26caa3f09d208015a8102ac10b66953efabb37ef923615e"
+    },
+    {
+      "bytes": 745,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/mtu.py",
+      "sha256": "937df81bbf434882c86c521fccebb98ee7e2848c5aba09db860e8095aa0300ad"
+    },
+    {
+      "bytes": 9203,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/network_lab.py",
+      "sha256": "81a7e3781343d0678d54cac8a0983b6ea772dcc0aa6a30629a22c09fd3b67639"
+    },
+    {
+      "bytes": 3030,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/policy.py",
+      "sha256": "f5fc24e82f57b9a7d16c60f67029d77709ba0a0046c72ecf3e41d663947d2503"
+    },
+    {
+      "bytes": 598,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/release.py",
+      "sha256": "9596c08d86f223259430a5f5b5918fe385e6bcd62e6bb36555ece49e0f83ff3a"
+    },
+    {
+      "bytes": 1930,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/routing.py",
+      "sha256": "8aa53bf0e83e19a24c28b9a0d0fec1523d4e71d33d6f8f00bd3e800c43c38a2f"
+    },
+    {
+      "bytes": 2482,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/services.py",
+      "sha256": "aef2646626c3ea5def7b9046c80c1e706261f64ce34b3959ea839315cb17966f"
+    },
+    {
+      "bytes": 1709,
+      "mode": "0o644",
+      "path": "capstone/atlas_net/tls.py",
+      "sha256": "6786962e98442664e9549c62b21afce16b28d0d807b22615dbc4fbc7b7ba38ef"
+    },
+    {
+      "bytes": 538,
+      "mode": "0o644",
+      "path": "capstone/cilium/README.md",
+      "sha256": "f364c243cdda683db6d58c8be388f4983124d2bb74d88c9be966af1a8c3c80be"
+    },
+    {
+      "bytes": 263,
+      "mode": "0o644",
+      "path": "capstone/cilium/values.yaml",
+      "sha256": "724bbe49132c8988393016634663e6340c07837f4f895257f2db1d36491d352c"
+    },
+    {
+      "bytes": 422,
+      "mode": "0o644",
+      "path": "capstone/cni-go/cmd/atlas-cni-lab/main.go",
+      "sha256": "c1ccd7173a4f9a38880822ad0db35e16994f917b43e1dd397054bf6e85a62a81"
+    },
+    {
+      "bytes": 47,
+      "mode": "0o644",
+      "path": "capstone/cni-go/go.mod",
+      "sha256": "28aca69b58b2cc5b56ea51ea6068b09a5e79dd43f3e8ad10425698f9f6b1f313"
+    },
+    {
+      "bytes": 1300,
+      "mode": "0o644",
+      "path": "capstone/cni-go/lifecycle.go",
+      "sha256": "56905e7db8ae556f4c7fb6136a16cef19b3229e1ea69d6a224ea33853c0bae00"
+    },
+    {
+      "bytes": 666,
+      "mode": "0o644",
+      "path": "capstone/cni-go/lifecycle_test.go",
+      "sha256": "53b5bda899bfdeec17e8f75e589ea47e67804a28c43565ec1340a967b778999e"
+    },
+    {
+      "bytes": 1638,
+      "mode": "0o644",
+      "path": "capstone/handoff/MANIFEST.json",
+      "sha256": "2859a98fa7ce8b23f4e4fe40e219f86d9c69bd669f7f1bc6b0f5818d2043ab5a"
+    },
+    {
+      "bytes": 319,
+      "mode": "0o644",
+      "path": "capstone/handoff/README.md",
+      "sha256": "846ee44b159a6a11014017884f47ba516d4ab523f2dc905087fca1753b1599ba"
+    },
+    {
+      "bytes": 525,
+      "mode": "0o644",
+      "path": "capstone/handoff/egress-contract.yaml",
+      "sha256": "c597415f9ebcbe4e0d2f83ed4980c13feac30d35748ef1557af8abb1470b844e"
+    },
+    {
+      "bytes": 485,
+      "mode": "0o644",
+      "path": "capstone/handoff/gateway-and-tls-contract.yaml",
+      "sha256": "344c950edf968fd7ef199b92d49c4ac3517f0963c2c1c937b19cd44005efc1b7"
+    },
+    {
+      "bytes": 228,
+      "mode": "0o644",
+      "path": "capstone/handoff/known-risks.json",
+      "sha256": "e93373553aef10459e355dfb72543ad6d217dc091a5800ba9aa9ede3a7ac7f14"
+    },
+    {
+      "bytes": 535,
+      "mode": "0o644",
+      "path": "capstone/handoff/network-policy-baseline.yaml",
+      "sha256": "db1b29ddd2e26f2145272ae5701d8833be4735a2cf3a9ee8bebcdaef46867a27"
+    },
+    {
+      "bytes": 450,
+      "mode": "0o644",
+      "path": "capstone/handoff/service-and-dns-contract.yaml",
+      "sha256": "0274edc07decc0d594b3ebeffc77f1a314de30b39b4c870f1168b57c9742fbc7"
+    },
+    {
+      "bytes": 527,
+      "mode": "0o644",
+      "path": "capstone/handoff/storage-network-requirements.yaml",
+      "sha256": "fa4412c8cc1bcd23dfbd7a062926391485fd5ede659fb67fd24d20a895e06dfe"
+    },
+    {
+      "bytes": 499,
+      "mode": "0o644",
+      "path": "capstone/handoff/topology-and-traffic-contract.yaml",
+      "sha256": "b0bdbbe56bd731a0ff41d1191adb8d09bee8be1738c1238487f3bd303dc943b8"
+    },
+    {
+      "bytes": 162,
+      "mode": "0o644",
+      "path": "capstone/handoff/version-ledger.json",
+      "sha256": "9c7b0c881c5431a8d2cddcc8471abc492087d13da906f6c39844092bdf91ee78"
+    },
+    {
+      "bytes": 378,
+      "mode": "0o644",
+      "path": "capstone/handoff/workload-and-service-inventory.json",
+      "sha256": "daf941bae217ebc8c97e65a30f846c76b2b38c060ac044ed97cf820fe7cb31ad"
+    },
+    {
+      "bytes": 432,
+      "mode": "0o644",
+      "path": "capstone/kind/README.md",
+      "sha256": "2b49809ec2179b0318346d98338c7afc0d18b967596293b1028c971ecc3f18cb"
+    },
+    {
+      "bytes": 220,
+      "mode": "0o644",
+      "path": "capstone/kind/cluster.yaml",
+      "sha256": "34798103010a5c15bf080e88da0062b8d14823bb845bd1861d7dcffd2f853112"
+    },
+    {
+      "bytes": 557,
+      "mode": "0o755",
+      "path": "capstone/kind/cluster_proof.sh",
+      "sha256": "d001f246e7c684740b10c68852c80b952bb9104e2317f4823263c0eb16fc5d62"
+    },
+    {
+      "bytes": 312,
+      "mode": "0o644",
+      "path": "capstone/manifests/README.md",
+      "sha256": "7325772ec3b9798b9d74dbe152ab3c1e142fa6e7674357c0bb94174d96a9671c"
+    },
+    {
+      "bytes": 442,
+      "mode": "0o644",
+      "path": "capstone/manifests/apply-order.txt",
+      "sha256": "d12c1b67121adae78ff047c1a9741161e5c963a89ac1adf38bb09cad967d2dad"
+    },
+    {
+      "bytes": 362,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/00-namespace-labels.yaml",
+      "sha256": "2c7eedf83a180bd59f44be48261e201bd92e0e678d5152f34dd7785edc63efcc"
+    },
+    {
+      "bytes": 432,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/10-api-service.yaml",
+      "sha256": "f52779274fdb0a7912ac8077d7923a35830145094d0787ce6e4d765acf9320e3"
+    },
+    {
+      "bytes": 342,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/11-api-service-prefer-close.yaml",
+      "sha256": "cb07270561933f113eef3f1d96381009ac20ebd3c54cf116789882fbb9d6e5bd"
+    },
+    {
+      "bytes": 191,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/20-networkpolicy-default-deny.yaml",
+      "sha256": "f340787663396d41b4355af794a394fbbf3c8e56a68e01ff7adb0451dcac7882"
+    },
+    {
+      "bytes": 475,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/21-networkpolicy-dns.yaml",
+      "sha256": "375cc201aa83c1f1ae88b9c693a5606958814a7ff30971a0da32553f9373bb29"
+    },
+    {
+      "bytes": 532,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/22-networkpolicy-gateway-api.yaml",
+      "sha256": "a414485a2b7e20e179d9a26d0c094d3ed0666b4c6c65063e72ae2c01d5d5016d"
+    },
+    {
+      "bytes": 154,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/30-gatewayclass.yaml",
+      "sha256": "fe9b4222a444e3d081b1bac246906bfbeb943b3df55f1fc38cd7f8dd2c5540c8"
+    },
+    {
+      "bytes": 548,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/31-gateway.yaml",
+      "sha256": "e26ca21adeba7ae391e4c7150d00ff7b68b356705c66e9f74aff60b0c28146ca"
+    },
+    {
+      "bytes": 410,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/32-httproute.yaml",
+      "sha256": "06ffcb74d7722441c7c076a69bf3d0b367dc2c3e3beadaffdfd5ec07cf895f96"
+    },
+    {
+      "bytes": 645,
+      "mode": "0o644",
+      "path": "capstone/manifests/frontier/backend-tls-policy-example.yaml",
+      "sha256": "93cbb353b92340002094be35388e934905a3daf93a2f01784d574c13ac92bfa4"
+    },
+    {
+      "bytes": 266,
+      "mode": "0o644",
+      "path": "capstone/manifests/labs/headless-service.yaml",
+      "sha256": "e5064389bec14e5e2a547e5ad4045ce605e296a81005ed41a94507d092ad0742"
+    },
+    {
+      "bytes": 294,
+      "mode": "0o644",
+      "path": "capstone/manifests/labs/referencegrant.yaml",
+      "sha256": "1ddd2dd423bbd317279bd3e6e23627537927b3412b870179cedffacc4a9c897e"
+    },
+    {
+      "bytes": 517,
+      "mode": "0o644",
+      "path": "capstone/manifests/labs/selectorless-service.yaml",
+      "sha256": "7f2887f8df4c503fe4bbfdeadf807aad97e6a3ba3bb8e411caf89d947ceb0025"
+    },
+    {
+      "bytes": 269,
+      "mode": "0o644",
+      "path": "capstone/manifests/labs/service-local-policy.yaml",
+      "sha256": "89ca2666e35703e897b550566681e326e6dd9b0c3f7aea743c3c055ff7659f8d"
+    },
+    {
+      "bytes": 382,
+      "mode": "0o644",
+      "path": "capstone/manifests/observability/coredns-fragment.yaml",
+      "sha256": "0c0c3377a89b2d8b6ceabd75cab819ba9393b2682cc7d3479c8f35cda5508dd8"
+    },
+    {
+      "bytes": 946,
+      "mode": "0o644",
+      "path": "capstone/netprobe-go/cmd/atlas-netprobe/main.go",
+      "sha256": "a8f03233ab3be05e0b4c7630d3601e14b9c91a75ad461f1d4f7dce5a7b6f4f28"
+    },
+    {
+      "bytes": 47,
+      "mode": "0o644",
+      "path": "capstone/netprobe-go/go.mod",
+      "sha256": "f2385cfb2ce971b8aa4845e0988c11d84cb3e158e71eea46776e017b13f9e470"
+    },
+    {
+      "bytes": 1818,
+      "mode": "0o644",
+      "path": "capstone/netprobe-go/internal/probe/probe.go",
+      "sha256": "8b444f9411196149ccc36ca17125935763082aa5d6a10121464850a409d4a7fb"
+    },
+    {
+      "bytes": 504,
+      "mode": "0o644",
+      "path": "capstone/netprobe-go/internal/probe/probe_test.go",
+      "sha256": "a88bd640168abf5a963aabe1b8033ce867505108a25648b610bf765041a3c023"
+    },
+    {
+      "bytes": 184,
+      "mode": "0o644",
+      "path": "capstone/pki/README.md",
+      "sha256": "6328c44c3b0d25bde582bec6b868a93b7ca8a801f9bd0d285aca6f7157ecc5fa"
+    },
+    {
+      "bytes": 169,
+      "mode": "0o644",
+      "path": "capstone/pki/atlas.cnf",
+      "sha256": "2f01b011653113e96ae086c8c51d6e09750d3e36506beb9eee8ce0dffe0bf59c"
+    },
+    {
+      "bytes": 1220,
+      "mode": "0o644",
+      "path": "capstone/pki/atlas.crt",
+      "sha256": "0ea018b7a4ad96f698a33c2fae270e6605691a1bf0511b2d5ab7d435029b79c1"
+    },
+    {
+      "bytes": 1704,
+      "mode": "0o600",
+      "path": "capstone/pki/atlas.key",
+      "sha256": "ec7ca42471fd654280e591115cd1099df3db6951ebb4ff5eb07cba1d2c13f6a3"
+    },
+    {
+      "bytes": 260,
+      "mode": "0o644",
+      "path": "capstone/pki/ca.cnf",
+      "sha256": "1e4ced14cedabf2e547536c3fc4cd85c61ac00952a34941c256a1fed32799baa"
+    },
+    {
+      "bytes": 1151,
+      "mode": "0o644",
+      "path": "capstone/pki/ca.crt",
+      "sha256": "292b30b9ea4b18ad56dbdb1ba90d88f46b58e919916c0129d7b1c1e81fd45111"
+    },
+    {
+      "bytes": 1704,
+      "mode": "0o600",
+      "path": "capstone/pki/ca.key",
+      "sha256": "2f8d3be92e68a59b43775b3ac7da73b8797d93a899d7d583c619ce9b6f8f6724"
+    },
+    {
+      "bytes": 1256,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/defects.json",
+      "sha256": "a06dfea43da3d0fbdabbc0f306d0e719a6b332e4f0841604e048b56586b83fea"
+    },
+    {
+      "bytes": 184,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-01.json",
+      "sha256": "7346211dfa81187458c9e63edccea86303edb28e706a21fd8bcff1239aaca709"
+    },
+    {
+      "bytes": 195,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-02.json",
+      "sha256": "fde922549522998ab6a883c64a5fb5f41c0d042201add5b2d1257ed0a095a66a"
+    },
+    {
+      "bytes": 179,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-03.json",
+      "sha256": "d443023d71913fd6c1f559fb0f272c7feacd1d39fa4d89c16e0fbe68aaa6e5e6"
+    },
+    {
+      "bytes": 217,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-04.json",
+      "sha256": "47f6895399bfd7e23d06bb730273f70451dd4cb5d7370143844ae479f09d2087"
+    },
+    {
+      "bytes": 228,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-05.json",
+      "sha256": "d41aea098fd648fadf1702dac8ffb7290ebcb57bce8804db1fd9e66398c4f3a3"
+    },
+    {
+      "bytes": 225,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-06.json",
+      "sha256": "c9ece0e4ec2865b22764b4bdfc64a84188bd753b9439f9aab720237a65f6592c"
+    },
+    {
+      "bytes": 200,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-07.json",
+      "sha256": "e7987665d7ed451b4646e7764b3dfd925d05e54a5b5ed12e1eb2e737965fdcfa"
+    },
+    {
+      "bytes": 216,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-08.json",
+      "sha256": "77baa47a7645a1ff2bdccd0df4ce72d63109d1703654fb0d684fdf1876ab03c0"
+    },
+    {
+      "bytes": 214,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-09.json",
+      "sha256": "019abc3a2d21a3088f0de07a5dd1bd64eef615591ce09b47a8bec1cd7c1cdf89"
+    },
+    {
+      "bytes": 232,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/net-10.json",
+      "sha256": "a7795fc360e727d0ab54f4660ef13477bbfc629d776ade81167482e60ecdf57b"
+    },
+    {
+      "bytes": 1610,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/MANIFEST.json",
+      "sha256": "de2c5ed9ad9a55eda807211c93cd65d1d707a9b60686cdb53d9678b658142fad"
+    },
+    {
+      "bytes": 381,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/README.md",
+      "sha256": "bedc1b02edfb54fe616b31c7196e484648270b6f8eea2c42fc2abfcd5eea1655"
+    },
+    {
+      "bytes": 298,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/dns-requirements.yaml",
+      "sha256": "4c73b30c06cc5d5e0a6683bc9c284f5ba217ebbc84791e196975aae717379f16"
+    },
+    {
+      "bytes": 485,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/gateway-requirements.yaml",
+      "sha256": "64ee67c63c982495d219a9a3cfe1805aba64564ca033df24c8f87cc5bbeb95b9"
+    },
+    {
+      "bytes": 400,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/known-risks.json",
+      "sha256": "9c32145e785db70e473e382b5ddd19942d57a8ed37659a8fa4af30d2119a5ca8"
+    },
+    {
+      "bytes": 444,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/network-policy-requirements.yaml",
+      "sha256": "28746df31ccf5ce45b3c2a7aba43562edfd955f0e11a81f98bc7e5ea7b3f2660"
+    },
+    {
+      "bytes": 383,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/readiness-and-endpoints.yaml",
+      "sha256": "bc8829653b795a4e5f54b98f3b42fa8a008e51ecdb9ba9c90bac468400812c50"
+    },
+    {
+      "bytes": 376,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/service-connectivity.yaml",
+      "sha256": "12ebf5d2e97a339528c57716bb5c66c56e63d51fc8d23b3896aa7e843d00a0b3"
+    },
+    {
+      "bytes": 255,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/topology-requirements.yaml",
+      "sha256": "04bd76452cef68a37285111beb6a6bad1a4c8f2022ded44887f57db0bfe2559a"
+    },
+    {
+      "bytes": 233,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/version-ledger.json",
+      "sha256": "918d6e8a99cb7537c5b03009432baba7cf2c85e0677291e3e7116c3d9c69642c"
+    },
+    {
+      "bytes": 495,
+      "mode": "0o644",
+      "path": "capstone/predecessor/handoff/workload-inventory.json",
+      "sha256": "563b2b2878a248bb0bf4c27f02518f32d14d1740204711b928e2f93022471e7f"
+    },
+    {
+      "bytes": 537,
+      "mode": "0o644",
+      "path": "capstone/releases/accepted.json",
+      "sha256": "3427603452a26fca3e5bad01b4a05c9bd37245ad32da87fccf92a5077cdeaf5d"
+    },
+    {
+      "bytes": 240,
+      "mode": "0o644",
+      "path": "capstone/releases/not-executed-managed-cloud.json",
+      "sha256": "ba0ec80e1eef60d43aae2eb6aea21319f459b151daaccf08591e0a153442d361"
+    },
+    {
+      "bytes": 196,
+      "mode": "0o644",
+      "path": "capstone/releases/rejected-broad-egress.json",
+      "sha256": "257740c0490195d8bb1e3e81f65a060e9eb8212cb1d00d00046e0ddf8004cbe7"
+    },
+    {
+      "bytes": 219,
+      "mode": "0o644",
+      "path": "capstone/releases/rejected-mutable-image.json",
+      "sha256": "fadb39cbf0d6824353397d29bbd9fc38aed6973adb30ecb58a434c0cbabf10a9"
+    },
+    {
+      "bytes": 219,
+      "mode": "0o644",
+      "path": "capstone/releases/rejected-no-policy-enforcement.json",
+      "sha256": "4381051bb21364ae9b9825cfe8952de954b916dc1a5f1af0e49d965b33bf6d8c"
+    },
+    {
+      "bytes": 218,
+      "mode": "0o644",
+      "path": "capstone/releases/rejected-production-overclaim.json",
+      "sha256": "da7478d56fdfa8b713cbb94c5f8f493c32f463d869248623d455b9d150521740"
+    },
+    {
+      "bytes": 290,
+      "mode": "0o644",
+      "path": "capstone/releases/review-required-local-cluster.json",
+      "sha256": "47de74a9f28088d64c485d5cb76c984656f5cdbb8f6b7c60561e43ede0250f67"
+    },
+    {
+      "bytes": 538,
+      "mode": "0o644",
+      "path": "capstone/runbooks/dns-failure.md",
+      "sha256": "e5d16adb2df74c4bbf519ffe8bbb0ecf89689e37eac6674ed0aa9376f1892420"
+    },
+    {
+      "bytes": 575,
+      "mode": "0o644",
+      "path": "capstone/runbooks/egress-failure.md",
+      "sha256": "50f013163c9b5f2daec7faa788932daf2b1ca6be775fe9effb7ef6a6e989c5ea"
+    },
+    {
+      "bytes": 568,
+      "mode": "0o644",
+      "path": "capstone/runbooks/gateway-route-failure.md",
+      "sha256": "19c0a66d1f3df78f06989be5a721de1f76011f566525ad53a134e746a5ff972e"
+    },
+    {
+      "bytes": 571,
+      "mode": "0o644",
+      "path": "capstone/runbooks/networkpolicy-denial.md",
+      "sha256": "bb0569f1aac69c782b5367bd0cd7ec9d9b15fcd8ba4408ab1e8ca92f9256c92f"
+    },
+    {
+      "bytes": 583,
+      "mode": "0o644",
+      "path": "capstone/runbooks/service-no-endpoints.md",
+      "sha256": "8a2fcc83634a9511e9164e5c2ce8fe0bccf72ba1975b3210913e0fe017df5f26"
+    },
+    {
+      "bytes": 580,
+      "mode": "0o644",
+      "path": "capstone/runbooks/tls-failure.md",
+      "sha256": "c3a642a4e04c5902450b6939b34b6faae30f43debb51fa71b66b95ce4e32d153"
+    },
+    {
+      "bytes": 873,
+      "mode": "0o644",
+      "path": "capstone/scripts/capstone_tour.py",
+      "sha256": "27ec2c1031a06dab1a46f72aa85d1b843ac134f9b2f1562b444cb44bef7a5f8e"
+    },
+    {
+      "bytes": 248,
+      "mode": "0o644",
+      "path": "capstone/scripts/clean.py",
+      "sha256": "f6371ef304121d05c11967c104567d7fdb85f9d87d2b2efe6c8e7657833c137e"
+    },
+    {
+      "bytes": 726,
+      "mode": "0o644",
+      "path": "capstone/scripts/cni_lifecycle_lab.py",
+      "sha256": "d2a437eac09b60d7488e618bd2fc37b80da3624a10f68f079e16c10edd159ddd"
+    },
+    {
+      "bytes": 1031,
+      "mode": "0o644",
+      "path": "capstone/scripts/common.py",
+      "sha256": "9fe461aa7a0e93e1cedc655558dfb8c005fabb0205f30953603f3e2f323103cd"
+    },
+    {
+      "bytes": 863,
+      "mode": "0o644",
+      "path": "capstone/scripts/dns_cache_lab.py",
+      "sha256": "8a2b8a02f1c64ba3ac20c3ff812ca9bed92041e5bbadea25fd91b51518f7ceca"
+    },
+    {
+      "bytes": 644,
+      "mode": "0o644",
+      "path": "capstone/scripts/egress_policy_lab.py",
+      "sha256": "4671e91a456b83d0753c3e9f048c1393837560ac53f13e891379ead8a63d2040"
+    },
+    {
+      "bytes": 734,
+      "mode": "0o644",
+      "path": "capstone/scripts/final_game_day.py",
+      "sha256": "39f3faba6a57249eeb4a1d2b443887cec61f4b18435b5f63442c1e4b6bdc0538"
+    },
+    {
+      "bytes": 1123,
+      "mode": "0o644",
+      "path": "capstone/scripts/gateway_attachment_lab.py",
+      "sha256": "17368a318072b774f61de88fa4ca215eacc197141030ac38618542e92116fa5f"
+    },
+    {
+      "bytes": 2214,
+      "mode": "0o755",
+      "path": "capstone/scripts/kind_cilium_proof.sh",
+      "sha256": "f96aeb1c774a4089f35a909239aeb2400326f6ac0d300687f2b5149e7e0deb3f"
+    },
+    {
+      "bytes": 983,
+      "mode": "0o644",
+      "path": "capstone/scripts/locality_failure_lab.py",
+      "sha256": "409d342c2c351f11f7f976e2915fa11a0d1974d165ed5ca2587c87d6baa813fc"
+    },
+    {
+      "bytes": 1907,
+      "mode": "0o644",
+      "path": "capstone/scripts/network_policy_lab.py",
+      "sha256": "82f04e0b5026260bbb4ae1808dce7d4b8afb2ece754d91ee275660bd4dc917ff"
+    },
+    {
+      "bytes": 879,
+      "mode": "0o644",
+      "path": "capstone/scripts/packet_path_lab.py",
+      "sha256": "99c9e791096b3e133b1eeed149da15230f86b5aa6429e212e7251624e98e1f5e"
+    },
+    {
+      "bytes": 634,
+      "mode": "0o644",
+      "path": "capstone/scripts/service_convergence_lab.py",
+      "sha256": "0ea120792671f43f8dd2f9c231d26361ba6d4ef483992a8f6bdabc71ca13c913"
+    },
+    {
+      "bytes": 3171,
+      "mode": "0o755",
+      "path": "capstone/scripts/tls_gateway_lab.py",
+      "sha256": "362f594480a6eedc90f1c007f38f9cdf76ac73150ec10b870930deb653f0c480"
+    },
+    {
+      "bytes": 161,
+      "mode": "0o644",
+      "path": "capstone/shared/vectors/dns.json",
+      "sha256": "2e092dd5856a197eeb8294c15e230283e145e25313b5a0b9298a370e27befd6e"
+    },
+    {
+      "bytes": 134,
+      "mode": "0o644",
+      "path": "capstone/shared/vectors/egress.json",
+      "sha256": "bcc2069302a824bf0fe1f58d95a0bb41387276838babf6cf9a7601fa47d7cc59"
+    },
+    {
+      "bytes": 130,
+      "mode": "0o644",
+      "path": "capstone/shared/vectors/gateway.json",
+      "sha256": "de735b98db938a144388a3e093bcc245833b1093a7ecd81b64281371454519ba"
+    },
+    {
+      "bytes": 174,
+      "mode": "0o644",
+      "path": "capstone/shared/vectors/mtu.json",
+      "sha256": "ff9b6a094b86c333523c249e4e652eaba3fc1a0d2f5f58ec308938fbc0e495d0"
+    },
+    {
+      "bytes": 202,
+      "mode": "0o644",
+      "path": "capstone/shared/vectors/policy.json",
+      "sha256": "ee435b5a901514df53fa50ccc31842676a71fbb92e5b4f7f3f33f5134dbc9e21"
+    },
+    {
+      "bytes": 178,
+      "mode": "0o644",
+      "path": "capstone/shared/vectors/routes.json",
+      "sha256": "18dde796192a700427c42267425337098901a87d1fd2b061a60528d2682ab4dd"
+    },
+    {
+      "bytes": 189,
+      "mode": "0o644",
+      "path": "capstone/tests/README.md",
+      "sha256": "80458dbc2e6d107fbe431c78b8bbff41dc3c96f3a0db388c284c6a550d51d40d"
+    },
+    {
+      "bytes": 207,
+      "mode": "0o644",
+      "path": "capstone/tests/conftest.py",
+      "sha256": "2c1c4897042921b62b9f2e0e50eba8c92fd246110d289a12675c13c8d069939b"
+    },
+    {
+      "bytes": 2399,
+      "mode": "0o644",
+      "path": "capstone/tests/test_cni.py",
+      "sha256": "ede8f1bb8087bcb5c24bce86effce5bf58ef2652e8865c695c4c6e99dc4bd47a"
+    },
+    {
+      "bytes": 986,
+      "mode": "0o644",
+      "path": "capstone/tests/test_dns.py",
+      "sha256": "d2cd79da2f8095c10f7bf403e17abb54f2a01867e172bcd0bad911d5180645b5"
+    },
+    {
+      "bytes": 1659,
+      "mode": "0o644",
+      "path": "capstone/tests/test_egress_release.py",
+      "sha256": "31524c2ad1480e7495f2f55fb46dcbefcd3b7af4260fc27ca70834958a3a791f"
+    },
+    {
+      "bytes": 2944,
+      "mode": "0o644",
+      "path": "capstone/tests/test_gateway_tls.py",
+      "sha256": "a75e799763b09aaca5104b628447e7a9bd9b7e1609d64ef7fb1b7f72112e6f6d"
+    },
+    {
+      "bytes": 3293,
+      "mode": "0o644",
+      "path": "capstone/tests/test_network_lab.py",
+      "sha256": "0a071c612852e11e7deac77e9aed7d08414a8dabd6074bc4e014fb707fd4cbe8"
+    },
+    {
+      "bytes": 2629,
+      "mode": "0o644",
+      "path": "capstone/tests/test_policy.py",
+      "sha256": "2934f5335fd1f9958fec0f5a1e4352707451069e96e18c4525bca4ee6bcf2f3e"
+    },
+    {
+      "bytes": 1538,
+      "mode": "0o644",
+      "path": "capstone/tests/test_routing_mtu.py",
+      "sha256": "92328a0a7cda00cc4a93562e5680206eb83a43f32dfe8505a76b269607cc130b"
+    },
+    {
+      "bytes": 2397,
+      "mode": "0o644",
+      "path": "capstone/tests/test_services_locality.py",
+      "sha256": "ca7b58828062840a8b6b25220dc9ad62ab12a45612cf2ffa99f4ee4981c39f09"
+    },
+    {
+      "bytes": 1440,
+      "mode": "0o644",
+      "path": "course-book/assessment/final-defense.md",
+      "sha256": "7d10bf7ffd17b685a7a5e8e33495ebed681cdae35ec062bf1f476c9f7669eba4"
+    },
+    {
+      "bytes": 833,
+      "mode": "0o644",
+      "path": "course-book/assessment/rubric.md",
+      "sha256": "05ab92d450b25cd79d82ae3469de68839a0c052a5b41d82fb7ecfe41927ce3c4"
+    },
+    {
+      "bytes": 1612,
+      "mode": "0o644",
+      "path": "course-book/capstone/architecture.md",
+      "sha256": "f3fee3ea8693c87486767e0a31801c57e9692a3eb380da389ea580ccbc2726a0"
+    },
+    {
+      "bytes": 995,
+      "mode": "0o644",
+      "path": "course-book/capstone/evidence-dossier.md",
+      "sha256": "416b2a4bfb335f226ea912bcf20f3c4babb02b5fc4886ae542afa8ca31c9b27f"
+    },
+    {
+      "bytes": 2272,
+      "mode": "0o644",
+      "path": "course-book/capstone/implementation-map.md",
+      "sha256": "3329324bef651364a9899db7f888e2271442d7efe75cd7608276bba8e28070a7"
+    },
+    {
+      "bytes": 964,
+      "mode": "0o644",
+      "path": "course-book/capstone/release-process.md",
+      "sha256": "16f8f908125b1d92969e31f26fdcba478aa6c7cbfa02069c3251f4a3807a34a2"
+    },
+    {
+      "bytes": 3225,
+      "mode": "0o644",
+      "path": "course-book/capstone.md",
+      "sha256": "b9fbbb206e09de41d587837178f7976f87c75ace023bd3d3ac816bf79d1f9e0e"
+    },
+    {
+      "bytes": 2724,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-01-the-running-pod-with-no-route.md",
+      "sha256": "e9b75fb78f8f115372d8fb8d7f9f0e9a8ce46ba7e8ec3a4cc41a591ce3a17045"
+    },
+    {
+      "bytes": 2414,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-02-the-service-with-zero-usable-endpoints.md",
+      "sha256": "24dc2a2ea6c7bedc9cf18c298ed36855dce0356f27436eae6e138f1bf3f192da"
+    },
+    {
+      "bytes": 2305,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-03-the-negative-dns-cache.md",
+      "sha256": "6040c764bce8d0f95afce01b974ef563e122fcadd567e5dadbe3bfb866452edd"
+    },
+    {
+      "bytes": 2148,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-04-the-default-deny-that-broke-dns.md",
+      "sha256": "9c8cff06cc3f41dba30d92be0a2e3ca2bdc041eac70c2ad3b81f5e202a41af8a"
+    },
+    {
+      "bytes": 2199,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-05-the-programmed-gateway-with-a-bad-backend.md",
+      "sha256": "b739604259fd205dc088a08d82453f5baa0ad14a85b5cb554a155ee66b68e24d"
+    },
+    {
+      "bytes": 2492,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-06-the-helpful-mesh-retry-storm.md",
+      "sha256": "0ab6fe858c4604f3169f7e8048f386600abf66b65c7e6945122e5c937dd422d1"
+    },
+    {
+      "bytes": 2720,
+      "mode": "0o644",
+      "path": "course-book/evidence-model.md",
+      "sha256": "c6ba302d1bcd36362ca6fe6c93dcb1bd2261feffe7d1b75165a4bfb8a6a5ad6c"
+    },
+    {
+      "bytes": 4391,
+      "mode": "0o644",
+      "path": "course-book/glossary.md",
+      "sha256": "1e8152f0ccbac0f99f332c0899a7002f2a5bd8f2eda3d195c3556f920625e528"
+    },
+    {
+      "bytes": 2034,
+      "mode": "0o644",
+      "path": "course-book/guides/dns-diagnosis.md",
+      "sha256": "7e9e78fe6867c867f83001699c9c05f2cb7c3fd4659daba1747f4af432f3b9a4"
+    },
+    {
+      "bytes": 1510,
+      "mode": "0o644",
+      "path": "course-book/guides/gateway-status-review.md",
+      "sha256": "a2352951d2bea8df66a68dab163db38bf0e9d122fec4e6edfdf3c3556684c08f"
+    },
+    {
+      "bytes": 1348,
+      "mode": "0o644",
+      "path": "course-book/guides/local-cluster-lane.md",
+      "sha256": "2105bd7345d074b31f0494702486735f0e1023e3a6104403f313bdb4a5d29c48"
+    },
+    {
+      "bytes": 2146,
+      "mode": "0o644",
+      "path": "course-book/guides/native-evidence-commands.md",
+      "sha256": "6e34fb09e3e5730e0af74f342eabac06c635b292d76e93f0787f9a8d25e7a967"
+    },
+    {
+      "bytes": 1915,
+      "mode": "0o644",
+      "path": "course-book/guides/networkpolicy-review-and-rollout.md",
+      "sha256": "d1e6a0edc97a50be54a15532b62110c8edbc356437e8a05cfdeafa9e34d45d77"
+    },
+    {
+      "bytes": 2415,
+      "mode": "0o644",
+      "path": "course-book/guides/packet-path-analysis.md",
+      "sha256": "f83c4ca3933b12076c6ae659394ffce15538a51e33ef411b93e25aeee72b3006"
+    },
+    {
+      "bytes": 1530,
+      "mode": "0o644",
+      "path": "course-book/guides/tcpdump-safely.md",
+      "sha256": "3618ae7c98c2e36699b2624a55c0eebc0a9c37e0b06021a5a48ac0271fc9d882"
+    },
+    {
+      "bytes": 1353,
+      "mode": "0o644",
+      "path": "course-book/guides/tls-evidence.md",
+      "sha256": "68923afcef028bce88b512ede127dcd1cef76df6db2f3f01995e0e1f901fe8d5"
+    },
+    {
+      "bytes": 3029,
+      "mode": "0o644",
+      "path": "course-book/index.md",
+      "sha256": "58461fcdbbf4beb64f9ca38b855e9f483ab52ec4bc294b7d000fb477970453e3"
+    },
+    {
+      "bytes": 710,
+      "mode": "0o644",
+      "path": "course-book/instructor/facilitation-guide.md",
+      "sha256": "e881a60842038e7589d8d36eb9c6120ef048beea145b573a2431ec6231de5915"
+    },
+    {
+      "bytes": 617,
+      "mode": "0o644",
+      "path": "course-book/instructor/planted-defect-map.md",
+      "sha256": "a8fadc1d12156eec5068145e32f4cbd74364b0362b2ddd0b4f8561291a1c9e4e"
+    },
+    {
+      "bytes": 612,
+      "mode": "0o644",
+      "path": "course-book/instructor/review-questions.md",
+      "sha256": "0b4fdb9a694d712bf03459aef0ef7c6129c8d70ffbd673937df5e2e12fe6912e"
+    },
+    {
+      "bytes": 2029,
+      "mode": "0o644",
+      "path": "course-book/language-strategy.md",
+      "sha256": "625a2dae44f7725497b8c6c087c21fe4f6c0ab5322d8a85bbcf9a8a54fe2b6d7"
+    },
+    {
+      "bytes": 634,
+      "mode": "0o644",
+      "path": "course-book/module-00-orientation/checkpoint.md",
+      "sha256": "2b41df4d96867275fa62889c6fb8e3f57052a9a69ecafa716cf192fcf1199b4f"
+    },
+    {
+      "bytes": 7017,
+      "mode": "0o644",
+      "path": "course-book/module-00-orientation/index.md",
+      "sha256": "cfc57518e2b86e8c7da2602d22552888cfd31efd12ebaa7bf3c4b36303fcd01a"
+    },
+    {
+      "bytes": 1619,
+      "mode": "0o644",
+      "path": "course-book/module-00-orientation/lab.md",
+      "sha256": "86d48afb67c938c5708fd9231abbfd168b3f6f721b60d4e6352e862b901fb15a"
+    },
+    {
+      "bytes": 661,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-network-model-address-domains-and-packet-paths/checkpoint.md",
+      "sha256": "30846f4bb667f8b51437c931a94fb198e4ed0a9545a0a8b30fa3e128550642b6"
+    },
+    {
+      "bytes": 9119,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-network-model-address-domains-and-packet-paths/exercise-answers.md",
+      "sha256": "9a665755229974fe28d8f3b870a561ac91f166cc3fc3c7f9dd35a50d4f038022"
+    },
+    {
+      "bytes": 1242,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-network-model-address-domains-and-packet-paths/exercises.md",
+      "sha256": "3cc46fa6e4fcbaaad59d7a6ee2b653a7aa7b61852ee007a5e016c3e51596896f"
+    },
+    {
+      "bytes": 19769,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-network-model-address-domains-and-packet-paths/index.md",
+      "sha256": "d4540033b8b9e719106ad1378692aa324bf1d67d7c3457ee51f72010ebaadf69"
+    },
+    {
+      "bytes": 1669,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-network-model-address-domains-and-packet-paths/lab.md",
+      "sha256": "2399d34f0c1a5249091f1e75db3f2d41cb63cdab405e4e0146f43ed4a9567bd3"
+    },
+    {
+      "bytes": 578,
+      "mode": "0o644",
+      "path": "course-book/module-02-cni-lifecycle-ipam-routes-and-node-integration/checkpoint.md",
+      "sha256": "cc2814125eb55a17c260834052f97a87c6ab719696786cb1cdd0bd5c8213018c"
+    },
+    {
+      "bytes": 8345,
+      "mode": "0o644",
+      "path": "course-book/module-02-cni-lifecycle-ipam-routes-and-node-integration/exercise-answers.md",
+      "sha256": "f68945fc4960dc54a657245538094b6e3efb861291b0fe913a91465fd21d91ec"
+    },
+    {
+      "bytes": 1116,
+      "mode": "0o644",
+      "path": "course-book/module-02-cni-lifecycle-ipam-routes-and-node-integration/exercises.md",
+      "sha256": "0d22e35de7d52da2e25a4eedf5d022a49ea4632c0405e91b3e0f45c351e45e57"
+    },
+    {
+      "bytes": 17793,
+      "mode": "0o644",
+      "path": "course-book/module-02-cni-lifecycle-ipam-routes-and-node-integration/index.md",
+      "sha256": "88a8836f413217f8c4927a7e66e363640b65769bd6988099e505629a28440732"
+    },
+    {
+      "bytes": 1501,
+      "mode": "0o644",
+      "path": "course-book/module-02-cni-lifecycle-ipam-routes-and-node-integration/lab.md",
+      "sha256": "785ae93767b6e6c8b5c32064de17eeec4ae6674bed895574721b50a6afc054b2"
+    },
+    {
+      "bytes": 671,
+      "mode": "0o644",
+      "path": "course-book/module-03-services-endpointslices-and-service-data-planes/checkpoint.md",
+      "sha256": "568e8f4ccc008e5f0b2c73d02301f4bf6e0d02ea48189d63315d8f085d52890f"
+    },
+    {
+      "bytes": 7223,
+      "mode": "0o644",
+      "path": "course-book/module-03-services-endpointslices-and-service-data-planes/exercise-answers.md",
+      "sha256": "4efe5fcb1c7d6f765e1f13c6c2b530311cc95c1b5332d05f4c67a587eaf08256"
+    },
+    {
+      "bytes": 1036,
+      "mode": "0o644",
+      "path": "course-book/module-03-services-endpointslices-and-service-data-planes/exercises.md",
+      "sha256": "908fa695cab5c25d8743673b02ac3142f7edc9f7e6db4142d5d7773a59633b1d"
+    },
+    {
+      "bytes": 16676,
+      "mode": "0o644",
+      "path": "course-book/module-03-services-endpointslices-and-service-data-planes/index.md",
+      "sha256": "31d735ae854e1118c57bffc97d15a22c742c9fc0c5a3d97cdc572f483ec709e0"
+    },
+    {
+      "bytes": 1507,
+      "mode": "0o644",
+      "path": "course-book/module-03-services-endpointslices-and-service-data-planes/lab.md",
+      "sha256": "a764c9e40859ed6db690800c9725ee63d4efbb7644e3bf8c56614c0bf269e443"
+    },
+    {
+      "bytes": 616,
+      "mode": "0o644",
+      "path": "course-book/module-04-dns-and-service-discovery/checkpoint.md",
+      "sha256": "ccf3977c6624e2d87175135e67caf3176ba3ec57862df7e41060a97e57d4920c"
+    },
+    {
+      "bytes": 6985,
+      "mode": "0o644",
+      "path": "course-book/module-04-dns-and-service-discovery/exercise-answers.md",
+      "sha256": "5fd6d03a2c2ea3eddc693861eec0386faf6a0de11e8c003d1cb9d916b43d2f40"
+    },
+    {
+      "bytes": 877,
+      "mode": "0o644",
+      "path": "course-book/module-04-dns-and-service-discovery/exercises.md",
+      "sha256": "6236726eecf871cec49461ce433bb1f7d8bdeecae73cea2f90547633b66ce52b"
+    },
+    {
+      "bytes": 16176,
+      "mode": "0o644",
+      "path": "course-book/module-04-dns-and-service-discovery/index.md",
+      "sha256": "c239d3fcf88305f4b3342fc8b53d215b7de5eea91583c997a97afff79805e4e2"
+    },
+    {
+      "bytes": 1539,
+      "mode": "0o644",
+      "path": "course-book/module-04-dns-and-service-discovery/lab.md",
+      "sha256": "7638f4c7ba9b3329fb949af96908920816b0d3851264cd56e1a9b290ef45801f"
+    },
+    {
+      "bytes": 652,
+      "mode": "0o644",
+      "path": "course-book/module-05-networkpolicy-and-l3-l4-segmentation/checkpoint.md",
+      "sha256": "12469c17bba2f645190efb1fafd56364ba7e4fa9506babeadf19c22e5639cdda"
+    },
+    {
+      "bytes": 6852,
+      "mode": "0o644",
+      "path": "course-book/module-05-networkpolicy-and-l3-l4-segmentation/exercise-answers.md",
+      "sha256": "6f95152911d78615fa4eee6674c26fd794f8bfcee7d44a861b4ae241ae4bc516"
+    },
+    {
+      "bytes": 1006,
+      "mode": "0o644",
+      "path": "course-book/module-05-networkpolicy-and-l3-l4-segmentation/exercises.md",
+      "sha256": "a5bfa227e8a82827650be509ca7ed73f4e0304108c10428c97b166cebb70c34b"
+    },
+    {
+      "bytes": 15814,
+      "mode": "0o644",
+      "path": "course-book/module-05-networkpolicy-and-l3-l4-segmentation/index.md",
+      "sha256": "0bdc2352a43bd9eb18d09128ed048ba2d29468015cb614b149435a97753a3a9a"
+    },
+    {
+      "bytes": 1636,
+      "mode": "0o644",
+      "path": "course-book/module-05-networkpolicy-and-l3-l4-segmentation/lab.md",
+      "sha256": "45ed995ca1583265cd22eed531fdca3247ef358aa7f8be3411c5abe7a971c33c"
+    },
+    {
+      "bytes": 577,
+      "mode": "0o644",
+      "path": "course-book/module-06-traffic-locality-source-identity-and-dual-stack/checkpoint.md",
+      "sha256": "a6fff1ba688aee1684fee94612acbea2f6f334e649de4f640d88f90e050c5527"
+    },
+    {
+      "bytes": 6641,
+      "mode": "0o644",
+      "path": "course-book/module-06-traffic-locality-source-identity-and-dual-stack/exercise-answers.md",
+      "sha256": "f9c8cfd689cffdb6a2853758c461b11c5d64dbd068c28b51b2a235d510e4dc76"
+    },
+    {
+      "bytes": 1012,
+      "mode": "0o644",
+      "path": "course-book/module-06-traffic-locality-source-identity-and-dual-stack/exercises.md",
+      "sha256": "3a1884feb8f8280d1ff121261672dc509a9bac2242004a442af0911baaea927b"
+    },
+    {
+      "bytes": 14710,
+      "mode": "0o644",
+      "path": "course-book/module-06-traffic-locality-source-identity-and-dual-stack/index.md",
+      "sha256": "8a94c8937a55f68f81ff6618b104cbe3fc46e03a7d1b3f9034fae8d59c3f5d7a"
+    },
+    {
+      "bytes": 1407,
+      "mode": "0o644",
+      "path": "course-book/module-06-traffic-locality-source-identity-and-dual-stack/lab.md",
+      "sha256": "eec444618ff426550e8998b64ba2eb67ad262e62f0b24b09381c382c420775e9"
+    },
+    {
+      "bytes": 604,
+      "mode": "0o644",
+      "path": "course-book/module-07-gateway-api-architecture-and-route-ownership/checkpoint.md",
+      "sha256": "49c3a59b736476f8a3dd55fa1e0767a8bff661b79c8e241bc599e37880729f1d"
+    },
+    {
+      "bytes": 7298,
+      "mode": "0o644",
+      "path": "course-book/module-07-gateway-api-architecture-and-route-ownership/exercise-answers.md",
+      "sha256": "dd1088718375638d05baa8e430139d26253622cd1f62e3f0e4e23176f98f6433"
+    },
+    {
+      "bytes": 870,
+      "mode": "0o644",
+      "path": "course-book/module-07-gateway-api-architecture-and-route-ownership/exercises.md",
+      "sha256": "faa0e0cdc6b593165104523e496b8e17fa50634fe816cc4ff4d5b3bd17f2c526"
+    },
+    {
+      "bytes": 21082,
+      "mode": "0o644",
+      "path": "course-book/module-07-gateway-api-architecture-and-route-ownership/index.md",
+      "sha256": "d9d5038440ece89f27cabb2ad4daa939a0166cbd66819fc560acc4a56a4b5c24"
+    },
+    {
+      "bytes": 1541,
+      "mode": "0o644",
+      "path": "course-book/module-07-gateway-api-architecture-and-route-ownership/lab.md",
+      "sha256": "a25ccc6f64b0208d055d3ced5564ea3034e6fd67680b7752dca7741ecdd28698"
+    },
+    {
+      "bytes": 614,
+      "mode": "0o644",
+      "path": "course-book/module-08-tls-http-semantics-and-backend-protocol-integrity/checkpoint.md",
+      "sha256": "ef9d3c235969e349e089cdbb28209c5833b41b335d3beecbbca217eb05466a94"
+    },
+    {
+      "bytes": 7016,
+      "mode": "0o644",
+      "path": "course-book/module-08-tls-http-semantics-and-backend-protocol-integrity/exercise-answers.md",
+      "sha256": "a8ebeecb313cb61137e54346eb8ad7b9c1da2a8c9c23cb03b3195ed936779e79"
+    },
+    {
+      "bytes": 876,
+      "mode": "0o644",
+      "path": "course-book/module-08-tls-http-semantics-and-backend-protocol-integrity/exercises.md",
+      "sha256": "41097f85a69d18adebdd8aff27e133ce0775708cd2566a59dc4b5bb6787b0de6"
+    },
+    {
+      "bytes": 20134,
+      "mode": "0o644",
+      "path": "course-book/module-08-tls-http-semantics-and-backend-protocol-integrity/index.md",
+      "sha256": "434749d2e9308c5a4ec19cd2da9044e2cbb73672d8be834d62d0f645834e379b"
+    },
+    {
+      "bytes": 1614,
+      "mode": "0o644",
+      "path": "course-book/module-08-tls-http-semantics-and-backend-protocol-integrity/lab.md",
+      "sha256": "e8eca0a3fd74b6833493ee867cac33ec2a5d05f4ffbc93c89c79343026b7081f"
+    },
+    {
+      "bytes": 607,
+      "mode": "0o644",
+      "path": "course-book/module-09-egress-external-services-and-service-mesh-boundaries/checkpoint.md",
+      "sha256": "370ac11965d4e450f51d656b3c9b824da091ebef310303e5b76870412d508bc4"
+    },
+    {
+      "bytes": 6599,
+      "mode": "0o644",
+      "path": "course-book/module-09-egress-external-services-and-service-mesh-boundaries/exercise-answers.md",
+      "sha256": "32c0e5f29de4b49670696926cacf67a9cad202162bc8cc66f1e5ea658b0fc9a1"
+    },
+    {
+      "bytes": 868,
+      "mode": "0o644",
+      "path": "course-book/module-09-egress-external-services-and-service-mesh-boundaries/exercises.md",
+      "sha256": "48d0a4f999ebc05187786333e3fac482d39c7c55289463e87bf60515e0938e13"
+    },
+    {
+      "bytes": 18816,
+      "mode": "0o644",
+      "path": "course-book/module-09-egress-external-services-and-service-mesh-boundaries/index.md",
+      "sha256": "e60e453f81c23f44881efc84caba1c5cb29617530ce651ff99afcdc2fd9b638d"
+    },
+    {
+      "bytes": 1591,
+      "mode": "0o644",
+      "path": "course-book/module-09-egress-external-services-and-service-mesh-boundaries/lab.md",
+      "sha256": "1f4b46d934e541d72c4d8a30ffb7be6ac4f5be6330b1cffaa2f8619e51833cc6"
+    },
+    {
+      "bytes": 647,
+      "mode": "0o644",
+      "path": "course-book/module-10-network-operations-conformance-and-release/checkpoint.md",
+      "sha256": "b04e746ec61bdb01864c6c402022700a198b936c7f3ccaf3aecbeb75973d7174"
+    },
+    {
+      "bytes": 6786,
+      "mode": "0o644",
+      "path": "course-book/module-10-network-operations-conformance-and-release/exercise-answers.md",
+      "sha256": "869bc05896ba6da9b48b3af11cd322561a53a6463778a391c5c712ece50e513e"
+    },
+    {
+      "bytes": 903,
+      "mode": "0o644",
+      "path": "course-book/module-10-network-operations-conformance-and-release/exercises.md",
+      "sha256": "483ef5a6b612b359eade680e9a57f42763527b5005be82286310a54a6587d46c"
+    },
+    {
+      "bytes": 19764,
+      "mode": "0o644",
+      "path": "course-book/module-10-network-operations-conformance-and-release/index.md",
+      "sha256": "e8593cfc686c87df9f43cd808b687a1a5375f8663a20c7c3bef249aaab6f6e06"
+    },
+    {
+      "bytes": 1561,
+      "mode": "0o644",
+      "path": "course-book/module-10-network-operations-conformance-and-release/lab.md",
+      "sha256": "fa0635d4793313154e18ec3492a236fe7ce0dcdb153d32b4a52191e93e8ece96"
+    },
+    {
+      "bytes": 1202,
+      "mode": "0o644",
+      "path": "course-book/reference/address-domain-inventory.md",
+      "sha256": "87e371e85e55bc713716bf319e598e7a0dbd840d6a9b8bbbb1edb77a43e20ce5"
+    },
+    {
+      "bytes": 1031,
+      "mode": "0o644",
+      "path": "course-book/reference/cni-command-matrix.md",
+      "sha256": "d772c4e29484d5c6c4ad2472e369ff522131d71eada990194f09f482de3e658b"
+    },
+    {
+      "bytes": 598,
+      "mode": "0o644",
+      "path": "course-book/reference/conformance-evidence.md",
+      "sha256": "138dedee78962402cf3afe88b9efb5bce9cb6e8449766fe1bacbcc278c2b479b"
+    },
+    {
+      "bytes": 654,
+      "mode": "0o644",
+      "path": "course-book/reference/course-6-network-handoff.md",
+      "sha256": "31cb15a062365be1a9eabc9116c911d2f45fd6075494b60fa6865d73633100b2"
+    },
+    {
+      "bytes": 675,
+      "mode": "0o644",
+      "path": "course-book/reference/dns-query-and-cache-map.md",
+      "sha256": "799807b320ac99eba36281afca816660462e420a18a210ebce60c2be513a47ee"
+    },
+    {
+      "bytes": 582,
+      "mode": "0o644",
+      "path": "course-book/reference/dual-stack-checklist.md",
+      "sha256": "743306c69dda0f8ff2772e38910b84e0653a4377afa08d86204f899f29ec6048"
+    },
+    {
+      "bytes": 600,
+      "mode": "0o644",
+      "path": "course-book/reference/egress-destination-classification.md",
+      "sha256": "11aff3fd2576fb6b0cd69307566be0e6ba24a57974b09e26ec5befcf46021d00"
+    },
+    {
+      "bytes": 852,
+      "mode": "0o644",
+      "path": "course-book/reference/endpoint-condition-map.md",
+      "sha256": "a31ee958cc4faaf33a3cc68dab54eacbd09d7dfce1e956f1bb408b79d88cdca2"
+    },
+    {
+      "bytes": 764,
+      "mode": "0o644",
+      "path": "course-book/reference/forwarded-header-contract.md",
+      "sha256": "afe398fc42d87ff4817592b7e975dab6e454cb2d6cc81bafa6c72447a62a9216"
+    },
+    {
+      "bytes": 737,
+      "mode": "0o644",
+      "path": "course-book/reference/gateway-role-map.md",
+      "sha256": "4d1b157faa11a42e8cf27bd71a2e29c615508cb652eb1f73cfcf1a7a919c5c66"
+    },
+    {
+      "bytes": 649,
+      "mode": "0o644",
+      "path": "course-book/reference/gateway-routing-precedence.md",
+      "sha256": "f193b69d8872f00be951e794f27ad8926be1d5e039904d01e873c08ec330ec4d"
+    },
+    {
+      "bytes": 647,
+      "mode": "0o644",
+      "path": "course-book/reference/incident-evidence-template.md",
+      "sha256": "24476e6efbd9dac228c2da3ef85aeeb6612e5fc7c03fdc94081e723929074a9b"
+    },
+    {
+      "bytes": 887,
+      "mode": "0o644",
+      "path": "course-book/reference/ipam-ownership.md",
+      "sha256": "5be7ae7d64c93cfabcf01891cf26d931ab74baf9bb3a60a32228f17a64112060"
+    },
+    {
+      "bytes": 647,
+      "mode": "0o644",
+      "path": "course-book/reference/mesh-decision-record.md",
+      "sha256": "c00af68fdab38a7037fb8f72042fd28dc51fc289853558f76480d43a1c4f96cb"
+    },
+    {
+      "bytes": 809,
+      "mode": "0o644",
+      "path": "course-book/reference/mtu-budget.md",
+      "sha256": "66a64187482be69213eca7d4b3f0a47418ffdd7bb95d51d51f0e29e45f885bb3"
+    },
+    {
+      "bytes": 9008,
+      "mode": "0o644",
+      "path": "course-book/reference/network-investigation-command-map.md",
+      "sha256": "fc60e6958797d2afa72f64f8641053afeb8428045bb6d8c8c1698b10d61c4708"
+    },
+    {
+      "bytes": 754,
+      "mode": "0o644",
+      "path": "course-book/reference/networkpolicy-truth-table.md",
+      "sha256": "9b134f0301be2858f285f0fd5b12ef3fdcc715ce647e60e9f4660bc4f8881d5e"
+    },
+    {
+      "bytes": 743,
+      "mode": "0o644",
+      "path": "course-book/reference/pod-network-contract.md",
+      "sha256": "23170c78c12cc0acccd60a7e87683ff78174db44c6881519a1be1a8b8aef9043"
+    },
+    {
+      "bytes": 637,
+      "mode": "0o644",
+      "path": "course-book/reference/referencegrant-review.md",
+      "sha256": "5b607d794e4a1513baff5414c4a127718383a4c135587d3d44e75e0cfe367e1e"
+    },
+    {
+      "bytes": 692,
+      "mode": "0o644",
+      "path": "course-book/reference/route-and-return-path.md",
+      "sha256": "70bb224ef1ffd9d9ec28182b1f1564d522a84938a119db1e6079d418a4b0da20"
+    },
+    {
+      "bytes": 903,
+      "mode": "0o644",
+      "path": "course-book/reference/service-data-plane-comparison.md",
+      "sha256": "f9b0c9f595d61c76e13ed222c8562ef38c12ff69932c248e7e836fba7e0c7330"
+    },
+    {
+      "bytes": 765,
+      "mode": "0o644",
+      "path": "course-book/reference/tls-decision-table.md",
+      "sha256": "17b466657450322db9974a461bd9b47667868098d3c8fa6f693d8d99c4b583fc"
+    },
+    {
+      "bytes": 953,
+      "mode": "0o644",
+      "path": "course-book/reference/traffic-policy-matrix.md",
+      "sha256": "1a4a97574f3b9c9cee05ecaf9a72dde717c9d419254e358d54ebd193bfffc78d"
+    },
+    {
+      "bytes": 6217,
+      "mode": "0o644",
+      "path": "course-book/standards.md",
+      "sha256": "b8cc80a72d6795d4d174f23ea153cd4a071792d5d678a24cb5918772ff201356"
+    },
+    {
+      "bytes": 4669,
+      "mode": "0o644",
+      "path": "course-book/start-here.md",
+      "sha256": "a199d10b311650091a4edd21a5ce7c2724e45028e4a6bb0e28e57b30c7e4eda6"
+    },
+    {
+      "bytes": 2419,
+      "mode": "0o644",
+      "path": "course-book/study-plan.md",
+      "sha256": "b4a716f03a639442ac38d9ff294be1968e97d90e44c0a3e55777462ce89b779e"
+    },
+    {
+      "bytes": 696,
+      "mode": "0o644",
+      "path": "course.json",
+      "sha256": "1e47cdd625d1e6a9b24f90aa36c99fed8cf2b72f1ce1f285769b93cc17e4835b"
+    },
+    {
+      "bytes": 815,
+      "mode": "0o644",
+      "path": "instructor/README.md",
+      "sha256": "b7ab555f0d3c2fbdd337a79140fc8bc117b3b929dcc73229f0712cbf8f99a082"
+    },
+    {
+      "bytes": 439,
+      "mode": "0o644",
+      "path": "instructor/lab-reset.md",
+      "sha256": "ddb9fe72a8790cfee4e977df45e20a939190f902da8d97f25b744dff584d66f0"
+    },
+    {
+      "bytes": 1256,
+      "mode": "0o644",
+      "path": "instructor/planted-defects.json",
+      "sha256": "a06dfea43da3d0fbdabbc0f306d0e719a6b332e4f0841604e048b56586b83fea"
+    },
+    {
+      "bytes": 916,
+      "mode": "0o644",
+      "path": "instructor/review-questions.md",
+      "sha256": "ed623b65caf0b1530438544782cd29a346e88d85c223944b17931506972d7e12"
+    },
+    {
+      "bytes": 8437,
+      "mode": "0o644",
+      "path": "mkdocs.yml",
+      "sha256": "b8212aae7d49e72bdfea89bc80f5488cf52c9b412aff0bb74a1ef59cdd34327d"
+    },
+    {
+      "bytes": 568,
+      "mode": "0o644",
+      "path": "reports/README.md",
+      "sha256": "acbdcd9d63e2f46c831e94d0a9473e089510583cc13b4e4222bbae3f0bdf5012"
+    },
+    {
+      "bytes": 1623,
+      "mode": "0o644",
+      "path": "reports/release-verification.json",
+      "sha256": "1c57af8aa5e70825113d668412715621e89392ee8676c15e980684b566f3553a"
+    },
+    {
+      "bytes": 23,
+      "mode": "0o644",
+      "path": "requirements-docs.txt",
+      "sha256": "968aea3f4765290926a2bcae19575a0dfead0afb322162a7560f18db237d5a78"
+    },
+    {
+      "bytes": 29,
+      "mode": "0o644",
+      "path": "requirements.txt",
+      "sha256": "3ec2dc9e81fd8dfcc4c174e21f659f459934a873c8faa30aa2524f8fdf25ef68"
+    },
+    {
+      "bytes": 522,
+      "mode": "0o755",
+      "path": "scripts/common.py",
+      "sha256": "4c8a31117ca2fd66fa4ffd01003c1c70be51e4cf2e0f60075b21189198c13be2"
+    },
+    {
+      "bytes": 464,
+      "mode": "0o755",
+      "path": "scripts/doctor.py",
+      "sha256": "e6aee3225bedd80ed4dbb208ccbb9bc27a8720e49b4f435570770847ade30d06"
+    },
+    {
+      "bytes": 1567,
+      "mode": "0o755",
+      "path": "scripts/manifest.py",
+      "sha256": "d14c4a383c68b1d2924826878aba3808a2f3a5c9576241705939f48795319302"
+    },
+    {
+      "bytes": 1639,
+      "mode": "0o755",
+      "path": "scripts/manifest_proof.py",
+      "sha256": "53139f3abcee4fe356ea6cc758feb6556ef29eae90c52921f4c5360adcb3aebb"
+    },
+    {
+      "bytes": 958,
+      "mode": "0o755",
+      "path": "scripts/verify_code.py",
+      "sha256": "5f88ca31895cd13aefcd19b672e8d3c92708eafd3092e0f250e968165da01ec4"
+    },
+    {
+      "bytes": 1442,
+      "mode": "0o755",
+      "path": "scripts/verify_data.py",
+      "sha256": "4c2643e68a1f0301e2559a6eb622d27f3e7c298650b8b97524e591de2811ea9f"
+    },
+    {
+      "bytes": 376,
+      "mode": "0o755",
+      "path": "scripts/verify_defects.py",
+      "sha256": "af5c0d9564e214a3b4598cba9179b12af90cf7324b6eb3a01cf052372bcf0d6a"
+    },
+    {
+      "bytes": 1533,
+      "mode": "0o755",
+      "path": "scripts/verify_documents.py",
+      "sha256": "0a107f232b4c970d2e7a51afdd2cb7619dbccd7a5ae658613d1cbb6cdcbbf238"
+    },
+    {
+      "bytes": 2227,
+      "mode": "0o755",
+      "path": "scripts/verify_educational_quality.py",
+      "sha256": "83dcbb8b82697b05e5575198a2f012594a0dd9d53521d6c81f924f2da4fa55f4"
+    },
+    {
+      "bytes": 492,
+      "mode": "0o755",
+      "path": "scripts/verify_handoff.py",
+      "sha256": "83701ce9ede7aa65e9e364e0aa8ba81fcb5d9a91d1da8bd441e4b926e922df62"
+    },
+    {
+      "bytes": 1075,
+      "mode": "0o755",
+      "path": "scripts/verify_links.py",
+      "sha256": "4674aeaaf5f8aa773f5b848bd3fcf7d44c6773522ccfd5c4a8b2c0b98697c708"
+    },
+    {
+      "bytes": 910,
+      "mode": "0o755",
+      "path": "scripts/verify_manifests.py",
+      "sha256": "22e4dbe7bb39cc36f24f4c43d16dd1357b40288a2e6ddd5728de40e56bfb10eb"
+    },
+    {
+      "bytes": 758,
+      "mode": "0o755",
+      "path": "scripts/verify_nav.py",
+      "sha256": "b472285e27d3abb7cab4277ca749b9de7a0b11bea3d6a733f9db4129dc599c02"
+    },
+    {
+      "bytes": 984,
+      "mode": "0o755",
+      "path": "scripts/verify_pki.py",
+      "sha256": "756fa6e1025394c0df89ba2503984da0e8acc2f01d5721136f0baeedb91fba67"
+    },
+    {
+      "bytes": 723,
+      "mode": "0o755",
+      "path": "scripts/verify_predecessor.py",
+      "sha256": "f721dfe97f09f697a0f3c0675dd818460d50308fb025705bb5ed29af8cb09786"
+    },
+    {
+      "bytes": 566,
+      "mode": "0o755",
+      "path": "scripts/verify_releases.py",
+      "sha256": "d0bd0194faa6ec71bef63ac9a53a094e1664fb8701f349c6d857bf4aa92fb5e8"
+    },
+    {
+      "bytes": 717,
+      "mode": "0o755",
+      "path": "scripts/verify_sources.py",
+      "sha256": "e85208a0b008204697be1353a7d4524394991929f7b513f2361e3dbe142bb0cc"
+    },
+    {
+      "bytes": 569,
+      "mode": "0o755",
+      "path": "scripts/verify_structure.py",
+      "sha256": "a3e5d650afb6ef9595e960e15200193737a4b21a78e585be4df6ea5fc5351778"
+    },
+    {
+      "bytes": 450,
+      "mode": "0o644",
+      "path": "standards-profile.json",
+      "sha256": "5bdead75ff81d32d4ffbf292f6c0f1f10a61eb66c29e17c62d16bdb801a30e1e"
+    },
+    {
+      "bytes": 162,
+      "mode": "0o644",
+      "path": "tool-versions.json",
+      "sha256": "d5b1f08d7aeaa09d884395d521d141ca2e04962ab7d222392df73a622a8e5e96"
+    }
+  ],
+  "schemaVersion": "1.0"
+}

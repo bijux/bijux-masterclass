@@ -1,0 +1,54 @@
+{
+  "defects": [
+    {
+      "id": "NET-01",
+      "name": "missing remote Pod route",
+      "proof": "packet path lab"
+    },
+    {
+      "id": "NET-02",
+      "name": "name-only IPAM garbage collection",
+      "proof": "CNI lifecycle lab"
+    },
+    {
+      "id": "NET-03",
+      "name": "stale service-programming generation",
+      "proof": "Service convergence lab"
+    },
+    {
+      "id": "NET-04",
+      "name": "unbounded negative DNS caching",
+      "proof": "DNS cache lab"
+    },
+    {
+      "id": "NET-05",
+      "name": "default deny applied before explicit allows",
+      "proof": "NetworkPolicy lab"
+    },
+    {
+      "id": "NET-06",
+      "name": "stale topology hints after zone loss",
+      "proof": "locality lab"
+    },
+    {
+      "id": "NET-07",
+      "name": "unauthorized Route attachment",
+      "proof": "Gateway attachment lab"
+    },
+    {
+      "id": "NET-08",
+      "name": "unsafe Gateway retry of non-idempotent request",
+      "proof": "TLS Gateway lab"
+    },
+    {
+      "id": "NET-09",
+      "name": "DNS rebinding and redirect accepted",
+      "proof": "egress lab"
+    },
+    {
+      "id": "NET-10",
+      "name": "release approved without required cluster evidence",
+      "proof": "release classifier"
+    }
+  ]
+}

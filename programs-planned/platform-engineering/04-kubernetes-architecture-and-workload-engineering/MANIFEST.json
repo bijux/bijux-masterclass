@@ -1,0 +1,1482 @@
+{
+  "course": "04-kubernetes-architecture-and-workload-engineering",
+  "files": [
+    {
+      "bytes": 135,
+      "mode": "0o644",
+      "path": ".gitignore",
+      "sha256": "e7ea12c13e3a2e76e84c0a00a30e2e4e5c34ee773a811269eb60af25d797c13e"
+    },
+    {
+      "bytes": 280,
+      "mode": "0o644",
+      "path": "CHANGELOG.md",
+      "sha256": "176b645d2e8e7f91411523361934018857ad7f502e1dce983588a4877c1d0392"
+    },
+    {
+      "bytes": 2354,
+      "mode": "0o644",
+      "path": "COURSE-CONTENTS.md",
+      "sha256": "7c97b83fbf719eb28621948655d43fc49f57c37a3fdef15a3719749d1f54740c"
+    },
+    {
+      "bytes": 3842,
+      "mode": "0o644",
+      "path": "FINAL-VERIFICATION.md",
+      "sha256": "ab33000a7ab30f73969035d9c9bad25124424875f04fe79e2b790a46daf43131"
+    },
+    {
+      "bytes": 1973,
+      "mode": "0o644",
+      "path": "Makefile",
+      "sha256": "ad8ad6804471585a179ab76e77e0272518e6278cbaff139a25ef2d3f65481974"
+    },
+    {
+      "bytes": 355,
+      "mode": "0o644",
+      "path": "NEXT-COURSE-HANDOFF.md",
+      "sha256": "2b7091722b20369331ca35b76c1d4816bf188f1cd538e9a536bae4a6bfac10bf"
+    },
+    {
+      "bytes": 317,
+      "mode": "0o644",
+      "path": "PREDECESSOR-HANDOFF.md",
+      "sha256": "e3e8cc4615746daabdd3d56dc7d93fd574e93c2e3ebc4bf45cc38d38fbc5cc6b"
+    },
+    {
+      "bytes": 552,
+      "mode": "0o644",
+      "path": "PRODUCTION-CLAIMS.md",
+      "sha256": "97ac8c6b67d76e87a4c6cdab5f647e6b13b961c8ea599052c4401ec5438eb3d5"
+    },
+    {
+      "bytes": 1843,
+      "mode": "0o644",
+      "path": "README.md",
+      "sha256": "74d409651f35c0ae1b8d7ac13d342308ac8e112473e627698595a38b49a9390b"
+    },
+    {
+      "bytes": 588,
+      "mode": "0o644",
+      "path": "assessment/final-project.md",
+      "sha256": "680ef0059bc9f2ea30ae58b7d588a4ea690d8899409d2ebd6e1c2fdfde647560"
+    },
+    {
+      "bytes": 1041,
+      "mode": "0o644",
+      "path": "assessment/rubric.json",
+      "sha256": "593feda885c9fe2887ff82eeeb4819ca02333570e173a34880e121c94416148b"
+    },
+    {
+      "bytes": 209,
+      "mode": "0o644",
+      "path": "capstone/Makefile",
+      "sha256": "882ff1c9af4e3bd95e9aa4e16fa910fd3ecebb6a7d99bcdda91e6113de49b368"
+    },
+    {
+      "bytes": 571,
+      "mode": "0o644",
+      "path": "capstone/README.md",
+      "sha256": "c16fd1c446ad26ece7b11d87ba93b65d8b2a46f9ec2f3ea70d03ad9078d5e754"
+    },
+    {
+      "bytes": 434,
+      "mode": "0o644",
+      "path": "capstone/architecture/availability-contract.yaml",
+      "sha256": "0553efbf88da58f904f4016ad4a49e14be5b77a749a500d46728ddb9317f3b61"
+    },
+    {
+      "bytes": 1262,
+      "mode": "0o644",
+      "path": "capstone/architecture/component-ownership.yaml",
+      "sha256": "997533e07722117f5300263f7456d25a6252e355d9d7724329b60bd13a1daddd"
+    },
+    {
+      "bytes": 802,
+      "mode": "0o644",
+      "path": "capstone/architecture/controller-choice.yaml",
+      "sha256": "c9b8a0fdc79c4c1d6a9cdbf6012a796536f417ab4aa0fe4b43c3e39d3616d635"
+    },
+    {
+      "bytes": 658,
+      "mode": "0o644",
+      "path": "capstone/architecture/deferred-responsibilities.yaml",
+      "sha256": "e60564e2efc06698ac52db83f7d58052e2ff59d8f8aa01d82688d9db53ca9bf0"
+    },
+    {
+      "bytes": 831,
+      "mode": "0o644",
+      "path": "capstone/architecture/field-ownership.yaml",
+      "sha256": "63f52816dc8e835ac1ef037d0725a5820505e4dd4cfdb4db139ab0ef44c9308b"
+    },
+    {
+      "bytes": 252,
+      "mode": "0o644",
+      "path": "capstone/architecture/version-ledger.json",
+      "sha256": "ee85550e4effc9505125f01dbb389738b7633ee1bb2ce1dc13b184ce47b5ebce"
+    },
+    {
+      "bytes": 393,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/__init__.py",
+      "sha256": "96b6aefdec7a8a3bd16036539c9a77687b7f9dc6d1e6245a090edbcf256fec2e"
+    },
+    {
+      "bytes": 8351,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/api_store.py",
+      "sha256": "7713fddcb9d351742c9f2b461f8a8c23da8dd8f3482fa8ba32a4447e616ed1cc"
+    },
+    {
+      "bytes": 946,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/conditions.py",
+      "sha256": "59fdcf719ded0cedf6cbc75fcc6a8ee0c8b7cd302e59c239ee3e7f6c084b4a4c"
+    },
+    {
+      "bytes": 7842,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/controller.py",
+      "sha256": "f5aca4642f46d334f8cbaf7867b40a1191dc408ad91afb8e424512ff73b09429"
+    },
+    {
+      "bytes": 4799,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/controllers.py",
+      "sha256": "6e7c1bbefdcac675768a073ef0ad123ca025c6fd42c7c8637bd9c3f456c924a6"
+    },
+    {
+      "bytes": 991,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/disruption.py",
+      "sha256": "70ad03970936e8aed1185b85fd5314b2748327e2ad32bc478fe3471eab86fa47"
+    },
+    {
+      "bytes": 1292,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/handoff.py",
+      "sha256": "0a3a480a0c6382b47c3b0cd958ff4a730b13e882afb2884064ff129952725772"
+    },
+    {
+      "bytes": 1743,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/jobs.py",
+      "sha256": "90ceb8824f4fc8c86e3128e194cef4bc74fab7a35d02054f64fbe1d102a81f91"
+    },
+    {
+      "bytes": 1344,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/lifecycle.py",
+      "sha256": "1f069a6da36dcb8c429fdb719adaf4623939c007b250f4e3923182864e14dec8"
+    },
+    {
+      "bytes": 3696,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/models.py",
+      "sha256": "581ddebf934db74c8a2715a496d89cf0eb4a4d9dea65d51ce0001e4edc214272"
+    },
+    {
+      "bytes": 1294,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/projection.py",
+      "sha256": "e75ac95c4d3b36abd63193e8a43ba3f9a280117734e8062a8c24663b39b31fe3"
+    },
+    {
+      "bytes": 1680,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/rollout.py",
+      "sha256": "bc66f32fd7a6b84f17d391eb5708f3b3974a5889c24d55868a5b3f56cf203eeb"
+    },
+    {
+      "bytes": 2862,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/scheduler.py",
+      "sha256": "8073923848b86a17e03152497ccbe4966fc1bb9a3147de1c5346f6e3308da4e9"
+    },
+    {
+      "bytes": 1162,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/stateful.py",
+      "sha256": "514dcfbcb3dbe48f8d4f41efa1c1112c0bfc70291cc5a30acf42387df441205e"
+    },
+    {
+      "bytes": 3608,
+      "mode": "0o644",
+      "path": "capstone/atlas_kube/validation.py",
+      "sha256": "830bf6774cedebc04c71a6ac69d778aee0adc5b67bfc0d228c616f67779ebfae"
+    },
+    {
+      "bytes": 960,
+      "mode": "0o644",
+      "path": "capstone/controller-go/README.md",
+      "sha256": "189821deece8bbc254f003f320bfa31e56aea8a6fd2996575cdf06f567395093"
+    },
+    {
+      "bytes": 2977,
+      "mode": "0o644",
+      "path": "capstone/controller-go/cmd/atlas-controller/main.go",
+      "sha256": "f4ae77a5d93095ccffd6ab4279222e62e384e8d6246eca992f212aff212acec4"
+    },
+    {
+      "bytes": 52,
+      "mode": "0o644",
+      "path": "capstone/controller-go/go.mod",
+      "sha256": "3d9b66f126f69f941329cf659be9d5d7e1fc9b11d48c9a60639d084915361483"
+    },
+    {
+      "bytes": 4448,
+      "mode": "0o644",
+      "path": "capstone/controller-go/internal/atlas/reconcile.go",
+      "sha256": "2f7ca8b0918cc23ab4bc5907ba39e8c9e52b0cbe8b5656f076deca5fb69a7a88"
+    },
+    {
+      "bytes": 2484,
+      "mode": "0o644",
+      "path": "capstone/controller-go/internal/atlas/reconcile_test.go",
+      "sha256": "217cc598d0991004036f0f82358b5da8bdaeb3f78b355846eb0df9e1c50fee82"
+    },
+    {
+      "bytes": 3097,
+      "mode": "0o644",
+      "path": "capstone/controller-go/internal/atlas/types.go",
+      "sha256": "d5892f76ef7805ea084247ac4ee3bb9f53d3613b7adfd371fd222f1e9ddf6983"
+    },
+    {
+      "bytes": 8417,
+      "mode": "0o644",
+      "path": "capstone/controller-go/internal/kubeclient/client.go",
+      "sha256": "09b0984c0077b94fa6f0f3caaba7a72eecca64a851c71e40709fc9ef4bcd32a7"
+    },
+    {
+      "bytes": 373,
+      "mode": "0o644",
+      "path": "capstone/controller-go/internal/kubeclient/client_test.go",
+      "sha256": "3caa214708e25ddd7ab5d02dd71d3450ac0e5fe9f4e218ac68225293995d8fda"
+    },
+    {
+      "bytes": 1610,
+      "mode": "0o644",
+      "path": "capstone/handoff/MANIFEST.json",
+      "sha256": "de2c5ed9ad9a55eda807211c93cd65d1d707a9b60686cdb53d9678b658142fad"
+    },
+    {
+      "bytes": 381,
+      "mode": "0o644",
+      "path": "capstone/handoff/README.md",
+      "sha256": "bedc1b02edfb54fe616b31c7196e484648270b6f8eea2c42fc2abfcd5eea1655"
+    },
+    {
+      "bytes": 298,
+      "mode": "0o644",
+      "path": "capstone/handoff/dns-requirements.yaml",
+      "sha256": "4c73b30c06cc5d5e0a6683bc9c284f5ba217ebbc84791e196975aae717379f16"
+    },
+    {
+      "bytes": 485,
+      "mode": "0o644",
+      "path": "capstone/handoff/gateway-requirements.yaml",
+      "sha256": "64ee67c63c982495d219a9a3cfe1805aba64564ca033df24c8f87cc5bbeb95b9"
+    },
+    {
+      "bytes": 400,
+      "mode": "0o644",
+      "path": "capstone/handoff/known-risks.json",
+      "sha256": "9c32145e785db70e473e382b5ddd19942d57a8ed37659a8fa4af30d2119a5ca8"
+    },
+    {
+      "bytes": 444,
+      "mode": "0o644",
+      "path": "capstone/handoff/network-policy-requirements.yaml",
+      "sha256": "28746df31ccf5ce45b3c2a7aba43562edfd955f0e11a81f98bc7e5ea7b3f2660"
+    },
+    {
+      "bytes": 383,
+      "mode": "0o644",
+      "path": "capstone/handoff/readiness-and-endpoints.yaml",
+      "sha256": "bc8829653b795a4e5f54b98f3b42fa8a008e51ecdb9ba9c90bac468400812c50"
+    },
+    {
+      "bytes": 376,
+      "mode": "0o644",
+      "path": "capstone/handoff/service-connectivity.yaml",
+      "sha256": "12ebf5d2e97a339528c57716bb5c66c56e63d51fc8d23b3896aa7e843d00a0b3"
+    },
+    {
+      "bytes": 255,
+      "mode": "0o644",
+      "path": "capstone/handoff/topology-requirements.yaml",
+      "sha256": "04bd76452cef68a37285111beb6a6bad1a4c8f2022ded44887f57db0bfe2559a"
+    },
+    {
+      "bytes": 233,
+      "mode": "0o644",
+      "path": "capstone/handoff/version-ledger.json",
+      "sha256": "918d6e8a99cb7537c5b03009432baba7cf2c85e0677291e3e7116c3d9c69642c"
+    },
+    {
+      "bytes": 495,
+      "mode": "0o644",
+      "path": "capstone/handoff/workload-inventory.json",
+      "sha256": "563b2b2878a248bb0bf4c27f02518f32d14d1740204711b928e2f93022471e7f"
+    },
+    {
+      "bytes": 359,
+      "mode": "0o644",
+      "path": "capstone/kind/README.md",
+      "sha256": "88da087d4b5785474b7c1b414beaa203a18416fba4304bebed98ab41a5b0cd06"
+    },
+    {
+      "bytes": 324,
+      "mode": "0o644",
+      "path": "capstone/kind/cluster.yaml",
+      "sha256": "fe88af5f30125f0304a05b658b5bb0e88f8d675ecb2da779601f20a710385559"
+    },
+    {
+      "bytes": 960,
+      "mode": "0o644",
+      "path": "capstone/kind/observation-workload.yaml",
+      "sha256": "2250cd559ee106111cee848d6e2750c85eda6609bcff371f9b472514fb54c126"
+    },
+    {
+      "bytes": 405,
+      "mode": "0o644",
+      "path": "capstone/manifests/README.md",
+      "sha256": "fd07d334b471110d69d2cd269e3558faa96f98c95634f9976aac02890b218281"
+    },
+    {
+      "bytes": 340,
+      "mode": "0o644",
+      "path": "capstone/manifests/apply-order.txt",
+      "sha256": "72f6ed68a1cbc5df2f59baa2ebbe06d26e3f8e6311514daf64faa667926ec653"
+    },
+    {
+      "bytes": 145,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/00-namespace.yaml",
+      "sha256": "0dcb2ce3627f5d5a7af3fde8ea2d9d913bc0c2545147fa4dcdd36647811f4246"
+    },
+    {
+      "bytes": 353,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/01-serviceaccounts.yaml",
+      "sha256": "c2a84640a04808a0927e024ab670623b65bbbe1e6ca602c0de542e0780d67abd"
+    },
+    {
+      "bytes": 227,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/02-config.yaml",
+      "sha256": "b7470f87634374729d2ee94a0f111d0ca9ba4607bb99166a781bd257a273640e"
+    },
+    {
+      "bytes": 264,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/03-secret-template.yaml",
+      "sha256": "cf7d98b9e1fca595b7add87ee7328132de6e7e1e0c474661608229d2a47a911b"
+    },
+    {
+      "bytes": 570,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/04-storage-interface.yaml",
+      "sha256": "c56d84b56a4b240045ab2a074b83547eed68266ac26578b6cd2c752a7d0492a1"
+    },
+    {
+      "bytes": 2855,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/10-api-deployment.yaml",
+      "sha256": "c351e360e4fbc4c7268930d7ad89f52baf2dd6adf16c695a61220710e9f30f00"
+    },
+    {
+      "bytes": 2606,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/11-worker-deployment.yaml",
+      "sha256": "d877cc20e29307f94d95cf355833860ae092e760609f41dd9a5774f6d757cbc7"
+    },
+    {
+      "bytes": 398,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/12-api-service.yaml",
+      "sha256": "649553b016e9daebddcec23636d356e34bcfd0d47026c0f1c890baa1e72d5a77"
+    },
+    {
+      "bytes": 234,
+      "mode": "0o644",
+      "path": "capstone/manifests/base/13-api-pdb.yaml",
+      "sha256": "87d22b3061c66fcc90d0acc2a9df9f52a25e13d7cc39fb850d791802bbc97afc"
+    },
+    {
+      "bytes": 2470,
+      "mode": "0o644",
+      "path": "capstone/manifests/controller/00-crd.yaml",
+      "sha256": "7068cc1de68a6c5fe13a9ec733dbe87c932b2f5a8768480d40ce634dc36e96d7"
+    },
+    {
+      "bytes": 1052,
+      "mode": "0o644",
+      "path": "capstone/manifests/controller/01-rbac.yaml",
+      "sha256": "fbfe20a5e1bd4c6fa6f841b0140a93e9b3bb6542fc57e4838ac001b49c2e04ca"
+    },
+    {
+      "bytes": 1049,
+      "mode": "0o644",
+      "path": "capstone/manifests/controller/02-deployment.yaml",
+      "sha256": "ecbda68b12941f352f53694e27cbb6660d0da543ea7dcff486458c8b4550d43d"
+    },
+    {
+      "bytes": 428,
+      "mode": "0o644",
+      "path": "capstone/manifests/controller/10-sample.yaml",
+      "sha256": "2448d819ec6825ba4eb423c641a8432750c4c2d9292140a07158e23c5ba85937"
+    },
+    {
+      "bytes": 1159,
+      "mode": "0o644",
+      "path": "capstone/manifests/labs/cronjob.yaml",
+      "sha256": "8217db5cb5fc27794bf60cfab78055fe3bba4d08d36bf7bbc3874aecec45ac0d"
+    },
+    {
+      "bytes": 979,
+      "mode": "0o644",
+      "path": "capstone/manifests/labs/daemonset.yaml",
+      "sha256": "2cbcf981c9aec218240686c215b2499ae628a16b8e72d71b5a985af4ecf6cb34"
+    },
+    {
+      "bytes": 1075,
+      "mode": "0o644",
+      "path": "capstone/manifests/labs/job.yaml",
+      "sha256": "3c208ca2c0e948472e3b3651dcf7c52829f1dfa8239bfe968a9e025e5ae6cf27"
+    },
+    {
+      "bytes": 1349,
+      "mode": "0o644",
+      "path": "capstone/manifests/labs/statefulset-sentinel.yaml",
+      "sha256": "f38ae76769331e9f6fb241c77b1630fb3bbafb8ba84b67a3b07589cb8c11c032"
+    },
+    {
+      "bytes": 202,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-01-mutable-image/defect.json",
+      "sha256": "fdbfd1707856386a5020777835ce501744c1e9a27910647036de802a8c4829fd"
+    },
+    {
+      "bytes": 546,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-01-mutable-image/workload.yaml",
+      "sha256": "eff0c4268d6643809ef8701f8a2a7a429cb4455e5b2e10bf989dd4749abbe23f"
+    },
+    {
+      "bytes": 208,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-02-root-runtime/defect.json",
+      "sha256": "06b6dd641583cb6bc90c6565ba3c241eb8ef359d1068aa74f65d4211604a4c5a"
+    },
+    {
+      "bytes": 612,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-02-root-runtime/workload.yaml",
+      "sha256": "01bb783f03acb80bec504bd086bb2deea4502d3355446a946982318e31edc7f8"
+    },
+    {
+      "bytes": 212,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-03-selector-mismatch/defect.json",
+      "sha256": "41feea973c6be2a9f74c1a0542b7ad4a3a4e365df3965919188caff64bd2f054"
+    },
+    {
+      "bytes": 598,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-03-selector-mismatch/workload.yaml",
+      "sha256": "e91d13451cf34b8b0c1c86dea3d7379bc6d8aa973802683856a841cfbcbd8eee"
+    },
+    {
+      "bytes": 204,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-04-remote-liveness/defect.json",
+      "sha256": "23bc1c8b4bce62ca7977740727cc53832eb5581a0cf33cda571c406696526403"
+    },
+    {
+      "bytes": 722,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-04-remote-liveness/workload.yaml",
+      "sha256": "e90b84a493552772a2f3af9b38dada31c369a9599108e84771ee9d8b44aeef39"
+    },
+    {
+      "bytes": 211,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-05-impossible-topology/defect.json",
+      "sha256": "3fced69aa083cd32cf999d39cadd0974f54a7e80b13c05102b62313bdd2cc2c5"
+    },
+    {
+      "bytes": 587,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-05-impossible-topology/scheduler-case.json",
+      "sha256": "66dd422b6f78448803958897fb7fad3131c5f2bd5a5d5e3475e51c28f32de8d5"
+    },
+    {
+      "bytes": 220,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-06-emptydir-durable/defect.json",
+      "sha256": "1edc75044cfd8d6d16c6ee45bfe2e388f7a30578a8ec8fe24ba9984bbd1f11e0"
+    },
+    {
+      "bytes": 768,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-06-emptydir-durable/workload.yaml",
+      "sha256": "b65da45a191a25a84f668c6a55db4c1835967793d5f80671263b2a44239ad07f"
+    },
+    {
+      "bytes": 180,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-07-force-owned-replicas/apply-case.json",
+      "sha256": "627990b7a896b6f50df071a990364b6b116d85e8b1d34805ca98a7ea763b587f"
+    },
+    {
+      "bytes": 215,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-07-force-owned-replicas/defect.json",
+      "sha256": "2e516f20f7d216fc38c079ed8211c9b7b166ed68f9a563ceb8a561b49b25c7c6"
+    },
+    {
+      "bytes": 138,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-08-finalizer-no-cleanup/controller-case.json",
+      "sha256": "73b8bbf90f5a7f21e1ed1423cc009b80241380546602d51485061429e08c1638"
+    },
+    {
+      "bytes": 221,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-08-finalizer-no-cleanup/defect.json",
+      "sha256": "75f8cae686cafa047446af21f66bb713d886701949cd310e675558f16daca837"
+    },
+    {
+      "bytes": 102,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-09-status-churn/controller-case.json",
+      "sha256": "65e42f32e42d5fe1560f6ff8e20e339b258eca743404a2cfddcaa979c30f6e94"
+    },
+    {
+      "bytes": 214,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-09-status-churn/defect.json",
+      "sha256": "56eea2327d2d3439e1dba3583725193cce658def3fca968b337caa337f84e692"
+    },
+    {
+      "bytes": 231,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-10-false-production-claim/defect.json",
+      "sha256": "20e5242333b83fae250dae4210a9d294602e6043c8a68df3a4f39d5cb9f8fad1"
+    },
+    {
+      "bytes": 101,
+      "mode": "0o644",
+      "path": "capstone/planted-defects/KUBE-10-false-production-claim/evidence.json",
+      "sha256": "93b2d9ae024bcc80bf13c47f1e3aeea7fa2304ae15ea9ba948433d2fc546f37b"
+    },
+    {
+      "bytes": 1436,
+      "mode": "0o644",
+      "path": "capstone/predecessor/MANIFEST.json",
+      "sha256": "0598ca8fb1edbbd2ba24e2cd2dff4541982881d10fffcb2358cf2ca6864ed03d"
+    },
+    {
+      "bytes": 292,
+      "mode": "0o644",
+      "path": "capstone/predecessor/README.md",
+      "sha256": "bf8115fee2948420477f0accfc32902bf8ab1d6624468676a5c324e4ed6c9c4a"
+    },
+    {
+      "bytes": 191,
+      "mode": "0o644",
+      "path": "capstone/predecessor/configuration-contract.json",
+      "sha256": "18e335886748be34b0e0cb3ecb4acd30539b4225ba7da57759e417978e103eaa"
+    },
+    {
+      "bytes": 1608,
+      "mode": "0o644",
+      "path": "capstone/predecessor/image-release.json",
+      "sha256": "64561ed733f160a049fe3127c0833cb2d2aff907fb3d584522568a866101e164"
+    },
+    {
+      "bytes": 555,
+      "mode": "0o644",
+      "path": "capstone/predecessor/known-risks.json",
+      "sha256": "40c0cdf0d1ec31b8a681066b185c54ef75813665d6713e16fe2f3eeb76382292"
+    },
+    {
+      "bytes": 267,
+      "mode": "0o644",
+      "path": "capstone/predecessor/resource-hypotheses.json",
+      "sha256": "79e00b98058986a442e838657d4058ead636273bce39fca26612c661f1a78616"
+    },
+    {
+      "bytes": 211,
+      "mode": "0o644",
+      "path": "capstone/predecessor/storage-contract.json",
+      "sha256": "4fc8ef6892aebac7b9eb3d1b33a95cfd3819e0b4f2ef675131bcaf1968617d04"
+    },
+    {
+      "bytes": 2034,
+      "mode": "0o644",
+      "path": "capstone/predecessor/supply-chain-contract.json",
+      "sha256": "8f8ce9240f217c967f9a77a8c0a60f71095ec2d3ab308dee03b6a21a20edcad5"
+    },
+    {
+      "bytes": 158,
+      "mode": "0o644",
+      "path": "capstone/predecessor/version-ledger.json",
+      "sha256": "b5e9f577c1aca69a4392e74d5cb487fd0b8e5b2ad2188249681cff6d7189d4d7"
+    },
+    {
+      "bytes": 710,
+      "mode": "0o644",
+      "path": "capstone/predecessor/workload-contract.json",
+      "sha256": "6d3716610ce7d116fb7bd056f6bce7036eb008ac755813094fc2671713c0d3ce"
+    },
+    {
+      "bytes": 346,
+      "mode": "0o644",
+      "path": "capstone/releases/accepted/release.json",
+      "sha256": "142fcd6156ad5c51cf24645f815fb4d8d6a62ba51bdc814c6897fb9b98042e76"
+    },
+    {
+      "bytes": 188,
+      "mode": "0o644",
+      "path": "capstone/releases/not-executed-managed-cluster/release.json",
+      "sha256": "4e4c6cbdb4b8ba6cfa905590d78646f71913692e77bc2a97805c1498cc9372aa"
+    },
+    {
+      "bytes": 145,
+      "mode": "0o644",
+      "path": "capstone/releases/rejected-mutable-image/release.json",
+      "sha256": "42f04b8db8a33ff52cf22edf8ab9d12576fdde417c5b679647512df66955053e"
+    },
+    {
+      "bytes": 144,
+      "mode": "0o644",
+      "path": "capstone/releases/rejected-ownership/release.json",
+      "sha256": "7326e7fbf19997ae022481cf200912eace5b8e65a14bb25396ded4dbb1b0fa7a"
+    },
+    {
+      "bytes": 142,
+      "mode": "0o644",
+      "path": "capstone/releases/rejected-storage-claim/release.json",
+      "sha256": "8d432dab4a9769d03084c7ac9314deb3164b01eb70806c45efb41c70d7c1d3ff"
+    },
+    {
+      "bytes": 179,
+      "mode": "0o644",
+      "path": "capstone/releases/review-required-kind/release.json",
+      "sha256": "2ef6b8dc28c100d266cfc87058e8f22d0497b99121e31e7d84f9933d97dd4e9e"
+    },
+    {
+      "bytes": 216,
+      "mode": "0o644",
+      "path": "capstone/reports/README.md",
+      "sha256": "6c0972b8e697f535078a7f53d8378a3a8618b169fb96470a094c31a22039f32b"
+    },
+    {
+      "bytes": 143,
+      "mode": "0o644",
+      "path": "capstone/tests/conftest.py",
+      "sha256": "4d68984b4cb33d0d39e91669aa00c8e25c2e175a1e79eec207e49fa63834b52a"
+    },
+    {
+      "bytes": 2706,
+      "mode": "0o644",
+      "path": "capstone/tests/test_api_store.py",
+      "sha256": "bc1a224686a28be7c538d13959ad2e340f349047e5c6db86ecaddeba2d04615f"
+    },
+    {
+      "bytes": 3576,
+      "mode": "0o644",
+      "path": "capstone/tests/test_controllers.py",
+      "sha256": "6c9d491fb6ebcb2f1134c229b7018d43c20b53fc03b613ea16c43885dc5c9c90"
+    },
+    {
+      "bytes": 2326,
+      "mode": "0o644",
+      "path": "capstone/tests/test_jobs_projection_stateful.py",
+      "sha256": "d58680a679d667992962870771195a4b1ad9be2ef039d5b84158eb230fa4c2a4"
+    },
+    {
+      "bytes": 1006,
+      "mode": "0o644",
+      "path": "capstone/tests/test_lifecycle_disruption.py",
+      "sha256": "ebd859ec566c81afe8449815cc77a2786a15a78dcebb655cd1168ac017e0a797"
+    },
+    {
+      "bytes": 3939,
+      "mode": "0o644",
+      "path": "capstone/tests/test_manifest_contracts.py",
+      "sha256": "3cd613e8257f9771b51b1dd8974ca31210d6cc97df89d2ec090ac5d003924c15"
+    },
+    {
+      "bytes": 933,
+      "mode": "0o644",
+      "path": "capstone/tests/test_rollout.py",
+      "sha256": "9c8222e2d21ba9816c4404ba136d8ef01db057116f003f760ed5bd6a767c9d81"
+    },
+    {
+      "bytes": 1522,
+      "mode": "0o644",
+      "path": "capstone/tests/test_scheduler.py",
+      "sha256": "ae4fc71a5b0ca0d19e88e4adde8392aafd161a92f94858174444cfd1c87a14e0"
+    },
+    {
+      "bytes": 1506,
+      "mode": "0o644",
+      "path": "capstone/tests/test_validation_handoff.py",
+      "sha256": "b6aff60b6678ad009f864a2bbb32179d2452a6abf148875ccd821c052efce274"
+    },
+    {
+      "bytes": 1281,
+      "mode": "0o644",
+      "path": "course-book/assessment/final-defense.md",
+      "sha256": "7c6c0d66cf73af73d90a6dc911b70bfedfe8aac13749c3a6884681ae7389a296"
+    },
+    {
+      "bytes": 589,
+      "mode": "0o644",
+      "path": "course-book/assessment/rubric.md",
+      "sha256": "fb57cb034cfdb67975da4e5aabc9ace81659a2c77b2d9e011ea86d3c7aeade29"
+    },
+    {
+      "bytes": 795,
+      "mode": "0o644",
+      "path": "course-book/capstone/architecture.md",
+      "sha256": "bfc2e32fde5731f36b1c2c0257e587c0331fdc739bad94125a92f0115a95a500"
+    },
+    {
+      "bytes": 890,
+      "mode": "0o644",
+      "path": "course-book/capstone/proof-map.md",
+      "sha256": "375ade4c2f59c4376d7425b3a0c2b3d36f35c26e50de2a32dc36d25b1861a9d5"
+    },
+    {
+      "bytes": 728,
+      "mode": "0o644",
+      "path": "course-book/capstone/walkthrough.md",
+      "sha256": "ed534a6ae0984afffb63f7832249b6484c6e585241e65ff7097d12df7193fc87"
+    },
+    {
+      "bytes": 4502,
+      "mode": "0o644",
+      "path": "course-book/capstone.md",
+      "sha256": "b175be64262cc81fd053e04c40bd36c5609b558071f9fc8e2a6c27d096b4834e"
+    },
+    {
+      "bytes": 1579,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-01-the-successful-apply.md",
+      "sha256": "c2dcdb968e6d1fc9f2a0329fb8f2b97adf438761f104f0912719cad2cbc62734"
+    },
+    {
+      "bytes": 1522,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-02-the-controller-fight.md",
+      "sha256": "df499686be89d3265aecdef9c9c48bf15665602b951c2abcf15ca5e42d7f863a"
+    },
+    {
+      "bytes": 1426,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-03-the-probe-storm.md",
+      "sha256": "e9f7ac10a692aee9483451baa0a7ae98eede0417448ea054d51f7005d65d683f"
+    },
+    {
+      "bytes": 1364,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-04-the-impossible-rollout.md",
+      "sha256": "3953e8075d40d1f30855335d215fc716b78bed24b074147c8ab818b85c25185e"
+    },
+    {
+      "bytes": 1371,
+      "mode": "0o644",
+      "path": "course-book/casebook/case-05-the-helpful-operator.md",
+      "sha256": "9f584d0bacd1cc1f7eab2f8142186b1c93bb8f1fb722ea0a09c63be817b48d97"
+    },
+    {
+      "bytes": 3580,
+      "mode": "0o644",
+      "path": "course-book/evidence-model.md",
+      "sha256": "bc56fe63a32dadff5edaf5249c31ede94845548bb8b92b17f9f528968115616b"
+    },
+    {
+      "bytes": 4988,
+      "mode": "0o644",
+      "path": "course-book/glossary.md",
+      "sha256": "71868f75db32bd5350ba0ad14a01c0e7fb624b66664443d6600cbc190e0f82f6"
+    },
+    {
+      "bytes": 1845,
+      "mode": "0o644",
+      "path": "course-book/guides/debugging-by-controller-ownership.md",
+      "sha256": "0c137b01a721898e9d4ac55f6e37e2b96560852bc5213352bed3e76d107ca81b"
+    },
+    {
+      "bytes": 973,
+      "mode": "0o644",
+      "path": "course-book/guides/evidence-capture.md",
+      "sha256": "157dc6f77a6418a55c19ff30910ab5e219aa3a9e477b5829822c4429afeb89a1"
+    },
+    {
+      "bytes": 2061,
+      "mode": "0o644",
+      "path": "course-book/guides/how-to-read-a-kubernetes-object.md",
+      "sha256": "5dc575152f03fdd4ec334feface0d8b5a5d28e84fe3cac2f49c20e8c5ece0b2b"
+    },
+    {
+      "bytes": 1504,
+      "mode": "0o644",
+      "path": "course-book/guides/local-cluster-lane.md",
+      "sha256": "38fd82207c8c0b561c192d9b2824ddb27ab4a829a45ec5b38e87e3406d97c4e3"
+    },
+    {
+      "bytes": 4728,
+      "mode": "0o644",
+      "path": "course-book/index.md",
+      "sha256": "f548dab449e0cb525c8677781cb37e1216a7076d44062b5e749481235e71bba8"
+    },
+    {
+      "bytes": 562,
+      "mode": "0o644",
+      "path": "course-book/instructor/facilitation-guide.md",
+      "sha256": "303763ec73672a55a0ed42a5668614c32decae24ddd5e409d6f5f1e58550445b"
+    },
+    {
+      "bytes": 744,
+      "mode": "0o644",
+      "path": "course-book/instructor/planted-defect-map.md",
+      "sha256": "ed4fedd6a4da03fd63d73f4a3e278c2685a93ffff9f81ff6c5cb2c19c66162e9"
+    },
+    {
+      "bytes": 2231,
+      "mode": "0o644",
+      "path": "course-book/language-strategy.md",
+      "sha256": "096fffb1d4d8c369c602d4ba3e19882442bed5b58397658f9b5e2c13904b5ae9"
+    },
+    {
+      "bytes": 452,
+      "mode": "0o644",
+      "path": "course-book/module-00-orientation/checkpoint.md",
+      "sha256": "aaf1875c5628962dcb2750b8dffe347e906ebbb3898bbcd34b8d53498a3112cc"
+    },
+    {
+      "bytes": 4021,
+      "mode": "0o644",
+      "path": "course-book/module-00-orientation/index.md",
+      "sha256": "a4e11c6c72aeabeedf574e4e2e60dc9ec3205aa19ec9ef7822d8e336fc04807b"
+    },
+    {
+      "bytes": 1241,
+      "mode": "0o644",
+      "path": "course-book/module-00-orientation/lab.md",
+      "sha256": "f37132f5b0f016786eee1802fb30b6f54fe0ec9b899bf3d411bf0d5aa003b4a6"
+    },
+    {
+      "bytes": 545,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-as-an-api-driven-control-system/checkpoint.md",
+      "sha256": "905909e745ce1a7f0be678569ba822553259461d68ac26bfed8e7aa978c3e4f6"
+    },
+    {
+      "bytes": 5905,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-as-an-api-driven-control-system/exercise-answers.md",
+      "sha256": "5caa57eb77a897d13627e99d895c561d19ff17a76851f4a1dd6639cd4d22a5fe"
+    },
+    {
+      "bytes": 1149,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-as-an-api-driven-control-system/exercises.md",
+      "sha256": "f51dedc862c6f3b007925cf843b27344f6d8db80318c19b8953a51af145793d2"
+    },
+    {
+      "bytes": 14136,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-as-an-api-driven-control-system/index.md",
+      "sha256": "4d46b2b1d849b8d07fecb3117edd9bedd4a70bf3fca7aa5c02b19dcfd5c8ce29"
+    },
+    {
+      "bytes": 1647,
+      "mode": "0o644",
+      "path": "course-book/module-01-kubernetes-as-an-api-driven-control-system/lab.md",
+      "sha256": "de883fb4a16738623d9ac0c6dcbea4c4cc09eeebf8466f8550cdfaf0e49fda57"
+    },
+    {
+      "bytes": 483,
+      "mode": "0o644",
+      "path": "course-book/module-02-api-objects-change-semantics-and-ownership/checkpoint.md",
+      "sha256": "ca5b872e242869461d6df18b4ea0294d45533b532e0617fda61c1bfba4f162bf"
+    },
+    {
+      "bytes": 4882,
+      "mode": "0o644",
+      "path": "course-book/module-02-api-objects-change-semantics-and-ownership/exercise-answers.md",
+      "sha256": "0dc6902b3a88e8ee6ee4f54daf8cc3f7582699323b0ff5ebf133907a35f464be"
+    },
+    {
+      "bytes": 1067,
+      "mode": "0o644",
+      "path": "course-book/module-02-api-objects-change-semantics-and-ownership/exercises.md",
+      "sha256": "b53245bcd4215b8e4558f80c32430f29ebb47e5040dacb06929c440b6c8f633f"
+    },
+    {
+      "bytes": 14191,
+      "mode": "0o644",
+      "path": "course-book/module-02-api-objects-change-semantics-and-ownership/index.md",
+      "sha256": "4c271fd2626d4334ec3d20d33ea4707a284f4c8403afd45ff7ef8b83a11bbc55"
+    },
+    {
+      "bytes": 1731,
+      "mode": "0o644",
+      "path": "course-book/module-02-api-objects-change-semantics-and-ownership/lab.md",
+      "sha256": "d409238f70a173e4c8a97e27ca2c5a310123c64eacb6e477b5fdff0bd9fccca8"
+    },
+    {
+      "bytes": 555,
+      "mode": "0o644",
+      "path": "course-book/module-03-pods-container-composition-and-lifecycle/checkpoint.md",
+      "sha256": "f6fb701671184bd7e685b456ce4960d1b89c81034689bb3b6eb7b3e808b994f9"
+    },
+    {
+      "bytes": 4661,
+      "mode": "0o644",
+      "path": "course-book/module-03-pods-container-composition-and-lifecycle/exercise-answers.md",
+      "sha256": "2cb79a2a1bbc4f40e8223b958ad95c83343db64f8d4d74f0dcca3a21a3edca07"
+    },
+    {
+      "bytes": 1034,
+      "mode": "0o644",
+      "path": "course-book/module-03-pods-container-composition-and-lifecycle/exercises.md",
+      "sha256": "cb9ab190e83fc73cecf0b64e0ace8bf4913763bef5ae33fdf66e39fd741e215a"
+    },
+    {
+      "bytes": 13704,
+      "mode": "0o644",
+      "path": "course-book/module-03-pods-container-composition-and-lifecycle/index.md",
+      "sha256": "5849b061c3e8ddccb199884f242b284ad38ec4f9aaedcc67228be7d05bf67927"
+    },
+    {
+      "bytes": 1628,
+      "mode": "0o644",
+      "path": "course-book/module-03-pods-container-composition-and-lifecycle/lab.md",
+      "sha256": "53838ceabe70217bb8b2dc866662622baa03d15d06054228d633320ceff38405"
+    },
+    {
+      "bytes": 520,
+      "mode": "0o644",
+      "path": "course-book/module-04-deployments-replicasets-and-rollout-mathematics/checkpoint.md",
+      "sha256": "e27fa0ef241bbf2b34927f4fef56e0c1f797d6004b5e5ef3fcf968a1c5f466cc"
+    },
+    {
+      "bytes": 4475,
+      "mode": "0o644",
+      "path": "course-book/module-04-deployments-replicasets-and-rollout-mathematics/exercise-answers.md",
+      "sha256": "ee4fd31008cf39684ce50485491c830570226fc5b36e937122ef4765f425a5a7"
+    },
+    {
+      "bytes": 978,
+      "mode": "0o644",
+      "path": "course-book/module-04-deployments-replicasets-and-rollout-mathematics/exercises.md",
+      "sha256": "5aa085f4e329a5df4da06c8cd94f991b8699318861c355f2e97385d25696c670"
+    },
+    {
+      "bytes": 12042,
+      "mode": "0o644",
+      "path": "course-book/module-04-deployments-replicasets-and-rollout-mathematics/index.md",
+      "sha256": "726ca2003838c36cb682effcb1547b76909b13302458d818eacfbef75c76ba67"
+    },
+    {
+      "bytes": 1625,
+      "mode": "0o644",
+      "path": "course-book/module-04-deployments-replicasets-and-rollout-mathematics/lab.md",
+      "sha256": "40ca58447a25ab97b7d33ae129db68bf2154739058aaf24f39b506d4ea15b805"
+    },
+    {
+      "bytes": 488,
+      "mode": "0o644",
+      "path": "course-book/module-05-jobs-cronjobs-daemonsets-and-controller-choice/checkpoint.md",
+      "sha256": "11774747f7f77bd92d62f7a808c2ddbeb6a9ef1a03e1d67e51b3ae6388b7d3da"
+    },
+    {
+      "bytes": 4360,
+      "mode": "0o644",
+      "path": "course-book/module-05-jobs-cronjobs-daemonsets-and-controller-choice/exercise-answers.md",
+      "sha256": "41262b3dc196f758b86234118505ec6ed9161510bfbabcdaf892e7a2bb495374"
+    },
+    {
+      "bytes": 1003,
+      "mode": "0o644",
+      "path": "course-book/module-05-jobs-cronjobs-daemonsets-and-controller-choice/exercises.md",
+      "sha256": "f7d284e8eacc484ab753247977556bfc64be942c4bc4aa45c3ef2844fcb2f211"
+    },
+    {
+      "bytes": 11686,
+      "mode": "0o644",
+      "path": "course-book/module-05-jobs-cronjobs-daemonsets-and-controller-choice/index.md",
+      "sha256": "d1e417e5be7700cff8d15b01323062229969c30a00d426d93eb517b8ab375d97"
+    },
+    {
+      "bytes": 1522,
+      "mode": "0o644",
+      "path": "course-book/module-05-jobs-cronjobs-daemonsets-and-controller-choice/lab.md",
+      "sha256": "315fbd2c7115bdb75f4486d2929ab66abc64148584dbd4f70df5532ee676a522"
+    },
+    {
+      "bytes": 488,
+      "mode": "0o644",
+      "path": "course-book/module-06-configuration-secrets-and-workload-identity-projection/checkpoint.md",
+      "sha256": "2e2787656c11ad82296288cf4470b9eee97e30e5e6929ddbcfe4704453a7187d"
+    },
+    {
+      "bytes": 4279,
+      "mode": "0o644",
+      "path": "course-book/module-06-configuration-secrets-and-workload-identity-projection/exercise-answers.md",
+      "sha256": "44dd96138c9af5b719dd642b7a79fbb19a81ddbc072b6f9bbf8fa1783c5263cc"
+    },
+    {
+      "bytes": 1048,
+      "mode": "0o644",
+      "path": "course-book/module-06-configuration-secrets-and-workload-identity-projection/exercises.md",
+      "sha256": "7bd093e74d54be117cdcaa927a0617975f8c822a854b07792d9cddbf7f78b673"
+    },
+    {
+      "bytes": 13746,
+      "mode": "0o644",
+      "path": "course-book/module-06-configuration-secrets-and-workload-identity-projection/index.md",
+      "sha256": "5db4036589e0a28f488666a896d6e1a1cabe36266d1227d9994cb52fdc1b8acc"
+    },
+    {
+      "bytes": 1683,
+      "mode": "0o644",
+      "path": "course-book/module-06-configuration-secrets-and-workload-identity-projection/lab.md",
+      "sha256": "ba6a00ca87817a117fe0b13da05fb12c4cec72a65249d2115f04eb1616fb6c70"
+    },
+    {
+      "bytes": 511,
+      "mode": "0o644",
+      "path": "course-book/module-07-resources-qos-scheduling-and-topology/checkpoint.md",
+      "sha256": "d4009477ce5e4fd8b28cad34213e947fd728f1e49abdd4784dd891d477bd817e"
+    },
+    {
+      "bytes": 4176,
+      "mode": "0o644",
+      "path": "course-book/module-07-resources-qos-scheduling-and-topology/exercise-answers.md",
+      "sha256": "69879a350c74e934f5c804d8170c081fb52edfb974e296bd02c3d035766084c4"
+    },
+    {
+      "bytes": 919,
+      "mode": "0o644",
+      "path": "course-book/module-07-resources-qos-scheduling-and-topology/exercises.md",
+      "sha256": "6df253fee2fbe0538c222dc7305cf684a70e9f2ce0d1a2e9220a5e7556c4883d"
+    },
+    {
+      "bytes": 12627,
+      "mode": "0o644",
+      "path": "course-book/module-07-resources-qos-scheduling-and-topology/index.md",
+      "sha256": "22ce9d0c0788e8ae685536367e9c6e66c4d1c43f642f235a57d22d144bfb0f66"
+    },
+    {
+      "bytes": 1569,
+      "mode": "0o644",
+      "path": "course-book/module-07-resources-qos-scheduling-and-topology/lab.md",
+      "sha256": "f38cf5fbdb62e9f7903c54b561790392944b41802dd89f64ba5d24b1d0827929"
+    },
+    {
+      "bytes": 505,
+      "mode": "0o644",
+      "path": "course-book/module-08-health-lifecycle-disruption-and-availability/checkpoint.md",
+      "sha256": "8156311383549a2d4f41c7a0a1d3cec31c74e97b02f53dec885343ced9a078e1"
+    },
+    {
+      "bytes": 3996,
+      "mode": "0o644",
+      "path": "course-book/module-08-health-lifecycle-disruption-and-availability/exercise-answers.md",
+      "sha256": "98a4494a91f3ba48bb4fe344bf819f43ed717ab89378f5c16356df611bbab603"
+    },
+    {
+      "bytes": 904,
+      "mode": "0o644",
+      "path": "course-book/module-08-health-lifecycle-disruption-and-availability/exercises.md",
+      "sha256": "f2b9b842ba404258b4394959630a1f2030c3066457495e7c7355b80a8261f232"
+    },
+    {
+      "bytes": 12720,
+      "mode": "0o644",
+      "path": "course-book/module-08-health-lifecycle-disruption-and-availability/index.md",
+      "sha256": "29936d9554cc47e803b6d2108d4c1d857482dc165c726d5c0666958fa1452c1b"
+    },
+    {
+      "bytes": 1682,
+      "mode": "0o644",
+      "path": "course-book/module-08-health-lifecycle-disruption-and-availability/lab.md",
+      "sha256": "064318559984fa4715e3526a4a1ff2e8c02b5af943a4a9fd1d5a5879813d2a5e"
+    },
+    {
+      "bytes": 533,
+      "mode": "0o644",
+      "path": "course-book/module-09-statefulsets-stable-identity-and-controller-fit/checkpoint.md",
+      "sha256": "274d3c021a52bed9f3442bfbd2be15c6b80e929515b7fbe6ca04ab94f99e25bf"
+    },
+    {
+      "bytes": 3864,
+      "mode": "0o644",
+      "path": "course-book/module-09-statefulsets-stable-identity-and-controller-fit/exercise-answers.md",
+      "sha256": "2d2d3356d157f46b00236d7306abe24d9316c48ac9e1517c16509810d1aff09f"
+    },
+    {
+      "bytes": 892,
+      "mode": "0o644",
+      "path": "course-book/module-09-statefulsets-stable-identity-and-controller-fit/exercises.md",
+      "sha256": "5878150cb06a9bd752c0f195cd6151fd1fb306f5d1aaf5c46b34160af95d4504"
+    },
+    {
+      "bytes": 11148,
+      "mode": "0o644",
+      "path": "course-book/module-09-statefulsets-stable-identity-and-controller-fit/index.md",
+      "sha256": "b8bfbba8ccf9f128270a3af2ceb2aa652ff8295293f35548ac48c4b29e08b9b7"
+    },
+    {
+      "bytes": 1422,
+      "mode": "0o644",
+      "path": "course-book/module-09-statefulsets-stable-identity-and-controller-fit/lab.md",
+      "sha256": "965f82dcc745f9d74f14cf1c29421d3aa0abd505f72836a07c4c2a3b3b31c717"
+    },
+    {
+      "bytes": 746,
+      "mode": "0o644",
+      "path": "course-book/module-10-custom-resources-controllers-and-workload-release/checkpoint.md",
+      "sha256": "b9feb7a67bd8a5d3e802df9cf69e5dee8b7a6d688f1e9219ea847ef02d8c73d5"
+    },
+    {
+      "bytes": 3986,
+      "mode": "0o644",
+      "path": "course-book/module-10-custom-resources-controllers-and-workload-release/exercise-answers.md",
+      "sha256": "f032de60cd3c4f05ab0aff771585e5ce5cf0e4953813838eece6b87a92afc469"
+    },
+    {
+      "bytes": 948,
+      "mode": "0o644",
+      "path": "course-book/module-10-custom-resources-controllers-and-workload-release/exercises.md",
+      "sha256": "7a2d5e2177c653aacce3a9e524c84228dbbb0ddf54039b34494b2de7eaff656e"
+    },
+    {
+      "bytes": 14409,
+      "mode": "0o644",
+      "path": "course-book/module-10-custom-resources-controllers-and-workload-release/index.md",
+      "sha256": "1078938c6788a1108a3ccb250a9374e24e44a3e093b2892aca92d5f420cbcc07"
+    },
+    {
+      "bytes": 1850,
+      "mode": "0o644",
+      "path": "course-book/module-10-custom-resources-controllers-and-workload-release/lab.md",
+      "sha256": "0b4c33187d881bafa288d0f92e0260b93928f0f564300a60a2b60aeeab7ec5f9"
+    },
+    {
+      "bytes": 2190,
+      "mode": "0o644",
+      "path": "course-book/reference/api-concurrency-watches-and-consistency.md",
+      "sha256": "18833138f91e2aa8ffe22363eae5bc2538bf292bd5832e1f8f0a1f8acb30e24b"
+    },
+    {
+      "bytes": 932,
+      "mode": "0o644",
+      "path": "course-book/reference/cluster-version-and-api-lifecycle.md",
+      "sha256": "cde7554156648ae787ce164ac3875948a1f9b9813c937167f4a39e6c60ed7932"
+    },
+    {
+      "bytes": 1424,
+      "mode": "0o644",
+      "path": "course-book/reference/component-ownership-matrix.md",
+      "sha256": "e2c660f78f1a4bbe44c4f0feb374ae145a72a2c986be6bb137c89218ed248e74"
+    },
+    {
+      "bytes": 554,
+      "mode": "0o644",
+      "path": "course-book/reference/conditions-and-events.md",
+      "sha256": "3a30699e1344fad430fb003c1645df37c5547acf762ed2c1812f47f8dacc4bb2"
+    },
+    {
+      "bytes": 1384,
+      "mode": "0o644",
+      "path": "course-book/reference/configuration-change-semantics.md",
+      "sha256": "05b8bf223b969b688986130b1111e006be28fdbaac05a10ea67a08526f54212c"
+    },
+    {
+      "bytes": 565,
+      "mode": "0o644",
+      "path": "course-book/reference/controller-choice.md",
+      "sha256": "21fa9041600cffaedc3a092826efa803804375c1c28cd6660d1924c1cb3c8427"
+    },
+    {
+      "bytes": 1673,
+      "mode": "0o644",
+      "path": "course-book/reference/controller-status-and-condition-design.md",
+      "sha256": "00017fc430cf29f73fbda8d19ea2c1950b15b136d3d8a16a42ca26baa7c77c33"
+    },
+    {
+      "bytes": 1285,
+      "mode": "0o644",
+      "path": "course-book/reference/custom-resource-evolution.md",
+      "sha256": "7217919becaf9ba00a76a1ffb9386c93095f19439284b3cbe8018a5e0e9d1665"
+    },
+    {
+      "bytes": 736,
+      "mode": "0o644",
+      "path": "course-book/reference/deferred-responsibilities.md",
+      "sha256": "58ede86b228fc109b657f15a171ac28d84d1f16b49e32ea6fa21a84b984dc8c6"
+    },
+    {
+      "bytes": 898,
+      "mode": "0o644",
+      "path": "course-book/reference/disruption-and-availability-populations.md",
+      "sha256": "710f49eaf65b0fc38767f4abfff083a508e7472547572ff5911dc0e6f476fa61"
+    },
+    {
+      "bytes": 764,
+      "mode": "0o644",
+      "path": "course-book/reference/incident-evidence-template.md",
+      "sha256": "89ad3437110803496821d485ffc0e35923f1f6bcd654dc10768007728ad89869"
+    },
+    {
+      "bytes": 958,
+      "mode": "0o644",
+      "path": "course-book/reference/job-effect-identity.md",
+      "sha256": "06c0dd3ea2384015d68f1dd51d0c988f1b1c63bb5f0c93cc32e8ffec3c85bcfe"
+    },
+    {
+      "bytes": 652,
+      "mode": "0o644",
+      "path": "course-book/reference/kubectl-reading-map.md",
+      "sha256": "dc12e7ec95259434f3932e50edb6fd9d7cc1f31e455116b8a21479dc5086e390"
+    },
+    {
+      "bytes": 2003,
+      "mode": "0o644",
+      "path": "course-book/reference/labels-selectors-and-object-graphs.md",
+      "sha256": "17348f17ec32b695f55ca0482d275ab697e50cd68ce8ca08500a6a529ee4981e"
+    },
+    {
+      "bytes": 1019,
+      "mode": "0o644",
+      "path": "course-book/reference/manifest-review-checklist.md",
+      "sha256": "99e83a282c50c13aa553e83ace52b13aaa086248f9e7b51a74fbe5523bd954d8"
+    },
+    {
+      "bytes": 1661,
+      "mode": "0o644",
+      "path": "course-book/reference/pod-lifecycle-and-restart-evidence.md",
+      "sha256": "49a8238d4bd90bd58f04a43d5e9cc861b239bf11731af8f5694ac5d9b6732b61"
+    },
+    {
+      "bytes": 720,
+      "mode": "0o644",
+      "path": "course-book/reference/probe-decision-table.md",
+      "sha256": "56dbea4e90729ce8e083a6f36afd4515f7795789c655497d5b8c1057c4e6d7bd"
+    },
+    {
+      "bytes": 906,
+      "mode": "0o644",
+      "path": "course-book/reference/resource-units-and-qos.md",
+      "sha256": "4c9b6bb85518ada46bff882553736d15c4871b05bd1ef051f7779a9e6249fd89"
+    },
+    {
+      "bytes": 685,
+      "mode": "0o644",
+      "path": "course-book/reference/rollout-math.md",
+      "sha256": "d823dbde85c0a9484faeba3c7307f7b3cc4c78a93aeaafd56fb95c1ad7e6a0e3"
+    },
+    {
+      "bytes": 1001,
+      "mode": "0o644",
+      "path": "course-book/reference/scheduling-evidence-and-repair.md",
+      "sha256": "3403a5327b21af59d2ac1a66ac658f6cd364481438b44bd19933acbabd652355"
+    },
+    {
+      "bytes": 2954,
+      "mode": "0o644",
+      "path": "course-book/standards.md",
+      "sha256": "c1ffa7ee9e26b6796a98bc6a17b14203730ae4037da2774bdaacccd38141d22c"
+    },
+    {
+      "bytes": 4626,
+      "mode": "0o644",
+      "path": "course-book/start-here.md",
+      "sha256": "f8d6c8209b2c454f0798f82c5655308c394bd687625a3e37a9171ff250ba7b9d"
+    },
+    {
+      "bytes": 2867,
+      "mode": "0o644",
+      "path": "course-book/study-plan.md",
+      "sha256": "dcf164393720d974a205382ae18496ae8b3b9d51a4307217bca4a7cec0795185"
+    },
+    {
+      "bytes": 2368,
+      "mode": "0o644",
+      "path": "course.json",
+      "sha256": "7e60de7ed53e08d0addb52a4e2a033525b4fe9c59bc4365cac661e06ae89487c"
+    },
+    {
+      "bytes": 515,
+      "mode": "0o644",
+      "path": "instructor/lab-reset.md",
+      "sha256": "ab65169577941bd3a2f61fbc5cf83c352cb0f37003e3c3ba0a786fbb5ea0a5e2"
+    },
+    {
+      "bytes": 336,
+      "mode": "0o644",
+      "path": "instructor/planted-defects.json",
+      "sha256": "23913ab5f677313b424b3d9d02b358e8736351e74e6753172390e4dd71359db6"
+    },
+    {
+      "bytes": 538,
+      "mode": "0o644",
+      "path": "instructor/review-questions.md",
+      "sha256": "f955c6ef13208233ac70aea92f2a9f28923f2f583f7af1aab3490f2ffbb0c19a"
+    },
+    {
+      "bytes": 8291,
+      "mode": "0o644",
+      "path": "mkdocs.yml",
+      "sha256": "08755524c23c3f20d218c656dfbf51055d44ec631fd42f6148e3e41f95951486"
+    },
+    {
+      "bytes": 248,
+      "mode": "0o644",
+      "path": "reports/README.md",
+      "sha256": "9cd8fed639b3a3c6d51ac1b455e1681325ab88510b2742cff469e8482093feee"
+    },
+    {
+      "bytes": 38,
+      "mode": "0o644",
+      "path": "requirements-docs.txt",
+      "sha256": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f"
+    },
+    {
+      "bytes": 47,
+      "mode": "0o644",
+      "path": "requirements.txt",
+      "sha256": "a4866424ba8e3f305b1c3cb4bc82284baf3f4891745126dcdbddb292b3b32dd5"
+    },
+    {
+      "bytes": 3589,
+      "mode": "0o755",
+      "path": "scripts/capstone_tour.py",
+      "sha256": "022023422e7a3d99311718380d8e02769ea19f60c8a72d011b6f9d426ba61e49"
+    },
+    {
+      "bytes": 627,
+      "mode": "0o755",
+      "path": "scripts/check_links.py",
+      "sha256": "82181685dc196f988129280e1d23716536a6456aaaffe40e492ed942e4e5db3c"
+    },
+    {
+      "bytes": 533,
+      "mode": "0o755",
+      "path": "scripts/clean.py",
+      "sha256": "62ca1509c8a2b546e37a2fb76cc39bf7be7eb061fe43f63b2b9e4ba4c06f0eee"
+    },
+    {
+      "bytes": 995,
+      "mode": "0o644",
+      "path": "scripts/common.py",
+      "sha256": "afbe30f845d25d1a92632cbd784d4f80fc520b56e0e833207ca9a7b300d860db"
+    },
+    {
+      "bytes": 861,
+      "mode": "0o755",
+      "path": "scripts/core_proof.py",
+      "sha256": "5e124d8db094cf32f5dfb001a32e681f6e71160292b3d55dfa79c32e7dabe443"
+    },
+    {
+      "bytes": 532,
+      "mode": "0o755",
+      "path": "scripts/doctor.py",
+      "sha256": "32da986e8a528462a4c13014d4a917221ab4222999d64ae272049493030cf597"
+    },
+    {
+      "bytes": 1170,
+      "mode": "0o755",
+      "path": "scripts/kind_proof.sh",
+      "sha256": "a308ff6c91e18c341313d4372049e0326402b58b6cb03e75ff2649535f6e05f6"
+    },
+    {
+      "bytes": 1104,
+      "mode": "0o755",
+      "path": "scripts/manifest.py",
+      "sha256": "68e9527144a9d73becef2b1cef1743f47dd177b2eb87db28c89ef9055834a3e1"
+    },
+    {
+      "bytes": 1198,
+      "mode": "0o755",
+      "path": "scripts/manifest_proof.py",
+      "sha256": "429344f41a84723fe2e44d1aaa7317b95476243c057c35d51adcef4cd5598255"
+    },
+    {
+      "bytes": 2503,
+      "mode": "0o755",
+      "path": "scripts/verify_defects.py",
+      "sha256": "d69954e5612c356e0557955c436c016b353e0bed492b5393d2d9695d66eec826"
+    },
+    {
+      "bytes": 1428,
+      "mode": "0o755",
+      "path": "scripts/verify_documents.py",
+      "sha256": "a2b133f5c1d7d6b1c33af48901792fa7b92d1bf829b161ac0336c35a67992f34"
+    },
+    {
+      "bytes": 1611,
+      "mode": "0o755",
+      "path": "scripts/verify_educational_quality.py",
+      "sha256": "40fae9787cc2e32b34e4b12e926bc268442b5ebb87d9ea80add989ec65400eb6"
+    },
+    {
+      "bytes": 486,
+      "mode": "0o755",
+      "path": "scripts/verify_handoff.py",
+      "sha256": "40f85eadb9f583f1f555cab655de7016239e721635e3908425a4b6d86899d282"
+    },
+    {
+      "bytes": 376,
+      "mode": "0o755",
+      "path": "scripts/verify_manifests.py",
+      "sha256": "251837a78b424885fce4e6d66067834200872a1e9aa21b748db9607ad721588a"
+    },
+    {
+      "bytes": 670,
+      "mode": "0o755",
+      "path": "scripts/verify_nav.py",
+      "sha256": "24bade30037053659a48d7f0b13757aca2d871e9d42e876c5ca4f8a2b2b73cb8"
+    },
+    {
+      "bytes": 502,
+      "mode": "0o755",
+      "path": "scripts/verify_predecessor.py",
+      "sha256": "203f80df846e890923203fa3a5b562ac5749c9dc1b8bdb0340d9ca1f5bedefda"
+    },
+    {
+      "bytes": 552,
+      "mode": "0o755",
+      "path": "scripts/verify_releases.py",
+      "sha256": "7b0d2f9da0abfc554683412a8038bd6ce4754f0a7bfa44592b56b8d160caa151"
+    },
+    {
+      "bytes": 1762,
+      "mode": "0o755",
+      "path": "scripts/verify_structure.py",
+      "sha256": "4b951e9df2485d8982331d2a75b1a522b27a80342366a9b55674f6975cd3f029"
+    },
+    {
+      "bytes": 528,
+      "mode": "0o644",
+      "path": "standards-profile.json",
+      "sha256": "eff0ab7cf94b90901f9ebeab20d991e78096b8d97ed1a5859f2cff6d3cb2b2fd"
+    },
+    {
+      "bytes": 604,
+      "mode": "0o644",
+      "path": "tool-versions.json",
+      "sha256": "208630ca790bce54edde99e63e772742307a50ac585020a0d5efa174fccddc3c"
+    }
+  ],
+  "schemaVersion": "1.0"
+}

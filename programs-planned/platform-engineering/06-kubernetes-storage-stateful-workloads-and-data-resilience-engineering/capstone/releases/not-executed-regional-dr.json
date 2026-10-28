@@ -1,0 +1,11 @@
+{
+  "candidate": "regional-dr",
+  "evidence": {
+    "migration_compatibility": "pass",
+    "predecessor": "pass",
+    "regional_dr": "not-executed",
+    "restore_drill": "pass",
+    "single_writer": "pass"
+  },
+  "expected": "review-required"
+}

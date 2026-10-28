@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: atlas-indexed-reconciliation
+  namespace: atlas-system
+spec:
+  completionMode: Indexed
+  completions: 3
+  parallelism: 2
+  backoffLimitPerIndex: 2
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: atlas-reconciliation-job
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: reconcile
+          image: platform/atlas-probe@sha256:7e0649ee963175daed1b6acece2fbc7543f05cd23cd5348d2502150caa0b6e4e
+          args: ["job", "--logical-run=$(JOB_COMPLETION_INDEX)"]
+          resources:
+            requests: {cpu: 25m, memory: 32Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}

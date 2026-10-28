@@ -1,0 +1,7 @@
+version: atlas-network-policy-handoff-1.0
+principles:
+  - default-deny is a Course 5 design target, not a Course 4 executed claim
+  - atlas-api ingress must be limited to approved gateway and internal clients
+  - atlas-worker requires queue/storage egress defined by later data-plane implementations
+  - DNS and control-plane dependencies must be enumerated before enforcement
+  - tenant and workload identity remain independent of IP identity

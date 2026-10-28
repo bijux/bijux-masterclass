@@ -1,0 +1,8 @@
+{
+  "address": "module.network.aws_vpc.this",
+  "owner": "foundation-team",
+  "signals": {
+    "providerVersionChanged": true,
+    "remoteAuditEvent": false
+  }
+}

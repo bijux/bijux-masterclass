@@ -1,0 +1,12 @@
+{
+  "argoCD": "3.5.0",
+  "dataProfile": "1.0",
+  "deliveryProfile": "1.0",
+  "externalSecrets": "2.9.0",
+  "flux": "2.9.4",
+  "gitopsProfile": "1.0",
+  "helm": "4.2.3",
+  "kubernetes": "1.36.2",
+  "kustomize": "5.8.1",
+  "sops": "3.13.3"
+}

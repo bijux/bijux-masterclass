@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+site/
+build/
+reports/generated/
+capstone/reports/generated/
+capstone/.work/

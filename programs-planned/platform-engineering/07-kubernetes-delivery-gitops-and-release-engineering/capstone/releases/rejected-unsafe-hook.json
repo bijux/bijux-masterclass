@@ -1,0 +1,74 @@
+{
+  "approvals": [],
+  "gates": [
+    {
+      "blocker": true,
+      "name": "immutable-artifacts",
+      "reason": "digests unchanged",
+      "status": "pass",
+      "subject": "atlas-1.7.0-unsafe-hook"
+    },
+    {
+      "blocker": true,
+      "name": "render-determinism",
+      "reason": "two independent renders match",
+      "status": "pass",
+      "subject": "atlas-1.7.0-unsafe-hook"
+    },
+    {
+      "blocker": true,
+      "name": "restore-evidence",
+      "reason": "empty-destination restore within objective",
+      "status": "pass",
+      "subject": "atlas-1.7.0-unsafe-hook"
+    },
+    {
+      "blocker": true,
+      "name": "secret-adoption",
+      "reason": "new version adopted before predecessor revoked",
+      "status": "pass",
+      "subject": "atlas-1.7.0-unsafe-hook"
+    },
+    {
+      "blocker": true,
+      "name": "progressive-analysis",
+      "reason": "absolute and comparative gates pass",
+      "status": "pass",
+      "subject": "atlas-1.7.0-unsafe-hook"
+    },
+    {
+      "blocker": true,
+      "name": "fleet-compatibility",
+      "reason": "target profiles satisfy requirements",
+      "status": "pass",
+      "subject": "atlas-1.7.0-unsafe-hook"
+    },
+    {
+      "blocker": true,
+      "name": "schema-compatibility",
+      "reason": "destructive hook cannot be replayed or rolled back",
+      "status": "fail",
+      "subject": "atlas-1.7.0-unsafe-hook"
+    }
+  ],
+  "name": "atlas-1.7.0-unsafe-hook",
+  "protectedDeletions": [],
+  "revision": {
+    "artifacts": {
+      "chartDigest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "imageDigests": [
+        "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      ],
+      "sourceArtifactDigest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    "commit": "3333333333333333333333333333333333333333",
+    "environment": "prod",
+    "predecessor": "atlas-1.6.0",
+    "releaseId": "atlas-1.7.0-unsafe-hook",
+    "renderDigest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "renderer": "kustomize",
+    "rendererVersion": "5.8.1"
+  },
+  "rollbackFrontier": "before-old-writer-removal"
+}

@@ -1,0 +1,46 @@
+clusters:
+- id: atlas-dev-eu1
+  owner: platform-dev
+  environment: dev
+  region: eu-north-1
+  topologyClass: single-zone
+  kubernetes: 1.36.2
+  gitopsController: flux-2.9.4
+  capabilities:
+  - external-secrets-v1
+  - gateway-api-v1
+  lifecycle: active
+- id: atlas-stage-eu1
+  owner: platform-stage
+  environment: staging
+  region: eu-north-1
+  topologyClass: multi-zone
+  kubernetes: 1.36.2
+  gitopsController: argocd-3.5.0
+  capabilities:
+  - external-secrets-v1
+  - gateway-api-v1
+  - argo-rollouts-v1alpha1
+  lifecycle: active
+- id: atlas-prod-eu1
+  owner: platform-prod
+  environment: prod
+  region: eu-north-1
+  topologyClass: multi-zone
+  kubernetes: 1.36.2
+  gitopsController: argocd-3.5.0
+  capabilities:
+  - external-secrets-v1
+  - gateway-api-v1
+  - argo-rollouts-v1alpha1
+  lifecycle: active
+- id: atlas-prod-eu2
+  owner: platform-prod
+  environment: prod
+  region: eu-west-1
+  topologyClass: multi-zone
+  kubernetes: 1.35.6
+  gitopsController: argocd-3.4.8
+  capabilities:
+  - gateway-api-v1
+  lifecycle: maintenance

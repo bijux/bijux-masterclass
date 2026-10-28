@@ -1,0 +1,6 @@
+{
+  "expected": 0,
+  "sameObservation": true,
+  "sameSpec": true,
+  "writesAcrossFiveReconciles": 5
+}
