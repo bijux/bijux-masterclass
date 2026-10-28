@@ -1,0 +1,6 @@
+{
+  "expectedControl": "render identity and source pinning",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-02",
+  "title": "Remote Kustomize base tracks a branch"
+}

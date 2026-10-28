@@ -1,0 +1,1 @@
+interface Parser<T>{parse(input:unknown):T}class InternalParser implements Parser<string>{parse(input:unknown){return String(input);}debug(){return'internal';}}const value:Parser<string>=new InternalParser();console.log(value.debug());

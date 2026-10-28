@@ -1,0 +1,11 @@
+{
+  "buffer_bound_checked": true,
+  "delivered_sequences": [
+    4,
+    5
+  ],
+  "duplicates_suppressed": true,
+  "gap_rejected": true,
+  "source": "analysis-events-1.0",
+  "status": "pass"
+}

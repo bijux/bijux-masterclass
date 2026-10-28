@@ -1,0 +1,5 @@
+{
+  "id": "RPC-07",
+  "title": "Accept worker result because the stream is live",
+  "expected_rejection": "streaming-and-security-proof"
+}

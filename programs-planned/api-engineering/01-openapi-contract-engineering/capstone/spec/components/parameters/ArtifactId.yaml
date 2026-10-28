@@ -1,0 +1,8 @@
+name: artifactId
+in: path
+required: true
+description: Stable artifact identifier.
+schema:
+  type: string
+  pattern: ^art_[0-9]{4,18}$
+example: art_0001

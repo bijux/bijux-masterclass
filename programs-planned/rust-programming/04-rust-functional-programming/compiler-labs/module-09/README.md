@@ -1,0 +1,11 @@
+# Module 39 Investigations — Combinator Laws and Cost Models
+
+[Chapter](../../course-book/module-39-combinator-laws-and-cost-models/index.md) · [Workbook](../../course-book/module-39-combinator-laws-and-cost-models/workbook.md) · [Course investigation method](../README.md)
+
+> **Prediction question:** What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?
+
+Before invoking a compiler or runner, draw a **law and counterexample table** and classify the expected result. The prediction must identify the earliest decisive phase or event and show why the result follows from **Design domain combinators that preserve type and error meaning**. Diagnostic wording may vary; the causal relationship may not.
+
+After observing Module 39 — Combinator Laws and Cost Models, preserve two repairs. The first is the smallest change that keeps the product requirement. The second is a tempting change that compiles, runs, or quiets the tool by erasing information, weakening a bound, changing ownership, hiding a failure, or narrowing the public contract. Explain precisely why the second repair is unacceptable here.
+
+Finish by creating a new specimen that changes one relationship while keeping every incidental detail stable. Predict whether that variation changes parsing, name resolution, type checking, trait solving, borrow checking, build execution, runtime behavior, schedule behavior, or only architectural quality.

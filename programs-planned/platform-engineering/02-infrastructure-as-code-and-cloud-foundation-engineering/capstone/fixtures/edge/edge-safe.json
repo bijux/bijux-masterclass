@@ -1,0 +1,16 @@
+{
+  "deregistrationDelaySeconds": 30,
+  "dnsName": "atlas.dev.example.test",
+  "health": {
+    "healthyThreshold": 2,
+    "intervalSeconds": 15,
+    "path": "/edge-health",
+    "unhealthyThreshold": 3
+  },
+  "hostIngressSource": "sg-atlas-edge",
+  "listenerPort": 443,
+  "publicHost": false,
+  "targetPort": 8080,
+  "targetProtocol": "HTTP",
+  "tlsTermination": "alb"
+}

@@ -1,0 +1,25 @@
+version: 1.0
+interactions:
+  - capability: public run creation
+    form: HTTP
+    reason: public resource semantics, broad interoperability, existing OpenAPI contract
+  - capability: committed run facts
+    form: durable-event
+    reason: independent consumers, replay, temporal decoupling
+  - capability: domain validation and transactional mutation
+    form: local-call
+    reason: one state owner and transaction boundary
+  - capability: internal run control
+    form: gRPC
+    reason: controlled peers, typed outcomes, immediate authoritative decision
+  - capability: worker assignment session
+    form: gRPC-bidirectional-stream
+    reason: independent duplex messages with durable lease authority
+  - capability: replayable integration history
+    form: durable-event
+    reason: gRPC watch retention is intentionally bounded
+rejected:
+  - proposal: CRUD service per database table
+    reason: creates network joins and a distributed monolith
+  - proposal: public browser gRPC replacement
+    reason: weakens public HTTP interoperability without a demonstrated need

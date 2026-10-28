@@ -1,0 +1,13 @@
+base/00-namespace.yaml
+base/01-serviceaccounts.yaml
+base/02-config.yaml
+base/03-secret-template.yaml
+base/04-storage-interface.yaml
+base/10-api-deployment.yaml
+base/11-worker-deployment.yaml
+base/12-api-service.yaml
+base/13-api-pdb.yaml
+controller/00-crd.yaml
+controller/01-rbac.yaml
+controller/02-deployment.yaml
+controller/10-sample.yaml

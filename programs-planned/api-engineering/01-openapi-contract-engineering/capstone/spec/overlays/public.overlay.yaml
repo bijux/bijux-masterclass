@@ -1,0 +1,18 @@
+overlay: 1.1.0
+info:
+  title: Public Analysis Runs API view
+  version: 1.0.0
+  description: Removes internal diagnostics and marks the result as a public artifact.
+extends: ../dist/openapi.bundle.yaml
+actions:
+- target: $.paths['/internal/diagnostics']
+  description: Remove the admin-only diagnostic path.
+  remove: true
+- target: $.tags[?@.name == 'Internal']
+  description: Remove the internal navigation tag.
+  remove: true
+- target: $.info
+  description: Identify the derived public description.
+  update:
+    title: Analysis Runs API — Public
+    x-derived-view: public

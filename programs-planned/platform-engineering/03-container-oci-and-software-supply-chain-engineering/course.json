@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "courseNumber": 3,
+  "id": "container-oci-and-software-supply-chain-engineering",
+  "slug": "03-container-oci-and-software-supply-chain-engineering",
+  "title": "Container, OCI, and Software Supply Chain Engineering",
+  "release": "1.0.0",
+  "primaryProduct": "course-book",
+  "capstone": "Atlas Workload Release 1.0",
+  "primaryLane": "Python semantic OCI implementation with Go workload artifacts",
+  "comparisonLanes": [
+    "BuildKit/Docker/Podman",
+    "runc/crun",
+    "ORAS/Skopeo",
+    "Sigstore/Cosign",
+    "Syft/Grype"
+  ],
+  "predecessor": "02-infrastructure-as-code-and-cloud-foundation-engineering",
+  "successor": "04-kubernetes-architecture-and-workload-engineering"
+}

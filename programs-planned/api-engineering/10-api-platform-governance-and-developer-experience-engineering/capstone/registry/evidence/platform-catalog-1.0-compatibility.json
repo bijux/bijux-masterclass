@@ -1,0 +1,14 @@
+{
+  "apiRef": "api:default/platform-catalog",
+  "baselineVersion": null,
+  "candidateVersion": "1.0.0",
+  "checks": [
+    "contract parses",
+    "owner recorded",
+    "release digest fixed"
+  ],
+  "classification": "initial-release",
+  "decision": "accepted",
+  "limitations": "Initial release has no predecessor compatibility comparison.",
+  "protocol": "openapi"
+}

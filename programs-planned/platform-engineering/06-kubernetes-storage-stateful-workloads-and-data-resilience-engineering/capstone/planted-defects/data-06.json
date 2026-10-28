@@ -1,0 +1,6 @@
+{
+  "description": "database operator has no restore owner",
+  "expectedProof": "responsibility review",
+  "id": "DATA-06",
+  "status": "must-be-rejected"
+}

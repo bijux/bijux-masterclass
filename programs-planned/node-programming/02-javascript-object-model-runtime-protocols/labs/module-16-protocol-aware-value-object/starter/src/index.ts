@@ -1,0 +1,2 @@
+export function validateMillimetres(value:unknown):number { if(typeof value!=='number'||!Number.isSafeInteger(value)||value<0)throw new Error('millimetres must be a non-negative safe integer'); return value; }
+export class Distance { readonly millimetres:number; constructor(value:number){this.millimetres=validateMillimetres(value);} equals(other:Distance):boolean{return this.millimetres===other.millimetres;} }

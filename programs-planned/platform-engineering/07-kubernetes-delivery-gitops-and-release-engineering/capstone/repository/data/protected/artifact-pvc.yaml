@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: atlas-artifacts
+  namespace: atlas-prod
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: atlas-standard
+  resources:
+    requests:
+      storage: 100Gi

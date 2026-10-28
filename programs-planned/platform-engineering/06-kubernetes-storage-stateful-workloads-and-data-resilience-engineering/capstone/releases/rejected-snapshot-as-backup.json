@@ -1,0 +1,10 @@
+{
+  "candidate": "snapshot-only",
+  "evidence": {
+    "migration_compatibility": "pass",
+    "predecessor": "pass",
+    "restore_drill": "fail",
+    "single_writer": "pass"
+  },
+  "expected": "rejected"
+}

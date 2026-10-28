@@ -1,0 +1,7 @@
+{
+  "description": "Private representations share a cache key across principals.",
+  "expectedOracle": "cache-key-vector",
+  "id": "PERF-06",
+  "mustBeRejected": true,
+  "slug": "cache-without-principal"
+}

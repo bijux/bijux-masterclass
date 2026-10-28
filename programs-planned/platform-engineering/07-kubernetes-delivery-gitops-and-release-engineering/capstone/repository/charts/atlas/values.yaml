@@ -1,0 +1,19 @@
+namespace: atlas
+nameOverride: atlas-api
+replicas: 2
+image:
+  repository: registry.atlas.test/platform/atlas-api
+  digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+service:
+  port: 80
+  targetPort: 8080
+security:
+  runAsUser: 65532
+  readOnlyRootFilesystem: true

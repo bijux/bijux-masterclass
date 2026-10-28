@@ -1,0 +1,10 @@
+{
+  "module": 3,
+  "status": "passed",
+  "claim": "compatibility is classified across four dimensions",
+  "evidence": {
+    "accepted_candidates": 1,
+    "rejected_candidates": 7,
+    "golden_fixtures": 1
+  }
+}

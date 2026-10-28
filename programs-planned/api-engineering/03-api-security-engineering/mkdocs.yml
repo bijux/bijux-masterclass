@@ -1,0 +1,95 @@
+site_name: API Security Engineering
+site_description: Course 3 of the API Engineering program
+docs_dir: course-book
+site_dir: site
+use_directory_urls: false
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - navigation.indexes
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
+nav:
+- Course Introduction: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Standards: standards.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Glossary: glossary.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — Threat Modeling and Security Requirements:
+  - Chapter: module-01-threat-modeling/index.md
+  - Exercises: module-01-threat-modeling/exercises.md
+  - Worked Answers: module-01-threat-modeling/exercise-answers.md
+  - Lab: module-01-threat-modeling/lab.md
+  - Checkpoint: module-01-threat-modeling/checkpoint.md
+- Module 02 — HTTP Edge and Canonicalization:
+  - Chapter: module-02-http-edge-and-canonicalization/index.md
+  - Exercises: module-02-http-edge-and-canonicalization/exercises.md
+  - Worked Answers: module-02-http-edge-and-canonicalization/exercise-answers.md
+  - Lab: module-02-http-edge-and-canonicalization/lab.md
+  - Checkpoint: module-02-http-edge-and-canonicalization/checkpoint.md
+- Module 03 — Authentication and Token Validation:
+  - Chapter: module-03-authentication-and-token-validation/index.md
+  - Exercises: module-03-authentication-and-token-validation/exercises.md
+  - Worked Answers: module-03-authentication-and-token-validation/exercise-answers.md
+  - Lab: module-03-authentication-and-token-validation/lab.md
+  - Checkpoint: module-03-authentication-and-token-validation/checkpoint.md
+- Module 04 — Authorization and Policy Enforcement:
+  - Chapter: module-04-authorization-and-policy-enforcement/index.md
+  - Exercises: module-04-authorization-and-policy-enforcement/exercises.md
+  - Worked Answers: module-04-authorization-and-policy-enforcement/exercise-answers.md
+  - Lab: module-04-authorization-and-policy-enforcement/lab.md
+  - Checkpoint: module-04-authorization-and-policy-enforcement/checkpoint.md
+- Module 05 — Hostile Input and File Handling:
+  - Chapter: module-05-hostile-input-and-file-handling/index.md
+  - Exercises: module-05-hostile-input-and-file-handling/exercises.md
+  - Worked Answers: module-05-hostile-input-and-file-handling/exercise-answers.md
+  - Lab: module-05-hostile-input-and-file-handling/lab.md
+  - Checkpoint: module-05-hostile-input-and-file-handling/checkpoint.md
+- Module 06 — Outbound HTTP, SSRF, and Webhook Integrity:
+  - Chapter: module-06-outbound-http-ssrf-and-webhooks/index.md
+  - Exercises: module-06-outbound-http-ssrf-and-webhooks/exercises.md
+  - Worked Answers: module-06-outbound-http-ssrf-and-webhooks/exercise-answers.md
+  - Lab: module-06-outbound-http-ssrf-and-webhooks/lab.md
+  - Checkpoint: module-06-outbound-http-ssrf-and-webhooks/checkpoint.md
+- Module 07 — Secrets, Cryptography, and Sensitive Data:
+  - Chapter: module-07-secrets-cryptography-and-sensitive-data/index.md
+  - Exercises: module-07-secrets-cryptography-and-sensitive-data/exercises.md
+  - Worked Answers: module-07-secrets-cryptography-and-sensitive-data/exercise-answers.md
+  - Lab: module-07-secrets-cryptography-and-sensitive-data/lab.md
+  - Checkpoint: module-07-secrets-cryptography-and-sensitive-data/checkpoint.md
+- Module 08 — Abuse Resistance and Resource Budgets:
+  - Chapter: module-08-abuse-resistance-and-resource-budgets/index.md
+  - Exercises: module-08-abuse-resistance-and-resource-budgets/exercises.md
+  - Worked Answers: module-08-abuse-resistance-and-resource-budgets/exercise-answers.md
+  - Lab: module-08-abuse-resistance-and-resource-budgets/lab.md
+  - Checkpoint: module-08-abuse-resistance-and-resource-budgets/checkpoint.md
+- Module 09 — Adversarial Verification and Supply-Chain Assurance:
+  - Chapter: module-09-adversarial-verification-and-supply-chain/index.md
+  - Exercises: module-09-adversarial-verification-and-supply-chain/exercises.md
+  - Worked Answers: module-09-adversarial-verification-and-supply-chain/exercise-answers.md
+  - Lab: module-09-adversarial-verification-and-supply-chain/lab.md
+  - Checkpoint: module-09-adversarial-verification-and-supply-chain/checkpoint.md
+- Module 10 — Security Operations and Incident Response:
+  - Chapter: module-10-security-operations-and-incident-response/index.md
+  - Exercises: module-10-security-operations-and-incident-response/exercises.md
+  - Worked Answers: module-10-security-operations-and-incident-response/exercise-answers.md
+  - Lab: module-10-security-operations-and-incident-response/lab.md
+  - Checkpoint: module-10-security-operations-and-incident-response/checkpoint.md

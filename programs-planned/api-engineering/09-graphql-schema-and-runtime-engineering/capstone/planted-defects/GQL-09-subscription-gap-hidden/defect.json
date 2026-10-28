@@ -1,0 +1,7 @@
+{
+  "description": "resume skips a missing event without error",
+  "expectedProof": "subscription-proof",
+  "failure": "Resume continues after a missing sequence without replay or error.",
+  "id": "GQL-09-subscription-gap-hidden",
+  "mustBeRejected": true
+}

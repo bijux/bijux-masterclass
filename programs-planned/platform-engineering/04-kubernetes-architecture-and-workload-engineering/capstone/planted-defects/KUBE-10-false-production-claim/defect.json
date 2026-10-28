@@ -1,0 +1,7 @@
+{
+  "expectedProof": "evidence-policy",
+  "id": "KUBE-10-false-production-claim",
+  "slug": "false-production-claim",
+  "status": "must-be-rejected",
+  "summary": "local observation is labelled as production networking evidence"
+}

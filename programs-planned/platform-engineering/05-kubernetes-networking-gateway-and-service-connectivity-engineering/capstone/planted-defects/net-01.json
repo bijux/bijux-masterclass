@@ -1,0 +1,6 @@
+{
+  "id": "NET-01",
+  "title": "CNI ADD is not idempotent",
+  "description": "Repeated ADD allocates a second address for the same sandbox.",
+  "expectedProof": "ipam-and-cni-tests"
+}

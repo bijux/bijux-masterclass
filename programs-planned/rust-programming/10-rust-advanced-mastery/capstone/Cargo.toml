@@ -1,0 +1,20 @@
+[package]
+name = "axiomstore"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+name = "axiomstore"
+path = "src/lib.rs"
+
+[[bin]]
+name = "axiomstore"
+path = "src/main.rs"
+
+[dependencies]
+
+[lints]
+workspace = true

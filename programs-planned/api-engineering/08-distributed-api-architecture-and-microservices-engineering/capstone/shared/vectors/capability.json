@@ -1,0 +1,62 @@
+{
+  "cases": [
+    {
+      "audience": "artifact-service",
+      "expected": "accept",
+      "expired": false,
+      "id": "A-01",
+      "tampered": false,
+      "tenant": "tenant-a"
+    },
+    {
+      "audience": "analysis-control",
+      "expected": "reject",
+      "expired": false,
+      "id": "A-02",
+      "tampered": false,
+      "tenant": "tenant-a"
+    },
+    {
+      "audience": "artifact-service",
+      "expected": "reject",
+      "expired": false,
+      "id": "A-03",
+      "tampered": false,
+      "tenant": "tenant-b"
+    },
+    {
+      "audience": "artifact-service",
+      "expected": "reject",
+      "expired": true,
+      "id": "A-04",
+      "tampered": false,
+      "tenant": "tenant-a"
+    },
+    {
+      "audience": "artifact-service",
+      "expected": "reject",
+      "expired": false,
+      "id": "A-05",
+      "tampered": true,
+      "tenant": "tenant-a"
+    }
+  ],
+  "interoperability": {
+    "claims": {
+      "action": "artifact:upload",
+      "audience": "artifact-service",
+      "expires_at": 20,
+      "issued_at": 10,
+      "issuer": "analysis-control",
+      "jti": "upload:run-1:attempt-1:abc",
+      "max_bytes": 1024,
+      "resource": "run-1",
+      "sha256": "abc",
+      "subject": "learner",
+      "tenant": "tenant-a"
+    },
+    "expected_token": "cap1.eyJhY3Rpb24iOiJhcnRpZmFjdDp1cGxvYWQiLCJhdWRpZW5jZSI6ImFydGlmYWN0LXNlcnZpY2UiLCJleHBpcmVzX2F0IjoyMCwiaXNzdWVkX2F0IjoxMCwiaXNzdWVyIjoiYW5hbHlzaXMtY29udHJvbCIsImp0aSI6InVwbG9hZDpydW4tMTphdHRlbXB0LTE6YWJjIiwibWF4X2J5dGVzIjoxMDI0LCJyZXNvdXJjZSI6InJ1bi0xIiwic2hhMjU2IjoiYWJjIiwic3ViamVjdCI6ImxlYXJuZXIiLCJ0ZW5hbnQiOiJ0ZW5hbnQtYSJ9.58o6VFEDiQRCTKeVtftoFesvm-L9UZzoMj0srBRNHgE",
+    "key_utf8": "0123456789abcdef0123456789abcdef"
+  },
+  "profile": "artifact-capability-1.0"
+}

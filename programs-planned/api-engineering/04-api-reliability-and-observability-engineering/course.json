@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 2,
+  "program": "api-engineering",
+  "number": 4,
+  "id": "api-reliability-and-observability-engineering",
+  "directory": "04-api-reliability-and-observability-engineering",
+  "title": "API Reliability and Observability Engineering",
+  "stage": "Observe, diagnose, contain, and recover the promise",
+  "centralQuestion": "How do operators know whether the user promise is still true, and how do they recover it without making the incident worse?",
+  "responsibility": "Make failures observable and recoverable through explicit budgets, lifecycle states, telemetry meaning, service-level objectives, fault experiments, and reconciliation.",
+  "duration": {
+    "calendarWeeks": 2,
+    "teachingDays": 10,
+    "orientationCounted": false
+  },
+  "incomingBoundary": "The Course 3 API 1.2 service protected by Security Profile 1.0 and migrations 001–007.",
+  "outgoingBoundary": "Reliability Profile 1.0, migration 008, critical journeys, deadline and resilience policies, lifecycle controls, telemetry contracts, SLOs, alerts, runbooks, game-day evidence, and reconciliation plans.",
+  "versionState": "API 1.2 and Security Profile 1.0 preserved; Reliability Profile 1.0 introduced; migrations 001–008.",
+  "predecessor": "03-api-security-engineering",
+  "successor": "05-api-performance-capacity-and-traffic-engineering",
+  "primaryProduct": "course-book",
+  "languageStrategy": "one primary implementation track plus one comparative reference track",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-reliability-model-and-critical-journeys",
+      "title": "Reliability Model and Critical Journeys",
+      "centralQuestion": "Which user journeys matter, what makes them good or bad, and which durable facts establish the outcome?",
+      "capstoneIncrement": "Create the reliability case, critical-journey populations, failure modes, ownership, residual risk, and negative claims.",
+      "learningOutcomes": [
+        "Define critical journeys and eligible event populations",
+        "Separate prevention, mitigation, repair, and verification",
+        "Choose public or durable correctness oracles before telemetry",
+        "Catalog failure modes and residual risks",
+        "Trace reliability requirements to tests, runbooks, and owners"
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-deadlines-timeouts-cancellation-and-retry-budgets",
+      "title": "Deadlines, Cancellation, and Retry Budgets",
+      "centralQuestion": "How is one absolute time budget propagated through retries, dependencies, and cancellation without multiplying work?",
+      "capstoneIncrement": "Implement monotonic deadlines, child budgets, safe retry classification, backoff, Retry-After handling, and cancellation.",
+      "learningOutcomes": [
+        "Distinguish absolute deadlines from per-call timeouts",
+        "Budget connect, pool, transaction, read, write, and cleanup waits",
+        "Preserve committed durable work after caller cancellation",
+        "Retry only safe or idempotent effects",
+        "Use bounded backoff, jitter, and `Retry-After` inside the remaining budget"
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-dependency-resilience-and-graceful-degradation",
+      "title": "Dependency Resilience and Graceful Degradation",
+      "centralQuestion": "How should circuits, bulkheads, and degradation be scoped so they contain rather than hide dependency failure?",
+      "capstoneIncrement": "Add dependency-local state machines, bounded probes, concurrency isolation, and truthful degraded responses.",
+      "learningOutcomes": [
+        "Classify dependency failures and ownership",
+        "Use bulkheads to bound local resource consumption",
+        "Design circuit state and half-open probe ownership",
+        "Avoid fallbacks that fabricate correctness",
+        "Keep telemetry failure from becoming business failure"
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-lifecycle-health-graceful-shutdown-and-recovery",
+      "title": "Lifecycle, Health, Shutdown, and Recovery",
+      "centralQuestion": "How do APIs, workers, and dispatchers start, become ready, drain, stop, and recover without losing accepted work?",
+      "capstoneIncrement": "Implement lifecycle states, liveness/readiness separation, graceful draining, lease handling, and startup reconciliation.",
+      "learningOutcomes": [
+        "Separate startup, liveness, and readiness",
+        "Stop accepting before draining",
+        "Bound graceful shutdown and preserve durable claims",
+        "Recover incomplete work on startup",
+        "Make health endpoints report service ability, not every dependency detail"
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-telemetry-architecture-and-structured-operational-events",
+      "title": "Telemetry Architecture and Structured Events",
+      "centralQuestion": "Which operational events are useful, bounded, redacted, versioned, and clearly separated from business truth?",
+      "capstoneIncrement": "Create the telemetry vocabulary, correlation rules, bounded sinks, exporter failure behavior, and privacy policy.",
+      "learningOutcomes": [
+        "Separate logs, metrics, traces, and audit records by purpose",
+        "Use stable event names and fields",
+        "Propagate correlation and trace context safely",
+        "Bound queues and drop behavior",
+        "Treat telemetry as evidence about execution, not the authority on durable state"
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-metrics-and-service-level-indicators",
+      "title": "Metrics and Service-Level Indicators",
+      "centralQuestion": "How are counters, gauges, histograms, and SLI populations defined so the math means what operators think it means?",
+      "capstoneIncrement": "Implement bounded metric dimensions, units, good/bad/eligible/excluded populations, and aggregation semantics.",
+      "learningOutcomes": [
+        "Choose metric instruments from the measured quantity",
+        "Control label dimensions and series count",
+        "Measure latency distributions rather than averages",
+        "Define good, bad, eligible, and excluded events",
+        "Use durable timestamps for asynchronous journey indicators"
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-distributed-tracing-across-http-workers-storage-and-webhooks",
+      "title": "Distributed Tracing Across Asynchronous Work",
+      "centralQuestion": "How does trace context cross HTTP, queues, workers, storage, retries, and webhooks without inventing false parentage?",
+      "capstoneIncrement": "Implement validated context, synchronous parent-child spans, asynchronous links, attempts, queue time, and privacy-safe attributes.",
+      "learningOutcomes": [
+        "Parse and validate W3C trace context",
+        "Create bounded span names and attributes",
+        "Represent queue and worker attempts accurately",
+        "Link asynchronous work to durable causation",
+        "Understand sampling and missing-span limits"
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-slos-error-budgets-dashboards-and-alerts",
+      "title": "SLOs, Error Budgets, Dashboards, and Alerts",
+      "centralQuestion": "How do versioned SLOs, exact error budgets, burn rates, dashboards, alerts, and runbooks drive decisions?",
+      "capstoneIncrement": "Publish five journey SLOs, multiwindow alerts, owner-linked runbooks, and release policy.",
+      "learningOutcomes": [
+        "Choose objectives from critical journeys",
+        "Calculate compliance and remaining error budget",
+        "Use multiwindow burn-rate alerts",
+        "Design dashboards from outcomes to causes",
+        "Handle insufficient data and planned exclusions explicitly"
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-fault-injection-troubleshooting-and-game-days",
+      "title": "Fault Injection, Troubleshooting, and Game Days",
+      "centralQuestion": "How can fault injection and game days produce falsifiable evidence without creating uncontrolled damage?",
+      "capstoneIncrement": "Design bounded faults, control populations, abort conditions, cleanup contracts, and proof-sensitive planted defects.",
+      "learningOutcomes": [
+        "Predict the failure and first oracle before injection",
+        "Control blast radius and synthetic tenants",
+        "Diagnose from user journey to durable state to telemetry",
+        "Prove alerts and runbooks are sensitive to planted defects",
+        "Verify cleanup mechanically"
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-incident-command-state-reconciliation-and-operational-readiness",
+      "title": "Incident Command, Reconciliation, and Readiness",
+      "centralQuestion": "How do responders command an incident, reconcile durable state, repair safely, and decide whether a release is operationally ready?",
+      "capstoneIncrement": "Run incident roles, read-only reconciliation, stable repair plans, verification, retrospective, and observable release gates.",
+      "learningOutcomes": [
+        "Assign incident command, operations, communication, and recording roles",
+        "Construct a timeline with source and confidence",
+        "Reconcile database, jobs, artifacts, and outbox state",
+        "Generate stable repair actions before mutation",
+        "Close only after user outcomes, cleanup, and regressions are verified"
+      ]
+    }
+  ]
+}

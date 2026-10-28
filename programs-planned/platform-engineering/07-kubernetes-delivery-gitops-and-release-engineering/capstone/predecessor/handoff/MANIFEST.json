@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "bytes": 365,
+      "path": "README.md",
+      "sha256": "73386e78f78015d517c07133dc4a4d5fe7bd65c437cb00b5c293fa23f77fb651"
+    },
+    {
+      "bytes": 328,
+      "path": "data-release-order.yaml",
+      "sha256": "68c05a1d64da73c9f3c85e64d13f846ccb7307f095e2eb879c396657cd40bd96"
+    },
+    {
+      "bytes": 358,
+      "path": "evidence-boundary.yaml",
+      "sha256": "29ceba26751045772f701bc3eed4ddb4f9b8dbf7c2492ed763c16f00d7799939"
+    },
+    {
+      "bytes": 283,
+      "path": "known-risks.json",
+      "sha256": "733ed6f08fbc9274e2c362763ad4aecf405dcf6307e0ce8e1db7ad49e3fefbac"
+    },
+    {
+      "bytes": 319,
+      "path": "network-and-security-obligations.yaml",
+      "sha256": "376c319fadb54d8f34e2254d11d2649b804293e98264183f42def34ecb71d809"
+    },
+    {
+      "bytes": 334,
+      "path": "protected-resources.yaml",
+      "sha256": "069df8736a3693b499e69cccd1d508802f2b8c7c0cdebd5214ce91ecdca8c6d8"
+    },
+    {
+      "bytes": 263,
+      "path": "recovery-gates.yaml",
+      "sha256": "7ea6dc30f89502a3026d8e4ec70e9c074d711b57b4c2771dbc871a94907ab880"
+    },
+    {
+      "bytes": 304,
+      "path": "stateful-workloads.yaml",
+      "sha256": "b240e785ea68a93942f6e32dc23fd90ef4b0c79f9e2a8fa9f58a8111c250b69d"
+    },
+    {
+      "bytes": 295,
+      "path": "storage-catalogue.yaml",
+      "sha256": "787d32fe11e9d6b5b3c76f39b2564b2ad7940f7957cbbdda8d7f0f255bdc9bb0"
+    },
+    {
+      "bytes": 130,
+      "path": "version-ledger.json",
+      "sha256": "72223a3147a66190d8d727410b3f002431ffc2f9e034eaadf192b6d9a473e896"
+    }
+  ],
+  "schemaVersion": "1.0"
+}

@@ -1,0 +1,48 @@
+{
+  "archive": {
+    "absoluteMembers": 0,
+    "cleanExtraction": "pass",
+    "crc": "pass",
+    "deterministicDoubleBuild": "pass",
+    "duplicateMembers": 0,
+    "extractedCapstoneTour": "pass",
+    "extractedCoreProof": "pass",
+    "extractedCourseManifest": "pass",
+    "extractedProgramManifest": "pass",
+    "parentTraversalMembers": 0,
+    "postCleanManifestVerification": "pass",
+    "zipMembers": 316
+  },
+  "capstone": "Atlas Cloud Foundation 1.0",
+  "claimBoundary": "production-shaped educational reference; not an operated production landing zone",
+  "course": "02-infrastructure-as-code-and-cloud-foundation-engineering",
+  "executed": {
+    "archiveVerification": "pass",
+    "capstoneTour": "pass",
+    "courseBookPages": 78,
+    "courseBookWordsApproximate": 49184,
+    "dependencyLightCoreProof": "pass",
+    "exercises": 120,
+    "hclGuardFiles": 42,
+    "predecessorFiles": 9,
+    "pythonTests": 54,
+    "successorHandoffFiles": 13,
+    "workedAnswers": 120
+  },
+  "notExecuted": [
+    "native OpenTofu format, validate, test, init, provider schema, and dependency lock",
+    "AWS control-plane and data-plane proof",
+    "multi-account organization proof",
+    "strict MkDocs build",
+    "ShellCheck"
+  ],
+  "referenceVersions": {
+    "awsProvider": "6.58.0",
+    "opentofu": "1.12.5",
+    "pytest": "9.0.2",
+    "python": "3.13.5"
+  },
+  "release": "1.0.0",
+  "schemaVersion": "1.0",
+  "standardsSnapshot": "2026-08-09"
+}

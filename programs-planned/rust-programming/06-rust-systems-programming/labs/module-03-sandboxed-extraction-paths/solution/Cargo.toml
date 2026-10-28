@@ -1,0 +1,10 @@
+[package]
+name = "course6-lab53-module-03-sandboxed-extraction-paths"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true

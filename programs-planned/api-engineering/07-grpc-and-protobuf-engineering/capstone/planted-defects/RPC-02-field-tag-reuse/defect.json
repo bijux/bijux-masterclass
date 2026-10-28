@@ -1,0 +1,5 @@
+{
+  "id": "RPC-02",
+  "title": "Reuse a removed Protobuf field number",
+  "expected_rejection": "compatibility-proof"
+}

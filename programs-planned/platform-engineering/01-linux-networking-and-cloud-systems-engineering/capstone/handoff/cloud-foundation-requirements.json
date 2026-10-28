@@ -1,0 +1,145 @@
+{
+  "profileVersion": "1.0",
+  "targetCourse": "02-infrastructure-as-code-and-cloud-foundation-engineering",
+  "requirements": [
+    {
+      "id": "PE-CF-001",
+      "category": "compute",
+      "statement": "Atlas compute is replaceable from a declared image and boot configuration.",
+      "acceptance": [
+        "new instance has recorded image identity",
+        "verified HTTPS and existing durable result pass",
+        "old instance is removed after rollback window"
+      ]
+    },
+    {
+      "id": "PE-CF-002",
+      "category": "compute",
+      "statement": "Baseline capacity provides at least 2 vCPU and 2048 MiB memory, subject to live workload validation.",
+      "acceptance": [
+        "instance shape recorded",
+        "resource envelope fits without unexplained throttling or OOM"
+      ]
+    },
+    {
+      "id": "PE-CF-003",
+      "category": "identity",
+      "statement": "Atlas receives workload identity without embedded long-lived cloud access keys.",
+      "acceptance": [
+        "credential source is platform-bound",
+        "permissions are least privilege",
+        "revocation path is documented"
+      ]
+    },
+    {
+      "id": "PE-CF-004",
+      "category": "identity",
+      "statement": "Operator access uses a named identity and bounded management path.",
+      "acceptance": [
+        "no shared password",
+        "no unrestricted management source",
+        "access and revocation evidence recorded"
+      ]
+    },
+    {
+      "id": "PE-CF-005",
+      "category": "network",
+      "statement": "Only the TLS edge is publicly reachable; API and worker remain private.",
+      "acceptance": [
+        "listener inventory",
+        "security-group/firewall evidence",
+        "negative external reachability test"
+      ]
+    },
+    {
+      "id": "PE-CF-006",
+      "category": "network",
+      "statement": "DNS, TLS, health routing, idle timeouts, and drain budgets form one documented edge contract.",
+      "acceptance": [
+        "verified hostname request",
+        "unhealthy backend removal",
+        "bounded graceful drain"
+      ]
+    },
+    {
+      "id": "PE-CF-007",
+      "category": "network",
+      "statement": "IPv4 and IPv6 behavior is explicitly selected and tested rather than inherited accidentally.",
+      "acceptance": [
+        "address-family decision",
+        "listener and route evidence",
+        "DNS record alignment"
+      ]
+    },
+    {
+      "id": "PE-CF-008",
+      "category": "storage",
+      "statement": "Durable Atlas state is independent of the replaceable root image.",
+      "acceptance": [
+        "state resource identity",
+        "replacement preserves or restores result",
+        "deletion policy recorded"
+      ]
+    },
+    {
+      "id": "PE-CF-009",
+      "category": "storage",
+      "statement": "Backups reside in an independent failure domain and are restored in a recurring empty-destination exercise.",
+      "acceptance": [
+        "backup identity and retention",
+        "restore transcript",
+        "application-level result verification"
+      ]
+    },
+    {
+      "id": "PE-CF-010",
+      "category": "metadata",
+      "statement": "Metadata access uses provider-required session/header protections and is not exposed through arbitrary proxying.",
+      "acceptance": [
+        "provider policy configured",
+        "negative request path",
+        "no long-lived secret in user data"
+      ]
+    },
+    {
+      "id": "PE-CF-011",
+      "category": "availability",
+      "statement": "The baseline is single-instance; any zone-tolerance claim requires every critical dependency to tolerate one zone loss.",
+      "acceptance": [
+        "full dependency graph",
+        "weakest-domain analysis",
+        "live or explicitly unexecuted failure exercise"
+      ]
+    },
+    {
+      "id": "PE-CF-012",
+      "category": "operations",
+      "statement": "Liveness, readiness, route eligibility, and business correctness remain distinct.",
+      "acceptance": [
+        "health definitions",
+        "failure response",
+        "routing behavior"
+      ]
+    },
+    {
+      "id": "PE-CF-013",
+      "category": "operations",
+      "statement": "Patch, image replacement, rollback, and decommission procedures preserve release and state identity.",
+      "acceptance": [
+        "versioned change",
+        "rollback boundary",
+        "obsolete resource cleanup"
+      ]
+    },
+    {
+      "id": "PE-CF-014",
+      "category": "governance",
+      "statement": "Quotas and cost-relevant flows are recorded as availability and architecture inputs.",
+      "acceptance": [
+        "quota snapshot",
+        "headroom decision",
+        "NAT/egress/cross-zone/storage cost flow"
+      ]
+    }
+  ]
+}

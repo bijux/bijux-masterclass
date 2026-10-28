@@ -1,0 +1,19 @@
+{
+  "risks": [
+    {
+      "description": "native controllers not executed in release environment",
+      "id": "RISK-DELIVERY-01",
+      "status": "open"
+    },
+    {
+      "description": "decryption and secret rotation require operated key custody",
+      "id": "RISK-DELIVERY-02",
+      "status": "open"
+    },
+    {
+      "description": "fleet credentials and tenant isolation need Course 8 hardening",
+      "id": "RISK-DELIVERY-03",
+      "status": "open"
+    }
+  ]
+}

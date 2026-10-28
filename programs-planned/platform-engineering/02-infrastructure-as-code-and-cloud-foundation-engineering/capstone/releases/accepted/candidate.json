@@ -1,0 +1,11 @@
+{
+  "costEvidence": "approved",
+  "destructiveCriticalChange": false,
+  "imdsTokens": "required",
+  "liveCloudEvidence": "not-executed",
+  "longLivedCiKey": false,
+  "name": "atlas-cloud-foundation-1.0-dependency-light",
+  "natArchitecture": "single-sandbox",
+  "publicSsh": false,
+  "stateProtection": "verified"
+}

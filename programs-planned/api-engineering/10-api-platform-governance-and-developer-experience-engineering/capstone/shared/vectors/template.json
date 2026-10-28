@@ -1,0 +1,26 @@
+{
+  "cases": [
+    {
+      "expected": "render",
+      "name": "valid params",
+      "params": {
+        "api_name": "reporting-api",
+        "owner": "group:default/analysis-control-team",
+        "protocol": "openapi",
+        "system": "system:default/analysis-platform",
+        "title": "Reporting API"
+      }
+    },
+    {
+      "error": "invalid-parameter",
+      "name": "bad api name",
+      "params": {
+        "api_name": "Reporting API",
+        "owner": "group:default/analysis-control-team",
+        "protocol": "openapi",
+        "system": "system:default/analysis-platform",
+        "title": "Reporting API"
+      }
+    }
+  ]
+}

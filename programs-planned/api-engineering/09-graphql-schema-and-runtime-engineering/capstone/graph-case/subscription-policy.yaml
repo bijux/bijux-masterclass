@@ -1,0 +1,14 @@
+version: '1.0'
+source: analysis-events-1.0
+baseline_transport: course-sse-profile-1.0
+resume: afterSequence
+rules:
+  - authorize at start and re-evaluate on security-context expiry
+  - one top-level subscription field
+  - suppress duplicate sequence values
+  - detect gaps and require replay
+  - bound buffered events per subscriber
+  - client disconnect cancels source observation
+frontier:
+  - GraphQL over WebSocket is optional
+  - defer and stream are ecosystem frontier features, not GraphQL September 2025 core

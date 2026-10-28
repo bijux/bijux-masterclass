@@ -1,0 +1,6 @@
+{
+  "description": "replacement writer lacks a fencing generation",
+  "expectedProof": "stale-writer test",
+  "id": "DATA-05",
+  "status": "must-be-rejected"
+}

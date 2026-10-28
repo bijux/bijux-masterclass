@@ -1,0 +1,6 @@
+{
+  "cross_tenant_concealed": true,
+  "denied_protected_source_calls": 0,
+  "field_policy_coordinates": 15,
+  "status": "pass"
+}

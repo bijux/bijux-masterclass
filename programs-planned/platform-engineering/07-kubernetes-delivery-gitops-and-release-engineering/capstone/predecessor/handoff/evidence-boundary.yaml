@@ -1,0 +1,12 @@
+version: atlas-data-evidence-1.0
+mandatoryLane:
+  - semantic binding and CSI lifecycle
+  - fencing
+  - content-verified backup and restore
+  - release classification
+notAutomaticallyProven:
+  - native CSI behavior
+  - cloud volume durability
+  - application-consistent database snapshots
+  - regional disaster recovery
+  - representative storage performance

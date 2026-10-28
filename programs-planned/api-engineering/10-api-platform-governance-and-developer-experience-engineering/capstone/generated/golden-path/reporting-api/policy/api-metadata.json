@@ -1,0 +1,7 @@
+{
+  "apiRef": "api:default/reporting-api",
+  "owner": "group:default/analysis-control-team",
+  "system": "system:default/analysis-platform",
+  "protocol": "openapi",
+  "lifecycle": "proposed"
+}

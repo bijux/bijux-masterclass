@@ -1,0 +1,8 @@
+{
+  "name": "reads",
+  "source": {
+    "kind": "remote-object",
+    "uri": "https://objects.example.test/a"
+  },
+  "status": "ready"
+}

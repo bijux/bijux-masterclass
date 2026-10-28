@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: atlas-dev
+  namespace: argocd
+spec:
+  project: atlas
+  source:
+    repoURL: https://git.example.invalid/atlas/environment.git
+    targetRevision: 1111111111111111111111111111111111111111
+    path: capstone/repository/apps/atlas/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: atlas-dev
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true

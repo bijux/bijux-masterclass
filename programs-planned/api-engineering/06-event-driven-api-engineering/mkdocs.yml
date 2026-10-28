@@ -1,0 +1,95 @@
+site_name: Event-Driven API Engineering
+site_description: Course 6 of the API Engineering program
+docs_dir: course-book
+site_dir: site
+use_directory_urls: false
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - navigation.indexes
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
+nav:
+- Course Introduction: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Standards: standards.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Glossary: glossary.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — Event Thinking, Ownership, and Message Taxonomy:
+  - Chapter: module-01-event-thinking-and-ownership/index.md
+  - Exercises: module-01-event-thinking-and-ownership/exercises.md
+  - Worked Answers: module-01-event-thinking-and-ownership/exercise-answers.md
+  - Lab: module-01-event-thinking-and-ownership/lab.md
+  - Checkpoint: module-01-event-thinking-and-ownership/checkpoint.md
+- Module 02 — AsyncAPI, CloudEvents, and Contract Architecture:
+  - Chapter: module-02-asyncapi-and-contract-architecture/index.md
+  - Exercises: module-02-asyncapi-and-contract-architecture/exercises.md
+  - Worked Answers: module-02-asyncapi-and-contract-architecture/exercise-answers.md
+  - Lab: module-02-asyncapi-and-contract-architecture/lab.md
+  - Checkpoint: module-02-asyncapi-and-contract-architecture/checkpoint.md
+- Module 03 — Delivery Semantics, Ordering, Partitioning, and Acknowledgement:
+  - Chapter: module-03-delivery-ordering-and-acknowledgement/index.md
+  - Exercises: module-03-delivery-ordering-and-acknowledgement/exercises.md
+  - Worked Answers: module-03-delivery-ordering-and-acknowledgement/exercise-answers.md
+  - Lab: module-03-delivery-ordering-and-acknowledgement/lab.md
+  - Checkpoint: module-03-delivery-ordering-and-acknowledgement/checkpoint.md
+- Module 04 — Transactional Publication, Inbox Deduplication, and Exactly-Once Effects:
+  - Chapter: module-04-transactional-publication-and-idempotent-effects/index.md
+  - Exercises: module-04-transactional-publication-and-idempotent-effects/exercises.md
+  - Worked Answers: module-04-transactional-publication-and-idempotent-effects/exercise-answers.md
+  - Lab: module-04-transactional-publication-and-idempotent-effects/lab.md
+  - Checkpoint: module-04-transactional-publication-and-idempotent-effects/checkpoint.md
+- Module 05 — Schema Evolution, Compatibility, Replay, and Historical Truth:
+  - Chapter: module-05-evolution-replay-and-historical-truth/index.md
+  - Exercises: module-05-evolution-replay-and-historical-truth/exercises.md
+  - Worked Answers: module-05-evolution-replay-and-historical-truth/exercise-answers.md
+  - Lab: module-05-evolution-replay-and-historical-truth/lab.md
+  - Checkpoint: module-05-evolution-replay-and-historical-truth/checkpoint.md
+- Module 06 — Consumer Architecture and Asynchronous Workflows:
+  - Chapter: module-06-consumer-architecture-and-workflows/index.md
+  - Exercises: module-06-consumer-architecture-and-workflows/exercises.md
+  - Worked Answers: module-06-consumer-architecture-and-workflows/exercise-answers.md
+  - Lab: module-06-consumer-architecture-and-workflows/lab.md
+  - Checkpoint: module-06-consumer-architecture-and-workflows/checkpoint.md
+- Module 07 — Event-Time Stream Processing, Windows, Watermarks, and Corrections:
+  - Chapter: module-07-event-time-stream-processing/index.md
+  - Exercises: module-07-event-time-stream-processing/exercises.md
+  - Worked Answers: module-07-event-time-stream-processing/exercise-answers.md
+  - Lab: module-07-event-time-stream-processing/lab.md
+  - Checkpoint: module-07-event-time-stream-processing/checkpoint.md
+- Module 08 — Event Security, Multi-Tenancy, Privacy, and Trust:
+  - Chapter: module-08-event-security-and-multitenancy/index.md
+  - Exercises: module-08-event-security-and-multitenancy/exercises.md
+  - Worked Answers: module-08-event-security-and-multitenancy/exercise-answers.md
+  - Lab: module-08-event-security-and-multitenancy/lab.md
+  - Checkpoint: module-08-event-security-and-multitenancy/checkpoint.md
+- Module 09 — Event Reliability, Backpressure, Dead Letters, and Recovery:
+  - Chapter: module-09-event-reliability-and-recovery/index.md
+  - Exercises: module-09-event-reliability-and-recovery/exercises.md
+  - Worked Answers: module-09-event-reliability-and-recovery/exercise-answers.md
+  - Lab: module-09-event-reliability-and-recovery/lab.md
+  - Checkpoint: module-09-event-reliability-and-recovery/checkpoint.md
+- Module 10 — Event Platform Governance, Release, and Final Defense:
+  - Chapter: module-10-governance-release-and-final-defense/index.md
+  - Exercises: module-10-governance-release-and-final-defense/exercises.md
+  - Worked Answers: module-10-governance-release-and-final-defense/exercise-answers.md
+  - Lab: module-10-governance-release-and-final-defense/lab.md
+  - Checkpoint: module-10-governance-release-and-final-defense/checkpoint.md

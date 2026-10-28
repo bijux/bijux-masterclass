@@ -1,0 +1,7 @@
+version: atlas-recovery-gates-1.0
+requiredBeforePromotion:
+  - current backup manifest verified
+  - empty-destination restore within RPO and RTO
+  - stale writer rejected
+  - migration compatibility proven
+  - storage class and CSI capability evidence classified

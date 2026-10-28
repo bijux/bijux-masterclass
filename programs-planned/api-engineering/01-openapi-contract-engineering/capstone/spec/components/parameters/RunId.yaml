@@ -1,0 +1,8 @@
+name: runId
+in: path
+required: true
+description: Stable analysis-run identifier.
+schema:
+  type: string
+  pattern: ^run_[0-9]{4,18}$
+example: run_0001

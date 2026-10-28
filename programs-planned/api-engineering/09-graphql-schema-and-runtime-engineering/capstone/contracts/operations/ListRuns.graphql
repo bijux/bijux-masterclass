@@ -1,0 +1,6 @@
+query ListRuns($filter: RunFilter, $first: Int = 20, $after: Cursor) {
+  analysisRuns(filter: $filter, first: $first, after: $after) {
+    edges { cursor node { id projectId status version createdAt } }
+    pageInfo { hasNextPage endCursor }
+  }
+}

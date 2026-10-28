@@ -1,0 +1,5 @@
+LEDGERFLOW-V1
+1	acct-a	open	0	primary
+2	acct-a	deposit	5000	funds
+3	acct-a	withdraw	5000	settlement
+4	acct-a	close	0	complete

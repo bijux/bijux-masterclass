@@ -1,0 +1,7 @@
+version: atlas-dns-handoff-1.0
+names:
+  - atlas-api.atlas-system.svc
+requirements:
+  - namespace-qualified and cluster-qualified resolution must be tested separately
+  - negative caching and search domains must be visible in evidence
+  - DNS success does not prove endpoint health or authorization

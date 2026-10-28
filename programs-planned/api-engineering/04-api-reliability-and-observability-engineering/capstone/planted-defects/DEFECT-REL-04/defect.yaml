@@ -1,0 +1,8 @@
+id: DEFECT-REL-04
+module: 4
+name: Collapsed health endpoint
+detector: distinct-health-contracts
+mutation: Route liveness and readiness to one collapsed decision.
+oracle: separate state and probe tests
+expectedCommand: make module-proof MODULE=04
+expectedFailure: Identical liveness/readiness semantics are rejected.

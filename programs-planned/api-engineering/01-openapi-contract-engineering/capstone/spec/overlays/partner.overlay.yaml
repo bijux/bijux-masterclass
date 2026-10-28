@@ -1,0 +1,22 @@
+overlay: 1.1.0
+info:
+  title: Partner Analysis Runs API view
+  version: 1.0.0
+  description: Publishes a restricted partner surface without copying the canonical source.
+extends: ../dist/openapi.bundle.yaml
+actions:
+- target: $.paths['/internal/diagnostics']
+  remove: true
+  description: Partners cannot inspect service internals.
+- target: $.paths['/datasets/{datasetId}'].delete
+  remove: true
+  description: Partner integrations may read datasets but not delete them.
+- target: $.paths['/webhook-subscriptions'].post
+  update:
+    description: Partner webhook subscriptions require destination registration through the partner onboarding
+      process.
+    x-audience: partner
+- target: $.info
+  update:
+    title: Analysis Runs API — Partner
+    x-derived-view: partner

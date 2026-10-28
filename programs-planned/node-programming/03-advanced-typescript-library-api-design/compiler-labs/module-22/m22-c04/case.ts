@@ -1,0 +1,1 @@
+function project<T,const K extends readonly(keyof T)[]>(value:T,keys:K):Pick<T,K[number]>{return Object.fromEntries(keys.map(k=>[k,value[k]]))as Pick<T,K[number]>;}const result=project({name:'Ada'},['role']as const);console.log(result);

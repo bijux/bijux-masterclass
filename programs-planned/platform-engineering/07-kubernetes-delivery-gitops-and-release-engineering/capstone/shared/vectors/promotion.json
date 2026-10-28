@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "expected": "accepted",
+      "name": "same-artifacts-all-gates"
+    },
+    {
+      "expected": "rejected",
+      "name": "rebuild-during-promotion"
+    },
+    {
+      "expected": "not-executed",
+      "name": "missing-live-evidence"
+    }
+  ]
+}

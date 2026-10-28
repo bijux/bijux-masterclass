@@ -1,0 +1,7 @@
+{
+  "description": "Every caller waits indefinitely and memory becomes the queue.",
+  "expectedOracle": "admission-bound-proof",
+  "id": "PERF-05",
+  "mustBeRejected": true,
+  "slug": "unbounded-admission-wait"
+}

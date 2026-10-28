@@ -1,0 +1,21 @@
+course5:
+  - CNI and Pod packet paths
+  - Services and endpoint data planes
+  - CoreDNS
+  - Gateway API and TLS routing
+  - egress and NetworkPolicy
+course6:
+  - StorageClass and CSI behavior
+  - PVC durability and topology
+  - snapshots, backup, restore and database resilience
+course7:
+  - Helm and Kustomize packaging
+  - GitOps ownership and promotion
+  - progressive delivery automation
+course8:
+  - admission policy, RBAC hardening and multi-tenancy
+  - workload identity federation and image-policy enforcement
+course9:
+  - autoscaling, cluster upgrades, SLOs and fleet operations
+course10:
+  - self-service platform API and controller productization

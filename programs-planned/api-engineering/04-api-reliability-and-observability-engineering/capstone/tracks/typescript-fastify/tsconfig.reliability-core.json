@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "declaration": false,
+    "skipLibCheck": true,
+    "outDir": "dist-reliability",
+    "rootDir": "src/reliability",
+    "types": [],
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true
+  },
+  "include": [
+    "src/reliability/**/*.ts"
+  ],
+  "files": [
+    "../../scripts/typescript_audit_shims.d.ts"
+  ]
+}

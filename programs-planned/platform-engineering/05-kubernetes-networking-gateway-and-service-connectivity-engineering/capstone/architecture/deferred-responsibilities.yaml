@@ -1,0 +1,18 @@
+version: atlas-network-deferred-1.0
+course6:
+  - StorageClass and CSI implementation
+  - durable volume topology and binding
+  - database and artifact storage recovery
+course7:
+  - GitOps reconciliation and progressive delivery of network resources
+course8:
+  - platform-wide identity, admission, and multi-tenant policy governance
+course9:
+  - fleet-wide network SLOs, capacity, upgrades, and multi-cluster connectivity
+course10:
+  - self-service network classes and platform control-plane APIs
+notClaimedByCourse5:
+  - managed-cloud load balancer behavior without cloud evidence
+  - production CNI or Gateway conformance without an independent suite
+  - service-mesh necessity merely because a mesh can be installed
+  - end-to-end application authorization from IP policy alone

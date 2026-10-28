@@ -1,0 +1,144 @@
+get:
+  tags:
+  - Analysis Runs
+  summary: List analysis runs
+  description: Returns owned runs, optionally filtered by status.
+  operationId: listAnalysisRuns
+  security:
+  - OAuth2:
+    - runs:read
+  - ApiKey: []
+  parameters:
+  - $ref: ../components/parameters/Limit.yaml
+  - $ref: ../components/parameters/Cursor.yaml
+  - $ref: ../components/parameters/RunStatusFilter.yaml
+  responses:
+    '200':
+      description: A cursor-paginated analysis-run page.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AnalysisRunPage.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml
+post:
+  tags:
+  - Analysis Runs
+  summary: Start an analysis run
+  description: Accepts an asynchronous run. The same principal, idempotency key, and canonical request
+    body identify one logical submission.
+  operationId: createAnalysisRun
+  security:
+  - OAuth2:
+    - runs:write
+  - ApiKey: []
+  parameters:
+  - $ref: ../components/parameters/IdempotencyKey.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AnalysisRunCreate.yaml
+        example:
+          projectId: prj_0001
+          datasetId: dts_0001
+          parameters:
+            algorithm: quality-summary
+            priority: normal
+          callbackUrl: https://hooks.example.test/analysis-complete
+  callbacks:
+    onCompletion:
+      '{$request.body#/callbackUrl}':
+        post:
+          summary: Notify the request-specific callback destination.
+          operationId: analysisCompletionCallback
+          security: []
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: ../components/schemas/RunCompletedEvent.yaml
+                example:
+                  eventId: evt_0003
+                  eventType: analysis.completed
+                  occurredAt: '2026-08-05T10:12:00Z'
+                  run:
+                    id: run_0001
+                    projectId: prj_0001
+                    datasetId: dts_0001
+                    ownerId: learner
+                    status: completed
+                    parameters:
+                      algorithm: quality-summary
+                      priority: normal
+                    progress: 100
+                    createdAt: '2026-08-05T10:10:00Z'
+                    updatedAt: '2026-08-05T10:12:00Z'
+                    completedAt: '2026-08-05T10:12:00Z'
+                    artifactIds:
+                    - art_0001
+          responses:
+            '204':
+              description: Callback accepted.
+            default:
+              description: The callback receiver rejected delivery.
+  responses:
+    '202':
+      description: Run accepted for asynchronous processing.
+      headers:
+        Location:
+          $ref: ../components/headers/Location.yaml
+        Retry-After:
+          $ref: ../components/headers/RetryAfter.yaml
+        Idempotent-Replay:
+          $ref: ../components/headers/IdempotentReplay.yaml
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AnalysisRun.yaml
+          example:
+            id: run_0001
+            projectId: prj_0001
+            datasetId: dts_0001
+            ownerId: learner
+            status: queued
+            parameters:
+              algorithm: quality-summary
+              priority: normal
+            progress: 0
+            createdAt: '2026-08-05T10:10:00Z'
+            updatedAt: '2026-08-05T10:10:00Z'
+            completedAt: null
+            artifactIds: []
+      links:
+        status:
+          operationId: getAnalysisRun
+          parameters:
+            runId: $response.body#/id
+          description: Poll the accepted run.
+        artifacts:
+          operationId: listRunArtifacts
+          parameters:
+            runId: $response.body#/id
+          description: Retrieve artifacts after completion.
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '409':
+      $ref: ../components/responses/ConflictProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

@@ -1,0 +1,31 @@
+{
+  "name": "@bijux-masterclass/node-typescript-foundations",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.19.0 <25"
+  },
+  "packageManager": "npm@11.17.0",
+  "scripts": {
+    "audit": "python3 tools/audit.py",
+    "links": "python3 tools/check_links.py",
+    "source-audit": "python3 tools/check_ts_sources.py",
+    "investigations": "python3 tools/run_investigations.py",
+    "typecheck": "python3 tools/run_packages.py typecheck",
+    "build": "python3 tools/run_packages.py build",
+    "test": "python3 tools/run_packages.py test",
+    "verify": "python3 tools/proof.py --compatibility",
+    "proof": "python3 tools/proof.py",
+    "clean": "python3 -c \"from pathlib import Path; import shutil; [shutil.rmtree(p) for p in Path('.').rglob('dist') if p.is_dir()]\""
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "typescript": "7.0.2"
+  },
+  "workspaces": [
+    "labs/*/starter",
+    "labs/*/reference",
+    "capstone"
+  ]
+}

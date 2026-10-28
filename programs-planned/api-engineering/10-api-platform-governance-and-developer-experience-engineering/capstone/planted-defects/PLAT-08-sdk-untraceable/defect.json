@@ -1,0 +1,5 @@
+{
+  "defect": "An SDK artifact lacks contract digest and provenance",
+  "expectedRejectingProof": "sdk-proof",
+  "id": "PLAT-08-sdk-untraceable"
+}

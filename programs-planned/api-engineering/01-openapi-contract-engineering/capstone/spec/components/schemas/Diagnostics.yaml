@@ -1,0 +1,35 @@
+type: object
+additionalProperties: false
+required:
+- counts
+- outboundEvents
+properties:
+  counts:
+    type: object
+    additionalProperties: false
+    required:
+    - projects
+    - datasets
+    - runs
+    - artifacts
+    - subscriptions
+    properties:
+      projects:
+        type: integer
+        minimum: 0
+      datasets:
+        type: integer
+        minimum: 0
+      runs:
+        type: integer
+        minimum: 0
+      artifacts:
+        type: integer
+        minimum: 0
+      subscriptions:
+        type: integer
+        minimum: 0
+  outboundEvents:
+    type: array
+    items:
+      $ref: ./RunCompletedEvent.yaml

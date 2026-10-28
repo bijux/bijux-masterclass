@@ -1,0 +1,1 @@
+interface Animal{readonly name:string}interface Dog extends Animal{bark():void}type Consumer<T>=(value:T)=>void;const dog:Consumer<Dog>=value=>value.bark();const animal:Consumer<Animal>=dog;void animal;

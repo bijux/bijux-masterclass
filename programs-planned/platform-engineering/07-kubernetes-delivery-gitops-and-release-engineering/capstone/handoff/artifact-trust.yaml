@@ -1,0 +1,10 @@
+requirements:
+- subject: workload images
+  identity: sha256 digest
+  verification: Course 3 supply-chain policy
+- subject: Helm chart
+  identity: archive digest
+  verification: registry provenance and release gate
+- subject: Git revision
+  identity: commit object
+  verification: protected branch and signature policy

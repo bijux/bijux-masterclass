@@ -1,0 +1,9 @@
+version: '1.0'
+mode: trusted-documents-production
+identity: sha256-of-exact-utf8-operation-document
+rules:
+  - operation name is required
+  - registered hash maps to exactly one document
+  - variables remain validated and budgeted at runtime
+  - APQ cache registration is not treated as an authorization control
+  - clients and operation versions have owners and retirement dates

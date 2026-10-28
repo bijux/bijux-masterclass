@@ -1,0 +1,15 @@
+description: Unsupported media type
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: https://api.example.test/problems/unsupportedmediatype
+      title: Unsupported media type
+      status: 415
+      detail: The request media type is not supported.
+      instance: /example
+      requestId: req_012345abcdef

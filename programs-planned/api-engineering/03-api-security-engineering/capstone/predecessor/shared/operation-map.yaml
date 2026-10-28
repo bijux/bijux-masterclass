@@ -1,0 +1,23 @@
+operations:
+  getHealth: {useCase: health, transaction: none}
+  listProjects: {useCase: list-projects, transaction: read}
+  createProject: {useCase: create-project, transaction: write}
+  getProject: {useCase: get-project, transaction: read}
+  updateProject: {useCase: update-project, transaction: conditional-write}
+  listProjectDatasets: {useCase: list-datasets, transaction: read}
+  createDataset: {useCase: create-dataset, transaction: write}
+  getDataset: {useCase: get-dataset, transaction: read}
+  deleteDataset: {useCase: delete-dataset, transaction: write}
+  uploadDatasetContent: {useCase: upload-dataset, transaction: file-then-metadata}
+  listAnalysisRuns: {useCase: list-runs, transaction: read}
+  createAnalysisRun: {useCase: create-run, transaction: idempotent-write}
+  getAnalysisRun: {useCase: get-run, transaction: read}
+  cancelAnalysisRun: {useCase: request-cancellation, transaction: write}
+  listRunArtifacts: {useCase: list-artifacts, transaction: read}
+  streamAnalysisRunEvents: {useCase: stream-events, transaction: repeated-read}
+  getArtifact: {useCase: get-artifact-metadata, transaction: read}
+  createWebhookSubscription: {useCase: create-subscription, transaction: write}
+  getInternalDiagnostics: {useCase: diagnostics, transaction: read}
+
+releaseExtensions:
+  downloadArtifactContent: {useCase: download-artifact-content, transaction: read-and-stream}

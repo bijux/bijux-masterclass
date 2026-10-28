@@ -1,0 +1,7 @@
+{
+  "description": "child field assumes parent visibility grants permission",
+  "expectedProof": "authorization-proof",
+  "failure": "A protected child field executes because its parent was visible.",
+  "id": "GQL-04-authorization-by-parent",
+  "mustBeRejected": true
+}

@@ -1,0 +1,11 @@
+{
+  "candidateRelease": "atlas-workload-release-1.0.0",
+  "condition": "The image index advertises linux/arm64 but no architecture check or subject-bound SBOM/provenance exists for that child.",
+  "evidenceClass": "dependency-light",
+  "expectedDecision": "rejected",
+  "failedGate": "platform-coverage",
+  "id": "rejected-missing-platform",
+  "reviewQuestion": "What exact evidence would be required to change this decision without weakening another gate?",
+  "schemaVersion": "1.0",
+  "title": "Required arm64 child lacks evidence"
+}

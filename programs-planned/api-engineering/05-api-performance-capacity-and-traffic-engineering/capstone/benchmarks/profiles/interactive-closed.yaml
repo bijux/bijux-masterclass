@@ -1,0 +1,17 @@
+profile: performance-1.0
+id: WL-INTERACTIVE-MIX
+model: closed
+executor: fixed-users
+users: 50
+thinkTimeSeconds:
+  minimum: 0.4
+  maximum: 1.2
+durationSeconds: 300
+dataset: DS-RUNS-100K
+operationMix:
+  listAnalysisRuns: 0.8
+  getProject: 0.2
+correctnessOracle:
+  - response-conforms
+  - authorization-preserved
+  - all-outcomes-accounted

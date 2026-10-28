@@ -1,0 +1,14 @@
+{
+  "candidateId": "rejected-required-field",
+  "eventType": "org.bijux.analysis.run.completed.v1",
+  "eventApiVersion": "1.1.0-rejected",
+  "expectedDecision": "rejected",
+  "gates": {
+    "contractValid": true,
+    "replaySafe": true,
+    "catalogComplete": true,
+    "securityValid": true,
+    "reliabilityReady": true
+  },
+  "rationale": "Existing events and producers do not supply the newly required field."
+}

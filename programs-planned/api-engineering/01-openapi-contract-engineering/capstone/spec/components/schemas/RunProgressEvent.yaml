@@ -1,0 +1,30 @@
+type: object
+additionalProperties: false
+required:
+- eventId
+- runId
+- status
+- progress
+- occurredAt
+properties:
+  eventId:
+    type: string
+    pattern: ^evt_[0-9]{4,18}$
+  runId:
+    type: string
+    pattern: ^run_[0-9]{4,18}$
+  status:
+    type: string
+    enum:
+    - queued
+    - running
+    - completed
+    - failed
+    - canceled
+  progress:
+    type: integer
+    minimum: 0
+    maximum: 100
+  occurredAt:
+    type: string
+    format: date-time

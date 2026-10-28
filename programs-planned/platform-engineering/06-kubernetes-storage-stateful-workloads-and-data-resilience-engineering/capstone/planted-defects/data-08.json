@@ -1,0 +1,6 @@
+{
+  "description": "backup candidate has no empty-destination restore",
+  "expectedProof": "restore gate",
+  "id": "DATA-08",
+  "status": "must-be-rejected"
+}

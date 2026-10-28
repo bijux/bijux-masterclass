@@ -1,0 +1,38 @@
+groups:
+  - name: analysis-runs-slo-alerts
+    rules:
+      - alert: AnalysisApiFastErrorBudgetBurn
+        expr: |
+          (analysis:sli_api_availability:bad_ratio_rate1h / 0.001 > 14.4)
+          and
+          (analysis:sli_api_availability:bad_ratio_rate5m / 0.001 > 14.4)
+        for: 2m
+        labels:
+          severity: page
+          slo: SLO-API-AVAILABILITY
+          runbook: RB-API-ERROR-BUDGET
+        annotations:
+          summary: Analysis Runs API is rapidly consuming its availability budget
+          impact: Eligible API requests are failing above the fast-burn threshold.
+      - alert: AnalysisRunStartFreshnessBurn
+        expr: |
+          (analysis:sli_run_start_freshness:bad_ratio_rate1h / 0.005 > 10)
+          and
+          (analysis:sli_run_start_freshness:bad_ratio_rate5m / 0.005 > 10)
+        for: 2m
+        labels:
+          severity: page
+          slo: SLO-RUN-START-FRESHNESS
+          runbook: RB-WORKER-BACKLOG
+        annotations:
+          summary: Accepted analysis runs are not starting within the freshness objective
+          impact: Customers see queued runs remain idle.
+      - alert: AnalysisTelemetryDropsSustained
+        expr: increase(analysis_telemetry_dropped_total[15m]) > 0
+        for: 15m
+        labels:
+          severity: ticket
+          runbook: RB-TELEMETRY-PIPELINE
+        annotations:
+          summary: Telemetry is being dropped
+          impact: Diagnosis quality is degraded; API correctness is not inferred from this alert alone.

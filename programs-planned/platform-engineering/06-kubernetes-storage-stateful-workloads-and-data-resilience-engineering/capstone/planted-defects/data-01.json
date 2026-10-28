@@ -1,0 +1,6 @@
+{
+  "description": "authoritative run state stored in emptyDir",
+  "expectedProof": "data catalogue and lifetime lab",
+  "id": "DATA-01",
+  "status": "must-be-rejected"
+}

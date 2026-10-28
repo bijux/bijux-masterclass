@@ -1,0 +1,22 @@
+{
+  "cases": [
+    {
+      "allowed": true,
+      "phases": [
+        "expand",
+        "backfill",
+        "contract"
+      ],
+      "rollbackAfter": "backfill"
+    },
+    {
+      "allowed": false,
+      "phases": [
+        "expand",
+        "backfill",
+        "contract"
+      ],
+      "rollbackAfter": "contract"
+    }
+  ]
+}

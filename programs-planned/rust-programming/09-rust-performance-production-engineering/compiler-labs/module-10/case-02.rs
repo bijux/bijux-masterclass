@@ -1,0 +1,1 @@
+#[derive(Debug,PartialEq)] enum Decision{Deploy,Canary,Reject} fn decide(current:bool,rollback:bool)->Decision{if !rollback{Decision::Reject}else if current{Decision::Deploy}else{Decision::Canary}} fn main(){assert_eq!(decide(false,true),Decision::Canary);}

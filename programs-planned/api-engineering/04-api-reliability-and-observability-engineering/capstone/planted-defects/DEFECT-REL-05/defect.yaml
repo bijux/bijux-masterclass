@@ -1,0 +1,8 @@
+id: DEFECT-REL-05
+module: 5
+name: Free-form event vocabulary
+detector: telemetry-event-schema
+mutation: Emit a free-form event name with spaces and capitals.
+oracle: schema conformance
+expectedCommand: make module-proof MODULE=05
+expectedFailure: Structured telemetry event validation rejects it.

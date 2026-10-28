@@ -1,0 +1,8 @@
+{
+  "changed_input": "CONFLICT",
+  "gateway_business_state_tables": 0,
+  "logical_effects": 1,
+  "retry_replayed": true,
+  "stale_version": "PRECONDITION_FAILED",
+  "status": "pass"
+}

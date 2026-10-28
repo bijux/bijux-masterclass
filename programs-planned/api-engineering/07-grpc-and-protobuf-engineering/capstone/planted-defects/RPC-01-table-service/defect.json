@@ -1,0 +1,5 @@
+{
+  "id": "RPC-01",
+  "title": "Mirror database tables into CRUD services",
+  "expected_rejection": "boundary-proof"
+}

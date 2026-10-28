@@ -1,0 +1,14 @@
+site_name: Platform Engineering Program
+docs_dir: program-book
+site_dir: site-program
+strict: true
+theme:
+  name: material
+nav:
+- Start here: start-here.md
+- Course 6 bridge: course-06-bridge.md
+- Atlas capstone evolution: capstone-evolution.md
+- Evidence ladder: evidence-ladder.md
+- Program standards: program-standards.md
+- Ten-course journey: ten-course-journey.md
+- Tool and language strategy: tool-and-language-strategy.md

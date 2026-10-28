@@ -1,0 +1,15 @@
+description: Payload too large
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: https://api.example.test/problems/payload-too-large
+      title: Payload too large
+      status: 413
+      detail: The uploaded payload exceeds the training limit.
+      instance: /example
+      requestId: req_012345abcdef

@@ -1,0 +1,18 @@
+extends:
+  - spectral:oas
+
+rules:
+  operation-operationId: error
+  operation-tags: error
+  operation-description: error
+  info-contact: warn
+  oas3-api-servers: error
+  path-params: error
+  duplicated-entry-in-enum: error
+  no-unbounded-public-strings:
+    description: Public string schemas must define a finite maximum unless explicitly exempted.
+    message: "{{path}} needs maxLength or x-unbounded-reason."
+    severity: warn
+    given: "$..[?(@ && @.type == 'string' && !@.maxLength && !@['x-unbounded-reason'])]"
+    then:
+      function: falsy

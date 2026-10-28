@@ -1,0 +1,27 @@
+type: object
+additionalProperties: false
+required:
+- projectId
+- datasetId
+- parameters
+properties:
+  projectId:
+    type: string
+    pattern: ^prj_[0-9]{4,18}$
+  datasetId:
+    type: string
+    pattern: ^dts_[0-9]{4,18}$
+  parameters:
+    $ref: ./AnalysisParameters.yaml
+  callbackUrl:
+    type: string
+    format: uri
+    pattern: '^https://hooks\.example\.test(?:/[^#\s]*)?$'
+    description: Training callback destinations are constrained to hooks.example.test.
+examples:
+- projectId: prj_0001
+  datasetId: dts_0001
+  parameters:
+    algorithm: quality-summary
+    priority: normal
+  callbackUrl: https://hooks.example.test/analysis-complete

@@ -1,0 +1,16 @@
+version: atlas-network-to-storage-1.0
+service:
+  name: atlas-api
+  namespace: atlas-system
+  type: ClusterIP
+  port: 8080
+  endpointEligibility: Ready and not terminating
+names:
+  short: atlas-api
+  namespaceQualified: atlas-api.atlas-system
+  serviceQualified: atlas-api.atlas-system.svc
+  clusterQualified: atlas-api.atlas-system.svc.cluster.local
+dnsDoesNotProve:
+  - endpoint readiness
+  - NetworkPolicy authorization
+  - application correctness

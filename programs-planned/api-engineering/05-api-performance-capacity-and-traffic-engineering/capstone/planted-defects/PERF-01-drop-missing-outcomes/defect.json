@@ -1,0 +1,7 @@
+{
+  "description": "A timed-out request is removed from the terminal population.",
+  "expectedOracle": "coverage-gate",
+  "id": "PERF-01",
+  "mustBeRejected": true,
+  "slug": "drop-missing-outcomes"
+}

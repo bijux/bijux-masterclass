@@ -1,0 +1,10 @@
+{
+  "evidence_class": "semantic",
+  "scenario": "artifact-service-unavailable-during-run-view",
+  "run_authoritative": true,
+  "artifact_details_authoritative": false,
+  "partial": true,
+  "warnings": ["artifactsUnavailable"],
+  "silent_empty_list": false,
+  "status": "pass"
+}

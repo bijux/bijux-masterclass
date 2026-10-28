@@ -1,0 +1,9 @@
+{
+  "module": 4,
+  "status": "passed",
+  "claim": "unary application outcomes map to stable safe statuses",
+  "evidence": {
+    "status_cases": 8,
+    "live_python_network_tests": 8
+  }
+}

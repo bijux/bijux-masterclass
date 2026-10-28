@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: atlas-node-observer
+  namespace: atlas-system
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: atlas-node-observer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: atlas-node-observer
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: observer
+          image: platform/atlas-probe@sha256:7e0649ee963175daed1b6acece2fbc7543f05cd23cd5348d2502150caa0b6e4e
+          args: ["observe-node-without-host-access"]
+          resources:
+            requests: {cpu: 10m, memory: 16Mi}
+            limits: {cpu: 50m, memory: 32Mi}
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}

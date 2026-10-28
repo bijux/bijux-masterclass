@@ -1,0 +1,1 @@
+use std::{env,fs,path::PathBuf};fn main(){println!("cargo::rerun-if-changed=build.rs");fs::write(PathBuf::from(env::var("OUT_DIR").unwrap()).join("generated.rs"),"pub const NAME:&str=\"generated\";pub const LIMIT:usize=3;\n").unwrap();}

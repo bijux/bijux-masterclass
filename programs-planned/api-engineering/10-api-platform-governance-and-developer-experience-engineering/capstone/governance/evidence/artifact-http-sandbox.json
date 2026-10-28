@@ -1,0 +1,11 @@
+{
+  "apiRef": "api:default/artifact-http",
+  "collectedAt": "2026-08-08T08:30:00Z",
+  "expiresAt": "2026-11-08T08:30:00Z",
+  "id": "artifact-http-sandbox-1",
+  "kind": "sandbox",
+  "owner": "group:default/artifact-team",
+  "sourceContract": "contracts/capabilities/artifact-http.openapi.yaml",
+  "statement": "sandbox evidence for api:default/artifact-http in the bounded Course 10 profile.",
+  "status": "pass"
+}

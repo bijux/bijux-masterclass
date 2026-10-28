@@ -1,0 +1,25 @@
+cases:
+  - change: add an optional response property
+    expected: compatible-with-review
+    reason: tolerant readers accept it, but closed generated models still need evidence.
+  - change: add a required request property
+    expected: breaking
+    reason: existing requests become invalid.
+  - change: remove a documented response
+    expected: breaking
+    reason: consumer branches and generated result unions can disappear.
+  - change: add an enum value to a response
+    expected: potentially-breaking
+    reason: exhaustive consumers may fail even though the producer widened output.
+  - change: remove an enum value from a request
+    expected: breaking
+    reason: previously legal client input is rejected.
+  - change: change operationId only
+    expected: breaking
+    reason: generated client method names are part of the consumer-facing contract.
+  - change: tighten a string pattern
+    expected: breaking
+    reason: previously accepted values become invalid.
+  - change: add a new operation
+    expected: compatible
+    reason: existing interactions are unchanged.

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "courseNumber": 2,
+  "id": "infrastructure-as-code-and-cloud-foundation-engineering",
+  "title": "Infrastructure as Code and Cloud Foundation Engineering",
+  "release": "1.0.0",
+  "primaryProduct": "course-book",
+  "capstone": "Atlas Cloud Foundation 1.0",
+  "primaryLane": "AWS with OpenTofu",
+  "comparisonLanes": [
+    "Google Cloud",
+    "Azure"
+  ],
+  "predecessor": "01-linux-networking-and-cloud-systems-engineering",
+  "successor": "03-container-oci-and-software-supply-chain-engineering"
+}

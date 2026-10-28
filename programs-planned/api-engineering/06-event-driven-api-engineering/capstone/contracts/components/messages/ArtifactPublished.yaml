@@ -1,0 +1,25 @@
+name: ArtifactPublished
+title: Analysis artifact published
+summary: Analysis artifact published under event profile 1.0
+contentType: application/cloudevents+json
+payload:
+  allOf:
+  - $ref: ../schemas/event-envelope.v1.schema.json
+  - type: object
+    properties:
+      type:
+        const: org.bijux.analysis.artifact.published.v1
+      dataschema:
+        const: https://schemas.bijux.dev/events/artifact-published.v1
+      data:
+        $ref: ../schemas/artifact-published.v1.schema.json
+    required:
+    - type
+    - dataschema
+    - data
+x-event-type: org.bijux.analysis.artifact.published.v1
+x-data-schema: ../schemas/artifact-published.v1.schema.json
+x-example: ../../examples/artifact-published.v1.json
+x-owner: urn:bijux:artifact-service
+x-partition-key: partitionkey
+x-event-profile: '1.0'

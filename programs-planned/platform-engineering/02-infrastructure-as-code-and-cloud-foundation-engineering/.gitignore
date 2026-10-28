@@ -1,0 +1,11 @@
+.tofu/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+reports/generated/
+capstone/reports/*.json
+!capstone/reports/.gitkeep
+__pycache__/
+.pytest_cache/
