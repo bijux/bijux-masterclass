@@ -20744,5 +20744,23 @@
       "destination": "programs-planned/computing-reference/tools/verify_snippets.py",
       "disposition": "imported-unchanged"
     }
-  ]
+  ],
+  "local_additions": [
+    {
+      "source_path": "programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/055-technical-investigation-under-pressure.md",
+      "destination": "programs-planned/computing-reference/programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/055-technical-investigation-under-pressure.md",
+      "source_status": "untracked",
+      "chapter_status": "draft",
+      "manifest_status": "planned",
+      "sha256": "8419a6f0f9f9a0347dcc3ca8c72d5683e390674b033872f53d7a8d59ce557248",
+      "blob": "e85f96bd927796520399b3e5e451efb78abb6c62",
+      "mode": "100644"
+    }
+  ],
+  "local_recovery": {
+    "working_archive": "artifacts/course-consolidation/courses-working-tree.tar.gz",
+    "archive_sha256": "3eeb950bc788a921d64f83f48fa5531f7c84088dcbc32567a54590d25bfb3294",
+    "files_including_ignored": 9799,
+    "scope": "Local recovery archive, including generated outputs, caches and downloaded references. The archive is not tracked or published as curriculum source."
+  }
 }
