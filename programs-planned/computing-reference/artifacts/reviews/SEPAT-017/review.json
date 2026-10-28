@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-017",
+  "chapter_digest": "4f889d4f67a2f7fb2ad3ebf44faec4c43fe3ac659cf227dde1e58a08298d3d33",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked current Microsoft object-pool lifecycle and ASP.NET guidance, Go sync.Pool documentation, Oracle PooledConnection API semantics, PostgreSQL 18 connection-limit documentation, and bibliographic metadata for Release It! Claims preserve the distinction between retention and hard live-capacity limits."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked live, available, leased, and transient set notation; disjoint union; capacity; generation/key compatibility; utilization; reset baseline; and deadline symbols."
+      ],
+      "notes": "Exact capacity and idealized queueing estimates are separated, and all formal symbols are defined before their governing use."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Reproduced all five exact executable output lines.",
+        "Recomputed Exercise 2: 120 minus 12 equals 108, and floor(108/12) equals 9."
+      ],
+      "notes": "The 6–8 starting range is labeled a cautious candidate for testing, not a derived optimum. No universal throughput or latency improvement is claimed."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Traced checkout, return, eviction, and replacement through the finite state partition.",
+        "Checked the induction sketch preserves disjoint identity and the capacity upper bound under stated transition assumptions."
+      ],
+      "notes": "The proof sketch is explicitly bounded to the abstract transition system and does not establish concurrency correctness for the Python model."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed capacity zero/saturation, double return, use after return, exception, timeout, cancellation-handoff race, lost wakeup, creation/reset/validation failure, shutdown, drain deadline, and replacement.",
+        "Reviewed transaction/thread/device/tenant/credential/generation affinity, unbounded subpools, dependency outage, retry storm, stale credentials, secret contamination, and surgical-robot authority hazards."
+      ],
+      "notes": "The chapter makes unsupported fairness and health guarantees explicit rather than assuming FIFO or a successful ping is sufficient."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked disjoint pool states, hard-capacity accounting, one borrower per exclusive lease, sanitation before reuse, invalid-resource destruction, bounded acquisition, structured release, policy-based affinity/fairness, and deterministic drain/destruction."
+      ],
+      "notes": "Worked examples and answers preserve ownership and capacity rules under database, memory, process, transaction, tenant, device, and safety-critical scenarios."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the transition-system induction argument line by line against serialization, reservation, authentic lease, reset-before-availability, and exactly-once destruction assumptions.",
+        "Confirmed the executable trace demonstrates only its listed one-thread observations."
+      ],
+      "notes": "Liveness is correctly separated from safety and depends on return, creation, wakeup, scheduling, and starvation assumptions."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited invariant, induction, proof sketch, proves, guarantee, utilization, fair, healthy, safe, hard limit, and conclusion language."
+      ],
+      "notes": "The chapter labels the formal argument as a proof sketch and bounds queueing, sanitation, health, timing, and high-stakes conclusions to their evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-017/report.json",
+        "Exact capacity, reuse, clearing, eviction, and replacement outputs reproduced.",
+        "Load, contention, fleet dependency, database, device, timing, and clinical evidence remain prescribed future work."
+      ],
+      "notes": "No production performance, database compatibility, medical safety, external practitioner, or academic review is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter treats Object Pool as ownership, lifecycle, sanitation, and admission control; distinguishes memory reuse from scarce resources; and relates mechanisms to alternatives and contraction criteria."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "The material covers realistic acquisition deadlines, queue policies, resource poisoning, reset contracts, affinity, global budgets, retry storms, telemetry, generation rollover, and graceful drain."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter progresses from a compact set model through lifecycle and queueing mechanisms to a runnable trace, ten domain-diverse examples, and five exercises with complete design-level answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

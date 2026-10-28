@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-009",
+  "chapter_digest": "6106e492d4f14d396fa9d6d7b506a8cbfc0eb3cc06596e8d94f2f4e7af10dd96",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked Michael Nygard's original ADR article, current MADR project and template documentation, and current ISO/IEC/IEEE 42010:2022 catalogue metadata. Durable architecture-decision, rationale, traceability, documentation, and evolution claims were reviewed against the cited papers and architecture texts."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed ADR tuple fields, stable identity and decision mapping, supersession relation, transitive closure, acyclicity predicate, and driver, realization, and confirmation relations.",
+        "Confirmed that sets, relations, edge direction, statuses, and known-inventory limits are introduced before use."
+      ],
+      "notes": "The notation represents decision records and their relationships without treating the catalogue as a complete inventory of architecture."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter makes no numerical estimate, arithmetic claim, benchmark, or measured-performance assertion requiring recomputation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked that no record can reach itself through one or more supersession edges under the acyclicity predicate.",
+        "Verified that an edge from a new record to an old record matches the stated supersession interpretation and that trace relations have the declared domains."
+      ],
+      "notes": "Acyclicity supports consistent historical replacement; it does not determine whether supersession scope is semantically correct."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed local versus architectural records, technology-first context, accepted versus implemented status, partial supersession, central versus local placement, cross-repository ownership, security exceptions, invalidated assumptions, observed adverse consequences, and safety-critical train control.",
+        "Checked cycles, deleted history, bundled decisions, surviving legacy scope, missing alternatives, and automated confirmation limits."
+      ],
+      "notes": "The chapter distinguishes decision, record, implementation, requirements, risk authority, evidence, and architecture-description boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced one decision intent, stable identity, honest contemporaneous context, credible alternatives, explicit authority, visible consequences, claim-specific confirmation, immutable semantic history, acyclic supersession, discoverable ownership, and lifecycle review through exposition, examples, and answers."
+      ],
+      "notes": "Accepted history remains intact while new records update decision authority and transition scope."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the supersession graph condition and confirmed it excludes direct and indirect self-supersession.",
+        "Confirmed that schema validation and trace-link presence are not presented as proofs of decision wisdom, authority legitimacy, architecture fitness, or complete alternatives."
+      ],
+      "notes": "The formal material defines catalogue integrity properties, not universal correctness."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of proof, complete, accepted, implemented, confirmed, valid, authority, conformance, and evidence."
+      ],
+      "notes": "No proof sketch is presented; conformance and completeness-like claims are bounded to explicit records and predicates."
+    },
+    "empirical_evidence_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No experiment, benchmark, executable snippet, or newly reproduced empirical result is presented. Operational evidence is discussed as future decision feedback, not as collected evidence."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed ADR selection, context, alternatives, outcomes, authority, consequences, status, confirmation, supersession, placement, indexing, traceability, and lifecycle review for conceptual coherence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed technology choices, distributed data ownership, retries, record placement, implementation status, automated conformance, migration, partial supersession, operational feedback, security exceptions, and residual risk. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from first-principles decision memory through authoring, governance, confirmation, failure modes, ten distinct examples, and five complete answers ending with unfamiliar clinical-alarm transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

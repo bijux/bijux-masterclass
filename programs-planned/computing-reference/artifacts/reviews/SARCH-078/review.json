@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-078",
+  "chapter_digest": "0202da962d03c65936b44adb54ce97617d62798c9e34fbe11a3aeeba51edaf69",
+  "review_date": "2026-09-06",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-06",
+    "notes": "Reviewed all twelve references for identity, publication details, and scope. The SEI record confirms the 2016 WICSA Architecture Options Workshop paper and its three-system action-research basis. Publisher and bibliographic records confirmed Boehm, Lehman-Belady, Feathers, Sadalage-Fowler, Newman, the second edition of Building Evolutionary Architectures, Ozkaya, and the fourth edition of Software Architecture in Practice. IEEE and DOI records confirm the Kazman-Asundi-Klein economics paper. Fowler's current Strangler Fig page was checked on 2026-09-06. The official ISO record confirms ISO/IEC/IEEE 14764:2022 as the published third edition, dated January 2022, covering software maintenance and related disposal."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed modernization units, option sets, hard-feasible subset, periodic benefits and costs, scenario probabilities and losses, discount rate, horizon, terminal value, criterion scores and weights, transition states, residual risks, required behavior, and discovered specification before use.",
+        "Checked finite sum, discount exponent, subset, expected-loss term, set difference, product, approximate equality, and currency-neutral unit notation.",
+        "Confirmed hard constraints are applied before scoring and noncompensable obligations are not automatically monetized."
+      ],
+      "notes": "The NPV and weighted-score expressions structure assumptions; they do not validate inputs or authority."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the sensitivity snippet and independently recomputed the exit-deadline winner as rehost 5.80 and long-horizon winner as rebuild 4.90.",
+        "Recomputed Exercise 2 net annual flow as 100, discounted flows as 90.9091, 82.6446, and 75.1315, terminal value as 75.1315, and total as 323.8167 or 323.82.",
+        "Checked that the sensitivity profiles include risk as a negative contribution and all option values use the same invented ordinal scale."
+      ],
+      "notes": "All values are illustrative and no precision claim extends beyond the arithmetic."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified infeasible options cannot become selectable through weights because selection is restricted to the hard-feasible subset.",
+        "Verified the NPV expression discounts each period's benefit minus cost and expected scenario loss, then adds discounted terminal value.",
+        "Verified satisfying discovered requirements D cannot imply satisfaction of required behavior Q when D is a strict subset of Q without another argument covering Q minus D."
+      ],
+      "notes": "Expected-value arithmetic is explicitly insufficient for poorly estimated catastrophic or rights-sensitive risk."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed urgent hosting exit, stable valuable behavior, unsupported extensions, incomplete requirements, rare annual paths, no-source cases, platform semantic changes, proprietary dependencies, and obsolete behavior.",
+        "Reviewed estimate ranges, double-counted benefits, sunk cost, fragile rankings, prototype gaps, unavailable skills, dual running, incompatible rollback, hidden consumers, and incomplete retirement.",
+        "Reviewed banking, national-court, sealed-record, accessibility, privacy, legal, judicial, archival, security, continuity, and regulatory constraints with accountable-authority limits."
+      ],
+      "notes": "The strategy set includes retain, replace, and retire to avoid forcing transformation of every capability."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced named outcomes, hard gates, characterized behavior, data authority, operating model, coherent transition, explicit estimate uncertainty, capability feasibility, portfolio composition, and retirement through every strategy.",
+        "Confirmed rehosting preserves residual application risk, replatforming changes platform semantics, refactoring retains required behavior, and rebuilding expands discovery and transition scope.",
+        "Confirmed mixed strategies must compose contracts, identity, data, security, recovery, and authority in every intermediate state."
+      ],
+      "notes": "No strategy is treated as a maturity rank or universal destination."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the feasibility argument for the explicit premise that hard constraints are noncompensable.",
+        "Reviewed the sensitivity proposition: different winners under plausible profiles establish ranking fragility, not which profile is correct.",
+        "Reviewed the rebuild-incompleteness set argument and confirmed it establishes only that tests from incomplete discovered requirements are insufficient."
+      ],
+      "notes": "All arguments remain conditional and preserve accountable judgment."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of feasible, objective, proof, correct, equivalent, safe, managed, guarantee, complete, compliance, optimal, value, and modernization for scope and assumptions.",
+        "Confirmed scores, prototypes, characterization tests, estimates, managed services, and new deployments are each denied stronger conclusions than they support.",
+        "Confirmed the national-court answer reserves judicial, legal, records, privacy, accessibility, and disclosure judgments for responsible authorities."
+      ],
+      "notes": "No internal review or economic calculation is mislabeled as external approval."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Executed snippet compare-strategy-sensitivity with the repository verifier under Python 3.14.4.",
+        "Observed exit status 0, exact two expected profile-winner lines, and empty standard error.",
+        "Confirmed data-center, managed database, policy, scheduling, document, bank, retail, and court cases are hypothetical worked situations."
+      ],
+      "notes": "The execution validates arithmetic over invented ordinal scores only and does not establish a real strategy choice."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed outcomes, modernization units, obligations, hard constraints, rehost, replatform, refactor, rearchitect, rebuild, retain, retire, replace, economics, scoring, learning, reversibility, operations, security, dependencies, data, portfolio composition, transition, evidence, exit, and reassessment as one coherent graduate-level strategy-selection treatment."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed concrete failure paths across hosting, runtimes, database semantics, licensing, identity, networks, suppliers, skills, pipelines, data movement, dual operation, compatibility, performance, recovery, security, accessibility, support, cutover, rollback, and retirement. The chapter supplies actionable gates, experiments, stop conditions, residual-risk, and lifecycle-cost practices. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified graduate and professional strategy judgment, a conditional lifecycle-value model, feasibility invariant, sensitivity program, incomplete-specification argument, eighteen distinct misconceptions, ten varied worked examples with explicit conclusions, and five progressive exercises with complete answers ending in an unfamiliar national-court transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed. Source checks, structural validation, conditional economics, set reasoning, hypothetical cases, and one local Python execution do not validate an external modernization program, establish probability or monetary valuation, prove platform equivalence, discover all legacy obligations, guarantee migration or recovery, or provide judicial, legal, accessibility, privacy, security, financial, procurement, supplier, labor, records, compliance, policy, or regulatory approval."
+}

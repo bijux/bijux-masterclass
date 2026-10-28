@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-005",
+  "chapter_digest": "565ff9665612dc24127e8f783e45da3ddf8e16a0276565b2324bfd22c32ca6b2",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed PostgreSQL 18 materialized-view/refresh documentation, author-affiliated incremental-maintenance papers, Debezium 3.6 documentation, and Microsoft CQRS/materialized-view guidance against the cited claims. All seven final destinations returned HTTP 200. Product mechanisms are separated from end-to-end guarantees."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked S_k, P_v, M_{v,k}, projection equivalence, lag, drift, watermark, amplification, and idempotency terminology.", "Checked source position, event time, commit order, and processing time remain distinct."],
+      "notes": "Every equivalence or drift comparison names a common source position and projection version."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Recomputed two initial order-card rows from two customers and two orders.", "Recomputed version-2 rename on order 10 and rejection of its duplicate.", "Recomputed exactly one drift key after the missed version-3 rename and zero after rebuild.", "Confirmed source and read-model cardinality both equal two."],
+      "notes": "Exact integer fixture values avoid rounding and aggregation ambiguity."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Re-derived exact correctness as M_{v,k}=P_v(S_k).", "Re-derived incremental/full equivalence at a shared snapshot and source position.", "Re-derived why maximum observed offset does not establish contiguous completeness.", "Re-derived idempotence from rejection of versions not greater than current."],
+      "notes": "Asynchronous correctness remains conditional on the declared lag, ordering, gap, and delete contract."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Reviewed duplicate, stale, reordered, missing, poison, and retained-too-briefly changes.", "Reviewed deletes, corrections, aggregate retractions, key changes, snapshot/stream handoff, and partial rebuild publication.", "Reviewed schema versions, source failover, partition watermarks, privacy erasure, authorization, and consumer retirement."],
+      "notes": "The executable fixture covers duplicate/stale/missed changes only; broader cases are design-review obligations."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Rebuild derives one row per order key from authoritative customer/order dictionaries.", "Incremental customer application accepts only a strictly greater version and updates every affected order card.", "Drift compares union of expected and materialized keys plus exact values.", "The verifier matched exact eight-line stdout, empty stderr, and zero exit status."],
+      "notes": "Rebuild and incremental paths share the card shape, an independence limitation explicitly disclosed."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed the projection equivalence obligation at fixed version/watermark.", "Reviewed idempotency, per-key ordering, contiguous completeness, and retraction obligations separately.", "Reviewed versioned backfill/catch-up/reconcile/cutover/rollback sequence against atomic publication."],
+      "notes": "No proof is claimed for a broker, CDC connector, sink, or distributed end-to-end exactly-once path."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Separated historical snapshots, current derivations, aggregates, caches, and independent facts.", "Separated mechanism claims for transactions/CDC/events/materialized views from freshness and correctness guarantees.", "Separated bounded executable evidence from concurrency, crash, schema, broker, and production claims."],
+      "notes": "No latency or cost improvement is claimed without workload measurement."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": ["The standard-library projection/rebuild model executed successfully through the repository verifier.", "All seven final source destinations returned HTTP 200 on 2026-08-30.", "Structure, links, ten examples, five exercises, five answers, and exact snippet expectations passed draft validation."],
+      "notes": "No database refresh, CDC stream, event broker, cache, migration, benchmark, restore, or production read model was run."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter treats denormalization as a versioned projection system with explicit authority, grain, maintenance, consistency, reconciliation, economics, and retirement."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed direct-query alternatives, transactional/CDC/event/cache routes, offsets, duplicates, gaps, deletes, freshness SLOs, rebuilds, cutovers, schema versions, privacy, cost, and rollback."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, projection model, ten distinct operational examples, and five exercises progress from classification through delivery algebra to zero-downtime replacement."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter and model do not certify a production materialized view, CDC/event pipeline, cache, snapshot handoff, delete/retraction path, schema migration, privacy workflow, benchmark, distributed consistency guarantee, or deployment fitness."
+}

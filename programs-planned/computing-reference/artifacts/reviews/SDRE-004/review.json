@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "module_id": "SDRE-004",
+  "chapter_digest": "7eb97fd502db8c5c30547816c355a9a5d603c3e875cba45117f501c7a2395e7c",
+  "review_date": "2026-09-06",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-06",
+    "notes": "Checked all eight cited records for identity, authorship or issuing body, date or current status, and relevance. The Microsoft Research and DOI record supports the 2020 Journal of Functional Programming article; current GNU Make documentation supports timestamp and prerequisite semantics; the current Bazel Remote Execution API source distinguishes action results from content-addressed blobs and specifies salts, platform identity, and digest verification; current Bazel and Shake documentation supports remote-cache operation, writer caution, dynamic dependencies, and compiler-version dependencies. The Pluto, reliable-build framework, and USENIX Riker records support dynamic dependency and incremental-correctness claims. Tool-specific statements are bounded to those sources and were checked on 2026-09-06."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Defined G, V, E, predecessor relation, effective input state, action function, action key, digest, action cache, CAS, miss set, and observational equivalence before extended use.",
+        "Checked tuple, function, graph, implication, summation, set-membership, equality, and approximation notation and all GitHub math delimiters."
+      ],
+      "notes": "The action-node graph is explicitly a DAG for this foundational model; cyclic and interactive build semantics are outside its claim."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed model-action-cache under CPython 3.14.4 and matched seven exact outcomes: miss, hit, and three change misses followed by a demonstrated false hit and clean/sound equality.",
+        "Independently checked the 99-of-100 example gives a 99 percent unweighted hit rate while the omitted 4 GB output can still dominate latency; no unsupported timing value is inferred."
+      ],
+      "notes": "The latency equation is a deliberately simplified nonparallel accounting identity; real wall time is stated to depend on critical paths and contention."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Recomputed the sound-key implication from equal digest under the collision assumption, equal canonical encoding, injectivity, equal effective state, and functional substitution.",
+        "Constructed the omitted-compiler counterexample: identical modeled source key with distinct compiler identities and distinct outputs violates sound reuse.",
+        "Checked that adding an output-irrelevant nonce changes keys without changing the action function, producing false misses rather than false hits."
+      ],
+      "notes": "The implication is conditional on complete modeled inputs, deterministic execution, injective canonical encoding, verified bytes, and the accepted digest threat model."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed unchanged, modified, added, deleted, renamed, absent, permission-changing, symlink, directory-membership, generated, dynamically discovered, and stale-output inputs.",
+        "Reviewed compiler, sysroot, flags, environment, target ABI, platform, rule, key-schema, failed action, concurrent modification, partial upload, missing blob, eviction, remote outage, and nondeterministic execution cases.",
+        "Reviewed hostile writer, cross-tenant result, guessed key, poisoned namespace, compromised tool, protected CI, untrusted pull request, already-promoted artifact, and confidentiality boundaries."
+      ],
+      "notes": "Security, privacy, release, and incident decisions require legitimate owners and context-specific evidence beyond this build mechanism."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced complete semantic inputs, verified dependency results, canonical keys, dynamic-dependency recording, successful execution, complete blob upload, atomic result publication, digest verification, writer authorization, and clean-oracle comparison through exposition and exercises.",
+        "Checked every worked example identifies either a preserved invariant, a false hit, a false miss, or an explicit performance trade-off.",
+        "Confirmed eviction and cache unavailability become misses while unverifiable or unauthorized results never become fallback successes."
+      ],
+      "notes": "These invariants define the chapter's model and review criteria; their presence in prose is not evidence that a production build system enforces them."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed every premise of the sound-key proposition and verified that the conclusion is limited to the modeled output boundary.",
+        "Checked the omitted-input construction directly negates the implication by equal keys and unequal outputs.",
+        "Checked that conservative over-inclusion supports correctness only because fresh execution is assumed correct for the effective state; it makes no claim about the program's behavioral correctness."
+      ],
+      "notes": "The proof is finite mathematical reasoning about an abstract model, not formal verification of GNU Make, Bazel, Shake, Pluto, Python, a hash function, or a production cache."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of proof, proposition, invariant, sound, complete, deterministic, equal, verified, trusted, current, and correct.",
+        "Confirmed theorem assumptions, executable observation, hypothetical scenarios, official tool behavior, and professional design guidance remain distinct."
+      ],
+      "notes": "No universal cache correctness, collision impossibility, external review, platform certification, security approval, or production measurement is claimed."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Executed the sole practical code block under CPython 3.14.4 with exact expected stdout, empty stderr, and exit status zero.",
+        "Confirmed timestamp, compiler, remote cache, CI, 4 GB transfer, cross-platform, randomized edit, and data-pipeline cases are hypothetical teaching scenarios rather than measured field results."
+      ],
+      "notes": "Local execution demonstrates tuple lookup and string transformation only; it proves no hash security, filesystem dependency discovery, real compiler behavior, CAS integrity, remote-cache security, or distributed atomicity."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the clean-build contract, graph and effective-input models, invalidation strategies, canonical action keys, action-cache/CAS separation, dynamic dependencies, early cutoff, concurrency, remote trust, differential validation, performance accounting, and connections to preceding and succeeding SDRE modules. Scope remains one foundational chapter rather than a platform-service implementation guide."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed operational failures across timestamp skew, missing dependencies, stale generated outputs, toolchain and platform changes, ambiguous keys, partial publication, missing blobs, eviction, remote outages, expensive transfer, hostile writers, poisoned namespaces, clean-build divergence, and promoted-artifact response. The controls are actionable and evidence limits explicit. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified undergraduate progression from vocabulary through graph and key models, one conditional proof, two counterarguments, one executable seven-outcome trace, fifteen misconceptions, ten distinct worked examples, and five exercises progressing from classification and derivation through diagnosis, design, and transfer to a cached data pipeline."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable-snippet, conceptual, practitioner, and pedagogical evidence only; no external build-system, compiler, distributed-storage, security, data-governance, academic, or independent practitioner review is claimed. Sources, models, one local execution, and internal reviews do not establish dependency completeness, hash collision impossibility, cache integrity, artifact correctness, production performance, security, privacy compliance, or release authorization."
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-021",
+  "chapter_digest": "9b1a341d41f98076c323b1bf71a1ca79c07c46f470a299a9044021d83f10930c",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked the Pearson GoF catalog record, current Microsoft Anti-Corruption Layer guidance, current Rust TryFrom documentation, Oracle InputStreamReader API documentation, and bibliographic records for the Evans, Kleppmann, and Feathers books. Semantic-refinement claims are bounded by explicit target and source contracts."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked valid source subset, partial mapping, target invariant, trace refinement, loss function, reverse mapping, and observational round-trip notation."
+      ],
+      "notes": "Syntactic conformance is explicitly separated from semantic, timing, error, side-effect, and authority refinement."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed (770-320)*5000/90 as 25000 millidegrees Celsius.",
+        "Reproduced station, 25.000 Celsius, one successful legacy call accounting, and bad-quality rejection output."
+      ],
+      "notes": "The exact integer result is claimed only for the demonstrated value; nonintegral conversions require a separately declared rounding rule."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Traced identity and quality validation before target construction.",
+        "Checked accepted-source-to-target-invariant implication and the conditional bidirectional round-trip law.",
+        "Verified unrepresentable conversion and invalid quality lead to errors rather than target values."
+      ],
+      "notes": "No universal lossless mapping or operational refinement is inferred from the finite adapter."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed missing/null/empty/unknown, enum evolution, identity collision/reuse, encoding, Unicode, unit rounding/overflow/range, ambiguous local time, sequence wrap/restart, and timestamp precision.",
+        "Reviewed sync/async blocking, cancellation, timeout, pagination, streaming/backpressure, duplicate delivery, indeterminate commit, transaction mismatch, credentials, injection, versioning, migration, aircraft, payment, and intensive-care cases."
+      ],
+      "notes": "The chapter requires rejection or target-contract change whenever the adaptee cannot satisfy a stronger required property."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked target-owned vocabulary; explicit unit/encoding/identity/null/range/time/enum mapping; typed loss/error; compatible operational semantics; owned resources/affinity; narrowed authority; stated round trips; and layered observability."
+      ],
+      "notes": "Examples and answers preserve rejection and provenance rather than manufacturing valid-looking defaults."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed finite temperature conversion and validation path line by line.",
+        "Reviewed refinement obligations against target precondition/result/error/side-effect statements.",
+        "Confirmed stronger atomicity, precision, ordering, or timing is not claimed without an added mechanism."
+      ],
+      "notes": "Physical calibration, sensor accuracy, concurrency, network, timestamp validity, and clinical/avionics safety remain outside the proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited compatible, equivalent, exact, lossless, valid, refinement, round trip, atomic, async, durable, proof, and safety language."
+      ],
+      "notes": "Round-trip claims have domains and observational equivalence; proposed expert and operational evidence is not described as completed."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-021/report.json",
+        "Reproduced exact conversion and rejection trace.",
+        "Network, concurrency, fuzz, differential, protocol, device, calibration, avionics, and clinical evidence remain future requirements."
+      ],
+      "notes": "No production compatibility, physical accuracy, external practitioner, academic, aviation, or clinical review is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter distinguishes structural from semantic adaptation, defines partial/lossy/refining mappings, and integrates units, identity, time, errors, asynchronous effects, transactions, security, and migration."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "The guidance supplies mapping inventories, explicit target errors, bounded blocking bridges, pagination/backpressure contracts, contract/property/fuzz/differential tests, safe diagnostics, version support, and adapter retirement."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter builds from a formal target/adaptee relation through practical boundary dimensions, provides a runnable exact conversion, ten diverse examples, and five exercises with complete design and high-stakes answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

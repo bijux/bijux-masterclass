@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-042",
+  "chapter_digest": "6892980037fd82de500ebad28db9cba414fcc26113ec01095babf1f72c3aeb6c",
+  "review_date": "2026-08-31",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked current NASA Decision Analysis, Design Solution Definition, Technical Assessment, and Technical Data Management guidance; official NASA records for the Systems Engineering Toolbox and Risk-Informed Decision Making Handbook; official GAO representations for GAO-15-37 and GAO-07-759; current official NIST decision-support publication metadata; and official ISO metadata for ISO/IEC/IEEE 15288:2023. NASA web and NIST resources returned HTTP 200. Two NTRS endpoints timed out and GAO/ISO returned HTTP 403 to the command-line client after their official representations had already been inspected through the web retrieval path. The chapter treats weighted scoring as one bounded method within decision analysis, not as the default or automatic decision rule."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed feasible alternatives, criteria, raw performance, value mappings, evidence, global and hierarchical local weights, additive scores/contributions, score differences, intervals, break-even parameters, and study-baseline identity.",
+        "Confirmed local hierarchical weights are multiplied along root-to-leaf paths and additive/envelope equations require explicit nonnegative weights and model assumptions."
+      ],
+      "notes": "The chapter keeps raw performance, preference values, weighted contributions, recommendation, and final decision as separate layers."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed weighted-trade-matrix-check and reproduced weight sum 1.000, scores A 0.675, B 0.705, C 0.705, ranking B-C-A by deterministic tie-break, top tie, and 0.030 margin over A.",
+        "Recomputed Answer 1 totals A 0.66, B 0.67, C 0.69 with exact contribution sums and margins 0.02, 0.01, and 0.03.",
+        "Recomputed Answer 2 global leaf weights 0.385, 0.165, 0.18, 0.12, 0.075, and 0.075 summing to 1.0; and Answer 3 fixed-anchor values about 0.8889 and 0.6667."
+      ],
+      "notes": "All displayed arithmetic agrees with independent recomputation. Alphabetical tie-breaking is explicitly not a preference rule, and close margins are not treated as robust separation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Confirmed mandatory screening defines the feasible set before compensatory scoring and contribution sums reproduce total score.",
+        "Confirmed global weights are products of conditional local weights and reconcile only when sibling sets and hierarchy are complete.",
+        "Confirmed alternative-dependent min-max normalization changes B from 0 to 0.75 after adding a dominated option, while fixed anchors preserve A/B values."
+      ],
+      "notes": "The interval score bound is correctly labeled as an envelope rather than a probability statement and preserves dependence limitations."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Challenged sponsor-shaped alternatives, unequal maturity, hidden pruning, unsupported 1–10 cells, alternative-dependent normalization, hierarchy weight errors, causal double counting, missing-value midpoint substitution, hidden formulas/overrides, and result-driven method changes.",
+        "Reviewed mandatory/veto constraints, ordinal scales, interacting preferences, uncertainty/correlation, affected-group distributions, conflicts of interest, rank reversal, close ties, independent review, lower-score decisions, and changed supplier alternatives.",
+        "Reviewed all ten examples and five answers for raw evidence, scale/weight semantics, dominance, break-even, reproducibility, uncertainty, authority, and bounded conclusions."
+      ],
+      "notes": "Consequential studies still require applicable domain, decision-science, safety, security, economic, ethical, human-factors, regulatory, operational, and affected-stakeholder review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced charter, alternative generation/comparability/pruning, mandatory screening, raw-evidence visibility, fixed scale, swing-weight authority, hierarchy reconciliation, compensation, missingness, dominance/Pareto, uncertainty/sensitivity, reproducibility, recommendation/decision distinction, and controlled update invariants throughout the chapter.",
+        "Confirmed evidence estimate, preference mapping, weighted result, analyst recommendation, and authority decision remain separately auditable.",
+        "Confirmed study history is baselined rather than overwritten after evidence or alternative changes."
+      ],
+      "notes": "A weighted matrix is consistently treated as one transparent decision-support artifact rather than objective proof of the best alternative."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents matrix and break-even relations but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed feasible, validated, protected, objective, robust, dominant, preferred, representative, accurate, independent, current, and complete language for explicit scope and evidence basis.",
+        "artifacts/snippets/SYSENG-042/report.json records exact local execution evidence for the nominal weighted-matrix checker.",
+        "Expert, model, simulation, prototype, test, supplier, cost, schedule, reliability, human, field, and operational evidence is bounded by configuration, scenario, provenance, uncertainty, correlation, and limitations."
+      ],
+      "notes": "No external review is claimed. Correct arithmetic, a top score, or an independent method review is never presented as proof that alternatives, evidence, preferences, or final choice are correct."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked trade study, charter, trade space/tree, screening, performance/value matrices, weighted score, local/global weights, rank reversal, break-even, study baseline, and independent review. Constraints, raw evidence, preferences, aggregation, recommendation, and decision remain distinct."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked nominal ties, hierarchical weights, thermal feasibility, normalization rank effects, causal double counting, overlapping intervals, break-even weights, supplier missing evidence, role separation, supplier change, weak-matrix recovery, and medication-delivery architecture. Each case ties calculation to evidence, authority, uncertainty, reproducibility, and change control."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from charter/roles and alternative generation through feasibility, objective hierarchy, raw matrix, scales/weights/hierarchy, qualitative/missing evidence, dominance, reproducible calculation, contributions, break-even, uncertainty/sensitivity/rank reversal, information value, independent review, recommendation, decision, and baseline. Ten examples and five complete answers require scoring, hierarchy arithmetic, normalization critique, audit recovery, and sociotechnical study design."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, practitioner, decision-science, architecture, mechanical, electrical, thermal, fluid, software, data, control, safety, security, privacy, accessibility, human-factors, economics, ethics, supplier, operations, verification, validation, regulatory, clinical, or affected-stakeholder review is claimed."
+}

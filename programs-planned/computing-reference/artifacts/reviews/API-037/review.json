@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "module_id": "API-037",
+  "chapter_digest": "b788219e7c3ee46128aa5458b34e3c98d87c0946929adb76c19805d53a0e3d13",
+  "review_date": "2026-09-01",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 5,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-01",
+    "notes": "Checked RFC 9110 directly for idempotent method and automatic-retry semantics; checked IETF Datatracker for draft-ietf-httpapi-idempotency-key-header-07 content and its expired work-in-progress status; checked Stripe's current documented key, parameter-comparison, outcome-storage, and pruning policy as one deployed example; and checked current AWS retry-safe API and transactional-outbox guidance for caller-provided identity, late-arriving requests, and dual-write recovery."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed scoped key tuple K, record mapping M(K), fingerprint/state/outcome/expiry components, request scope and fingerprint functions, live-record mismatch rule, and deduplication-horizon terminology."
+      ],
+      "notes": "All symbols are introduced, and the at-most-one claim is bounded by scope, consistency, paths, and retention."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed six deterministic cases: first create 201 stored, same-fingerprint replay 201, changed fingerprint 409, concurrent pending 409, same key in another scope 201, and reuse after modeled expiry 201."
+      ],
+      "notes": "Exact output is recorded in artifacts/snippets/API-037/report.json and is explicitly not evidence of database or multi-region atomicity."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked absent-to-pending first-writer exclusion, same-key same-fingerprint observation, same-key different-fingerprint rejection, and terminal replay without protected re-execution.",
+        "Checked that final expiry removes the finite-horizon guarantee and that a tombstone can extend duplicate prevention without retaining a full response."
+      ],
+      "notes": "HTTP method idempotence, logical-operation deduplication, and byte-identical replay remain distinct."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed cross-tenant/actor/operation/version collisions, raw versus semantic payload equality, simultaneous first writers, process and commit crashes, pending lease expiry, remote timeout, authorization revocation, volatile response fields, retention races, delayed messages, regional partitions, oversized keys, and storage exhaustion.",
+        "Reviewed malformed, pre-execution validation, stable rejection, definitive transient, committed, and ambiguous outcomes for record policy."
+      ],
+      "notes": "Identity, semantic equality, ownership, effect, observation, time, regional consistency, and security boundaries are explicit."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced opaque bounded keys, verified scope, one live fingerprint, pre-effect claim, single owner, effect/outcome recoverability, no blind pending takeover, current observation authorization, bounded retention, and raw-key secrecy through exposition, examples, and answers.",
+        "Verified that no example treats cache lookup, key possession, lease expiry, timeout, or an expired IETF draft as stronger evidence than it supplies."
+      ],
+      "notes": "Every strong guarantee names the authoritative consistency and retention boundary."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No formal proof of all implementation paths, global uniqueness, or exactly-once distributed effects is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The mapping and transition rules define obligations rather than a proof of a deployed system."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable state model explicitly disclaims database atomicity, crashes, multi-region consistency, and remote effects.",
+        "Stripe behavior is labeled as one deployed provider policy rather than a universal standard, and the IETF document is labeled expired work in progress rather than an RFC."
+      ],
+      "notes": "Source retrieval and finite execution are bounded internal evidence only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed method semantics, client responsibilities, verified scope, versioned fingerprinting, atomic first ownership, pending behavior, local/workflow coupling, outcome classification, semantic replay, authorization, retention/tombstones, abuse protection, regional consistency, and crash testing as one finite-horizon deduplication model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed header limits and duplicate fields, canonicalization hazards, unique claims, leases and reconciliation, local and remote crash gaps, stored response sensitivity, volatile headers and signed URLs, metrics cardinality, cleanup races, failover, partitions, schema deployment, and operational repair."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Reviewed the one-page retrieval aid, lifecycle-first exposition, executable six-case state model, ten distinct worked examples, and five exercises advancing from contract definition through workflow states, diagnosis, replay design, and multi-region verification."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source-retrieval, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external academic, IETF consensus, practitioner, security, payment, multi-region, performance, production, or independent validation review is claimed."
+}

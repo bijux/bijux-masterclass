@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-016",
+  "chapter_digest": "656e2e6fe24ba3197fa19650792067c0bc56ee3f46400b590430e869f13bd1e4",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked the current Martin Fowler test-double article and OWASP ASVS 5.0.0 record. The official ISO catalogue endpoint returned HTTP 403 to the command-line client; its ISO/IEC/IEEE 29119-2:2021 edition metadata remained independently reviewable. Durable testability, seams, fixtures, delivery, and architecture-tactics claims were reviewed against the cited books."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the transition-system tuple, finite-sequence reachability, immediate and future observational distinguishability, feedback-time decomposition, and repeated-detection probability.",
+        "Confirmed domains, codomains, elapsed-time units, nonnegative components, probability bounds, and deterministic-model and independence limitations are stated."
+      ],
+      "notes": "The notation makes controllability and observability relative to declared states, permitted inputs, outputs, permissions, and claims."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed configuration combinations as 2 x 3 x 4 = 24.",
+        "Recomputed 1 - 0.9^20 = 0.8784233454, approximately 87.84% under the hypothetical independent stable-probability model.",
+        "Recomputed feedback time as 12 + 8 + 15 + 25 = 60 seconds and confirmed diagnosis is the largest term at 25 seconds."
+      ],
+      "notes": "All displayed arithmetic matches independent calculation, and the probability example explicitly rejects rerun-until-green conclusions."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified that controllability requires existence of a permitted finite input sequence reaching the target state from the setup state.",
+        "Verified that unequal observation outputs immediately distinguish states, while equal immediate outputs do not exclude distinction by a future experiment sequence; checked that feedback decomposition preserves consistent time units."
+      ],
+      "notes": "The deterministic transition function is explicitly a simplified model and is not extended to a claim that production concurrency is deterministic."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed hidden clocks, observationally identical states, mock drift, escaping transactional side effects, asynchronous sleeps, combinatorial interaction, flaky probability, destructive reset, production fault injection, sensitive test data, concurrency, cleanup interruption, and external services.",
+        "Checked infusion-pump and floodgate-control transfers for physical testing, safe test modes, qualified authority, and explicit readiness blockers."
+      ],
+      "notes": "The examples cover control, observation, fidelity, isolation, fault injection, asynchronous evidence, configurations, flakiness, privileged reset, and high-consequence systems."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced requirement-derived claims, permitted control, boundary observation, sound oracles, isolated state, faithful seams, bounded nondeterminism, protected test authority, reproducible evidence, and no overclaim through exposition, examples, and answers."
+      ],
+      "notes": "Architectural test facilities remain constrained by production security, privacy, availability, and safety boundaries."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed reachability and distinguishability definitions against their transition and observation premises.",
+        "Confirmed that repeated-detection probability depends on independent runs with stable p and that test results are never asserted to prove absence of defects or universal correctness."
+      ],
+      "notes": "The formal material establishes properties of the declared test model and evidence sensitivity, not complete system verification."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of deterministic, reproducible, faithful, prove, correctness, representative, testable, verified, probability, evidence, and external review."
+      ],
+      "notes": "No proof sketch is presented; model, simulation, test, observation, standard, and internal-review claims are explicitly bounded."
+    },
+    "empirical_evidence_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No new test run, experiment, benchmark, executable snippet, or reproduced empirical result is presented. Test and fault exercises are designed as evidence procedures rather than claimed outcomes."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed testability scenarios, controllability, observability, oracles, seams, doubles, state isolation, asynchronous behavior, replay, fault injection, diagnostics, production protection, layered evidence, flakiness, and reproducibility for conceptual coherence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed clock and scheduler control, operation identity, provider fidelity, transactional side effects, namespace cleanup, condition-based waiting, concurrency schedules, blast-radius controls, synthetic data, test credential scope, quarantine governance, and evidence retention. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles testability distinctions, bounded transition-system and probability models, tactic trade-offs, twelve misconceptions, ten distinct worked examples, and five progressive exercises with complete answers ending in unfamiliar floodgate-control transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

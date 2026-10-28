@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-063",
+  "chapter_digest": "96ba715ac123b63ecf991f6814c1fdb8dbb7f71a4e629af9458df57f6317bd60",
+  "review_date": "2026-08-31",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked IEC 61078:2016 and current IEC TC 56 status; NASA-STD-8729.1A, current NASA reliability/maintainability resources, KSC preferred practices and Lesson 825; NASA tri-agency mission-extension guidance and Systems Engineering Handbook; and NIST survival/complex-system formulas. All ten final URLs returned HTTP 200. Claims distinguish normative requirements, agency practices, statistical identities and the chapter's engineering synthesis."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed binary success structure, coherence and series/parallel reliability expressions.",
+        "Reviewed identical-independent k-out-of-n binomial expression and its scope.",
+        "Reviewed exponential lifetime and additive series-hazard relation.",
+        "Reviewed exact independent-state enumeration, minimal path/cut and hazard notation."
+      ],
+      "notes": "Reliability, failure probability/rate/frequency, availability and maintainability are consistently distinguished."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed rbd-series-parallel-fixture under python3 with exact output recorded in artifacts/snippets/SYSENG-063/report.json.",
+        "Enumerated all sixteen states and confirmed their probabilities sum to 1.00000000.",
+        "Recomputed sensor parallel reliability 0.99960000 and system reliability 0.95991588.",
+        "Recomputed single-sensor reliability 0.94109400 and modeled gain 0.01882188.",
+        "Recomputed worked series 0.941094, parallel-with-bus 0.97755, 2-of-3 0.998816, exponential 0.98020 and exercise values 0.921888/0.95876352/0.972."
+      ],
+      "notes": "Arithmetic assumes declared independent, capacity-sufficient success events and does not validate block data or real architecture."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Confirmed the fixture structure is (sensor_a OR sensor_b) AND controller AND actuator.",
+        "Confirmed two minimal paths and three minimal cuts by logical duality and direct inspection.",
+        "Confirmed structure monotonicity over every componentwise-comparable enumerated state.",
+        "Confirmed series and parallel formulas derive from intersection and complement under independence.",
+        "Confirmed exact enumeration requires a joint distribution when component states are dependent."
+      ],
+      "notes": "Static coherent identities are not applied to standby, repair, sequence or noncoherent systems without a suitable model."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Challenged physical-schematic substitution, vague success, mixed mission phases, degraded capacity and incompatible paths.",
+        "Reviewed series, parallel, unequal/identical k-of-n, bridge, noncoherent and dynamic structures.",
+        "Reviewed active/standby, dormancy, detection, isolation, switching, delay, load sharing and repair semantics.",
+        "Reviewed shared design/software/power/environment/process/maintenance/operator, CCF and double counting.",
+        "Reviewed constant-rate, demand/cycle/wear-out/systematic failure, units/time bases, censoring and sparse demonstrations.",
+        "Reviewed solver identity/reduction/enumeration/BDD/simulation, truncation, convergence and limiting cases.",
+        "Reviewed importance/allocation misuse, uncertainty, redundancy-created modes and lifecycle configuration changes.",
+        "Reviewed all ten examples and five complete answers for assumptions, reasoning, limitations and bounded conclusions."
+      ],
+      "notes": "Production RBDA still requires domain, reliability/statistical, software/human, maintainability/logistics, common-cause, test, configuration, tool and decision-authority review appropriate to consequence."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Confirmed function, threshold, mission/time, configuration/environment and repair credit precede modeling.",
+        "Confirmed functional success connectivity remains distinct from physical topology.",
+        "Confirmed shared dependencies and coverage are explicit rather than hidden by parallel boxes.",
+        "Confirmed block data retain distribution, units, population, provenance, uncertainty and applicability.",
+        "Confirmed structural, dependency, stochastic, computational, empirical and decision validity remain separate gates.",
+        "Confirmed model updates retain historical baselines and no prediction is labeled demonstrated reliability."
+      ],
+      "notes": "Nominal redundancy and calculated precision never substitute for independence, capacity, evidence or acceptance."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter derives standard reliability identities but presents no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The fixture labels evidence synthetic_independent_events_only and lists excluded phenomena.",
+        "IEC edition/stability and NASA/NIST publication status are attributed.",
+        "Every quantitative example names independence, mission, lifetime or capacity assumptions.",
+        "Zero-failure demonstration is explicitly an upper-bound example rather than proof of reliability one.",
+        "No external review, real-system reliability, independence, common-cause completeness, safety or design acceptance is claimed."
+      ],
+      "notes": "Predictions and demonstrations are treated as distinct bounded evidence."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked reliability, RBD/block, series/parallel/k-of-n, active/standby redundancy, minimal paths/cuts, coherence, mission reliability versus availability, common cause, coverage and importance."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked success definition, functional modeling, capacity, redundancy, lifetime/time bases, repair, paths/cuts, bridge networks, dependencies, double counting, importance, allocation, uncertainty, structural/tool/empirical validation, action and lifecycle maintenance."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from success-space semantics through closed forms, complex/dynamic cases, evidence and decision use. Ten examples isolate recurring errors; five complete solutions cover shared-dependency construction, series-parallel arithmetic, voting, standby and lifecycle validation."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external IEC/NASA/NIST expert, reliability statistician, domain architect, software/human-reliability specialist, operator/maintainer/logistics owner, common-cause analyst, test/demonstration authority, solver vendor, independent V&V, safety, certification, technical-authority or design-acceptance review is claimed."
+}

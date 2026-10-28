@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "module_id": "DSE-085",
+  "chapter_digest": "d19386887879b9a1ec351956484a6925e4997c95c515078a728ae1ff7d506e10",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed the original HLL analysis, primary HLL++ engineering paper, Ertl estimator papers, a recent estimator analysis, and current Apache DataSketches HLL documentation/API. All seven final destinations returned HTTP 200. Error, correction, sparse-mode, set-operation, and implementation claims remain scoped to the cited estimator and library families."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked distinct set D, cardinality n, hash width L, precision p, register count m, index j, rank rho, registers M[j], zero count V, estimators, alpha_m, relative error, and RSE.",
+        "Checked index/rank bit conventions are described as implementation choices that must remain consistent.",
+        "Checked raw, linear-counting, empirical, HIP, and maximum-likelihood estimators are not treated as interchangeable."
+      ],
+      "notes": "Cardinality of semantic values is separated from cardinality of canonical finite hashes."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the fixture as p=5, m=32, V=3, raw 67.6719881481, linear-counting 75.7479556522, and relative error -0.0531505543 for truth 80.",
+        "Recomputed p=12 RSE 1.625 percent and p=14 RSE 0.8125 percent with four times the registers.",
+        "Recomputed exercise values: p=10 gives 1024 bytes and 3.25 percent; p=12 gives 4096 and 1.625 percent; p=16 gives 65536 and 0.40625 percent.",
+        "Recomputed inclusion-exclusion example as 1000000+1010000-2020000=-10000."
+      ],
+      "notes": "Unpacked byte counts exclude all framing, metadata, sparse state, object, alignment, and allocator costs as stated."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified duplicate idempotence from max(max(a,r),r)=max(a,r).",
+        "Verified componentwise union inherits associativity, commutativity, and idempotence from scalar maximum.",
+        "Verified geometric rank tail motivates logarithmic state and stochastic averaging, while the chapter does not claim to rederive alpha_m.",
+        "Verified linear counting m ln(m/V) is defined only for V>0 and finite-hash rank bounds depend on L-p."
+      ],
+      "notes": "The full analytic HLL bias and variance theorem remains attributed to the primary paper."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty, duplicate-only, sparse-transition, dense, zero-register exhaustion, high-cardinality, hash-collision, and rank-censoring regimes.",
+        "Reviewed malformed high ranks, packed exceptions, checksums, incompatible precision/hash/seed/schema/rank/estimator, downsampling, unsupported upsampling, and corrupt union inputs.",
+        "Reviewed deletion, sliding windows, reset races, late events, concurrent snapshots, sparse conversion, crashes, stale generations, and estimator migration.",
+        "Reviewed chosen inputs, small-domain reversal, differencing, intersection instability, cohort privacy, and exact fallback."
+      ],
+      "notes": "The executable model excludes sparse packing, corrections beyond original linear counting, finite-hash saturation experiments, malformed input, concurrency, persistence, privacy, and adversarial hashes."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "The model hashes 80 distinct integers into 32 registers, leaving exactly three zeros and maximum rank six.",
+        "Replaying all 80 values leaves the complete register array unchanged.",
+        "Max-union of ranges 0 through 59 and 40 through 79 exactly equals direct construction over 0 through 79.",
+        "The fixture checks merge commutativity and idempotence and exact fifteen-line output."
+      ],
+      "notes": "The deterministic mixer and unpacked registers are teaching fixtures, not a validated production HLL implementation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed value update from canonical hash through index, finite-suffix rank, and monotone register maximum.",
+        "Reviewed array union laws and the compatibility premise needed for each coordinate to retain the same meaning.",
+        "Reviewed estimator mechanism from geometric tails through register partitioning, harmonic aggregation, normalization, and regime correction.",
+        "Reviewed why neither register minimum nor naive inclusion-exclusion supplies a generally reliable intersection contract."
+      ],
+      "notes": "No new proof of HLL asymptotic constants, confidence coverage, joint estimator, compressed representation, or concurrent protocol is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The rank intuition and estimator argument are labeled as mechanism rather than a replacement for the original analytic proof.",
+        "RSE is labeled as a modeled standard-error scale rather than a deterministic bound.",
+        "The finite model's exact algebraic checks are separated from statistical estimator validation and production fitness."
+      ],
+      "notes": "Implementation-specific sparse, downsampling, estimator, and set-operation behavior is explicitly delegated to versioned contracts."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library Python model passed exact fifteen-line stdout, empty stderr, and zero exit status under the repository verifier.",
+        "Independent arithmetic reproduced fixture estimates, RSE/storage examples, linear counting, and intersection subtraction.",
+        "All seven external destinations returned HTTP 200 and repository-local front-matter, section, local-link, example, exercise, answer, and snippet checks passed before review."
+      ],
+      "notes": "No multi-seed bias/RSE/coverage study, production hash characterization, large-cardinality run, sparse/dense implementation, set-intersection experiment, throughput benchmark, concurrent/crash test, privacy analysis, or deployment was run."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter connects geometric rank observations to harmonic estimation, separates logical state from encoding and estimator, and treats union as a compatibility-qualified semilattice."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed canonicalization, finite hashes, rank bounds, sparse/dense conversion, packing, estimator versioning, union validation, downsampling, windows, generation fencing, corruption, atomic max/snapshots, observability, privacy, testing, and migration."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet exposes estimator and merge boundaries; the finite model makes duplicates and overlap visible; ten examples cover rank, sizing, correction, replay, union, incompatibility, intersection, corruption, windows, and migration; five exercises progress to diagnosis and privacy-sensitive architecture."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic, Flajolet, Fusy, Gandouet, Meunier, Heule, Nunkesser, Hall, Ertl, Pettie, Wang, Apache, database, data-engineering, distributed-systems, security, privacy, performance, or independent practitioner review is claimed. The chapter and model prove neither a production HLL/HLL++ implementation, empirical RSE or interval coverage, compatible compressed format, intersection estimator, concurrent/persistent union service, privacy guarantee, certification, nor deployment fitness."
+}

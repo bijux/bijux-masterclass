@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "API-011",
+  "chapter_digest": "d6d7e00b9372c4a6081fa8f52d1a325cfb352ab63cb0f4c483d1c47822ab2905",
+  "review_date": "2026-09-01",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 3,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-01",
+    "notes": "Checked the published ISO/IEC/IEEE 29148:2018 catalogue record and its 2026 revision status, RFC 9110, and the authoritative OpenAPI Specification 3.2.0. The chapter distinguishes requirements discovery from HTTP semantics and interface description."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "sets A, O, R, S, and K",
+        "relations N, C, and T",
+        "uncovered and unjustified set comprehensions"
+      ],
+      "notes": "Every symbol and relation is defined before its use, and all expressions use GitHub-compatible math delimiters."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter contains illustrative thresholds and quantities but makes no derived numerical claim requiring recomputation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "an uncovered requirement has an empty related-scenario set",
+        "an unjustified contract element has an empty related-requirement set",
+        "coverage is evidence under declared conditions rather than completeness proof"
+      ],
+      "notes": "The relation and set-comprehension claims follow directly from the declared definitions; their limits are stated."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "empty and maximum collections",
+        "lost responses and retries",
+        "concurrent state transitions",
+        "unauthenticated and unauthorized actors",
+        "partial success",
+        "offline operation",
+        "dependency timeout and ambiguous commitment"
+      ],
+      "notes": "Examples and exercises cover normal, boundary, failure, concurrency, recovery, and abuse distinctions without claiming exhaustive state-space coverage."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "outcome-first",
+        "observability",
+        "bounded fault model",
+        "minimal surface",
+        "honest ambiguity"
+      ],
+      "notes": "The proposed workflow, examples, and answers preserve the five stated requirements invariants."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No formal theorem or implementation-correctness proof is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The limited coverage argument is explicitly bounded and is not presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "stakeholder statements are treated as evidence rather than authority",
+        "tests and interface-description validation are bounded",
+        "traffic and incident evidence require interpretation"
+      ],
+      "notes": "The chapter makes no empirical performance or production-conformance claim and clearly bounds observational evidence."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed actor and outcome discovery, evidence classification, atomic requirements, scenario coverage, quality measurement, failure semantics, traceability, and change governance."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed retries, ambiguous commitment, pagination under mutation, authorization disclosure, partial success, asynchronous recovery, offline clients, quality conflicts, and public-surface cost."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Ten worked examples have distinct diagnostic purposes; five exercises progress from classification through rewriting, scenario design, contract comparison, and safety-critical transfer, with complete corresponding answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

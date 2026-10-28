@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "module_id": "SDRE-041",
+  "chapter_digest": "7ebbf9067ff7d9ab939d50387ae015a0a164e3a532e3793dcbcbd471418a05b1",
+  "review_date": "2026-09-06",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-06",
+    "notes": "Checked all eight sources for identity, authority, current status or publication date, and bounded claim scope. IFIP WG 10.4 identifies the 2004 dependability taxonomy; the official ISO record identifies ISO/IEC 25010:2023 edition 2 and its product-quality model. Google SRE sources support risk trade-offs, time/request availability, service usability, durability, and integrity/recovery distinctions. Current PostgreSQL 18 documentation supports WAL and synchronous-replication acknowledgment examples. Seven URLs returned HTTP 200; ISO's official page was retrieved successfully through browser search but returned HTTP 403 to direct curl due its access policy. Checked 2026-09-06."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Defined service contract, failure time, survival function, eligible time and operations, alternating cycle means, object cohorts, loss and evaluable sets, component availabilities, and model assumptions before formal use."],
+      "notes": "Checked probability, expectation, finite sets, ratios, products, complements, exponential notation, percentages, inequalities, and all TeX delimiters for GitHub rendering."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Recomputed the executable fixture as 350/360=97.22% time availability, 1400/1500=93.33% request availability, 3/6=50% mission reliability, and equal ratio-of-means 97.22%.", "Recomputed 1800/1830=98.3607%, 10350/10520=98.3840%, and equal-region mean (99%+90%+0%)/3=63%.", "Recomputed 720/722=99.723%, 720/721=99.861%, exp(-0.1)=90.4837%, series 0.999*0.99=98.901%, ideal parallel 1-0.01^2=99.99%, and 980/982=99.7963%.", "Executed reliability-availability-model under CPython 3.14.4 with four exact output lines, empty stderr, and zero exit."],
+      "notes": "Percentages are tied to their exact populations and assumptions; rounding is disclosed by displayed precision."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Checked R(t)=P(T>t), exponential R(t)=exp(-lambda*t) under constant hazard, renewal fraction U/(U+D), weighted request aggregation, and cohort durability.", "Derived independent series availability as A1*A2 and ideal parallel availability as 1-(1-A1)(1-A2)."],
+      "notes": "Stationarity, complete cycles, independence, perfect failover, coverage, integrity, and positive-denominator hypotheses are explicit."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Reviewed correct-but-late, available-but-corrupt, durable-but-offline, accepted-but-not-persisted, retries, cancellation, partial regions, zero demand, planned maintenance, incomplete cycles, censoring, intentional deletion, common-cause failure, split brain, failed failover, checksum collision scope, restore failure, and missing telemetry."],
+      "notes": "No available, reliable, or durable classification is inferred from evidence absence."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Traced contract boundary, population/window, availability estimands, reliability/repair separation, acknowledgment/integrity, retry visibility, failure-domain analysis, maintenance policy, indicator-specific nines, and bounded evidence through exposition, examples, and answers."],
+      "notes": "The three central properties remain distinct throughout all examples and exercises."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed survival, renewal-fraction, weighted-aggregation, series/parallel, acknowledgment, and integrity arguments.", "Checked premises for uninterrupted mission time, representative complete cycles, compatible operation populations, component independence, sufficient alternate capacity, persistence boundaries, and correctness predicates."],
+      "notes": "Arguments establish only results within declared models and do not prove production reliability or future failure independence."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Audited reliability, availability, durability, integrity, failure, fault, error, success, acknowledgment, commit, independent, steady-state, empirical, estimated, correct, and guaranteed language."],
+      "notes": "PostgreSQL mechanisms are examples bounded to cited current documentation; medical and service cases are hypothetical."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": ["Executed reliability-availability-model with CPython 3.14.4 and confirmed all four observed ratios.", "Independently recomputed every numerical worked example and exercise answer."],
+      "notes": "No live service, database, storage device, replica, failover, restore, medical system, user population, or long-horizon durability cohort was tested."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed fault/error/failure, contracts, mission reliability, demand availability, windows, retries, acknowledgment durability, integrity, cohorts, redundancy, common cause, prevention/tolerance/removal/forecasting, and evidence limits."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed user/server boundary mismatch, partial availability, retries, maintenance classification, write acknowledgment, WAL/replication semantics, backups, checksums, common dependencies, failover, censoring, restore exercises, and long-tailed repair. Internal practitioner review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from exact vocabulary through survival and repair models, six bounded arguments, one executable model, nine trade-offs, sixteen misconceptions, ten distinct worked examples, ten cross-program connections, and five progressive exercises with complete answers."},
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic, standards, practitioner, database, safety, clinical, or statistical review is claimed. Source retrieval, calculations, and controlled execution do not establish production reliability, availability, durability, independence, restoration capability, certification, or safety."
+}

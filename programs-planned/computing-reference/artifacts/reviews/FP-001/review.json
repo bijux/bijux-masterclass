@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "module_id": "FP-001",
+  "chapter_digest": "c49e24dfffbdeb76ba949b84a5c03148f453a1597fb58a23c048b81eba0ec8ed",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 5,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked Bird and Hutton against Cambridge University Press, Backus against ACM DOI metadata, Hughes against the archival paper and Oxford DOI metadata, and Pierce against MIT Press. The chapter makes durable semantic claims and no tool-version claim beyond the verified Python execution."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked E, V, contexts, admitted context set, observations, terminating and diverging evaluation, contextual equivalence, substitution, and functional-versus-cost observation notation."
+      ],
+      "notes": "Expression, value, effect, error, divergence, contextual equivalence, and referential transparency remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Reproduced all four executable outputs: both pure forms yield 36, two stateful calls yield 3, and one shared stateful result used twice yields 2."
+      ],
+      "notes": "The fixed run is explicitly calibration evidence rather than proof of a general substitution law."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Recomputed (x+2)+3=x+5, 2(x+3)=2x+6, and 3(x+4)=3x+12 under exact integer laws; independently traced the counter exercise from initial state 10 to results 0/state 11 and -1/state 12."
+      ],
+      "notes": "Every algebraic derivation excludes overflow, saturation, floating-point rounding, and overloaded effects unless separately modeled."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked zero, one, and multiple substitution occurrences; strict and lazy evaluation; unused failures; divergence; mutation; logging; time; randomness; hidden configuration; floating-point rounding; mutable cached results; and observable resource cost."
+      ],
+      "notes": "The chapter never treats value equality as automatic trace, termination, or cost equality."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked congruence, explicit dependency completeness, evaluation-count accounting, value-domain law selection, and separation of functional from cost observations throughout examples and answers."
+      ],
+      "notes": "Effects are isolated or represented explicitly rather than declared absent from complete systems."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the distributive derivations line by line and verified the hidden-counter counterexample is sufficient to refute unrestricted inlining; checked all assumptions on contextual replacement."
+      ],
+      "notes": "The contextual equivalence formula is a definition; the chapter does not claim all program expressions satisfy it."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of law, proof, derivation, principle, counterexample, observation, and conclusion; equations name domains and non-formal design guidance is not labeled theorem."
+      ],
+      "notes": "Capture-avoiding substitution and detailed evaluation strategies are explicitly deferred to later modules."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Executable output, memoization, tests, and production replay are bounded to captured inputs, versions, implementation, and observation policy."
+      ],
+      "notes": "No example execution is presented as universal functional correctness or real-world effect success."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter establishes expressions, values, evaluation contexts, contextual equivalence, referential transparency, substitution, and equational reasoning without taking over pure functions, strictness, immutable data, or effect systems from later modules."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Hidden configuration, logging, clock reads, memoization keys, mutable cached results, normalization policy, and replayable fraud decisions connect the semantic principle to realistic engineering boundaries."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Ten examples progress from expression/value classification through pure substitution, hidden effects, time, logs, numerics, strictness, explicit policies, memoization, and production effect isolation; five exercises progress to a versioned replay design with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

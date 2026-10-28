@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "module_id": "API-049",
+  "chapter_digest": "dcf80f0fc19b44379587338dd7a341dd84f9bf0b1efa8ea1ca4ff69de1bc765b",
+  "review_date": "2026-09-01",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 6,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-01",
+    "notes": "Checked all six references at the RFC Editor or official AWS documentation. RFC 9421 confirms selected HTTP component signatures, created/expires/nonce/keyid/tag parameters, application-profile obligations, and replay risks from incomplete coverage. RFC 9530 confirms Content-Digest versus Repr-Digest semantics. RFC 9449 confirms DPoP jti/htm/htu/iat/ath/nonce and replay-ledger limitations. RFC 2104 supplies the HMAC construction; RFC 9110 supplies current HTTP semantics. AWS SigV4 documents canonical request, signed headers, payload hash, credential scope, and time-bound signing as a mature profile example."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed request r, proof p, key record k, signature base B(r,p), validation predicates, replay key tuple, retention inequality, and allow predicate for consistent definitions.",
+        "Confirmed proof verification, TLS, authorization, and business invariant symbols are distinct and all TeX uses GitHub-compatible delimiters.",
+        "Confirmed replay-safe proof, idempotent execution, sender-constrained token, nonce/JTI, and content/representation digest terminology is scoped precisely."
+      ],
+      "notes": "The notation makes the central non-substitution rule visible: valid selected-component proof is only one conjunct of an allowed, nonduplicated business operation."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the executable time boundary: NOW-(NOW-10)=10 is within MAX_AGE=120, while NOW-(NOW-121)=121 is rejected.",
+        "Checked future allowance is at most five model seconds and replay retention prose requires coverage through the final skewed acceptance.",
+        "Verified the RFC 2104 SHA-256 HMAC block size used by the model is 64 bytes and the padding constants are 0x36 and 0x5c."
+      ],
+      "notes": "The model's fixed times and key are deterministic test inputs, not production recommendations for age, skew, key material, or nonce entropy."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Expanded V_proof into key, algorithm, signature-base, time, nonce, context, and content predicates; removing any conjunct recreates a documented relocation, tampering, stale, or replay case.",
+        "Re-derived allow as TLS AND proof AND authorization AND domain invariant, confirming signatures do not imply confidentiality or permission.",
+        "Checked the retention condition t_retain >= t_last-accept and scoped atomic uniqueness are sufficient to prevent a second acceptance of the same nonce under the stated complete-ledger assumptions."
+      ],
+      "notes": "The argument is explicitly conditional on primitive security, key custody, canonicalization/profile completeness, and ledger coverage."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed unsigned/altered method, authority, path, query duplicates/encoding/order, fields, tenant/idempotency data, content/digest/content type, signature metadata, token, redirect, and proxy rewrite cases.",
+        "Reviewed exact replay, concurrent cross-node/region replay, per-process caches, check/insert races, early expiry, clock past/future/skew, challenge/pre-generation, huge nonce/ledger exhaustion, partitions/outage, and fail-open behavior.",
+        "Reviewed raw/parsed JSON, duplicates/Unicode/numbers, content/transfer encoding, streaming/trailers, DPoP body/query limits, HMAC/asymmetric algorithm confusion, key rotation/revocation, presigned URL leakage, legitimate retries, fresh duplicate commands, webhooks, and unsafe logs/errors."
+      ],
+      "notes": "Adversarial review covers cryptographic coverage, HTTP ambiguity, distributed uniqueness, resource exhaustion, credential lifecycle, and domain duplication."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Executed signed-request-replay-model: first request allowed; exact duplicate denied by nonce state; body tampering and target relocation denied by signature; 121-second proof denied by time.",
+        "Checked the hand-coded educational RFC 2104 construction against the inner/outer padded SHA-256 form and comparison scans all equal-length bytes without content-dependent early return.",
+        "Checked signed-component completeness, authenticate-before-ledger-insert, atomic uniqueness, fresh-proof/stable-idempotency retry, key-policy binding, and authorization-after-proof invariants across examples and answers."
+      ],
+      "notes": "The one-process model cannot establish RFC 9421 interoperability, production cryptographic implementation safety, proxy behavior, distributed atomicity, or business execution semantics."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No formal reduction for signature/HMAC unforgeability, canonicalization equivalence, distributed linearizability, sender constraint, authorization, or exactly-once execution is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Confirmed the signature and replay arguments enumerate primitive, key, serializer, profile, verifier, and ledger assumptions and explicitly exclude intent, custody, permission, confidentiality, and business uniqueness.",
+        "Confirmed the executable HMAC is labeled educational and production implementations are directed to maintained cryptographic/protocol libraries.",
+        "Confirmed standards claims, application-profile policy, implementation mechanisms, and operational verification obligations remain distinct."
+      ],
+      "notes": "The chapter never elevates a valid digest/signature, TLS, DPoP, nonce, timestamp, idempotency key, presigned URL, or passing snippet into a universal proof."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Snippet report artifacts/snippets/API-049/report.json records one passing deterministic local signing/replay state model with five exact outcomes.",
+        "Real RFC libraries/test vectors, proxy/CDN/mesh transforms, DPoP/token server, distributed nonce store, clocks, queues, streaming/trailers, key service/rotation, retries/idempotency, fault injection, and attack tests are future evidence obligations."
+      ],
+      "notes": "No production signer/verifier, key custody system, distributed ledger, OAuth deployment, webhook provider, or presigned capability was empirically assessed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed primitive guarantees, RFC 9421 profile coverage, RFC 9530 digest binding, semantic/proxy canonicalization, time plus distributed nonce state, DPoP's exact scope, proof versus business duplication, key/algorithm lifecycle, presigned capabilities, safe verification ordering, observability, and tests as one coherent layered model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Checked implementability through maintained profile libraries, trusted effective-target boundaries, raw bounded content hashing, algorithm/key/profile registry, skew/age policy, authenticate-then-atomic nonce reservation, regional failure policy, fresh signed retry plus stable operation key, rotation overlap, generic errors, safe telemetry, SDK vectors, captured production-like proxy requests, concurrency/fault tests, and resource quotas. Concrete profile parameters remain threat- and topology-specific."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The module begins by separating guarantees, derives component/digest/canonicalization/freshness requirements, then connects DPoP, idempotency, key lifecycle, presigned URLs, operations, and evidence. Ten examples cover distinct coverage, digest, time, distributed, retry, proxy, DPoP, webhook, rotation, and DoS cases; five exercises culminate in offline industrial-device transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

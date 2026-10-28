@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-067",
+  "chapter_digest": "081d801523caca1c8d1d1d5813be5f6589660ef00e8122110f87d0bc71ae4662",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked Hohpe/Woolf and the current EIP Competing Consumers page; current RabbitMQ consumers, acknowledgements/confirms, reliability and 4.3 prefetch documentation; current Apache Kafka introduction/design; current Amazon SQS visibility-timeout and FIFO message-group documentation; and the cited queueing, concurrency and transaction texts. Current product claims name their scope; cross-system recommendations state assumptions and limitations."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked arrival, service, worker, partition, downstream-capacity, utilization, attempt, effect and generation notation for consistent scope.",
+        "Confirmed strict inequalities, minimum-capacity expression, Amdahl bound and attempt/effect subscripts are syntactically and semantically consistent."
+      ],
+      "notes": "The queueing expressions are explicitly labeled idealized bounds rather than product or latency guarantees."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed Example 1: 180 < 30k requires k > 6, so seven workers are the ideal minimum and supply 210 jobs/s before other limits.",
+        "Recomputed Exercise 2: seven-worker ideal minimum; eight-worker and eight-partition capacity 400 jobs/s; downstream bound 360 effects/s; Amdahl speedup 1/(0.2+0.8/8)=3.333....",
+        "Reproduced two attempts, increasing tokens, one rejected stale completion and two final unique effects in the executable trace."
+      ],
+      "notes": "No production arrival, service-time, database-capacity or tail-latency dataset was measured."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived stability condition lambda < k*mu from aggregate idealized homogeneous service capacity.",
+        "Verified effective capacity is upper-bounded by the minimum of worker, partition and downstream capacities.",
+        "Checked E_(m,o)<=1 follows only from an atomic unique or conditional effect boundary; eventual valid execution is separately required for E_(m,o)>=1."
+      ],
+      "notes": "The safety argument does not imply liveness, bounded latency or uniqueness for unguarded remote side effects."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero/one/excess workers, utilization at equality, partition count below worker count, hot keys, heterogeneous work, downstream saturation and retry amplification.",
+        "Reviewed effect-before-ack crash, lost acknowledgement, short/long lease, heartbeat loss, overlapping stale worker, poison work, prefetch hoarding, shutdown/rebalance and mixed-version deployment.",
+        "Reviewed tenant starvation, shared credentials, unauthorized redrive, withdrawn consent, expired clinical work, malformed/unsupported messages and false-green queue metrics."
+      ],
+      "notes": "Real broker/network/database faults, workload skew, security controls, privacy/regulatory constraints and clinical safety still require environment-specific evidence and named human review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced shared responsibility, post-effect acknowledgement, stable operation identity, bounded in-flight work, fencing, scoped order, bounded retry, downstream-aware scaling, deliberate draining and terminal outcome through exposition/examples/answers.",
+        "Checked the finite model increases generation on reassignment, rejects the old worker/token pair, accepts the current pair, and leaves no ready or in-flight work after both jobs complete."
+      ],
+      "notes": "The in-memory model is deterministic and non-durable; its limitations are stated immediately before the snippet."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the unique-effect argument line by line: stable key, atomic uniqueness/conditional transition, racing attempts, at-most-one accepted effect, and separate eventual-execution premise.",
+        "Reviewed the fencing argument line by line: monotone reassignment generation, equality predicate at effect store, stale generation rejection and explicit exclusion of unguarded external effects.",
+        "Reviewed capacity minimum and Amdahl bounds against their declared homogeneous/serial assumptions."
+      ],
+      "notes": "These are scoped safety and upper-bound arguments, not a formal proof of broker implementation, distributed liveness, security, performance or clinical correctness."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited exactly-once, one, every, order, FIFO, stable, safe, current, fair, proof, guarantee and conclusion language for stated identity, atomicity, scope and availability premises.",
+        "Confirmed the chapter distinguishes model, upper bound, safety argument, product behavior, policy recommendation and empirical requirement."
+      ],
+      "notes": "No universal fairness, ordering, liveness, throughput, product or high-stakes safety claim remains unqualified."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-067/report.json",
+        "Reproduced the expected Python 3 trace for claim, lease expiry, reassignment, stale fencing, accepted current completion and final empty queue.",
+        "Recorded that no real queue, partition rebalance, durable transaction, remote effect, autoscaler, authorization system or clinical workflow was executed."
+      ],
+      "notes": "Execution establishes only the deterministic finite-state example under its documented abstractions."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter distinguishes one shared subscription from multiple subscribers and separates assignment, attempt, effect, acknowledgement, lease, fencing, partitioning, retry, scaling and terminal-outcome semantics."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers ownership, push/pull assignment, idempotency, acknowledgement, prefetch, leases/fencing, capacity/skew/order, retry/DLQ, autoscaling, draining/rebalance, version compatibility, security, observability, testing and high-stakes current-state checks."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with explicit notation and mechanisms, one runnable stale-worker model, ten distinct examples and five complete exercises progressing from definitions and capacity derivation to transactional design, production diagnosis and clinical transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

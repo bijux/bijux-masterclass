@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-080",
+  "chapter_digest": "34a0520d1ee6abf662d9cc16a0d2c08da96f3002c788ce6795f0cfae6e421129",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Crossref confirmed the exact Williams-Waterman-Patterson Roofline paper. Current NVIDIA Nsight Compute profiling/user and Nsight Systems guides, CUDA best practices, AMD ROCprofiler Compute/SDK and HIP performance documentation, OpenCL event profiling, and SYCL 2020 revision 12 all resolve and support the scoped timing, counter, replay, roofline, and profiling claims."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions consistently defines baseline/candidate distributions, declared-statistic speedup, useful work, boundary bytes/intensity, compatible compute/bandwidth ceilings, profiler metrics, configuration, hypothesis, and observations.",
+        "Measured, derived, modeled, and assumed quantities remain distinct with compatible units."
+      ],
+      "notes": "Checked ratios, units, boundary subscripts, distributions, statistics, ceilings, configuration, and causal notation."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed sorted medians as 10.1 and 8.0 and median speedup as 10.1/8 equals 1.262500.",
+        "Recomputed operational intensity as 4096/2048 equals 2 ops/byte, bandwidth ceiling as 300 times 2 equals 600 ops/unit, roofline min(1000,600)=600, and achieved fraction 400/600=0.667 rounded.",
+        "Recomputed ridge intensity as 1000/300 equals 3.333 recurring ops/byte.",
+        "artifacts/snippets/CONPAR-080/report.json retains exact arithmetic, output-equivalence flag, empty stderr, zero exit code, and toolchain evidence."
+      ],
+      "notes": "These supplied numbers do not validate samples, operation/byte conventions, peaks, independence, confidence, causality, or correctness."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived simple roofline R=min(P,BW/Q) and ridge P/B with explicit compatibility and boundary assumptions.",
+        "Rechecked measurement-validity and semantic-equivalence arguments across completion, configuration, variation, replay perturbation, numeric/error, and resource evidence.",
+        "Rechecked causal structure from falsifiable hypothesis through predicted source/metric/time movement and a one-factor counterfactual."
+      ],
+      "notes": "The roofline is a conditional envelope and the causal argument requires aligned observations, not correlation."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed cold/warm state, one/many samples, exclusions, drift, interleaving/pairing, outliers, multiple variants, practical versus statistical effect, and inconclusive regression gates.",
+        "Reviewed zero/small/large, alignment/tile tails, dynamic/adversarial inputs, numeric extremes, races/bounds, resource cliffs/spills, nondeterministic/host-interactive replay, counter availability/renaming, and profiler serialization/cache/clock effects.",
+        "Reviewed transfers/queues/concurrency/NUMA, capacity/energy/tails/fairness, failures/fallback, heterogeneous targets, sensitive artifacts, cardiac imaging, and genomic high-stakes cases."
+      ],
+      "notes": "Covers experimental design, semantics, numeric, profiler, hardware, resource, workload, operational, privacy, fairness, and safety boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Baseline/candidate preserve logical workload and declared observations; asynchronous timing reaches the same completion boundary.",
+        "Configuration, raw samples, warm-up, exclusions, tool mode/passes/warnings, metrics/units, compiler resources, and operating state are retained.",
+        "Every transformation rechecks value, identity, synchronization, bounds, numeric/error, lifetime, target, pressure, failure, and fallback behavior.",
+        "Acceptance uses unprofiled end-to-end distributions and intended counter movement without unacceptable tails, capacity, energy, fairness, privacy, or reliability regressions."
+      ],
+      "notes": "Checked invariants from question/baseline through trace, hypothesis, profiling, transformation, revalidation, confirmation, rollout, monitoring, and rollback."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Measurement proof explicitly addresses completion, clock/event domain, workload, state, drift, repetitions, exclusions, and perturbation.",
+        "Roofline proof requires compatible work/peak conventions and named byte/bandwidth boundary.",
+        "Causal proof demands predicted mechanism and timing movement under preserved semantics and controlled factors."
+      ],
+      "notes": "No profiler rule, counter percentage, roofline gap, sample speedup, source check, or snippet is claimed as universal bottleneck, causality, diagnostic validity, certification, or safety."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Every formula identifies supplied/modelled inputs, boundary, statistic, and scope.",
+        "The executable fence disclaims hardware measurement, sample validation/confidence, counter definition, causality, and correctness proof.",
+        "Cardiac imaging and genomics cases name required reviewers and explicitly claim none."
+      ],
+      "notes": "Measurement, derivation, model, hypothesis, tool recommendation, causal support, and high-stakes acceptance remain distinct."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-080 passed with exact stdout, empty stderr, zero exit code, and retained artifacts.",
+        "The chapter separately requires raw unprofiled timing distributions, system timelines, narrow profiler reports, replay/cache/clock/pass records, compiler IR/resources, semantic/sanitizer evidence, and representative workload/target matrices.",
+        "Confirmation separates exploration, uses held-out workloads, records multiplicity/drift/uncertainty, and tests concurrency, pressure, failure, capacity, energy, tails, fairness, and rollback."
+      ],
+      "notes": "The snippet reproduces arithmetic on supplied values only and measures no accelerator."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed objective/baseline, timelines/events, hypotheses, target metrics, memory/scheduler/pipeline evidence, roofline, replay perturbation, transformation/revalidation, variation/inference, automation, privacy, operations, and high-stakes limits."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed complete manifests, release binaries, cold/warm protocols, raw/interleaved samples, system-first tracing, narrow metrics, profiler modes/warnings, counter/source/IR/resource correlation, one-factor experiments, reference/sanitizer/target tests, unprofiled confirmation, practical regression bands, canary/rollback, parser fail-closed behavior, and artifact access/retention."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter teaches an evidence loop before individual metrics, includes one exact timing/roofline arithmetic model, counters seventeen misconceptions, supplies ten distinct examples through cardiac imaging, and ends with five progressive exercises and complete answers including genomics."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external NVIDIA/Nsight/CUDA, AMD/ROCprofiler/HIP, Khronos/OpenCL/SYCL, profiler/runtime/driver/compiler/hardware, statistics/measurement, numerical/scientific, genomics/bioinformatics, cardiology/radiology/medical-physics/reconstruction, security/privacy, operations/SRE, quality/regulatory/certification, human-factors, or safety review is claimed. The chapter and arithmetic model establish neither a real kernel's correctness, bottleneck, causality, speedup, optimality, or portability, nor biological/diagnostic validity, regulatory approval, or deployment safety."
+}
