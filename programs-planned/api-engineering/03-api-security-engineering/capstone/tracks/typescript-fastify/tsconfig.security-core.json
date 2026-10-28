@@ -8,11 +8,19 @@
     "exactOptionalPropertyTypes": true,
     "outDir": "dist-security",
     "rootDir": "src",
-    "lib": ["ES2023", "DOM"],
-    "types": [],
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+    "types": [
+      "node"
+    ],
     "skipLibCheck": true
   },
-  "files": ["../../scripts/typescript_audit_shims.d.ts"],
-  "include": ["src/security/**/*.ts"],
-  "exclude": ["src/security/fastify-app.ts"]
+  "include": [
+    "src/security/**/*.ts"
+  ],
+  "exclude": [
+    "src/security/fastify-app.ts"
+  ]
 }

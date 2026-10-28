@@ -6,7 +6,7 @@ import { signWebhook, verifyWebhook, MemoryReplayStore } from "../dist-security/
 import { AuditChain, pseudonym } from "../dist-security/security/audit.js";
 import { TokenBucket, ConcurrencyLimiter } from "../dist-security/security/abuse.js";
 import { Incident } from "../dist-security/security/incident.js";
-const vectors=new URL("../../../shared/vectors/",import.meta.url);const load=async(n)=>JSON.parse(await readFile(new URL(n,vectors),"utf8"));
+const vectors=new URL("../../../../shared/vectors/",import.meta.url);const load=async(n)=>JSON.parse(await readFile(new URL(n,vectors),"utf8"));
 
 test("exact-byte webhook, freshness and replay",async()=>{const data=await load("webhook.json");const secret=new SecretBytes(data.secret);const item=data.cases[0];const body=new TextEncoder().encode(item.body);const sig=signWebhook({secret,timestamp:item.timestamp,deliveryId:item.deliveryId,keyId:item.keyId,body});const replay=new MemoryReplayStore();verifyWebhook({body,timestamp:item.timestamp,deliveryId:item.deliveryId,keyId:item.keyId,signature:sig,now:item.timestamp,keys:new Map([[item.keyId,secret]]),replay});assert.throws(()=>verifyWebhook({body,timestamp:item.timestamp,deliveryId:item.deliveryId,keyId:item.keyId,signature:sig,now:item.timestamp,keys:new Map([[item.keyId,secret]]),replay}));const altered=new TextEncoder().encode(data.cases[1].body);assert.throws(()=>verifyWebhook({body:altered,timestamp:item.timestamp,deliveryId:item.deliveryId+"x",keyId:item.keyId,signature:sig,now:item.timestamp,keys:new Map([[item.keyId,secret]]),replay:new MemoryReplayStore()}));});
 

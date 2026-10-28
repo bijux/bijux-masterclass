@@ -53,7 +53,7 @@ export function validateAccessToken(input: {
   if (typ !== input.profile.tokenType) throw new SecurityControlError("invalid-token", "JWT type is not accepted", 401);
   if (typeof kid !== "string" || kid.length === 0) throw new SecurityControlError("invalid-token", "JWT key identifier is required", 401);
   const matches = input.jwks.keys.filter((key) => key.kid === kid);
-  if (matches.length !== 1) throw new SecurityControlError("invalid-token", "JWT key identifier is unknown or ambiguous", 401);
+  if (matches.length !== 1 || matches[0] === undefined) throw new SecurityControlError("invalid-token", "JWT key identifier is unknown or ambiguous", 401);
   const key = createPublicKey({ key: matches[0], format: "jwk" });
   const verifier = createVerify("RSA-SHA256");
   verifier.update(`${encodedHeader}.${encodedClaims}`);

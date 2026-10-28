@@ -133,10 +133,10 @@ describe("AnalysisClient", () => {
       bearerToken: "learner-write",
       fetch: fetcher,
     });
-    await expect(client.listArtifacts("run_0001")).rejects.toMatchObject<ApiError>({
+    await expect(client.listArtifacts("run_0001")).rejects.toMatchObject({
       status: 409,
       requestId: "req_012345abcdef",
-    });
+    } satisfies Pick<ApiError, "status" | "requestId">);
   });
 
   it("requires exactly one authentication mode", () => {

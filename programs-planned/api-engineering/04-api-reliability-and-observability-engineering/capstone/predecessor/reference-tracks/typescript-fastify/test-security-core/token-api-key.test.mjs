@@ -5,7 +5,7 @@ import { validateAccessToken } from "../dist-security/security/tokens.js";
 import { SecretBytes } from "../dist-security/security/secrets.js";
 import { digestApiKey, verifyApiKey } from "../dist-security/security/api-keys.js";
 
-const identity = new URL("../../../identity-provider/", import.meta.url);
+const identity = new URL("../../../../identity-provider/", import.meta.url);
 const profile = { issuer:"https://issuer.security.test", audience:"analysis-runs-api", algorithms:["RS256"], tokenType:"at+jwt", clockSkewSeconds:30, maxLifetimeSeconds:900, requiredClaims:["iss","aud","sub","exp","iat","jti","tenant","scope"] };
 const neverRevoked = { isRevoked(){ return false; } };
 

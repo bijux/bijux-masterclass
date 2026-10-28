@@ -134,7 +134,7 @@ export async function buildApp(
     logger: {
       level: settings.environment === "test" ? "silent" : "info",
     },
-    genReqId: (request: FastifyRequest) => {
+    genReqId: (request) => {
       const supplied = request.headers["x-request-id"];
       return typeof supplied === "string" && /^req_[a-f0-9]{12}$/.test(supplied)
         ? supplied
