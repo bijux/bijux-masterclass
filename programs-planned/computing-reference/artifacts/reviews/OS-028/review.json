@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-028",
+  "chapter_digest": "811e51638efd82fead6bceedd45a8dc4a1b1585443d57b8d9a5fcb39a4fa97cd",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 11, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux man-pages for signal concepts, sigaction, masks, synchronous waiting, atomic suspension, signal safety, signalfd, kill, pidfd signaling, and child waits, plus POSIX.1-2024 signal concepts. All 11 cited URLs returned HTTP 200; portable, Linux-specific, source-language, operational, and assurance claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked signal s, disposition D(s), thread mask M_t, process-pending P_p, thread-pending P_t, real-time queue Q(s), authoritative state A, notification state N, progress k, remaining work r, and deadline T.", "Reviewed generation, pending, delivery, disposition, mask, process- and thread-directed signaling, async-signal safety, standard coalescing, and real-time queue terminology."],
+      "notes": "Notation separates kernel notification state, target scope, application state, and interrupted-operation progress."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed five standard-signal generations against a coalescing pending-bit model and confirmed one pending bit and one handler run.", "Confirmed the separately owned work queue drains all five authoritative items."],
+      "notes": "The deterministic illustration omits real signal delivery, threads, masks, memory order, handlers, queue limits, failures, and syscalls."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived deliverability from pending process or thread state plus an eligible thread whose mask does not block s.", "Checked that retry advances by committed progress k and recomputes remaining time from absolute deadline T rather than replaying the original operation."],
+      "notes": "Disposition is modeled process-wide and blocking masks per thread, matching the cited signal contracts."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed generation before and after blocking, repeated standard signals, mixed targets, several eligible threads, pending disposition changes, uncatchable signals, unsafe handler reentry, errno changes, full self-pipe, spurious wait return, and check-then-sleep races.", "Reviewed partial syscalls, EINTR, SA_RESTART limits, deadline extension, real-time queue exhaustion, timer coalescing, child bursts, fault recurrence, alternate-stack failure, fork and exec inheritance, PID reuse, repeated shutdown, overload, and wedged receivers."],
+      "notes": "Delivery, handler, waiting, interruption, timer, child, fault, identity, lifecycle, security, operational, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced single-owner masks, atomic waits, async-safe handler state, coalescing-independent work, partial progress, identity-safe targeting, and lifecycle policy through ten examples and five answers.", "Verified the toy intentionally collapses five generations into one notification while retaining and draining five authoritative items."],
+      "notes": "The chapter does not conflate generation with delivery, notification with acknowledgment, disposition with mask, thread safety with async safety, standard pending state with a counter, or restart with idempotency."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed inventory, ownership, coalescing, handler handoff, atomic waiting, partial progress, lifecycle, overload, authority, and timing-evidence obligations.", "Constructed counterexamples for handler logging, inconsistent worker masks, check-then-pause, discarded read prefix, one-shot child wait, full self-pipe, real-time queue exhaustion, reused PID, returning to an unresolved fault, and complex repeated termination."],
+      "notes": "The chapter supplies reusable signal-control obligations, not a formal proof of a handler, runtime, supervisor, event loop, process-identity system, or real-time response bound."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of atomic, safe, pending, delivered, queued, ordered, restarted, reliable, fatal, bounded, and certification.", "Confirmed POSIX and Linux guarantees, source-language handler constraints, abstract notification state, toy coalescing, operational timing, security authority, and human assurance remain separately scoped."],
+      "notes": "Synchronous acceptance and signalfd are not presented as unlimited queues, and the toy is not presented as operating-system behavior evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-028/report.json records generated count, pending bits, handler runs, and drained work for toy-signal-coalescing under Python 3.", "Reviewed delivery delay, coalescing-sensitive state, wake overflow, interruptions, retries, child status, shutdown stage, deadlines, kernel, runtime, topology, raw results, and probe effects."],
+      "notes": "The passing toy excludes signals, syscalls, scheduler timing, threads, resource limits, and application failure."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed generation, pending state, delivery, dispositions, masks, standard and real-time signals, async handlers, self-pipes, synchronous acceptance, atomic waits, signalfd, interruptions, timers, children, faults, targeting, job control, fork and exec, shutdown, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed sigaction, pthread-style masking, sigwaitinfo, sigsuspend, pselect-style waits, self-pipes, signalfd, partial syscall progress, absolute deadlines, SIGCHLD drains, alternate stacks, kill and pidfd identity, close-on-exec, and supervisor behavior as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from signal state and ownership through handler constraints, synchronous integration, interruption, timers, process lifecycle, shutdown, security, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, POSIX or Linux signal maintainer, runtime or supervisor implementer, event-loop or real-time specialist, security or safety authority, independent verifier, or certification review is claimed."
+}

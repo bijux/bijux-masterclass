@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-005",
+  "chapter_digest": "25ba4009315d8ff742bf497685e35161d81045fa04dff8549c44111b6e5a3555",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 11,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux driver and module-signing documentation, Apple's XNU source overview, QNX microkernel and messaging documentation, seL4's current white paper and primary verification paper, the L4 publication archive, the SPIN project publication, Zircon concepts, and Microsoft mode documentation. Replaced automated-access-blocked ACM links with primary-author or project copies; all 11 final URLs returned HTTP 200."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked C, D, p, auth, G, E, P, TCB(P), f, q, and cross(q) for definition before use and consistent domains.",
+        "Reviewed monolithic, microkernel, hybrid, module, protection domain, TCB, IPC fast path, DMA, and fault-containment terminology against the cited system sources."
+      ],
+      "notes": "The notation separates placement, authority, communication, property-relative trust, and measured performance without turning architecture labels into proofs."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed one unique domain for the toy monolithic placement and four unique domains for its microkernel placement.",
+        "Recomputed zero monolithic and three microkernel domain transitions across the five-label abstract path."
+      ],
+      "notes": "The initial expected crossing count of four was caught by snippet validation and corrected to three; the chapter explicitly denies that these counts predict latency."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived TCB(P) as property-relative rather than equivalent to every privileged or isolated component.",
+        "Checked that contained_memory(f) does not imply service availability or output correctness and that cross(q) counts only edges whose placements differ."
+      ],
+      "notes": "The symbolic relations correctly distinguish direct memory containment from semantic, timing, device, and availability effects."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed unrestricted mappings, DMA escape, shared-memory corruption, stale capabilities, server dependency chains, priority inversion, ambiguous commits, replay, reset, restart loops, and mixed-version upgrades.",
+        "Reviewed fault injection across kernel, server, driver, device, boot, operational, and railway safety boundaries."
+      ],
+      "notes": "Memory, authority, protocol, scheduling, lifecycle, semantic, availability, and physical effects are not collapsed into one fault-domain claim."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced placement, authority, interface, scheduling, lifecycle, containment, and evidence integrity through the exposition, ten examples, and five answers.",
+        "Verified that restart paths revoke old authority and resolve in-flight ownership before resource reuse."
+      ],
+      "notes": "No architecture label is used as a substitute for the concrete component, mapping, capability, device, IPC, and recovery inventory."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the placement-and-interface argument from privilege need through authority enforcement, IPC semantics, fault containment, and operational recovery.",
+        "Constructed counterexamples showing that process isolation does not contain DMA, kernel survival does not establish service availability, and a verified kernel does not validate authorized server policy."
+      ],
+      "notes": "The chapter presents obligation decompositions and scoped counterexamples, not a theorem that one kernel family is universally superior."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of safe, secure, correct, prove, verified, contain, reliable, atomic, and certification.",
+        "Confirmed seL4 claims retain theorem, configuration, hardware, toolchain, and whole-system limitations, while benchmark claims require equivalent semantics and controls."
+      ],
+      "notes": "Formal, empirical, architectural, implementation, and accountable assurance claims retain distinct evidence scopes."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "artifacts/snippets/OS-005/report.json records the exact six-line expected output for toy-kernel-placement under Python 3.",
+        "Reviewed crossing, copy, scheduling, cache, queueing, recovery, and fault-injection passages for configuration, workload, endpoint, and property limitations."
+      ],
+      "notes": "The passing graph model is explicitly not latency evidence, hardware-isolation evidence, a complete OS model, or proof that more domains are better."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed architecture label, placement, modularity, privilege, authority, protection domain, TCB, attack surface, fault containment, availability, IPC, and recovery as distinct concepts. Hybrid is correctly treated as an invitation to inspect rather than a precise universal class."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed direct calls, IPC, shared buffers, capability transfer, synchronous dependency chains, priority propagation, user-space drivers, DMA restriction, teardown, restart, upgrade, observability, benchmarking, and ecosystem constraints as implementable concerns. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from component placement through three architecture families to IPC, recovery, assurance, performance, and evolution, followed by seven trade-offs, fourteen misconceptions, ten distinct examples, and five complete exercises. The final exercise transfers the analysis to a high-assurance railway system with named human review."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, kernel-practitioner, architecture-vendor, microkernel-project, railway-safety, security, or certification review is claimed."
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-035",
+  "chapter_digest": "3f31825dbea9a278f22c2d7373ad6eda72ace40d520f5478daa9401feba941b8",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux kernel documentation for page tables, process addresses, memory APIs, and x86 exception tables; current RISC-V, Intel, and Arm architecture documentation; Linux sigaction and userfaultfd man-pages; and MIT's 2025 xv6 text. All 10 cited URLs returned HTTP 200 after normal redirects; architecture evidence, Linux resolution policy, general mechanisms, and assurance claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked fault event E=(a,p,o,u,c,x,g), current region V(a,t), resolution R(E,V), and bounded retry key (p,a,o,c,g) with attempt count n.", "Reviewed page fault, fault address and cause, recoverable and protection faults, exception fixup, recursive fault, retry, partial effects, and userfault terminology."],
+      "notes": "Notation separates raw architectural event, time-varying operating-system state, policy outcome, and retry-progress identity."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed illustrative x86 core error value 0x17 and confirmed protection, write, user, clear reserved-bit, and instruction-fetch decoding.", "Confirmed every reported field follows its distinct bit without claiming current extension completeness."],
+      "notes": "The deterministic model omits fault addresses, current x86 optional bits, page tables, operating-system classification, side effects, and recovery."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived retry eligibility as a postcondition that authorizes the original operation and preserves architecture-specified partial effects.", "Checked that repeated identical key and generation without state progress cannot be allowed to continue indefinitely."],
+      "notes": "Raw cause is retained alongside normalization so platform-specific evidence is not erased by the abstract model."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed instruction, load, store and atomic faults; user and kernel privilege; absent, cached, swapped, COW, tracking, migration, stack, protection, reserved and invalid states; concurrent faults; stale completion; and allocation or I/O failure.", "Reviewed permission escalation, canonicality, partial misaligned effects, repeated retry, signals and alternate stacks, exception fixups, no-fault regions, recursive and double faults, lock inversion, delegated-handler death, nested virtualization, machine error, fault storms, and secret-bearing diagnostics."],
+      "notes": "Architecture, classification, concurrency, progress, context, recursion, resource, virtualization, security, observability, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced early raw-state capture, progress-before-retry, post-wait revalidation, privilege containment, registered fixups, bounded recursive failure, and outcome-specific metrics through ten examples and five answers.", "Verified the toy decodes independent cause bits and labels itself as an illustrative architecture-specific subset."],
+      "notes": "The chapter does not conflate hardware cause with policy, absent with nonresident, synchronous faults with process-directed signals, retry with fixup, user and kernel containment, or fault count with latency."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed capture, normalization, current mapping, classification, resource bounds, stale revalidation, publication, terminal outcome, lifecycle and partial effects, and evidence obligations.", "Constructed counterexamples for stale post-I/O install, duplicate COW publication, execute permission escalation, partial user copy, nested-fault evidence overwrite, broad stack growth, stale userfault event, wrong-stage guest reporting, and aggregate-metric masking."],
+      "notes": "The chapter supplies reusable page-fault obligations, not a formal proof of an architecture, kernel handler, filesystem, runtime signal bridge, userfault monitor, hypervisor, or machine-error recovery system."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of precise, synchronous, recoverable, fatal, safe, authorized, current, atomic, complete, bounded, and certified.", "Confirmed architectural guarantees, OS policy, abstract resolution invariants, illustrative x86 decoding, platform signal behavior, empirical latency, and human assurance remain separately scoped."],
+      "notes": "Catching a signal is not presented as recovery, retry as side-effect-free, or emulator and unit tests as implementation certification."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-035/report.json records code and five decoded fields for toy-fault-decoder under Python 3.", "Reviewed raw cause, class, privilege, access, outcome, retry, service latency, allocation, I/O, reclaim, lock wait, fixup site, signal code, recursion, stale rejection, architecture, kernel, filesystem, pressure, and raw samples."],
+      "notes": "The passing toy excludes processor exceptions, operating-system state, page-table changes, signals, concurrency, and recovery."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed synchronous exception entry, architecture evidence, current policy, classification, anonymous and file faults, COW, tracking, permissions, malformed entries, stack growth, retry, partial effects, signals, runtimes, kernel faults, fixups, no-fault contexts, recursion, deadlock, delegation, virtualization, machine errors, testing, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed early trap-register capture, internal normalized records, VMA and PTE revalidation, fault-owner coordination, PTE publication and invalidation, same-key retry detection, SIGSEGV and SIGBUS handling scope, exception-table partial counts, alternate and exception stacks, userfault generations, guest stages, and outcome histograms as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from architectural exception evidence through OS classification, recoverable and fatal paths, constrained kernel and runtime handling, virtualization, security, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux memory or architecture maintainer, Intel, Arm or RISC-V architect, kernel, runtime or hypervisor implementer, security or performance specialist, safety authority, independent verifier, or certification review is claimed."
+}

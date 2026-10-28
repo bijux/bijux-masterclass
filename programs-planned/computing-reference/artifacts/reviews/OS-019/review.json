@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-019",
+  "chapter_digest": "f6aaa753c5450670aa3e7316b174489f664a12f56807de059da9e6d8286a527f",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 13, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary documentation for Linux policies, nice, resource accounting, performance events, CFS, EEVDF, scheduler statistics, cgroup v2, PSI, core scheduling, capacity, energy, and MIT's 2025 xv6 text. All 13 cited URLs returned HTTP 200; abstract fair-share models, versioned Linux mechanisms, empirical observations, and normative policy choices are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked weights w_i, delivered service x_i, virtual service v_i, eligibility e_i(t), ideal share s_i, service increment delta_i, ideal cumulative service g_i, lag lambda_i, normalized allocation y_i, and Jain index J.", "Reviewed processor sharing, weighted and hierarchical fairness, virtual runtime, lag, granularity, work conservation, quota, reservation, and capacity terminology."],
+      "notes": "The notation separates physical service, normalized service, ideal entitlement, eligibility, lag, hierarchy, and statistical equality."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed eight unit selections and confirmed timeline A,B,B,B,A,B,B,B for weights 1 and 3 under stable tie breaking.", "Confirmed delivered service 2 and 6, shares 25% and 75%, and ending normalized virtual service 2.00 for both."],
+      "notes": "The arithmetic assumes permanent eligibility, fixed capacity, unit slices, one level, no hierarchy, no overhead, and no constraints."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived s_i=w_i/sum(w), v_i increment delta_i/w_i, lag as ideal minus delivered service, and Jain's index over normalized allocations.", "Derived parent shares 25% and 75%, child shares 18.75%,18.75%,37.5%, and max-min allocation 10%,40%,50% for bounded demands."],
+      "notes": "The review distinguishes equal shares, proportional entitlement, max-min allocation, and equality of normalized outcomes."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed positive-weight requirements, empty and sleeping entities, sleeper credit, tiny granularity, long-window masking, task multiplication, group movement, hierarchy deletion, quota exhaustion, and idle borrowing.", "Reviewed heterogeneous capacity, frequency and thermal changes, SMT security, affinity loss, migration, interrupt and delegated work, cross-resource interference, overload, CPU loss, and safety exceptions."],
+      "notes": "Mathematical, temporal, hierarchy, eligibility, capacity, security, accounting, operational, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced unique accounting identity, ancestor charge, hierarchy preservation, bounded wake credit, reclaimable borrowing, constraint separation, and population-complete measurement through ten examples and five answers.", "Verified the executable model selects minimum normalized service and preserves the 1:3 total allocation for its declared trace."],
+      "notes": "The chapter does not conflate equal and fair, weight and reservation, quota and entitlement, response and service, wall time and capacity, or Jain equality and justice."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed entity, hierarchy, reference model, lag, charge, wake placement, task-count resistance, constraint separation, capacity, attribution, overload, and evidence obligations.", "Constructed counterexamples for flat per-thread sharing, unlimited sleeper credit, quota-as-guarantee, long-window starvation, equal-time unequal work, uncharged soft work, and work conservation across forbidden SMT domains."],
+      "notes": "The chapter provides reusable allocation obligations, not a formal proof of Linux CFS, EEVDF, a capacity model, or a multi-tenant platform."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of fair, equal, ideal, entitled, bounded, guaranteed, work-conserving, isolated, secure, safe, and certification.", "Confirmed fluid-model claims, discrete arithmetic, Linux documentation, empirical ratios, normative choices, security constraints, and human assurance remain separately scoped."],
+      "notes": "No one trace, Jain index, or equal runtime result is presented as universal fairness or outcome justice."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-019/report.json records the exact timeline, services, shares, and virtual values for toy-weighted-virtual-runtime under Python 3.", "Reviewed offered and eligible demand, ancestor service, lag, runnable delay, throttling, migration, capacity, completion, multiple windows, topology, workload, raw trace, and observer limitations."],
+      "notes": "The passing toy excludes task lifecycle, sleepers, hierarchy, quotas, reservations, multicore placement, capacity variation, security constraints, overhead, and kernel code."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed allocation domains, fluid reference, virtual service, lag, eligibility, granularity, hierarchy, borrowing, quotas, max-min allocation, wake latency, multicore capacity, attribution, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed Linux nice, CFS, EEVDF, cgroup weights and caps, PSI, performance events, capacity and energy models, SMT constraints, hierarchy changes, task-count attacks, and experiment design as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from fairness definitions through virtual accounting, hierarchy, constraints, capacity, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux scheduler maintainer, fairness or performance researcher, platform tenancy owner, security or real-time analyst, safety authority, independent verifier, or certification review is claimed."
+}

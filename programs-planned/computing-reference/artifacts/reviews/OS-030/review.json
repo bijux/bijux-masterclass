@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-030",
+  "chapter_digest": "6904e2f963d8ff0835d2f7587a99f26fc0e5671f8f0167423133534bb5fbdaa4",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 11, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux man-pages for pipes, local sockets, shared memory, message queues, signals, eventfd, epoll, and performance counters; current Linux kernel documentation for circular buffers and memory barriers; and POSIX.1-2024 system-interface rationale. All 11 cited URLs returned HTTP 200; portable, Linux-specific, analytical, empirical, and assurance claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked requirement vector R=(F,O,D,A,C,T,L,S,P), candidate guarantees G_m, cost K_m(w,h,f), higher-layer protocol H, stage rates lambda_i and mu_i, backlog B_i, wait W_i, and illustrative objective J.", "Reviewed semantic contract, mechanism, control plane, data plane, copy cost, failure boundary, evidence scope, acknowledgment, and ownership terminology."],
+      "notes": "Notation separates semantic admissibility, workload-conditioned cost, bounded pipeline state, and stakeholder-weighted trade-offs."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed four candidates against required records, peer authentication, large payload, and backpressure features.", "Confirmed socket and hybrid are admissible, alphabetical report order is hybrid then socket, and minimum illustrative score selects hybrid at 7."],
+      "notes": "The deterministic model uses invented binary features and scalar costs and omits interactions, uncertainty, implementation effort, and non-scalar risk."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived admissibility as coverage of every R component by G_m union H without contradiction.", "Checked that lambda_i<mu_i in a mean sense does not alone prove finite-buffer tail behavior without arrival, burst, dependence, and service assumptions."],
+      "notes": "The weighted objective is explicitly illustrative and does not claim objective precision for qualitative risk."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed parent-child and unrelated peers, streams and records, small and large payloads, one and many producers, burst overload, full buffers, stalled consumers, ambiguous timeouts, partial operations, coalesced notification, and descriptor transfer.", "Reviewed hostile peers, shared corruption, stale names, PID and epoch reuse, crash mid-ownership, restart, rolling upgrade, version mismatch, control-plane starvation, NUMA placement, false sharing, page faults, measurement overhead, unequivalent benchmarks, and changing platforms."],
+      "notes": "Semantic, ownership, capacity, security, lifecycle, performance, measurement, operational, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced named semantic coverage, explicit ownership, bounded resources, aligned trust, advisory notification, lifecycle, and evidence scope through ten examples and five answers.", "Verified the toy rejects pipe and shared candidates for missing required features before comparing scores of the admissible socket and hybrid candidates."],
+      "notes": "The chapter does not conflate mechanism feature with system guarantee, copy avoidance with performance, local reachability with trust, acceptance with commit, capacity with durability, or measurement with universal proof."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed requirements, acknowledgment, candidate matrix, plane composition, ownership, capacity, isolation, equivalent-semantics measurement, reproducibility, and decision-record obligations.", "Constructed counterexamples for requirements drift, cache-bouncing shared memory, priority starvation, ambiguous retry, signal coalescing, buffer inflation, premature capability transfer, unfair benchmarks, incompatible rolling layout, and control-plane exhaustion."],
+      "notes": "The chapter supplies reusable IPC decision obligations, not a formal optimizer, queueing proof, security proof, performance model, or certification of any mechanism."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of fastest, zero-copy, reliable, authenticated, accepted, delivered, committed, stable, safe, bounded, optimal, and certification.", "Confirmed API guarantees, analytical conditions, toy feature selection, empirical distributions, security policy, stakeholder judgment, and human assurance remain separately scoped."],
+      "notes": "The design framework rejects semantically inadmissible candidates before cost comparison and avoids presenting its illustrative scalar score as an objective truth."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-030/report.json records admissible candidates, selected candidate, and score for toy-ipc-selection under Python 3.", "Reviewed payload distributions, warmup, repetitions, queue depth, placement, faults, cache events, context switches, CPU, memory, loss, retries, recovery, high-percentile latency, raw samples, and instrumentation cost."],
+      "notes": "The passing toy excludes operating-system mechanisms, workloads, hardware, failures, measurements, uncertainty, and operational cost."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed requirements, acknowledgment, semantic matrices, pipes, sockets, queues, shared memory, notifications, plane composition, ownership, capacity, latency, copies, transitions, batching, caches, NUMA, security, lifecycle, failure containment, benchmarking, instrumentation, decision records, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed workload characterization, API guarantee lookup, request IDs, hybrid socket and memfd patterns, slot ownership, admission and control reserve, cost decomposition, affinity and NUMA records, equivalent-semantics trials, fault injection, raw distributions, operational runbooks, and reevaluation triggers as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from semantic requirements through mechanism elimination, composition, cost and failure analysis, reproducible evidence, and durable decisions, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, POSIX or Linux IPC maintainer, runtime or platform architect, performance, queueing, security or safety specialist, independent verifier, stakeholder acceptance, or certification review is claimed."
+}

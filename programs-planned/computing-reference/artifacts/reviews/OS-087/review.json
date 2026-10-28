@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-087",
+  "chapter_digest": "6e39f24e42a0b3aa71cac6ddf0e26bbc352bbac41e1bbea720898f92a342102b",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux kernel and man-pages documentation, systemd resource-control and delegation contracts, and the OCI runtime specification for unified hierarchy, topology, task placement, delegation, CPU, memory, I/O, PID, cpuset, lifecycle and PSI semantics. All ten cited URLs returned HTTP 200 after normal redirects; kernel behavior, abstract models, operational guidance and assurance claims remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked cgroup-tree, ancestor-set, controller, effective-ceiling, sibling-capacity, positive-weight, quota, period, bandwidth, pressure-window and memory-boundary notation.", "Reviewed minimum-over-ancestors, proportional sibling allocation, quota fraction and stall ratio with their stated domains and limitations."],
+      "notes": "Notation separates hard hierarchical bounds, contingent proportional allocation, bandwidth ceilings, pressure exposure and categorical memory semantics."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed recursive allocation of eight abstract CPU units across root weights 1:3 and service-child weights 1:1.", "Confirmed root allocations 2 and 6, service leaf allocations 1 and 1, batch leaf allocation 6, and leaf conservation total 8; independently recomputed the exercise's 1:3 split and 30/100 quota fraction."],
+      "notes": "The deterministic computation validates proportional arithmetic only; it implements no Linux scheduler, cgroup, quota, affinity, topology, controller or latency behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived an abstract effective ceiling as the minimum of comparable hard ceilings along the node-to-root path.", "Checked normalized sibling weights sum to parent capacity, quota divided by period yields CPU-equivalent bandwidth, and qualifying stall time divided by window yields a bounded PSI exposure ratio."],
+      "notes": "The expressions are resource-reasoning tools and do not claim complete formalizations of Linux controller aggregation, reclaim, scheduling, block I/O, topology or pressure accounting."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed missing controllers, internal processes, threaded topology, launch races, cgroup namespaces, saturated ancestors, idle siblings, CPU hotplug and scheduler-class interactions.", "Reviewed memory-protection overcommit, high and max crossings, OOM scope, swap exhaustion, mapped devices, PID exhaustion, freeze races, unsafe delegation, partial updates and manager restart."],
+      "notes": "Topology, placement, hierarchy, CPU, memory, I/O, process-count, lifecycle, ownership and observability boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced controller availability and enablement from parent to child, workload placement from launch to inherited descendants, and effective constraints from leaf through every ancestor.", "Verified one-writer ownership, bounded delegation, semantic separation of weights/protections/throttles/limits, recovery headroom and evidence at matching hierarchy levels."],
+      "notes": "The chapter treats cgroups as a managed resource-distribution tree whose topology, mutation rights, task membership, policy and telemetry must agree."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed each task-to-root path, applicable controller intersection, enforcement under demand, mutation ownership and local-versus-ancestor evidence.", "Constructed counterexamples for cgroup-as-container, namespace-as-limit, weight-as-reservation, quota-as-pinning, memory-high-as-OOM, PID-limit-as-kill and accepted-write-as-enforcement."],
+      "notes": "The chapter supplies reusable cgroup obligations, not a formal proof of Linux, systemd, an OCI runtime, container, service-level objective or multi-tenant isolation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of available, enabled, effective, protected, throttled, capped, hard, delegated, owned, isolated and guaranteed.", "Confirmed kernel interfaces, simplified equations, examples, operational recommendations and assurance boundaries remain separately labeled."],
+      "notes": "A weight is not labeled a reservation, bandwidth is not labeled affinity, memory protection is not labeled preallocation, cgroup namespace is not labeled enforcement and controller policy is not labeled full security isolation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-087/report.json records source, expected and actual output, stderr, exit status, toolchain and environment for hierarchical proportional allocation.", "Reviewed required kernel, mount, controller, subtree, process-membership, ancestor, cpuset, device, swap, systemd, runtime, event, statistics and PSI evidence."],
+      "notes": "The passing toy establishes six arithmetic outputs only; it provides no evidence for Linux scheduling, controller enforcement, delegation safety, containment, latency, OOM behavior or workload isolation."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed cgroup v2 as a unified hierarchical resource-distribution and accounting mechanism whose effective behavior follows task placement, controller semantics and ancestor policy."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including discovery, subtree control, leaf placement, thread mode, CPU and cpuset policy, memory reclaim and OOM, device mapping, PID headroom, PSI, delegation, runtime transactions and adversarial tests. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from hierarchy and topology through CPU, memory, I/O, PID and lifecycle controllers to delegation, service-manager integration, observability and tests, followed by twelve obligations, sixteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux cgroup or scheduler maintainer, systemd or OCI maintainer, performance engineer, security reviewer, independent-verification or certification review is claimed."
+}

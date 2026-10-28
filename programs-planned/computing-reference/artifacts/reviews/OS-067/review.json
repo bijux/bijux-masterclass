@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-067",
+  "chapter_digest": "ca5557d278966a762f0bfbfd4916ba695d066d9a91a6d6faeaea14cd2ccb449f",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux MSG_ZEROCOPY, AF_XDP, io_uring zero-copy receive, user-page pinning, dma-buf and VFIO documentation plus current sendfile(2), splice(2), vmsplice(2) and copy_file_range(2) manual pages. All ten cited URLs returned HTTP 200 after normal redirects; scoped copy claims, Linux-specific interfaces, illustrative execution, operational guidance and assurance remain separately labeled."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked buffer tuple B, authorized descriptor containment, copy and sharing cost models, page-count ceiling, owner and generation states.", "Reviewed copy avoidance, zero-copy scope, pins, mappings, ownership, completion, kernel bypass, isolation, fallback and revocation terminology."],
+      "notes": "Notation distinguishes payload extent, permissions, ownership, generation, lifetime and illustrative cost terms without presenting them as a kernel ABI or calibrated platform model."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the illustrative fixed-plus-per-page and per-byte cost comparison for 4096 and 65536 bytes.", "Confirmed costs 8192 versus 12200 select copy at 4096, while 131072 versus 15200 select sharing at 65536."],
+      "notes": "The deterministic arithmetic demonstrates only that a crossover can exist; its invented constants measure no CPU, kernel, cache, pin, IOMMU, device, network or application."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived descriptor admissibility from extent containment, generation equality and queue authorization.", "Checked ownership transitions from free through application and kernel or device, completion, return and release while pin lifetime contains possible DMA."],
+      "notes": "The capability, cost and ownership relations are reusable reasoning models, not formal specifications of Linux VM, networking, DMA, AF_XDP, VFIO or hardware."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed copy, mmap, page cache, sendfile, splice, vmsplice, copy_file_range, MSG_ZEROCOPY, AF_XDP, io_uring zero-copy receive, dma-buf and device-assignment paths.", "Reviewed small and fragmented transfers, page padding, pin pressure, ring starvation, duplicate frames, fallback, malicious descriptors, IOMMU granularity, polling, cancellation, process death, reset and hot-unplug."],
+      "notes": "Copy, extent, memory, ownership, ordering, capacity, device, tenancy, security, lifecycle, performance and evidence boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced allocation, registration, pinning, mapping, handoff, completion, fallback, unmapping, unpinning and release through twelve obligations, ten examples and five answers.", "Verified scoped claims, one mutable owner, retained lifetime, descriptor bounds, completion scope, ring roles, isolation, accounting, drain-before-release and semantic fallback."],
+      "notes": "The chapter treats copy boundaries, buffer authority, memory lifetime, ring protocols, device isolation, fairness and teardown as coupled but independently observable invariants."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed ordinary copy, mapping, file-transfer APIs, zerocopy sockets, AF_XDP, io_uring receive, page pins, dma-buf, VFIO, IOMMUs, rings, polling, transformations, pressure, security, fallback and removal.", "Constructed counterexamples for zero-copy-as-no-movement, mmap-as-faster, return-as-reuse, completion-as-delivery, reference-as-race-protection, IOMMU-as-safety, bypass-as-no-kernel and fewer-copies-as-performance."],
+      "notes": "The chapter supplies reusable copy-avoidance and bypass obligations, not a formal proof of Linux interfaces, an IOMMU, device, network, application or performance result."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of zero-copy, bypass, pinned, mapped, owned, complete, transmitted, delivered, durable, isolated, safe, faster, measured and guaranteed.", "Confirmed scoped mechanism claims, API contracts, illustrative costs, hardware observations, recommendations and assurance claims remain separately scoped."],
+      "notes": "Local completion is not labeled peer delivery, page sharing is not labeled exclusive ownership, IOMMU presence is not labeled isolation proof, and copy avoidance is not labeled universal speedup."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-067/report.json records source, sizes, illustrative costs, choices, expected and actual output, stderr, exit status and Python version.", "Reviewed required collection of active path, avoided boundary, bytes, pins, mappings, segments, frame, generation, ownership, syscalls, wakeups, completions, drops, faults and teardown."],
+      "notes": "The passing toy establishes only two calculations under invented costs; it provides no evidence for actual copying, kernel bypass, page pins, devices, networks, security or performance."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed scoped copy avoidance, buffer ownership, page and DMA lifetime, file-transfer APIs, network fast paths, shared devices, isolation, capacity, fallback, lifecycle, measurement and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed current Linux MSG_ZEROCOPY, AF_XDP, io_uring zero-copy receive, page pin, dma-buf, VFIO, sendfile, splice, vmsplice and copy-file-range interfaces as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from claim boundaries and cost through sharing and file paths, then networking, device bypass, security and teardown, followed by twelve obligations, fourteen trade-offs, eighteen misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux VM, networking, DMA, VFIO, device, security, performance, independent-verification or certification review is claimed."
+}

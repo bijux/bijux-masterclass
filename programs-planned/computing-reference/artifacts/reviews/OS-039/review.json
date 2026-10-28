@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-039",
+  "chapter_digest": "05e3200c0cae7b80900990960613645415ceb8e98db41efd1cd1b8965cb05648",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 9, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux kernel documentation for memory and page-cache APIs, VFS address-space operations, filesystem locking, process mappings, Multi-Gen LRU, network filesystem caching, and fs-verity; the current Linux mincore man-page; and MIT's 2025 xv6 text. All nine cited URLs returned HTTP 200 after normal redirects; current Linux mechanisms, general cache invariants, teaching abstractions, empirical guidance, and assurance claims remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked entry E=(F,i,n,v,s,g,O), covered range [iP,(i+n)P), file identity F, index i, span n, version v, state s, generation g, ownership O, page size P, lookup H_t(F,i), and refault interval rho.", "Reviewed page cache, address space, folio, cache hit and miss, uptodate, dirty, writeback, readahead, invalidation, direct I/O, DAX, and integrity terminology."],
+      "notes": "Notation separates stable file-range identity, cache version, lifecycle properties, mapping freshness, ownership, size unit, lookup time, and eviction feedback."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the illustrative two-page cache and confirmed two reads of one logical page cause one cache fill.", "Confirmed shared modification changes cached ABCD to ABXD while backing remains ABCD and dirty index is 0, then modeled writeback changes backing to ABXD and clears dirty state."],
+      "notes": "The deterministic model serializes fixed-size pages and assumes complete successful I/O; it excludes mappings, folios, locks, versions, failures, eviction, readahead, filesystem semantics, and persistence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived coverage for aligned entry index and span as [iP,(i+n)P) and checked that overlapping authoritative entries are prohibited by the stated cache rules.", "Checked the coherence obligation applies to supported shared cached access for current (F,x), while private COW version v_p lies outside the shared update relation."],
+      "notes": "Lifecycle states are explicitly partly orthogonal; the chapter does not force dirty, mapped, referenced, writeback, pinned, or reclaimable properties into one invalid scalar ordering."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed duplicate misses, empty and partial files, holes, inline data, base and large folios, allocation and partial I/O failure, waiters, integrity failure, mapped and buffered reads and writes, dirty and redirty state, writeback, reclaim, pins, and references.", "Reviewed rename and hard links, descriptor reuse, truncate during fill, hole punch, extent remap, direct-I/O overlap, DAX, network lease revocation and partition, executable invalidation, NUMA, cgroup ownership, streaming pollution, refault storms, sparse abuse, count boundaries, and diagnostics."],
+      "notes": "Identity, size, insertion, fill, coherence, backing, concurrency, invalidation, remote, integrity, locality, accounting, overload, and security boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced unique authoritative range identity, fill-before-uptodate, shared coherence, dirty preservation, stale invalidation, balanced references, and bounded cache work through twelve obligations, ten examples, and five answers.", "Verified miss losers, fill waiters, stale completions, writeback redirty, truncate, direct-I/O coordination, and reclaim each preserve or release the correct current version and references."],
+      "notes": "The chapter does not conflate pathname with identity, file address space with process mm, present with valid, map count with reference count, dirty with durable, writeback start with completion, or hit ratio with service quality."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed identity, nonoverlap, reference balance, fill and verification, coherence, dirty error handling, cross-path coordination, generation revalidation, unmap-before-reuse, resource bounds, fairness, and evidence obligations.", "Constructed counterexamples for descriptor-keyed cache aliasing, overlapping large folios, partially filled publication, concurrent dirty loss, stale post-truncate refill, direct-I/O stale cache, invalid executable bytes, pin-blind reclaim, and aggregate hit-rate masking."],
+      "notes": "The chapter supplies reusable cache proof obligations, not a formal proof of Linux page cache, VFS, a filesystem, writeback implementation, network cache, DAX path, memory controller, or storage device."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of authoritative, current, compatible, stable, uptodate, coherent, atomic, complete, clean, durable, safe, and certified.", "Confirmed implementation-specific Linux terminology, abstract cache invariants, documented filesystem contracts, teaching simplifications, illustrative execution, empirical claims, and assurance remain separately labeled."],
+      "notes": "The page cache is not presented as a process address space, reference count as all ownership, dirty as durable, direct I/O as independent, DAX as cached, hit ratio as sufficient, or stress tests as certification."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-039/report.json records code, read results, cache-fill count, dirty state, cached bytes, and backing bytes for shared-page-cache under Python 3.", "Reviewed required collection of lookup bytes, hits, misses, fill latency and errors, folio sizes, readahead use, mapping and reference state, dirty age, writeback, invalidation, eviction, refault, I/O mode, ownership, NUMA, PSI, application latency, configuration, and raw timelines."],
+      "notes": "The passing toy establishes only its dictionary-backed cache model and provides no evidence for a kernel cache, filesystem coherence, concurrent lifecycle, storage durability, or network consistency."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed cache identity, file address spaces, folios, lookup, insertion, fill and waiters, mapped and buffered access, dirty state, writeback and errors, readahead, large folios, coherence, direct I/O, DAX, truncation, holes, networks, integrity, executables, reclaim, references, accounting, NUMA, pressure, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed inode-like mapping keys, aligned folio indices, duplicate insertion, uptodate and error publication, folio locks, page_mkwrite, partial buffered writes, redirty behavior, writeback wait rules, validity generations, invalidate locks, direct-I/O cache coordination, fs-verity verification, network invalidation, large-folio fallback, map and pin accounting, and refault evidence as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from cache identity and entry lifecycle through mapped and buffered coherence, speculation and writeback, invalidation and alternative I/O paths, distributed and integrity concerns, then pressure and assurance, followed by twelve trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux memory-management, VFS, filesystem, writeback, network-cache, fs-verity or DAX maintainer, storage or architecture engineer, security or performance specialist, independent verifier, or certification review is claimed."
+}

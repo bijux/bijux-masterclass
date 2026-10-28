@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-043",
+  "chapter_digest": "18bbd67f5a0a8c65ca17c09449ea4731f8cf69f77c1b5370b478cbab52ef7835",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current Linux kernel ext4 mapping and allocation, iomap design and operations, and FIEMAP documentation, plus current fallocate, lseek, truncate, posix_fallocate, and fsync man-pages. All ten cited URLs returned HTTP 200 after normal redirects; abstract allocation models, Linux-specific APIs, ext4 examples, illustrative execution, and assurance guidance remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked logical domain L_f=[0,S_f), mapping M_f states H, D, U(p), W(p), I, and C(p,k), allocator ownership A(p), reference count R(p), quota Q_f, mapping version V_f, block size B, logical block floor(offset/B), displacement offset mod B, and extent tuple (l,p,k).", "Reviewed logical range, allocation unit, block map, extent, hole, unwritten extent, delayed allocation, reservation, reflink, copy-on-write, fragmentation, and persistence terminology."],
+      "notes": "Notation separates logical offsets, mapping state, physical placement, initialization, ownership, sharing, accounting, versioning, and durability."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed the illustrative extent model and confirmed logical block 0 maps to physical 100 and logical block 8 maps to physical 200.", "Confirmed logical block 4 is a hole that reads as zero and that two four-block extents allocate eight of twelve logical blocks."],
+      "notes": "The deterministic model is intentionally simplified; it excludes bytes, partial blocks, allocation policy, cache, reservations, sharing, concurrency, persistence, and real filesystem behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived extent translation p+(i-l) for logical block i in [l,l+k) and verified half-open interval boundary behavior.", "Checked that each logical range has one compatible state while physical ownership is free, exclusive, or positively reference-counted shared, and that visibility and recoverability remain separate predicates."],
+      "notes": "The chapter does not infer physical allocation from logical size, plain device bytes from encoded mappings, or durability from in-memory mapping visibility."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed zero-length and overflowed ranges, maximum file size, block boundaries, tiny inline files, holes, unwritten and delayed extents, sparse gaps, partial-block punch and truncate, preallocation, zero, collapse, insert, clone, unshare, direct I/O, DAX, compression, encryption, mapping queries, and unsupported operations.", "Reviewed nearly full groups, quota and metadata exhaustion, reservation leaks, overlapping writers, concurrent truncate and writeback, stale extent observations, shared-block overwrite, reference-count mismatch, malformed trees, checksum errors, lost writeback errors, device failure, crash points, leaks, double allocation, and stale-data disclosure."],
+      "notes": "Range, representation, initialization, ownership, accounting, concurrency, caching, device, persistence, recovery, repair, performance, and adversarial boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced range validation, authorization and reservation, conflict stabilization, placement, initialization, ownership, publication, cache coherence, persistence, bidirectional recovery, bounded work, and evidence through twelve obligations, ten examples, and five answers.", "Verified mapping interval order, physical exclusivity or shared counts, zero-reading uninitialized state, delayed reservation, copy-on-write privacy, compound range mutation, and recovery ownership in both directions."],
+      "notes": "The chapter does not conflate holes with unwritten extents, reservations with allocations, preallocation with durability, reflink with an independent copy, FIEMAP with stable authority, or free byte totals with guaranteed allocation."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed range, reservation, placement, initialization, ownership, atomic publication, cache-generation, persistence-ordering, recovery, resource-bound, and evidence obligations.", "Constructed counterexamples for early mapping publication, stale-byte exposure, delayed allocation without reservation, premature block free, in-place shared overwrite, file-size-only truncate, obsolete writeback completion, aggregate-free-space admission, mounted-device FIEMAP use, and one-index-only repair."],
+      "notes": "The chapter supplies reusable allocation proof obligations, not a formal proof of Linux iomap, ext4, another allocator, storage device, or crash-recovery implementation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of allocated, reserved, delayed, unwritten, initialized, shared, private, atomic, visible, stable, persistent, recoverable, safe, and certified.", "Confirmed generic mapping models, current Linux interfaces, documented kernel mechanisms, ext4 examples, illustrative execution, empirical performance, and assurance claims remain separately scoped."],
+      "notes": "A hole is not presented as allocated zero storage, FIEMAP as a stable device-access capability, preallocation as infallibility, journaling as automatic leak freedom, or performance testing as certification."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-043/report.json records source, logical probes, physical translations, hole zero semantics, extent count, allocated-block count, and logical-block count under Python 3.", "Reviewed required collection of logical ranges, mapping versions and states, reservations, quota, allocator regions, extent and free-run distributions, cache, writeback, I/O, journal, synchronization, crash points, recovery checks, raw traces, and limitations."],
+      "notes": "The passing toy establishes only interval lookup and arithmetic; it provides no evidence for kernel allocation, zeroing, reservations, locking, copy-on-write, performance, or crash durability."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed logical address spaces, units, contiguous, linked, indexed and extent maps, inline and sparse data, partial blocks, unwritten and delayed allocation, reservations, placement, groups, fragmentation, preallocation, range transforms, truncation, reflink and copy-on-write, encoding, I/O paths, queries, concurrency, cache coherence, crash consistency, exhaustion, repair, observability, security, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed ext4 direct, indirect, extent and inline layouts; multiblock and delayed allocation; iomap mapping states; FIEMAP flags; fallocate modes; SEEK_DATA and SEEK_HOLE; truncate boundaries; portable preallocation; writeback generations; shared extent replacement; bidirectional allocator checks; and file synchronization as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from logical mapping and classic layouts through holes, reservations and placement, advanced range and sharing operations, I/O and queries, then concurrency, recovery, repair, security, and assurance, followed by twelve trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux iomap, VFS or filesystem maintainer, ext4 allocation specialist, storage, security, recovery, performance, distributed-storage, independent-verification, or certification review is claimed."
+}

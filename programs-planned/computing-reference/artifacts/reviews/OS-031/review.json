@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "OS-031",
+  "chapter_digest": "a03fc1d87cb0fd3a9a857bbbe49a460e0910149010696f7f44cedfac3066667c",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 10, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current primary Linux kernel documentation for page tables, process addresses, memory concepts, and pagemap; current RISC-V, Intel, and Arm architecture documentation; Linux mmap and mprotect man-pages; and MIT's 2025 xv6 text. All 10 cited URLs returned HTTP 200 after normal redirects; architecture-specific, Linux-specific, abstract, security, and empirical claims are distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked page size P=2^p, virtual address v, VPN, offset, address-space translation T_a, PFN, permissions, attributes, generation g, range end e, mapping references r, pins q, and stale state z.", "Reviewed virtual and physical address, page and frame, PTE, MMU, page fault, canonicality, alias, demand allocation, copy-on-write, and nested translation terminology."],
+      "notes": "Notation separates address decomposition, address-space identity, permission-bearing translations, complete ranges, and reclamation state."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Executed 0x12345 with 4096-byte pages and confirmed VPN 0x12 and offset 0x345.", "Confirmed PFN 0x9a recombines to physical 0x9a345, read is allowed, and write faults under the illustrative permission set."],
+      "notes": "The deterministic model uses a flat trusted mapping and unbounded integers and omits tables, caches, architecture faults, concurrency, and lifecycle."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived VPN=v div P and offset=v mod P with 0<=offset<P, followed by PFN*P+offset under valid authorization.", "Checked positive range page coverage through floor((e-1)/P), separate zero-length handling, and reclamation only after mapping, pin, walker, device, and stale-translation exclusions."],
+      "notes": "Every arithmetic claim is scoped to representable checked values and an explicit page size and address width."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed zero length, zero address, page-boundary crossing, maximum address, overflow, unaligned and noncanonical values, absent and reserved entries, permission combinations, aliases, accessed and dirty races, demand failure, and concurrent copy-on-write faults.", "Reviewed PTE replacement, stale TLBs, identifier reuse, page-table and frame reclamation, huge promotion and demotion, file truncation, user mapping races, device memory, nested faults, fault recursion, memory pressure, introspection disclosure, and speculative and timing boundaries."],
+      "notes": "Arithmetic, architecture, permission, fault, cache, concurrency, lifecycle, device, virtualization, security, performance, and assurance boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced complete range coverage, user-supervisor isolation, synchronized mapping publication and removal, least permission, alias ownership, fault revalidation, and explicit address assumptions through ten examples and five answers.", "Verified the toy preserves the page offset during translation and rejects write through permission rather than changing the physical address calculation."],
+      "notes": "The chapter does not conflate pointers with physical addresses, PTE memory with globally current translation, unmap with reclamation, faults with bugs, read-only mapping with system-wide immutability, or TLB-hit timing with translation cost."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed address mode, checked range, entry semantics, fault classification, publication, invalidation, lifetime, alias and nesting, security, and measurement obligations.", "Constructed counterexamples for cross-page validation, equal virtual addresses, premature frame reuse, duplicate copy-on-write faults, wrapping range arithmetic, writable alias, huge-page tail cost, nested-stage revocation, and unsynchronized diagnostics."],
+      "notes": "The chapter supplies reusable translation obligations, not a formal proof of an MMU, architecture, kernel page-table implementation, fault handler, hypervisor, or security mitigation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of valid, present, authorized, precise, coherent, atomic, safe, current, exact, protected, bounded, and certified.", "Confirmed architecture guarantees, OS policy, abstract range and lifetime invariants, toy arithmetic, empirical performance, security mitigation, and human assurance remain separately scoped."],
+      "notes": "The chapter explicitly treats accessed-state recency and performance counters as conditional evidence and the toy as neither a page walk nor fault implementation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/OS-031/report.json records VPN, offset, physical address, and read and write outcomes for toy-address-translation under Python 3.", "Reviewed mapping operations, fault causes, allocations, I/O, sizes, permissions, invalidations, shootdowns, working sets, pressure, counters, tracing, architecture mode, mitigations, topology, load, and raw distributions."],
+      "notes": "The passing toy excludes address hardware, page tables, faults, caches, finite widths, processes, and concurrent changes."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed virtual address spaces, page decomposition, frames, roots, hierarchical lookup, permissions, accessed and dirty state, faults, demand allocation, copy-on-write, translation caches, mapping updates, huge pages, sharing, kernel boundaries, devices, nesting, canonicality, concurrency, security, observability, and assurance as coupled concepts."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed checked page arithmetic, address-space identifiers, hierarchical leaf interpretation, least permissions, fault revalidation, zeroing, concurrent COW, invalidation and shootdown, delayed table and frame reclamation, huge-page trade-offs, user-copy races, device mapping, nested translation, and counter interpretation as implementable concerns. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from virtual abstraction and arithmetic through tables, permissions, fault-driven mechanisms, concurrent updates, architecture extensions, security, and evidence, followed by nine trade-offs, fourteen misconceptions, ten examples, and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external operating-systems academic, Linux memory maintainer, Intel, Arm or RISC-V architect, kernel or hypervisor implementer, security or performance specialist, safety authority, independent verifier, or certification review is claimed."
+}
