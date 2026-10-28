@@ -1,0 +1,57 @@
+{
+  "cases": [
+    {
+      "id": "json-valid-basic",
+      "text": "{\"name\":\"alpha\",\"count\":2}",
+      "valid": true
+    },
+    {
+      "id": "json-valid-unicode",
+      "text": "{\"name\":\"\u0394ataset\"}",
+      "valid": true
+    },
+    {
+      "error": "duplicate-key",
+      "id": "json-duplicate",
+      "text": "{\"role\":\"reader\",\"role\":\"admin\"}",
+      "valid": false
+    },
+    {
+      "error": "non-finite",
+      "id": "json-nan",
+      "text": "{\"x\":NaN}",
+      "valid": false
+    },
+    {
+      "error": "non-finite",
+      "id": "json-infinity",
+      "text": "{\"x\":Infinity}",
+      "valid": false
+    },
+    {
+      "error": "trailing-content",
+      "id": "json-trailing",
+      "text": "{\"x\":1} true",
+      "valid": false
+    },
+    {
+      "error": "dangerous-key",
+      "id": "json-danger-proto",
+      "text": "{\"__proto__\":{\"admin\":true}}",
+      "valid": false
+    },
+    {
+      "error": "dangerous-key",
+      "id": "json-danger-constructor",
+      "text": "{\"constructor\":{\"prototype\":{\"admin\":true}}}",
+      "valid": false
+    },
+    {
+      "error": "depth",
+      "id": "json-depth",
+      "maxDepth": 8,
+      "text": "[[[[[[[[[[[0]]]]]]]]]]]",
+      "valid": false
+    }
+  ]
+}

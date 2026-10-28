@@ -1,0 +1,22 @@
+[
+  {
+    "accept": "application/graphql-response+json",
+    "content_type": "application/json",
+    "method": "POST",
+    "operation": "query",
+    "status": "accept"
+  },
+  {
+    "accept": "application/graphql-response+json",
+    "method": "GET",
+    "operation": "mutation",
+    "status": "reject"
+  },
+  {
+    "accept": "text/html",
+    "content_type": "application/json",
+    "method": "POST",
+    "operation": "query",
+    "status": "reject"
+  }
+]

@@ -1,0 +1,55 @@
+version: '1.0'
+principles:
+  - A command expresses requested intent and may be rejected.
+  - An event records a fact that the owning producer has already committed.
+  - A query asks for current state and remains synchronous unless a durable result is itself the product.
+  - An audit record is evidence, not automatically an integration event.
+messages:
+  - name: StartAnalysis
+    kind: command
+    type: com.bijux.analysis.command.start.v1
+    owner: analysis-control
+    authority: The analysis-control service owns admission and durable run identity.
+    responseModel: outcome-event
+    partitionKey: runId
+  - name: AnalysisRunRequested
+    kind: domain-and-integration-event
+    type: org.bijux.analysis.run.requested.v1
+    owner: analysis-control
+    authority: Emitted only after the run and its outbox row commit atomically.
+    partitionKey: runId
+  - name: AnalysisRunStarted
+    kind: integration-event
+    type: org.bijux.analysis.run.started.v1
+    owner: analysis-worker
+    authority: The worker owns execution-attempt facts, not run admission.
+    partitionKey: runId
+  - name: AnalysisRunProgressed
+    kind: notification-event
+    type: org.bijux.analysis.run.progressed.v1
+    owner: analysis-worker
+    authority: Progress is replaceable observation; consumers must not derive irreversible effects from every update.
+    partitionKey: runId
+  - name: AnalysisRunCompleted
+    kind: integration-event
+    type: org.bijux.analysis.run.completed.v1
+    owner: analysis-worker
+    authority: Emitted in the same transaction that records terminal completion and artifact metadata.
+    partitionKey: runId
+  - name: AnalysisRunFailed
+    kind: integration-event
+    type: org.bijux.analysis.run.failed.v1
+    owner: analysis-worker
+    authority: Records terminal failure classification; it is not a retry command.
+    partitionKey: runId
+  - name: ArtifactPublished
+    kind: integration-event
+    type: org.bijux.analysis.artifact.published.v1
+    owner: artifact-service
+    authority: The artifact service owns content integrity and publication facts.
+    partitionKey: runId
+keptSynchronous:
+  - operation: GET /analysis-runs/{runId}
+    reason: The client asks for current authoritative state and needs an immediate representation.
+  - operation: GET /artifacts/{artifactId}/content
+    reason: The requested representation is the response itself; an event cannot replace content transfer.

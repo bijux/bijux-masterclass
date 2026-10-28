@@ -1,0 +1,17 @@
+{
+  "exceptions": [
+    {
+      "approvedBy": "group:default/api-platform-team",
+      "compensatingControl": "Checked grpcurl and Python client transcripts are published instead.",
+      "createdAt": "2026-08-05T10:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-09-30T23:59:59Z",
+      "id": "EX-2026-001",
+      "owner": "group:default/analysis-control-team",
+      "reason": "Interactive browser example is not meaningful for an internal bidirectional worker stream.",
+      "ruleId": "DOC-002",
+      "status": "active"
+    }
+  ],
+  "version": "1.0"
+}

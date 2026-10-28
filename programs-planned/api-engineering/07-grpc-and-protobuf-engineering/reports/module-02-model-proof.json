@@ -1,0 +1,10 @@
+{
+  "module": 2,
+  "status": "passed",
+  "claim": "presence, oneof, enum zero, and int64 semantics are explicit",
+  "evidence": {
+    "presence_cases": 5,
+    "int64_cases": 5,
+    "golden_sha256": "0658bd065901cd732b9af3139e0ba9539108cf27752b785acf292fd5228a4f98"
+  }
+}

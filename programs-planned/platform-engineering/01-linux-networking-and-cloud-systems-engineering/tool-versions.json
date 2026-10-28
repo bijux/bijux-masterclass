@@ -1,0 +1,22 @@
+{
+  "courseRelease": "1.0.0",
+  "referenceOperatingSystems": {
+    "primary": "Debian 13 stable",
+    "comparison": "Ubuntu 26.04 LTS"
+  },
+  "python": {
+    "reference": "3.14.7",
+    "minimumForCoreProof": "3.12"
+  },
+  "openssl": {
+    "reference": "3.5 LTS"
+  },
+  "linux": {
+    "requiredModel": "cgroup v2 and modern /proc interfaces"
+  },
+  "docs": {
+    "mkdocs": "1.6.x",
+    "material": "9.x"
+  },
+  "standardsSnapshot": "2026-08-09"
+}

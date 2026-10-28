@@ -1,0 +1,8 @@
+{
+  "activeOperationsValid": true,
+  "budgetsPass": true,
+  "change": "add RunStatus.PAUSED",
+  "expected": "review-required",
+  "oldClientPasses": true,
+  "ownershipComplete": true
+}

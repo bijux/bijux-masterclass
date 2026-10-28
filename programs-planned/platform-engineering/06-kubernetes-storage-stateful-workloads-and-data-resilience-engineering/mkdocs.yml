@@ -1,0 +1,124 @@
+site_name: Kubernetes Storage, Stateful Workloads, and Data Resilience Engineering
+docs_dir: course-book
+site_dir: site
+strict: true
+theme:
+  name: material
+nav:
+- Home: index.md
+- Start here: start-here.md
+- Study plan: study-plan.md
+- Capstone: capstone.md
+- Evidence model: evidence-model.md
+- Language strategy: language-strategy.md
+- Standards: standards.md
+- Glossary: glossary.md
+- Guides:
+  - Backup Restore Drill: guides/backup-restore-drill.md
+  - Capacity And Performance: guides/capacity-and-performance.md
+  - Csi Lifecycle Review: guides/csi-lifecycle-review.md
+  - Data Migration Review: guides/data-migration-review.md
+  - Local Cluster Lane: guides/local-cluster-lane.md
+  - Managed Versus Incluster: guides/managed-versus-incluster.md
+  - Snapshot Consistency Review: guides/snapshot-consistency-review.md
+  - Stateful Workload Review: guides/stateful-workload-review.md
+  - Storage Diagnosis: guides/storage-diagnosis.md
+- Reference:
+  - Access Modes And Authority: reference/access-modes-and-authority.md
+  - Backup Versus Snapshot: reference/backup-versus-snapshot.md
+  - Csi Rpc Map: reference/csi-rpc-map.md
+  - Failure Signature Catalogue: reference/failure-signature-catalogue.md
+  - Feature And Evidence Matrix: reference/feature-and-evidence-matrix.md
+  - Fencing And Split Brain: reference/fencing-and-split-brain.md
+  - Group Snapshot Profile: reference/group-snapshot-profile.md
+  - Pv Pvc State Map: reference/pv-pvc-state-map.md
+  - Rpo Rto Math: reference/rpo-rto-math.md
+  - Statefulset Semantics: reference/statefulset-semantics.md
+  - Storage Performance Math: reference/storage-performance-math.md
+  - Storageclass Contract: reference/storageclass-contract.md
+  - Topology And Scheduling: reference/topology-and-scheduling.md
+  - Volume Lifetime Atlas: reference/volume-lifetime-atlas.md
+  - Volume Snapshot Map: reference/volume-snapshot-map.md
+- Incident casebook:
+  - Case 01 Bound But Not Usable: casebook/case-01-bound-but-not-usable.md
+  - Case 02 Force Detach Split Brain: casebook/case-02-force-detach-split-brain.md
+  - Case 03 Ready Snapshot Broken Restore: casebook/case-03-ready-snapshot-broken-restore.md
+  - Case 04 Backup Without Key: casebook/case-04-backup-without-key.md
+  - Case 05 Expansion Half Complete: casebook/case-05-expansion-half-complete.md
+  - Case 06 Gitops Pruned Recovery: casebook/case-06-gitops-pruned-recovery.md
+- Capstone manual:
+  - Architecture: capstone/architecture.md
+  - Evidence Dossier: capstone/evidence-dossier.md
+  - Implementation Map: capstone/implementation-map.md
+  - Release Process: capstone/release-process.md
+- Assessment:
+  - Final Defense: assessment/final-defense.md
+  - Rubric: assessment/rubric.md
+- Instructor:
+  - Facilitation Guide: instructor/facilitation-guide.md
+  - Planted Defect Map: instructor/planted-defect-map.md
+  - Review Questions: instructor/review-questions.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — Data Lifetimes, Durability, and Storage Responsibility:
+  - Chapter: module-01-data-lifetimes-durability-and-storage-responsibility/index.md
+  - Exercises: module-01-data-lifetimes-durability-and-storage-responsibility/exercises.md
+  - Worked answers: module-01-data-lifetimes-durability-and-storage-responsibility/exercise-answers.md
+  - Lab: module-01-data-lifetimes-durability-and-storage-responsibility/lab.md
+  - Checkpoint: module-01-data-lifetimes-durability-and-storage-responsibility/checkpoint.md
+- Module 02 — PersistentVolumes, Claims, StorageClasses, and Binding:
+  - Chapter: module-02-persistentvolumes-claims-storageclasses-and-binding/index.md
+  - Exercises: module-02-persistentvolumes-claims-storageclasses-and-binding/exercises.md
+  - Worked answers: module-02-persistentvolumes-claims-storageclasses-and-binding/exercise-answers.md
+  - Lab: module-02-persistentvolumes-claims-storageclasses-and-binding/lab.md
+  - Checkpoint: module-02-persistentvolumes-claims-storageclasses-and-binding/checkpoint.md
+- Module 03 — CSI Architecture and Volume Lifecycle:
+  - Chapter: module-03-csi-architecture-and-volume-lifecycle/index.md
+  - Exercises: module-03-csi-architecture-and-volume-lifecycle/exercises.md
+  - Worked answers: module-03-csi-architecture-and-volume-lifecycle/exercise-answers.md
+  - Lab: module-03-csi-architecture-and-volume-lifecycle/lab.md
+  - Checkpoint: module-03-csi-architecture-and-volume-lifecycle/checkpoint.md
+- Module 04 — Topology, Scheduling, Capacity, Expansion, and Storage QoS:
+  - Chapter: module-04-topology-scheduling-capacity-expansion-and-storage-qos/index.md
+  - Exercises: module-04-topology-scheduling-capacity-expansion-and-storage-qos/exercises.md
+  - Worked answers: module-04-topology-scheduling-capacity-expansion-and-storage-qos/exercise-answers.md
+  - Lab: module-04-topology-scheduling-capacity-expansion-and-storage-qos/lab.md
+  - Checkpoint: module-04-topology-scheduling-capacity-expansion-and-storage-qos/checkpoint.md
+- Module 05 — StatefulSets, Stable Identity, Quorum, and Fencing:
+  - Chapter: module-05-statefulsets-stable-identity-quorum-and-fencing/index.md
+  - Exercises: module-05-statefulsets-stable-identity-quorum-and-fencing/exercises.md
+  - Worked answers: module-05-statefulsets-stable-identity-quorum-and-fencing/exercise-answers.md
+  - Lab: module-05-statefulsets-stable-identity-quorum-and-fencing/lab.md
+  - Checkpoint: module-05-statefulsets-stable-identity-quorum-and-fencing/checkpoint.md
+- Module 06 — Databases, Object Storage, and Operator Boundaries:
+  - Chapter: module-06-databases-object-storage-and-operator-boundaries/index.md
+  - Exercises: module-06-databases-object-storage-and-operator-boundaries/exercises.md
+  - Worked answers: module-06-databases-object-storage-and-operator-boundaries/exercise-answers.md
+  - Lab: module-06-databases-object-storage-and-operator-boundaries/lab.md
+  - Checkpoint: module-06-databases-object-storage-and-operator-boundaries/checkpoint.md
+- Module 07 — Snapshots, Clones, Populators, and Consistency:
+  - Chapter: module-07-snapshots-clones-populators-and-consistency/index.md
+  - Exercises: module-07-snapshots-clones-populators-and-consistency/exercises.md
+  - Worked answers: module-07-snapshots-clones-populators-and-consistency/exercise-answers.md
+  - Lab: module-07-snapshots-clones-populators-and-consistency/lab.md
+  - Checkpoint: module-07-snapshots-clones-populators-and-consistency/checkpoint.md
+- Module 08 — Backup, Restore, RPO, RTO, and Disaster Recovery:
+  - Chapter: module-08-backup-restore-rpo-rto-and-disaster-recovery/index.md
+  - Exercises: module-08-backup-restore-rpo-rto-and-disaster-recovery/exercises.md
+  - Worked answers: module-08-backup-restore-rpo-rto-and-disaster-recovery/exercise-answers.md
+  - Lab: module-08-backup-restore-rpo-rto-and-disaster-recovery/lab.md
+  - Checkpoint: module-08-backup-restore-rpo-rto-and-disaster-recovery/checkpoint.md
+- Module 09 — Storage Performance, Observability, Quotas, and Failure Diagnosis:
+  - Chapter: module-09-storage-performance-observability-quotas-and-failure-diagnosis/index.md
+  - Exercises: module-09-storage-performance-observability-quotas-and-failure-diagnosis/exercises.md
+  - Worked answers: module-09-storage-performance-observability-quotas-and-failure-diagnosis/exercise-answers.md
+  - Lab: module-09-storage-performance-observability-quotas-and-failure-diagnosis/lab.md
+  - Checkpoint: module-09-storage-performance-observability-quotas-and-failure-diagnosis/checkpoint.md
+- Module 10 — Data Migration, Maintenance, Release, and GitOps Handoff:
+  - Chapter: module-10-data-migration-maintenance-release-and-gitops-handoff/index.md
+  - Exercises: module-10-data-migration-maintenance-release-and-gitops-handoff/exercises.md
+  - Worked answers: module-10-data-migration-maintenance-release-and-gitops-handoff/exercise-answers.md
+  - Lab: module-10-data-migration-maintenance-release-and-gitops-handoff/lab.md
+  - Checkpoint: module-10-data-migration-maintenance-release-and-gitops-handoff/checkpoint.md

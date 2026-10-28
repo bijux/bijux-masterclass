@@ -1,0 +1,9 @@
+{
+  "allowedHost": "updates.example.invalid",
+  "forbidden": [
+    "127.0.0.1",
+    "169.254.169.254",
+    "::1",
+    "fe80::1"
+  ]
+}

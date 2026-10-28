@@ -1,0 +1,24 @@
+version: 1.0
+limits:
+  maximum_message_bytes: 65536
+  upload_total_bytes: 2097152
+  per_stream_queue_messages: 16
+  per_tenant_concurrent_streams: 8
+  worker_max_inflight_assignments: 4
+protocols:
+  UploadDataset:
+    first_frame: metadata
+    later_frames: chunk
+    integrity: expected-size-and-sha256
+    publication: atomic-after-validation
+  DownloadArtifact:
+    ordering: offset-ascending
+    completion: final-chunk-and-sha256-required
+  WatchRun:
+    sequence_scope: per-run-observation
+    retention: bounded
+    expired_resume: authoritative-get-and-reset
+  Work:
+    first_frame: hello
+    authority: durable-lease-generation
+    connection: not-authoritative

@@ -1,0 +1,13 @@
+{
+  "runtimeDir": "/run/atlas",
+  "stateDir": "/var/lib/atlas",
+  "logDir": "/var/log/atlas",
+  "apiHost": "127.0.0.1",
+  "apiPort": 18080,
+  "edgeHost": "0.0.0.0",
+  "edgePort": 8443,
+  "publicName": "atlas.example.invalid",
+  "maxBodyBytes": 65536,
+  "workerPollSeconds": 0.25,
+  "workerLeaseSeconds": 30
+}

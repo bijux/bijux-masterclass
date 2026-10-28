@@ -1,0 +1,1 @@
+fn stable_envelope(knee: usize, headroom_percent: usize) -> Option<usize> { knee.checked_mul(100_usize.checked_sub(headroom_percent)?)?.checked_div(100) } fn main() { assert_eq!(stable_envelope(1000, 20), Some(800)); }

@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+.venv/
+site/
+capstone/reports/core-proof.json
+capstone/reports/doctor.json
+capstone/reports/kind-live.json

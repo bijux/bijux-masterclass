@@ -1,0 +1,31 @@
+{
+  "course": "08-distributed-api-architecture-and-microservices-engineering",
+  "version": "1.0.0",
+  "status": "pass",
+  "executed": {
+    "predecessor_files": 46,
+    "course_book_pages": 59,
+    "exercises": 120,
+    "worked_answers": 120,
+    "labs": 10,
+    "checkpoints": 10,
+    "python_tests": 31,
+    "typescript_tests": 20,
+    "typescript_strict_compilation": true,
+    "network_lab_processes": 5,
+    "network_lab_remote_calls": true,
+    "network_lab_explicit_degradation": true,
+    "shared_vector_files": 10,
+    "shared_vector_cases": 46,
+    "planted_defects_rejected": 10,
+    "outgoing_handoff_files": 8
+  },
+  "not_executed": [
+    "live PostgreSQL proof",
+    "native Docker Compose proof",
+    "Kubernetes API and policy enforcement",
+    "live event-broker proof",
+    "strict MkDocs build",
+    "representative production capacity evidence"
+  ]
+}

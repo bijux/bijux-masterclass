@@ -1,0 +1,11 @@
+{
+  "csiSpecification": "1.13.0",
+  "externalSnapshotterProfile": "8.6.0 / course-reviewed",
+  "go": "1.23+",
+  "kindOptionalLane": "0.32.0",
+  "kubernetes": "1.36.2",
+  "mkdocsMaterial": "9.x optional",
+  "python": "3.12+",
+  "volumeGroupSnapshotImplementationApi": "groupsnapshot.storage.k8s.io/v1beta2",
+  "volumeSnapshotApi": "snapshot.storage.k8s.io/v1"
+}

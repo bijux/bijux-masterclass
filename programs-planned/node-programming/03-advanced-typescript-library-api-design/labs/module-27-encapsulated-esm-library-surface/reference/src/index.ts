@@ -1,0 +1,1 @@
+import{normalizeName}from'./internal/normalize.js';export interface Greeting{readonly text:string;readonly normalizedName:string}export function greet(name:string):Greeting{const normalizedName=normalizeName(name);return Object.freeze({text:`Hello, ${normalizedName}`,normalizedName});}

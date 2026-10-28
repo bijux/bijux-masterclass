@@ -1,0 +1,221 @@
+policies:
+- operationId: getHealth
+  credential: anonymous
+  scopes: []
+  roles: []
+  relationship: none
+  tenantBound: false
+  concealment: public
+  audit: false
+  freshAuthentication: false
+  assurance: baseline
+- operationId: listProjects
+  credential: bearer
+  scopes:
+  - projects:read
+  roles: []
+  relationship: tenant-query
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: createProject
+  credential: bearer
+  scopes:
+  - projects:write
+  roles: []
+  relationship: tenant-create
+  tenantBound: true
+  concealment: explicit
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: getProject
+  credential: bearer
+  scopes:
+  - projects:read
+  roles: []
+  relationship: owner-or-member
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: updateProject
+  credential: bearer
+  scopes:
+  - projects:write
+  roles: []
+  relationship: owner
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: listProjectDatasets
+  credential: bearer
+  scopes:
+  - datasets:read
+  roles: []
+  relationship: project-member
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: createDataset
+  credential: bearer
+  scopes:
+  - datasets:write
+  roles: []
+  relationship: project-owner-or-writer
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: getDataset
+  credential: bearer
+  scopes:
+  - datasets:read
+  roles: []
+  relationship: project-member
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: deleteDataset
+  credential: bearer
+  scopes:
+  - datasets:write
+  roles: []
+  relationship: project-owner
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: uploadDatasetContent
+  credential: bearer
+  scopes:
+  - datasets:write
+  roles: []
+  relationship: project-owner-or-writer
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: listAnalysisRuns
+  credential: bearer
+  scopes:
+  - runs:read
+  roles: []
+  relationship: tenant-query
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: createAnalysisRun
+  credential: bearer
+  scopes:
+  - runs:write
+  roles: []
+  relationship: project-member-and-dataset
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: getAnalysisRun
+  credential: bearer
+  scopes:
+  - runs:read
+  roles: []
+  relationship: project-member
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: cancelAnalysisRun
+  credential: bearer
+  scopes:
+  - runs:write
+  roles: []
+  relationship: project-owner-or-run-creator
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: listRunArtifacts
+  credential: bearer
+  scopes:
+  - artifacts:read
+  roles: []
+  relationship: project-member-completed-run
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: streamAnalysisRunEvents
+  credential: bearer
+  scopes:
+  - runs:read
+  roles: []
+  relationship: project-member
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: getArtifact
+  credential: bearer
+  scopes:
+  - artifacts:read
+  roles: []
+  relationship: project-member
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: createWebhookSubscription
+  credential: bearer
+  scopes:
+  - webhooks:write
+  roles: []
+  relationship: tenant-owner
+  tenantBound: true
+  concealment: explicit
+  audit: true
+  freshAuthentication: false
+  assurance: baseline
+- operationId: getInternalDiagnostics
+  credential: bearer
+  scopes:
+  - diagnostics:read
+  roles:
+  - operator
+  relationship: fresh-high-assurance
+  tenantBound: true
+  concealment: explicit
+  audit: true
+  freshAuthentication: true
+  assurance: high
+- operationId: downloadArtifactContent
+  credential: bearer
+  scopes:
+  - artifacts:read
+  roles: []
+  relationship: project-member
+  tenantBound: true
+  concealment: concealed
+  audit: true
+  freshAuthentication: false
+  assurance: baseline

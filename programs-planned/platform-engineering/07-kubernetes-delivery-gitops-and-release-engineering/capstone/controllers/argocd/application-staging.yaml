@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: atlas-staging
+  namespace: argocd
+spec:
+  project: atlas
+  source:
+    repoURL: https://git.example.invalid/atlas/environment.git
+    targetRevision: 2222222222222222222222222222222222222222
+    path: capstone/repository/apps/atlas/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: atlas-staging
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true

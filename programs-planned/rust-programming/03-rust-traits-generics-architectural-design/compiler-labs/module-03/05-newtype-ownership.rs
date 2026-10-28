@@ -1,0 +1,1 @@
+struct Hex(Vec<u8>);impl std::fmt::Display for Hex{fn fmt(&self,f:&mut std::fmt::Formatter<'_>)->std::fmt::Result{for b in &self.0{write!(f,"{b:02x}")?;}Ok(())}}fn main(){assert_eq!(Hex(vec![10]).to_string(),"0a");}

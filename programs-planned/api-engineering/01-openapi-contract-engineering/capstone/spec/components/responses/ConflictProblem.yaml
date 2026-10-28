@@ -1,0 +1,15 @@
+description: Request conflict
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: https://api.example.test/problems/conflict
+      title: Request conflict
+      status: 409
+      detail: The request conflicts with current resource state.
+      instance: /example
+      requestId: req_012345abcdef

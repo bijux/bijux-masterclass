@@ -1,0 +1,6 @@
+{
+  "description": "crash-consistent snapshot labelled application-consistent",
+  "expectedProof": "snapshot checkpoint proof",
+  "id": "DATA-07",
+  "status": "must-be-rejected"
+}

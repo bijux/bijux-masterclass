@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "category": "contract-semantics",
+      "expected": "catalog-owner",
+      "name": "contract semantics route"
+    },
+    {
+      "category": "portal-registry-template",
+      "expected": "group:default/api-platform-team",
+      "name": "platform defect route"
+    }
+  ]
+}

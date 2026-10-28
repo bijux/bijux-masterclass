@@ -1,0 +1,11 @@
+{
+  "costEvidence": "approved",
+  "destructiveCriticalChange": false,
+  "imdsTokens": "required",
+  "liveCloudEvidence": "not-executed",
+  "longLivedCiKey": false,
+  "name": "not-executed-live-cloud",
+  "natArchitecture": "single-sandbox",
+  "publicSsh": false,
+  "stateProtection": "not-executed"
+}

@@ -1,0 +1,13 @@
+PyYAML==6.0.3
+jsonschema==4.26.0
+httpx==0.28.1
+pytest==9.0.2
+fastapi==0.128.2
+pydantic==2.13.4
+python-multipart==0.0.32
+uvicorn==0.48.0
+mkdocs==1.6.1
+mkdocs-material==9.7.0
+schemathesis==4.24.3
+openapi-python-client==0.29.0
+ruff==0.14.13

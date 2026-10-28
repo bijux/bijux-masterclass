@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: atlas-prod
+  namespace: argocd
+spec:
+  project: atlas
+  source:
+    repoURL: https://git.example.invalid/atlas/environment.git
+    targetRevision: 3333333333333333333333333333333333333333
+    path: capstone/repository/apps/atlas/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: atlas-prod
+  syncPolicy:
+    automated:
+      enabled: false
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+      - Prune=confirm
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: atlas-api-prod
+      namespace: atlas-prod
+      jsonPointers:
+        - /spec/replicas

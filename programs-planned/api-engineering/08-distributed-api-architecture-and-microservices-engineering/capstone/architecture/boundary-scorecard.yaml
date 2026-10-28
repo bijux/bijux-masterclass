@@ -1,0 +1,60 @@
+version: '1.0'
+criteria:
+- id: ownership
+  weight: 3
+  question: Is one team accountable for the capability and contract?
+- id: data-autonomy
+  weight: 3
+  question: Can the capability own its writes without shared-table transactions?
+- id: change-independence
+  weight: 2
+  question: Does it change for reasons distinct from Analysis Control?
+- id: scale-isolation
+  weight: 2
+  question: Does it have a distinct resource or traffic profile?
+- id: failure-isolation
+  weight: 2
+  question: Can independent failure improve the whole system?
+- id: security-boundary
+  weight: 2
+  question: Does it need a distinct trust or retention policy?
+- id: operational-cost
+  weight: -3
+  question: What additional on-call, release, and data-recovery cost appears?
+- id: sync-coupling
+  weight: -3
+  question: How many synchronous calls remain on critical paths?
+candidates:
+- capability: Analysis Control
+  score: 7
+  decision: keep-cohesive
+  reason: run, idempotency, lease, and outbox invariants share one transaction authority
+- capability: Notification Delivery
+  score: 15
+  decision: extract-first
+  reason: event-fed, independently retryable, separate retention and operational profile
+- capability: Artifact Delivery
+  score: 12
+  decision: extract-second
+  reason: distinct storage and egress profile after capability-based authorization
+    is designed
+- capability: Worker Plane
+  score: 10
+  decision: separate-deployment-not-data-owner
+  reason: independent compute fleet; Analysis Control retains lease and run authority
+- capability: Dataset Metadata
+  score: 2
+  decision: keep-with-control
+  reason: strong policy and transaction coupling with projects and run submission
+- capability: Project CRUD
+  score: -4
+  decision: reject
+  reason: table-shaped service creates remote joins and no independent capability
+- capability: Idempotency Service
+  score: -8
+  decision: reject
+  reason: idempotency must commit with the owning mutation
+- capability: Gateway
+  score: 6
+  decision: edge-component
+  reason: owns routing and normalization but no business state

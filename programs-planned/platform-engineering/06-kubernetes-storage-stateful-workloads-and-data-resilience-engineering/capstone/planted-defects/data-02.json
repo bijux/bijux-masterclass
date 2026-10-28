@@ -1,0 +1,6 @@
+{
+  "description": "Immediate zonal binding strands the workload",
+  "expectedProof": "binding and topology proof",
+  "id": "DATA-02",
+  "status": "must-be-rejected"
+}

@@ -1,0 +1,41 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "courseEvidenceNotice": "The structure demonstrates provenance semantics; it is not a signed attestation from a hardened hosted build platform.",
+  "predicate": {
+    "buildDefinition": {
+      "buildType": "https://example.invalid/analysis-platform/sdk-publication/v1",
+      "externalParameters": {
+        "apiRef": "api:default/analysis-http",
+        "contractVersion": "1.2.0"
+      },
+      "internalParameters": {},
+      "resolvedDependencies": [
+        {
+          "digest": {
+            "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3"
+          },
+          "uri": "capstone/contracts/http/analysis-http-api-1.2.openapi.yaml"
+        }
+      ]
+    },
+    "runDetails": {
+      "builder": {
+        "id": "https://example.invalid/analysis-platform/course-builder"
+      },
+      "metadata": {
+        "finishedOn": "2026-08-08T10:01:00Z",
+        "invocationId": "course10-sdk-1.2.0",
+        "startedOn": "2026-08-08T10:00:00Z"
+      }
+    }
+  },
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "subject": [
+    {
+      "digest": {
+        "sha256": "3b6f03aaacf268f54720f78f8550cc6b96b45b23158090de71bbb7a2a3d118ff"
+      },
+      "name": "analysis-api-client-publication.json"
+    }
+  ]
+}

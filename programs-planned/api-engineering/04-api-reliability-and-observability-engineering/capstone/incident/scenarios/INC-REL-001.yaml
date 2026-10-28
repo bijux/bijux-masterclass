@@ -1,0 +1,72 @@
+incidentId: INC-REL-001
+title: Accepted runs stall while telemetry is partially unavailable
+initialSeverity: SEV-2
+roles:
+  incidentCommander: A. Operator
+  operationsLead: B. Engineer
+  communicationsLead: C. Support
+  scribe: D. Observer
+timeline:
+- at: '2026-08-06T10:00:00Z'
+  kind: observation
+  source: slo-alert
+  confidence: high
+  statement: Run-start freshness fast-burn alert fired.
+- at: '2026-08-06T10:01:00Z'
+  kind: action
+  source: incident-commander
+  confidence: confirmed
+  statement: Declared SEV-2 and froze unrelated releases.
+- at: '2026-08-06T10:02:00Z'
+  kind: observation
+  source: durable-job-state
+  confidence: high
+  statement: One leased job stopped renewing its lease.
+- at: '2026-08-06T10:03:00Z'
+  kind: observation
+  source: collector-self-metric
+  confidence: medium
+  statement: Trace exporter batches are being refused.
+- at: '2026-08-06T10:05:00Z'
+  kind: inference
+  source: operations-lead
+  confidence: medium
+  statement: Worker termination is the likely primary fault; telemetry loss is a secondary
+    diagnostic failure.
+- at: '2026-08-06T10:08:00Z'
+  kind: action
+  source: operations-lead
+  confidence: confirmed
+  statement: Recovered the expired lease using the existing generation-fencing path.
+- at: '2026-08-06T10:11:00Z'
+  kind: confirmation
+  source: reconciliation-report
+  confidence: high
+  statement: One terminal artifact, event, and outbox record exist; no target divergence
+    remains.
+- at: '2026-08-06T10:16:00Z'
+  kind: confirmation
+  source: slo-query
+  confidence: high
+  statement: Run-start burn rate is below one in both windows.
+severityTransitions:
+- at: '2026-08-06T10:00:00Z'
+  from: none
+  to: SEV-2
+  reason: Fast burn of a customer-facing journey.
+- at: '2026-08-06T10:16:00Z'
+  from: SEV-2
+  to: monitoring
+  reason: Customer journey recovered and reconciliation is clean.
+requiredActions:
+- Confirm accepted submissions are durable.
+- Recover expired leases without disabling fencing.
+- Restore telemetry independently.
+- Run read-only reconciliation.
+- Validate SLO recovery.
+- Write a blameless review with owned follow-up.
+closureCriteria:
+- Run-start SLO healthy in both windows.
+- No target reconciliation finding.
+- Telemetry gap documented.
+- Follow-up owners assigned.

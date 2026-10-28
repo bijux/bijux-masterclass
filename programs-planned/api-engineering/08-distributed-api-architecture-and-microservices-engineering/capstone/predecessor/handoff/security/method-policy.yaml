@@ -1,0 +1,38 @@
+version: 1.0
+default: deny
+methods:
+  CreateRun:
+    workloads: [gateway]
+    delegated_scope: runs:write
+    tenant_source: verified-principal
+  GetRun:
+    workloads: [gateway]
+    delegated_scope: runs:read
+    tenant_source: verified-principal
+  CancelRun:
+    workloads: [gateway]
+    delegated_scope: runs:write
+    tenant_source: verified-principal
+  WatchRun:
+    workloads: [gateway]
+    delegated_scope: runs:read
+    maximum_stream_age_seconds: 900
+  UploadDataset:
+    workloads: [gateway]
+    delegated_scope: datasets:write
+  DownloadArtifact:
+    workloads: [gateway]
+    delegated_scope: artifacts:read
+  Work:
+    workloads: [worker]
+    workload_scope: worker:connect
+    completion_requires:
+      - assignment-bound-worker
+      - current-lease-generation
+tls:
+  server_name_validation: required
+  mtls_workload_mapping: required-in-full-profile
+  fixture_credentials: non-production
+reflection:
+  production_default: disabled
+  operator_access: authenticated

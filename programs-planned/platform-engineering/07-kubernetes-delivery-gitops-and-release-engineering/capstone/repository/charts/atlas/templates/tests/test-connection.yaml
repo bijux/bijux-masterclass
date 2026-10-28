@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "atlas.name" . }}-test-connection
+  namespace: {{ .Values.namespace }}
+  annotations:
+    helm.sh/hook: test
+spec:
+  restartPolicy: Never
+  containers:
+    - name: curl
+      image: curlimages/curl@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+      args: ["--fail", "http://{{ include "atlas.name" . }}:{{ .Values.service.port }}/ready"]

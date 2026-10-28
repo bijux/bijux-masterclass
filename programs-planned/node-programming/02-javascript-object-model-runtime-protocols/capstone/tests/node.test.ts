@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict'; import test from 'node:test'; import { inspect } from 'node:util';
+import { AtlasNode } from '../src/node.js';
+const record={id:'root',kind:'folder' as const,label:'Root',parentId:null,children:[],attributes:{color:'blue'}};
+test('node exposes deliberate descriptor and protocol surfaces',()=>{const node=new AtlasNode(record,1);const d=Object.getOwnPropertyDescriptor(node,'id')!;assert.deepEqual({writable:d.writable,enumerable:d.enumerable,configurable:d.configurable},{writable:false,enumerable:true,configurable:false});assert.equal(Object.prototype.toString.call(node),'[object AtlasNode]');assert.equal(String(node),'root');assert.throws(()=>Number(node));assert.match(inspect(node),/AtlasNode root/);assert.equal(Reflect.ownKeys(node).some((key)=>typeof key==='symbol'),true);});
+test('prototype forgery does not establish private brand',()=>{const forged=Object.setPrototypeOf({},AtlasNode.prototype);assert.equal(forged instanceof AtlasNode,true);assert.equal(AtlasNode.isAtlasNode(forged),false);assert.throws(()=>AtlasNode.prototype.toRecord.call(forged));});

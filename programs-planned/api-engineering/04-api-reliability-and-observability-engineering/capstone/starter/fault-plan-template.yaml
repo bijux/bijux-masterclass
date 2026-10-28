@@ -1,0 +1,12 @@
+id: LAB-FAULT-XXX
+journey: JRN-XXX
+requirement: REL-XXX
+hypothesis: ''
+steadyState: ''
+fault:
+  mechanism: ''
+  scope: synthetic-only
+  durationSeconds: 0
+abortConditions: []
+oracles: []
+cleanup: []

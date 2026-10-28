@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "expected": true,
+      "name": "compatible"
+    },
+    {
+      "expected": false,
+      "name": "missing-capability"
+    },
+    {
+      "expectedTargets": null,
+      "name": "source-unavailable"
+    }
+  ]
+}

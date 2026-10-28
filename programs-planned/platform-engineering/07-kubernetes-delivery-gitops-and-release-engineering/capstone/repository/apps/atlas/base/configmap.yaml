@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atlas-runtime
+  namespace: atlas
+data:
+  LOG_LEVEL: info
+  SHUTDOWN_GRACE_SECONDS: "30"
+  DATA_RELEASE_PHASE: expand

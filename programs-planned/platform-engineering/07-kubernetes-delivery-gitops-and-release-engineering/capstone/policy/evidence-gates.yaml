@@ -1,0 +1,19 @@
+gates:
+- name: predecessor-integrity
+  blocker: true
+- name: immutable-artifacts
+  blocker: true
+- name: render-determinism
+  blocker: true
+- name: schema-compatibility
+  blocker: true
+- name: restore-evidence
+  blocker: true
+- name: secret-adoption
+  blocker: true
+- name: progressive-analysis
+  blocker: true
+- name: fleet-compatibility
+  blocker: true
+- name: native-controller-evidence
+  blocker: false

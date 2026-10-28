@@ -1,0 +1,9 @@
+{
+  "host": "atlas.example.invalid",
+  "paths": [
+    "/",
+    "/health",
+    "/api"
+  ],
+  "unauthorizedNamespace": "tenant-b"
+}

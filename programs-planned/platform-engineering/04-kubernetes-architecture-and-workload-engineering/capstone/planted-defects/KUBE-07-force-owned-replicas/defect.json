@@ -1,0 +1,7 @@
+{
+  "expectedProof": "managed-field-proof",
+  "id": "KUBE-07-force-owned-replicas",
+  "slug": "force-owned-replicas",
+  "status": "must-be-rejected",
+  "summary": "controller seizes an author-owned replica field"
+}

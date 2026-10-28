@@ -1,0 +1,9 @@
+[package]
+name = "course7-compiler-m09-c03"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+rayon = "=1.12.0"

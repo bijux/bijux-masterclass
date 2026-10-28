@@ -1,0 +1,12 @@
+{
+  "bucketOwner": "atlas-runtime",
+  "keyPrefix": "",
+  "kmsEncryption": false,
+  "nativeLockfile": false,
+  "publicAccessBlock": true,
+  "recoveryVersionSelection": false,
+  "retainedVersions": 1,
+  "tlsOnlyPolicy": false,
+  "versioning": false,
+  "workloadOwner": "atlas-runtime"
+}

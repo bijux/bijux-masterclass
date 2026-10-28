@@ -1,0 +1,9 @@
+{
+  "candidate": "synchronous-cycle",
+  "defect": "analysis-control and artifact-service call each other",
+  "expected": "reject",
+  "id": "DIST-03",
+  "lesson": "Reverse synchronous authorization creates circular availability and release dependence; use owner-issued delegated authority instead.",
+  "rejecting_gate": "acyclic-sync-graph",
+  "title": "Synchronous Cycle"
+}

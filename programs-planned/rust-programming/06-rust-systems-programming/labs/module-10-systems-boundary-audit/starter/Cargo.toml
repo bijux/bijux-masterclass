@@ -1,0 +1,9 @@
+[package]
+name = "course6-lab60-module-10-systems-boundary-audit-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[lib]
+crate-type = ["rlib", "cdylib"]

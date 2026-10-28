@@ -1,0 +1,8 @@
+serviceRelease: security-1.0.0-rejected
+publicApi: 1.2.0
+compatibility: breaking
+changes:
+- requires a new mandatory client header on all existing operations
+- removes API-key credential without deprecation
+- changes concealed 404 behavior to detailed foreign-resource 403
+expected: compatibility/security-policy proof rejects candidate

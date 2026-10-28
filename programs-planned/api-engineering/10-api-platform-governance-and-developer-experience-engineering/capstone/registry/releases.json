@@ -1,0 +1,82 @@
+{
+  "registryVersion": "1.0",
+  "releases": [
+    {
+      "apiRef": "api:default/analysis-events",
+      "compatibilityEvidence": "evidence/events-api-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "asyncapi",
+      "publishedAt": "2026-08-02T09:00:00Z",
+      "sha256": "43410d220996bd5dd1f86242ab36916bac3817febda716b39023aceb9cf3c37a",
+      "source": "contracts/events/asyncapi.yaml",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/analysis-graph",
+      "compatibilityEvidence": "evidence/graph-api-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/api-platform-team",
+      "protocol": "graphql",
+      "publishedAt": "2026-08-04T09:00:00Z",
+      "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9",
+      "source": "contracts/graph/schema.graphql",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/analysis-http",
+      "compatibilityEvidence": "evidence/http-api-1.2-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "openapi",
+      "publishedAt": "2026-08-01T09:00:00Z",
+      "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+      "source": "contracts/http/analysis-http-api-1.2.openapi.yaml",
+      "version": "1.2.0"
+    },
+    {
+      "apiRef": "api:default/analysis-rpc",
+      "compatibilityEvidence": "evidence/rpc-api-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "protobuf",
+      "publishedAt": "2026-08-03T09:00:00Z",
+      "sha256": "871307a4cfd2b34658fe5a7506ca1f8a127816c4186ef426163869dd2dbbda27",
+      "source": "contracts/rpc/bijux/analysis/v1/analysis.proto",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/artifact-http",
+      "compatibilityEvidence": "evidence/artifact-http-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/artifact-team",
+      "protocol": "openapi",
+      "publishedAt": "2026-08-08T08:00:00Z",
+      "sha256": "72a95928e6ee1b053b8bfe76a8032ac0d1012df86962c36138402283a89caa7f",
+      "source": "contracts/capabilities/artifact-http.openapi.yaml",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/notification-http",
+      "compatibilityEvidence": "evidence/notification-http-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/notification-team",
+      "protocol": "openapi",
+      "publishedAt": "2026-08-08T08:00:00Z",
+      "sha256": "db729a97a723c84b96b8871e88771b06f1e830c1f1df5af2984f0adf68047f40",
+      "source": "contracts/capabilities/notification-http.openapi.yaml",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/platform-catalog",
+      "compatibilityEvidence": "evidence/platform-catalog-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/api-platform-team",
+      "protocol": "openapi",
+      "publishedAt": "2026-08-08T08:00:00Z",
+      "sha256": "bda58d7af7e33e2cdc058b901f43ef107d935dd5d297841bb4aea1304f4bbb8f",
+      "source": "contracts/platform/platform-catalog.openapi.yaml",
+      "version": "1.0.0"
+    }
+  ]
+}

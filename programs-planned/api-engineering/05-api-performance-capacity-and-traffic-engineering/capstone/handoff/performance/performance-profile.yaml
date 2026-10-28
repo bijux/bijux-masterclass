@@ -1,0 +1,61 @@
+profileVersion: "1.0"
+inherits:
+  publicApi: "1.2"
+  securityProfile: "1.0"
+  reliabilityProfile: "1.0"
+identity:
+  workloadHash: required
+  environmentHash: required
+  sourceRevision: required
+  datasetId: required
+  buildFlags: required
+evidenceClasses:
+  A: deterministic-model
+  B: local-process
+  C: live-dependency
+  D: representative-environment
+  E: operated-production
+comparisonOrder:
+  - comparability
+  - predecessor-integrity
+  - correctness
+  - outcome-coverage
+  - performance
+  - capacity-review
+quantiles:
+  deterministicVectors: nearest-rank
+  toolOutput: record-algorithm
+outcomes:
+  required:
+    - offered
+    - started
+    - admitted
+    - completed
+    - rejected
+    - failed
+    - missing
+releasePolicy:
+  metrics:
+    - name: p95Ms
+      direction: lower
+      absoluteRegression: "10"
+      relativeRegression: "0.05"
+      hardMaximum: "250"
+    - name: throughputPerSecond
+      direction: higher
+      absoluteRegression: "5"
+      relativeRegression: "0.03"
+      hardMinimum: "40"
+    - name: cpuNsPerOperation
+      direction: lower
+      absoluteRegression: "500000"
+      relativeRegression: "0.05"
+    - name: peakMemoryBytes
+      direction: lower
+      absoluteRegression: "8388608"
+      relativeRegression: "0.05"
+      hardMaximum: "536870912"
+decisionStates:
+  - accepted
+  - rejected
+  - inconclusive

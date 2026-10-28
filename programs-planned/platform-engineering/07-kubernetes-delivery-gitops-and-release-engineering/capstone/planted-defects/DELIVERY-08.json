@@ -1,0 +1,6 @@
+{
+  "expectedControl": "minimum sample and unavailable-data rule",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-08",
+  "title": "Canary passes with zero candidate samples"
+}

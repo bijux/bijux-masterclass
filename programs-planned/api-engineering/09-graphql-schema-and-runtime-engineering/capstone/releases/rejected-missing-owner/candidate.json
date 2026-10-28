@@ -1,0 +1,8 @@
+{
+  "activeOperationsValid": true,
+  "budgetsPass": true,
+  "change": "add AnalysisRun.ownerEmail without field authority",
+  "expected": "rejected",
+  "oldClientPasses": true,
+  "ownershipComplete": false
+}

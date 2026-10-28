@@ -1,0 +1,33 @@
+name: OpenAPI Contract Engineering proof
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: programs/api-engineering/01-openapi-contract-engineering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Setup course toolchain
+        run: make setup
+      - name: Full contract, implementation, client, tool, and documentation proof
+        run: make proof
+      - name: Preserve reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-contract-engineering-reports
+          path: programs/api-engineering/01-openapi-contract-engineering/capstone/reports

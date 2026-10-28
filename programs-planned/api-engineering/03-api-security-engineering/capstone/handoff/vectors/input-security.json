@@ -1,0 +1,126 @@
+{
+  "archiveCases": [
+    {
+      "id": "archive-ok",
+      "members": [
+        {
+          "name": "a.csv",
+          "size": 100
+        },
+        {
+          "name": "b/meta.json",
+          "size": 50
+        }
+      ],
+      "valid": true
+    },
+    {
+      "id": "archive-traversal",
+      "members": [
+        {
+          "name": "../x",
+          "size": 1
+        }
+      ],
+      "valid": false
+    },
+    {
+      "id": "archive-too-many",
+      "maxMembers": 5,
+      "members": [
+        {
+          "name": "0.txt",
+          "size": 1
+        },
+        {
+          "name": "1.txt",
+          "size": 1
+        },
+        {
+          "name": "2.txt",
+          "size": 1
+        },
+        {
+          "name": "3.txt",
+          "size": 1
+        },
+        {
+          "name": "4.txt",
+          "size": 1
+        },
+        {
+          "name": "5.txt",
+          "size": 1
+        }
+      ],
+      "valid": false
+    },
+    {
+      "id": "archive-too-large",
+      "maxTotal": 1000,
+      "members": [
+        {
+          "name": "x.bin",
+          "size": 2000
+        }
+      ],
+      "valid": false
+    }
+  ],
+  "filenameCases": [
+    {
+      "id": "file-ok",
+      "valid": true,
+      "value": "dataset-01.csv"
+    },
+    {
+      "id": "file-separator",
+      "valid": false,
+      "value": "../dataset.csv"
+    },
+    {
+      "id": "file-bidi",
+      "valid": false,
+      "value": "safe\u202efdp.exe"
+    },
+    {
+      "id": "file-control",
+      "valid": false,
+      "value": "data\u0000.csv"
+    }
+  ],
+  "pathCases": [
+    {
+      "id": "path-normal",
+      "result": "/srv/data/tenant/a.csv",
+      "root": "/srv/data",
+      "valid": true,
+      "value": "tenant/a.csv"
+    },
+    {
+      "id": "path-parent",
+      "root": "/srv/data",
+      "valid": false,
+      "value": "../secret"
+    },
+    {
+      "decode": true,
+      "id": "path-encoded-parent",
+      "root": "/srv/data",
+      "valid": false,
+      "value": "%2e%2e/secret"
+    },
+    {
+      "id": "path-absolute",
+      "root": "/srv/data",
+      "valid": false,
+      "value": "/etc/passwd"
+    },
+    {
+      "id": "path-mixed",
+      "root": "/srv/data",
+      "valid": false,
+      "value": "tenant/../../secret"
+    }
+  ]
+}

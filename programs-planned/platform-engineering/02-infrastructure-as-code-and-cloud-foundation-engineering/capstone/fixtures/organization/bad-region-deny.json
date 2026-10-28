@@ -1,0 +1,7 @@
+{
+  "approvedRegions": [
+    "eu-central-1"
+  ],
+  "globalServiceExceptions": [],
+  "testedInPolicyStaging": false
+}

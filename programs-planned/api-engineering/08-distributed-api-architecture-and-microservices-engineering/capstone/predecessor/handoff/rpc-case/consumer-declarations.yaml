@@ -1,0 +1,19 @@
+consumers:
+  - id: python-gateway
+    language: Python
+    methods: [CreateRun, GetRun, CancelRun, WatchRun]
+    unknown_enum_policy: preserve-or-explicit-unknown
+    int64_policy: native-integer
+    protojson: diagnostics-only
+  - id: typescript-worker
+    language: TypeScript
+    methods: [Work]
+    unknown_enum_policy: explicit-fallback
+    int64_policy: decimal-string-or-bigint
+    protojson: diagnostics-only
+  - id: typescript-operator
+    language: TypeScript
+    methods: [GetRun, WatchRun]
+    unknown_enum_policy: explicit-fallback
+    int64_policy: decimal-string-or-bigint
+    protojson: allowed

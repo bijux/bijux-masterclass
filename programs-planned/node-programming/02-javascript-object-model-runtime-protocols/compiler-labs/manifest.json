@@ -1,0 +1,826 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "m11-c01",
+      "module": 11,
+      "title": "Complete data descriptor",
+      "category": "typecheck-pass",
+      "path": "module-11/m11-c01/case.ts",
+      "target": "A complete descriptor can be inspected only after handling possible absence.",
+      "principledRepair": "Handle undefined and inspect attributes explicitly.",
+      "weakRepair": "Assert the descriptor exists without establishing the property."
+    },
+    {
+      "id": "m11-c02",
+      "module": 11,
+      "title": "Descriptor writable must be Boolean",
+      "category": "typecheck-fail",
+      "path": "module-11/m11-c02/case.ts",
+      "target": "PropertyDescriptor.writable is Boolean, not a descriptive string.",
+      "principledRepair": "Use a Boolean and document the intended mutability.",
+      "weakRepair": "Cast the descriptor to PropertyDescriptor."
+    },
+    {
+      "id": "m11-c03",
+      "module": 11,
+      "title": "Reflect own keys include symbols",
+      "category": "typecheck-pass",
+      "path": "module-11/m11-c03/case.ts",
+      "target": "Reflect.ownKeys returns string and symbol keys.",
+      "principledRepair": "Model the result as PropertyKey values.",
+      "weakRepair": "Convert every key to string and lose symbol identity."
+    },
+    {
+      "id": "m11-c04",
+      "module": 11,
+      "title": "Property key is not always string",
+      "category": "typecheck-fail",
+      "path": "module-11/m11-c04/case.ts",
+      "target": "PropertyKey includes symbol as well as string/number source forms.",
+      "principledRepair": "Narrow with typeof before using string-only behavior.",
+      "weakRepair": "Call String(key) and pretend identity is preserved."
+    },
+    {
+      "id": "m11-c05",
+      "module": 11,
+      "title": "Enumeration surfaces differ",
+      "category": "run-pass",
+      "path": "module-11/m11-c05/case.ts",
+      "target": "Object.keys and Reflect.ownKeys observe different property sets.",
+      "principledRepair": "Choose the surface that matches the claim.",
+      "weakRepair": "Use one enumeration API for every purpose.",
+      "expectedStdout": "visible|3\n"
+    },
+    {
+      "id": "m11-c06",
+      "module": 11,
+      "title": "Spread invokes an enumerable getter",
+      "category": "run-fail",
+      "path": "module-11/m11-c06/case.ts",
+      "target": "Object spread reads enumerable property values and therefore invokes getters.",
+      "principledRepair": "Inspect descriptors or serialize an explicit plain snapshot.",
+      "weakRepair": "Wrap spread in catch and keep the effectful boundary.",
+      "expectedStderrContains": "getter executed"
+    },
+    {
+      "id": "m11-c07",
+      "module": 11,
+      "title": "Symbol-keyed metadata is typed",
+      "category": "typecheck-pass",
+      "path": "module-11/m11-c07/case.ts",
+      "target": "A unique symbol can name a statically tracked property.",
+      "principledRepair": "Keep the symbol identity in module scope and use it consistently.",
+      "weakRepair": "Replace it with a collision-prone string."
+    },
+    {
+      "id": "m11-c08",
+      "module": 11,
+      "title": "Descriptor lookup may be absent",
+      "category": "typecheck-fail",
+      "path": "module-11/m11-c08/case.ts",
+      "target": "Descriptor lookup returns undefined when the property is absent.",
+      "principledRepair": "Check for undefined before reading attributes.",
+      "weakRepair": "Use a non-null assertion without proving ownership."
+    },
+    {
+      "id": "m12-c01",
+      "module": 12,
+      "title": "Inherited method uses derived receiver",
+      "category": "typecheck-pass",
+      "path": "module-12/m12-c01/case.ts",
+      "target": "An inherited method receives the final base object as receiver.",
+      "principledRepair": "Type the receiver contract and construct the delegated object deliberately.",
+      "weakRepair": "Bind the method to the prototype object."
+    },
+    {
+      "id": "m12-c02",
+      "module": 12,
+      "title": "Prototype object lacks instance field initialization",
+      "category": "run-fail",
+      "path": "module-12/m12-c02/case.ts",
+      "target": "TypeScript may type Constructor.prototype as the instance type even though instance fields are not installed there.",
+      "principledRepair": "Treat the prototype as shared behavior and construct a legitimate instance for instance state.",
+      "weakRepair": "Use a non-null assertion on the missing field.",
+      "expectedStderrContains": "toFixed"
+    },
+    {
+      "id": "m12-c03",
+      "module": 12,
+      "title": "Own-property check precedes read",
+      "category": "typecheck-pass",
+      "path": "module-12/m12-c03/case.ts",
+      "target": "Own input policy must be checked separately from inherited lookup.",
+      "principledRepair": "Use Object.hasOwn and then validate the value.",
+      "weakRepair": "Use the in operator for untrusted dictionaries."
+    },
+    {
+      "id": "m12-c04",
+      "module": 12,
+      "title": "Explicit this contract rejects wrong receiver",
+      "category": "typecheck-fail",
+      "path": "module-12/m12-c04/case.ts",
+      "target": "The receiver must satisfy the explicit this parameter.",
+      "principledRepair": "Pass a receiver with the required tenant property.",
+      "weakRepair": "Cast the receiver to Tenant."
+    },
+    {
+      "id": "m12-c05",
+      "module": 12,
+      "title": "Inherited getter preserves receiver",
+      "category": "run-pass",
+      "path": "module-12/m12-c05/case.ts",
+      "target": "Accessor lookup changes objects but calls the getter with the original receiver.",
+      "principledRepair": "Preserve receiver semantics when forwarding with Reflect.get.",
+      "weakRepair": "Read the getter from the prototype with the prototype as receiver.",
+      "expectedStdout": "child\n"
+    },
+    {
+      "id": "m12-c06",
+      "module": 12,
+      "title": "Inherited input is rejected",
+      "category": "run-fail",
+      "path": "module-12/m12-c06/case.ts",
+      "target": "An inherited property is not an explicit input field under an own-only contract.",
+      "principledRepair": "Require Object.hasOwn and validate own data.",
+      "weakRepair": "Accept inherited values because the in operator succeeds.",
+      "expectedStderrContains": "inherited override rejected"
+    },
+    {
+      "id": "m12-c07",
+      "module": 12,
+      "title": "Null-prototype dictionary remains explicit",
+      "category": "typecheck-pass",
+      "path": "module-12/m12-c07/case.ts",
+      "target": "A null-prototype dictionary avoids inherited string keys but still needs value validation.",
+      "principledRepair": "Construct it explicitly and use own-key operations.",
+      "weakRepair": "Assume null prototype provides runtime type safety."
+    },
+    {
+      "id": "m12-c08",
+      "module": 12,
+      "title": "Prototype method needs declared receiver field",
+      "category": "typecheck-fail",
+      "path": "module-12/m12-c08/case.ts",
+      "target": "The inferred receiver type contains no tenant property.",
+      "principledRepair": "Declare an explicit this contract or include the field in the object.",
+      "weakRepair": "Suppress noImplicitThis."
+    },
+    {
+      "id": "m13-c01",
+      "module": 13,
+      "title": "Explicit receiver method call",
+      "category": "typecheck-pass",
+      "path": "module-13/m13-c01/case.ts",
+      "target": "Method call syntax supplies a receiver satisfying the explicit this parameter.",
+      "principledRepair": "Keep receiver-dependent invocation visible.",
+      "weakRepair": "Remove the this contract."
+    },
+    {
+      "id": "m13-c02",
+      "module": 13,
+      "title": "Extracted explicit-this method cannot be called bare",
+      "category": "typecheck-fail",
+      "path": "module-13/m13-c02/case.ts",
+      "target": "A bare call has an undefined receiver in module code.",
+      "principledRepair": "Wrap or bind the method at the composition boundary.",
+      "weakRepair": "Cast the function to () => number."
+    },
+    {
+      "id": "m13-c03",
+      "module": 13,
+      "title": "Arrow function is not constructible",
+      "category": "typecheck-fail",
+      "path": "module-13/m13-c03/case.ts",
+      "target": "Arrow functions have no construct signature.",
+      "principledRepair": "Call it as a factory or use a constructible class/function.",
+      "weakRepair": "Cast it to a constructor type."
+    },
+    {
+      "id": "m13-c04",
+      "module": 13,
+      "title": "Construct signature states construction",
+      "category": "typecheck-pass",
+      "path": "module-13/m13-c04/case.ts",
+      "target": "Constructibility is represented by a new signature.",
+      "principledRepair": "Use a construct signature when construction is the required operation.",
+      "weakRepair": "Type constructors as Function."
+    },
+    {
+      "id": "m13-c05",
+      "module": 13,
+      "title": "Bound constructor preserves prefix arguments",
+      "category": "run-pass",
+      "path": "module-13/m13-c05/case.ts",
+      "target": "A bound constructible target remains constructible and retains bound arguments while ignoring bound this.",
+      "principledRepair": "Document bound arguments and construction behavior.",
+      "weakRepair": "Assume bind always creates a call-only function.",
+      "expectedStdout": "7\n"
+    },
+    {
+      "id": "m13-c06",
+      "module": 13,
+      "title": "Extracted method loses receiver at runtime",
+      "category": "run-fail",
+      "path": "module-13/m13-c06/case.ts",
+      "target": "Reading a method produces a function value; later bare invocation supplies no receiver.",
+      "principledRepair": "Use explicit this typing, a wrapper, or deliberate binding.",
+      "weakRepair": "Catch TypeError and retry.",
+      "expectedStderrContains": "Cannot read"
+    },
+    {
+      "id": "m13-c07",
+      "module": 13,
+      "title": "Bound prefix arguments remain typed",
+      "category": "typecheck-pass",
+      "path": "module-13/m13-c07/case.ts",
+      "target": "Bind removes supplied receiver and prefix arguments from the callable surface.",
+      "principledRepair": "Let the type system retain the remaining argument contract.",
+      "weakRepair": "Cast the bound function to a broad Function."
+    },
+    {
+      "id": "m13-c08",
+      "module": 13,
+      "title": "Callable interface is not a constructor",
+      "category": "typecheck-fail",
+      "path": "module-13/m13-c08/case.ts",
+      "target": "A call signature alone does not establish constructibility.",
+      "principledRepair": "Add an explicit new signature only when construction is meaningful.",
+      "weakRepair": "Use any or Function."
+    },
+    {
+      "id": "m14-c01",
+      "module": 14,
+      "title": "Private brand predicate",
+      "category": "typecheck-pass",
+      "path": "module-14/m14-c01/case.ts",
+      "target": "The declaring class can test its private brand at runtime.",
+      "principledRepair": "Use the brand predicate to establish legitimate initialization.",
+      "weakRepair": "Use instanceof as a substitute for every brand question."
+    },
+    {
+      "id": "m14-c02",
+      "module": 14,
+      "title": "Private field is inaccessible outside class",
+      "category": "typecheck-fail",
+      "path": "module-14/m14-c02/case.ts",
+      "target": "JavaScript private fields are syntactically and semantically restricted to the declaring class body.",
+      "principledRepair": "Expose a narrow method or getter if reading is part of the public contract.",
+      "weakRepair": "Rename it to a normal underscore property."
+    },
+    {
+      "id": "m14-c03",
+      "module": 14,
+      "title": "Derived constructor cannot use this before super",
+      "category": "typecheck-fail",
+      "path": "module-14/m14-c03/case.ts",
+      "target": "A derived constructor receives a usable this only after super returns.",
+      "principledRepair": "Call super before using this.",
+      "weakRepair": "Suppress the diagnostic."
+    },
+    {
+      "id": "m14-c04",
+      "module": 14,
+      "title": "Prototype forgery lacks private brand",
+      "category": "run-fail",
+      "path": "module-14/m14-c04/case.ts",
+      "target": "Prototype delegation does not execute private-field initialization.",
+      "principledRepair": "Validate plain data and invoke a legitimate factory or constructor.",
+      "weakRepair": "Set the prototype and assert the class type.",
+      "expectedStderrContains": "private"
+    },
+    {
+      "id": "m14-c05",
+      "module": 14,
+      "title": "Class field initialization order",
+      "category": "run-pass",
+      "path": "module-14/m14-c05/case.ts",
+      "target": "Base fields exist before the base constructor body; derived fields initialize after super returns.",
+      "principledRepair": "Trace state by construction phase.",
+      "weakRepair": "Assume all fields exist before any constructor executes.",
+      "expectedStdout": "base-field\nderived-field\n"
+    },
+    {
+      "id": "m14-c06",
+      "module": 14,
+      "title": "Static private field belongs to constructor",
+      "category": "typecheck-pass",
+      "path": "module-14/m14-c06/case.ts",
+      "target": "Static private state is branded on the constructor object.",
+      "principledRepair": "Access it through the declaring class contract.",
+      "weakRepair": "Move it to an exported mutable module variable."
+    },
+    {
+      "id": "m14-c07",
+      "module": 14,
+      "title": "Private fields are not structurally interchangeable",
+      "category": "typecheck-fail",
+      "path": "module-14/m14-c07/case.ts",
+      "target": "Distinct private declarations make classes nominally incompatible.",
+      "principledRepair": "Use a public interface when structural substitution is intended.",
+      "weakRepair": "Cast B to A."
+    },
+    {
+      "id": "m14-c08",
+      "module": 14,
+      "title": "Constructor return type remains instance",
+      "category": "typecheck-pass",
+      "path": "module-14/m14-c08/case.ts",
+      "target": "Ordinary class construction returns a legitimately initialized instance.",
+      "principledRepair": "Keep reconstruction on the constructor/factory path.",
+      "weakRepair": "Forge the prototype of decoded data."
+    },
+    {
+      "id": "m15-c01",
+      "module": 15,
+      "title": "Narrow capability injection",
+      "category": "typecheck-pass",
+      "path": "module-15/m15-c01/case.ts",
+      "target": "A narrow structural capability grants only the required authority.",
+      "principledRepair": "Inject the smallest stable operation set.",
+      "weakRepair": "Pass a broad environment object."
+    },
+    {
+      "id": "m15-c02",
+      "module": 15,
+      "title": "Missing capability method is rejected",
+      "category": "typecheck-fail",
+      "path": "module-15/m15-c02/case.ts",
+      "target": "A collaborator must satisfy the required capability.",
+      "principledRepair": "Provide save with the correct asynchronous contract.",
+      "weakRepair": "Cast the object to Store."
+    },
+    {
+      "id": "m15-c03",
+      "module": 15,
+      "title": "Class cannot extend two bases",
+      "category": "typecheck-fail",
+      "path": "module-15/m15-c03/case.ts",
+      "target": "JavaScript class syntax has one extends lineage.",
+      "principledRepair": "Compose independent capabilities or use a constrained mixin.",
+      "weakRepair": "Invent a fake multiple-inheritance cast."
+    },
+    {
+      "id": "m15-c04",
+      "module": 15,
+      "title": "Constrained mixin preserves base type",
+      "category": "typecheck-pass",
+      "path": "module-15/m15-c04/case.ts",
+      "target": "A mixin transforms one constructor and returns a derived constructor.",
+      "principledRepair": "Constrain and document constructor, state, and conflict policy.",
+      "weakRepair": "Copy methods with Object.assign and ignore state."
+    },
+    {
+      "id": "m15-c05",
+      "module": 15,
+      "title": "Composition preserves call order",
+      "category": "run-pass",
+      "path": "module-15/m15-c05/case.ts",
+      "target": "The orchestrator owns operation order while collaborators own separate behavior.",
+      "principledRepair": "Test authority and exact effect order.",
+      "weakRepair": "Let dependencies call each other through globals.",
+      "expectedStdout": "X load,render\n"
+    },
+    {
+      "id": "m15-c06",
+      "module": 15,
+      "title": "Copied accessor executes during composition",
+      "category": "run-fail",
+      "path": "module-15/m15-c06/case.ts",
+      "target": "Object.assign reads enumerable source values and does not copy descriptors.",
+      "principledRepair": "Compose explicit methods or copy reviewed descriptors.",
+      "weakRepair": "Catch the getter and keep copying blindly.",
+      "expectedStderrContains": "mixin getter executed"
+    },
+    {
+      "id": "m15-c07",
+      "module": 15,
+      "title": "Readonly capability cannot be replaced",
+      "category": "typecheck-fail",
+      "path": "module-15/m15-c07/case.ts",
+      "target": "Readonly composition prevents post-construction collaborator replacement through that reference.",
+      "principledRepair": "Choose construction-time injection or an explicit reconfiguration authority.",
+      "weakRepair": "Cast away readonly."
+    },
+    {
+      "id": "m15-c08",
+      "module": 15,
+      "title": "Function composition needs compatible stages",
+      "category": "typecheck-pass",
+      "path": "module-15/m15-c08/case.ts",
+      "target": "Ordinary functions are sufficient when identity and lifecycle add no value.",
+      "principledRepair": "Use the simplest composition that preserves the contract.",
+      "weakRepair": "Create classes for every stage."
+    },
+    {
+      "id": "m16-c01",
+      "module": 16,
+      "title": "Unique symbol property contract",
+      "category": "typecheck-pass",
+      "path": "module-16/m16-c01/case.ts",
+      "target": "A unique symbol can define a collision-resistant structural protocol.",
+      "principledRepair": "Share the exact symbol identity.",
+      "weakRepair": "Use the same symbol description to create a new symbol."
+    },
+    {
+      "id": "m16-c02",
+      "module": 16,
+      "title": "Different unique symbols are incompatible",
+      "category": "typecheck-fail",
+      "path": "module-16/m16-c02/case.ts",
+      "target": "Symbol descriptions do not determine symbol identity.",
+      "principledRepair": "Use one exported or module-shared symbol.",
+      "weakRepair": "Compare descriptions and cast."
+    },
+    {
+      "id": "m16-c03",
+      "module": 16,
+      "title": "Iterator protocol is typed",
+      "category": "typecheck-pass",
+      "path": "module-16/m16-c03/case.ts",
+      "target": "Symbol.iterator must return an iterator producing the declared item type.",
+      "principledRepair": "Implement the standard iterable contract.",
+      "weakRepair": "Expose a string-named iterate method and expect for-of to find it."
+    },
+    {
+      "id": "m16-c04",
+      "module": 16,
+      "title": "Iterator item type mismatch",
+      "category": "typecheck-fail",
+      "path": "module-16/m16-c04/case.ts",
+      "target": "The generator item type must satisfy the iterable item type.",
+      "principledRepair": "Yield numbers or change the declared protocol honestly.",
+      "weakRepair": "Cast yielded strings to numbers."
+    },
+    {
+      "id": "m16-c05",
+      "module": 16,
+      "title": "Primitive conversion receives a hint",
+      "category": "run-pass",
+      "path": "module-16/m16-c05/case.ts",
+      "target": "Coercion requests a hint and requires a primitive result.",
+      "principledRepair": "Define meaning per supported hint.",
+      "weakRepair": "Return one representation for every operation without analysis.",
+      "expectedStdout": "4 four\n"
+    },
+    {
+      "id": "m16-c06",
+      "module": 16,
+      "title": "Non-primitive conversion result fails",
+      "category": "run-fail",
+      "path": "module-16/m16-c06/case.ts",
+      "target": "Symbol.toPrimitive must return a primitive value.",
+      "principledRepair": "Return string, number, bigint, symbol, boolean, null, or undefined as appropriate.",
+      "weakRepair": "Cast the object return type.",
+      "expectedStderrContains": "primitive"
+    },
+    {
+      "id": "m16-c07",
+      "module": 16,
+      "title": "toStringTag getter returns string",
+      "category": "typecheck-pass",
+      "path": "module-16/m16-c07/case.ts",
+      "target": "Symbol.toStringTag participates in built-in tagging.",
+      "principledRepair": "Return a stable tag string.",
+      "weakRepair": "Treat it as a privacy mechanism."
+    },
+    {
+      "id": "m16-c08",
+      "module": 16,
+      "title": "Protocol method return type is enforced",
+      "category": "typecheck-fail",
+      "path": "module-16/m16-c08/case.ts",
+      "target": "The declared protocol method must return a permitted primitive type.",
+      "principledRepair": "Return a supported primitive.",
+      "weakRepair": "Use any."
+    },
+    {
+      "id": "m17-c01",
+      "module": 17,
+      "title": "Repeatable iterable creates generator",
+      "category": "typecheck-pass",
+      "path": "module-17/m17-c01/case.ts",
+      "target": "An iterable can create a fresh iterator for each traversal.",
+      "principledRepair": "Return new traversal state per call.",
+      "weakRepair": "Make the container itself a permanently consumed iterator."
+    },
+    {
+      "id": "m17-c02",
+      "module": 17,
+      "title": "Iterator result item type mismatch",
+      "category": "typecheck-fail",
+      "path": "module-17/m17-c02/case.ts",
+      "target": "IteratorResult value must satisfy the iterator item type while done is false.",
+      "principledRepair": "Return a number or change the contract.",
+      "weakRepair": "Cast the result."
+    },
+    {
+      "id": "m17-c03",
+      "module": 17,
+      "title": "Generator return and yield types",
+      "category": "typecheck-pass",
+      "path": "module-17/m17-c03/case.ts",
+      "target": "Generator type parameters distinguish yielded, returned, and resumed values.",
+      "principledRepair": "Model all three positions when they matter.",
+      "weakRepair": "Use Generator<any, any, any>."
+    },
+    {
+      "id": "m17-c04",
+      "module": 17,
+      "title": "Yielded value violates generator contract",
+      "category": "typecheck-fail",
+      "path": "module-17/m17-c04/case.ts",
+      "target": "Yield expressions must match the declared yield type.",
+      "principledRepair": "Yield numbers or correct the API.",
+      "weakRepair": "Assert the string as unknown as number."
+    },
+    {
+      "id": "m17-c05",
+      "module": 17,
+      "title": "Early break closes generator",
+      "category": "run-pass",
+      "path": "module-17/m17-c05/case.ts",
+      "target": "for-of calls iterator return on early break, allowing generator finally cleanup.",
+      "principledRepair": "Place traversal-local cleanup in a finally block.",
+      "weakRepair": "Assume completion is the only cleanup path.",
+      "expectedStdout": "1\nclosed\n"
+    },
+    {
+      "id": "m17-c06",
+      "module": 17,
+      "title": "Mutation invalidates traversal",
+      "category": "run-fail",
+      "path": "module-17/m17-c06/case.ts",
+      "target": "A live traversal can reject structural revision changes explicitly.",
+      "principledRepair": "Capture and compare the relevant revision.",
+      "weakRepair": "Silently continue over mixed versions.",
+      "expectedStderrContains": "traversal invalidated"
+    },
+    {
+      "id": "m17-c07",
+      "module": 17,
+      "title": "Iterator is not automatically iterable",
+      "category": "typecheck-fail",
+      "path": "module-17/m17-c07/case.ts",
+      "target": "Iterator and Iterable are separate protocols.",
+      "principledRepair": "Add Symbol.iterator returning the iterator or expose an Iterable.",
+      "weakRepair": "Cast Iterator to Iterable."
+    },
+    {
+      "id": "m17-c08",
+      "module": 17,
+      "title": "IterableIterator satisfies both protocols",
+      "category": "typecheck-pass",
+      "path": "module-17/m17-c08/case.ts",
+      "target": "Generator objects implement both next and Symbol.iterator.",
+      "principledRepair": "Use the combined interface when single-pass iterability is intended.",
+      "weakRepair": "Assume every Iterator has Symbol.iterator."
+    },
+    {
+      "id": "m18-c01",
+      "module": 18,
+      "title": "Reflect preserves receiver",
+      "category": "typecheck-pass",
+      "path": "module-18/m18-c01/case.ts",
+      "target": "Reflect.get accepts an explicit receiver for accessor semantics.",
+      "principledRepair": "Forward target, key, and receiver deliberately.",
+      "weakRepair": "Use target[key] inside a proxy trap and lose receiver behavior."
+    },
+    {
+      "id": "m18-c02",
+      "module": 18,
+      "title": "ownKeys trap returns property keys",
+      "category": "typecheck-fail",
+      "path": "module-18/m18-c02/case.ts",
+      "target": "Proxy ownKeys must return strings or symbols.",
+      "principledRepair": "Return PropertyKey values and preserve target invariants.",
+      "weakRepair": "Cast number keys."
+    },
+    {
+      "id": "m18-c03",
+      "module": 18,
+      "title": "Revocable proxy exposes revoke",
+      "category": "typecheck-pass",
+      "path": "module-18/m18-c03/case.ts",
+      "target": "Proxy.revocable separates the proxy value from terminal revocation authority.",
+      "principledRepair": "Own the revoke function in a session object.",
+      "weakRepair": "Expose revoke to every caller."
+    },
+    {
+      "id": "m18-c04",
+      "module": 18,
+      "title": "Proxy target retains static shape",
+      "category": "typecheck-pass",
+      "path": "module-18/m18-c04/case.ts",
+      "target": "A generic Proxy retains the target surface statically while runtime traps govern operations.",
+      "principledRepair": "Implement traps against the actual target contract.",
+      "weakRepair": "Assume static shape guarantees trap honesty."
+    },
+    {
+      "id": "m18-c05",
+      "module": 18,
+      "title": "Private field rejects proxy receiver",
+      "category": "run-fail",
+      "path": "module-18/m18-c05/case.ts",
+      "target": "Method lookup through a proxy calls the method with the proxy receiver, which lacks the target private brand.",
+      "principledRepair": "Avoid proxying branded instances or define a deliberate receiver-recovery boundary.",
+      "weakRepair": "Assume an empty proxy is transparent.",
+      "expectedStderrContains": "private"
+    },
+    {
+      "id": "m18-c06",
+      "module": 18,
+      "title": "Proxy cannot hide non-configurable key",
+      "category": "run-fail",
+      "path": "module-18/m18-c06/case.ts",
+      "target": "The proxy invariant requires non-configurable own keys to be reported.",
+      "principledRepair": "Use a separate redacted view rather than a lying proxy.",
+      "weakRepair": "Make the target property configurable solely to permit deception.",
+      "expectedStderrContains": "trap result"
+    },
+    {
+      "id": "m18-c07",
+      "module": 18,
+      "title": "Proxy constructor requires object target",
+      "category": "typecheck-fail",
+      "path": "module-18/m18-c07/case.ts",
+      "target": "A proxy target must be an object or callable object.",
+      "principledRepair": "Wrap data in an object only when proxy semantics are justified.",
+      "weakRepair": "Cast the primitive to object."
+    },
+    {
+      "id": "m18-c08",
+      "module": 18,
+      "title": "Define-property trap can delegate",
+      "category": "typecheck-pass",
+      "path": "module-18/m18-c08/case.ts",
+      "target": "Reflect.defineProperty returns the Boolean result expected by the trap.",
+      "principledRepair": "Delegate ordinary semantics and add only bounded validation.",
+      "weakRepair": "Return true without updating the target."
+    },
+    {
+      "id": "m19-c01",
+      "module": 19,
+      "title": "Structured clone preserves typed data shape",
+      "category": "typecheck-pass",
+      "path": "module-19/m19-c01/case.ts",
+      "target": "structuredClone returns a deep data clone typed from its input.",
+      "principledRepair": "Use it only when its runtime cloning contract matches the domain.",
+      "weakRepair": "Assume it preserves class prototypes and descriptors."
+    },
+    {
+      "id": "m19-c02",
+      "module": 19,
+      "title": "WeakRef requires an object target",
+      "category": "typecheck-fail",
+      "path": "module-19/m19-c02/case.ts",
+      "target": "WeakRef targets must be objects.",
+      "principledRepair": "Use weak references only for optional object reachability behavior.",
+      "weakRepair": "Box the number solely to satisfy WeakRef."
+    },
+    {
+      "id": "m19-c03",
+      "module": 19,
+      "title": "Disposable contract requires Symbol.dispose",
+      "category": "typecheck-pass",
+      "path": "module-19/m19-c03/case.ts",
+      "target": "A synchronous Disposable exposes Symbol.dispose.",
+      "principledRepair": "Implement deterministic cleanup on the owning value.",
+      "weakRepair": "Rely on finalization."
+    },
+    {
+      "id": "m19-c04",
+      "module": 19,
+      "title": "Missing disposal method violates contract",
+      "category": "typecheck-fail",
+      "path": "module-19/m19-c04/case.ts",
+      "target": "A Disposable must implement Symbol.dispose.",
+      "principledRepair": "Add the explicit cleanup method or remove the claim.",
+      "weakRepair": "Cast the value to Disposable."
+    },
+    {
+      "id": "m19-c05",
+      "module": 19,
+      "title": "Structured clone preserves cycle",
+      "category": "run-pass",
+      "path": "module-19/m19-c05/case.ts",
+      "target": "structuredClone preserves graph cycles while creating new object identities.",
+      "principledRepair": "Use it for supported data graphs, then apply domain reconstruction if needed.",
+      "weakRepair": "Use JSON for cyclic graphs.",
+      "expectedStdout": "true\n"
+    },
+    {
+      "id": "m19-c06",
+      "module": 19,
+      "title": "JSON cannot clone a cycle",
+      "category": "run-fail",
+      "path": "module-19/m19-c06/case.ts",
+      "target": "JSON serialization rejects cyclic object graphs.",
+      "principledRepair": "Use a cycle-aware representation or domain codec.",
+      "weakRepair": "Delete back-references without defining product meaning.",
+      "expectedStderrContains": "circular"
+    },
+    {
+      "id": "m19-c07",
+      "module": 19,
+      "title": "Finalization registry held value is explicit",
+      "category": "typecheck-pass",
+      "path": "module-19/m19-c07/case.ts",
+      "target": "Finalization callbacks receive held values but are not deterministic cleanup.",
+      "principledRepair": "Restrict use to optional diagnostics or cache cleanup.",
+      "weakRepair": "Use the callback to maintain correctness-critical capacity."
+    },
+    {
+      "id": "m19-c08",
+      "module": 19,
+      "title": "Readonly map prevents remapping mutation",
+      "category": "typecheck-fail",
+      "path": "module-19/m19-c08/case.ts",
+      "target": "ReadonlyMap exposes lookup but not mutation authority.",
+      "principledRepair": "Keep a mutable map inside the clone algorithm and return a readonly view.",
+      "weakRepair": "Cast away readonly."
+    },
+    {
+      "id": "m20-c01",
+      "module": 20,
+      "title": "Readonly view hides mutation authority",
+      "category": "typecheck-pass",
+      "path": "module-20/m20-c01/case.ts",
+      "target": "A readonly public view can omit structural mutation methods.",
+      "principledRepair": "Return detached/frozen data or a narrow live view.",
+      "weakRepair": "Expose the internal mutable array."
+    },
+    {
+      "id": "m20-c02",
+      "module": 20,
+      "title": "Readonly children reject push",
+      "category": "typecheck-fail",
+      "path": "module-20/m20-c02/case.ts",
+      "target": "Readonly arrays do not expose mutating methods through that capability.",
+      "principledRepair": "Route mutation through graph authority.",
+      "weakRepair": "Cast to string[]."
+    },
+    {
+      "id": "m20-c03",
+      "module": 20,
+      "title": "Exhaustive representation switch",
+      "category": "typecheck-pass",
+      "path": "module-20/m20-c03/case.ts",
+      "target": "A closed representation vocabulary supports exhaustive handling.",
+      "principledRepair": "Keep live and plain representations distinct.",
+      "weakRepair": "Use one broad object type."
+    },
+    {
+      "id": "m20-c04",
+      "module": 20,
+      "title": "Missing representation branch is visible",
+      "category": "typecheck-fail",
+      "path": "module-20/m20-c04/case.ts",
+      "target": "The remaining debug variant is not never.",
+      "principledRepair": "Handle the new representation explicitly.",
+      "weakRepair": "Remove assertNever or cast."
+    },
+    {
+      "id": "m20-c05",
+      "module": 20,
+      "title": "Plain persistence loses class behavior",
+      "category": "run-fail",
+      "path": "module-20/m20-c05/case.ts",
+      "target": "JSON reconstructs plain data, not class prototype behavior or private brands.",
+      "principledRepair": "Validate data and invoke a legitimate reconstruction factory.",
+      "weakRepair": "Assert the decoded object has the class type.",
+      "expectedStderrContains": "not a function"
+    },
+    {
+      "id": "m20-c06",
+      "module": 20,
+      "title": "Runtime and record remain separate",
+      "category": "run-pass",
+      "path": "module-20/m20-c06/case.ts",
+      "target": "A deliberate record conversion produces a different runtime representation.",
+      "principledRepair": "Keep separate types and reconstruction paths.",
+      "weakRepair": "Persist the live instance directly.",
+      "expectedStdout": "true false\n"
+    },
+    {
+      "id": "m20-c07",
+      "module": 20,
+      "title": "Private mutation method stays inaccessible",
+      "category": "typecheck-fail",
+      "path": "module-20/m20-c07/case.ts",
+      "target": "Private graph authority cannot be invoked outside the declaring class.",
+      "principledRepair": "Expose a validated public transition.",
+      "weakRepair": "Rename it with an underscore."
+    },
+    {
+      "id": "m20-c08",
+      "module": 20,
+      "title": "Protocol capability can be tested safely",
+      "category": "typecheck-pass",
+      "path": "module-20/m20-c08/case.ts",
+      "target": "Runtime capability discovery establishes the iterable protocol before use.",
+      "principledRepair": "Test the symbol-keyed operation and then consume it.",
+      "weakRepair": "Assert every object is iterable."
+    }
+  ]
+}

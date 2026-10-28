@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "claimGiB": 20,
+      "expected": "Bound",
+      "name": "delayed-zone-a",
+      "selectedZone": "zone-a"
+    },
+    {
+      "claimGiB": 20,
+      "expected": "error",
+      "name": "missing-selected-zone",
+      "selectedZone": null
+    }
+  ]
+}

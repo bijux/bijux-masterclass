@@ -1,0 +1,5 @@
+{
+  "decision": "rejected",
+  "name": "atlas-kubernetes-runtime-mutable-image",
+  "reason": "mutable image identity violates Course 3 handoff"
+}

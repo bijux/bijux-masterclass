@@ -1,0 +1,5 @@
+{
+  "id": "RPC-04",
+  "title": "Hide algorithm and resource identity in metadata",
+  "expected_rejection": "unary-proof"
+}

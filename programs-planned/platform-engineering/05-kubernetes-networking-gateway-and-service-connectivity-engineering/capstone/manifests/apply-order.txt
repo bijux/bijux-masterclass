@@ -1,0 +1,13 @@
+# API objects and policy prerequisites
+base/00-namespace-labels.yaml
+base/10-api-service.yaml
+base/11-api-service-prefer-close.yaml
+base/20-networkpolicy-default-deny.yaml
+base/21-networkpolicy-dns.yaml
+base/22-networkpolicy-gateway-api.yaml
+
+# Gateway resources require a selected conformant implementation and a
+# separately delivered TLS Secret named atlas-public-tls.
+base/30-gatewayclass.yaml
+base/31-gateway.yaml
+base/32-httproute.yaml

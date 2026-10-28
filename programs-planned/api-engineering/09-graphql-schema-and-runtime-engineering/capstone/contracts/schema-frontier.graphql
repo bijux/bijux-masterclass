@@ -1,0 +1,145 @@
+"""Analysis Graph API 1.0."""
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+directive @source(service: ServiceName!) on FIELD_DEFINITION
+directive @requires(permission: Permission!) on FIELD_DEFINITION
+directive @cost(value: Int!, multipliers: [String!]) on FIELD_DEFINITION
+directive @stale(maxAgeSeconds: Int!) on FIELD_DEFINITION
+
+enum ServiceName { GRAPH_GATEWAY ANALYSIS_CONTROL ARTIFACT_SERVICE NOTIFICATION_SERVICE }
+enum Permission { PROJECT_READ PROJECT_WRITE RUN_READ RUN_WRITE ARTIFACT_READ DELIVERY_READ }
+enum RunStatus { QUEUED RUNNING COMPLETED FAILED CANCELLED }
+enum ProblemCode { VALIDATION CONFLICT PRECONDITION_FAILED NOT_FOUND FORBIDDEN UNAVAILABLE }
+
+scalar DateTime
+scalar Cursor
+scalar Version
+scalar JSON
+
+interface Node { id: ID! }
+
+union SearchResult = Project | AnalysisRun | Artifact
+union StartAnalysisResult = StartAnalysisSuccess | MutationProblem
+union CancelAnalysisResult = CancelAnalysisSuccess | MutationProblem
+union CreateProjectResult = CreateProjectSuccess | MutationProblem
+
+input NodeLookup @oneOf {
+  id: ID
+  externalId: String
+}
+
+input RunFilter {
+  status: RunStatus
+  projectId: ID
+}
+
+input CreateProjectInput {
+  clientMutationId: String
+  idempotencyKey: String!
+  name: String!
+}
+
+input StartAnalysisInput {
+  clientMutationId: String
+  idempotencyKey: String!
+  projectId: ID!
+  datasetId: ID!
+  algorithm: String!
+}
+
+input CancelAnalysisInput {
+  clientMutationId: String
+  runId: ID!
+  expectedVersion: Version!
+}
+
+type Query {
+  viewer: Viewer!
+  node(by: NodeLookup!): Node @source(service: GRAPH_GATEWAY)
+  project(id: ID!): Project @source(service: ANALYSIS_CONTROL) @requires(permission: PROJECT_READ)
+  analysisRun(id: ID!): AnalysisRun @source(service: ANALYSIS_CONTROL) @requires(permission: RUN_READ)
+  artifact(id: ID!): Artifact @source(service: ARTIFACT_SERVICE) @requires(permission: ARTIFACT_READ)
+  deliverySummary(runId: ID!): DeliverySummary! @source(service: NOTIFICATION_SERVICE) @requires(permission: DELIVERY_READ) @stale(maxAgeSeconds: 30)
+  analysisRuns(filter: RunFilter, first: Int! = 20, after: Cursor): AnalysisRunConnection! @source(service: ANALYSIS_CONTROL) @requires(permission: RUN_READ) @cost(value: 5, multipliers: ["first"])
+  search(text: String!, first: Int! = 20, after: Cursor): SearchConnection! @source(service: GRAPH_GATEWAY) @cost(value: 8, multipliers: ["first"])
+}
+
+type Mutation {
+  createProject(input: CreateProjectInput!): CreateProjectResult! @source(service: ANALYSIS_CONTROL) @requires(permission: PROJECT_WRITE)
+  startAnalysis(input: StartAnalysisInput!): StartAnalysisResult! @source(service: ANALYSIS_CONTROL) @requires(permission: RUN_WRITE)
+  cancelAnalysis(input: CancelAnalysisInput!): CancelAnalysisResult! @source(service: ANALYSIS_CONTROL) @requires(permission: RUN_WRITE)
+}
+
+type Subscription {
+  analysisRunUpdated(runId: ID!, afterSequence: String): AnalysisRunUpdate! @source(service: ANALYSIS_CONTROL) @requires(permission: RUN_READ)
+}
+
+type Viewer {
+  subject: ID!
+  tenantId: ID!
+  permissions: [Permission!]!
+}
+
+type Project implements Node {
+  id: ID!
+  name: String!
+  version: Version!
+  analysisRuns(first: Int! = 20, after: Cursor): AnalysisRunConnection! @source(service: ANALYSIS_CONTROL) @cost(value: 2, multipliers: ["first"])
+}
+
+type AnalysisRun implements Node {
+  id: ID!
+  projectId: ID!
+  datasetId: ID!
+  status: RunStatus!
+  version: Version!
+  createdAt: DateTime!
+  resultSummary: String
+  artifacts: [Artifact!] @source(service: ARTIFACT_SERVICE) @requires(permission: ARTIFACT_READ)
+  deliverySummary: DeliverySummary @source(service: NOTIFICATION_SERVICE) @requires(permission: DELIVERY_READ) @stale(maxAgeSeconds: 30)
+}
+
+type Artifact implements Node {
+  id: ID!
+  runId: ID!
+  mediaType: String!
+  size: Int!
+  sha256: String!
+  downloadUrl: String! @requires(permission: ARTIFACT_READ)
+}
+
+type DeliverySummary {
+  runId: ID!
+  delivered: Int!
+  pending: Int!
+  failed: Int!
+  observedAt: DateTime!
+  stalenessSeconds: Int!
+}
+
+type AnalysisRunEdge { cursor: Cursor!, node: AnalysisRun! }
+type AnalysisRunConnection { edges: [AnalysisRunEdge!]!, pageInfo: PageInfo! }
+type SearchEdge { cursor: Cursor!, node: SearchResult! }
+type SearchConnection { edges: [SearchEdge!]!, pageInfo: PageInfo! }
+type PageInfo { hasNextPage: Boolean!, endCursor: Cursor }
+
+type CreateProjectSuccess { clientMutationId: String, project: Project! }
+type StartAnalysisSuccess { clientMutationId: String, run: AnalysisRun!, replayed: Boolean! }
+type CancelAnalysisSuccess { clientMutationId: String, run: AnalysisRun! }
+type MutationProblem { clientMutationId: String, code: ProblemCode!, message: String!, field: String }
+
+type AnalysisRunUpdate {
+  sequence: String!
+  run: AnalysisRun!
+  occurredAt: DateTime!
+}
+
+
+# Ecosystem frontier, not part of the GraphQL September 2025 core specification:
+# clients may negotiate incremental delivery for selected fields through a
+# separately versioned transport profile. The released Analysis Graph API 1.0
+# does not require @defer or @stream support.

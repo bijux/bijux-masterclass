@@ -1,0 +1,37 @@
+version: '1.0'
+contracts:
+- apiRef: api:default/analysis-events
+  protocol: asyncapi
+  version: 1.0.0
+  path: contracts/events/asyncapi.yaml
+  sha256: 43410d220996bd5dd1f86242ab36916bac3817febda716b39023aceb9cf3c37a
+- apiRef: api:default/analysis-graph
+  protocol: graphql
+  version: 1.0.0
+  path: contracts/graph/schema.graphql
+  sha256: 4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9
+- apiRef: api:default/analysis-http
+  protocol: openapi
+  version: 1.2.0
+  path: contracts/http/analysis-http-api-1.2.openapi.yaml
+  sha256: 85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3
+- apiRef: api:default/analysis-rpc
+  protocol: protobuf
+  version: 1.0.0
+  path: contracts/rpc/bijux/analysis/v1/analysis.proto
+  sha256: 871307a4cfd2b34658fe5a7506ca1f8a127816c4186ef426163869dd2dbbda27
+- apiRef: api:default/artifact-http
+  protocol: openapi
+  version: 1.0.0
+  path: contracts/capabilities/artifact-http.openapi.yaml
+  sha256: 72a95928e6ee1b053b8bfe76a8032ac0d1012df86962c36138402283a89caa7f
+- apiRef: api:default/notification-http
+  protocol: openapi
+  version: 1.0.0
+  path: contracts/capabilities/notification-http.openapi.yaml
+  sha256: db729a97a723c84b96b8871e88771b06f1e830c1f1df5af2984f0adf68047f40
+- apiRef: api:default/platform-catalog
+  protocol: openapi
+  version: 1.0.0
+  path: contracts/platform/platform-catalog.openapi.yaml
+  sha256: bda58d7af7e33e2cdc058b901f43ef107d935dd5d297841bb4aea1304f4bbb8f

@@ -1,0 +1,1749 @@
+{
+  "schema_version": 1,
+  "collection": "python-extensions",
+  "state": "planned",
+  "base_commit": "30265cfc10a0875d49504cf12c169f7e92e7c3cd",
+  "qualified_for_course_ci": false,
+  "qualified_for_publication": false,
+  "selected_snapshot": "4077783048c7190177dd9dfc42aeb16ecb30efa8",
+  "source_snapshots": [
+    {
+      "content_id": "1b4b994be8a6b2b08173309d0096be20b8e3b7c66c1c49abf2dd24aeeedbcf1e",
+      "commit": "4077783048c7190177dd9dfc42aeb16ecb30efa8",
+      "files": [
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C01.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C01.md",
+          "sha256": "36ec2c12ddb01132da2607ccf77982e3480ab84d4c1ea385b96a5d25786600e3",
+          "bytes": 11749,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C02.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C02.md",
+          "sha256": "a6d1db1b0ecb06ac66d5e0290e9bdc06f1d65a10b5557c5b07de08a794125585",
+          "bytes": 13414,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C03.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C03.md",
+          "sha256": "eeb4f119f2bf7b5b10cc8fe8f04ae371fb03274bd83ce9e3453e4cbde2c3b33f",
+          "bytes": 14435,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C04.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C04.md",
+          "sha256": "7952c4a56b4bf797544632b38330a8905fce13251d736f8918d9fda426425df9",
+          "bytes": 15882,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C05.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C05.md",
+          "sha256": "f9998ff7f5334bd062353359ec33b66776fcd3c7400c331ebfd34a25592ea1a4",
+          "bytes": 9314,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C06.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C06.md",
+          "sha256": "d89fe3c9491b8dce3393e22ed8603aa4520fd92336910f95850cc903e2493b83",
+          "bytes": 13114,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C07.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C07.md",
+          "sha256": "4c33afbe9b54386ed94e1a319956e79df74ae327877c275c604d63ad91e8d458",
+          "bytes": 12022,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C08.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C08.md",
+          "sha256": "3db50d754bb3725704460df5b1d59f3175b8b617bd13ae861b5800bc28a011ca",
+          "bytes": 12475,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C09.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C09.md",
+          "sha256": "b2438450c3994bc9fdb58e54364282769fedd1bb45c1bc66980cc3ebf4003c04",
+          "bytes": 10945,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C10.md",
+          "destination": "systems-programming/object-model-memory/cores/M01C10.md",
+          "sha256": "d44ae8cacc3c4eed4485fdd1700723955e1846c5c9d0a17d194b8dcd7aaf8b32",
+          "bytes": 9481,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C01.ipynb",
+          "destination": "systems-programming/object-model-memory/notebooks/M01C01.ipynb",
+          "sha256": "1d7c54573f24e6f30a5126c47c09bfb2c21d29d6c6e593c508db532c8bb0f685",
+          "bytes": 32489,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C02.ipynb",
+          "destination": "systems-programming/object-model-memory/notebooks/M01C02.ipynb",
+          "sha256": "ce3e5b24fcaaefdb2da9c9271cf65c1d0554bc5d1d1eca920f97808559285a9a",
+          "bytes": 28309,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C03.ipynb",
+          "destination": "systems-programming/object-model-memory/notebooks/M01C03.ipynb",
+          "sha256": "57d1bdafda1d6c7f9982d73bbebdc49f4bdc178906071d5d6eb3cb4a19ed0845",
+          "bytes": 27032,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C04.ipynb",
+          "destination": "systems-programming/object-model-memory/notebooks/M01C04.ipynb",
+          "sha256": "0072494ff37400365205e84a6d9a960dd289f4924de9825bd8f77c67c6a27256",
+          "bytes": 27800,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C05.ipynb",
+          "destination": "systems-programming/object-model-memory/notebooks/M01C05.ipynb",
+          "sha256": "e417ee4794646d43096cb3b86f3f7dd93312c7b9bb4660690a33fa1dfbccaba2",
+          "bytes": 20065,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C06.ipynb",
+          "destination": "systems-programming/object-model-memory/notebooks/M01C06.ipynb",
+          "sha256": "de7796e6c646b7717304ccbe98d00d473638e372cea18ffdd05bdd89367b6fd3",
+          "bytes": 19064,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C07.ipynb",
+          "destination": "systems-programming/object-model-memory/notebooks/M01C07.ipynb",
+          "sha256": "9679bf2b3ed010c1c262a32ad687af49be7da36cdd78e2bcb8b4f213c37bb6f0",
+          "bytes": 17298,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C01.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C01.md",
+          "sha256": "8ff88fe57cb859e915dd2b74f23344e6ef90e4367ad884b83d335a32e6901404",
+          "bytes": 8878,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C02.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C02.md",
+          "sha256": "6e235270ce3ffb7820ab3cd5e47cbd4023549bea3a38a3b13ccdce3ae1a97bec",
+          "bytes": 10113,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C03.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C03.md",
+          "sha256": "44e39d0ab82c8a3c18d549194cb8fc785877f0b94f8750338ce15cc37b4a25ae",
+          "bytes": 8484,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C04.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C04.md",
+          "sha256": "59b54cd887cea38a3f8150a995aa57faf5584a9d517589d7aa1b7b7f48223802",
+          "bytes": 9775,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C05.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C05.md",
+          "sha256": "6b1053ce7abc0a7ba51b08e048337b59a11f6fb22939ca4eca08dc986569c191",
+          "bytes": 7749,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C06.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C06.md",
+          "sha256": "e356510c87f71b357ace5a2566c6cf284178256913a249b4d3783ece6ded96a5",
+          "bytes": 8156,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C07.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C07.md",
+          "sha256": "03acee32c7eee40453cc30c5c3dd58fcfcc81488e7666155651c91ddbac46ec0",
+          "bytes": 7786,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C08.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C08.md",
+          "sha256": "ed2abfb0e8e885e9b26d9e442b3b0bf8768c5b827b7a595bca18241042712614",
+          "bytes": 6822,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C09.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C09.md",
+          "sha256": "5867e3a874d93d7c0b549a3dbb6d95e1783382c43096549cf020941aa7a43ee0",
+          "bytes": 8564,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C10.md",
+          "destination": "systems-programming/linear-layout-profiling/cores/M02C10.md",
+          "sha256": "9a754b22efef63c69c46de1587a7e0c0a0fc9d474863722f19e6271c58a95b82",
+          "bytes": 6819,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/toc-!.md",
+          "destination": "parallel-programming/outline.md",
+          "sha256": "83db6c43cb86692b5be23346147cedbdd9eb29cf29b5d38efe0af6ac7b4e0221",
+          "bytes": 50244,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-001.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-001.md",
+          "sha256": "975a4c0a63d35b7e1314c1136ab83ee58dfe21c25ebc35b204f8f85063780dd7",
+          "bytes": 23605,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-002.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-002.md",
+          "sha256": "b8b017b3685be22222a656d9522b9e65074cdbdbace19e86b445205073d58d6a",
+          "bytes": 23246,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-003.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-003.md",
+          "sha256": "1c1ac4d39d64ef211a66614979f02341148c53c4066abaab48a2376b757962de",
+          "bytes": 25136,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-004.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-004.md",
+          "sha256": "9b9a7487561c51ab1124494de6c46f267d2e84cfd1d152f1eae547552f1036fc",
+          "bytes": 24957,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-005.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-005.md",
+          "sha256": "5426a6d61a0a155190535fd5af3b062e6364263f5e4fec66b8aeaae144f4efd1",
+          "bytes": 28631,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-006.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-006.md",
+          "sha256": "2214e269f388e43103aff32b9a6cd2d196204a8529fea0c870a78e3318b14a4a",
+          "bytes": 28221,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-007.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-007.md",
+          "sha256": "681b22faeb37ed2f01c40b95782f71a77aa79552e53b8b4cbade6a7c1e2f388f",
+          "bytes": 21360,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-008.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-008.md",
+          "sha256": "387768c64108b2e86df8872f55aa85cea53f8685da34b86b232072a0391b3ecd",
+          "bytes": 22669,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-009.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-009.md",
+          "sha256": "779910e7053327027cf12de3d399f4334c300362bd3962d7da0ae1624dbf4b73",
+          "bytes": 27519,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-010.md",
+          "destination": "parallel-programming/concurrency-and-shared-memory/core-010.md",
+          "sha256": "dbda788c79c77b1acfb953c4f0f3457069f24994abb9d7103f52f9d2539eb936",
+          "bytes": 20928,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-00.md",
+          "destination": "parallel-programming/accelerated-course/part-00.md",
+          "sha256": "e4e93f5626031faab1b854e8e5024270a65f105bb9d003633f3cf0d09b0f4b54",
+          "bytes": 74905,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-01.md",
+          "destination": "parallel-programming/accelerated-course/part-01.md",
+          "sha256": "2683c0812815c319b25d58810f40c16cd7d31f797f3df37de40cda3ee2a525a0",
+          "bytes": 56449,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-02.md",
+          "destination": "parallel-programming/accelerated-course/part-02.md",
+          "sha256": "dcf39620cec2921765421c10f2bf349eddd374cdeaf52862a963feb6df45be8e",
+          "bytes": 60409,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-03.md",
+          "destination": "parallel-programming/accelerated-course/part-03.md",
+          "sha256": "24ec2c5f5c1e2b907b81731c0b07d3f96daba8f45f096f44e5a7ab4434d3a968",
+          "bytes": 51078,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-04.md",
+          "destination": "parallel-programming/accelerated-course/part-04.md",
+          "sha256": "b7f1bcee74f0a418745c82fc813048204f3a66066cd0577d4964333b623f4e86",
+          "bytes": 46854,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-05.md",
+          "destination": "parallel-programming/accelerated-course/part-05.md",
+          "sha256": "b6360092e7a263e6aeed80e97a13d2fb9f0e8373123f1c780e41f44205798a29",
+          "bytes": 44759,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/tofix.md",
+          "destination": "parallel-programming/reviews/concurrency.md",
+          "sha256": "1da31df7ff7fb107f80bc0ef80909601a5557008cbc45df8620547d46bdbd5c7",
+          "bytes": 24321,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/ToC.md",
+          "destination": "foundations/outline.md",
+          "sha256": "0135fdf86b0dc7d910939244f91d442e0d87fbea4a63e5d217299dedfe4ce64f",
+          "bytes": 8264,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/01-beginner-foundations/M01C01.md",
+          "destination": "foundations/beginner-cores/M01C01.md",
+          "sha256": "4b1c723c316de45bb97bbc00f824d9a0dc7e89fd43160859385edc5a2f675d55",
+          "bytes": 10825,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/01-beginner-foundations/M01C02.md",
+          "destination": "foundations/beginner-cores/M01C02.md",
+          "sha256": "ddd306a687abe33e187545302c3f52a6be8159c657b85c17b48c95c7df317a40",
+          "bytes": 10237,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/01-beginner-foundations/M01C03.md",
+          "destination": "foundations/beginner-cores/M01C03.md",
+          "sha256": "1edb97c33c518766cf8652c95704b1f63f273806fbe4ade08e21612500c705c3",
+          "bytes": 16259,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/01-beginner-foundations/M01C04.md",
+          "destination": "foundations/beginner-cores/M01C04.md",
+          "sha256": "bb34c6a5757a5f3501a9b7c9b7e31f0621282f354edc11d759d96e7599f0e3c8",
+          "bytes": 9850,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/python-[patterns]/plan.md",
+          "destination": "patterns/principles-outline.md",
+          "sha256": "91b4e252d30a821a224f9a09e8a1d91a990ec2149f86b1ba8bc97a790eaa5307",
+          "bytes": 5889,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/python-[patterns]/plan2.md",
+          "destination": "patterns/typing-contracts-outline.md",
+          "sha256": "dc0d4c222a4b5b9ed0de546f14b54994338f94497bf1e2ee54774f4163d90f74",
+          "bytes": 10791,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/Module M01_ CPython Objects & Memory Model.pdf",
+          "destination": "systems-programming/object-model-memory/source-guide.pdf",
+          "sha256": "09d0a9b5c695935f8a1f9b06150f6f9a4c83e76d30a6c8caaf749fbeba18d4bd",
+          "bytes": 410867,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/TODO-M01.md",
+          "destination": "systems-programming/object-model-memory/reviews/source-audit.md",
+          "sha256": "f4ec90fa72fab10c950edc41a9d525dd86ac9b69faf5ec1d898c0918b89b299c",
+          "bytes": 11635,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/TODO-M02.md",
+          "destination": "systems-programming/linear-layout-profiling/reviews/source-audit.md",
+          "sha256": "8d4f9714f554cb44ba18813431a513491d512a1af950079c00f84b1294e08719",
+          "bytes": 14018,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01.md",
+          "destination": "systems-programming/object-model-memory/combined-guide.md",
+          "sha256": "b650763e095657ce5cb0ceb48e672b8f88f632d1801502f72ac8c27327c77536",
+          "bytes": 122831,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02.md",
+          "destination": "systems-programming/linear-layout-profiling/combined-guide.md",
+          "sha256": "60f58eec5bbaed447cb4fdee9160c7b0d27137bb1a2687f9bc1ce095e96fb868",
+          "bytes": 83146,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Metaprogramming - Quality Assurance Review \u2013 Module 1 Cores (M01C01\u2013M01C05).pdf",
+          "destination": "metaprogramming/reviews/conceptual-foundations.pdf",
+          "sha256": "6586be70e84a6980c067e21552388d737faa00b993cca6b7d889fe2f8cb1e5a5",
+          "bytes": 175670,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/ToC.md",
+          "destination": "metaprogramming/outline.md",
+          "sha256": "709bbfec61dcf9107b6c5dd65a7081f81cab1bb3ceaccf75ca32a95ef577397a",
+          "bytes": 8845,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C01.md",
+          "destination": "metaprogramming/conceptual-foundations/M01C01.md",
+          "sha256": "092f3fb2a4231a7e2378190037d01ae3977ae195f5ed30aadd789252710e67c5",
+          "bytes": 40851,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C02.md",
+          "destination": "metaprogramming/conceptual-foundations/M01C02.md",
+          "sha256": "dee68f7926af7eedf8d552c96cc9f397b1dbe0d89bf48e6151314e344c25aa14",
+          "bytes": 28333,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C03.md",
+          "destination": "metaprogramming/conceptual-foundations/M01C03.md",
+          "sha256": "0941677b559a6871917575386562ef3902e434741ed4a9a9da1fea5c9eeb2503",
+          "bytes": 37739,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C04.md",
+          "destination": "metaprogramming/conceptual-foundations/M01C04.md",
+          "sha256": "cff29233aaae028771ea21c40998cf75e098e6516469df5e28179ebfd926c0a6",
+          "bytes": 51388,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C05.md",
+          "destination": "metaprogramming/conceptual-foundations/M01C05.md",
+          "sha256": "e2b6c15955580a2870e092b5e236a663e1e0cd53dd0a50c16a1056cf3165a694",
+          "bytes": 48705,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C06.md",
+          "destination": "metaprogramming/representation-binding-and-rewriting/M02C06.md",
+          "sha256": "ab1e54fbd09b08177991e35b1253530066cb4b971527615c2148e634062702ea",
+          "bytes": 22919,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C07.md",
+          "destination": "metaprogramming/representation-binding-and-rewriting/M02C07.md",
+          "sha256": "a50f9f18764c43088cb2033f0be53a555b7a285860021eed877a299e07d1c8e9",
+          "bytes": 19905,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C08.md",
+          "destination": "metaprogramming/representation-binding-and-rewriting/M02C08.md",
+          "sha256": "ac037285c8479d310d8d9bfb005b4a09132dcf3c40b66f5939ff27d4072a5ae8",
+          "bytes": 17724,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C09.md",
+          "destination": "metaprogramming/representation-binding-and-rewriting/M02C09.md",
+          "sha256": "a9161adefbf32e74e91c0f036126a4485d9846d7f0a80ed59c46f434b2b47d66",
+          "bytes": 18148,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C10.md",
+          "destination": "metaprogramming/representation-binding-and-rewriting/M02C10.md",
+          "sha256": "fb95a777ea10a79aa2946d3f7b5fa2884600aab3454278684d38e9fd9d6bc5fa",
+          "bytes": 17941,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C11.md",
+          "destination": "metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C11.md",
+          "sha256": "85178e0127ad410f3ac907cae1646f236c47829ef89aa1ccb070dbbafc880039",
+          "bytes": 22030,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C12.md",
+          "destination": "metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C12.md",
+          "sha256": "0e51b75f45ee2ce1a7cf31dc116a35837622e0e74abb6b4ceecc884f524e27b0",
+          "bytes": 23467,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C13.md",
+          "destination": "metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C13.md",
+          "sha256": "462a7a42f6e8f9125c5d92921fd038d0ff25e684ddf6db5d2fc6376ec58b2dc9",
+          "bytes": 20874,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C14.md",
+          "destination": "metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C14.md",
+          "sha256": "28de1c339a82c594ef98cca45b80a1bb2928cd49bd62f20ea719b47f5cc86604",
+          "bytes": 26707,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C15.md",
+          "destination": "metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C15.md",
+          "sha256": "e4eca1325c9d7838a6c0fe5c2b0f63f6cc6602fbf99b6a6ec856a4d06cdf8bbb",
+          "bytes": 26250,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C16.md",
+          "destination": "metaprogramming/generics-overloading-and-parametricity/M04C16.md",
+          "sha256": "9f943c8de28c3eb82aa8d21316a52da8a64593e7c09f469df634942319346ab3",
+          "bytes": 26350,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C17.md",
+          "destination": "metaprogramming/generics-overloading-and-parametricity/M04C17.md",
+          "sha256": "6bfee26a8a1c192e90c60e7bc99e8035f18bd3fa4c3f96bfbc180b9f79f46863",
+          "bytes": 23442,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C18.md",
+          "destination": "metaprogramming/generics-overloading-and-parametricity/M04C18.md",
+          "sha256": "3998658c9616be3a14a38e73315c0a46e99d924ccfe3d9c34d342d97e0e5657a",
+          "bytes": 29039,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C19.md",
+          "destination": "metaprogramming/generics-overloading-and-parametricity/M04C19.md",
+          "sha256": "4cf28640127c257d0586649539d3098f394f1f9f5ab9e5523995413b5cb95227",
+          "bytes": 32546,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C20.md",
+          "destination": "metaprogramming/generics-overloading-and-parametricity/M04C20.md",
+          "sha256": "b058eb7a75508a1e91c71938fef6e9f86e67d20f7bbc396d15eba6ed65671cf6",
+          "bytes": 27755,
+          "mode": "100755"
+        }
+      ]
+    }
+  ],
+  "current_source_files": [
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C01.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C01.md",
+      "sha256": "36ec2c12ddb01132da2607ccf77982e3480ab84d4c1ea385b96a5d25786600e3",
+      "bytes": 11749,
+      "mode": "100755",
+      "sha256_after": "36ec2c12ddb01132da2607ccf77982e3480ab84d4c1ea385b96a5d25786600e3",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C02.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C02.md",
+      "sha256": "a6d1db1b0ecb06ac66d5e0290e9bdc06f1d65a10b5557c5b07de08a794125585",
+      "bytes": 13414,
+      "mode": "100755",
+      "sha256_after": "a6d1db1b0ecb06ac66d5e0290e9bdc06f1d65a10b5557c5b07de08a794125585",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C03.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C03.md",
+      "sha256": "eeb4f119f2bf7b5b10cc8fe8f04ae371fb03274bd83ce9e3453e4cbde2c3b33f",
+      "bytes": 14435,
+      "mode": "100755",
+      "sha256_after": "eeb4f119f2bf7b5b10cc8fe8f04ae371fb03274bd83ce9e3453e4cbde2c3b33f",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C04.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C04.md",
+      "sha256": "7952c4a56b4bf797544632b38330a8905fce13251d736f8918d9fda426425df9",
+      "bytes": 15882,
+      "mode": "100755",
+      "sha256_after": "7952c4a56b4bf797544632b38330a8905fce13251d736f8918d9fda426425df9",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C05.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C05.md",
+      "sha256": "f9998ff7f5334bd062353359ec33b66776fcd3c7400c331ebfd34a25592ea1a4",
+      "bytes": 9314,
+      "mode": "100755",
+      "sha256_after": "f9998ff7f5334bd062353359ec33b66776fcd3c7400c331ebfd34a25592ea1a4",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C06.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C06.md",
+      "sha256": "d89fe3c9491b8dce3393e22ed8603aa4520fd92336910f95850cc903e2493b83",
+      "bytes": 13114,
+      "mode": "100755",
+      "sha256_after": "d89fe3c9491b8dce3393e22ed8603aa4520fd92336910f95850cc903e2493b83",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C07.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C07.md",
+      "sha256": "4c33afbe9b54386ed94e1a319956e79df74ae327877c275c604d63ad91e8d458",
+      "bytes": 12022,
+      "mode": "100755",
+      "sha256_after": "4c33afbe9b54386ed94e1a319956e79df74ae327877c275c604d63ad91e8d458",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C08.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C08.md",
+      "sha256": "3db50d754bb3725704460df5b1d59f3175b8b617bd13ae861b5800bc28a011ca",
+      "bytes": 12475,
+      "mode": "100755",
+      "sha256_after": "3db50d754bb3725704460df5b1d59f3175b8b617bd13ae861b5800bc28a011ca",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C09.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C09.md",
+      "sha256": "b2438450c3994bc9fdb58e54364282769fedd1bb45c1bc66980cc3ebf4003c04",
+      "bytes": 10945,
+      "mode": "100755",
+      "sha256_after": "b2438450c3994bc9fdb58e54364282769fedd1bb45c1bc66980cc3ebf4003c04",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01 - Python Object Model and Memory Reality/M01C10.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/cores/M01C10.md",
+      "sha256": "d44ae8cacc3c4eed4485fdd1700723955e1846c5c9d0a17d194b8dcd7aaf8b32",
+      "bytes": 9481,
+      "mode": "100755",
+      "sha256_after": "d44ae8cacc3c4eed4485fdd1700723955e1846c5c9d0a17d194b8dcd7aaf8b32",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C01.ipynb",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/notebooks/M01C01.ipynb",
+      "sha256": "1d7c54573f24e6f30a5126c47c09bfb2c21d29d6c6e593c508db532c8bb0f685",
+      "bytes": 32489,
+      "mode": "100755",
+      "sha256_after": "1d7c54573f24e6f30a5126c47c09bfb2c21d29d6c6e593c508db532c8bb0f685",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C02.ipynb",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/notebooks/M01C02.ipynb",
+      "sha256": "ce3e5b24fcaaefdb2da9c9271cf65c1d0554bc5d1d1eca920f97808559285a9a",
+      "bytes": 28309,
+      "mode": "100755",
+      "sha256_after": "ce3e5b24fcaaefdb2da9c9271cf65c1d0554bc5d1d1eca920f97808559285a9a",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C03.ipynb",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/notebooks/M01C03.ipynb",
+      "sha256": "57d1bdafda1d6c7f9982d73bbebdc49f4bdc178906071d5d6eb3cb4a19ed0845",
+      "bytes": 27032,
+      "mode": "100755",
+      "sha256_after": "57d1bdafda1d6c7f9982d73bbebdc49f4bdc178906071d5d6eb3cb4a19ed0845",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C04.ipynb",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/notebooks/M01C04.ipynb",
+      "sha256": "0072494ff37400365205e84a6d9a960dd289f4924de9825bd8f77c67c6a27256",
+      "bytes": 27800,
+      "mode": "100755",
+      "sha256_after": "0072494ff37400365205e84a6d9a960dd289f4924de9825bd8f77c67c6a27256",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C05.ipynb",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/notebooks/M01C05.ipynb",
+      "sha256": "e417ee4794646d43096cb3b86f3f7dd93312c7b9bb4660690a33fa1dfbccaba2",
+      "bytes": 20065,
+      "mode": "100755",
+      "sha256_after": "e417ee4794646d43096cb3b86f3f7dd93312c7b9bb4660690a33fa1dfbccaba2",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C06.ipynb",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/notebooks/M01C06.ipynb",
+      "sha256": "de7796e6c646b7717304ccbe98d00d473638e372cea18ffdd05bdd89367b6fd3",
+      "bytes": 19064,
+      "mode": "100755",
+      "sha256_after": "de7796e6c646b7717304ccbe98d00d473638e372cea18ffdd05bdd89367b6fd3",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M01-ipynb/M01C07.ipynb",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/notebooks/M01C07.ipynb",
+      "sha256": "9679bf2b3ed010c1c262a32ad687af49be7da36cdd78e2bcb8b4f213c37bb6f0",
+      "bytes": 17298,
+      "mode": "100755",
+      "sha256_after": "9679bf2b3ed010c1c262a32ad687af49be7da36cdd78e2bcb8b4f213c37bb6f0",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C01.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C01.md",
+      "sha256": "8ff88fe57cb859e915dd2b74f23344e6ef90e4367ad884b83d335a32e6901404",
+      "bytes": 8878,
+      "mode": "100755",
+      "sha256_after": "8ff88fe57cb859e915dd2b74f23344e6ef90e4367ad884b83d335a32e6901404",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C02.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C02.md",
+      "sha256": "6e235270ce3ffb7820ab3cd5e47cbd4023549bea3a38a3b13ccdce3ae1a97bec",
+      "bytes": 10113,
+      "mode": "100755",
+      "sha256_after": "6e235270ce3ffb7820ab3cd5e47cbd4023549bea3a38a3b13ccdce3ae1a97bec",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C03.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C03.md",
+      "sha256": "44e39d0ab82c8a3c18d549194cb8fc785877f0b94f8750338ce15cc37b4a25ae",
+      "bytes": 8484,
+      "mode": "100755",
+      "sha256_after": "44e39d0ab82c8a3c18d549194cb8fc785877f0b94f8750338ce15cc37b4a25ae",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C04.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C04.md",
+      "sha256": "59b54cd887cea38a3f8150a995aa57faf5584a9d517589d7aa1b7b7f48223802",
+      "bytes": 9775,
+      "mode": "100755",
+      "sha256_after": "59b54cd887cea38a3f8150a995aa57faf5584a9d517589d7aa1b7b7f48223802",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C05.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C05.md",
+      "sha256": "6b1053ce7abc0a7ba51b08e048337b59a11f6fb22939ca4eca08dc986569c191",
+      "bytes": 7749,
+      "mode": "100755",
+      "sha256_after": "6b1053ce7abc0a7ba51b08e048337b59a11f6fb22939ca4eca08dc986569c191",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C06.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C06.md",
+      "sha256": "e356510c87f71b357ace5a2566c6cf284178256913a249b4d3783ece6ded96a5",
+      "bytes": 8156,
+      "mode": "100755",
+      "sha256_after": "e356510c87f71b357ace5a2566c6cf284178256913a249b4d3783ece6ded96a5",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C07.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C07.md",
+      "sha256": "03acee32c7eee40453cc30c5c3dd58fcfcc81488e7666155651c91ddbac46ec0",
+      "bytes": 7786,
+      "mode": "100755",
+      "sha256_after": "03acee32c7eee40453cc30c5c3dd58fcfcc81488e7666155651c91ddbac46ec0",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C08.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C08.md",
+      "sha256": "ed2abfb0e8e885e9b26d9e442b3b0bf8768c5b827b7a595bca18241042712614",
+      "bytes": 6822,
+      "mode": "100755",
+      "sha256_after": "ed2abfb0e8e885e9b26d9e442b3b0bf8768c5b827b7a595bca18241042712614",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C09.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C09.md",
+      "sha256": "5867e3a874d93d7c0b549a3dbb6d95e1783382c43096549cf020941aa7a43ee0",
+      "bytes": 8564,
+      "mode": "100755",
+      "sha256_after": "5867e3a874d93d7c0b549a3dbb6d95e1783382c43096549cf020941aa7a43ee0",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/04-python-system-programming/M02 - Linear Layout, Scans and Performance Tooling/M02C10.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/cores/M02C10.md",
+      "sha256": "9a754b22efef63c69c46de1587a7e0c0a0fc9d474863722f19e6271c58a95b82",
+      "bytes": 6819,
+      "mode": "100755",
+      "sha256_after": "9a754b22efef63c69c46de1587a7e0c0a0fc9d474863722f19e6271c58a95b82",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/toc-!.md",
+      "destination": "programs-planned/python-programming/parallel-programming/outline.md",
+      "sha256": "83db6c43cb86692b5be23346147cedbdd9eb29cf29b5d38efe0af6ac7b4e0221",
+      "bytes": 50244,
+      "mode": "100755",
+      "sha256_after": "83db6c43cb86692b5be23346147cedbdd9eb29cf29b5d38efe0af6ac7b4e0221",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-001.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-001.md",
+      "sha256": "975a4c0a63d35b7e1314c1136ab83ee58dfe21c25ebc35b204f8f85063780dd7",
+      "bytes": 23605,
+      "mode": "100755",
+      "sha256_after": "975a4c0a63d35b7e1314c1136ab83ee58dfe21c25ebc35b204f8f85063780dd7",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-002.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-002.md",
+      "sha256": "b8b017b3685be22222a656d9522b9e65074cdbdbace19e86b445205073d58d6a",
+      "bytes": 23246,
+      "mode": "100755",
+      "sha256_after": "b8b017b3685be22222a656d9522b9e65074cdbdbace19e86b445205073d58d6a",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-003.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-003.md",
+      "sha256": "1c1ac4d39d64ef211a66614979f02341148c53c4066abaab48a2376b757962de",
+      "bytes": 25136,
+      "mode": "100755",
+      "sha256_after": "1c1ac4d39d64ef211a66614979f02341148c53c4066abaab48a2376b757962de",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-004.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-004.md",
+      "sha256": "9b9a7487561c51ab1124494de6c46f267d2e84cfd1d152f1eae547552f1036fc",
+      "bytes": 24957,
+      "mode": "100755",
+      "sha256_after": "9b9a7487561c51ab1124494de6c46f267d2e84cfd1d152f1eae547552f1036fc",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-005.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-005.md",
+      "sha256": "5426a6d61a0a155190535fd5af3b062e6364263f5e4fec66b8aeaae144f4efd1",
+      "bytes": 28631,
+      "mode": "100755",
+      "sha256_after": "5426a6d61a0a155190535fd5af3b062e6364263f5e4fec66b8aeaae144f4efd1",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-006.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-006.md",
+      "sha256": "2214e269f388e43103aff32b9a6cd2d196204a8529fea0c870a78e3318b14a4a",
+      "bytes": 28221,
+      "mode": "100755",
+      "sha256_after": "2214e269f388e43103aff32b9a6cd2d196204a8529fea0c870a78e3318b14a4a",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-007.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-007.md",
+      "sha256": "681b22faeb37ed2f01c40b95782f71a77aa79552e53b8b4cbade6a7c1e2f388f",
+      "bytes": 21360,
+      "mode": "100755",
+      "sha256_after": "681b22faeb37ed2f01c40b95782f71a77aa79552e53b8b4cbade6a7c1e2f388f",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-008.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-008.md",
+      "sha256": "387768c64108b2e86df8872f55aa85cea53f8685da34b86b232072a0391b3ecd",
+      "bytes": 22669,
+      "mode": "100755",
+      "sha256_after": "387768c64108b2e86df8872f55aa85cea53f8685da34b86b232072a0391b3ecd",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-009.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-009.md",
+      "sha256": "779910e7053327027cf12de3d399f4334c300362bd3962d7da0ae1624dbf4b73",
+      "bytes": 27519,
+      "mode": "100755",
+      "sha256_after": "779910e7053327027cf12de3d399f4334c300362bd3962d7da0ae1624dbf4b73",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/01-concurrency-theory-and-shared-memory-correctness/core-010.md",
+      "destination": "programs-planned/python-programming/parallel-programming/concurrency-and-shared-memory/core-010.md",
+      "sha256": "dbda788c79c77b1acfb953c4f0f3457069f24994abb9d7103f52f9d2539eb936",
+      "bytes": 20928,
+      "mode": "100755",
+      "sha256_after": "dbda788c79c77b1acfb953c4f0f3457069f24994abb9d7103f52f9d2539eb936",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-00.md",
+      "destination": "programs-planned/python-programming/parallel-programming/accelerated-course/part-00.md",
+      "sha256": "e4e93f5626031faab1b854e8e5024270a65f105bb9d003633f3cf0d09b0f4b54",
+      "bytes": 74905,
+      "mode": "100755",
+      "sha256_after": "e4e93f5626031faab1b854e8e5024270a65f105bb9d003633f3cf0d09b0f4b54",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-01.md",
+      "destination": "programs-planned/python-programming/parallel-programming/accelerated-course/part-01.md",
+      "sha256": "2683c0812815c319b25d58810f40c16cd7d31f797f3df37de40cda3ee2a525a0",
+      "bytes": 56449,
+      "mode": "100755",
+      "sha256_after": "2683c0812815c319b25d58810f40c16cd7d31f797f3df37de40cda3ee2a525a0",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-02.md",
+      "destination": "programs-planned/python-programming/parallel-programming/accelerated-course/part-02.md",
+      "sha256": "dcf39620cec2921765421c10f2bf349eddd374cdeaf52862a963feb6df45be8e",
+      "bytes": 60409,
+      "mode": "100755",
+      "sha256_after": "dcf39620cec2921765421c10f2bf349eddd374cdeaf52862a963feb6df45be8e",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-03.md",
+      "destination": "programs-planned/python-programming/parallel-programming/accelerated-course/part-03.md",
+      "sha256": "24ec2c5f5c1e2b907b81731c0b07d3f96daba8f45f096f44e5a7ab4434d3a968",
+      "bytes": 51078,
+      "mode": "100755",
+      "sha256_after": "24ec2c5f5c1e2b907b81731c0b07d3f96daba8f45f096f44e5a7ab4434d3a968",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-04.md",
+      "destination": "programs-planned/python-programming/parallel-programming/accelerated-course/part-04.md",
+      "sha256": "b7f1bcee74f0a418745c82fc813048204f3a66066cd0577d4964333b623f4e86",
+      "bytes": 46854,
+      "mode": "100755",
+      "sha256_after": "b7f1bcee74f0a418745c82fc813048204f3a66066cd0577d4964333b623f4e86",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/fast-track/pp-part-05.md",
+      "destination": "programs-planned/python-programming/parallel-programming/accelerated-course/part-05.md",
+      "sha256": "b6360092e7a263e6aeed80e97a13d2fb9f0e8373123f1c780e41f44205798a29",
+      "bytes": 44759,
+      "mode": "100755",
+      "sha256_after": "b6360092e7a263e6aeed80e97a13d2fb9f0e8373123f1c780e41f44205798a29",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/tofix.md",
+      "destination": "programs-planned/python-programming/parallel-programming/reviews/concurrency.md",
+      "sha256": "1da31df7ff7fb107f80bc0ef80909601a5557008cbc45df8620547d46bdbd5c7",
+      "bytes": 24321,
+      "mode": "100755",
+      "sha256_after": "1da31df7ff7fb107f80bc0ef80909601a5557008cbc45df8620547d46bdbd5c7",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/ToC.md",
+      "destination": "programs-planned/python-programming/foundations/outline.md",
+      "sha256": "0135fdf86b0dc7d910939244f91d442e0d87fbea4a63e5d217299dedfe4ce64f",
+      "bytes": 8264,
+      "mode": "100755",
+      "sha256_after": "0135fdf86b0dc7d910939244f91d442e0d87fbea4a63e5d217299dedfe4ce64f",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/01-beginner-foundations/M01C01.md",
+      "destination": "programs-planned/python-programming/foundations/beginner-cores/M01C01.md",
+      "sha256": "4b1c723c316de45bb97bbc00f824d9a0dc7e89fd43160859385edc5a2f675d55",
+      "bytes": 10825,
+      "mode": "100755",
+      "sha256_after": "4b1c723c316de45bb97bbc00f824d9a0dc7e89fd43160859385edc5a2f675d55",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/01-beginner-foundations/M01C02.md",
+      "destination": "programs-planned/python-programming/foundations/beginner-cores/M01C02.md",
+      "sha256": "ddd306a687abe33e187545302c3f52a6be8159c657b85c17b48c95c7df317a40",
+      "bytes": 10237,
+      "mode": "100755",
+      "sha256_after": "ddd306a687abe33e187545302c3f52a6be8159c657b85c17b48c95c7df317a40",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/01-beginner-foundations/M01C03.md",
+      "destination": "programs-planned/python-programming/foundations/beginner-cores/M01C03.md",
+      "sha256": "1edb97c33c518766cf8652c95704b1f63f273806fbe4ade08e21612500c705c3",
+      "bytes": 16259,
+      "mode": "100755",
+      "sha256_after": "1edb97c33c518766cf8652c95704b1f63f273806fbe4ade08e21612500c705c3",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/06-python-[foundation]/01-beginner-foundations/M01C04.md",
+      "destination": "programs-planned/python-programming/foundations/beginner-cores/M01C04.md",
+      "sha256": "bb34c6a5757a5f3501a9b7c9b7e31f0621282f354edc11d759d96e7599f0e3c8",
+      "bytes": 9850,
+      "mode": "100755",
+      "sha256_after": "bb34c6a5757a5f3501a9b7c9b7e31f0621282f354edc11d759d96e7599f0e3c8",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/python-[patterns]/plan.md",
+      "destination": "programs-planned/python-programming/patterns/principles-outline.md",
+      "sha256": "91b4e252d30a821a224f9a09e8a1d91a990ec2149f86b1ba8bc97a790eaa5307",
+      "bytes": 5889,
+      "mode": "100755",
+      "sha256_after": "91b4e252d30a821a224f9a09e8a1d91a990ec2149f86b1ba8bc97a790eaa5307",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-python/python-[patterns]/plan2.md",
+      "destination": "programs-planned/python-programming/patterns/typing-contracts-outline.md",
+      "sha256": "dc0d4c222a4b5b9ed0de546f14b54994338f94497bf1e2ee54774f4163d90f74",
+      "bytes": 10791,
+      "mode": "100755",
+      "sha256_after": "dc0d4c222a4b5b9ed0de546f14b54994338f94497bf1e2ee54774f4163d90f74",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/Module M01_ CPython Objects & Memory Model.pdf",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/source-guide.pdf",
+      "sha256": "09d0a9b5c695935f8a1f9b06150f6f9a4c83e76d30a6c8caaf749fbeba18d4bd",
+      "bytes": 410867,
+      "mode": "100755",
+      "sha256_after": "09d0a9b5c695935f8a1f9b06150f6f9a4c83e76d30a6c8caaf749fbeba18d4bd",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/TODO-M01.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/reviews/source-audit.md",
+      "sha256": "f4ec90fa72fab10c950edc41a9d525dd86ac9b69faf5ec1d898c0918b89b299c",
+      "bytes": 11635,
+      "mode": "100755",
+      "sha256_after": "f4ec90fa72fab10c950edc41a9d525dd86ac9b69faf5ec1d898c0918b89b299c",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/TODO-M02.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/reviews/source-audit.md",
+      "sha256": "8d4f9714f554cb44ba18813431a513491d512a1af950079c00f84b1294e08719",
+      "bytes": 14018,
+      "mode": "100755",
+      "sha256_after": "8d4f9714f554cb44ba18813431a513491d512a1af950079c00f84b1294e08719",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01.md",
+      "destination": "programs-planned/python-programming/systems-programming/object-model-memory/combined-guide.md",
+      "sha256": "b650763e095657ce5cb0ceb48e672b8f88f632d1801502f72ac8c27327c77536",
+      "bytes": 122831,
+      "mode": "100755",
+      "sha256_after": "b650763e095657ce5cb0ceb48e672b8f88f632d1801502f72ac8c27327c77536",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02.md",
+      "destination": "programs-planned/python-programming/systems-programming/linear-layout-profiling/combined-guide.md",
+      "sha256": "60f58eec5bbaed447cb4fdee9160c7b0d27137bb1a2687f9bc1ce095e96fb868",
+      "bytes": 83146,
+      "mode": "100755",
+      "sha256_after": "60f58eec5bbaed447cb4fdee9160c7b0d27137bb1a2687f9bc1ce095e96fb868",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Metaprogramming - Quality Assurance Review \u2013 Module 1 Cores (M01C01\u2013M01C05).pdf",
+      "destination": "programs-planned/python-programming/metaprogramming/reviews/conceptual-foundations.pdf",
+      "sha256": "6586be70e84a6980c067e21552388d737faa00b993cca6b7d889fe2f8cb1e5a5",
+      "bytes": 175670,
+      "mode": "100755",
+      "sha256_after": "6586be70e84a6980c067e21552388d737faa00b993cca6b7d889fe2f8cb1e5a5",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/ToC.md",
+      "destination": "programs-planned/python-programming/metaprogramming/outline.md",
+      "sha256": "709bbfec61dcf9107b6c5dd65a7081f81cab1bb3ceaccf75ca32a95ef577397a",
+      "bytes": 8845,
+      "mode": "100755",
+      "sha256_after": "709bbfec61dcf9107b6c5dd65a7081f81cab1bb3ceaccf75ca32a95ef577397a",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C01.md",
+      "destination": "programs-planned/python-programming/metaprogramming/conceptual-foundations/M01C01.md",
+      "sha256": "092f3fb2a4231a7e2378190037d01ae3977ae195f5ed30aadd789252710e67c5",
+      "bytes": 40851,
+      "mode": "100755",
+      "sha256_after": "092f3fb2a4231a7e2378190037d01ae3977ae195f5ed30aadd789252710e67c5",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C02.md",
+      "destination": "programs-planned/python-programming/metaprogramming/conceptual-foundations/M01C02.md",
+      "sha256": "dee68f7926af7eedf8d552c96cc9f397b1dbe0d89bf48e6151314e344c25aa14",
+      "bytes": 28333,
+      "mode": "100755",
+      "sha256_after": "dee68f7926af7eedf8d552c96cc9f397b1dbe0d89bf48e6151314e344c25aa14",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C03.md",
+      "destination": "programs-planned/python-programming/metaprogramming/conceptual-foundations/M01C03.md",
+      "sha256": "0941677b559a6871917575386562ef3902e434741ed4a9a9da1fea5c9eeb2503",
+      "bytes": 37739,
+      "mode": "100755",
+      "sha256_after": "0941677b559a6871917575386562ef3902e434741ed4a9a9da1fea5c9eeb2503",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C04.md",
+      "destination": "programs-planned/python-programming/metaprogramming/conceptual-foundations/M01C04.md",
+      "sha256": "cff29233aaae028771ea21c40998cf75e098e6516469df5e28179ebfd926c0a6",
+      "bytes": 51388,
+      "mode": "100755",
+      "sha256_after": "cff29233aaae028771ea21c40998cf75e098e6516469df5e28179ebfd926c0a6",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 01 \u2013 Conceptual Foundations/M01C05.md",
+      "destination": "programs-planned/python-programming/metaprogramming/conceptual-foundations/M01C05.md",
+      "sha256": "e2b6c15955580a2870e092b5e236a663e1e0cd53dd0a50c16a1056cf3165a694",
+      "bytes": 48705,
+      "mode": "100755",
+      "sha256_after": "e2b6c15955580a2870e092b5e236a663e1e0cd53dd0a50c16a1056cf3165a694",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C06.md",
+      "destination": "programs-planned/python-programming/metaprogramming/representation-binding-and-rewriting/M02C06.md",
+      "sha256": "ab1e54fbd09b08177991e35b1253530066cb4b971527615c2148e634062702ea",
+      "bytes": 22919,
+      "mode": "100755",
+      "sha256_after": "ab1e54fbd09b08177991e35b1253530066cb4b971527615c2148e634062702ea",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C07.md",
+      "destination": "programs-planned/python-programming/metaprogramming/representation-binding-and-rewriting/M02C07.md",
+      "sha256": "a50f9f18764c43088cb2033f0be53a555b7a285860021eed877a299e07d1c8e9",
+      "bytes": 19905,
+      "mode": "100755",
+      "sha256_after": "a50f9f18764c43088cb2033f0be53a555b7a285860021eed877a299e07d1c8e9",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C08.md",
+      "destination": "programs-planned/python-programming/metaprogramming/representation-binding-and-rewriting/M02C08.md",
+      "sha256": "ac037285c8479d310d8d9bfb005b4a09132dcf3c40b66f5939ff27d4072a5ae8",
+      "bytes": 17724,
+      "mode": "100755",
+      "sha256_after": "ac037285c8479d310d8d9bfb005b4a09132dcf3c40b66f5939ff27d4072a5ae8",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C09.md",
+      "destination": "programs-planned/python-programming/metaprogramming/representation-binding-and-rewriting/M02C09.md",
+      "sha256": "a9161adefbf32e74e91c0f036126a4485d9846d7f0a80ed59c46f434b2b47d66",
+      "bytes": 18148,
+      "mode": "100755",
+      "sha256_after": "a9161adefbf32e74e91c0f036126a4485d9846d7f0a80ed59c46f434b2b47d66",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 02 \u2013 Representation, Binding and Rewriting/M02C10.md",
+      "destination": "programs-planned/python-programming/metaprogramming/representation-binding-and-rewriting/M02C10.md",
+      "sha256": "fb95a777ea10a79aa2946d3f7b5fa2884600aab3454278684d38e9fd9d6bc5fa",
+      "bytes": 17941,
+      "mode": "100755",
+      "sha256_after": "fb95a777ea10a79aa2946d3f7b5fa2884600aab3454278684d38e9fd9d6bc5fa",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C11.md",
+      "destination": "programs-planned/python-programming/metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C11.md",
+      "sha256": "85178e0127ad410f3ac907cae1646f236c47829ef89aa1ccb070dbbafc880039",
+      "bytes": 22030,
+      "mode": "100755",
+      "sha256_after": "85178e0127ad410f3ac907cae1646f236c47829ef89aa1ccb070dbbafc880039",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C12.md",
+      "destination": "programs-planned/python-programming/metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C12.md",
+      "sha256": "0e51b75f45ee2ce1a7cf31dc116a35837622e0e74abb6b4ceecc884f524e27b0",
+      "bytes": 23467,
+      "mode": "100755",
+      "sha256_after": "0e51b75f45ee2ce1a7cf31dc116a35837622e0e74abb6b4ceecc884f524e27b0",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C13.md",
+      "destination": "programs-planned/python-programming/metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C13.md",
+      "sha256": "462a7a42f6e8f9125c5d92921fd038d0ff25e684ddf6db5d2fc6376ec58b2dc9",
+      "bytes": 20874,
+      "mode": "100755",
+      "sha256_after": "462a7a42f6e8f9125c5d92921fd038d0ff25e684ddf6db5d2fc6376ec58b2dc9",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C14.md",
+      "destination": "programs-planned/python-programming/metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C14.md",
+      "sha256": "28de1c339a82c594ef98cca45b80a1bb2928cd49bd62f20ea719b47f5cc86604",
+      "bytes": 26707,
+      "mode": "100755",
+      "sha256_after": "28de1c339a82c594ef98cca45b80a1bb2928cd49bd62f20ea719b47f5cc86604",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 03 \u2013 Macro Systems and Hygienic Metaprogramming/M03C15.md",
+      "destination": "programs-planned/python-programming/metaprogramming/macro-systems-and-hygienic-metaprogramming/M03C15.md",
+      "sha256": "e4eca1325c9d7838a6c0fe5c2b0f63f6cc6602fbf99b6a6ec856a4d06cdf8bbb",
+      "bytes": 26250,
+      "mode": "100755",
+      "sha256_after": "e4eca1325c9d7838a6c0fe5c2b0f63f6cc6602fbf99b6a6ec856a4d06cdf8bbb",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C16.md",
+      "destination": "programs-planned/python-programming/metaprogramming/generics-overloading-and-parametricity/M04C16.md",
+      "sha256": "9f943c8de28c3eb82aa8d21316a52da8a64593e7c09f469df634942319346ab3",
+      "bytes": 26350,
+      "mode": "100755",
+      "sha256_after": "9f943c8de28c3eb82aa8d21316a52da8a64593e7c09f469df634942319346ab3",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C17.md",
+      "destination": "programs-planned/python-programming/metaprogramming/generics-overloading-and-parametricity/M04C17.md",
+      "sha256": "6bfee26a8a1c192e90c60e7bc99e8035f18bd3fa4c3f96bfbc180b9f79f46863",
+      "bytes": 23442,
+      "mode": "100755",
+      "sha256_after": "6bfee26a8a1c192e90c60e7bc99e8035f18bd3fa4c3f96bfbc180b9f79f46863",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C18.md",
+      "destination": "programs-planned/python-programming/metaprogramming/generics-overloading-and-parametricity/M04C18.md",
+      "sha256": "3998658c9616be3a14a38e73315c0a46e99d924ccfe3d9c34d342d97e0e5657a",
+      "bytes": 29039,
+      "mode": "100755",
+      "sha256_after": "3998658c9616be3a14a38e73315c0a46e99d924ccfe3d9c34d342d97e0e5657a",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C19.md",
+      "destination": "programs-planned/python-programming/metaprogramming/generics-overloading-and-parametricity/M04C19.md",
+      "sha256": "4cf28640127c257d0586649539d3098f394f1f9f5ab9e5523995413b5cb95227",
+      "bytes": 32546,
+      "mode": "100755",
+      "sha256_after": "4cf28640127c257d0586649539d3098f394f1f9f5ab9e5523995413b5cb95227",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-programming/zzz___programming/-programming-meta/Module 04 \u2013 Generics, Overloading and Parametricity/M04C20.md",
+      "destination": "programs-planned/python-programming/metaprogramming/generics-overloading-and-parametricity/M04C20.md",
+      "sha256": "b058eb7a75508a1e91c71938fef6e9f86e67d20f7bbc396d15eba6ed65671cf6",
+      "bytes": 27755,
+      "mode": "100755",
+      "sha256_after": "b058eb7a75508a1e91c71938fef6e9f86e67d20f7bbc396d15eba6ed65671cf6",
+      "transformation": null
+    }
+  ],
+  "duplicate_source_aliases": [
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/toc-!.md",
+      "sha256": "83db6c43cb86692b5be23346147cedbdd9eb29cf29b5d38efe0af6ac7b4e0221",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/outline.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-001.md",
+      "sha256": "975a4c0a63d35b7e1314c1136ab83ee58dfe21c25ebc35b204f8f85063780dd7",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-001.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-002.md",
+      "sha256": "b8b017b3685be22222a656d9522b9e65074cdbdbace19e86b445205073d58d6a",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-002.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-003.md",
+      "sha256": "1c1ac4d39d64ef211a66614979f02341148c53c4066abaab48a2376b757962de",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-003.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-004.md",
+      "sha256": "9b9a7487561c51ab1124494de6c46f267d2e84cfd1d152f1eae547552f1036fc",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-004.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-005.md",
+      "sha256": "5426a6d61a0a155190535fd5af3b062e6364263f5e4fec66b8aeaae144f4efd1",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-005.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-006.md",
+      "sha256": "2214e269f388e43103aff32b9a6cd2d196204a8529fea0c870a78e3318b14a4a",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-006.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-007.md",
+      "sha256": "681b22faeb37ed2f01c40b95782f71a77aa79552e53b8b4cbade6a7c1e2f388f",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-007.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-008.md",
+      "sha256": "387768c64108b2e86df8872f55aa85cea53f8685da34b86b232072a0391b3ecd",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-008.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-009.md",
+      "sha256": "779910e7053327027cf12de3d399f4334c300362bd3962d7da0ae1624dbf4b73",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-009.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/05-python-parallel-programming/python-[parallel]/python-parallel-01-[concurrency-theory-and-shared-memory-correctness]/zzz/module-01/version-01/core-010.md",
+      "sha256": "dbda788c79c77b1acfb953c4f0f3457069f24994abb9d7103f52f9d2539eb936",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "parallel-programming/concurrency-and-shared-memory/core-010.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C01.md",
+      "sha256": "36ec2c12ddb01132da2607ccf77982e3480ab84d4c1ea385b96a5d25786600e3",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C01.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C02.md",
+      "sha256": "a6d1db1b0ecb06ac66d5e0290e9bdc06f1d65a10b5557c5b07de08a794125585",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C02.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C03.md",
+      "sha256": "eeb4f119f2bf7b5b10cc8fe8f04ae371fb03274bd83ce9e3453e4cbde2c3b33f",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C03.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C04.md",
+      "sha256": "7952c4a56b4bf797544632b38330a8905fce13251d736f8918d9fda426425df9",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C04.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C05.md",
+      "sha256": "f9998ff7f5334bd062353359ec33b66776fcd3c7400c331ebfd34a25592ea1a4",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C05.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C06.md",
+      "sha256": "d89fe3c9491b8dce3393e22ed8603aa4520fd92336910f95850cc903e2493b83",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C06.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C07.md",
+      "sha256": "4c33afbe9b54386ed94e1a319956e79df74ae327877c275c604d63ad91e8d458",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C07.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C08.md",
+      "sha256": "3db50d754bb3725704460df5b1d59f3175b8b617bd13ae861b5800bc28a011ca",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C08.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C09.md",
+      "sha256": "b2438450c3994bc9fdb58e54364282769fedd1bb45c1bc66980cc3ebf4003c04",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C09.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M01 - Python Object Model and Memory Reality/M01C10.md",
+      "sha256": "d44ae8cacc3c4eed4485fdd1700723955e1846c5c9d0a17d194b8dcd7aaf8b32",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C10.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C01.md",
+      "sha256": "8ff88fe57cb859e915dd2b74f23344e6ef90e4367ad884b83d335a32e6901404",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C01.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C02.md",
+      "sha256": "6e235270ce3ffb7820ab3cd5e47cbd4023549bea3a38a3b13ccdce3ae1a97bec",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C02.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C03.md",
+      "sha256": "44e39d0ab82c8a3c18d549194cb8fc785877f0b94f8750338ce15cc37b4a25ae",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C03.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C04.md",
+      "sha256": "59b54cd887cea38a3f8150a995aa57faf5584a9d517589d7aa1b7b7f48223802",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C04.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C05.md",
+      "sha256": "6b1053ce7abc0a7ba51b08e048337b59a11f6fb22939ca4eca08dc986569c191",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C05.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C06.md",
+      "sha256": "e356510c87f71b357ace5a2566c6cf284178256913a249b4d3783ece6ded96a5",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C06.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C07.md",
+      "sha256": "03acee32c7eee40453cc30c5c3dd58fcfcc81488e7666155651c91ddbac46ec0",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C07.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C08.md",
+      "sha256": "ed2abfb0e8e885e9b26d9e442b3b0bf8768c5b827b7a595bca18241042712614",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C08.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C09.md",
+      "sha256": "5867e3a874d93d7c0b549a3dbb6d95e1783382c43096549cf020941aa7a43ee0",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C09.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/M02 - Linear Layout, Scans and Performance Tooling/M02C10.md",
+      "sha256": "9a754b22efef63c69c46de1587a7e0c0a0fc9d474863722f19e6271c58a95b82",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C10.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/M01-ipynb/M01C01.ipynb",
+      "sha256": "1d7c54573f24e6f30a5126c47c09bfb2c21d29d6c6e593c508db532c8bb0f685",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/notebooks/M01C01.ipynb"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/M01-ipynb/M01C02.ipynb",
+      "sha256": "ce3e5b24fcaaefdb2da9c9271cf65c1d0554bc5d1d1eca920f97808559285a9a",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/notebooks/M01C02.ipynb"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/M01-ipynb/M01C03.ipynb",
+      "sha256": "57d1bdafda1d6c7f9982d73bbebdc49f4bdc178906071d5d6eb3cb4a19ed0845",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/notebooks/M01C03.ipynb"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/M01-ipynb/M01C04.ipynb",
+      "sha256": "0072494ff37400365205e84a6d9a960dd289f4924de9825bd8f77c67c6a27256",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/notebooks/M01C04.ipynb"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/M01-ipynb/M01C05.ipynb",
+      "sha256": "e417ee4794646d43096cb3b86f3f7dd93312c7b9bb4660690a33fa1dfbccaba2",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/notebooks/M01C05.ipynb"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/M01-ipynb/M01C06.ipynb",
+      "sha256": "de7796e6c646b7717304ccbe98d00d473638e372cea18ffdd05bdd89367b6fd3",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/notebooks/M01C06.ipynb"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/M01-ipynb/M01C07.ipynb",
+      "sha256": "9679bf2b3ed010c1c262a32ad687af49be7da36cdd78e2bcb8b4f213c37bb6f0",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/notebooks/M01C07.ipynb"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C01.md",
+      "sha256": "36ec2c12ddb01132da2607ccf77982e3480ab84d4c1ea385b96a5d25786600e3",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C01.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C02.md",
+      "sha256": "a6d1db1b0ecb06ac66d5e0290e9bdc06f1d65a10b5557c5b07de08a794125585",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C02.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C03.md",
+      "sha256": "eeb4f119f2bf7b5b10cc8fe8f04ae371fb03274bd83ce9e3453e4cbde2c3b33f",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C03.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C04.md",
+      "sha256": "7952c4a56b4bf797544632b38330a8905fce13251d736f8918d9fda426425df9",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C04.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C05.md",
+      "sha256": "f9998ff7f5334bd062353359ec33b66776fcd3c7400c331ebfd34a25592ea1a4",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C05.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C06.md",
+      "sha256": "d89fe3c9491b8dce3393e22ed8603aa4520fd92336910f95850cc903e2493b83",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C06.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C07.md",
+      "sha256": "4c33afbe9b54386ed94e1a319956e79df74ae327877c275c604d63ad91e8d458",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C07.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C08.md",
+      "sha256": "3db50d754bb3725704460df5b1d59f3175b8b617bd13ae861b5800bc28a011ca",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C08.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C09.md",
+      "sha256": "b2438450c3994bc9fdb58e54364282769fedd1bb45c1bc66980cc3ebf4003c04",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C09.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M01 - Python Object Model and Memory Reality/M01C10.md",
+      "sha256": "d44ae8cacc3c4eed4485fdd1700723955e1846c5c9d0a17d194b8dcd7aaf8b32",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/object-model-memory/cores/M01C10.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C01.md",
+      "sha256": "8ff88fe57cb859e915dd2b74f23344e6ef90e4367ad884b83d335a32e6901404",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C01.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C02.md",
+      "sha256": "6e235270ce3ffb7820ab3cd5e47cbd4023549bea3a38a3b13ccdce3ae1a97bec",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C02.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C03.md",
+      "sha256": "44e39d0ab82c8a3c18d549194cb8fc785877f0b94f8750338ce15cc37b4a25ae",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C03.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C04.md",
+      "sha256": "59b54cd887cea38a3f8150a995aa57faf5584a9d517589d7aa1b7b7f48223802",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C04.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C05.md",
+      "sha256": "6b1053ce7abc0a7ba51b08e048337b59a11f6fb22939ca4eca08dc986569c191",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C05.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C06.md",
+      "sha256": "e356510c87f71b357ace5a2566c6cf284178256913a249b4d3783ece6ded96a5",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C06.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C07.md",
+      "sha256": "03acee32c7eee40453cc30c5c3dd58fcfcc81488e7666155651c91ddbac46ec0",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C07.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C08.md",
+      "sha256": "ed2abfb0e8e885e9b26d9e442b3b0bf8768c5b827b7a595bca18241042712614",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C08.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C09.md",
+      "sha256": "5867e3a874d93d7c0b549a3dbb6d95e1783382c43096549cf020941aa7a43ee0",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C09.md"
+      }
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-structure-algorithms/dsa-01-[systems-foundations-and-core-reasoning]/zzz/TODOs/S01 - Python Systems Foundations and Core Reasoning 1203-1200/M02 - Linear Layout, Scans and Performance Tooling/M02C10.md",
+      "sha256": "9a754b22efef63c69c46de1587a7e0c0a0fc9d474863722f19e6271c58a95b82",
+      "owner": {
+        "collection": "python-extensions",
+        "destination": "systems-programming/linear-layout-profiling/cores/M02C10.md"
+      }
+    }
+  ]
+}

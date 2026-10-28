@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "delivery",
+  "cases": [
+    {
+      "id": "DEL-001",
+      "description": "ack advances one consumer group only",
+      "expected": "accepted"
+    },
+    {
+      "id": "DEL-002",
+      "description": "expired ack redelivers the same record",
+      "expected": "accepted"
+    },
+    {
+      "id": "DEL-003",
+      "description": "nack delays redelivery",
+      "expected": "accepted"
+    },
+    {
+      "id": "DEL-004",
+      "description": "delivery token settles once",
+      "expected": "rejected-on-second-settlement"
+    },
+    {
+      "id": "DEL-005",
+      "description": "second record cannot overtake inflight first record in one partition",
+      "expected": "accepted"
+    },
+    {
+      "id": "DEL-006",
+      "description": "different partitions may progress independently",
+      "expected": "accepted"
+    }
+  ]
+}

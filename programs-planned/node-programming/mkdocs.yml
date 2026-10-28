@@ -1,0 +1,415 @@
+site_name: Node.js Programming — Reader-First Course Books
+site_description: Reader-first Node.js and TypeScript curriculum, Courses 1–6
+docs_dir: .
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.indexes
+  - content.code.copy
+nav:
+- Program start: README.md
+- How to study: START_HERE.md
+- Reasoning model: REASONING_MODEL.md
+- Course map: COURSE_MAP.md
+- Skill map: SKILL_MAP.md
+- Progress: PROGRESS.md
+- Glossary: GLOSSARY.md
+- Source notes: SOURCE_NOTES.md
+- Course 1 — Node.js and TypeScript Foundations:
+  - Course overview: 01-node-typescript-foundations/README.md
+  - Course-book start: 01-node-typescript-foundations/course-book/index.md
+  - Outcomes: 01-node-typescript-foundations/course-book/outcomes.md
+  - Ten-day plan: 01-node-typescript-foundations/course-book/study-plan.md
+  - Module 1 — Runtime, Toolchain, ESM, and the JavaScript/TypeScript Boundary:
+    - Chapter: 01-node-typescript-foundations/course-book/module-01-runtime-toolchain-and-execution/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-01-runtime-toolchain-and-execution/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-01-runtime-toolchain-and-execution/solutions.md
+  - Module 2 — Values, Coercion, Equality, Control Flow, and Invariants:
+    - Chapter: 01-node-typescript-foundations/course-book/module-02-values-coercion-equality-and-control/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-02-values-coercion-equality-and-control/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-02-values-coercion-equality-and-control/solutions.md
+  - Module 3 — Functions, Scope, Closures, Callbacks, and `this`:
+    - Chapter: 01-node-typescript-foundations/course-book/module-03-functions-scope-closures-and-this/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-03-functions-scope-closures-and-this/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-03-functions-scope-closures-and-this/solutions.md
+  - Module 4 — Objects, Arrays, Identity, Mutation, and Immutable Updates:
+    - Chapter: 01-node-typescript-foundations/course-book/module-04-objects-arrays-identity-and-mutation/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-04-objects-arrays-identity-and-mutation/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-04-objects-arrays-identity-and-mutation/solutions.md
+  - Module 5 — TypeScript Modeling, Unions, Narrowing, `unknown`, and `never`:
+    - Chapter: 01-node-typescript-foundations/course-book/module-05-typescript-modeling-and-narrowing/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-05-typescript-modeling-and-narrowing/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-05-typescript-modeling-and-narrowing/solutions.md
+  - Module 6 — Collections, Iteration, Generic Relationships, and Deterministic Data:
+    - Chapter: 01-node-typescript-foundations/course-book/module-06-collections-iteration-and-generics/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-06-collections-iteration-and-generics/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-06-collections-iteration-and-generics/solutions.md
+  - Module 7 — Modules, Packages, Resolution, and Public API Boundaries:
+    - Chapter: 01-node-typescript-foundations/course-book/module-07-modules-packages-and-public-apis/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-07-modules-packages-and-public-apis/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-07-modules-packages-and-public-apis/solutions.md
+  - Module 8 — Errors, JSON, Runtime Validation, and Persistence Contracts:
+    - Chapter: 01-node-typescript-foundations/course-book/module-08-errors-json-validation-and-persistence/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-08-errors-json-validation-and-persistence/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-08-errors-json-validation-and-persistence/solutions.md
+  - Module 9 — Promises, Event-Loop Ordering, CLI Boundaries, and Async Files:
+    - Chapter: 01-node-typescript-foundations/course-book/module-09-promises-event-loop-cli-and-files/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-09-promises-event-loop-cli-and-files/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-09-promises-event-loop-cli-and-files/solutions.md
+  - Module 10 — Testing, Architecture, Integration, and Independent Change:
+    - Chapter: 01-node-typescript-foundations/course-book/module-10-testing-architecture-and-change/index.md
+    - Workbook: 01-node-typescript-foundations/course-book/module-10-testing-architecture-and-change/workbook.md
+    - Reasoned solutions: 01-node-typescript-foundations/course-book/module-10-testing-architecture-and-change/solutions.md
+  - StudyLedger engineering guide: 01-node-typescript-foundations/course-book/capstone.md
+  - Final review: 01-node-typescript-foundations/course-book/final-review.md
+  - Final review solutions: 01-node-typescript-foundations/course-book/final-review-solutions.md
+  - Reference desk: 01-node-typescript-foundations/course-book/reference.md
+  - Independent laboratories:
+    - Laboratory system: 01-node-typescript-foundations/labs/README.md
+    - Laboratory 1 — Runtime Report: 01-node-typescript-foundations/labs/module-01-runtime-report/README.md
+    - Laboratory 2 — Usage Quote Policy: 01-node-typescript-foundations/labs/module-02-usage-quote-policy/README.md
+    - Laboratory 3 — Callback Budget: 01-node-typescript-foundations/labs/module-03-callback-budget/README.md
+    - Laboratory 4 — Inventory Transform: 01-node-typescript-foundations/labs/module-04-inventory-transform/README.md
+    - Laboratory 5 — Review Workflow: 01-node-typescript-foundations/labs/module-05-review-workflow/README.md
+    - Laboratory 6 — Record Query: 01-node-typescript-foundations/labs/module-06-record-query/README.md
+    - Laboratory 7 — Package Boundary: 01-node-typescript-foundations/labs/module-07-package-boundary/README.md
+    - Laboratory 8 — Validated Configuration: 01-node-typescript-foundations/labs/module-08-validated-configuration/README.md
+    - Laboratory 9 — Async File Index: 01-node-typescript-foundations/labs/module-09-async-file-index/README.md
+    - Laboratory 10 — Reading Ledger: 01-node-typescript-foundations/labs/module-10-reading-ledger/README.md
+  - Type-checker and runtime investigations: 01-node-typescript-foundations/compiler-labs/README.md
+  - StudyLedger implementation: 01-node-typescript-foundations/capstone/README.md
+- Course 2 — JavaScript Object Model and Runtime Protocols:
+  - Course overview: 02-javascript-object-model-runtime-protocols/README.md
+  - Course-book start: 02-javascript-object-model-runtime-protocols/course-book/index.md
+  - Outcomes: 02-javascript-object-model-runtime-protocols/course-book/outcomes.md
+  - Ten-day plan: 02-javascript-object-model-runtime-protocols/course-book/study-plan.md
+  - Module 11 — Objects, Property Keys, Descriptors, and Enumeration:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-11-properties-descriptors-and-enumeration/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-11-properties-descriptors-and-enumeration/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-11-properties-descriptors-and-enumeration/solutions.md
+  - Module 12 — Prototypes, Delegation, Lookup, and Shadowing:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-12-prototypes-delegation-and-lookup/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-12-prototypes-delegation-and-lookup/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-12-prototypes-delegation-and-lookup/solutions.md
+  - Module 13 — Functions, Receivers, Constructors, and new:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-13-functions-receivers-constructors-and-new/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-13-functions-receivers-constructors-and-new/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-13-functions-receivers-constructors-and-new/solutions.md
+  - Module 14 — Classes, Fields, Private State, and Initialization:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-14-classes-private-state-and-initialization/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-14-classes-private-state-and-initialization/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-14-classes-private-state-and-initialization/solutions.md
+  - Module 15 — Composition, Capabilities, Mixins, and Object Architecture:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-15-composition-capabilities-and-mixins/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-15-composition-capabilities-and-mixins/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-15-composition-capabilities-and-mixins/solutions.md
+  - Module 16 — Symbols and Runtime Protocols:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-16-symbols-and-runtime-protocols/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-16-symbols-and-runtime-protocols/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-16-symbols-and-runtime-protocols/solutions.md
+  - Module 17 — Iterables, Iterators, Generators, and Traversal:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-17-iterables-iterators-and-generators/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-17-iterables-iterators-and-generators/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-17-iterables-iterators-and-generators/solutions.md
+  - Module 18 — Reflection, Proxies, Traps, and Invariants:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-18-reflection-proxies-and-invariants/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-18-reflection-proxies-and-invariants/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-18-reflection-proxies-and-invariants/solutions.md
+  - Module 19 — Object Graphs, Cloning, Reachability, and Disposal:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-19-object-graphs-cloning-reachability-and-disposal/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-19-object-graphs-cloning-reachability-and-disposal/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-19-object-graphs-cloning-reachability-and-disposal/solutions.md
+  - Module 20 — Object-Model Architecture, Testing, and Independent Change:
+    - Chapter: 02-javascript-object-model-runtime-protocols/course-book/module-20-object-model-architecture-testing-and-change/index.md
+    - Workbook: 02-javascript-object-model-runtime-protocols/course-book/module-20-object-model-architecture-testing-and-change/workbook.md
+    - Reasoned solutions: 02-javascript-object-model-runtime-protocols/course-book/module-20-object-model-architecture-testing-and-change/solutions.md
+  - ObjectAtlas engineering guide: 02-javascript-object-model-runtime-protocols/course-book/capstone.md
+  - Final review: 02-javascript-object-model-runtime-protocols/course-book/final-review.md
+  - Final review solutions: 02-javascript-object-model-runtime-protocols/course-book/final-review-solutions.md
+  - Reference desk: 02-javascript-object-model-runtime-protocols/course-book/reference.md
+  - Independent laboratories:
+    - Laboratory system: 02-javascript-object-model-runtime-protocols/labs/README.md
+    - Laboratory 11 — Descriptor-Safe Settings: 02-javascript-object-model-runtime-protocols/labs/module-11-descriptor-safe-settings/README.md
+    - Laboratory 12 — Prototype-Based Policy Catalog: 02-javascript-object-model-runtime-protocols/labs/module-12-prototype-policy-catalog/README.md
+    - Laboratory 13 — Receiver-Safe Command Adapter: 02-javascript-object-model-runtime-protocols/labs/module-13-receiver-safe-command-adapter/README.md
+    - Laboratory 14 — Private Counter Bank: 02-javascript-object-model-runtime-protocols/labs/module-14-private-counter-bank/README.md
+    - Laboratory 15 — Capability-Composed Document: 02-javascript-object-model-runtime-protocols/labs/module-15-capability-composed-document/README.md
+    - Laboratory 16 — Protocol-Aware Value Object: 02-javascript-object-model-runtime-protocols/labs/module-16-protocol-aware-value-object/README.md
+    - Laboratory 17 — Hierarchy Walker: 02-javascript-object-model-runtime-protocols/labs/module-17-hierarchy-walker/README.md
+    - Laboratory 18 — Transactional Draft Proxy: 02-javascript-object-model-runtime-protocols/labs/module-18-transactional-draft-proxy/README.md
+    - Laboratory 19 — Graph Snapshot and Lease: 02-javascript-object-model-runtime-protocols/labs/module-19-graph-snapshot-and-lease/README.md
+    - Laboratory 20 — Object-Model Audit: 02-javascript-object-model-runtime-protocols/labs/module-20-object-model-audit/README.md
+  - Type-checker and runtime investigations: 02-javascript-object-model-runtime-protocols/compiler-labs/README.md
+  - ObjectAtlas implementation: 02-javascript-object-model-runtime-protocols/capstone/README.md
+- Course 3 — Advanced TypeScript and Library API Design:
+  - Course overview: 03-advanced-typescript-library-api-design/README.md
+  - Course-book start: 03-advanced-typescript-library-api-design/course-book/index.md
+  - Outcomes: 03-advanced-typescript-library-api-design/course-book/outcomes.md
+  - Ten-day plan: 03-advanced-typescript-library-api-design/course-book/study-plan.md
+  - Module 21 — Structural Typing, Assignability, and Public Shape:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-21-structural-typing-assignability-and-public-shape/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-21-structural-typing-assignability-and-public-shape/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-21-structural-typing-assignability-and-public-shape/solutions.md
+  - Module 22 — Generic Relationships, Inference, and Indexed Access:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-22-generic-relationships-inference-and-indexed-access/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-22-generic-relationships-inference-and-indexed-access/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-22-generic-relationships-inference-and-indexed-access/solutions.md
+  - Module 23 — Conditional Types, infer, and Type-Level Control Flow:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-23-conditional-types-infer-and-type-level-control-flow/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-23-conditional-types-infer-and-type-level-control-flow/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-23-conditional-types-infer-and-type-level-control-flow/solutions.md
+  - Module 24 — Mapped Types, Key Remapping, and Template-Literal Types:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-24-mapped-types-key-remapping-and-template-literals/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-24-mapped-types-key-remapping-and-template-literals/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-24-mapped-types-key-remapping-and-template-literals/solutions.md
+  - Module 25 — Variance, Function Types, and Callback Safety:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-25-variance-function-types-and-callback-safety/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-25-variance-function-types-and-callback-safety/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-25-variance-function-types-and-callback-safety/solutions.md
+  - Module 26 — Declaration Files, Declaration Emission, and Type Tests:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-26-declaration-files-emission-and-type-tests/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-26-declaration-files-emission-and-type-tests/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-26-declaration-files-emission-and-type-tests/solutions.md
+  - Module 27 — Node ESM Packages, Exports, and Consumer Contracts:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-27-node-esm-packages-exports-and-consumer-contracts/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-27-node-esm-packages-exports-and-consumer-contracts/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-27-node-esm-packages-exports-and-consumer-contracts/solutions.md
+  - Module 28 — Runtime Schemas, Static Inference, and Validation Algebra:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-28-runtime-schemas-static-inference-and-validation-algebra/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-28-runtime-schemas-static-inference-and-validation-algebra/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-28-runtime-schemas-static-inference-and-validation-algebra/solutions.md
+  - Module 29 — API Compatibility, Semantic Versioning, and Migration:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-29-api-compatibility-semver-and-migration/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-29-api-compatibility-semver-and-migration/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-29-api-compatibility-semver-and-migration/solutions.md
+  - Module 30 — Integrated Library Architecture and Independent Change:
+    - Chapter: 03-advanced-typescript-library-api-design/course-book/module-30-integrated-library-architecture-and-independent-change/index.md
+    - Workbook: 03-advanced-typescript-library-api-design/course-book/module-30-integrated-library-architecture-and-independent-change/workbook.md
+    - Reasoned solutions: 03-advanced-typescript-library-api-design/course-book/module-30-integrated-library-architecture-and-independent-change/solutions.md
+  - SchemaKit engineering guide: 03-advanced-typescript-library-api-design/course-book/capstone.md
+  - Final review: 03-advanced-typescript-library-api-design/course-book/final-review.md
+  - Final review solutions: 03-advanced-typescript-library-api-design/course-book/final-review-solutions.md
+  - Reference desk: 03-advanced-typescript-library-api-design/course-book/reference.md
+  - Laboratories:
+    - Laboratory system: 03-advanced-typescript-library-api-design/labs/README.md
+    - Laboratory 21 — Structural Contract Catalog: 03-advanced-typescript-library-api-design/labs/module-21-structural-contract-catalog/README.md
+    - Laboratory 22 — Typed Projection Engine: 03-advanced-typescript-library-api-design/labs/module-22-typed-projection-engine/README.md
+    - Laboratory 23 — Command Outcome Matrix: 03-advanced-typescript-library-api-design/labs/module-23-command-outcome-matrix/README.md
+    - Laboratory 24 — Typed Change Event Surface: 03-advanced-typescript-library-api-design/labs/module-24-typed-change-event-surface/README.md
+    - Laboratory 25 — Variance-Safe Event Router: 03-advanced-typescript-library-api-design/labs/module-25-variance-safe-event-router/README.md
+    - Laboratory 26 — Legacy Runtime Declaration Facade: 03-advanced-typescript-library-api-design/labs/module-26-legacy-runtime-declaration-facade/README.md
+    - Laboratory 27 — Encapsulated ESM Library Surface: 03-advanced-typescript-library-api-design/labs/module-27-encapsulated-esm-library-surface/README.md
+    - Laboratory 28 — Composable Decoder Library: 03-advanced-typescript-library-api-design/labs/module-28-composable-decoder-library/README.md
+    - Laboratory 29 — Evolvable Client SDK: 03-advanced-typescript-library-api-design/labs/module-29-evolvable-client-sdk/README.md
+    - Laboratory 30 — Typed Library Architecture Audit: 03-advanced-typescript-library-api-design/labs/module-30-typed-library-architecture-audit/README.md
+  - Investigations: 03-advanced-typescript-library-api-design/compiler-labs/README.md
+  - SchemaKit implementation: 03-advanced-typescript-library-api-design/capstone/README.md
+- Course 4 — Async Node.js and Event-Driven Architecture:
+  - Course start: 04-async-node-event-driven-architecture/README.md
+  - Course book: 04-async-node-event-driven-architecture/course-book/index.md
+  - Outcomes: 04-async-node-event-driven-architecture/course-book/outcomes.md
+  - Ten-day plan: 04-async-node-event-driven-architecture/course-book/study-plan.md
+  - Module 31 — Event Loop, Scheduling, Fairness, and Blocking:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-31-event-loop-scheduling-fairness-and-blocking/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-31-event-loop-scheduling-fairness-and-blocking/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-31-event-loop-scheduling-fairness-and-blocking/solutions.md
+  - Module 32 — Promises, Async Functions, and Task Ownership:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-32-promises-async-functions-and-task-ownership/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-32-promises-async-functions-and-task-ownership/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-32-promises-async-functions-and-task-ownership/solutions.md
+  - Module 33 — Cancellation, Abort Signals, Deadlines, and Time Budgets:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-33-cancellation-abort-signals-deadlines-and-time-budgets/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-33-cancellation-abort-signals-deadlines-and-time-budgets/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-33-cancellation-abort-signals-deadlines-and-time-budgets/solutions.md
+  - Module 34 — EventEmitter and Typed Event Contracts:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-34-event-emitter-and-typed-event-contracts/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-34-event-emitter-and-typed-event-contracts/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-34-event-emitter-and-typed-event-contracts/solutions.md
+  - Module 35 — Timers, Clocks, Rate Control, and Deterministic Time:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-35-timers-clocks-rate-control-and-deterministic-time/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-35-timers-clocks-rate-control-and-deterministic-time/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-35-timers-clocks-rate-control-and-deterministic-time/solutions.md
+  - Module 36 — Async Iterables, Generators, and Pull-Based Sequences:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-36-async-iterables-generators-and-pull-based-sequences/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-36-async-iterables-generators-and-pull-based-sequences/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-36-async-iterables-generators-and-pull-based-sequences/solutions.md
+  - Module 37 — Async Context, Correlation, and Diagnostic Boundaries:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-37-async-context-correlation-and-diagnostic-boundaries/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-37-async-context-correlation-and-diagnostic-boundaries/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-37-async-context-correlation-and-diagnostic-boundaries/solutions.md
+  - Module 38 — Task Supervision, Failure Policies, and Bounded Concurrency:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-38-task-supervision-failure-policies-and-bounded-concurrency/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-38-task-supervision-failure-policies-and-bounded-concurrency/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-38-task-supervision-failure-policies-and-bounded-concurrency/solutions.md
+  - Module 39 — Process Lifecycle, Signals, Cleanup, and Graceful Shutdown:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-39-process-lifecycle-signals-cleanup-and-graceful-shutdown/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-39-process-lifecycle-signals-cleanup-and-graceful-shutdown/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-39-process-lifecycle-signals-cleanup-and-graceful-shutdown/solutions.md
+  - Module 40 — Integrated Event-Driven Architecture and Independent Change:
+    - Chapter: 04-async-node-event-driven-architecture/course-book/module-40-integrated-event-driven-architecture-and-independent-change/index.md
+    - Workbook: 04-async-node-event-driven-architecture/course-book/module-40-integrated-event-driven-architecture-and-independent-change/workbook.md
+    - Reasoned solutions: 04-async-node-event-driven-architecture/course-book/module-40-integrated-event-driven-architecture-and-independent-change/solutions.md
+  - TaskHarbor engineering guide: 04-async-node-event-driven-architecture/course-book/capstone.md
+  - Final review: 04-async-node-event-driven-architecture/course-book/final-review.md
+  - Final review solutions: 04-async-node-event-driven-architecture/course-book/final-review-solutions.md
+  - Reference desk: 04-async-node-event-driven-architecture/course-book/reference.md
+  - Laboratories:
+    - Laboratory system: 04-async-node-event-driven-architecture/labs/README.md
+    - Laboratory 31 — Event Loop Observatory: 04-async-node-event-driven-architecture/labs/module-31-event-loop-observatory/README.md
+    - Laboratory 32 — Owned Promise Nursery: 04-async-node-event-driven-architecture/labs/module-32-owned-promise-nursery/README.md
+    - Laboratory 33 — Deadline Budget: 04-async-node-event-driven-architecture/labs/module-33-deadline-budget/README.md
+    - Laboratory 34 — Typed Event Hub: 04-async-node-event-driven-architecture/labs/module-34-typed-event-hub/README.md
+    - Laboratory 35 — Deterministic Scheduler: 04-async-node-event-driven-architecture/labs/module-35-deterministic-scheduler/README.md
+    - Laboratory 36 — Bounded Async Queue: 04-async-node-event-driven-architecture/labs/module-36-bounded-async-queue/README.md
+    - Laboratory 37 — Correlation Context: 04-async-node-event-driven-architecture/labs/module-37-correlation-context/README.md
+    - Laboratory 38 — Supervised Task Group: 04-async-node-event-driven-architecture/labs/module-38-supervised-task-group/README.md
+    - Laboratory 39 — Graceful Lifecycle Harness: 04-async-node-event-driven-architecture/labs/module-39-graceful-lifecycle-harness/README.md
+    - Laboratory 40 — Event-Driven Job Engine: 04-async-node-event-driven-architecture/labs/module-40-event-driven-job-engine/README.md
+  - Investigations: 04-async-node-event-driven-architecture/compiler-labs/README.md
+  - TaskHarbor implementation: 04-async-node-event-driven-architecture/capstone/README.md
+- Course 5 — Streams, Filesystems, and Data Pipeline Architecture:
+  - Course overview: 05-node-streams-filesystems-data-pipelines/README.md
+  - Course-book start: 05-node-streams-filesystems-data-pipelines/course-book/index.md
+  - Outcomes: 05-node-streams-filesystems-data-pipelines/course-book/outcomes.md
+  - Study plan: 05-node-streams-filesystems-data-pipelines/course-book/study-plan.md
+  - 'Module 41 — Binary Data: Buffer, Uint8Array, Encodings, and Memory Views':
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-41-binary-data-buffer-uint8array-encodings-and-memory-views/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-41-binary-data-buffer-uint8array-encodings-and-memory-views/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-41-binary-data-buffer-uint8array-encodings-and-memory-views/solutions.md
+  - 'Module 42 — Stream Contracts: Readable, Writable, Duplex, and Transform':
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-42-stream-contracts-readable-writable-duplex-and-transform/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-42-stream-contracts-readable-writable-duplex-and-transform/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-42-stream-contracts-readable-writable-duplex-and-transform/solutions.md
+  - Module 43 — Backpressure, Pipeline, Completion, and Failure:
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-43-backpressure-pipeline-completion-and-failure/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-43-backpressure-pipeline-completion-and-failure/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-43-backpressure-pipeline-completion-and-failure/solutions.md
+  - Module 44 — Async Iteration, Web Streams, and Adapter Boundaries:
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-44-async-iteration-web-streams-and-adapter-boundaries/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-44-async-iteration-web-streams-and-adapter-boundaries/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-44-async-iteration-web-streams-and-adapter-boundaries/solutions.md
+  - Module 45 — Files, File Handles, Paths, and Transactional Replacement:
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-45-files-file-handles-paths-and-transactional-replacement/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-45-files-file-handles-paths-and-transactional-replacement/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-45-files-file-handles-paths-and-transactional-replacement/solutions.md
+  - Module 46 — Incremental Text Decoding, Framing, and Bounded Parsers:
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-46-incremental-text-decoding-framing-and-bounded-parsers/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-46-incremental-text-decoding-framing-and-bounded-parsers/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-46-incremental-text-decoding-framing-and-bounded-parsers/solutions.md
+  - 'Module 47 — Transform Pipelines: Compression, Hashing, and Integrity':
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-47-transform-pipelines-compression-hashing-and-integrity/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-47-transform-pipelines-compression-hashing-and-integrity/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-47-transform-pipelines-compression-hashing-and-integrity/solutions.md
+  - Module 48 — Child Processes, Stdio, and Supervised Pipelines:
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-48-child-processes-stdio-and-supervised-pipelines/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-48-child-processes-stdio-and-supervised-pipelines/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-48-child-processes-stdio-and-supervised-pipelines/solutions.md
+  - Module 49 — Multi-Stage Dataflow, Fan-Out, and Commit Coordination:
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-49-multi-stage-dataflow-fan-out-and-commit-coordination/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-49-multi-stage-dataflow-fan-out-and-commit-coordination/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-49-multi-stage-dataflow-fan-out-and-commit-coordination/solutions.md
+  - Module 50 — Integrated Streaming Architecture, Testing, and Independent Change:
+    - Chapter: 05-node-streams-filesystems-data-pipelines/course-book/module-50-integrated-streaming-architecture-testing-and-independent-change/index.md
+    - Workbook: 05-node-streams-filesystems-data-pipelines/course-book/module-50-integrated-streaming-architecture-testing-and-independent-change/workbook.md
+    - Solutions: 05-node-streams-filesystems-data-pipelines/course-book/module-50-integrated-streaming-architecture-testing-and-independent-change/solutions.md
+  - FlowLedger engineering guide: 05-node-streams-filesystems-data-pipelines/course-book/capstone.md
+  - Final review: 05-node-streams-filesystems-data-pipelines/course-book/final-review.md
+  - Final review solutions: 05-node-streams-filesystems-data-pipelines/course-book/final-review-solutions.md
+  - Reference desk: 05-node-streams-filesystems-data-pipelines/course-book/reference.md
+  - Independent laboratories:
+    - Laboratory system: 05-node-streams-filesystems-data-pipelines/labs/README.md
+    - Laboratory 1 — Bounded Binary Envelope: 05-node-streams-filesystems-data-pipelines/labs/module-41-bounded-binary-envelope/README.md
+    - Laboratory 2 — Stream State Observatory: 05-node-streams-filesystems-data-pipelines/labs/module-42-stream-state-observatory/README.md
+    - Laboratory 3 — Backpressure Copy Engine: 05-node-streams-filesystems-data-pipelines/labs/module-43-backpressure-copy-engine/README.md
+    - Laboratory 4 — Async Record Window: 05-node-streams-filesystems-data-pipelines/labs/module-44-async-record-window/README.md
+    - Laboratory 5 — Transactional File Sink: 05-node-streams-filesystems-data-pipelines/labs/module-45-transactional-file-sink/README.md
+    - Laboratory 6 — Bounded NDJSON Decoder: 05-node-streams-filesystems-data-pipelines/labs/module-46-bounded-ndjson-decoder/README.md
+    - Laboratory 7 — Compressed Digest Pipeline: 05-node-streams-filesystems-data-pipelines/labs/module-47-compressed-digest-pipeline/README.md
+    - Laboratory 8 — Supervised Child Filter: 05-node-streams-filesystems-data-pipelines/labs/module-48-supervised-child-filter/README.md
+    - Laboratory 9 — Coordinated Fan-Out Writer: 05-node-streams-filesystems-data-pipelines/labs/module-49-coordinated-fan-out-writer/README.md
+    - Laboratory 10 — Streaming Architecture Audit: 05-node-streams-filesystems-data-pipelines/labs/module-50-streaming-architecture-audit/README.md
+  - Compiler and runtime investigations: 05-node-streams-filesystems-data-pipelines/compiler-labs/README.md
+  - FlowLedger implementation: 05-node-streams-filesystems-data-pipelines/capstone/README.md
+- Course 6 — Networking, HTTP, and Service Architecture:
+  - Course overview: 06-node-networking-http-service-architecture/README.md
+  - Course-book start: 06-node-networking-http-service-architecture/course-book/index.md
+  - Outcomes: 06-node-networking-http-service-architecture/course-book/outcomes.md
+  - Study plan: 06-node-networking-http-service-architecture/course-book/study-plan.md
+  - 'Module 51 — Network Boundaries: Addresses, DNS, Sockets, and Time':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-51-network-boundaries-addresses-dns-sockets-and-time/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-51-network-boundaries-addresses-dns-sockets-and-time/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-51-network-boundaries-addresses-dns-sockets-and-time/solutions.md
+  - 'Module 52 — TCP: Connection State, Framing, Half-Close, and Idle Policy':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-52-tcp-connection-state-framing-half-close-and-idle-policy/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-52-tcp-connection-state-framing-half-close-and-idle-policy/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-52-tcp-connection-state-framing-half-close-and-idle-policy/solutions.md
+  - 'Module 53 — UDP: Datagrams, Loss, Duplication, Reordering, and Correlation':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-53-udp-datagrams-loss-duplication-reordering-and-correlation/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-53-udp-datagrams-loss-duplication-reordering-and-correlation/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-53-udp-datagrams-loss-duplication-reordering-and-correlation/solutions.md
+  - 'Module 54 — HTTP/1.1: Messages, Methods, Headers, Bodies, and Connections':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-54-http1-messages-methods-headers-bodies-and-connections/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-54-http1-messages-methods-headers-bodies-and-connections/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-54-http1-messages-methods-headers-bodies-and-connections/solutions.md
+  - 'Module 55 — HTTP Application Boundaries: Routing, Validation, Errors, and Idempotency':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-55-http-application-boundaries-routing-validation-errors-and-idempotency/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-55-http-application-boundaries-routing-validation-errors-and-idempotency/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-55-http-application-boundaries-routing-validation-errors-and-idempotency/solutions.md
+  - 'Module 56 — HTTP Clients: Agents, Pooling, Deadlines, Redirects, and Retry':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-56-http-clients-agents-pooling-deadlines-redirects-and-retry/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-56-http-clients-agents-pooling-deadlines-redirects-and-retry/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-56-http-clients-agents-pooling-deadlines-redirects-and-retry/solutions.md
+  - 'Module 57 — TLS and HTTPS: Certificates, Trust, Identity, SNI, and ALPN':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-57-tls-and-https-certificates-trust-identity-sni-and-alpn/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-57-tls-and-https-certificates-trust-identity-sni-and-alpn/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-57-tls-and-https-certificates-trust-identity-sni-and-alpn/solutions.md
+  - 'Module 58 — HTTP/2: Sessions, Streams, Multiplexing, and Flow Control':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-58-http2-sessions-streams-multiplexing-and-flow-control/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-58-http2-sessions-streams-multiplexing-and-flow-control/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-58-http2-sessions-streams-multiplexing-and-flow-control/solutions.md
+  - 'Module 59 — Long-Lived HTTP: SSE, Heartbeats, Replay, and Slow Consumers':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-59-long-lived-http-sse-heartbeats-replay-and-slow-consumers/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-59-long-lived-http-sse-heartbeats-replay-and-slow-consumers/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-59-long-lived-http-sse-heartbeats-replay-and-slow-consumers/solutions.md
+  - 'Module 60 — Integrated Service Architecture: Admission, Overload, Shutdown, and Audit':
+    - Chapter: 06-node-networking-http-service-architecture/course-book/module-60-integrated-service-architecture-admission-overload-shutdown-and-audit/index.md
+    - Workbook: 06-node-networking-http-service-architecture/course-book/module-60-integrated-service-architecture-admission-overload-shutdown-and-audit/workbook.md
+    - Solutions: 06-node-networking-http-service-architecture/course-book/module-60-integrated-service-architecture-admission-overload-shutdown-and-audit/solutions.md
+  - ServiceWire engineering guide: 06-node-networking-http-service-architecture/course-book/capstone.md
+  - Final review: 06-node-networking-http-service-architecture/course-book/final-review.md
+  - Final review solutions: 06-node-networking-http-service-architecture/course-book/final-review-solutions.md
+  - Reference desk: 06-node-networking-http-service-architecture/course-book/reference.md
+  - Independent laboratories:
+    - Laboratory system: 06-node-networking-http-service-architecture/labs/README.md
+    - Laboratory 51 — Address Resolution Observatory: 06-node-networking-http-service-architecture/labs/module-51-address-resolution-observatory/README.md
+    - Laboratory 52 — Bounded TCP Frame Server: 06-node-networking-http-service-architecture/labs/module-52-bounded-tcp-frame-server/README.md
+    - Laboratory 53 — Reliable Datagram Protocol: 06-node-networking-http-service-architecture/labs/module-53-reliable-datagram-protocol/README.md
+    - Laboratory 54 — Strict HTTP Message Server: 06-node-networking-http-service-architecture/labs/module-54-strict-http-message-server/README.md
+    - Laboratory 55 — Typed HTTP Router: 06-node-networking-http-service-architecture/labs/module-55-typed-http-router/README.md
+    - Laboratory 56 — Deadline-Aware HTTP Client: 06-node-networking-http-service-architecture/labs/module-56-deadline-aware-http-client/README.md
+    - Laboratory 57 — Local TLS Identity Lab: 06-node-networking-http-service-architecture/labs/module-57-local-tls-identity-lab/README.md
+    - Laboratory 58 — Multiplexed HTTP/2 Service: 06-node-networking-http-service-architecture/labs/module-58-multiplexed-http2-service/README.md
+    - Laboratory 59 — Replayable SSE Channel: 06-node-networking-http-service-architecture/labs/module-59-replayable-sse-channel/README.md
+    - Laboratory 60 — Network Service Audit: 06-node-networking-http-service-architecture/labs/module-60-network-service-audit/README.md
+  - Compiler and runtime investigations: 06-node-networking-http-service-architecture/compiler-labs/README.md
+  - ServiceWire implementation: 06-node-networking-http-service-architecture/capstone/README.md
+exclude_docs: '**/node_modules/**
+
+  **/dist/**
+
+  **/site/**
+
+  **/starter/**
+
+  **/reference/**
+
+  **/compiler-labs/module-*/**
+
+  **/capstone/src/**
+
+  **/capstone/tests/**
+
+  '

@@ -1,0 +1,14 @@
+{
+  "candidateId": "baseline",
+  "eventType": "org.bijux.analysis.run.completed.v1",
+  "eventApiVersion": "1.0.0",
+  "expectedDecision": "accepted",
+  "gates": {
+    "contractValid": true,
+    "replaySafe": true,
+    "catalogComplete": true,
+    "securityValid": true,
+    "reliabilityReady": true
+  },
+  "rationale": "Published event profile 1.0 baseline."
+}

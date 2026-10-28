@@ -1,0 +1,3 @@
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.11", import: ["@key", "@external"])
+type AnalysisRun @key(fields: "id") { id: ID! @external, deliverySummary: DeliverySummary }
+type DeliverySummary { runId: ID!, delivered: Int!, pending: Int!, failed: Int!, stalenessSeconds: Int! }

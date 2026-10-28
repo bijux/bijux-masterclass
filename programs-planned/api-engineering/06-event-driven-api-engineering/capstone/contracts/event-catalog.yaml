@@ -1,0 +1,90 @@
+version: '1.0'
+entries:
+- name: StartAnalysis
+  eventType: com.bijux.analysis.command.start.v1
+  owner: urn:bijux:analysis-control
+  channel: analysis.commands.start.v1
+  schema: components/schemas/start-analysis-command.v1.schema.json
+  partitionKey: partitionkey
+  classification: internal
+  retentionDays: 90
+  replayPolicy: workflow-review
+  consumers:
+  - analysis-worker
+- name: AnalysisRunRequested
+  eventType: org.bijux.analysis.run.requested.v1
+  owner: urn:bijux:analysis-control
+  channel: analysis.events.run.lifecycle.v1
+  schema: components/schemas/analysis-run-requested.v1.schema.json
+  partitionKey: partitionkey
+  classification: internal
+  retentionDays: 90
+  replayPolicy: projection-safe
+  consumers:
+  - analytics
+  - audit
+  - notification
+- name: AnalysisRunStarted
+  eventType: org.bijux.analysis.run.started.v1
+  owner: urn:bijux:analysis-worker
+  channel: analysis.events.run.lifecycle.v1
+  schema: components/schemas/analysis-run-started.v1.schema.json
+  partitionKey: partitionkey
+  classification: internal
+  retentionDays: 90
+  replayPolicy: projection-safe
+  consumers:
+  - analytics
+  - audit
+  - notification
+- name: AnalysisRunProgressed
+  eventType: org.bijux.analysis.run.progressed.v1
+  owner: urn:bijux:analysis-worker
+  channel: analysis.events.run.lifecycle.v1
+  schema: components/schemas/analysis-run-progressed.v1.schema.json
+  partitionKey: partitionkey
+  classification: internal
+  retentionDays: 14
+  replayPolicy: projection-safe
+  consumers:
+  - analytics
+  - audit
+  - notification
+- name: AnalysisRunCompleted
+  eventType: org.bijux.analysis.run.completed.v1
+  owner: urn:bijux:analysis-worker
+  channel: analysis.events.run.lifecycle.v1
+  schema: components/schemas/analysis-run-completed.v1.schema.json
+  partitionKey: partitionkey
+  classification: internal
+  retentionDays: 90
+  replayPolicy: projection-safe
+  consumers:
+  - analytics
+  - audit
+  - notification
+- name: AnalysisRunFailed
+  eventType: org.bijux.analysis.run.failed.v1
+  owner: urn:bijux:analysis-worker
+  channel: analysis.events.run.lifecycle.v1
+  schema: components/schemas/analysis-run-failed.v1.schema.json
+  partitionKey: partitionkey
+  classification: internal
+  retentionDays: 90
+  replayPolicy: projection-safe
+  consumers:
+  - analytics
+  - audit
+  - notification
+- name: ArtifactPublished
+  eventType: org.bijux.analysis.artifact.published.v1
+  owner: urn:bijux:artifact-service
+  channel: analysis.events.artifact.v1
+  schema: components/schemas/artifact-published.v1.schema.json
+  partitionKey: partitionkey
+  classification: internal
+  retentionDays: 90
+  replayPolicy: projection-safe
+  consumers:
+  - artifact-index
+  - audit

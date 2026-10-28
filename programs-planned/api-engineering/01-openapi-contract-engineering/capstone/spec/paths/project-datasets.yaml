@@ -1,0 +1,90 @@
+parameters:
+- $ref: ../components/parameters/ProjectId.yaml
+get:
+  tags:
+  - Datasets
+  summary: List project datasets
+  description: Returns datasets for one owned project.
+  operationId: listProjectDatasets
+  security:
+  - OAuth2:
+    - datasets:read
+  - ApiKey: []
+  parameters:
+  - $ref: ../components/parameters/Limit.yaml
+  - $ref: ../components/parameters/Cursor.yaml
+  - $ref: ../components/parameters/DatasetStatusFilter.yaml
+  responses:
+    '200':
+      description: A cursor-paginated dataset page.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/DatasetPage.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml
+post:
+  tags:
+  - Datasets
+  summary: Register a dataset
+  description: Registers local-file metadata or an HTTPS remote object.
+  operationId: createDataset
+  security:
+  - OAuth2:
+    - datasets:write
+  - ApiKey: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/DatasetCreate.yaml
+        example:
+          name: reads
+          source:
+            kind: local-file
+            fileName: reads.csv
+            mediaType: text/csv
+  responses:
+    '201':
+      description: Dataset registered.
+      headers:
+        Location:
+          $ref: ../components/headers/Location.yaml
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Dataset.yaml
+          example:
+            id: dts_0001
+            projectId: prj_0001
+            ownerId: learner
+            name: reads
+            source:
+              kind: local-file
+              fileName: reads.csv
+              mediaType: text/csv
+            status: ready
+            contentLength: 19
+            checksumSha256: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+            createdAt: '2026-08-05T10:05:00Z'
+            updatedAt: '2026-08-05T10:06:00Z'
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

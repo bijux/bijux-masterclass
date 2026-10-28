@@ -1,0 +1,21 @@
+{
+  "specversion": "1.0",
+  "id": "00000000-0000-4000-8000-000000000006",
+  "source": "urn:bijux:analysis-worker",
+  "type": "org.bijux.analysis.run.failed.v1",
+  "subject": "analysis-runs/run-002",
+  "time": "2026-08-07T10:00:06Z",
+  "datacontenttype": "application/json",
+  "dataschema": "https://schemas.bijux.dev/events/analysis-run-failed.v1",
+  "tenantid": "tenant-a",
+  "correlationid": "00000000-0000-4000-8000-000000000100",
+  "causationid": "00000000-0000-4000-8000-000000000005",
+  "partitionkey": "run-002",
+  "traceparent": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
+  "data": {
+    "runId": "run-002",
+    "failureCode": "COMPUTE_FAILED",
+    "retryable": true,
+    "occurredAt": "2026-08-07T10:00:09Z"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "image": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "repository",
+        "digest"
+      ],
+      "type": "object"
+    },
+    "nameOverride": {
+      "type": "string"
+    },
+    "namespace": {
+      "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
+      "type": "string"
+    },
+    "replicas": {
+      "maximum": 20,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "resources": {
+      "type": "object"
+    },
+    "security": {
+      "type": "object"
+    },
+    "service": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "namespace",
+    "replicas",
+    "image",
+    "resources",
+    "service",
+    "security"
+  ],
+  "type": "object"
+}

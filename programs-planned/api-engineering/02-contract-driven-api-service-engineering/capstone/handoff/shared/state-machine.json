@@ -1,0 +1,54 @@
+{
+  "invariants": [
+    "queued progress is 0 and completed_at is null",
+    "running progress is between 1 and 99 and completed_at is null",
+    "completed progress is 100 and completed_at is non-null",
+    "terminal states never transition",
+    "artifacts are publicly visible only for completed runs"
+  ],
+  "states": [
+    "queued",
+    "running",
+    "completed",
+    "failed",
+    "canceled"
+  ],
+  "terminal": [
+    "completed",
+    "failed",
+    "canceled"
+  ],
+  "transitions": [
+    {
+      "command": "claim",
+      "from": "queued",
+      "to": "running"
+    },
+    {
+      "command": "cancel",
+      "from": "queued",
+      "to": "canceled"
+    },
+    {
+      "command": "complete",
+      "from": "running",
+      "to": "completed"
+    },
+    {
+      "command": "fail",
+      "from": "running",
+      "to": "failed"
+    },
+    {
+      "command": "request-cancel",
+      "from": "running",
+      "internal": "cancellation_requested_at is set",
+      "to": "running"
+    },
+    {
+      "command": "observe-cancel",
+      "from": "running",
+      "to": "canceled"
+    }
+  ]
+}

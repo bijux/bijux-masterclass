@@ -1,0 +1,57 @@
+[workspace]
+resolver = "3"
+members = [
+    "capstone",
+    "labs/module-01-one-shot-signal/solution",
+    "labs/module-02-task-nursery/solution",
+    "labs/module-03-bounded-length-codec/solution",
+    "labs/module-04-deadline-echo-service/solution",
+    "labs/module-05-negotiated-command-protocol/solution",
+    "labs/module-06-bounded-relay-broker/solution",
+    "labs/module-07-graceful-task-tree/solution",
+    "labs/module-08-hyper-health-surface/solution",
+    "labs/module-09-idempotent-retry-client/solution",
+    "labs/module-10-async-service-audit/solution",
+]
+exclude = [
+    "labs/module-01-one-shot-signal/starter",
+    "labs/module-02-task-nursery/starter",
+    "labs/module-03-bounded-length-codec/starter",
+    "labs/module-04-deadline-echo-service/starter",
+    "labs/module-05-negotiated-command-protocol/starter",
+    "labs/module-06-bounded-relay-broker/starter",
+    "labs/module-07-graceful-task-tree/starter",
+    "labs/module-08-hyper-health-surface/starter",
+    "labs/module-09-idempotent-retry-client/starter",
+    "labs/module-10-async-service-audit/starter",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+publish = false
+
+[workspace.dependencies]
+tokio = { version = "=1.53.1", features = ["rt-multi-thread", "macros", "net", "io-util", "sync", "time", "signal", "test-util"] }
+tokio-util = { version = "=0.7.19", features = ["codec", "rt"] }
+bytes = "=1.12.1"
+futures-util = { version = "=0.3.33", features = ["sink"] }
+hyper = { version = "=1.8.0", features = ["server", "http1"] }
+hyper-util = { version = "=0.1.20", features = ["server", "http1", "tokio"] }
+http-body-util = "=0.1.4"
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+missing_docs = "allow"
+
+[workspace.lints.clippy]
+correctness = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+undocumented_unsafe_blocks = "deny"
+missing_safety_doc = "deny"
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

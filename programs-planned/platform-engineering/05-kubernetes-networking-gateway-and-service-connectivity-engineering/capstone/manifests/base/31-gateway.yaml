@@ -1,0 +1,23 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: atlas-public
+  namespace: gateway-system
+spec:
+  gatewayClassName: atlas-gateway
+  listeners:
+    - name: https
+      hostname: atlas.example.invalid
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: atlas-public-tls
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              platform.bijux.dev/network-role: workload

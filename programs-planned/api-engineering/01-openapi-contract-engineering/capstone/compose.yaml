@@ -1,0 +1,12 @@
+services:
+  python-provider:
+    build: ./services/python-fastapi
+    ports:
+      - "8000:8000"
+  typescript-provider:
+    build: ./services/typescript-fastify
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+    ports:
+      - "3000:3000"

@@ -1,0 +1,10 @@
+{
+  "evidence_class": "structural-and-semantic",
+  "synchronous_edges": 4,
+  "asynchronous_edges": 2,
+  "cycles": [],
+  "public_sync_depth": 2,
+  "maximum_public_sync_depth": 2,
+  "forbidden_edges_present": false,
+  "status": "pass"
+}

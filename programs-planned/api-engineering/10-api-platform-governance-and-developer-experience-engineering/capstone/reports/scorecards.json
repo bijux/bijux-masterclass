@@ -1,0 +1,117 @@
+{
+  "scorecards": [
+    {
+      "blockers": [],
+      "dimensions": {
+        "compatibility": "pass",
+        "documentation": "pass",
+        "ownership": "pass",
+        "performance": "pass",
+        "reliability": "pass",
+        "sandbox": "pass",
+        "security": "pass",
+        "support": "pass"
+      },
+      "entityRef": "api:default/analysis-events",
+      "reviews": [],
+      "status": "ready"
+    },
+    {
+      "blockers": [],
+      "dimensions": {
+        "compatibility": "pass",
+        "documentation": "pass",
+        "ownership": "pass",
+        "performance": "pass",
+        "reliability": "pass",
+        "sandbox": "pass",
+        "security": "pass",
+        "support": "pass"
+      },
+      "entityRef": "api:default/analysis-graph",
+      "reviews": [],
+      "status": "ready"
+    },
+    {
+      "blockers": [],
+      "dimensions": {
+        "compatibility": "pass",
+        "documentation": "pass",
+        "ownership": "pass",
+        "performance": "pass",
+        "reliability": "pass",
+        "sandbox": "pass",
+        "security": "pass",
+        "support": "pass"
+      },
+      "entityRef": "api:default/analysis-http",
+      "reviews": [],
+      "status": "ready"
+    },
+    {
+      "blockers": [],
+      "dimensions": {
+        "compatibility": "pass",
+        "documentation": "pass",
+        "ownership": "pass",
+        "performance": "pass",
+        "reliability": "pass",
+        "sandbox": "pass",
+        "security": "pass",
+        "support": "pass"
+      },
+      "entityRef": "api:default/analysis-rpc",
+      "reviews": [],
+      "status": "ready"
+    },
+    {
+      "blockers": [],
+      "dimensions": {
+        "compatibility": "pass",
+        "documentation": "pass",
+        "ownership": "pass",
+        "performance": "pass",
+        "reliability": "pass",
+        "sandbox": "pass",
+        "security": "pass",
+        "support": "pass"
+      },
+      "entityRef": "api:default/artifact-http",
+      "reviews": [],
+      "status": "ready"
+    },
+    {
+      "blockers": [],
+      "dimensions": {
+        "compatibility": "pass",
+        "documentation": "pass",
+        "ownership": "pass",
+        "performance": "pass",
+        "reliability": "pass",
+        "sandbox": "pass",
+        "security": "pass",
+        "support": "pass"
+      },
+      "entityRef": "api:default/notification-http",
+      "reviews": [],
+      "status": "ready"
+    },
+    {
+      "blockers": [],
+      "dimensions": {
+        "compatibility": "pass",
+        "documentation": "pass",
+        "ownership": "pass",
+        "performance": "pass",
+        "reliability": "pass",
+        "sandbox": "pass",
+        "security": "pass",
+        "support": "pass"
+      },
+      "entityRef": "api:default/platform-catalog",
+      "reviews": [],
+      "status": "ready"
+    }
+  ],
+  "version": "1.0"
+}

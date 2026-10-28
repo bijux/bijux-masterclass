@@ -1,0 +1,7 @@
+apiVersion: v2
+name: atlas
+version: 1.0.0
+appVersion: "1.7.0"
+description: Atlas workload chart used to study chart API design and upgrade semantics.
+type: application
+kubeVersion: ">=1.31.0-0"

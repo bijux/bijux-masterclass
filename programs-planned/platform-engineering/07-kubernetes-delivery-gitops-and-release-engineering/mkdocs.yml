@@ -1,0 +1,139 @@
+site_name: "Platform Engineering Course 7 \u2014 Kubernetes Delivery, GitOps, and Release Engineering"
+docs_dir: course-book
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
+nav:
+- Home: index.md
+- Start here: start-here.md
+- Study plan: study-plan.md
+- Capstone: capstone.md
+- Evidence model: evidence-model.md
+- Language strategy: language-strategy.md
+- Standards: standards.md
+- Glossary: glossary.md
+- "Orientation \u2014 predecessor lock and delivery laboratory":
+  - Chapter: module-00-orientation/index.md
+  - Laboratory: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- 1. Delivery systems, GitOps authority, and reconciliation:
+  - Chapter: module-01-delivery-systems-gitops-authority-and-reconciliation/index.md
+  - Exercises: module-01-delivery-systems-gitops-authority-and-reconciliation/exercises.md
+  - Worked answers: module-01-delivery-systems-gitops-authority-and-reconciliation/exercise-answers.md
+  - Laboratory: module-01-delivery-systems-gitops-authority-and-reconciliation/lab.md
+  - Checkpoint: module-01-delivery-systems-gitops-authority-and-reconciliation/checkpoint.md
+- 2. Kubernetes resource model, Kustomize, and render integrity:
+  - Chapter: module-02-kubernetes-resource-model-kustomize-and-render-integrity/index.md
+  - Exercises: module-02-kubernetes-resource-model-kustomize-and-render-integrity/exercises.md
+  - Worked answers: module-02-kubernetes-resource-model-kustomize-and-render-integrity/exercise-answers.md
+  - Laboratory: module-02-kubernetes-resource-model-kustomize-and-render-integrity/lab.md
+  - Checkpoint: module-02-kubernetes-resource-model-kustomize-and-render-integrity/checkpoint.md
+- 3. Helm chart engineering, packaging, and upgrade semantics:
+  - Chapter: module-03-helm-chart-engineering-packaging-and-upgrade-semantics/index.md
+  - Exercises: module-03-helm-chart-engineering-packaging-and-upgrade-semantics/exercises.md
+  - Worked answers: module-03-helm-chart-engineering-packaging-and-upgrade-semantics/exercise-answers.md
+  - Laboratory: module-03-helm-chart-engineering-packaging-and-upgrade-semantics/lab.md
+  - Checkpoint: module-03-helm-chart-engineering-packaging-and-upgrade-semantics/checkpoint.md
+- 4. Repository topology, artifact promotion, and environment lineage:
+  - Chapter: module-04-repository-topology-artifact-promotion-and-environment-lineage/index.md
+  - Exercises: module-04-repository-topology-artifact-promotion-and-environment-lineage/exercises.md
+  - Worked answers: module-04-repository-topology-artifact-promotion-and-environment-lineage/exercise-answers.md
+  - Laboratory: module-04-repository-topology-artifact-promotion-and-environment-lineage/lab.md
+  - Checkpoint: module-04-repository-topology-artifact-promotion-and-environment-lineage/checkpoint.md
+- 5. Argo CD application reconciliation, health, and prune:
+  - Chapter: module-05-argo-cd-application-reconciliation-health-and-prune/index.md
+  - Exercises: module-05-argo-cd-application-reconciliation-health-and-prune/exercises.md
+  - Worked answers: module-05-argo-cd-application-reconciliation-health-and-prune/exercise-answers.md
+  - Laboratory: module-05-argo-cd-application-reconciliation-health-and-prune/lab.md
+  - Checkpoint: module-05-argo-cd-application-reconciliation-health-and-prune/checkpoint.md
+- 6. Flux controller composition, sources, and image automation:
+  - Chapter: module-06-flux-controller-composition-sources-and-image-automation/index.md
+  - Exercises: module-06-flux-controller-composition-sources-and-image-automation/exercises.md
+  - Worked answers: module-06-flux-controller-composition-sources-and-image-automation/exercise-answers.md
+  - Laboratory: module-06-flux-controller-composition-sources-and-image-automation/lab.md
+  - Checkpoint: module-06-flux-controller-composition-sources-and-image-automation/checkpoint.md
+- 7. Secrets, credentials, artifact trust, and policy gates:
+  - Chapter: module-07-secrets-credentials-artifact-trust-and-policy-gates/index.md
+  - Exercises: module-07-secrets-credentials-artifact-trust-and-policy-gates/exercises.md
+  - Worked answers: module-07-secrets-credentials-artifact-trust-and-policy-gates/exercise-answers.md
+  - Laboratory: module-07-secrets-credentials-artifact-trust-and-policy-gates/lab.md
+  - Checkpoint: module-07-secrets-credentials-artifact-trust-and-policy-gates/checkpoint.md
+- 8. Progressive delivery, analysis, rollback, and data compatibility:
+  - Chapter: module-08-progressive-delivery-analysis-rollback-and-data-compatibility/index.md
+  - Exercises: module-08-progressive-delivery-analysis-rollback-and-data-compatibility/exercises.md
+  - Worked answers: module-08-progressive-delivery-analysis-rollback-and-data-compatibility/exercise-answers.md
+  - Laboratory: module-08-progressive-delivery-analysis-rollback-and-data-compatibility/lab.md
+  - Checkpoint: module-08-progressive-delivery-analysis-rollback-and-data-compatibility/checkpoint.md
+- 9. Multi-cluster fleet, bootstrap, controller lifecycle, and recovery:
+  - Chapter: module-09-multi-cluster-fleet-bootstrap-controller-lifecycle-and-recovery/index.md
+  - Exercises: module-09-multi-cluster-fleet-bootstrap-controller-lifecycle-and-recovery/exercises.md
+  - Worked answers: module-09-multi-cluster-fleet-bootstrap-controller-lifecycle-and-recovery/exercise-answers.md
+  - Laboratory: module-09-multi-cluster-fleet-bootstrap-controller-lifecycle-and-recovery/lab.md
+  - Checkpoint: module-09-multi-cluster-fleet-bootstrap-controller-lifecycle-and-recovery/checkpoint.md
+- 10. Release operations, incidents, final defense, and security handoff:
+  - Chapter: module-10-release-operations-incidents-final-defense-and-security-handoff/index.md
+  - Exercises: module-10-release-operations-incidents-final-defense-and-security-handoff/exercises.md
+  - Worked answers: module-10-release-operations-incidents-final-defense-and-security-handoff/exercise-answers.md
+  - Laboratory: module-10-release-operations-incidents-final-defense-and-security-handoff/lab.md
+  - Checkpoint: module-10-release-operations-incidents-final-defense-and-security-handoff/checkpoint.md
+- Guides:
+  - Argo Cd Lane: guides/argo-cd-lane.md
+  - Fleet Promotion Review: guides/fleet-promotion-review.md
+  - Flux Lane: guides/flux-lane.md
+  - Helm Chart Review: guides/helm-chart-review.md
+  - Incident Recovery: guides/incident-recovery.md
+  - Kustomize Review: guides/kustomize-review.md
+  - Local Git Laboratory: guides/local-git-laboratory.md
+  - Native Cluster Lane: guides/native-cluster-lane.md
+  - Progressive Delivery Review: guides/progressive-delivery-review.md
+  - Secret Delivery Review: guides/secret-delivery-review.md
+- Reference:
+  - Argo Cd Object Map: reference/argo-cd-object-map.md
+  - Delivery State Model: reference/delivery-state-model.md
+  - Fleet Failure Signatures: reference/fleet-failure-signatures.md
+  - Flux Controller Map: reference/flux-controller-map.md
+  - Gitops Principles Map: reference/gitops-principles-map.md
+  - Helm Chart Api Map: reference/helm-chart-api-map.md
+  - Krm Identity And Canonicalization: reference/krm-identity-and-canonicalization.md
+  - Patch Semantics: reference/patch-semantics.md
+  - Progressive Delivery Math: reference/progressive-delivery-math.md
+  - Promotion Evidence Schema: reference/promotion-evidence-schema.md
+  - Prune And Inventory: reference/prune-and-inventory.md
+  - Repository Topology Patterns: reference/repository-topology-patterns.md
+  - Rollback Boundary Atlas: reference/rollback-boundary-atlas.md
+  - Secret Strategy Matrix: reference/secret-strategy-matrix.md
+  - Sync Health Journey Data: reference/sync-health-journey-data.md
+  - Tool Version Evidence Matrix: reference/tool-version-evidence-matrix.md
+- Incident casebook:
+  - Case 01 Gitops Pruned Recovery: casebook/case-01-gitops-pruned-recovery.md
+  - Case 02 Tag Moved After Staging: casebook/case-02-tag-moved-after-staging.md
+  - Case 03 Healthy Wrong Data: casebook/case-03-healthy-wrong-data.md
+  - Case 04 Secret Synced Workload Stale: casebook/case-04-secret-synced-workload-stale.md
+  - Case 05 Canary Average Lied: casebook/case-05-canary-average-lied.md
+  - Case 06 Bootstrap During Source Outage: casebook/case-06-bootstrap-during-source-outage.md
+- Capstone manual:
+  - Architecture: capstone/architecture.md
+  - Evidence Dossier: capstone/evidence-dossier.md
+  - Implementation Map: capstone/implementation-map.md
+  - Release Process: capstone/release-process.md
+  - Repository Layout: capstone/repository-layout.md
+- Assessment:
+  - Final Defense: assessment/final-defense.md
+  - Rubric: assessment/rubric.md
+- Instructor:
+  - Facilitation Guide: instructor/facilitation-guide.md
+  - Planted Defect Map: instructor/planted-defect-map.md
+  - Review Questions: instructor/review-questions.md

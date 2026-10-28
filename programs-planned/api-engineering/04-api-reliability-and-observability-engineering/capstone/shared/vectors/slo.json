@@ -1,0 +1,32 @@
+{
+  "cases": [
+    {
+      "burnRate": 0.0,
+      "good": 1000,
+      "id": "slo-perfect",
+      "objective": 0.999,
+      "total": 1000
+    },
+    {
+      "burnRate": 1.0,
+      "good": 999,
+      "id": "slo-one-bad-per-thousand",
+      "objective": 0.999,
+      "total": 1000
+    },
+    {
+      "burnRate": 3.0,
+      "good": 970,
+      "id": "slo-thirty-bad",
+      "objective": 0.99,
+      "total": 1000
+    },
+    {
+      "burnRate": null,
+      "good": 0,
+      "id": "slo-no-traffic",
+      "objective": 0.999,
+      "total": 0
+    }
+  ]
+}

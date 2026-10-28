@@ -1,0 +1,60 @@
+parameters:
+- $ref: ../components/parameters/DatasetId.yaml
+post:
+  tags:
+  - Datasets
+  summary: Upload local dataset content
+  description: Accepts one file part up to 1 MiB for a local-file dataset.
+  operationId: uploadDatasetContent
+  security:
+  - OAuth2:
+    - datasets:write
+  - ApiKey: []
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          additionalProperties: false
+          required:
+          - file
+          properties:
+            file:
+              type: string
+              format: binary
+            description:
+              type: string
+              maxLength: 200
+        encoding:
+          file:
+            contentType: text/csv, application/json, application/octet-stream
+  responses:
+    '201':
+      description: Content stored in the in-memory training service.
+      headers:
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/UploadReceipt.yaml
+          example:
+            datasetId: dts_0001
+            contentLength: 19
+            checksumSha256: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+            uploadedAt: '2026-08-05T10:06:00Z'
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '404':
+      $ref: ../components/responses/NotFoundProblem.yaml
+    '409':
+      $ref: ../components/responses/ConflictProblem.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLargeProblem.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaTypeProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

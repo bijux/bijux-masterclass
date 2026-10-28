@@ -1,0 +1,10 @@
+{
+  "defect": "root filesystem is writable",
+  "expectedDecision": "rejected",
+  "expectedGate": "runtime-profile-proof",
+  "expectedProof": "runtime-profile-proof",
+  "id": "C3-DEFECT-005",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "The runtime permits writes outside the declared temporary and durable mounts.",
+  "title": "Writable image root"
+}

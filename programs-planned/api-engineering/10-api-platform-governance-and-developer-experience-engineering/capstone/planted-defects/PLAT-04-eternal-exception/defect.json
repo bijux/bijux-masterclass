@@ -1,0 +1,5 @@
+{
+  "defect": "An exception omits expiry and compensating control",
+  "expectedRejectingProof": "policy-proof",
+  "id": "PLAT-04-eternal-exception"
+}

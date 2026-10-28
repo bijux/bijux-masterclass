@@ -1,0 +1,18 @@
+{
+  "cases": [
+    {
+      "expected": "publish",
+      "hasDigest": true,
+      "hasProvenance": true,
+      "hasSbom": true,
+      "name": "complete publication"
+    },
+    {
+      "error": "incomplete-publication",
+      "hasDigest": true,
+      "hasProvenance": false,
+      "hasSbom": true,
+      "name": "missing provenance"
+    }
+  ]
+}

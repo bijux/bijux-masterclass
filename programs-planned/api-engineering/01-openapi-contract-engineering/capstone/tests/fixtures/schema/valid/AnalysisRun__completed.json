@@ -1,0 +1,18 @@
+{
+  "id": "run_0001",
+  "projectId": "prj_0001",
+  "datasetId": "dts_0001",
+  "ownerId": "learner",
+  "status": "completed",
+  "parameters": {
+    "algorithm": "quality-summary",
+    "priority": "normal"
+  },
+  "progress": 100,
+  "createdAt": "2026-08-05T10:00:00Z",
+  "updatedAt": "2026-08-05T10:00:00Z",
+  "completedAt": "2026-08-05T10:02:00Z",
+  "artifactIds": [
+    "art_0001"
+  ]
+}

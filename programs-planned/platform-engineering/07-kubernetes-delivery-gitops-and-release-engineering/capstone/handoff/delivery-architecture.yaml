@@ -1,0 +1,22 @@
+authorities:
+- name: application-team
+  owns:
+  - source
+  - tests
+- name: build-system
+  owns:
+  - immutable-artifacts
+  - provenance
+- name: environment-owner
+  owns:
+  - desired-revision
+  - promotion-approval
+- name: gitops-controller
+  owns:
+  - selected-kubernetes-fields
+  - inventory
+- name: data-owner
+  owns:
+  - retirement
+  - restore
+  - writer-cutover

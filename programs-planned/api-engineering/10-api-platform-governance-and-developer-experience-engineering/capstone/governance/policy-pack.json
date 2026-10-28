@@ -1,0 +1,170 @@
+{
+  "rules": [
+    {
+      "evidence": "catalog",
+      "id": "CAT-001",
+      "scope": [
+        "Component",
+        "API",
+        "Resource",
+        "System"
+      ],
+      "severity": "blocker",
+      "title": "Every published entity has an accountable owner"
+    },
+    {
+      "evidence": "catalog",
+      "id": "CAT-002",
+      "scope": [
+        "API"
+      ],
+      "severity": "blocker",
+      "title": "Every API belongs to one system"
+    },
+    {
+      "evidence": "catalog-relations",
+      "id": "CAT-003",
+      "scope": [
+        "API"
+      ],
+      "severity": "blocker",
+      "title": "Every API is implemented by at least one component"
+    },
+    {
+      "evidence": "registry",
+      "id": "REG-001",
+      "scope": [
+        "API"
+      ],
+      "severity": "blocker",
+      "title": "Published releases are immutable and digest-addressed"
+    },
+    {
+      "evidence": "compatibility",
+      "id": "REG-002",
+      "scope": [
+        "API"
+      ],
+      "severity": "blocker",
+      "title": "Every release carries protocol-appropriate compatibility evidence"
+    },
+    {
+      "evidence": "documentation",
+      "id": "DOC-001",
+      "scope": [
+        "API"
+      ],
+      "severity": "major",
+      "title": "Active APIs publish overview, quickstart, task guide, and reference"
+    },
+    {
+      "evidence": "examples",
+      "id": "DOC-002",
+      "scope": [
+        "API"
+      ],
+      "severity": "major",
+      "title": "Examples are executable and version-bound"
+    },
+    {
+      "evidence": "security-profile",
+      "id": "SEC-001",
+      "scope": [
+        "API"
+      ],
+      "severity": "blocker",
+      "title": "Active APIs link current security evidence"
+    },
+    {
+      "evidence": "reliability-profile",
+      "id": "REL-001",
+      "scope": [
+        "API"
+      ],
+      "severity": "blocker",
+      "title": "Active APIs link reliability objectives and runbooks"
+    },
+    {
+      "evidence": "performance-profile",
+      "id": "PERF-001",
+      "scope": [
+        "API"
+      ],
+      "severity": "major",
+      "title": "Active APIs link representative performance evidence"
+    },
+    {
+      "evidence": "lifecycle",
+      "id": "LFC-001",
+      "scope": [
+        "API"
+      ],
+      "severity": "blocker",
+      "title": "Deprecation requires consumer inventory and migration guide"
+    },
+    {
+      "evidence": "consumer-inventory",
+      "id": "LFC-002",
+      "scope": [
+        "API"
+      ],
+      "severity": "blocker",
+      "title": "Retirement requires zero unapproved active consumers"
+    },
+    {
+      "evidence": "artifact-publication",
+      "id": "SDK-001",
+      "scope": [
+        "SDK"
+      ],
+      "severity": "blocker",
+      "title": "Published SDK artifacts include digest, SBOM, and provenance"
+    },
+    {
+      "evidence": "template",
+      "id": "TPL-001",
+      "scope": [
+        "Template"
+      ],
+      "severity": "major",
+      "title": "Golden paths emit ownership, docs, tests, and policy hooks"
+    },
+    {
+      "evidence": "exception-register",
+      "id": "EXC-001",
+      "scope": [
+        "Exception"
+      ],
+      "severity": "blocker",
+      "title": "Every exception has owner, scope, reason, compensating control, and expiry"
+    },
+    {
+      "evidence": "runtime-sync",
+      "id": "RUN-001",
+      "scope": [
+        "RuntimeRoute"
+      ],
+      "severity": "blocker",
+      "title": "Gateway state is derived from approved releases and contains no domain authorization"
+    },
+    {
+      "evidence": "sandbox",
+      "id": "DX-001",
+      "scope": [
+        "API"
+      ],
+      "severity": "major",
+      "title": "Active APIs provide an isolated non-production onboarding path"
+    },
+    {
+      "evidence": "support",
+      "id": "DX-002",
+      "scope": [
+        "API"
+      ],
+      "severity": "major",
+      "title": "Support ownership and escalation route are discoverable"
+    }
+  ],
+  "version": "1.0"
+}

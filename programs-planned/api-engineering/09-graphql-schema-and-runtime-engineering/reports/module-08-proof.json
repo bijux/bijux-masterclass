@@ -1,0 +1,13 @@
+{
+  "authoritative_non_null_bubbled": true,
+  "nullable_remote_failure": {
+    "code": "DOWNSTREAM_UNAVAILABLE",
+    "path": [
+      "analysisRun",
+      "artifacts"
+    ],
+    "value": null
+  },
+  "silent_empty_list": false,
+  "status": "pass"
+}

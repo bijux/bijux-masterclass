@@ -1,0 +1,164 @@
+{
+  "ociVersion": "1.3.0",
+  "root": {
+    "path": "rootfs",
+    "readonly": true
+  },
+  "process": {
+    "terminal": false,
+    "user": {
+      "uid": 65532,
+      "gid": 65532
+    },
+    "args": [
+      "/opt/atlas/bin/atlas-edge"
+    ],
+    "env": [
+      "PATH=/usr/local/bin:/usr/bin:/bin",
+      "PYTHONPATH=/opt/atlas",
+      "PYTHONUNBUFFERED=1"
+    ],
+    "cwd": "/opt/atlas",
+    "noNewPrivileges": true,
+    "capabilities": {
+      "bounding": [],
+      "effective": [],
+      "permitted": [],
+      "inheritable": [],
+      "ambient": []
+    },
+    "rlimits": [
+      {
+        "type": "RLIMIT_NOFILE",
+        "hard": 4096,
+        "soft": 1024
+      }
+    ]
+  },
+  "mounts": [
+    {
+      "destination": "/proc",
+      "type": "proc",
+      "source": "proc",
+      "options": [
+        "nosuid",
+        "noexec",
+        "nodev"
+      ]
+    },
+    {
+      "destination": "/dev",
+      "type": "tmpfs",
+      "source": "tmpfs",
+      "options": [
+        "nosuid",
+        "strictatime",
+        "mode=755",
+        "size=65536k"
+      ]
+    },
+    {
+      "destination": "/run/atlas",
+      "type": "tmpfs",
+      "source": "tmpfs",
+      "options": [
+        "nosuid",
+        "nodev",
+        "noexec",
+        "mode=0750",
+        "size=16m"
+      ]
+    }
+  ],
+  "linux": {
+    "namespaces": [
+      {
+        "type": "pid"
+      },
+      {
+        "type": "mount"
+      },
+      {
+        "type": "network"
+      },
+      {
+        "type": "ipc"
+      },
+      {
+        "type": "uts"
+      },
+      {
+        "type": "cgroup"
+      }
+    ],
+    "resources": {
+      "memory": {
+        "limit": 134217728
+      },
+      "pids": {
+        "limit": 96
+      },
+      "cpu": {
+        "quota": 25000,
+        "period": 100000
+      }
+    },
+    "seccomp": {
+      "defaultAction": "SCMP_ACT_ERRNO",
+      "defaultErrnoRet": 1,
+      "architectures": [
+        "SCMP_ARCH_X86_64",
+        "SCMP_ARCH_AARCH64"
+      ],
+      "syscalls": [
+        {
+          "names": [
+            "read",
+            "write",
+            "close",
+            "futex",
+            "clock_gettime",
+            "nanosleep",
+            "epoll_wait",
+            "epoll_ctl",
+            "socket",
+            "bind",
+            "listen",
+            "accept4",
+            "connect",
+            "recvfrom",
+            "sendto",
+            "getsockname",
+            "getpeername",
+            "setsockopt",
+            "getsockopt",
+            "openat",
+            "newfstatat",
+            "fstat",
+            "lseek",
+            "mmap",
+            "mprotect",
+            "munmap",
+            "brk",
+            "rt_sigaction",
+            "rt_sigprocmask",
+            "rt_sigreturn",
+            "getpid",
+            "gettid",
+            "getrandom",
+            "prlimit64",
+            "readlinkat",
+            "statx",
+            "ioctl",
+            "exit",
+            "exit_group"
+          ],
+          "action": "SCMP_ACT_ALLOW"
+        }
+      ]
+    }
+  },
+  "annotations": {
+    "dev.bijux.atlas.profile": "edge-runtime-1.0"
+  }
+}

@@ -1,0 +1,55 @@
+assets:
+- id: A-01
+  name: access credentials
+  properties:
+  - confidentiality
+  - authenticity
+- id: A-02
+  name: projects and datasets
+  properties:
+  - confidentiality
+  - integrity
+  - availability
+- id: A-03
+  name: analysis runs and state
+  properties:
+  - integrity
+  - availability
+- id: A-04
+  name: artifact content
+  properties:
+  - confidentiality
+  - integrity
+  - availability
+- id: A-05
+  name: webhook secrets and deliveries
+  properties:
+  - confidentiality
+  - authenticity
+  - integrity
+- id: A-06
+  name: private signing and pepper material
+  properties:
+  - confidentiality
+  - integrity
+- id: A-07
+  name: audit and incident evidence
+  properties:
+  - integrity
+  - availability
+  - privacy
+- id: A-08
+  name: service capacity
+  properties:
+  - availability
+  - fairness
+- id: A-09
+  name: database and filesystem boundaries
+  properties:
+  - integrity
+  - confidentiality
+- id: A-10
+  name: software supply chain
+  properties:
+  - integrity
+  - provenance

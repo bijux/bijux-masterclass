@@ -1,0 +1,14 @@
+{
+  "expected": 1418,
+  "layers": [
+    {
+      "bytes": 50,
+      "name": "vxlan"
+    },
+    {
+      "bytes": 32,
+      "name": "encryption"
+    }
+  ],
+  "underlay": 1500
+}

@@ -1,0 +1,75 @@
+type: object
+additionalProperties: false
+required:
+- id
+- projectId
+- ownerId
+- name
+- source
+- status
+- contentLength
+- createdAt
+- updatedAt
+properties:
+  id:
+    type: string
+    pattern: ^dts_[0-9]{4,18}$
+    readOnly: true
+  projectId:
+    type: string
+    pattern: ^prj_[0-9]{4,18}$
+    readOnly: true
+  ownerId:
+    type: string
+    pattern: ^[a-z][a-z0-9-]{2,31}$
+    readOnly: true
+  name:
+    type: string
+    minLength: 1
+    maxLength: 100
+  source:
+    oneOf:
+    - $ref: ./LocalFileSource.yaml
+    - $ref: ./RemoteObjectSource.yaml
+    discriminator:
+      propertyName: kind
+  status:
+    type: string
+    enum:
+    - awaiting-upload
+    - ready
+    - deleted
+  contentLength:
+    type:
+    - integer
+    - 'null'
+    minimum: 0
+    readOnly: true
+  checksumSha256:
+    type:
+    - string
+    - 'null'
+    pattern: ^[a-f0-9]{64}$
+    readOnly: true
+  createdAt:
+    type: string
+    format: date-time
+    readOnly: true
+  updatedAt:
+    type: string
+    format: date-time
+    readOnly: true
+examples:
+- id: dts_0001
+  projectId: prj_0001
+  ownerId: learner
+  name: reads
+  source:
+    kind: local-file
+    fileName: reads.csv
+    mediaType: text/csv
+  status: ready
+  contentLength: 19
+  checksumSha256: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  createdAt: '2026-08-05T10:05:00Z'
+  updatedAt: '2026-08-05T10:06:00Z'

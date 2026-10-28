@@ -1,0 +1,1 @@
+trait P{fn ok(&self)->bool;}struct V;impl P for V{fn ok(&self)->bool{true}}fn decode<T:From<u8>>(x:u8)->T{T::from(x)}fn main(){let p:Box<dyn P>=Box::new(V);assert!(p.ok());assert_eq!(decode::<u16>(2),2);}

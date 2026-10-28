@@ -1,0 +1,3 @@
+import assert from 'node:assert/strict'; import test from 'node:test'; import { parseCommand } from '../src/index.js';
+test('parses typed commands and JSON values',()=>{assert.deepEqual(parseCommand(['add','a','folder','A','--parent','p']),{kind:'add',id:'a',nodeKind:'folder',label:'A',parentId:'p'});assert.deepEqual(parseCommand(['set','a','n','1']),{kind:'set',id:'a',key:'n',value:1});assert.deepEqual(parseCommand(['walk','a','--order','breadth']),{kind:'walk',startId:'a',order:'breadth'});});
+test('rejects incomplete or unknown commands',()=>{assert.throws(()=>parseCommand([]),/missing command/);assert.throws(()=>parseCommand(['set','a','x','no-json']),/valid JSON/);assert.throws(()=>parseCommand(['wat']),/unknown/);});

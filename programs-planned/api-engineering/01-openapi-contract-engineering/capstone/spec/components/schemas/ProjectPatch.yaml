@@ -1,0 +1,16 @@
+type: object
+additionalProperties: false
+minProperties: 1
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 80
+    pattern: ^\S(?:.*\S)?$
+  description:
+    type:
+    - string
+    - 'null'
+    maxLength: 500
+examples:
+- description: Revised cohort description.

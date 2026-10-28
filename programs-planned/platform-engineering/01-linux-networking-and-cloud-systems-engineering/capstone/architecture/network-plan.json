@@ -1,0 +1,39 @@
+{
+  "profileVersion": "1.0",
+  "publicEndpoint": {
+    "scheme": "https",
+    "port": 443,
+    "name": "atlas.example.invalid"
+  },
+  "hostEdgePort": 8443,
+  "internalApi": {
+    "address": "127.0.0.1",
+    "port": 18080
+  },
+  "management": {
+    "allowedMechanisms": [
+      "provider-managed session",
+      "SSH from a named management source"
+    ],
+    "publicPasswordAuthentication": false,
+    "sourcePolicy": "explicit operator identity and bounded source; no unrestricted management listener"
+  },
+  "egress": [
+    {
+      "purpose": "os-updates",
+      "protocol": "https",
+      "destinationPolicy": "approved repositories"
+    },
+    {
+      "purpose": "backup",
+      "protocol": "provider-api",
+      "destinationPolicy": "dedicated backup target"
+    }
+  ],
+  "forbidden": [
+    "public internal API listener",
+    "public worker listener",
+    "unrestricted management source",
+    "client-controlled forwarding identity"
+  ]
+}

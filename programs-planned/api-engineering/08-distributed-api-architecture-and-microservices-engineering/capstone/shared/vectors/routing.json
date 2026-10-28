@@ -1,0 +1,54 @@
+{
+  "cases": [
+    {
+      "calls": 4,
+      "expected": [
+        "a",
+        "b",
+        "a",
+        "b"
+      ],
+      "id": "R-01",
+      "instances": [
+        {
+          "healthy": true,
+          "id": "a"
+        },
+        {
+          "healthy": true,
+          "id": "b"
+        }
+      ]
+    },
+    {
+      "calls": 2,
+      "expected": [
+        "b",
+        "b"
+      ],
+      "id": "R-02",
+      "instances": [
+        {
+          "healthy": false,
+          "id": "a"
+        },
+        {
+          "healthy": true,
+          "id": "b"
+        }
+      ]
+    },
+    {
+      "calls": 1,
+      "expected_error": "unavailable",
+      "id": "R-03",
+      "instances": [
+        {
+          "healthy": false,
+          "id": "a"
+        }
+      ]
+    }
+  ],
+  "profile": "routing-1.0"
+}

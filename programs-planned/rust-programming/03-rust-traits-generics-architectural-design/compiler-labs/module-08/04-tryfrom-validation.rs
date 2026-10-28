@@ -1,0 +1,1 @@
+struct P(u8);impl TryFrom<u8> for P{type Error=();fn try_from(v:u8)->Result<Self,()>{(v<=100).then_some(P(v)).ok_or(())}}fn main(){assert!(P::try_from(101).is_err());let p=P::try_from(3).unwrap();assert_eq!(p.0,3);}

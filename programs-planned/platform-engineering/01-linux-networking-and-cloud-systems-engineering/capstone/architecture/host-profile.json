@@ -1,0 +1,59 @@
+{
+  "profileVersion": "1.0",
+  "os": {
+    "family": "linux",
+    "primary": "debian-13",
+    "comparison": "ubuntu-26.04-lts",
+    "init": "systemd",
+    "cgroup": "v2"
+  },
+  "processes": [
+    {
+      "name": "atlas-api",
+      "identity": "atlas-api",
+      "listeners": [
+        "127.0.0.1:18080"
+      ]
+    },
+    {
+      "name": "atlas-worker",
+      "identity": "atlas-worker",
+      "listeners": []
+    },
+    {
+      "name": "atlas-edge",
+      "identity": "atlas-edge",
+      "listeners": [
+        "0.0.0.0:8443",
+        "[::]:8443"
+      ]
+    }
+  ],
+  "paths": [
+    {
+      "path": "/opt/atlas",
+      "class": "immutable-code",
+      "writableByService": false
+    },
+    {
+      "path": "/etc/atlas",
+      "class": "configuration-and-secrets",
+      "writableByService": false
+    },
+    {
+      "path": "/run/atlas",
+      "class": "ephemeral-runtime",
+      "writableByService": true
+    },
+    {
+      "path": "/var/lib/atlas",
+      "class": "durable-state",
+      "writableByService": true
+    },
+    {
+      "path": "/var/log/atlas",
+      "class": "operational-evidence",
+      "writableByService": true
+    }
+  ]
+}

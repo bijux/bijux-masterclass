@@ -1,0 +1,15 @@
+{
+  "invalid_downstream_calls": 0,
+  "status": "pass",
+  "valid_operation_phase_order": [
+    "http",
+    "document",
+    "parse",
+    "select",
+    "validate",
+    "admit",
+    "execute",
+    "complete",
+    "serialize"
+  ]
+}

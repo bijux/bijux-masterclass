@@ -1,0 +1,11 @@
+{
+  "candidateRelease": "atlas-workload-release-1.0.0",
+  "condition": "The attestation verifies cryptographically but the builder identity is outside the release-policy allowlist.",
+  "evidenceClass": "dependency-light",
+  "expectedDecision": "rejected",
+  "failedGate": "builder-authorization",
+  "id": "rejected-untrusted-builder",
+  "reviewQuestion": "What exact evidence would be required to change this decision without weakening another gate?",
+  "schemaVersion": "1.0",
+  "title": "Valid signature from unauthorized builder"
+}

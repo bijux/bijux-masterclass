@@ -1,0 +1,25 @@
+name: StartAnalysis
+title: Start analysis command
+summary: Start analysis command under event profile 1.0
+contentType: application/cloudevents+json
+payload:
+  allOf:
+  - $ref: ../schemas/event-envelope.v1.schema.json
+  - type: object
+    properties:
+      type:
+        const: com.bijux.analysis.command.start.v1
+      dataschema:
+        const: https://schemas.bijux.dev/events/start-analysis-command.v1
+      data:
+        $ref: ../schemas/start-analysis-command.v1.schema.json
+    required:
+    - type
+    - dataschema
+    - data
+x-event-type: com.bijux.analysis.command.start.v1
+x-data-schema: ../schemas/start-analysis-command.v1.schema.json
+x-example: ../../examples/start-analysis-command.v1.json
+x-owner: urn:bijux:analysis-control
+x-partition-key: partitionkey
+x-event-profile: '1.0'

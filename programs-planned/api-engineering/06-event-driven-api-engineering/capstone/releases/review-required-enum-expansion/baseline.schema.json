@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "runId": {
+      "type": "string"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "completed"
+      ]
+    }
+  },
+  "required": [
+    "runId",
+    "outcome"
+  ],
+  "additionalProperties": false
+}

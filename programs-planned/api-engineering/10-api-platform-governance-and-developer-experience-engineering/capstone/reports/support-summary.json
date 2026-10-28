@@ -1,0 +1,8 @@
+{
+  "contractOwner": "group:default/analysis-control-team",
+  "platformOwner": "group:default/api-platform-team",
+  "responseSeconds": {
+    "SUP-001": 4500.0,
+    "SUP-002": 10800.0
+  }
+}

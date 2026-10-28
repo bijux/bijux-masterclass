@@ -1,0 +1,19 @@
+# Standards-frontier example. This resource is not part of the accepted Atlas
+# Connectivity Plane 1.0 release because the inherited API backend exposes
+# plaintext HTTP on port 8080. Applying this before a backend trust contract
+# exists would create false assurance.
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: atlas-api-backend-tls
+  namespace: atlas-system
+  annotations:
+    platform.bijux.dev/example-only: "true"
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: atlas-api-tls
+  validation:
+    hostname: atlas-api.atlas-system.svc.cluster.local
+    wellKnownCACertificates: System

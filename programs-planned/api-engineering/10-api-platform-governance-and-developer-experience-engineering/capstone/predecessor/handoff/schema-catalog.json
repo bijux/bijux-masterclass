@@ -1,0 +1,72 @@
+{
+  "enums": {
+    "ProblemCode": [
+      "VALIDATION",
+      "CONFLICT",
+      "PRECONDITION_FAILED",
+      "NOT_FOUND",
+      "FORBIDDEN",
+      "UNAVAILABLE"
+    ],
+    "RunStatus": [
+      "QUEUED",
+      "RUNNING",
+      "COMPLETED",
+      "FAILED",
+      "CANCELLED"
+    ]
+  },
+  "field_sources": {
+    "AnalysisRun.artifacts": "artifact-service",
+    "AnalysisRun.deliverySummary": "notification-service",
+    "Mutation.cancelAnalysis": "analysis-control",
+    "Mutation.createProject": "analysis-control",
+    "Mutation.startAnalysis": "analysis-control",
+    "Project.analysisRuns": "analysis-control",
+    "Query.analysisRun": "analysis-control",
+    "Query.analysisRuns": "analysis-control",
+    "Query.artifact": "artifact-service",
+    "Query.deliverySummary": "notification-service",
+    "Query.node": "graph-gateway-dispatch",
+    "Query.project": "analysis-control",
+    "Query.search": "graph-gateway-composition",
+    "Query.viewer": "graph-gateway-context",
+    "Subscription.analysisRunUpdated": "analysis-events-1.0"
+  },
+  "interfaces": {
+    "Node": [
+      "Project",
+      "AnalysisRun",
+      "Artifact"
+    ]
+  },
+  "one_of_inputs": [
+    "NodeLookup"
+  ],
+  "roots": {
+    "mutation": "Mutation",
+    "query": "Query",
+    "subscription": "Subscription"
+  },
+  "schemaRelease": "1.0.0",
+  "unions": {
+    "CancelAnalysisResult": [
+      "CancelAnalysisSuccess",
+      "MutationProblem"
+    ],
+    "CreateProjectResult": [
+      "CreateProjectSuccess",
+      "MutationProblem"
+    ],
+    "SearchResult": [
+      "Project",
+      "AnalysisRun",
+      "Artifact"
+    ],
+    "StartAnalysisResult": [
+      "StartAnalysisSuccess",
+      "MutationProblem"
+    ]
+  },
+  "version": "1.0"
+}

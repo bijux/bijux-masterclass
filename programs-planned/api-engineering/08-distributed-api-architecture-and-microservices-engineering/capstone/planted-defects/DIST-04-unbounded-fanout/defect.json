@@ -1,0 +1,9 @@
+{
+  "candidate": "unbounded-fanout",
+  "defect": "gateway issues one remote call per artifact row",
+  "expected": "reject",
+  "id": "DIST-04",
+  "lesson": "Collection size must not become unbounded network fan-out; use bounded batch, projection, or owner pagination.",
+  "rejecting_gate": "dependency-budget",
+  "title": "Unbounded Fan-out"
+}

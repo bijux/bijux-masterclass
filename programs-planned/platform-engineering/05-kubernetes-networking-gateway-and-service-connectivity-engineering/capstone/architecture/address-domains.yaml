@@ -1,0 +1,23 @@
+{
+  "domains": {
+    "gateway": [
+      "198.51.100.20/32"
+    ],
+    "nodes": [
+      "192.0.2.0/24"
+    ],
+    "podsIPv4": [
+      "10.244.0.0/16"
+    ],
+    "podsIPv6": [
+      "fd00:10:244::/56"
+    ],
+    "servicesIPv4": [
+      "10.96.0.0/12"
+    ],
+    "servicesIPv6": [
+      "fd00:10:96::/112"
+    ]
+  },
+  "version": "atlas-address-domains-1.0"
+}

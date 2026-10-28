@@ -1,0 +1,8 @@
+{
+  "course1HostRuntime": "1.0.0",
+  "course2CloudFoundation": "1.0.0",
+  "course3WorkloadRelease": "1.0.0",
+  "course4KubernetesRuntime": "1.0.0",
+  "course5Target": "kubernetes-networking-1.0.0",
+  "kubernetesBaseline": "1.36.2"
+}

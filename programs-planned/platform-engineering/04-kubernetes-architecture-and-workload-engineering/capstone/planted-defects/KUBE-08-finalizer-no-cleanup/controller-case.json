@@ -1,0 +1,6 @@
+{
+  "cleanupCalled": false,
+  "expected": "reject",
+  "finalizer": "platform.bijux.dev/release-reservation",
+  "finalizerRemoved": true
+}

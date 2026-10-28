@@ -1,0 +1,12 @@
+{
+  "apiRef": "api:default/analysis-http",
+  "checks": [
+    "syntax",
+    "ownership",
+    "backward-compatibility",
+    "active-consumer-surface"
+  ],
+  "decision": "pass",
+  "evidenceClass": "course-executed",
+  "version": "1.2.0"
+}
