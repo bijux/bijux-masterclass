@@ -1,0 +1,1 @@
+interface Schema<T>{parse(input:unknown):T}type Infer<S extends Schema<unknown>>=S extends Schema<infer T>?T:never;type Output<S extends Record<string,Schema<unknown>>>={[K in keyof S]:Infer<S[K]>};declare const shape:{name:Schema<string>;age:Schema<number>};const value:Output<typeof shape>={name:'Ada',age:37};console.log(value);

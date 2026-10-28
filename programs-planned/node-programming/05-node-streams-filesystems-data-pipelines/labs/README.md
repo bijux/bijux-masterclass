@@ -1,0 +1,16 @@
+# Course 5 Laboratory System
+
+The ten laboratories are smaller than FlowLedger and independent from it. Their purpose is to expose one mechanism under adversarial input, pressure, cancellation, and failure. Each directory contains a compile-clean `starter/` and a complete `reference/` package.
+
+1. [Bounded Binary Envelope](./module-41-bounded-binary-envelope/README.md) — Implement a versioned binary envelope with a fixed header, big-endian fields, product limits, canonical length checks, explicit copy-versus-view APIs, and mutation tests.
+2. [Stream State Observatory](./module-42-stream-state-observatory/README.md) — Build instrumented Readable, Writable, and Transform implementations that record state transitions, queue lengths, terminal events, and the difference between end, finish, close, error, and destroy.
+3. [Backpressure Copy Engine](./module-43-backpressure-copy-engine/README.md) — Implement a bounded copy engine with a deliberately slow Writable, pressure observations, AbortSignal support, pipeline ownership, and evidence that memory does not grow with source length.
+4. [Async Record Window](./module-44-async-record-window/README.md) — Build one-shot and repeatable async sources, cancellation-aware batching and take adapters, and Node/Web Stream round trips with explicit early-return and chunk-ownership tests.
+5. [Transactional File Sink](./module-45-transactional-file-sink/README.md) — Implement a same-directory staged sink that accepts a pipeline writer, synchronizes and closes the candidate, applies a declared overwrite policy, cleans up pre-commit failure, and reports post-commit failure separately.
+6. [Bounded NDJSON Decoder](./module-46-bounded-ndjson-decoder/README.md) — Implement a byte-to-object Transform with fatal UTF-8 decoding, CRLF handling, exact physical line numbers, maximum line bytes, structured syntax errors, runtime object validation, and explicit final-line behavior.
+7. [Compressed Digest Pipeline](./module-47-compressed-digest-pipeline/README.md) — Build a gzip pipeline that records source, canonical, and compressed byte counts, computes explicitly named SHA-256 digests, rejects corrupt input, enforces an expanded-byte limit, and publishes metadata only after successful completion.
+8. [Supervised Child Filter](./module-48-supervised-child-filter/README.md) — Implement a direct-spawn filter that streams input to stdin, stages stdout transactionally, drains and bounds stderr, handles spawn failure and nonzero exit, supports AbortSignal, and waits for complete close before deciding commit.
+9. [Coordinated Fan-Out Writer](./module-49-coordinated-fan-out-writer/README.md) — Build a required two-sink writer that respects both destinations’ pressure, propagates one branch failure to the complete operation, tracks visible-byte conservation, and demonstrates a versioned-bundle commit protocol.
+10. [Streaming Architecture Audit](./module-50-streaming-architecture-audit/README.md) — Audit and repair an independent NDJSON export system. Produce the representation graph, queue budget, resource ledger, commit matrix, chunk-boundary test set, and an implementation that survives injected failures.
+
+Use the reference only after producing a tested attempt. The most useful comparison is the first different decision and the requirement that forced it.

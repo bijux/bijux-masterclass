@@ -1,0 +1,21 @@
+[package]
+name = "async-hyper-health-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+tokio = { version = "=1.53.1", features = ["macros", "rt-multi-thread", "net", "sync", "time", "io-util"] }
+hyper = { version = "=1.8.0", features = ["server", "http1"] }
+hyper-util = { version = "=0.1.20", features = ["server", "http1", "tokio"] }
+http-body-util = "=0.1.4"
+bytes = "=1.12.1"
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

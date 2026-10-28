@@ -1,0 +1,61 @@
+site_name: Node.js Streams, Filesystems, and Data Pipeline Architecture
+docs_dir: .
+site_dir: site
+theme:
+  name: material
+nav:
+- Home: README.md
+- Course book: course-book/index.md
+- Outcomes: course-book/outcomes.md
+- Study plan: course-book/study-plan.md
+- 'Module 41 — Binary Data: Buffer, Uint8Array, Encodings, and Memory Views':
+  - Chapter: course-book/module-41-binary-data-buffer-uint8array-encodings-and-memory-views/index.md
+  - Workbook: course-book/module-41-binary-data-buffer-uint8array-encodings-and-memory-views/workbook.md
+  - Solutions: course-book/module-41-binary-data-buffer-uint8array-encodings-and-memory-views/solutions.md
+- 'Module 42 — Stream Contracts: Readable, Writable, Duplex, and Transform':
+  - Chapter: course-book/module-42-stream-contracts-readable-writable-duplex-and-transform/index.md
+  - Workbook: course-book/module-42-stream-contracts-readable-writable-duplex-and-transform/workbook.md
+  - Solutions: course-book/module-42-stream-contracts-readable-writable-duplex-and-transform/solutions.md
+- Module 43 — Backpressure, Pipeline, Completion, and Failure:
+  - Chapter: course-book/module-43-backpressure-pipeline-completion-and-failure/index.md
+  - Workbook: course-book/module-43-backpressure-pipeline-completion-and-failure/workbook.md
+  - Solutions: course-book/module-43-backpressure-pipeline-completion-and-failure/solutions.md
+- Module 44 — Async Iteration, Web Streams, and Adapter Boundaries:
+  - Chapter: course-book/module-44-async-iteration-web-streams-and-adapter-boundaries/index.md
+  - Workbook: course-book/module-44-async-iteration-web-streams-and-adapter-boundaries/workbook.md
+  - Solutions: course-book/module-44-async-iteration-web-streams-and-adapter-boundaries/solutions.md
+- Module 45 — Files, File Handles, Paths, and Transactional Replacement:
+  - Chapter: course-book/module-45-files-file-handles-paths-and-transactional-replacement/index.md
+  - Workbook: course-book/module-45-files-file-handles-paths-and-transactional-replacement/workbook.md
+  - Solutions: course-book/module-45-files-file-handles-paths-and-transactional-replacement/solutions.md
+- Module 46 — Incremental Text Decoding, Framing, and Bounded Parsers:
+  - Chapter: course-book/module-46-incremental-text-decoding-framing-and-bounded-parsers/index.md
+  - Workbook: course-book/module-46-incremental-text-decoding-framing-and-bounded-parsers/workbook.md
+  - Solutions: course-book/module-46-incremental-text-decoding-framing-and-bounded-parsers/solutions.md
+- 'Module 47 — Transform Pipelines: Compression, Hashing, and Integrity':
+  - Chapter: course-book/module-47-transform-pipelines-compression-hashing-and-integrity/index.md
+  - Workbook: course-book/module-47-transform-pipelines-compression-hashing-and-integrity/workbook.md
+  - Solutions: course-book/module-47-transform-pipelines-compression-hashing-and-integrity/solutions.md
+- Module 48 — Child Processes, Stdio, and Supervised Pipelines:
+  - Chapter: course-book/module-48-child-processes-stdio-and-supervised-pipelines/index.md
+  - Workbook: course-book/module-48-child-processes-stdio-and-supervised-pipelines/workbook.md
+  - Solutions: course-book/module-48-child-processes-stdio-and-supervised-pipelines/solutions.md
+- Module 49 — Multi-Stage Dataflow, Fan-Out, and Commit Coordination:
+  - Chapter: course-book/module-49-multi-stage-dataflow-fan-out-and-commit-coordination/index.md
+  - Workbook: course-book/module-49-multi-stage-dataflow-fan-out-and-commit-coordination/workbook.md
+  - Solutions: course-book/module-49-multi-stage-dataflow-fan-out-and-commit-coordination/solutions.md
+- Module 50 — Integrated Streaming Architecture, Testing, and Independent Change:
+  - Chapter: course-book/module-50-integrated-streaming-architecture-testing-and-independent-change/index.md
+  - Workbook: course-book/module-50-integrated-streaming-architecture-testing-and-independent-change/workbook.md
+  - Solutions: course-book/module-50-integrated-streaming-architecture-testing-and-independent-change/solutions.md
+- FlowLedger: course-book/capstone.md
+- Final review: course-book/final-review.md
+- Final review solutions: course-book/final-review-solutions.md
+- Reference: course-book/reference.md
+- Laboratories: labs/README.md
+- Investigations: compiler-labs/README.md
+markdown_extensions:
+- admonition
+- tables
+- toc
+- pymdownx.superfences

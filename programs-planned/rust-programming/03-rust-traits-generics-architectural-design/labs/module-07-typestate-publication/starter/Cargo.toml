@@ -1,0 +1,9 @@
+[package]
+name = "module_07_typestate_publication_starter"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true

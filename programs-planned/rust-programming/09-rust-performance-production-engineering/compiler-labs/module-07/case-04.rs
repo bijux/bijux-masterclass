@@ -1,0 +1,1 @@
+#[derive(PartialEq,Debug)] enum Mode { Normal, Degraded } fn mode(snapshot_bytes: usize, limit: usize) -> Mode { if snapshot_bytes > limit { Mode::Degraded } else { Mode::Normal } } fn main() { assert_eq!(mode(11,10), Mode::Degraded); }
