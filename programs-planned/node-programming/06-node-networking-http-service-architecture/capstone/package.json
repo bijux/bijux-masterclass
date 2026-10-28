@@ -1,0 +1,15 @@
+{
+  "name": "@bijux-masterclass/servicewire",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "servicewire": "./dist/src/main.js"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build --silent && node --test dist/tests/*.test.js",
+    "demo": "npm run build --silent && node dist/src/main.js demo"
+  }
+}

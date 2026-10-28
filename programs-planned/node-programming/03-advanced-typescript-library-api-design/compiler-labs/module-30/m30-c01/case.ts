@@ -1,0 +1,1 @@
+export interface Parser<T>{parse(input:unknown):T}class InternalParser implements Parser<string>{parse(input:unknown){if(typeof input!=='string')throw new Error('text');return input;}}export function text():Parser<string>{return new InternalParser();}console.log(text().parse('x'));

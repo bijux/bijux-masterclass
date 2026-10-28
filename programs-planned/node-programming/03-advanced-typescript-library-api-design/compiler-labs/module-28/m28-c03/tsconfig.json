@@ -1,0 +1,11 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": ".",
+    "tsBuildInfoFile": ".tmp/m28-c03.tsbuildinfo"
+  },
+  "include": [
+    "case.ts"
+  ]
+}
