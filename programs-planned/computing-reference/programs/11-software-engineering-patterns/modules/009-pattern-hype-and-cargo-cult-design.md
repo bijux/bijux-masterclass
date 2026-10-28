@@ -32,9 +32,9 @@ How can a team use pattern knowledge without copying prestigious structures whos
 
 For candidate design (p), context (x), evidence (E), and explicit force set (F), use a comparative decision model
 
-\[
+$$
 M(p\mid x,F,E)=B(p\mid x,F,E)-C(p\mid x,F,E)-U(p\mid x,E).
-\]
+$$
 
 (B) is expected benefit, (C) is implementation and lifecycle cost, and (U) is an uncertainty allowance. Adopt (p) only when it has a defensible positive margin over a simpler alternative, not merely a positive score in isolation. The numbers may be ordinal decision aids; they are not universal measurements. Record assumptions, predicted observations, review date, and removal triggers.
 
@@ -196,30 +196,30 @@ Permit experiments without granting indefinite permanence. Credit designers for 
 
 ## Definitions and Notation
 
-Let (A=\{a_0,a_1,\ldots,a_n\}) be alternatives, where (a_0) is the simplest adequate baseline. Let (F=\{f_1,\ldots,f_m\}) be forces with evidence records (E_i). A transparent ordinal model is
+Let $A=\{a_0,a_1,\ldots,a_n\}$ be alternatives, where (a_0) is the simplest adequate baseline. Let $F=\{f_1,\ldots,f_m\}$ be forces with evidence records (E_i). A transparent ordinal model is
 
-\[
+$$
 S(a)=\sum_{i=1}^{m} w_i r_{ia}-K(a)-U(a),
-\]
+$$
 
 where (w_i) is declared importance, (r_{ia}) is the alternative's supported response to force (i), (K) is lifecycle cost, and (U) is uncertainty. The adoption margin is
 
-\[
+$$
 \Delta(a)=S(a)-S(a_0).
-\]
+$$
 
 The decision rule is conditional, not a theorem of design quality:
 
-\[
+$$
 adopt(a)\text{ only if }\Delta(a)>\tau
 \quad\text{and hard constraints hold.}
-\]
+$$
 
-Threshold (\tau) reflects migration risk and consequence severity. Scores support comparison and sensitivity analysis; they do not establish causal effects. A pattern claim should also identify
+Threshold $\tau$ reflects migration risk and consequence severity. Scores support comparison and sensitivity analysis; they do not establish causal effects. A pattern claim should also identify
 
-\[
+$$
 (F,M,P,D),
-\]
+$$
 
 where (F) is observed forces, (M) the proposed mechanism, (P) predicted observations, and (D) disconfirming observations. A copied form with no credible (F) or (M) is cargo-cult risk even if its implementation is canonical.
 

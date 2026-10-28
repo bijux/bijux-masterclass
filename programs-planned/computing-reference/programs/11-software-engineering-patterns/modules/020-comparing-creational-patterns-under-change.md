@@ -31,11 +31,11 @@ Given concrete change scenarios and quality constraints, which creation mechanis
 
 ### Central model, mechanism, or theorem
 
-For alternatives \(a\in A\), scenarios \(s\in S\), evidence-based likelihood/importance weights \(w_s\ge0\), and bounded consequence ratings \(c(a,s)\), an illustrative expected-loss model is
+For alternatives $a\in A$, scenarios $s\in S$, evidence-based likelihood/importance weights $w_s\ge0$, and bounded consequence ratings $c(a,s)$, an illustrative expected-loss model is
 
-\[
+$$
 L(a)=\sum_{s\in S}w_sc(a,s).
-\]
+$$
 
 Do not add incomparable measurements until their scales and stakeholder meanings are defined. First remove dominated alternatives, identify hard feasibility constraints, analyze sensitivity to plausible weights, and expose worst-case regret. A numerical minimum is a decision aid, not proof: uncertain scenarios, interaction effects, tail risk, irreversible migration, safety, and organizational capability require explicit qualitative and empirical review.
 
@@ -190,19 +190,19 @@ Define contraction triggers: only one stable product remains; optional configura
 
 ## Definitions and Notation
 
-Let alternatives be \(A\), scenarios \(S\), and criteria \(Q\). Feasibility predicate \(F(a)\) is true only if hard constraints are supported by evidence. Let \(c_q(a,s)\) be consequence in a defined scale and \(w_{s,q}\) an explicitly justified weight.
+Let alternatives be $A$, scenarios $S$, and criteria $Q$. Feasibility predicate $F(a)$ is true only if hard constraints are supported by evidence. Let $c_q(a,s)$ be consequence in a defined scale and $w_{s,q}$ an explicitly justified weight.
 
-\[
+$$
 L(a)=\sum_{s\in S}\sum_{q\in Q}w_{s,q}c_q(a,s),\qquad a\in\{a:F(a)\}.
-\]
+$$
 
-Alternative \(a\) dominates \(b\) when every evaluated consequence is no worse and at least one is better. Scenario regret is
+Alternative $a$ dominates $b$ when every evaluated consequence is no worse and at least one is better. Scenario regret is
 
-\[
+$$
 R(a,s)=c(a,s)-\min_{b\in A}c(b,s),
-\]
+$$
 
-after consequences are placed on one defensible scale. Minimax-regret selection minimizes \(\max_sR(a,s)\). Let \(E(x)\in\{observed,measured,inferred,assumed,unknown\}\) classify each consequential claim.
+after consequences are placed on one defensible scale. Minimax-regret selection minimizes $\max_sR(a,s)$. Let $E(x)\in\{observed,measured,inferred,assumed,unknown\}$ classify each consequential claim.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -221,7 +221,7 @@ after consequences are placed on one defensible scale. Minimax-regret selection 
 
 ### Conditional correctness
 
-If the candidate set contains the relevant alternatives, hard constraints are correctly classified, consequence scales validly represent stakeholder loss, weights match the selected decision context, and interaction effects are included, minimizing \(L\) selects the minimum modeled weighted loss. Those premises are rarely fully knowable; therefore the result is conditional and must be accompanied by sensitivity and qualitative review.
+If the candidate set contains the relevant alternatives, hard constraints are correctly classified, consequence scales validly represent stakeholder loss, weights match the selected decision context, and interaction effects are included, minimizing $L$ selects the minimum modeled weighted loss. Those premises are rarely fully knowable; therefore the result is conditional and must be accompanied by sensitivity and qualitative review.
 
 ### Executable illustrative matrix
 
@@ -251,7 +251,7 @@ print(f"config-heavy-best={config_name}:{config_scores[config_name]}")
 print(f"selection-reversed={baseline_name != config_name}")
 ```
 
-Independent recomputation: Factory scores \(5+12+5+4=26\) in the baseline profile. Builder scores \(3+6+5+4=18\) in the configuration-heavy profile. The run proves deterministic arithmetic for invented ordinal inputs only. It does not validate the scales, scenarios, alternatives, weights, pattern implementations, or any production selection.
+Independent recomputation: Factory scores $5+12+5+4=26$ in the baseline profile. Builder scores $3+6+5+4=18$ in the configuration-heavy profile. The run proves deterministic arithmetic for invented ordinal inputs only. It does not validate the scales, scenarios, alternatives, weights, pattern implementations, or any production selection.
 
 ## Alternatives and Trade-Offs
 
@@ -381,7 +381,7 @@ An unfamiliar railway interlocking platform asks you to choose creational patter
 
 ### Answer 1
 
-Baseline weights `(5,4,5,2)` yield: direct \(25+16+15+2=58\), factory \(5+12+5+4=26\), Builder \(15+4+5+8=32\); factory wins. Configuration-heavy `(1,6,5,1)` yields direct \(5+24+15+1=45\), factory \(1+18+5+2=26\), Builder \(3+6+5+4=18\); Builder wins.
+Baseline weights `(5,4,5,2)` yield: direct $25+16+15+2=58$, factory $5+12+5+4=26$, Builder $15+4+5+8=32$; factory wins. Configuration-heavy `(1,6,5,1)` yields direct $5+24+15+1=45$, factory $1+18+5+2=26$, Builder $3+6+5+4=18$; Builder wins.
 
 Threats include invented alternatives, omitted combinations, vague scenario definitions, ordinal multiplication, unjustified interval assumptions, arbitrary weights, correlated scenarios, missing interaction costs, missing migration/removal cost, no uncertainty ranges, stakeholder omission, hard constraints hidden as consequences, no evidence quality adjustment, and winner sensitivity. A direct-friendly illustrative profile `(1,1,1,8)` yields direct 20, factory 21, and Builder 37. It demonstrates tunability, not real preference. The decision record must expose all inputs and use measured natural units where possible.
 

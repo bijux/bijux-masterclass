@@ -33,9 +33,9 @@ How can a hash table preserve exact map/set semantics when many keys select the 
 
 Let table `T=<B0,...,B(m-1)>`. Its abstraction is the disjoint logical union of entries in all buckets, subject to the map's key-equivalence rule. Representation requires every entry e to occur exactly once in
 
-\[
+$$
 B_{reduce(h(e.key),m)}.
-\]
+$$
 
 Also `n=sum Li` and no two entries have equivalent keys for a unique-key map. Under simple uniform hashing, the expected chain length is `E[Li]=α`; an unsuccessful lookup inspects expected O(α) candidates plus hashing/bucket work. A successful bound depends on insertion/order/query assumptions. Worst-case lookup remains O(max Li), which can be O(n).
 

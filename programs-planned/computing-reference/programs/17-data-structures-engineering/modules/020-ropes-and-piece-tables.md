@@ -33,13 +33,13 @@ How can an editor represent a large, repeatedly modified text sequence without c
 
 For a rope node T,
 
-\[
+$$
 flatten(T)=
 \begin{cases}
 chunk(T), & T\text{ is a leaf},\\
 flatten(T.left)\cdot flatten(T.right), & T\text{ is internal}.
 \end{cases}
-\]
+$$
 
 If every node stores a composable metric `m(T)=m(left)⊕m(right)` and the tree height is O(log N), locating a coordinate descends one path in O(log N), apart from bounded leaf work. Insert and delete follow split/concatenate and restore balance/chunk bounds.
 

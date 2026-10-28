@@ -33,24 +33,24 @@ How can a system combine efficient asynchronous event handling with comprehensib
 
 For accepted request (r), the normal path is
 
-\[
+$$
 async\_admit \rightarrow Q_{work} \rightarrow sync\_execute
 \rightarrow Q_{result} \rightarrow async\_deliver.
-\]
+$$
 
 The async layer creates envelope
 
-\[
+$$
 E_r=(request\_id,owner,generation,deadline,authority,payload),
-\]
+$$
 
 transfers it through bounded (Q_{work}), and is the only layer that later interprets the result against current connection and request state. With arrival rate λ, (k) workers, and mean service rate μ per worker, a necessary—not sufficient—stability condition is
 
-\[
+$$
 \lambda < k\mu.
-\]
+$$
 
-For a stable measured interval, Little's Law gives (L=\lambda W), and response time decomposes as (T=W_q+S+W_r): work-queue wait, synchronous service, and result-delivery wait. A queue capacity (K) bounds queued payload memory approximately by (K b_{max}), but total memory also includes in-flight worker state, result backlog, connection state, and allocator/runtime overhead.
+For a stable measured interval, Little's Law gives $L=\lambda W$, and response time decomposes as (T=W_q+S+W_r): work-queue wait, synchronous service, and result-delivery wait. A queue capacity (K) bounds queued payload memory approximately by (K b_{max}), but total memory also includes in-flight worker state, result backlog, connection state, and allocator/runtime overhead.
 
 ### Critical invariants
 
@@ -164,13 +164,13 @@ Suppose (k) workers each sustain mean service rate μ. The inequality λ < (kμ)
 
 Let (W_q) be work-queue wait, (S) synchronous service, and (W_r) result-queue/dispatch wait. Then
 
-\[
+$$
 T=W_q+S+W_r+T_{network/output}
-\]
+$$
 
 for the relevant end-to-end response. A worker that reports a 20 ms database call has not met a 100 ms objective if the request waited 300 ms before starting. Record `accepted_at` and monotonic deadline in the envelope. Reject work that lacks enough estimated slack when policy supports that decision, and always discard or reconcile already-expired work before consuming a scarce dependency.
 
-Little's Law relates measured stable averages, (L=\lambda W). It is useful for checking observations: 800 accepted jobs/s with mean 0.25 s in the pipeline implies about 200 jobs on average. It does not bound a percentile, guarantee stability, select queue capacity, or justify admission above dependency capacity.
+Little's Law relates measured stable averages, $L=\lambda W$. It is useful for checking observations: 800 accepted jobs/s with mean 0.25 s in the pipeline implies about 200 jobs on average. It does not bound a percentile, guarantee stability, select queue capacity, or justify admission above dependency capacity.
 
 ### Define overload explicitly
 
@@ -314,18 +314,18 @@ Let λ denote the effective accepted arrival rate; (k) the number of synchronous
 
 Let request lifecycle be
 
-\[
+$$
 created\rightarrow accepted\rightarrow queued\rightarrow claimed\rightarrow
 executing\rightarrow result\_queued\rightarrow terminal.
-\]
+$$
 
 Rejection occurs before `accepted`. Cancellation and expiry are requests/observations that may occur across states; they do not erase a running external effect. `owner_generation` changes whenever a reusable connection/session owner is retired. A terminal result is **current** only if its request cell is nonterminal, its owner/generation matches, and current deadline/authority policy permits application.
 
 The capacity vector
 
-\[
+$$
 C=(K_w,k,K_r,C_{downstream},B_{payload},Q_{tenant})
-\]
+$$
 
 must be analyzed as one system. Enlarging one component cannot raise safe throughput past the binding bottleneck and can increase retained work.
 
@@ -345,7 +345,7 @@ Progress requires available workers, terminating or time-bounded service calls, 
 
 ### Queueing limits
 
-For stable averages Little's Law checks (L=\lambda W). The condition λ < (kμ) expresses offered work below idealized mean service capacity; it is neither a tail-latency proof nor universally sufficient. Service dependence, nonstationarity, burst correlation, priority, failures, and downstream queues require empirical and sometimes formal analysis. Mark model assumptions explicitly.
+For stable averages Little's Law checks $L=\lambda W$. The condition λ < (kμ) expresses offered work below idealized mean service capacity; it is neither a tail-latency proof nor universally sufficient. Service dependence, nonstationarity, burst correlation, priority, failures, and downstream queues require empirical and sometimes formal analysis. Mark model assumptions explicitly.
 
 ### Verification obligations
 
@@ -530,21 +530,21 @@ The work envelope contains request, connection/generation, tenant/principal and 
 
 Idealized mean worker capacity is
 
-\[
+$$
 k\mu=12\times55=660\text{ jobs/s},
-\]
+$$
 
 so (600<660) satisfies the necessary inequality with only about nine percent nominal headroom. Little's Law gives
 
-\[
+$$
 L=\lambda W=600\times0.20=120
-\]
+$$
 
 average jobs across the measured pipeline. Maximum payload held only in the work queue is
 
-\[
+$$
 80\times64\text{ KiB}=5120\text{ KiB}=5\text{ MiB}.
-\]
+$$
 
 The total also includes up to 12 executing payloads, result/output envelopes, connection state, dependency queues, stacks, and overhead. Means do not bound bursts or percentiles; service rates can be dependent and nonstationary; near-capacity utilization amplifies tail wait; and the 120-job observation may expose hidden queues outside the declared capacity. Measure each stage and test the target arrival/service distributions and dependency failures.
 

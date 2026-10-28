@@ -33,12 +33,12 @@ How can an application own semantically meaningful boundaries so that user inter
 
 Let application core (H) own driving ports (P_{in}) and driven ports (P_{out}). Adapters (A_{in}) and (A_{out}) satisfy
 
-\[
+$$
 A_{in}:ExternalInput\to P_{in},\qquad
 A_{out}:P_{out}\to ExternalMechanism.
-\]
+$$
 
-At runtime a use case may call outward through (P_{out}), but its source dependency remains inward: (A_{out}\to P_{out}\leftarrow H). Replaceability follows only when the port captures the application's semantics and each adapter satisfies them; an interface that merely copies one vendor API does not create independence.
+At runtime a use case may call outward through (P_{out}), but its source dependency remains inward: $A_{out}\to P_{out}\leftarrow H$. Replaceability follows only when the port captures the application's semantics and each adapter satisfies them; an interface that merely copies one vendor API does not create independence.
 
 ### Critical invariants
 
@@ -175,11 +175,11 @@ Track port/adapter count, fan-out, duplicate mappings, contract-test burden, and
 
 ## Definitions and Notation
 
-Let (H) be core modules, (P) application-owned port modules, and (A) adapter modules. Permitted source edges include (H\to P) and (A\to P); forbidden edges include (H\to A) and domain-to-framework/provider imports.
+Let (H) be core modules, (P) application-owned port modules, and (A) adapter modules. Permitted source edges include $H\to P$ and $A\to P$; forbidden edges include $H\to A$ and domain-to-framework/provider imports.
 
-Let port contract be (C_P=(I,O,E,G,T,R)): input domain (I), output domain (O), error/outcome algebra (E), guarantees (G), time/cancellation semantics (T), and resource bounds (R). Adapter (a) conforms under observation set (Q) when (a\models_Q C_P).
+Let port contract be (C_P=(I,O,E,G,T,R)): input domain (I), output domain (O), error/outcome algebra (E), guarantees (G), time/cancellation semantics (T), and resource bounds (R). Adapter (a) conforms under observation set (Q) when $a\models_Q C_P$.
 
-For an operation deadline (D), each adapter receives remaining budget (b_i=\max(0,D-t_i)). For message identity (m), idempotent acceptance requires repeated delivery of the same scoped (m) and payload to produce one logical accepted effect, while conflicting payload reuse is rejected.
+For an operation deadline (D), each adapter receives remaining budget $b_i=\max(0,D-t_i)$. For message identity (m), idempotent acceptance requires repeated delivery of the same scoped (m) and payload to produce one logical accepted effect, while conflicting payload reuse is rejected.
 
 ## Mechanisms, Invariants, or Proof Structure
 

@@ -31,7 +31,7 @@ When do two dimensions of behavior need to evolve independently, and how can del
 
 ### Central model, mechanism, or theorem
 
-Let abstraction variants be \(A\), implementors \(I\), and valid combinations \(C\subseteq A\times I\). A Bridge represents an abstraction \(a\) holding an implementor \(i\) and maps each high-level operation into a protocol over implementor primitives. If every combination is valid, separate families require \(|A|+|I|\) main components and wiring instead of up to \(|A||I|\) combined subclasses. This count is only structural; the design is correct only when the implementor contract is sufficient, each \((a,i)\in C\) preserves abstraction behavior, invalid pairs are rejected, and lifecycle/error/concurrency semantics compose.
+Let abstraction variants be $A$, implementors $I$, and valid combinations $C\subseteq A\times I$. A Bridge represents an abstraction $a$ holding an implementor $i$ and maps each high-level operation into a protocol over implementor primitives. If every combination is valid, separate families require $|A|+|I|$ main components and wiring instead of up to $|A||I|$ combined subclasses. This count is only structural; the design is correct only when the implementor contract is sufficient, each $(a,i)\in C$ preserves abstraction behavior, invalid pairs are rejected, and lifecycle/error/concurrency semantics compose.
 
 ### Critical invariants
 
@@ -46,7 +46,7 @@ Let abstraction variants be \(A\), implementors \(I\), and valid combinations \(
 
 ### Common failures
 
-Common failures include inventing two hierarchies for one stable variant, splitting inseparable concepts into artificial axes, exposing concrete implementors to clients, designing primitives around one abstraction, assuming all pairs work, capability checks scattered through business code, abstraction and implementor both retrying or caching, runtime swapping while operations are in flight, lifecycle leaks from shared implementors, using Bridge where Strategy or Adapter is simpler, and citing \(m+n\) class count as proof of lower complexity.
+Common failures include inventing two hierarchies for one stable variant, splitting inseparable concepts into artificial axes, exposing concrete implementors to clients, designing primitives around one abstraction, assuming all pairs work, capability checks scattered through business code, abstraction and implementor both retrying or caching, runtime swapping while operations are in flight, lifecycle leaks from shared implementors, using Bridge where Strategy or Adapter is simpler, and citing $m+n$ class count as proof of lower complexity.
 
 ### Compact example
 
@@ -114,7 +114,7 @@ Too fine-grained creates round trips and prevents backend optimization. Too coar
 
 ### Compatibility is a relation
 
-Do not assume \(C=A\times I\). A detailed report may require units and metadata unsupported by a minimal backend. A hardware renderer may have fixed color depth. A transaction abstraction may require isolation a driver cannot provide.
+Do not assume $C=A\times I$. A detailed report may require units and metadata unsupported by a minimal backend. A hardware renderer may have fixed color depth. A transaction abstraction may require isolation a driver cannot provide.
 
 Bind through a validated factory/composition root that compares required and offered capabilities. Prefer typed capability sets or distinct implementor interfaces over string flags. Reject before serving traffic.
 
@@ -168,13 +168,13 @@ Preserve client contracts during contraction and delete obsolete capability matr
 
 ## Definitions and Notation
 
-Let \(A\) be abstraction variants, \(I\) implementors, \(C\subseteq A\times I\) supported pairs, \(req(a)\) required capabilities, and \(cap(i)\) provided capabilities:
+Let $A$ be abstraction variants, $I$ implementors, $C\subseteq A\times I$ supported pairs, $req(a)$ required capabilities, and $cap(i)$ provided capabilities:
 
-\[
+$$
 (a,i)\in C\Longrightarrow req(a)\subseteq cap(i).
-\]
+$$
 
-Let abstraction operation \(op_a\) translate into implementor protocol \(\pi_i=(p_1,\ldots,p_k)\). Refinement requires observable trace \(trace(\pi_i)\) to satisfy the abstraction contract for every supported pair. If there are \(m\) abstractions and \(n\) implementors with full compatibility, a combined-subclass design can require up to \(mn\) pair classes, while a Bridge has roughly \(m+n\) primary classes plus binding and compatibility logic. This is a structural estimate, not a complexity theorem.
+Let abstraction operation $op_a$ translate into implementor protocol $\pi_i=(p_1,\ldots,p_k)$. Refinement requires observable trace $trace(\pi_i)$ to satisfy the abstraction contract for every supported pair. If there are $m$ abstractions and $n$ implementors with full compatibility, a combined-subclass design can require up to $mn$ pair classes, while a Bridge has roughly $m+n$ primary classes plus binding and compatibility logic. This is a structural estimate, not a complexity theorem.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -363,7 +363,7 @@ An unfamiliar autonomous-drone platform proposes bridging flight modes to swappa
 
 ### Answer 1
 
-Let \(A=\{CompactReport,DetailedReport\}\) and \(I=\{TextOutput,StructuredOutput\}\). The example treats \(C=A\times I\), giving four pairs. Compact protocol is one `compact(metric,value)` call and ignores unit by declared policy. Detailed protocol is one `detailed(metric,value,unit)` call. Expected representative outputs match the four formatting rules; the assertion covers the fourth pair.
+Let $A=\{CompactReport,DetailedReport\}$ and $I=\{TextOutput,StructuredOutput\}$. The example treats $C=A\times I$, giving four pairs. Compact protocol is one `compact(metric,value)` call and ignores unit by declared policy. Detailed protocol is one `detailed(metric,value,unit)` call. Expected representative outputs match the four formatting rules; the assertion covers the fourth pair.
 
 The structured form is not valid general JSON: keys and string values are unquoted, escaping is absent, arbitrary Unicode/control characters are untested, numeric type/range and schema are unspecified, and no JSON parser validates it. Rename it structured text, as the chapter does, or implement a real encoder with an executable parser/schema test. The run also says nothing about localization, concurrent sharing, failures, capability subsets, or independent future evolution.
 
@@ -381,9 +381,9 @@ Evidence includes actual change history, number and ownership of abstraction/bac
 
 ### Answer 4
 
-Use immutable implementor generations behind an acquisition handle. Build generation \(g+1\) within an overlap capacity budget, validate configuration/capabilities, start it with deadlines, and pass readiness checks. Atomically publish it for new acquisitions; each operation pins its chosen generation and cannot switch mid-protocol. Mark \(g\) draining, reject new acquisitions, await holder count zero to a deadline, then close it exactly once.
+Use immutable implementor generations behind an acquisition handle. Build generation $g+1$ within an overlap capacity budget, validate configuration/capabilities, start it with deadlines, and pass readiness checks. Atomically publish it for new acquisitions; each operation pins its chosen generation and cannot switch mid-protocol. Mark $g$ draining, reject new acquisitions, await holder count zero to a deadline, then close it exactly once.
 
-If new startup/readiness fails, close its partial resources in reverse and leave \(g\) published. After publication, rollback republishes a still-valid prior or newly rebuilt generation through the same protocol; it never mutates delegates inside existing abstractions. Track generation, holders, start/drain/close, errors, capacity, and rollback. Shutdown stops publication, rejects new work, drains all generations, and reports/handles stragglers by resource policy. Test handoff races, long operations, failed start, failure after publish, capacity exhaustion, repeated rollback, cancellation, and idempotent close.
+If new startup/readiness fails, close its partial resources in reverse and leave $g$ published. After publication, rollback republishes a still-valid prior or newly rebuilt generation through the same protocol; it never mutates delegates inside existing abstractions. Track generation, holders, start/drain/close, errors, capacity, and rollback. Shutdown stops publication, rejects new work, drains all generations, and reports/handles stragglers by resource policy. Test handoff races, long operations, failed start, failure after publish, capacity exhaustion, repeated rollback, cancellation, and idempotent close.
 
 ### Answer 5
 

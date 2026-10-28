@@ -31,25 +31,25 @@ How can one publication become independently consumable by multiple interested s
 
 ### Central model, mechanism, or theorem
 
-For publication \(m\) at time \(t\), let \(S_t\) be the snapshot of subscriptions and \(match(s,m)\) each subscription's filter. The intended obligation set is
+For publication $m$ at time $t$, let $S_t$ be the snapshot of subscriptions and $match(s,m)$ each subscription's filter. The intended obligation set is
 
-\[
+$$
 O(m,t)=\{(m,s)\mid s\in S_t\land match(s,m)=T\},
-\]
+$$
 
-subject to declared transient/durable/retention semantics. For each obligation, delivery attempts \(D_{m,s}\) and committed effects \(E_{m,s}\) are independent. A typical at-least-once design targets
+subject to declared transient/durable/retention semantics. For each obligation, delivery attempts $D_{m,s}$ and committed effects $E_{m,s}$ are independent. A typical at-least-once design targets
 
-\[
+$$
 D_{m,s}\ge1,\qquad E_{m,s}=1,
-\]
+$$
 
-but effect uniqueness requires subscriber-specific idempotency; one topic publication or broker acknowledgment cannot establish all \(E_{m,s}=1\).
+but effect uniqueness requires subscriber-specific idempotency; one topic publication or broker acknowledgment cannot establish all $E_{m,s}=1$.
 
-Fan-out delivery work for \(N\) publications is approximately
+Fan-out delivery work for $N$ publications is approximately
 
-\[
+$$
 W=\sum_{m=1}^{N}|O(m)|,
-\]
+$$
 
 before retries, filtering implementation, replication, bytes, and downstream effects. Subscriber growth therefore changes capacity/cost without changing producer call count.
 
@@ -306,11 +306,11 @@ The snippet report is empirical evidence for two obligations, absent transient d
 
 ## Definitions and Notation
 
-Topic publication \(m=(id,type,version,key,source,time,payload)\). Subscription \(s=(id,owner,filter,durability,start,retention,group,delivery,security,SLO)\). Membership snapshot \(S_t\) and obligation set \(O(m,t)\) require product-specific subscription timing semantics.
+Topic publication $m=(id,type,version,key,source,time,payload)$. Subscription $s=(id,owner,filter,durability,start,retention,group,delivery,security,SLO)$. Membership snapshot $S_t$ and obligation set $O(m,t)$ require product-specific subscription timing semantics.
 
-\(D_{m,s}\) counts attempts and \(E_{m,s}\) committed domain effects scoped to subscriber operation. Group instances \(c_{s,1},\ldots\) share obligation stream/position for \(s\). Lag \(L_s\), oldest age \(A_s\), arrival rate \(\lambda_s\), sustainable completion \(\mu_s\), and retention horizon \(H\) govern recoverability.
+$D_{m,s}$ counts attempts and $E_{m,s}$ committed domain effects scoped to subscriber operation. Group instances $c_{s,1},\ldots$ share obligation stream/position for $s$. Lag $L_s$, oldest age $A_s$, arrival rate $\lambda_s$, sustainable completion $\mu_s$, and retention horizon $H$ govern recoverability.
 
-Publication fan-out \(f(m)=|O(m,t)|\), total attempts include retries \(W'=\sum_{m,s}D_{m,s}\), and effect count is not inferred from \(W'\).
+Publication fan-out $f(m)=|O(m,t)|$, total attempts include retries $W'=\sum_{m,s}D_{m,s}$, and effect count is not inferred from $W'$.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -495,7 +495,7 @@ Partition by tenant/invoice; consumers reject duplicates/stale and detect gaps/c
 
 ### Answer 3
 
-Create database/search snapshot from authoritative source at logical watermark \(w\) that corresponds to event log position(s) per partition. Snapshot records entity versions and watermark. New group is created/retained before or consistently with snapshot so events after \(w\) cannot expire; bulk-load snapshot idempotently, then consume strictly after \(w\). If snapshot scan includes changes beyond \(w\), use MVCC snapshot at \(w\) or entity/version merge rules so log events deterministically supersede.
+Create database/search snapshot from authoritative source at logical watermark $w$ that corresponds to event log position(s) per partition. Snapshot records entity versions and watermark. New group is created/retained before or consistently with snapshot so events after $w$ cannot expire; bulk-load snapshot idempotently, then consume strictly after $w$. If snapshot scan includes changes beyond $w$, use MVCC snapshot at $w$ or entity/version merge rules so log events deterministically supersede.
 
 Stable key/version makes reapplication at boundary harmless; choosing inclusive consumption deliberately with dedupe is safer than an unproven exclusive conversion. Verify every partition watermark, no missing partitions, snapshot counts/digests, event gaps, version monotonicity and final source/projection reconciliation. Checkpoint bootstrap stages durably; on crash resume snapshot chunks/offsets, not restart effects blindly. Retention/capacity covers snapshot duration plus catch-up; throttle to protect live traffic. Fault-test concurrent updates, partition rebalance, snapshot failure, expiry approach and restore.
 

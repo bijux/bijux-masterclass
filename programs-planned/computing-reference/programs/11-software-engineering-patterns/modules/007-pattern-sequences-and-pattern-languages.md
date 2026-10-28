@@ -32,16 +32,16 @@ How can related patterns guide a designer through successive context changes wit
 
 Model a language as a directed, typed graph
 
-\[
+$$
 L=(P,R,E),
-\]
+$$
 
-where (P) is patterns, (R) is relationship types, and (E\subseteq P\times R\times P) is edges. Design state (x_i) determines which outgoing edge is admissible:
+where (P) is patterns, (R) is relationship types, and $E\subseteq P\times R\times P$ is edges. Design state (x_i) determines which outgoing edge is admissible:
 
-\[
+$$
 x_{i+1}=apply(p_i,x_i),\qquad
 p_{i+1}\in applicable(successors(p_i),x_{i+1}).
-\]
+$$
 
 A sequence is therefore a path discovered through resulting contexts, not the printed order of a book. Different projects can take different paths, revisit earlier patterns, or stop when no remaining force justifies another move.
 
@@ -177,35 +177,35 @@ Removal is also evolution. Merge duplicate patterns, split overloaded ones, and 
 
 Let a pattern language be
 
-\[
+$$
 L=(P,R,E,A,S),
-\]
+$$
 
-where (P) is patterns, (R) typed relationships, (E\subseteq P\times R\times P) edges, (A) entry conditions, and (S) stopping predicates. A design state (x) contains current context, unresolved forces, decisions, and evidence.
+where (P) is patterns, (R) typed relationships, $E\subseteq P\times R\times P$ edges, (A) entry conditions, and (S) stopping predicates. A design state (x) contains current context, unresolved forces, decisions, and evidence.
 
 An application transition is partial:
 
-\[
+$$
 apply:P\times X\rightharpoonup X.
-\]
+$$
 
 It is defined only when the pattern is applicable and its preconditions hold. Candidate successors are
 
-\[
+$$
 Next_L(p,x')=\{q\mid (p,r,q)\in E\land guard(r,q,x')\}.
-\]
+$$
 
 A sequence is a path
 
-\[
+$$
 \sigma=(p_1,x_1),(p_2,x_2),\ldots,(p_n,x_n)
-\]
+$$
 
 where each transition is defined and each next node passes its edge guard. Completion for this path is contextual:
 
-\[
+$$
 Stop_L(x_n)=true,
-\]
+$$
 
 not “every node in (P) was applied.”
 

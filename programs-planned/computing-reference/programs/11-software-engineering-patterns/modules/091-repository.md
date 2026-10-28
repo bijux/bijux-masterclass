@@ -31,11 +31,11 @@ When a domain model must retrieve and persist aggregate roots, how can it expres
 
 ### Central model, mechanism, or theorem
 
-For aggregate type \(A\), Repository \(R_A\) approximates a conceptual collection:
+For aggregate type $A$, Repository $R_A$ approximates a conceptual collection:
 
-\[
+$$
 R_A.get(id),\quad R_A.add(a),\quad R_A.remove(a),\quad R_A.matching(s).
-\]
+$$
 
 The illusion is intentionally partial. Storage access has latency, failure, finite query shapes, authorization, isolation and consistency. Correctness requires each operation to define tenant/principal scope, absence semantics, consistency/snapshot, result bounds/order/page, loading depth, version precondition and unit-of-work participation. A Repository preserves domain language and one-way dependency; it cannot make remote/database behavior equal to an in-memory list.
 
@@ -126,9 +126,9 @@ Do not begin by generating interfaces for every table. Identify aggregate roots 
 
 The interface lives with the client policy—domain or application layer—using domain/application types. Infrastructure implements it with SQL/ORM/document/event storage. This keeps dependencies pointing inward:
 
-\[
+$$
 application/domain \leftarrow repository\ interface \leftarrow infrastructure\ implementation.
-\]
+$$
 
 Do not leak `DbContext`, SQL fragments, ORM `Query`, vendor cursor, database row or HTTP response through the interface. Those make the client depend outward and complicate replacement/testing. Conversely, do not erase capabilities that affect the domain: expected version, consistency requirement, bounded page and lock/lease intent may belong in the contract.
 
@@ -173,9 +173,9 @@ A service that first asks `authorize(user, order_id)` then calls `repository.of_
 
 Pass an immutable authorized scope/principal/tenant policy and constrain the storage predicate:
 
-\[
+$$
 WHERE\ id=?\ AND\ tenant=?\ AND\ permitted\_relationship(...).
-\]
+$$
 
 Under concealment policy, foreign and absent resources both produce `NotFound`. Some use cases deliberately distinguish `Forbidden`, but the policy must be explicit and side channels tested. Mutation predicates include authorization-relevant ownership and expected version in the same transaction/conditional write when authority can change.
 
@@ -203,9 +203,9 @@ No-tracking reads may materialize copies for performance. Such objects should be
 
 Use expected version/ETag/generation or an atomic domain predicate:
 
-\[
+$$
 UPDATE\ orders\ SET\ldots,version=8\ WHERE\ id=?\ AND\ tenant=?\ AND\ version=7.
-\]
+$$
 
 Zero affected rows could mean absent, unauthorized or version conflict; resolve according to the contract without leaking more than policy permits. A database constraint violation maps to `DuplicateOrderNumber`/`UniquenessConflict` if that constraint has domain meaning. Connection timeout/deadlock maps to a retryable infrastructure/application category, not an HTTP response.
 
@@ -287,13 +287,13 @@ Remove Repository when it provides no domain vocabulary or policy, merely duplic
 
 ## Definitions and Notation
 
-Let aggregate type be \(A\), root identity \(id\), tenant/authorization scope \(\sigma\), version \(v\), Repository \(R_A\), Specification \(s:A\to\{true,false\}\), Unit of Work \(U\), Identity Map \(M_U[(A,\sigma,id)]\), ordered bounded page \(P=(items,cursor,snapshot)\), and conditional mutation \(write(id,\sigma,v\to v+1)\).
+Let aggregate type be $A$, root identity $id$, tenant/authorization scope $\sigma$, version $v$, Repository $R_A$, Specification $s:A\to\{true,false\}$, Unit of Work $U$, Identity Map $M_U[(A,\sigma,id)]$, ordered bounded page $P=(items,cursor,snapshot)$, and conditional mutation $write(id,\sigma,v\to v+1)$.
 
 The collection metaphor is observational: clients express domain selection/mutation without mapping syntax. It does not imply in-memory complexity, infinite enumeration, local failure semantics, one consistency model or arbitrary predicate translation.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Dependency direction.** Domain/application owns \(R_A\); infrastructure implements it. If vendor types escape, the intended one-way dependency fails.
+**Dependency direction.** Domain/application owns $R_A$; infrastructure implements it. If vendor types escape, the intended one-way dependency fails.
 
 **Aggregate safety.** Repository mutation exposes roots; root behavior and one local transaction preserve internal invariant assumptions. Independent child repositories bypass the boundary.
 

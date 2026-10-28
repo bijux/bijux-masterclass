@@ -20,7 +20,7 @@ When may a program phrase be replaced by its result without changing the program
 
 - An **expression** is a program phrase evaluated to produce a result, possibly with effects, failure, or divergence according to its language.
 - A **value** is a completed result recognized by the language's evaluation rules; values do not require the same immediate evaluation step as reducible expressions.
-- An **evaluation context** (C[-]) is a surrounding program with one distinguished hole.
+- An **evaluation context** $C[-]$ is a surrounding program with one distinguished hole.
 - Two expressions are **contextually equivalent** relative to observations when every admitted context observes the same behavior from each.
 - An expression is **referentially transparent** in a stated context when replacing it by its value preserves observable behavior.
 - **Equational reasoning** transforms program expressions using laws justified by their semantics, much as algebra transforms mathematical expressions.
@@ -28,13 +28,13 @@ When may a program phrase be replaced by its result without changing the program
 
 ### Central model, mechanism, or theorem
 
-Write (e\Downarrow v) when expression (e) evaluates to value (v), and (Obs(C[e])) for the observation of placing (e) in context (C). The substitution principle desired by functional reasoning is
+Write $e\Downarrow v$ when expression $e$ evaluates to value $v$, and $Obs(C[e])$ for the observation of placing $e$ in context $C$. The substitution principle desired by functional reasoning is
 
-\[
+$$
 e\Downarrow v
 \quad\Longrightarrow\quad
 \forall C\in\mathcal{C},\;Obs(C[e])=Obs(C[v]).
-\]
+$$
 
 This implication is not automatic. It depends on the language, evaluation strategy, admitted contexts, termination behavior, effects, and observation boundary. Pure, deterministic, terminating expressions under functional observations provide the simplest reliable setting.
 
@@ -53,7 +53,7 @@ Typical errors are calling every expression pure, confusing deterministic output
 
 ### Compact example
 
-The arithmetic expression `(4 + 2) * 6` can be rewritten by binding `x = 4 + 2` and using `x * 6`; both yield 36. If `next()` increments hidden state, `next() + next()` yields (1+2=3), while binding `x = next()` and using `x + x` yields (1+1=2). The substitution is safe in the first case and observable in the second.
+The arithmetic expression `(4 + 2) * 6` can be rewritten by binding `x = 4 + 2` and using `x * 6`; both yield 36. If `next()` increments hidden state, `next() + next()` yields $1+2=3$, while binding `x = next()` and using `x + x` yields $1+1=2$. The substitution is safe in the first case and observable in the second.
 
 ### Connections
 
@@ -113,25 +113,25 @@ An **expression** is a phrase whose language semantics describes evaluation towa
 
 A **value** is language-relative. Integers, booleans, tuples, and functions may be values; a reducible addition is not yet a value. In a lazy language, a data constructor can count as a value before all of its fields are evaluated. A value is therefore not “anything stored in memory” and not necessarily a fully traversed data structure.
 
-Evaluation can be modeled as (e\Downarrow v) for a terminating computation. The notation deliberately excludes effects at first. A richer model records an outcome such as (\langle v,t\rangle), where (t) is a trace, or distinguishes errors and divergence. Referential transparency must use the richer model whenever the observer can see those facts.
+Evaluation can be modeled as $e\Downarrow v$ for a terminating computation. The notation deliberately excludes effects at first. A richer model records an outcome such as $\langle v,t\rangle$, where $t$ is a trace, or distinguishes errors and divergence. Referential transparency must use the richer model whenever the observer can see those facts.
 
-An **evaluation context** (C[-]) represents a surrounding program awaiting an expression. Examples include ([-]+1), `print([-])`, a branch condition, or a larger function application. If every admitted context observes (e) and (v) alike, replacement is behavior-preserving. The quantification prevents a convenient test context from hiding a difference that another legal context exposes.
+An **evaluation context** $C[-]$ represents a surrounding program awaiting an expression. Examples include `[-] + 1`, `print([-])`, a branch condition, or a larger function application. If every admitted context observes $e$ and $v$ alike, replacement is behavior-preserving. The quantification prevents a convenient test context from hiding a difference that another legal context exposes.
 
 Functional programming aims to make substitution routine by controlling effects. A pure calculation receives its dependencies as explicit values and returns a result without changing or consulting hidden state. Module 002 defines purity carefully. This chapter focuses on what purity enables: an expression can be named, expanded, shared, or transformed using justified laws.
 
 Consider a let binding:
 
-\[
+$$
 \operatorname{let}\;x=e\;\operatorname{in}\;b.
-\]
+$$
 
-Inlining substitutes (e) for free occurrences of (x) in (b), written (b[e/x]). If (x) occurs twice, inlining may evaluate (e) twice rather than once. If it occurs zero times, inlining may eliminate evaluation. For a pure total expression under value observations, this preserves the result. For effects, exceptions, divergence, or observable cost, it may not.
+Inlining substitutes $e$ for free occurrences of $x$ in $b$, written $b[e/x]$. If $x$ occurs twice, inlining may evaluate $e$ twice rather than once. If it occurs zero times, inlining may eliminate evaluation. For a pure total expression under value observations, this preserves the result. For effects, exceptions, divergence, or observable cost, it may not.
 
 Equational reasoning proceeds in small justified steps. For mathematical integers,
 
-\[
+$$
 (x+2)+3=x+(2+3)=x+5.
-\]
+$$
 
 Each equality cites associativity and literal evaluation. The same rewrite is not universally valid for bounded overflow, floating point, overloaded operators, or effectful addition. Functional programmers do not get free algebra; they work to design representations whose laws are clear.
 
@@ -141,36 +141,36 @@ Referential transparency is also compatible with explicit effects. A program may
 
 Let:
 
-- (E) be a set of expressions;
-- (V\subseteq E) be values;
-- (C[-]) be a one-hole program context;
-- (\mathcal{C}) be the admitted contexts;
-- (O) be observations;
-- (Obs) map complete executions to (O).
+- $E$ be a set of expressions;
+- $V\subseteq E$ be values;
+- $C[-]$ be a one-hole program context;
+- $\mathcal{C}$ be the admitted contexts;
+- $O$ be observations;
+- $\operatorname{Obs}$ maps complete executions to $O$.
 
-Write (e\Downarrow v) for terminating evaluation and (e\Uparrow) for divergence. Write (e_1\simeq e_2) when
+Write $e\Downarrow v$ for terminating evaluation and $e\Uparrow$ for divergence. Write $e_1\simeq e_2$ when
 
-\[
+$$
 \forall C\in\mathcal{C},\;Obs(C[e_1])=Obs(C[e_2]).
-\]
+$$
 
-An occurrence of (e) is referentially transparent with value (v) when (e\Downarrow v) and (e\simeq v) under the declared observations. In practice, authors often say a language fragment is referentially transparent when its expressions systematically support this replacement principle.
+An occurrence of $e$ is referentially transparent with value $v$ when $e\Downarrow v$ and $e\simeq v$ under the declared observations. In practice, authors often say a language fragment is referentially transparent when its expressions systematically support this replacement principle.
 
-For substitution, (b[e/x]) means replace free occurrences of (x) in (b) with (e), avoiding variable capture. Detailed substitution is deferred to FP-052. Here, the critical operational fact is the number and location of occurrences.
+For substitution, $b[e/x]$ means replace free occurrences of $x$ in $b$ with $e$, avoiding variable capture. Detailed substitution is deferred to FP-052. Here, the critical operational fact is the number and location of occurrences.
 
 Separate **functional observation** from **cost observation**:
 
-\[
+$$
 Obs_f(e)=\text{returned value, error, and declared effects},
 \qquad
 Obs_c(e)=\text{time, allocations, or other modeled resources}.
-\]
+$$
 
-Two expressions can be equivalent under (Obs_f) and different under (Obs_c).
+Two expressions can be equivalent under $\operatorname{Obs}_f$ and different under $\operatorname{Obs}_c$.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Congruence.** Useful expression equality must survive placement in admitted contexts: from (e_1\simeq e_2), infer (C[e_1]\simeq C[e_2]). Without this property, local replacement cannot support compositional reasoning.
+**Congruence.** Useful expression equality must survive placement in admitted contexts: from $e_1\simeq e_2$, infer $C[e_1]\simeq C[e_2]$. Without this property, local replacement cannot support compositional reasoning.
 
 **Dependency completeness.** Every changing fact that affects a result must appear as an explicit input or an explicitly modeled effect. A function that reads hidden configuration violates this condition even if the configuration happens not to change during one test.
 
@@ -178,15 +178,15 @@ Two expressions can be equivalent under (Obs_f) and different under (Obs_c).
 
 **Domain-law obligation.** A rewrite must cite a law valid for the represented values. For mathematical integers, associativity and distributivity apply. Fixed-width, saturating, checked, approximate, or user-defined operations require their own laws and failure models.
 
-**A derivation.** Let (f(x)=2(x+3)) over mathematical integers. Then
+**A derivation.** Let $f(x)=2(x+3)$ over mathematical integers. Then
 
-\[
+$$
 f(x)=2(x+3)=2x+2\cdot3=2x+6
-\]
+$$
 
-by distributivity and multiplication of literals. Therefore replacing `2 * (x + 3)` with `2 * x + 6` preserves integer value for every (x). The conclusion excludes overflow and floating-point rounding unless those domains separately validate the law.
+by distributivity and multiplication of literals. Therefore replacing `2 * (x + 3)` with `2 * x + 6` preserves integer value for every $x$. The conclusion excludes overflow and floating-point rounding unless those domains separately validate the law.
 
-**Effect counterexample.** Let (next()) increment hidden state and return the new count. Starting at zero, (next()+next()=1+2=3). Binding (y=next()) and replacing both calls with (y) yields (y+y=1+1=2). One counterexample disproves the unrestricted substitution law.
+**Effect counterexample.** Let (next()) increment hidden state and return the new count. Starting at zero, $next()+next()=1+2=3$. Binding $y=next()$ and replacing both calls with $y$ yields $y+y=1+1=2$. One counterexample disproves the unrestricted substitution law.
 
 ## Alternatives and Trade-Offs
 
@@ -229,7 +229,7 @@ by distributivity and multiplication of literals. Therefore replacing `2 * (x + 
 
 **Question:** Does naming a pure arithmetic subexpression change its result?
 
-**Reasoning:** The direct expression `(4 + 2) * 6` yields 36. Binding `x = 4 + 2` and evaluating `x * 6` also yields 36. Substitution replaces (x) with its value 6, and integer multiplication observes no difference.
+**Reasoning:** The direct expression `(4 + 2) * 6` yields 36. Binding `x = 4 + 2` and evaluating `x * 6` also yields 36. Substitution replaces $x$ with its value 6, and integer multiplication observes no difference.
 
 **Conclusion:** Pure terminating integer calculation supports this local replacement.
 
@@ -283,7 +283,7 @@ print("effectful shared:", shared_value + shared_value)
 
 **Question:** May `(a + b) + c` always be rewritten as `a + (b + c)`?
 
-**Reasoning:** It is valid for mathematical integers. For floating point, choose (a=10^{16}), (b=-10^{16}), and (c=1). The left grouping first produces approximately 0 then 1; the right grouping may round ((-10^{16})+1) back to (-10^{16}), then produce 0. The represented operation is not real-number addition.
+**Reasoning:** It is valid for mathematical integers. For floating point, choose $a=10^{16}$, $b=-10^{16}$, and $c=1$. The left grouping first produces approximately 0 then 1; the right grouping may round $(-10^{16})+1$ back to $-10^{16}$, then produce 0. The represented operation is not real-number addition.
 
 **Conclusion:** Equational laws belong to value domains, not surface operator spellings.
 
@@ -346,7 +346,7 @@ Classify each phrase under a conventional strict language: integer literal `4`; 
 
 ### Exercise 2
 
-Starting from (g(x)=3(x+4)), derive an equivalent expanded expression over mathematical integers. Name every algebraic law. Then explain why the derivation alone does not establish equality for all fixed-width or floating-point implementations.
+Starting from $g(x)=3(x+4)$, derive an equivalent expanded expression over mathematical integers. Name every algebraic law. Then explain why the derivation alone does not establish equality for all fixed-width or floating-point implementations.
 
 ### Exercise 3
 
@@ -370,15 +370,15 @@ A fraud decision depends on transaction data, a model version, feature configura
 
 For mathematical integers,
 
-\[
+$$
 g(x)=3(x+4)=3x+3\cdot4=3x+12.
-\]
+$$
 
 The first rewrite uses distributivity of multiplication over addition; the second evaluates the integer literal product. The derivation assumes exact, unbounded integer operations. Fixed-width arithmetic may overflow, trap, wrap, or saturate at different intermediate points. Floating-point distribution can change rounding and special-value propagation. Those domains require separate semantics and evidence.
 
 ### Answer 3
 
-Starting at 10, the binding calls `read_counter()` once, obtains 10, increments the hidden counter to 11, and computes (10-10=0). The duplicated version makes the first call return 10 and advance to 11, then the second return 11 and advance to 12, producing (10-11=-1). Replacing the shared variable occurrences with the effectful expression duplicated evaluation, changing both the numeric result and final hidden state. The unrestricted inlining step is invalid.
+Starting at 10, the binding calls `read_counter()` once, obtains 10, increments the hidden counter to 11, and computes $10-10=0$. The duplicated version makes the first call return 10 and advance to 11, then the second return 11 and advance to 12, producing $10-11=-1$. Replacing the shared variable occurrences with the effectful expression duplicated evaluation, changing both the numeric result and final hidden state. The unrestricted inlining step is invalid.
 
 ### Answer 4
 

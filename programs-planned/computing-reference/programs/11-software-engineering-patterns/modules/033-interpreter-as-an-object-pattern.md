@@ -33,11 +33,11 @@ When is it appropriate to represent a small language's grammar as an object stru
 
 Let expression grammar be
 
-\[
+$$
 e ::= literal(v)\mid variable(x)\mid add(e,e)\mid multiply(e,e)\mid less(e,e).
-\]
+$$
 
-Define evaluation judgment (\langle e,\rho\rangle\Downarrow v), where environment (\rho) maps names to typed values. For example, if both operands evaluate to integers (a,b), then (\langle add(e_1,e_2),\rho\rangle\Downarrow a+b). Correctness requires syntax construction and evaluation to match a versioned language specification; object shape alone proves neither. Termination for the finite pure tree follows by structural descent only if evaluation visits proper subexpressions and no node introduces unbounded recursion/effects.
+Define evaluation judgment $\langle e,\rho\rangle\Downarrow v$, where environment $\rho$ maps names to typed values. For example, if both operands evaluate to integers (a,b), then $\langle add(e_1,e_2),\rho\rangle\Downarrow a+b$. Correctness requires syntax construction and evaluation to match a versioned language specification; object shape alone proves neither. Termination for the finite pure tree follows by structural descent only if evaluation visits proper subexpressions and no node introduces unbounded recursion/effects.
 
 ### Critical invariants
 
@@ -180,11 +180,11 @@ Generated parsers do not solve semantic security automatically, but they provide
 
 ## Definitions and Notation
 
-Let environment (\rho:Name\rightharpoonup Value) be partial. Evaluation uses judgment (\langle e,\rho,b\rangle\Downarrow(v,b')), where fuel (b\in\mathbb{N}) decreases at each visited node; zero fuel yields `LimitExceeded`.
+Let environment $\rho:Name\rightharpoonup Value$ be partial. Evaluation uses judgment $\langle e,\rho,b\rangle\Downarrow(v,b')$, where fuel $b\in\mathbb{N}$ decreases at each visited node; zero fuel yields `LimitExceeded`.
 
-For tree (e), size (|e|=1+\sum |child|) and height (h(e)=1+\max h(child)), with terminal height one. A pure structural evaluator visits (O(|e|)) nodes when each node evaluates each child once and primitive operations have bounded cost; big integers/strings and lookup/effect costs invalidate constant-operation assumptions.
+For tree (e), size $|e|=1+\sum |child|$ and height $h(e)=1+\max h(child)$, with terminal height one. A pure structural evaluator visits (O(|e|)) nodes when each node evaluates each child once and primitive operations have bounded cost; big integers/strings and lookup/effect costs invalidate constant-operation assumptions.
 
-Parsing function is (parse_v:Text\to AST_v\mid SyntaxErrors). Complete consumption requires the accepted derivation end at EOF. Semantic function (eval_v) is version-indexed; changing (v) can change parse or meaning and is therefore a compatibility decision.
+Parsing function is $parse_v:Text\to AST_v\mid SyntaxErrors$. Complete consumption requires the accepted derivation end at EOF. Semantic function (eval_v) is version-indexed; changing (v) can change parse or meaning and is therefore a compatibility decision.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -419,7 +419,7 @@ Review an unfamiliar clinical-rule interpreter proposal without claiming clinica
 
 ### Answer 1
 
-The tree has root `Less`; left `Add` has `Variable(x)` and `Literal(2)`, while right `Multiply` has literals 3 and 4: (1+(1+1+1)+(1+1+1)=7) nodes. Under (\rho(x)=5), variable evaluates 5, literal 2 evaluates 2, and add gives 7. Literals 3 and 4 multiply to 12. Less compares 7<12 and yields true. Rendering adds explicit parentheses and symbols to produce the shown string.
+The tree has root `Less`; left `Add` has `Variable(x)` and `Literal(2)`, while right `Multiply` has literals 3 and 4: (1+(1+1+1)+(1+1+1)=7) nodes. Under $\rho(x)=5$, variable evaluates 5, literal 2 evaluates 2, and add gives 7. Literals 3 and 4 multiply to 12. Less compares 7<12 and yields true. Rendering adds explicit parentheses and symbols to produce the shown string.
 
 This proves one finite, already-built, well-typed, acyclic AST under one environment. It does not prove text parsing, precedence rules, unknown-name diagnostics, type errors, overflow/big-number cost, evaluation fuel/depth, immutability, security, concurrency, serialization, version compatibility, or arbitrary-expression termination.
 
@@ -427,7 +427,7 @@ This proves one finite, already-built, well-typed, acyclic AST under one environ
 
 Define precedence from tightest to loosest: primary, multiplication, addition, comparison/equality, then `and`; forbid chained comparison or define it explicitly. AST adds `Equal(left,right)` and `And(left,right)`. Equality requires same compatible type under a documented relation and returns Boolean. `And` requires Boolean left/right and evaluates left first; if false it returns false without evaluating right, otherwise evaluates right and returns it if Boolean.
 
-Rules: if (e_1\Downarrow false), `And(e1,e2)` yields false without a judgment for (e_2); if (e_1\Downarrow true) and (e_2\Downarrow b), result is (b). Non-Boolean operand yields source-located type error at the offending expression. Equality defines numeric/string/Boolean behavior without implicit cross-type coercion. Tests cover precedence such as `1+2==3 and false`, short-circuit with forbidden/failing right side, all type pairs, errors/spans, and budget consumption only for visited nodes.
+Rules: if $e_1\Downarrow false$, `And(e1,e2)` yields false without a judgment for (e_2); if $e_1\Downarrow true$ and $e_2\Downarrow b$, result is (b). Non-Boolean operand yields source-located type error at the offending expression. Equality defines numeric/string/Boolean behavior without implicit cross-type coercion. Tests cover precedence such as `1+2==3 and false`, short-circuit with forbidden/failing right side, all type pairs, errors/spans, and budget consumption only for visited nodes.
 
 ### Answer 3
 

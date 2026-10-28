@@ -33,9 +33,9 @@ How do predecessor links and embedded hooks enable constant-link-time removal, m
 
 For a circular sentinel `s`, empty means `s.next=s.prev=s`. Otherwise forward traversal from `s.next` returns the abstract sequence and backward traversal from `s.prev` returns its reverse. For every reachable node including `s`:
 
-\[
+$$
 x.next.prev=x \quad\text{and}\quad x.prev.next=x.
-\]
+$$
 
 To insert detached node `x` before linked position `p`, let `a=p.prev`, then set `x.prev=a`, `x.next=p`, `a.next=x`, and `p.prev=x` before committing membership metadata. To unlink linked `x`, let `a=x.prev`, `b=x.next`, set `a.next=b` and `b.prev=a`, then place `x` in the documented detached state. Given valid nodes and no failure during link writes, both operations use a constant number of links. Finding positions, allocating owning nodes, updating size, synchronization, and reclamation are separate costs.
 

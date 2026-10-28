@@ -34,17 +34,17 @@ How can one business intent make durable progress across independently owned tra
 
 For a sequential saga
 
-\[
+$$
 S = T_1;T_2;\ldots;T_n,
-\]
+$$
 
-each \(T_i\) commits locally. If progress fails after \(T_k\), one possible backward-recovery path is
+each $T_i$ commits locally. If progress fails after $T_k$, one possible backward-recovery path is
 
-\[
+$$
 C_{k};C_{k-1};\ldots;C_1,
-\]
+$$
 
-where each \(C_i\) semantically compensates \(T_i\). This notation is a protocol plan, not an atomicity theorem: other transactions can observe intermediate states; \(C_i\) can fail; some effects are irreversible; and dependency order, not wall-clock completion, governs parallel compensation. Correctness therefore comes from explicit invariants, durable state transitions, stable effect identities, idempotent participants, isolation countermeasures, reconciliation, and truthful terminal states.
+where each $C_i$ semantically compensates $T_i$. This notation is a protocol plan, not an atomicity theorem: other transactions can observe intermediate states; $C_i$ can fail; some effects are irreversible; and dependency order, not wall-clock completion, governs parallel compensation. Correctness therefore comes from explicit invariants, durable state transitions, stable effect identities, idempotent participants, isolation countermeasures, reconciliation, and truthful terminal states.
 
 ### Critical invariants
 
@@ -120,7 +120,7 @@ After this module, learners can:
 
 Do not begin with a workflow engine. State the business intent, unacceptable states, acceptable temporary states, terminal outcomes, and independently owned consistency boundaries. “Place order” might require that captured value is eventually matched by deliverable inventory or compensated, that inventory is never oversold, and that every unresolved monetary effect has an owner. It does not necessarily require that observers see all changes simultaneously.
 
-For each participant identify the local transaction \(T_i\): its command preconditions, atomic state change, durable result, emitted fact/next intent, stable effect identity, and possible compensation \(C_i\). A participant—not the coordinator—enforces its local invariants. The coordinator may decide *when* to request a reservation, but inventory decides whether the reservation is legal and commits it atomically.
+For each participant identify the local transaction $T_i$: its command preconditions, atomic state change, durable result, emitted fact/next intent, stable effect identity, and possible compensation $C_i$. A participant—not the coordinator—enforces its local invariants. The coordinator may decide *when* to request a reservation, but inventory decides whether the reservation is legal and commits it atomically.
 
 If every step truly requires immediate global isolation, or an irreversible action must be atomically coupled to unrelated stores, decomposition may be the wrong boundary. Co-locate the invariant, redesign the business promise, use a shared transaction where technically and organizationally justified, or accept an explicit manual control. A saga cannot manufacture compensation for an irreversible external fact.
 
@@ -285,15 +285,15 @@ Financial, medical, legal, safety or irreversible workflows require named domain
 
 ## Definitions and Notation
 
-Let saga instance \(S\) contain workflow-versioned steps \(V=\{v_1,\ldots,v_n\}\) with dependency DAG \(G=(V,E)\). Let \(T_i\) be participant \(i\)'s local forward transaction and \(C_i\) its optional compensating transaction. Let \(sid\), \(step_i\), \(eid_i\), \(aid_{i,j}\), and \(mid_{i,j}\) denote saga, step, stable effect, attempt and message identities. Let \(q_i\) be durable step state, \(g\) a fencing generation, and \(d_i\) a step/business deadline.
+Let saga instance $S$ contain workflow-versioned steps $V=\{v_1,\ldots,v_n\}$ with dependency DAG $G=(V,E)$. Let $T_i$ be participant $i$'s local forward transaction and $C_i$ its optional compensating transaction. Let $sid$, $step_i$, $eid_i$, $aid_{i,j}$, and $mid_{i,j}$ denote saga, step, stable effect, attempt and message identities. Let $q_i$ be durable step state, $g$ a fencing generation, and $d_i$ a step/business deadline.
 
-An idempotent participant implements a logical mapping where all valid duplicate requests carrying the same \(eid_i\) and fingerprint return the same committed effect/result. This is not a claim about exactly-once transport or exactly-once handler execution.
+An idempotent participant implements a logical mapping where all valid duplicate requests carrying the same $eid_i$ and fingerprint return the same committed effect/result. This is not a claim about exactly-once transport or exactly-once handler execution.
 
 A terminal saga state is domain-defined: `completed`, `compensated`, `partially_compensated_manual_review`, or another explicit outcome. “Compensated” means the specified compensations committed; it does not imply restoration of every historical or physical condition.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Local safety.** Each \(T_i\) atomically checks local preconditions, applies one effect for \(eid_i\), and records replay evidence. Therefore duplicates with the same identity cannot multiply that participant effect, assuming identity retention and transaction isolation are adequate.
+**Local safety.** Each $T_i$ atomically checks local preconditions, applies one effect for $eid_i$, and records replay evidence. Therefore duplicates with the same identity cannot multiply that participant effect, assuming identity retention and transaction isolation are adequate.
 
 **Durable progress.** A coordinator transition and its next outgoing intent are atomically recorded. At-least-once relays may duplicate delivery, but participant deduplication makes repetition safe. Fair retry/reconciliation can then resume after crashes. This is a conditional liveness argument: permanent outages, expired authority or impossible compensation terminate in explicit escalation rather than automatic completion.
 

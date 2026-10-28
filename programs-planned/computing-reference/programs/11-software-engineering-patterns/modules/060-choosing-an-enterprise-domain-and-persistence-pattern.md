@@ -33,17 +33,17 @@ How should architects choose and evolve a coherent combination of domain-logic a
 
 Let a decision context have evidence vector
 
-\[
+$$
 x=(r,s,i,d,t,q,o,h),
-\]
+$$
 
-where \(r\) is rule interaction, \(s\) set orientation, \(i\) identity/lifecycle importance, \(d\) representation divergence, \(t\) transaction breadth, \(q\) read/query asymmetry, \(o\) operational constraints, and \(h\) human/team capability. A candidate architecture \(a\) is admissible only if every hard constraint \(g_j(a,x)\) holds. Among admissible candidates, compare evidence-backed trade-offs:
+where $r$ is rule interaction, $s$ set orientation, $i$ identity/lifecycle importance, $d$ representation divergence, $t$ transaction breadth, $q$ read/query asymmetry, $o$ operational constraints, and $h$ human/team capability. A candidate architecture $a$ is admissible only if every hard constraint $g_j(a,x)$ holds. Among admissible candidates, compare evidence-backed trade-offs:
 
-\[
+$$
 A(x)=\{a\mid \forall j,\ g_j(a,x)=\mathrm{true}\},
 \qquad
 a^*\in\operatorname{Pareto}(A(x)).
-\]
+$$
 
 There is generally no universal scalar optimum. A pattern that dominates latency in one workload may lose on correctness clarity, change isolation, or operability. Architecture selection is a falsifiable hypothesis reviewed over time.
 
@@ -298,15 +298,15 @@ The snippet report empirically establishes deterministic execution and exact out
 
 ## Definitions and Notation
 
-The evidence vector \(x=(r,s,i,d,t,q,o,h)\) uses contextual observations, not universal normalized measurements. Each component must include its source, unit/rubric, uncertainty, and review date. Ordinal values cannot legitimately be multiplied as if they were physical quantities without a defended decision method.
+The evidence vector $x=(r,s,i,d,t,q,o,h)$ uses contextual observations, not universal normalized measurements. Each component must include its source, unit/rubric, uncertainty, and review date. Ordinal values cannot legitimately be multiplied as if they were physical quantities without a defended decision method.
 
-Let \(G=\{g_1,\ldots,g_m\}\) be hard constraints. Candidate \(a\) is **admissible** when every \(g_j(a,x)\) holds with sufficient evidence. A **trade-off dimension** \(f_k(a,x)\) evaluates an admissible candidate; direction (minimize/maximize), uncertainty, and unacceptable region are explicit.
+Let $G=\{g_1,\ldots,g_m\}$ be hard constraints. Candidate $a$ is **admissible** when every $g_j(a,x)$ holds with sufficient evidence. A **trade-off dimension** $f_k(a,x)$ evaluates an admissible candidate; direction (minimize/maximize), uncertainty, and unacceptable region are explicit.
 
-Candidate \(a\) **dominates** \(b\) when it is at least as good on every relevant \(f_k\) and strictly better on one, under comparable evidence. The **Pareto set** contains nondominated candidates. This formalism organizes reasoning; incomplete or biased dimensions still yield a poor decision.
+Candidate $a$ **dominates** $b$ when it is at least as good on every relevant $f_k$ and strictly better on one, under comparable evidence. The **Pareto set** contains nondominated candidates. This formalism organizes reasoning; incomplete or biased dimensions still yield a poor decision.
 
-Let \(I\) be the set of important invariants and \(O(i)\) the unique authoritative decision owner for invariant \(i\). Migration safety requires that at each cutover point exactly one path owns new decisions, even if several paths read or compare results. Reconciliation checks representations against the authoritative history/state.
+Let $I$ be the set of important invariants and $O(i)$ the unique authoritative decision owner for invariant $i$. Migration safety requires that at each cutover point exactly one path owns new decisions, even if several paths read or compare results. Reconciliation checks representations against the authoritative history/state.
 
-A fitness function is tuple \((p,m,\theta,w)\): property \(p\), evidence method \(m\), threshold/condition \(\theta\), and owner/reaction \(w\). A metric without an owner and decision response is observation, not governance.
+A fitness function is tuple $(p,m,\theta,w)$: property $p$, evidence method $m$, threshold/condition $\theta$, and owner/reaction $w$. A metric without an owner and decision response is observation, not governance.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -323,7 +323,7 @@ The selection mechanism is a review loop:
 
 The governing invariants are: one authoritative owner per business decision; one explicit transaction/consistency policy per invariant; trusted authorization on every path; constraints and concurrency control at the shared data boundary; effects delivered under idempotency/outbox/workflow policy; reads labeled by freshness/source; no write bypass through projections/bulk/admin paths; and migration with compatible representations, reconciliation, and rollback/forward recovery.
 
-The decision proof is defeasible. It has the form: under evidence \(E\), constraints \(G\), and priorities \(P\), candidate \(a\) is admissible and no evidenced alternative dominates it; experiment/fitness evidence supports specified properties. Counterevidence—new rule interaction, contention, load, security boundary, ownership, or operational failure—invalidates a premise and triggers review. It does not prove the original team was irrational.
+The decision proof is defeasible. It has the form: under evidence $E$, constraints $G$, and priorities $P$, candidate $a$ is admissible and no evidenced alternative dominates it; experiment/fitness evidence supports specified properties. Counterevidence—new rule interaction, contention, load, security boundary, ownership, or operational failure—invalidates a premise and triggers review. It does not prove the original team was irrational.
 
 Verification triangulates architecture tests, real persistence/concurrency/fault experiments, production-like performance, migration rehearsal, threat/privacy analysis, operability drills, and conceptual/domain review. No single layer substitutes for the others.
 

@@ -33,9 +33,9 @@ How can a first-in-first-out abstraction preserve admission order while making e
 
 Write the abstract queue front-to-back as
 
-\[
+$$
 Q=\langle q_0,\ldots,q_{n-1}\rangle.
-\]
+$$
 
 Successful `enqueue(x)` maps Q to `Q·<x>`; successful `dequeue()` for `n>0` returns `q_0` and leaves `<q_1,...,q_(n-1)>`; `peek()` returns `q_0` unchanged. For accepted enqueues `x_1,...,x_k` with no other operation removing them, successive dequeues return `x_1,...,x_k`. The proof follows by induction from append-back/remove-front.
 

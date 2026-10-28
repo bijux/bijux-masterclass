@@ -32,7 +32,7 @@ When do conflicting write-decision and read-retrieval forces justify separate mo
 
 ### Central model, mechanism, or theorem
 
-Let write authority move from (W_v) to (W_{v+1}) after accepting command (c). A projector eventually computes (R_p=project(W_{\le p})) for source position (p\le v+1). Query result (Q(R_p)) is correct for position (p), not necessarily for latest write revision. Therefore a CQRS API must expose or internally enforce the freshness required by each decision: accept stale display, wait for (p\ge v+1), route to an authoritative query, or reject/degrade when the bound cannot be met.
+Let write authority move from (W_v) to (W_{v+1}) after accepting command (c). A projector eventually computes $R_p=project(W_{\le p})$ for source position $p\le v+1$. Query result (Q(R_p)) is correct for position (p), not necessarily for latest write revision. Therefore a CQRS API must expose or internally enforce the freshness required by each decision: accept stale display, wait for $p\ge v+1$, route to an authoritative query, or reject/degrade when the bound cannot be met.
 
 CQRS starts with responsibility/model separation. Separate databases, asynchronous messaging, microservices and Event Sourcing are optional consequences, not defining requirements.
 
@@ -213,7 +213,7 @@ The run proves this sequential projection model only. It does not implement comm
 
 ## Definitions and Notation
 
-Let (W_v) be authoritative write state at revision (v), (F=\langle f_1,\ldots\rangle) committed facts/change records, (P_j) projector version (j), (R_{j,p}) its read state through source position (p), and (Q_x(R)) query (x). Let (receipt(c)=(id,outcome,v)) be a command receipt.
+Let (W_v) be authoritative write state at revision (v), $F=\langle f_1,\ldots\rangle$ committed facts/change records, (P_j) projector version (j), (R_{j,p}) its read state through source position (p), and (Q_x(R)) query (x). Let (receipt(c)=(id,outcome,v)) be a command receipt.
 
 **Write correctness** is validation/authorization/invariant preservation at authoritative revision. **Projection completeness through (p)** means every applicable fact through (p) is reflected exactly under (P_j)'s semantics. **Freshness lag** may be measured in positions and elapsed time, but only within a valid source/shard coordinate. **Read-your-writes for receipt (v)** means the subsequent query is evaluated on state incorporating that accepted write or an authoritative equivalent—not simply that time elapsed.
 
@@ -232,7 +232,7 @@ If projectors are deterministic and idempotent, replay of the same ordered uniqu
 9. **Rebuild/version.** Isolated target, bounded replay, reconciliation, catch-up, atomic switch and rollback.
 10. **Govern copies.** Security/privacy, capacity, SLOs, recovery ownership and evidence for eventual retirement/simplification.
 
-For read-your-writes, if a command receipt proves accepted source revision (v), and the relevant projector proves complete through (p\ge v) in the same ordering scope, a query from that projection incorporates the write—assuming deterministic correct mapping and no later authorized change obscures it. The claim fails if versions are incomparable, a gap was skipped, the write is outside the projection, or the requested semantics require latest state beyond (v). Thus version tokens are stronger than delay but not universal linearizability.
+For read-your-writes, if a command receipt proves accepted source revision (v), and the relevant projector proves complete through $p\ge v$ in the same ordering scope, a query from that projection incorporates the write—assuming deterministic correct mapping and no later authorized change obscures it. The claim fails if versions are incomparable, a gap was skipped, the write is outside the projection, or the requested semantics require latest state beyond (v). Thus version tokens are stronger than delay but not universal linearizability.
 
 ## Alternatives and Trade-Offs
 

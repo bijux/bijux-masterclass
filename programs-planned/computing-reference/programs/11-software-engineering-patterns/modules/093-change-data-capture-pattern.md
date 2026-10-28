@@ -32,7 +32,7 @@ How can a system turn committed changes in an authoritative data store into a re
 
 ### Central model, mechanism, or theorem
 
-Let a committed source log be (L=\langle r_1,r_2,\ldots\rangle), ordered by source positions (p(r_i)). A consumer resumes after durable checkpoint (c), emits records with (p>c), and advances (c) only after the configured downstream handoff is durable. A crash after handoff but before checkpoint creates a duplicate; a checkpoint before handoff creates loss. Therefore practical CDC normally promises at-least-once delivery plus idempotent application, not magical end-to-end exactly-once behavior.
+Let a committed source log be $L=\langle r_1,r_2,\ldots\rangle$, ordered by source positions (p(r_i)). A consumer resumes after durable checkpoint (c), emits records with (p>c), and advances (c) only after the configured downstream handoff is durable. A crash after handoff but before checkpoint creates a duplicate; a checkpoint before handoff creates loss. Therefore practical CDC normally promises at-least-once delivery plus idempotent application, not magical end-to-end exactly-once behavior.
 
 For bootstrap, take a consistent source image at boundary (p_0), emit its rows, then apply log records after (p_0). Correctness requires a precise snapshot definition, retained log history covering the scan, gap-free handoff, schema history, and a duplicate-safe sink. Order is guaranteed only in the documented transaction/key/partition scope.
 
@@ -230,7 +230,7 @@ The run proves only this pure transition function and expected output. It does n
 Let:
 
 - (S) be the authoritative source state;
-- (L=\langle r_1,r_2,\ldots\rangle) be committed logical change records;
+- $L=\langle r_1,r_2,\ldots\rangle$ be committed logical change records;
 - (p(r)) be a source-specific total coordinate within one declared log lineage;
 - (tx(r)) and (seq(r)) identify transaction and within-transaction sequence where available;
 - (p_0) be the snapshot boundary;
@@ -243,15 +243,15 @@ Let:
 
 For idempotent application, require
 
-\[
+$$
 A(A(P,r),r)=A(P,r).
-\]
+$$
 
 For gap-free bootstrap, the intended history is
 
-\[
+$$
 P_q=fold(A, snapshot(S,p_0),\{r\in L\mid p_0<p(r)\le q\}).
-\]
+$$
 
 This is a model, not a proof that an engine snapshot corresponds to one (p_0). That correspondence must be established from official engine/connector semantics and tested. A keyed reconciliation claim might be (H_K(S_q)=H_K(P_q)), but only after projecting source fields into exactly the sink's intended representation.
 

@@ -33,15 +33,15 @@ How can one caller-owned time budget govern queueing, nested calls, retries, par
 
 For parent deadline Tₚ, local time t, child maximum duration m and parent reserve g, derive
 
-\[
+$$
 T_c=\min(T_p-g,\;t+m),\qquad T_c\le T_p.
-\]
+$$
 
 Admit work of minimum useful duration w only if
 
-\[
+$$
 t+w+g\le T_p.
-\]
+$$
 
 All queueing, backoff, attempts and dependent calls consume the same finite interval. Independent relative timeouts instead accumulate: three sequential five-second waits can consume about fifteen seconds, while three operations under one five-second absolute deadline cannot legitimately extend the caller's authority beyond five seconds.
 
@@ -120,9 +120,9 @@ Different timeouts have different scopes: pool acquisition, DNS lookup, TCP conn
 
 The operation deadline encloses all relevant phases:
 
-\[
+$$
 L_{end-to-end}=L_{queue}+L_{acquire}+L_{connect}+L_{service}+L_{response}+L_{cleanup}.
-\]
+$$
 
 The sum is a boundary model, not a claim that phases are independent or strictly sequential. Parallel work takes the maximum critical-path duration while consuming aggregate resources.
 
@@ -138,9 +138,9 @@ For durable work, the request deadline may govern admission/acknowledgement whil
 
 If a parent deadline is Tₚ and current time t, a child cannot exceed Tₚ. It may be shortened by a dependency maximum and reserved parent work:
 
-\[
+$$
 T_c=\min(T_p-g, t+m).
-\]
+$$
 
 Reserve g is not arbitrary padding. It owns required cleanup, fallback decision, result mapping, serialization, network return and uncertain-effect recording. Separate hard safety reserve from optional quality work.
 

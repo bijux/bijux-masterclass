@@ -32,13 +32,13 @@ How should deadlines, retries, idempotency, circuit breakers, bulkheads, rate li
 
 ### Central model, mechanism, or theorem
 
-If layer \(i\) permits at most \(a_i\) total attempts for the operation it sees, nested independent retries can generate
+If layer $i$ permits at most $a_i$ total attempts for the operation it sees, nested independent retries can generate
 
-\[
+$$
 A_{max}=\prod_{i=1}^{m} a_i
-\]
+$$
 
-attempts at the deepest dependency before fan-out/hedging. Five layers with three attempts each can create \(3^5=243\) deepest calls from one original intent. With one retry owner allowing \(a\) total attempts, \(A_{max}=a\). This is a worst-case bound, not a traffic prediction. Runtime amplification also forms feedback: failures trigger retries, retries increase load/latency, which causes more timeouts/failures. Stability requires one end-to-end deadline, one retry authority/budget, bounded admission/concurrency/queues, idempotent effects, correctly scoped breakers, cheap shedding, jittered recovery and evidence from attempts through terminal outcome.
+attempts at the deepest dependency before fan-out/hedging. Five layers with three attempts each can create $3^5=243$ deepest calls from one original intent. With one retry owner allowing $a$ total attempts, $A_{max}=a$. This is a worst-case bound, not a traffic prediction. Runtime amplification also forms feedback: failures trigger retries, retries increase load/latency, which causes more timeouts/failures. Stability requires one end-to-end deadline, one retry authority/budget, bounded admission/concurrency/queues, idempotent effects, correctly scoped breakers, cheap shedding, jittered recovery and evidence from attempts through terminal outcome.
 
 ### Critical invariants
 
@@ -118,11 +118,11 @@ Begin with one semantic operation, not one HTTP/RPC call. It may pass through cl
 
 If three nested layers each make at most three total attempts, the deepest worst case is 27. If each deepest attempt fans out to four shards, it is 108 shard calls. Hedging two copies doubles relevant branches. The maximum may not occur often, but capacity and incident response must know it.
 
-For layer total attempts \(a_i\), fan-out \(b_i\) and hedge multiplicity \(h_i\), a coarse bound is
+For layer total attempts $a_i$, fan-out $b_i$ and hedge multiplicity $h_i$, a coarse bound is
 
-\[
+$$
 W_{max}=\prod_i a_i b_i h_i.
-\]
+$$
 
 This overcounts when branches short-circuit and ignores cancellations, but exposes hidden multiplicative structure. Expected work needs conditional failure/latency distributions and correlations; independence assumptions are usually optimistic during common outages.
 
@@ -130,11 +130,11 @@ Count original operations, attempts, downstream calls and terminal outcomes sepa
 
 ### Treat resilience as feedback control
 
-Let original offered rate be \(\lambda_0\) and mean extra-attempt ratio be \(r\). Dependency offered rate is approximately \(\lambda=\lambda_0(1+r)\) before fan-out. But \(r\) depends on failure/timeout probability, which depends on \(\lambda\):
+Let original offered rate be $\lambda_0$ and mean extra-attempt ratio be $r$. Dependency offered rate is approximately $\lambda=\lambda_0(1+r)$ before fan-out. But $r$ depends on failure/timeout probability, which depends on $\lambda$:
 
-\[
+$$
 \lambda=\lambda_0[1+r(p(\lambda))].
-\]
+$$
 
 When overload raises latency and failure, retries raise load, creating positive feedback. Backoff/jitter changes timing but does not guarantee reduced total work. A retry budget/token bucket introduces negative feedback: recent successful originals replenish a limited pool; retries consume it; widespread failure fails fast rather than spending the recovery capacity.
 
@@ -314,19 +314,19 @@ Verification combines deterministic policy tests with load/fault experiments in 
 
 ## Definitions and Notation
 
-Let original operation rate be \(\lambda_0\), dependency attempt rate \(\lambda\), per-layer total attempts \(a_i\), fan-out \(b_i\), hedge copies \(h_i\), deepest work bound \(W_{max}\), retry ratio \(r\), load-dependent failure probability \(p(\lambda)\), absolute deadline \(D\), remaining budget \(R(t)=D-t\), per-attempt bound \(\tau_j\), backoff \(\delta_j\), bulkhead capacity \(K\), retry tokens \(B_r\), and goodput \(G\).
+Let original operation rate be $\lambda_0$, dependency attempt rate $\lambda$, per-layer total attempts $a_i$, fan-out $b_i$, hedge copies $h_i$, deepest work bound $W_{max}$, retry ratio $r$, load-dependent failure probability $p(\lambda)$, absolute deadline $D$, remaining budget $R(t)=D-t$, per-attempt bound $\tau_j$, backoff $\delta_j$, bulkhead capacity $K$, retry tokens $B_r$, and goodput $G$.
 
-Let operation/effect identity \(o,e\) persist across attempts \(j\). A terminal outcome is success, truthful degradation, definite failure, compensated/reconciled state or owned uncertainty—not merely the last attempt's status.
+Let operation/effect identity $o,e$ persist across attempts $j$. A terminal outcome is success, truthful degradation, definite failure, compensated/reconciled state or owned uncertainty—not merely the last attempt's status.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Multiplicative bound.** Independent nested attempt loops produce Cartesian combinations; deepest attempts are at most \(\prod_i a_i\), multiplied by fan-out/hedging bounds. One owner collapses retry factors to its one total-attempt bound.
+**Multiplicative bound.** Independent nested attempt loops produce Cartesian combinations; deepest attempts are at most $\prod_i a_i$, multiplied by fan-out/hedging bounds. One owner collapses retry factors to its one total-attempt bound.
 
-**Deadline feasibility.** An attempt is eligible only if accumulated waits/work plus next attempt and reserve fit \(D\). Resetting relative timeouts removes this finite end-to-end bound.
+**Deadline feasibility.** An attempt is eligible only if accumulated waits/work plus next attempt and reserve fit $D$. Resetting relative timeouts removes this finite end-to-end bound.
 
 **Capacity safety.** Finite admission/queue/bulkhead bounds cap resident work in their named scope. They do not guarantee throughput or protect unmodeled shared resources.
 
-**Retry stability condition.** Retry tokens, one owner, backoff/jitter, breaker suppression and shedding limit positive feedback. Stability under a real workload is empirical because \(p(\lambda)\), costs and controller delays are workload-dependent.
+**Retry stability condition.** Retry tokens, one owner, backoff/jitter, breaker suppression and shedding limit positive feedback. Stability under a real workload is empirical because $p(\lambda)$, costs and controller delays are workload-dependent.
 
 **Effect safety.** Stable idempotency identity plus outcome reconciliation prevents retries from intentionally multiplying one semantic effect under their retention/participant assumptions. Timeout/cancellation alone proves nothing about remote commit.
 
@@ -372,7 +372,7 @@ Let operation/effect identity \(o,e\) persist across attempts \(j\). A terminal 
 
 ### Example 1
 
-Client, gateway, service and SDK each allow three total attempts. One operation can create \(3^4=81\) deepest calls; a five-shard fan-out makes 405. The team assigns the gateway one three-attempt semantic budget, disables service retries and charges unavoidable SDK transport retries to it. The bound becomes 15 shard calls before cancellation effects.
+Client, gateway, service and SDK each allow three total attempts. One operation can create $3^4=81$ deepest calls; a five-shard fan-out makes 405. The team assigns the gateway one three-attempt semantic budget, disables service retries and charges unavoidable SDK transport retries to it. The bound becomes 15 shard calls before cancellation effects.
 
 ### Example 2
 
@@ -463,7 +463,7 @@ Design a resilience composition for high-stakes remote actuation spanning API, d
 
 ### Answer 1
 
-Each layer has \(a_i=3\), so deepest attempts are \(3^5=243\). Six-way fan-out yields at most \(243\times6=1,458\) shard calls before hedging/fallback/failover. The fact that each layer allows “only two retries” hides multiplication.
+Each layer has $a_i=3$, so deepest attempts are $3^5=243$. Six-way fan-out yields at most $243\times6=1,458$ shard calls before hedging/fallback/failover. The fact that each layer allows “only two retries” hides multiplication.
 
 Choose the highest layer with operation semantics, stable identity and absolute deadline as retry owner, perhaps three total attempts. Disable retries elsewhere; account narrowly proven transparent SDK/transport retry within that same budget. Then the simple bound is three deepest attempts and 18 shard calls. Further reduce through per-operation fan-out limits, deadline feasibility, retry tokens, breaker/bulkhead admission and no retry of overload/permanent/unsafe outcomes.
 

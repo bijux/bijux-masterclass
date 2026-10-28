@@ -33,9 +33,9 @@ How can fixed storage carry an indefinitely long logical stream while preserving
 
 Let physical capacity be `C>0`, head `h`, and occupancy `n`, with `0<=h<C` and `0<=n<=C`. Logical element `R[i]` resides at
 
-\[
+$$
 p(i)=(h+i)\bmod C,\qquad 0\le i<n.
-\]
+$$
 
 The next write slot is `p(n)`. Enqueue constructs there and increments `n`; dequeue reads/destroys at `h`, advances `h=(h+1) mod C`, and decrements `n`. This counted representation uses all C slots. A two-cursor sentinel representation instead has usable capacity `C-1`; changing the encoding changes the proof and public capacity.
 

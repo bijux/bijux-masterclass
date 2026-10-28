@@ -22,17 +22,17 @@ Let text (T[0..n)) end in a unique sentinel `$` that is lexicographically smalle
 
 For the cyclic sentinel model,
 
-\[
+$$
 \Psi(i)=ISA[(SA[i]+1)\bmod n],
 \qquad
 LF(i)=ISA[(SA[i]-1)\bmod n].
-\]
+$$
 
-(Psi) advances one text position and (LF) moves backward; they are inverses. The Burrows–Wheeler transform is (BWT[i]=T[(SA[i]-1)\bmod n]). Compressed suffix arrays (CSA) are a family of representations using compressible structure in (Psi), BWT, alphabets, and sampled (SA/ISA), rather than storing every (SA) value in (lceil\log_2n\rceil) bits.
+(Psi) advances one text position and (LF) moves backward; they are inverses. The Burrows–Wheeler transform is $BWT[i]=T[(SA[i]-1)\bmod n]$. Compressed suffix arrays (CSA) are a family of representations using compressible structure in (Psi), BWT, alphabets, and sampled (SA/ISA), rather than storing every (SA) value in $lceil\log_2n\rceil$ bits.
 
 ### Central model, mechanism, or theorem
 
-Suffixes beginning with the same character occupy a contiguous SA interval, and within such groups (Psi) has structured/monotone behavior exploited by CSA encodings. A sampled SA stores selected ranks or text positions. To locate an unsampled rank (i), follow (Psi) until a sampled rank (j); if (d) advances occurred, (SA[i]=(SA[j]-d)\bmod n). Sampling density trades space for locate time.
+Suffixes beginning with the same character occupy a contiguous SA interval, and within such groups (Psi) has structured/monotone behavior exploited by CSA encodings. A sampled SA stores selected ranks or text positions. To locate an unsampled rank (i), follow (Psi) until a sampled rank (j); if (d) advances occurred, $SA[i]=(SA[j]-d)\bmod n$. Sampling density trades space for locate time.
 
 FM-indexes represent BWT with rank support and use backward (LF)-style interval updates; Sadakane/Grossi–Vitter CSAs often foreground (Psi). These are related compressed self-index families, not synonyms for one concrete layout. Count, locate, extract, suffix-array access, and inverse access have distinct structures and bounds.
 
@@ -65,7 +65,7 @@ How should a CSA define its text model, permutation functions, compressed repres
 
 ## Why This Matters
 
-A plain suffix array stores (n) integers, usually (Theta(n\log n)) bits, in addition to text. It supports binary-search pattern intervals and is cache-friendly, but its memory can dominate large corpora. A compressed full-text index exploits the suffix permutation's relationship to the text, potentially replacing both raw SA and text while supporting search and extraction.
+A plain suffix array stores (n) integers, usually $Theta(n\log n)$ bits, in addition to text. It supports binary-search pattern intervals and is cache-friendly, but its memory can dominate large corpora. A compressed full-text index exploits the suffix permutation's relationship to the text, potentially replacing both raw SA and text while supporting search and extraction.
 
 The difficulty is compositional. An index can count correctly but locate incorrectly because samples mismatch; it can locate but decode symbols under a stale alphabet; it can serialize a valid BWT with a corrupt rank directory. Exact identities and a plain oracle are therefore first-class production evidence.
 
@@ -97,7 +97,7 @@ After this chapter, you should be able to:
 
 ### Suffix array and inverse
 
-For each (p\in[0,n)), suffix (T[p..n)) participates exactly once. Sorting these suffixes yields permutation (SA); assigning ranks yields inverse (ISA). Pattern (P) matches a contiguous SA interval because all strings with prefix (P) are contiguous lexicographically. Two boundary searches find lower/upper suffixes; locating reads SA values in the interval.
+For each $p\in[0,n$), suffix (T[p..n)) participates exactly once. Sorting these suffixes yields permutation (SA); assigning ranks yields inverse (ISA). Pattern (P) matches a contiguous SA interval because all strings with prefix (P) are contiguous lexicographically. Two boundary searches find lower/upper suffixes; locating reads SA values in the interval.
 
 The unique sentinel makes every suffix distinct, defines a single smallest suffix, and makes rotations/BWT invertible. For byte indexes reserve a byte not present or remap alphabet to an integer domain. For multiple documents, use distinct logical terminators or a collection construction that prevents matches crossing boundaries and maps global positions back to documents.
 
@@ -105,13 +105,13 @@ Plain SA access is direct; compression introduces navigation/sample work. Plain 
 
 ### Psi and LF identities
 
-If rank (i) names suffix starting at (p=SA[i]), (Psi(i)) names suffix at (p+1\bmod n). Therefore repeated (Psi) walks forward through text positions in suffix-rank space. (LF) names (p-1\bmod n); each is the other's inverse:
+If rank (i) names suffix starting at (p=SA[i]), (Psi(i)) names suffix at $p+1\bmod n$. Therefore repeated (Psi) walks forward through text positions in suffix-rank space. (LF) names $p-1\bmod n$; each is the other's inverse:
 
-\[
+$$
 LF(\Psi(i))=i=\Psi(LF(i)).
-\]
+$$
 
-BWT stores the character preceding each suffix. LF can be computed from BWT using (C[c]), the count of symbols smaller than (c), and occurrence rank of (c=BWT[i]). Convention details decide whether rank includes position (i); with half-open rank use (LF(i)=C[c]+\operatorname{rank}_c(BWT,i)).
+BWT stores the character preceding each suffix. LF can be computed from BWT using (C[c]), the count of symbols smaller than (c), and occurrence rank of (c=BWT[i]). Convention details decide whether rank includes position (i); with half-open rank use $LF(i)=C[c]+\operatorname{rank}_c(BWT,i)$.
 
 (Psi) can be derived from the first column/symbol groups and select over BWT. CSA families compress (Psi)'s increasing runs or differences within character groups; FM families compress BWT and rank. Both exploit text regularity through different primary interfaces.
 
@@ -119,7 +119,7 @@ BWT stores the character preceding each suffix. LF can be computed from BWT usin
 
 Storing one SA value every (s) *ranks* does not automatically bound distance along the (Psi) permutation by (s); the fixture's walk happens to reach even-rank samples, but arbitrary rank sampling needs analyzed coverage. A common strategy samples by text position modulo (s): when a walk reaches a suffix whose text position is sampled, at most (s-1) forward/backward text steps are required. The support must recognize sampled ranks and map them to values.
 
-If (Psi^d(i)=j) and (SA[j]) is known, then (SA[i]=(SA[j]-d)\bmod n). With LF steps, signs reverse accordingly. ISA samples support inverse access/extraction by anchoring text positions to suffix ranks. Sample identifiers, density, direction, and order must be persisted with the compressed function.
+If (Psi^d(i)=j) and (SA[j]) is known, then $SA[i]=(SA[j]-d)\bmod n$. With LF steps, signs reverse accordingly. ISA samples support inverse access/extraction by anchoring text positions to suffix ranks. Sample identifiers, density, direction, and order must be persisted with the compressed function.
 
 Larger sampling intervals reduce sample space and increase locate/extract work. Count may not need SA samples at all. A product should tune sampling against occurrence distributions: a frequent pattern can make locate output dominate even if count is fast.
 
@@ -129,9 +129,9 @@ A CSA may search with ordinary suffix comparisons or expose BWT backward search.
 
 Backward search starts with interval ([0,n)) and consumes (P) right to left. For next symbol (c), it maps ([l,r)) to
 
-\[
+$$
 [C[c]+\operatorname{rank}_c(BWT,l),\ C[c]+\operatorname{rank}_c(BWT,r)).
-\]
+$$
 
 The interval is empty exactly when its endpoints meet. Otherwise its length is the occurrence count. Each row represents one matching suffix, but converting rows into original positions is a separate locate operation. A production API should therefore return a typed interval or count, not an unlabelled pair that callers may mistake for positions.
 
@@ -230,9 +230,9 @@ The model's even-rank samples are fixture evidence only. Its bounded loop detect
 
 - (T) is the normalized symbol sequence ending in one unique smallest sentinel; (n=|T|).
 - (SA[i]) is the starting text position of the suffix with lexicographic rank (i); (ISA) is its inverse.
-- (Psi(i)=ISA[(SA[i]+1)\bmod n]) advances one text position in suffix-rank space.
-- (LF(i)=ISA[(SA[i]-1)\bmod n]) retreats one text position and is inverse to (Psi).
-- (BWT[i]=T[(SA[i]-1)\bmod n]) is the preceding symbol for suffix-array row (i).
+- $Psi(i)=ISA[(SA[i]+1)\bmod n]$ advances one text position in suffix-rank space.
+- $LF(i)=ISA[(SA[i]-1)\bmod n]$ retreats one text position and is inverse to (Psi).
+- $BWT[i]=T[(SA[i]-1)\bmod n]$ is the preceding symbol for suffix-array row (i).
 - (C[c]) counts indexed symbols strictly smaller than (c); (rank_c(BWT,i)) counts (c) in (BWT[0..i)).
 - A suffix-array interval ([l,r)) contains exactly the suffix ranks matching a pattern; its count is (r-l).
 - **Locate** maps matching ranks to original text positions; **extract** reconstructs an indexed text range.
@@ -244,11 +244,11 @@ The model's even-rank samples are fixture evidence only. Its bounded loop detect
 
 ### Permutation identities
 
-Because SA is a permutation, ISA exists and (ISA[SA[i]]=i). Substituting definitions gives (LF(Psi(i))=ISA[((SA[i]+1)-1)\bmod n]=i); the symmetric substitution proves (Psi(LF(i))=i). Exhaustive validation checks every row at build time, not merely a few successful queries.
+Because SA is a permutation, ISA exists and (ISA[SA[i]]=i). Substituting definitions gives $LF(Psi(i))=ISA[((SA[i]+1)-1)\bmod n]=i$; the symmetric substitution proves (Psi(LF(i))=i). Exhaustive validation checks every row at build time, not merely a few successful queries.
 
 ### Sample-based reconstruction
 
-If (Psi^d(i)=j), each step advances the represented text position once, so (SA[j]=(SA[i]+d)\bmod n). Rearranging yields (SA[i]=(SA[j]-d)\bmod n). A termination bound needs a sampling-set proof: sampling positions congruent to zero modulo (s) ensures a forward text walk reaches one in at most (s-1) steps; sampling arbitrary suffix ranks does not.
+If (Psi^d(i)=j), each step advances the represented text position once, so $SA[j]=(SA[i]+d)\bmod n$. Rearranging yields $SA[i]=(SA[j]-d)\bmod n$. A termination bound needs a sampling-set proof: sampling positions congruent to zero modulo (s) ensures a forward text walk reaches one in at most (s-1) steps; sampling arbitrary suffix ranks does not.
 
 ### Backward-search correctness
 
@@ -313,7 +313,7 @@ Preceding each suffix start cyclically yields characters `a n n b $ a a`, hence 
 
 ### Example 5
 
-Suppose even suffix ranks store `{0:6,2:3,4:0,6:2}`. To locate row 3, follow (Psi(3)=6), where sample value is 2. Since one forward step was taken, reconstruct (SA[3]=(2-1)\bmod7=1). The subtraction direction follows from (Psi) advancing text positions.
+Suppose even suffix ranks store `{0:6,2:3,4:0,6:2}`. To locate row 3, follow (Psi(3)=6), where sample value is 2. Since one forward step was taken, reconstruct $SA[3]=(2-1)\bmod7=1$. The subtraction direction follows from (Psi) advancing text positions.
 
 ### Example 6
 
@@ -385,7 +385,7 @@ The sorted suffixes are `$` at 3, `a$` at 2, `aba$` at 0, and `ba$` at 1, so (SA
 
 ### Answer 2
 
-Each (Psi) step increments the represented position modulo (n). Thus if (Psi^d(i)=j), then (SA[j]=(SA[i]+d)\bmod n), and rearrangement gives (SA[i]=(SA[j]-d)\bmod n). Suffix rank is unrelated to position along the (Psi) cycle, so ranks congruent modulo (s) can be arbitrarily far apart on that cycle. If samples instead satisfy (SA[j]\equiv0\pmod s), each forward step increments the position residue; one of the next (s) residues is zero, giving at most (s-1) steps, with the sentinel wrap handled modulo (n) under the documented sampling convention.
+Each (Psi) step increments the represented position modulo (n). Thus if (Psi^d(i)=j), then $SA[j]=(SA[i]+d)\bmod n$, and rearrangement gives $SA[i]=(SA[j]-d)\bmod n$. Suffix rank is unrelated to position along the (Psi) cycle, so ranks congruent modulo (s) can be arbitrarily far apart on that cycle. If samples instead satisfy $SA[j]\equiv0\pmod s$, each forward step increments the position residue; one of the next (s) residues is zero, giving at most (s-1) steps, with the sentinel wrap handled modulo (n) under the documented sampling convention.
 
 ### Answer 3
 

@@ -18,7 +18,7 @@ How can a consumer safely receive the same logical message more than once—conc
 
 ### Essential definitions
 
-- An operation \(f\) is **idempotent** over a stated domain when \(f(f(x))=f(x)\); in messaging the required property is usually one logical durable effect, not one handler invocation.
+- An operation $f$ is **idempotent** over a stated domain when $f(f(x))=f(x)$; in messaging the required property is usually one logical durable effect, not one handler invocation.
 - A **logical message/event identity** is stable across transport redeliveries and producer relay retries.
 - An **effect identity** scopes deduplication to consumer/effect name, effect version and logical event/business identity.
 - An **inbox** is durable consumer-side evidence that a named effect processed an identity with a specific input fingerprint and outcome.
@@ -31,13 +31,13 @@ How can a consumer safely receive the same logical message more than once—conc
 
 ### Central model, mechanism, or theorem
 
-For consumer \(c\), effect version \(v\), logical event \(e\), define
+For consumer $c$, effect version $v$, logical event $e$, define
 
-\[
+$$
 k=(c,v,e).
-\]
+$$
 
-In one local serializable or adequately isolated transaction, attempt `insert inbox(k, fingerprint, outcome)` under a unique constraint and apply effect \(E_k\). If the insert wins, commit both; if \(k\) already exists with the same fingerprint, return the recorded outcome without reapplying; if the fingerprint differs, raise an integrity conflict. Therefore concurrent/redelivered attempts converge to one committed local effect per \(k\), assuming all effect writes and inbox evidence share the transaction. Broker acknowledgement occurs afterward and may be repeated.
+In one local serializable or adequately isolated transaction, attempt `insert inbox(k, fingerprint, outcome)` under a unique constraint and apply effect $E_k$. If the insert wins, commit both; if $k$ already exists with the same fingerprint, return the recorded outcome without reapplying; if the fingerprint differs, raise an integrity conflict. Therefore concurrent/redelivered attempts converge to one committed local effect per $k$, assuming all effect writes and inbox evidence share the transaction. Broker acknowledgement occurs afterward and may be repeated.
 
 ### Critical invariants
 
@@ -112,7 +112,7 @@ After this module, learners can:
 
 ### Define the effect, not merely the handler
 
-The equation \(f(f(x))=f(x)\) is useful but incomplete for distributed consumers. What is \(x\)? What counts as the same invocation? Which effects are observed? For a consumer, define:
+The equation $f(f(x))=f(x)$ is useful but incomplete for distributed consumers. What is $x$? What counts as the same invocation? Which effects are observed? For a consumer, define:
 
 - logical input identity and canonical fingerprint;
 - consumer/effect name and version;
@@ -139,9 +139,9 @@ Do not use delivery tag, receipt handle, attempt UUID, process ID or trace ID: t
 
 Deduplication scope includes the effect. A single event may legitimately drive inventory, billing projection and analytics. Global `event_id` uniqueness across all consumers would let the first suppress the others. A useful key is:
 
-\[
+$$
 (producer, tenant, consumer, effect\_version, event\_id).
-\]
+$$
 
 Sometimes business intent identity is required. Two producers might issue different event IDs for one payment authorization; a provider effect key derived from `merchant + order + authorization-purpose` prevents duplicate charge. Keep transport event ID for audit and detect the producer defect rather than hiding it.
 
@@ -298,19 +298,19 @@ Verification injects failure before/after inbox insert, effect mutation, local c
 
 ## Definitions and Notation
 
-Let logical event \(e\) have authenticated producer/tenant \(p,t\), canonical fingerprint \(h(e)\), and zero or more transport deliveries \(d_{e,1},d_{e,2},\ldots\). Let consumer/effect definition be \(c,v\), giving key \(k=(p,t,c,v,e)\). Let inbox state \(I_k\), local target transition \(E_k:x\to x'\), broker acknowledgement \(A_d\), and downstream effect identity \(u_k\).
+Let logical event $e$ have authenticated producer/tenant $p,t$, canonical fingerprint $h(e)$, and zero or more transport deliveries $d_{e,1},d_{e,2},\ldots$. Let consumer/effect definition be $c,v$, giving key $k=(p,t,c,v,e)$. Let inbox state $I_k$, local target transition $E_k:x\to x'$, broker acknowledgement $A_d$, and downstream effect identity $u_k$.
 
-Idempotence is claimed over the observable effect surface and retention horizon: repeated valid deliveries for \(k\) with the same fingerprint yield the same committed local result without additional effect. This does not imply one invocation, one broker record, no errors, global ordering, or idempotence after evidence expires.
+Idempotence is claimed over the observable effect surface and retention horizon: repeated valid deliveries for $k$ with the same fingerprint yield the same committed local result without additional effect. This does not imply one invocation, one broker record, no errors, global ordering, or idempotence after evidence expires.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Atomic local effect.** Unique inbox insertion and target mutation in one local transaction permit only one committed winner for \(k\); losers observe the winner. If either is outside the transaction, a crash counterexample creates suppression or repetition.
+**Atomic local effect.** Unique inbox insertion and target mutation in one local transaction permit only one committed winner for $k$; losers observe the winner. If either is outside the transaction, a crash counterexample creates suppression or repetition.
 
-**Conflict safety.** Storing/checking \(h(e)\) makes same-key/different-content visible. Without a fingerprint, identity collision or malicious reuse silently returns an unrelated result.
+**Conflict safety.** Storing/checking $h(e)$ makes same-key/different-content visible. Without a fingerprint, identity collision or malicious reuse silently returns an unrelated result.
 
 **Acknowledgement safety.** Acknowledge after committed outcome. Crash after commit/before acknowledgement creates a duplicate, which the inbox absorbs. Acknowledge before commit has an unrecoverable loss window.
 
-**Concurrent arbitration.** A database unique constraint/conditional write linearizes competing inserts for \(k\). A read-before-write check without such arbitration admits two winners.
+**Concurrent arbitration.** A database unique constraint/conditional write linearizes competing inserts for $k$. A read-before-write check without such arbitration admits two winners.
 
 **External composition.** Atomic inbox/effect/outbox plus a downstream stable idempotency key extends one logical effect across another boundary under downstream retention/query assumptions. The local inbox alone cannot prove the external effect.
 

@@ -32,9 +32,9 @@ When does an internal platform reduce the total complexity of delivering and ope
 
 Treat a platform change as a complexity transfer with possible leverage. Let (C_b) be user burden before the change, (C_u) residual burden for each consuming team, (C_p) platform build-and-operate burden, (C_c) coordination and migration burden, and (B) the value of safer or faster outcomes. For (n) teams, a candidate is defensible only when evidence supports a favorable total system effect, not simply (C_u<C_b):
 
-\[
+$$
 \Delta V = B - \left(C_p + C_c + nC_u\right) + nC_b.
-\]
+$$
 
 The expression is an accounting frame, not a universal scalar objective. Costs, benefits, risks, and distribution among teams require separate qualitative and quantitative evidence. Complexity that disappears from a developer screen may remain in the platform control plane, support queue, incident path, security boundary, or migration backlog.
 

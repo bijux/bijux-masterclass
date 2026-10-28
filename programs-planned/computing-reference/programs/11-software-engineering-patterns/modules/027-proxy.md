@@ -31,13 +31,13 @@ How can a surrogate control access to a subject while preserving the subject con
 
 ### Central model, mechanism, or theorem
 
-Let subject behavior be (S:C\times X\to Outcome(Y,E)), with operation context (C). A proxy is
+Let subject behavior be $S:C\times X\to Outcome(Y,E)$, with operation context (C). A proxy is
 
-\[
+$$
 P(S)(c,x)=pre(c,x);\ choose\{short\ circuit,\ delegate\};\ post(outcome).
-\]
+$$
 
-For declared observation set (O), transparency requires (P(S)\approx_O S). A protection proxy intentionally differs for unauthorized contexts; a cache proxy may differ in freshness and subject-call count; a remote proxy necessarily adds delay and distributed failure. Correctness therefore comes from an explicit proxy contract, not the slogan “same interface.”
+For declared observation set (O), transparency requires $P(S)\approx_O S$. A protection proxy intentionally differs for unauthorized contexts; a cache proxy may differ in freshness and subject-call count; a remote proxy necessarily adds delay and distributed failure. Correctness therefore comes from an explicit proxy contract, not the slogan “same interface.”
 
 ### Critical invariants
 
@@ -174,11 +174,11 @@ Use architecture and deployment tests to find bypass paths. Protocol-conformance
 
 ## Definitions and Notation
 
-Let decision (A(p,r,a,e,v)\in\{allow,deny\}) depend on principal (p), resource (r), action (a), environment (e), and policy/resource version (v). Secure disclosure requires (A=allow) at the time and scope promised by policy, including cache hits.
+Let decision $A(p,r,a,e,v)\in\{allow,deny\}$ depend on principal (p), resource (r), action (a), environment (e), and policy/resource version (v). Secure disclosure requires (A=allow) at the time and scope promised by policy, including cache hits.
 
-Let client deadline be (D), current time at proxy step (i) be (t_i), and remaining budget (b_i=\max(0,D-t_i)). The proxy passes at most (b_i) downstream.
+Let client deadline be (D), current time at proxy step (i) be (t_i), and remaining budget $b_i=\max(0,D-t_i)$. The proxy passes at most (b_i) downstream.
 
-For observation set (O), (P(S)\approx_O S) iff every experiment limited to (O) yields equivalent outcomes. Timing, locality, identity, telemetry, call count, and freshness belong to (O) only when the contract exposes them.
+For observation set (O), $P(S)\approx_O S$ iff every experiment limited to (O) yields equivalent outcomes. Timing, locality, identity, telemetry, call count, and freshness belong to (O) only when the contract exposes them.
 
 A remote effect can yield knowledge states `not_sent`, `rejected`, `applied`, or `indeterminate`. `deadline_exceeded` alone does not determine which effect state occurred.
 

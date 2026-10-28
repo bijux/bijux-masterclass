@@ -217,7 +217,7 @@ Pair it with a causal oracle: exactly one conditional update succeeds, one durab
 
 ## Definitions and Notation
 
-For phase (g), let registered party set be (P_g), arrivals (A_g subseteq P_g), and unarrived set (U_g=P_g\A_g). Successful advance requires (U_g=empty). Broken flag (B_g) and terminated flag (T) define abnormal passage.
+For phase (g), let registered party set be (P_g), arrivals (A_g subseteq P_g), and unarrived set $U_g=P_g\A_g$. Successful advance requires (U_g=empty). Broken flag (B_g) and terminated flag (T) define abnormal passage.
 
 A latch has initial count (C_0=N) and current (C>=0), monotonically nonincreasing. Completion event (d_i) decrements at most once until zero.
 

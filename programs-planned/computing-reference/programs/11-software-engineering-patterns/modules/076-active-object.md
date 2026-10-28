@@ -33,10 +33,10 @@ How can concurrent clients invoke object-like operations without executing them 
 
 Invocation becomes
 
-\[
+$$
 client\xrightarrow{proxy}MethodRequest(r)\xrightarrow{accept}Q_a
 \xrightarrow{guard/scheduler}servant\xrightarrow{terminal}future_r.
-\]
+$$
 
 For one non-reentrant scheduler executing requests to completion, servant operations are linearized at scheduler-defined points, so observable servant mutation is serial even when clients invoke concurrently. This does not imply FIFO execution: if head request (r_1) has false guard and later (r_2) is enabled, a work-conserving scheduler may execute (r_2) first.
 
@@ -298,10 +298,10 @@ Let (Q_a) be activation queue with capacity (K); (S) servant state; (r=(id,op,ar
 
 Request states are
 
-\[
+$$
 created\rightarrow\{rejected,accepted\rightarrow queued\rightarrow selected
 \rightarrow running\rightarrow terminal\}.
-\]
+$$
 
 Cancellation/expiry can be requested in nonterminal states; actual outcome remains distinct. Let (lin(r)) be the operation-defined servant/effect linearization point, not automatically proxy return or future completion. Object lifecycle identity is `(object_id,generation)`.
 
@@ -504,15 +504,15 @@ Invocation is entering proxy; acceptance is atomic capacity reservation/enqueue/
 
 Maximum declared queued payload is
 
-\[
+$$
 120\times32\text{ KiB}=3840\text{ KiB}=3.75\text{ MiB}.
-\]
+$$
 
 With one running request, maximum local queued-plus-running count is (120+1=121). Little's Law gives
 
-\[
+$$
 L=\lambda W=400\times0.15=60
-\]
+$$
 
 average resident requests for the stable measured boundary.
 

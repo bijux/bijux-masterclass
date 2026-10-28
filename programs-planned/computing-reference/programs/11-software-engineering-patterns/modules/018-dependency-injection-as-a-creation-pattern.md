@@ -31,13 +31,13 @@ How can a system construct a complete, valid, least-authority object graph at an
 
 ### Central model, mechanism, or theorem
 
-Model a constructed graph as \(G=(V,E)\), where \((u,v)\in E\) means consumer \(u\) requires dependency \(v\). A direct eager construction order exists exactly when the required subgraph is acyclic; a reverse topological order constructs dependencies before consumers. For each required dependency key, resolution must be total and unambiguous:
+Model a constructed graph as $G=(V,E)$, where $(u,v)\in E$ means consumer $u$ requires dependency $v$. A direct eager construction order exists exactly when the required subgraph is acyclic; a reverse topological order constructs dependencies before consumers. For each required dependency key, resolution must be total and unambiguous:
 
-\[
+$$
 \forall k\in K_{required},\quad |bindings(k)|=1.
-\]
+$$
 
-If lifetime rank increases with longevity, direct retention requires \(life(v)\ge life(u)\). A longer-lived consumer may access a shorter-lived object only through an explicit scope/provider boundary evaluated in the shorter-lived context. Graph validation does not prove provider behavior or domain correctness, but it can reject missing, ambiguous, cyclic, and scope-invalid wiring before serving traffic.
+If lifetime rank increases with longevity, direct retention requires $life(v)\ge life(u)$. A longer-lived consumer may access a shorter-lived object only through an explicit scope/provider boundary evaluated in the shorter-lived context. Graph validation does not prove provider behavior or domain correctness, but it can reject missing, ambiguous, cyclic, and scope-invalid wiring before serving traffic.
 
 ### Critical invariants
 
@@ -156,7 +156,7 @@ Providers can hide failure, blocking I/O, and lifecycle. Their interface should 
 
 ### Startup and failure atomicity
 
-Separate allocation, configuration validation, dependency wiring, resource startup, readiness, and traffic admission. If starting component \(n\) fails, stop already-started components in reverse order and report the causal chain.
+Separate allocation, configuration validation, dependency wiring, resource startup, readiness, and traffic admission. If starting component $n$ fails, stop already-started components in reverse order and report the causal chain.
 
 Avoid network calls in arbitrary provider evaluation. Make external acquisition explicit and bounded. A graph can be structurally valid while the database is unavailable; diagnostics must distinguish configuration, wiring, and runtime readiness failures.
 
@@ -180,19 +180,19 @@ For live reconfiguration, build and validate a new graph generation, switch traf
 
 ## Definitions and Notation
 
-Let \(K\) be dependency keys, \(P\) providers, and binding map \(B:K\to P\). A qualified key includes semantic type and qualifier. Let \(G=(V,E)\) be the realized graph, with edge \((u,v)\) from consumer to dependency.
+Let $K$ be dependency keys, $P$ providers, and binding map $B:K\to P$. A qualified key includes semantic type and qualifier. Let $G=(V,E)$ be the realized graph, with edge $(u,v)$ from consumer to dependency.
 
-Let \(scope(v)\) identify instance-reuse context and \(life(v)\) rank lifetime duration. Direct retention requires
+Let $scope(v)$ identify instance-reuse context and $life(v)$ rank lifetime duration. Direct retention requires
 
-\[
+$$
 (u,v)\in E \Longrightarrow life(v)\ge life(u),
-\]
+$$
 
-unless \(v\) is reached through a provider evaluated inside the correct shorter scope. Let \(start(v)\) and \(stop(v)\) denote lifecycle events. For a direct dependency:
+unless $v$ is reached through a provider evaluated inside the correct shorter scope. Let $start(v)$ and $stop(v)$ denote lifecycle events. For a direct dependency:
 
-\[
+$$
 start(v) < start(u),\qquad stop(u) < stop(v).
-\]
+$$
 
 These order constraints apply to owned startable resources, not pure immutable values.
 
@@ -406,7 +406,7 @@ Pass Principal into each scheduling operation after authentication, or inject a 
 
 Static/generated validation checks exactly one binding per required qualified key, no prohibited implicit binding, eager DAG acyclicity, accessible constructors/providers, scope compatibility, plugin interface/version metadata, and forbidden container imports outside roots. Emit a secret-redacted graph and diff it in review.
 
-Startup validation parses raw configuration into typed values, verifies required plugin signatures/allowlists, constructs generation \(g\), opens resources with deadlines, starts them in dependency order, and rolls back in reverse on failure. Readiness performs bounded dependency-specific checks without claiming future availability. Behavioral evidence includes contract tests for implementations, controlled database/broker integration, failure injection, concurrency tests, authorization tests, and shutdown/drain tests. Deployment builds the new generation alongside the old only within capacity, switches traffic atomically, observes it, drains, and closes. Static graph success is not behavioral or operational proof.
+Startup validation parses raw configuration into typed values, verifies required plugin signatures/allowlists, constructs generation $g$, opens resources with deadlines, starts them in dependency order, and rolls back in reverse on failure. Readiness performs bounded dependency-specific checks without claiming future availability. Behavioral evidence includes contract tests for implementations, controlled database/broker integration, failure injection, concurrency tests, authorization tests, and shutdown/drain tests. Deployment builds the new generation alongside the old only within capacity, switches traffic atomically, observes it, drains, and closes. Static graph success is not behavioral or operational proof.
 
 ### Answer 4
 

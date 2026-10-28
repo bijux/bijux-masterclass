@@ -33,9 +33,9 @@ Which resources and workloads must be partitioned so that one slow, faulty, mali
 
 For partitions i with allocations cᵢ from total safe capacity C and operational reserve R,
 
-\[
+$$
 \sum_i c_i + R \le C.
-\]
+$$
 
 For multiple resources r, each partition has a vector cᵢ,r and the inequality holds for every r. A concurrency estimate may begin from Little's Law Lᵢ≈λᵢWᵢ at a stable, aligned boundary, then must be capped by dependency, memory, connection, CPU and risk limits. Isolation is real only if the exhausted partition cannot acquire the capacity reserved for another; a separate thread pool that shares one saturated connection pool is not end-to-end isolation.
 
@@ -118,9 +118,9 @@ Partition by failure independence and business consequence. Common keys are depe
 
 Let total safe capacity for resource r be Cᵣ, reserve Rᵣ and allocation cᵢ,ᵣ. Require
 
-\[
+$$
 \forall r:\quad \sum_i c_{i,r}+R_r\le C_r.
-\]
+$$
 
 Safe capacity is below a theoretical maximum and is validated under failure/recovery. For database connections, include server connection/process/memory/lock limits and other applications. For threads, include stack memory, scheduler overhead and blocking behavior. For asynchronous tasks, connections, outstanding I/O and buffers may bind before threads. For queues, count and bytes both matter.
 

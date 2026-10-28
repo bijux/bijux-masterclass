@@ -6,7 +6,7 @@ from datetime import date
 from pathlib import Path
 
 from .manifest import find_module
-from .markdown import headings, prose_only
+from .markdown import github_math_issues, headings, prose_only
 from .result import ValidationResult
 
 FRONT_MATTER_FIELDS = (
@@ -214,6 +214,7 @@ def validate_chapter_text(
         issues.append("References contain exact normalized duplicates")
     if path is not None:
         _links(path, body, issues)
+    issues.extend(github_math_issues(body))
     return ValidationResult(tuple(issues))
 
 

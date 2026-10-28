@@ -31,17 +31,17 @@ How can a data-structure operation state exactly what callers must provide, what
 
 ### Central model, mechanism, or theorem
 
-For abstract state (a\in A), input (x\in X), normal result (y\in Y), and successor (a'\), specify an operation as a relation
+For abstract state $a\in A$, input $x\in X$, normal result $y\in Y$, and successor $a'$, specify an operation as a relation
 
-\[
+$$
 Op\subseteq A\times X\times Outcome(Y)\times A.
-\]
+$$
 
 A normal Hoare-style obligation is
 
-\[
+$$
 \{RI\land Pre(a,x)\}\ op(x)\ \{RI'\land Post(a,x,y,a')\land Frame(a,a')\}.
-\]
+$$
 
 Every documented error outcome needs its own postcondition. If behavior outside `Pre` is unspecified, callers cannot rely on it; when practical, a total API can instead return an explicit result for empty, absent, full, or invalid cases.
 
@@ -112,15 +112,15 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-Start from abstract state. A sequence operation `append(x)` transforms mathematical sequence (s) into (s\mathbin{\|\!|}[x]). It may grow an array, allocate a node, copy a persistent path, or write a page. The public postcondition should state the sequence relation; representation details belong to the implementation proof.
+Start from abstract state. A sequence operation `append(x)` transforms mathematical sequence (s) into $s\mathbin{\|\!|}[x]$. It may grow an array, allocate a node, copy a persistent path, or write a page. The public postcondition should state the sequence relation; representation details belong to the implementation proof.
 
 Use old-state notation explicitly. Let (a_0) be state at invocation and (a_1) the state on return. A map update might say:
 
-\[
+$$
 lookup(a_1,k)=v
-\]
+$$
 
-and for all (j\ne k), (lookup(a_1,j)=lookup(a_0,j)). The second clause is a frame condition. Without it, an implementation that deletes every other entry still satisfies the first equation.
+and for all $j\ne k$, (lookup(a_1,j)=lookup(a_0,j)). The second clause is a frame condition. Without it, an implementation that deletes every other entry still satisfies the first equation.
 
 **Input domains and preconditions.** A declared element type rarely captures every obligation. Hash-map keys may require stable equality and hash values while resident. Ordered trees require a total or otherwise specified ordering over admitted keys. Numeric priorities may exclude NaN because it violates ordinary ordering assumptions. Ownership-sensitive structures can require that a node is currently unlinked.
 
@@ -130,9 +130,9 @@ Distinguish invalid input from ordinary absence or capacity. An empty pop is par
 
 **Normal postconditions.** State result, abstract successor, preserved observations, and ownership transfer. For set insertion:
 
-\[
+$$
 S_1=S_0\cup\{x\},\qquad result=(x\notin S_0).
-\]
+$$
 
 This defines both idempotent state behavior and a Boolean meaning. “Returns success” is ambiguous: did the call finish, did membership change, or is the element present afterward?
 
@@ -165,7 +165,7 @@ Mutation during iteration can fail fast, invalidate the iterator, produce a weak
 
 **Complexity and resources.** A bound needs a size measure and cost model. `O(1)` may be worst-case, expected under a hash assumption, or amortized over a sequence. Amortized dynamic-array append permits occasional (O(n)) copies; it does not provide per-call latency.
 
-State output sensitivity where relevant: reporting (k) range results may cost (O(\log n+k)). Name allocation, auxiliary space, recursion depth, I/O, cache behavior, and maximum capacity when clients rely on them. Complexity constants and machine effects are developed in DSE-004 through DSE-006.
+State output sensitivity where relevant: reporting (k) range results may cost $O(\log n+k)$. Name allocation, auxiliary space, recursion depth, I/O, cache behavior, and maximum capacity when clients rely on them. Complexity constants and machine effects are developed in DSE-004 through DSE-006.
 
 Adversaries affect expected guarantees. Hash operations expected (O(1)) under independent distribution can degrade under chosen collisions. A contract for untrusted keys needs keyed hashing, collision bounds, tree fallback, or an honest weaker guarantee.
 
@@ -234,15 +234,15 @@ print("trace_contract_pass=True")
 
 Let an operation contract be (K=(Pre,N,E,F,R)): precondition, normal relation, exceptional relations, frame relation, and resource/concurrency guarantees. `old(e)` denotes expression (e) in invocation state; primed names denote response state.
 
-For partial operation (op:A\times X\rightharpoonup A\times Y), `Pre` identifies its domain. A totalized form returns (Outcome(Y)=Ok(Y)\mid Error(Code)) and defines a successor for every admitted input.
+For partial operation $op:A\times X\rightharpoonup A\times Y$, `Pre` identifies its domain. A totalized form returns $Outcome(Y)=Ok(Y)\mid Error(Code)$ and defines a successor for every admitted input.
 
 A frame can be written as a modifies set or relational equality. For map update at key (k):
 
-\[
+$$
 \forall j\ne k.\ lookup(a',j)=lookup(a,j).
-\]
+$$
 
-Sequential history (h) is a sequence of invocations/responses. Concurrent specifications relate a history to allowed sequential histories or another consistency model. Resource bound (T(n,k,\alpha)) names input size (n), output size (k), and assumptions (\alpha).
+Sequential history (h) is a sequence of invocations/responses. Concurrent specifications relate a history to allowed sequential histories or another consistency model. Resource bound $T(n,k,\alpha)$ names input size (n), output size (k), and assumptions $\alpha$.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -423,11 +423,11 @@ Prepare a verification plan for replacing a stable priority queue with a concurr
 
 ### Answer 1
 
-Let old queue be sequence (q). If nonempty (q=[x]\mathbin{\|\!|}r), return `Some(x)` and establish (q'=r); capacity/configuration and other objects are unchanged. If empty, return `None` and establish (q'=q=[]). The operation is total over valid queues. A null sentinel is ambiguous when null is an admitted element; a tagged option distinguishes empty from a stored null.
+Let old queue be sequence (q). If nonempty $q=[x]\mathbin{\|\!|}r$, return `Some(x)` and establish (q'=r); capacity/configuration and other objects are unchanged. If empty, return `None` and establish (q'=q=[]). The operation is total over valid queues. A null sentinel is ambiguous when null is an admitted element; a tagged option distinguishes empty from a stored null.
 
 ### Answer 2
 
-Require valid resident-key equality/hash semantics. Specify whether `f` receives the key, may return null, may throw, block, or mutate the map, and whether it is invoked once. If key is present, return its value and do not invoke `f`. If absent and `f` returns value (v), associate (k\mapsto v) and leave other keys unchanged. If `f` fails or returns a prohibited value, state whether the map is unchanged. Define reentrancy and concurrent atomicity: a linearizable contract might allow several computations but publish at most one, or promise single execution under stronger coordination. These alternatives affect side effects and cannot be inferred from the name.
+Require valid resident-key equality/hash semantics. Specify whether `f` receives the key, may return null, may throw, block, or mutate the map, and whether it is invoked once. If key is present, return its value and do not invoke `f`. If absent and `f` returns value (v), associate $k\mapsto v$ and leave other keys unchanged. If `f` fails or returns a prohibited value, state whether the map is unchanged. Define reentrancy and concurrent atomicity: a linearizable contract might allow several computations but publish at most one, or promise single execution under stronger coordination. These alternatives affect side effects and cannot be inferred from the name.
 
 ### Answer 3
 

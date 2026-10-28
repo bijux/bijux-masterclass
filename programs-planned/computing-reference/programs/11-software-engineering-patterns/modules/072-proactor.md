@@ -31,25 +31,25 @@ How can an application initiate many asynchronous operations and process their c
 
 ### Central model, mechanism, or theorem
 
-For operation \(o\), use lifecycle
+For operation $o$, use lifecycle
 
-\[
+$$
 created\rightarrow submitted\rightarrow in\_flight\rightarrow completing\rightarrow terminal,
-\]
+$$
 
 with cancellation as an orthogonal request flag. Exactly one transition wins from `in_flight` to terminal result
 
-\[
+$$
 R_o\in\{success(n),eof,error(e),cancelled,timeout\},
-\]
+$$
 
-and every completion notification is deduplicated by \((owner,generation,operation\_id)\). Cancellation and deadline do not overwrite a success that already won; the handler observes the actual result and reconciles external effects.
+and every completion notification is deduplicated by $(owner,generation,operation\_id)$. Cancellation and deadline do not overwrite a success that already won; the handler observes the actual result and reconciles external effects.
 
-If accepted operation rate is \(\lambda\) and mean in-flight duration \(W\), Little's Law gives average outstanding work
+If accepted operation rate is $\lambda$ and mean in-flight duration $W$, Little's Law gives average outstanding work
 
-\[
+$$
 N=\lambda W
-\]
+$$
 
 under a stable measured system. Submission slots, completion capacity, buffers, downstream limits, and handler service must be sized above bursts/tails yet bounded; otherwise asynchronous initiation only relocates overload.
 
@@ -225,13 +225,13 @@ Test immediate failure, inline and delayed completion, every short length includ
 
 | Symbol or term | Meaning |
 | --- | --- |
-| \(o\) | One logical asynchronous operation identity |
-| \(R_o\) | Actual terminal result of operation \(o\) |
-| \(B_o\) | Buffers/resources loaned to \(o\) until terminal ownership return |
-| \(g_o\) | Owner lifecycle generation recorded at submission |
-| \(\lambda\) | Accepted operation rate under a measured stable workload |
-| \(W\) | Mean in-flight duration from acceptance to terminal completion |
-| \(N\) | Mean number of outstanding operations, \(N=\lambda W\) |
+| $o$ | One logical asynchronous operation identity |
+| $R_o$ | Actual terminal result of operation $o$ |
+| $B_o$ | Buffers/resources loaned to $o$ until terminal ownership return |
+| $g_o$ | Owner lifecycle generation recorded at submission |
+| $\lambda$ | Accepted operation rate under a measured stable workload |
+| $W$ | Mean in-flight duration from acceptance to terminal completion |
+| $N$ | Mean number of outstanding operations, $N=\lambda W$ |
 | SQ/CQ | Submission queue and completion queue |
 | short completion | Successful result with less progress than requested |
 | terminal cell | Serialized/atomic record admitting one logical terminal transition |
@@ -247,7 +247,7 @@ Assume every path resolves stable `(owner,generation,operation)` and performs an
 
 ### Buffer-lifetime argument
 
-Assume buffer lease \(B_o\) is acquired before submission, inaccessible for conflicting reuse while operation is accepted/in flight, and released only after the platform terminal contract is reaped. Then the processor cannot validly access memory already reassigned through this path. Unsafe pointers, undocumented APIs, process termination and device/DMA defects are outside the argument.
+Assume buffer lease $B_o$ is acquired before submission, inaccessible for conflicting reuse while operation is accepted/in flight, and released only after the platform terminal contract is reaped. Then the processor cannot validly access memory already reassigned through this path. Unsafe pointers, undocumented APIs, process termination and device/DMA defects are outside the argument.
 
 ### Cancellation-race argument
 
@@ -478,15 +478,15 @@ The initiator builds context and requests work from the asynchronous operation p
 
 Little's Law gives
 
-\[
+$$
 N=\lambda W=20{,}000\times0.004=80
-\]
+$$
 
 average outstanding operations. Average owned buffer memory is
 
-\[
+$$
 80\times16\text{ KiB}=1280\text{ KiB}=1.25\text{ MiB}.
-\]
+$$
 
 Production limits require arrival/duration tails, bursts, correlations, operation mix, composed steps, CQ/SQ sizes, buffer fragmentation/registration, metadata, retries, device stalls, handler delay, tenant fairness and recovery headroom. Little's Law assumes stable averages and does not bound percentiles or prove capacity.
 

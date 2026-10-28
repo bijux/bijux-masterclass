@@ -31,21 +31,21 @@ How can independently executing components exchange messages through a channel w
 
 ### Central model, mechanism, or theorem
 
-For message identity \(m\), let \(P_m\) be publish attempts, \(D_m\) delivery attempts, and \(E_m\) committed domain effects. With acknowledgement after an atomic/idempotent effect boundary and redelivery after uncertainty, a typical channel targets
+For message identity $m$, let $P_m$ be publish attempts, $D_m$ delivery attempts, and $E_m$ committed domain effects. With acknowledgement after an atomic/idempotent effect boundary and redelivery after uncertainty, a typical channel targets
 
-\[
+$$
 P_m\ge1,\qquad D_m\ge1,\qquad E_m=1.
-\]
+$$
 
-The channel can make \(D_m\ge1\) under its availability/durability premises, but \(E_m=1\) requires the consumer to bind message identity to its effect using a uniqueness constraint, inbox, naturally idempotent transition, or equivalent protocol. Exactly-once business effect is not implied by one broker delivery.
+The channel can make $D_m\ge1$ under its availability/durability premises, but $E_m=1$ requires the consumer to bind message identity to its effect using a uniqueness constraint, inbox, naturally idempotent transition, or equivalent protocol. Exactly-once business effect is not implied by one broker delivery.
 
 Queue backlog evolves as
 
-\[
+$$
 B_{t+1}=\max(0,B_t+A_t-C_t-X_t),
-\]
+$$
 
-where admitted messages \(A_t\), completed messages \(C_t\), and expirations/drops \(X_t\) must be governed. If long-run arrival rate exceeds sustainable completion rate, backlog, latency, rejection, or loss must grow.
+where admitted messages $A_t$, completed messages $C_t$, and expirations/drops $X_t$ must be governed. If long-run arrival rate exceeds sustainable completion rate, backlog, latency, rejection, or loss must grow.
 
 ### Critical invariants
 
@@ -292,13 +292,13 @@ The snippet report is empirical evidence for this deterministic trace. Counts an
 
 ## Definitions and Notation
 
-Let message envelope be \(m=(id,type,version,source,tenant,key,t_o,t_r,correlation,causation,payload)\). Occurred time \(t_o\) describes the source event; recorded/published time \(t_r\) describes capture. Neither is assumed globally synchronized.
+Let message envelope be $m=(id,type,version,source,tenant,key,t_o,t_r,correlation,causation,payload)$. Occurred time $t_o$ describes the source event; recorded/published time $t_r$ describes capture. Neither is assumed globally synchronized.
 
-Let channel state contain ordered/partitioned retained messages \(Q\), in-flight attempts \(F\), consumer-group positions \(Z\), and quarantine \(L\). `publish`, `deliver`, `acknowledge`, `negative-acknowledge`, `expire`, `redrive`, and `commit-position` have product-specific atomicity; document exact mapping.
+Let channel state contain ordered/partitioned retained messages $Q$, in-flight attempts $F$, consumer-group positions $Z$, and quarantine $L$. `publish`, `deliver`, `acknowledge`, `negative-acknowledge`, `expire`, `redrive`, and `commit-position` have product-specific atomicity; document exact mapping.
 
-\(P_m,D_m,E_m\) count publish attempts, delivery attempts, and committed business effects for identity \(m\). An acknowledgement may attest receipt or completed durable processing; the contract must choose. Publisher confirmation is denoted \(K_m\) and has no implication \(E_m>0\).
+$P_m,D_m,E_m$ count publish attempts, delivery attempts, and committed business effects for identity $m$. An acknowledgement may attest receipt or completed durable processing; the contract must choose. Publisher confirmation is denoted $K_m$ and has no implication $E_m>0$.
 
-Arrival rate \(\lambda\), sustainable completion rate \(\mu\), backlog \(B\), oldest age \(W\), and partition skew characterize capacity. Long-run \(\lambda>\mu\) is unstable without admission/drop/expiry; autoscaling changes \(\mu\) only until a downstream bottleneck binds.
+Arrival rate $\lambda$, sustainable completion rate $\mu$, backlog $B$, oldest age $W$, and partition skew characterize capacity. Long-run $\lambda>\mu$ is unstable without admission/drop/expiry; autoscaling changes $\mu$ only until a downstream bottleneck binds.
 
 ## Mechanisms, Invariants, or Proof Structure
 

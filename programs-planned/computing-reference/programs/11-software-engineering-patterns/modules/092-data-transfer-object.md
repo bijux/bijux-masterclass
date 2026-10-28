@@ -31,15 +31,15 @@ When data crosses an expensive or independently evolving process/layer boundary,
 
 ### Central model, mechanism, or theorem
 
-Let domain state be \(M\), wire/request/response DTO shapes be \(D_{in},D_{out}\), and explicit mappings be
+Let domain state be $M$, wire/request/response DTO shapes be $D_{in},D_{out}$, and explicit mappings be
 
-\[
+$$
 parse: bytes\rightarrow D_{in},\quad validate/authorize/map:D_{in}\rightarrow Command,
-\]
+$$
 
-\[
+$$
 execute:Command\times M\rightarrow Result,\quad assemble:Result\rightarrow D_{out}\rightarrow bytes.
-\]
+$$
 
 Correctness depends on preserving only declared meaning at each arrow. There is rarely a bijection: server-owned fields are not writable; secrets/internal states are not readable; absence differs from null/default; domain value objects flatten or format; compatibility may accept several input versions while emitting one output version. A general reflection copier cannot prove these policies.
 
@@ -317,19 +317,19 @@ Schema validation proves conformance to the tested schema, not business authoriz
 
 ## Definitions and Notation
 
-Let input/output DTO schemas be \(D_{in}^v,D_{out}^v\), wire bytes \(B\), parse/serialize \(P_v,S_v\), boundary mapping \(m_{in}:D_{in}\times Context\to Command\), result projection \(m_{out}:Result\times Viewer\to D_{out}\), presence state \(\pi_f\in\{absent,null,default,value\}\), and reader/writer versions \(R_i,W_j\).
+Let input/output DTO schemas be $D_{in}^v,D_{out}^v$, wire bytes $B$, parse/serialize $P_v,S_v$, boundary mapping $m_{in}:D_{in}\times Context\to Command$, result projection $m_{out}:Result\times Viewer\to D_{out}$, presence state $\pi_f\in\{absent,null,default,value\}$, and reader/writer versions $R_i,W_j$.
 
-Let classified field set \(F\), writable allow-list \(A_w\subset F\), visible set \(A_r(viewer)\subset F\). Correct mapping is generally partial/asymmetric: \(m_{out}\) need not be invertible and \(m_{in}\) must not accept \(F\setminus A_w\).
+Let classified field set $F$, writable allow-list $A_w\subset F$, visible set $A_r(viewer)\subset F$. Correct mapping is generally partial/asymmetric: $m_{out}$ need not be invertible and $m_{in}$ must not accept $F\setminus A_w$.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 **Call reduction.** A coarse DTO transfers needed data in one remote call rather than multiple fine-grained calls, at the cost of larger payload/overfetch. Measurement selects granularity.
 
-**Mass-assignment safety.** Separate input DTO plus allow-list means fields outside \(A_w\) cannot reach command/domain mutation through the mapper. Reflection/unknown alternate paths invalidate the argument.
+**Mass-assignment safety.** Separate input DTO plus allow-list means fields outside $A_w$ cannot reach command/domain mutation through the mapper. Reflection/unknown alternate paths invalidate the argument.
 
-**Exposure safety.** Allow-listed contextual projection exposes only \(A_r(viewer)\); adding a new domain/persistence field does not automatically add output. Derived/inference risks still require review.
+**Exposure safety.** Allow-listed contextual projection exposes only $A_r(viewer)$; adding a new domain/persistence field does not automatically add output. Derived/inference risks still require review.
 
-**Presence correctness.** Preserving \(\pi_f\) lets PATCH distinguish no-change, clear and set-default/value. A language/model that collapses presence breaks this contract.
+**Presence correctness.** Preserving $\pi_f$ lets PATCH distinguish no-change, clear and set-default/value. A language/model that collapses presence breaks this contract.
 
 **Compatibility.** If old reader ignores unknown optional fields and new writer preserves old field meaning, an additive field is backward compatible for that pair. Required/type/meaning changes need separate proof/migration.
 

@@ -32,18 +32,18 @@ Whose interests, authority, exposure, and work define success, and how can broad
 
 ### Central model, mechanism, or theorem
 
-For stakeholder group \(s\), goal \(G_s\), outcome variable \(Y_s\), population \(P_s\), observation window \(T\), and intervention specification \(S\), define an outcome contract:
+For stakeholder group $s$, goal $G_s$, outcome variable $Y_s$, population $P_s$, observation window $T$, and intervention specification $S$, define an outcome contract:
 
-\[
+$$
 O_s=(P_s,Y_s,baseline_s,target_s,T,guardrails_s,evidence_s).
-\]
+$$
 
-An observed target does not by itself prove that \(S\) caused it. Adequacy still requires domain assumptions \(W\), implementation conformance, and a causal/evidential argument:
+An observed target does not by itself prove that $S$ caused it. Adequacy still requires domain assumptions $W$, implementation conformance, and a causal/evidential argument:
 
-\[
+$$
 W\land S\models G_s,\qquad
 observe(Y_s)\text{ supports but does not alone prove }cause(S,Y_s).
-\]
+$$
 
 ### Critical invariants
 
@@ -145,9 +145,9 @@ An **activity** is work: interview users, migrate records, train operators. An *
 
 The layers form a causal hypothesis:
 
-\[
+$$
 activities\rightarrow outputs\rightarrow use/behavior\rightarrow outcomes\rightarrow impacts.
-\]
+$$
 
 Every arrow needs evidence or an assumption. Shipping does not imply use; use does not imply correct use; correct use does not guarantee outcome; outcome correlation does not establish net impact. This model does not demean delivery metrics. It bounds what each metric proves.
 
@@ -198,7 +198,7 @@ Missingness is rarely random. People without connectivity, rejected applicants, 
 
 ### Separate observation from causation
 
-If outcome \(Y\) improved after release \(S\), other changes, selection, regression to the mean, seasonality, learning, or measurement drift may explain it. A causal claim asks what would have happened to the same population without \(S\)—a counterfactual that cannot be directly observed.
+If outcome $Y$ improved after release $S$, other changes, selection, regression to the mean, seasonality, learning, or measurement drift may explain it. A causal claim asks what would have happened to the same population without $S$—a counterfactual that cannot be directly observed.
 
 Randomized experiments can estimate effects when ethical, feasible, correctly powered, and analyzed. Quasi-experiments, phased rollout, matched comparisons, interrupted time series, and triangulation offer other evidence with assumptions. For safety or rights, withholding an established protection may be unacceptable. State the design and limitations rather than declaring “data-driven proof.”
 
@@ -246,25 +246,25 @@ print(f"contract_pass={contract_pass}")
 
 ## Definitions and Notation
 
-Let \(S=\{s_1,\ldots,s_n\}\) be stakeholder groups. For each \(s\):
+Let $S=\{s_1,\ldots,s_n\}$ be stakeholder groups. For each $s$:
 
-- \(G_s\): desired domain condition;
-- \(A_s\): legitimate authority and its source;
-- \(X_s\): exposure to benefit, cost, or harm;
-- \(Y_s\): operational outcome variable;
-- \(P_s\): eligible population;
-- \(T_s\): observation window;
-- \(H_s\): guardrail predicates.
+- $G_s$: desired domain condition;
+- $A_s$: legitimate authority and its source;
+- $X_s$: exposure to benefit, cost, or harm;
+- $Y_s$: operational outcome variable;
+- $P_s$: eligible population;
+- $T_s$: observation window;
+- $H_s$: guardrail predicates.
 
-For binary outcome \(y_i\) over eligible observations \(P\), rate
+For binary outcome $y_i$ over eligible observations $P$, rate
 
-\[
+$$
 \hat p=\frac{\sum_{i\in P}y_i}{|P|},
-\]
+$$
 
-provided \(P\) and exclusions are defined. For groups \(g\), a simple disparity measure is \(\Delta=\max_g\hat p_g-\min_g\hat p_g\). This difference is descriptive and does not by itself identify unfairness or cause.
+provided $P$ and exclusions are defined. For groups $g$, a simple disparity measure is $\Delta=\max_g\hat p_g-\min_g\hat p_g$. This difference is descriptive and does not by itself identify unfairness or cause.
 
-A goal graph uses \(G\leftarrow AND(G_1,\ldots,G_k)\) when every child is required and \(G\leftarrow OR(G_1,\ldots,G_k)\) for accepted alternatives under stated conditions. An obstacle \(O\) obstructs \(G\) when \(O\) can make the refinement insufficient.
+A goal graph uses $G\leftarrow AND(G_1,\ldots,G_k)$ when every child is required and $G\leftarrow OR(G_1,\ldots,G_k)$ for accepted alternatives under stated conditions. An obstacle $O$ obstructs $G$ when $O$ can make the refinement insufficient.
 
 ## Mechanisms, Invariants, or Proof Structure
 

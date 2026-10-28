@@ -33,9 +33,9 @@ How can an open-addressed table reduce displacement inequality by letting a fart
 
 For unit-step probing with capacity `m`, entry `x` at slot `j` has
 
-\[
+$$
 DIB(x,j)=(j-home(x))\bmod m.
-\]
+$$
 
 An insertion carries an entry with current distance `d`. At an occupied slot with resident distance `r`, equality handles update; if `r<d`, swap the carried entry and resident, then continue with the evicted entry at its next distance. Otherwise continue with the incoming entry. EMPTY commits.
 

@@ -33,15 +33,15 @@ How can a system reuse a finite set of worker threads to execute concurrent task
 
 The lifecycle is
 
-\[
+$$
 created\rightarrow submitted\rightarrow
 \begin{cases}rejected,\\queued\rightarrow claimed\rightarrow running\rightarrow terminal.
 \end{cases}
-\]
+$$
 
 For (k) workers, queue capacity (K), and at most one active task per worker, the declared in-pool task bound is (K+k), provided there are no hidden submission queues, recursive task graphs, or unbounded task payloads. If accepted arrival rate is λ and one worker's measured mean service rate is μ for a compatible workload, λ < (kμ) is a necessary—not sufficient—long-run stability condition.
 
-For a stable observed system, Little's Law gives (L=\lambda W). End-to-end time includes producer/admission delay, queue wait (W_q), service (S), result scheduling and downstream effect. A finite pool controls concurrency; safe capacity additionally requires finite queue/payload, downstream bounds, deadlines, fair admission, and a terminal outcome for every accepted task.
+For a stable observed system, Little's Law gives $L=\lambda W$. End-to-end time includes producer/admission delay, queue wait (W_q), service (S), result scheduling and downstream effect. A finite pool controls concurrency; safe capacity additionally requires finite queue/payload, downstream bounds, deadlines, fair admission, and a terminal outcome for every accepted task.
 
 ### Critical invariants
 
@@ -291,7 +291,7 @@ Let (k_c,k_m) be core/maximum worker counts where the implementation distinguish
 
 Let task states be `created`, `rejected`, `queued`, `claimed`, `running`, and terminal `{success,failed,cancelled,expired,unresolved}`. Cancellation request is orthogonal to actual running outcome. Let (A(t),Q(t),R(t)) be active, queued, and result-backlog counts, each with a declared bound.
 
-For dependency graph (G=(V,E)), edge (u\to v) means running task (u) waits synchronously for task/resource (v). A cycle whose waiting vertices occupy all eligible workers/resources is a starvation-deadlock risk even if locks are individually correct.
+For dependency graph (G=(V,E)), edge $u\to v$ means running task (u) waits synchronously for task/resource (v). A cycle whose waiting vertices occupy all eligible workers/resources is a starvation-deadlock risk even if locks are individually correct.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -309,7 +309,7 @@ If all (k) workers are occupied by parent tasks, each parent waits for at least 
 
 ### Queueing relationships
 
-The inequality λ < (kμ) is an idealized necessary stability check for a compatible stationary workload; downstream capacity, variability and dependence can dominate. Little's Law (L=\lambda W) relates stable measured averages. Neither relationship proves percentile latency, fairness, memory safety or chosen capacity.
+The inequality λ < (kμ) is an idealized necessary stability check for a compatible stationary workload; downstream capacity, variability and dependence can dominate. Little's Law $L=\lambda W$ relates stable measured averages. Neither relationship proves percentile latency, fairness, memory safety or chosen capacity.
 
 ### Evidence boundaries
 
@@ -494,21 +494,21 @@ Invariants include finite worker/queue/bytes/tenant/dependency/result/retry coun
 
 Idealized mean service capacity is
 
-\[
+$$
 k\mu=20\times50=1000\text{ tasks/s},
-\]
+$$
 
 so (800<1000) satisfies the necessary inequality. Nominal utilization under the simple compatible-worker model is (800/1000=0.8), or 80%. Little's Law gives
 
-\[
+$$
 L=\lambda W=800\times0.075=60
-\]
+$$
 
 average resident tasks. The queued-payload bound is
 
-\[
+$$
 100\times40\text{ KiB}=4000\text{ KiB}\approx3.90625\text{ MiB}.
-\]
+$$
 
 That excludes up to 20 running payloads, task graphs, futures/results, stacks/TLS, dependencies, producers and overhead. Means and nominal utilization do not bound tail wait or bursts. Service may vary/correlate or contend for downstream resources; arrivals may be nonstationary; and hidden queues invalidate the declared bound. Measure each stage and test target distributions plus failure modes.
 

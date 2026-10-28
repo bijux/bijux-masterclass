@@ -143,6 +143,14 @@ class ChapterValidationTests(unittest.TestCase):
         result = validate_chapter_text(text, manifest_row(), allow_draft=True)
         self.assertTrue(any("at least three" in issue for issue in result.issues))
 
+    def test_legacy_math_delimiters_fail_validation(self) -> None:
+        text = valid_draft().replace(
+            substantive("Definitions and Notation"),
+            substantive("Definitions and Notation") + " Let \\(x\\) be a value.",
+        )
+        result = validate_chapter_text(text, manifest_row(), allow_draft=True)
+        self.assertTrue(any("GitHub inline math" in issue for issue in result.issues))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -31,26 +31,26 @@ How can systems exchange semantically equivalent messages across different schem
 
 ### Central model, mechanism, or theorem
 
-Let \(S_v\) and \(T_w\) be valid source and target semantic domains for schema versions \(v,w\). A versioned translator is a partial function
+Let $S_v$ and $T_w$ be valid source and target semantic domains for schema versions $v,w$. A versioned translator is a partial function
 
-\[
+$$
 \tau_{v,w,k}:S_v\rightharpoonup T_w,
-\]
+$$
 
-where \(k\) fixes mapping/reference-data version. It returns either a target plus provenance/loss report or a typed rejection. Structural validation alone proves only membership in a schema, not that \(\tau\) preserves meaning.
+where $k$ fixes mapping/reference-data version. It returns either a target plus provenance/loss report or a typed rejection. Structural validation alone proves only membership in a schema, not that $\tau$ preserves meaning.
 
-For a declared lossless subset \(S^*\subseteq S_v\), an independently implemented inverse/decoder \(\rho\) should satisfy semantic round-trip:
+For a declared lossless subset $S^*\subseteq S_v$, an independently implemented inverse/decoder $\rho$ should satisfy semantic round-trip:
 
-\[
+$$
 \forall s\in S^*,\quad \rho(\tau(s))\equiv_S s.
-\]
+$$
 
 If two semantically distinct source values map to one target,
 
-\[
+$$
 s_1\not\equiv_S s_2\land\tau(s_1)=\tau(s_2),
 
-\]
+$$
 
 then translation is non-injective and loses that distinction. The loss must be acceptable, named, measured, and irreversible claims prohibited.
 
@@ -248,7 +248,7 @@ Fuzz parser/schema/translator with size/depth/encoding/unknown fields. Test all 
 
 ### Control pairwise translator growth
 
-With \(n\) formats, direct bidirectional pairs can approach \(n(n-1)\) mappings. A canonical model can reduce edges toward \(2n\), but only by creating a governed shared semantic contract and possible loss at its boundaries. It can become an enterprise bottleneck or lowest-common-denominator model.
+With $n$ formats, direct bidirectional pairs can approach $n(n-1)$ mappings. A canonical model can reduce edges toward $2n$, but only by creating a governed shared semantic contract and possible loss at its boundaries. It can become an enterprise bottleneck or lowest-common-denominator model.
 
 Use canonical models within coherent domains, not automatically across an organization. Sometimes consumer-owned anti-corruption translation or compatible schema evolution is simpler.
 
@@ -315,17 +315,17 @@ The snippet report is empirical evidence for two exact conversions, one typed re
 
 ## Definitions and Notation
 
-Let decoded source \(s\in S_v\) and target \(t\in T_w\). Mapping context \(k=(mapping,reference,rounding,time,code\text{-}system\ versions)\) is immutable for deterministic \(\tau_{v,w,k}\). Result type is
+Let decoded source $s\in S_v$ and target $t\in T_w$. Mapping context $k=(mapping,reference,rounding,time,code\text{-}system\ versions)$ is immutable for deterministic $\tau_{v,w,k}$. Result type is
 
-\[
+$$
 Result(t,provenance,loss)\;|\;Reject(category,evidence,retryability).
-\]
+$$
 
-Semantic equivalence \(\equiv_S\) compares source meaning rather than bytes or object identity. Injectivity on a subset means \(\tau(s_1)=\tau(s_2)\Rightarrow s_1\equiv_S s_2\). A round-trip test needs an independently credible \(\rho\); using the same erroneous mapping table both ways can falsely pass.
+Semantic equivalence $\equiv_S$ compares source meaning rather than bytes or object identity. Injectivity on a subset means $\tau(s_1)=\tau(s_2)\Rightarrow s_1\equiv_S s_2$. A round-trip test needs an independently credible $\rho$; using the same erroneous mapping table both ways can falsely pass.
 
-Presence domain may be \(P(V)=Missing|Null|Present(V)|Unknown(code)|Redacted(reason)|Invalid(reason)\). Target mapping must state which distinctions remain. Loss ledger \(L_k\) lists each merged/omitted/truncated/rounded/redacted distinction and its policy.
+Presence domain may be $P(V)=Missing|Null|Present(V)|Unknown(code)|Redacted(reason)|Invalid(reason)$. Target mapping must state which distinctions remain. Loss ledger $L_k$ lists each merged/omitted/truncated/rounded/redacted distinction and its policy.
 
-Provenance record \(p=(source\_id,source\_digest,v,w,k,target\_id,time,outcome,loss\_digest)\) supports audit/replay while payload access remains separately protected.
+Provenance record $p=(source\_id,source\_digest,v,w,k,target\_id,time,outcome,loss\_digest)$ supports audit/replay while payload access remains separately protected.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -340,7 +340,7 @@ The mechanism is a staged transducer:
 7. Durably store/publish target and provenance or quarantine typed failure.
 8. Reconcile source, decisions, target, downstream effects, and loss metrics.
 
-Core invariants are explicit version selection; stable identity/tenant/causation lineage; exact declared unit/precision/time conversion; presence/unknown preservation or governed loss; deterministic output for fixed \((s,k)\); no unauthorized field expansion; target validity; no acknowledgement before recoverable target/error outcome; immutable provenance; and reproducibility for retained supported history.
+Core invariants are explicit version selection; stable identity/tenant/causation lineage; exact declared unit/precision/time conversion; presence/unknown preservation or governed loss; deterministic output for fixed $(s,k)$; no unauthorized field expansion; target validity; no acknowledgement before recoverable target/error outcome; immutable provenance; and reproducibility for retained supported history.
 
 Proof obligations divide by claim. Structural validators establish schema membership. Arithmetic/dimensional proofs and independent recomputation establish conversions on bounded domains. Round-trip/injectivity tests find loss on declared subsets. Property/fuzz/mutation tests explore large domains but are not exhaustive. Compatibility matrices and historical differential runs establish deployment/replay evidence. Domain, privacy, safety, and regulatory experts validate semantics that code cannot derive.
 
@@ -348,7 +348,7 @@ Proof obligations divide by claim. Structural validators establish schema member
 
 | Approach | Mapping owner | Strong fit | Main risk |
 |---|---|---|---|
-| Pairwise translator | Integration boundary | Few stable formats | \(O(n^2)\) mapping sprawl |
+| Pairwise translator | Integration boundary | Few stable formats | $O(n^2)$ mapping sprawl |
 | Canonical Data Model | Shared domain governance | Many integrations in coherent domain | Central coupling/semantic flattening |
 | Consumer anti-corruption layer | Consumer | Protect local domain model | Duplicate interpretations |
 | Producer emits consumer format | Producer | One strategic consumer | Producer coupling/data leakage |

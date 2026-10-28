@@ -31,19 +31,19 @@ How can an integration flow be derived from the meaning and obligations of its m
 
 ### Central model, mechanism, or theorem
 
-Represent a flow as directed graph \(G=(V,E)\). For message \(m\), semantic contract \(S_0(m)\) creates obligation set \(O(m)\). Each stage \(v_i\) applies a typed transition
+Represent a flow as directed graph $G=(V,E)$. For message $m$, semantic contract $S_0(m)$ creates obligation set $O(m)$. Each stage $v_i$ applies a typed transition
 
-\[
+$$
 T_i:(S_i,m_i)\rightarrow(S_{i+1},m_{i+1},e_i),
-\]
+$$
 
-where \(e_i\) is durable evidence. Correct composition requires each transition to preserve stable identity, authority, provenance, security classification, ordering scope, and outstanding obligations unless an explicit authorized rule changes them.
+where $e_i$ is durable evidence. Correct composition requires each transition to preserve stable identity, authority, provenance, security classification, ordering scope, and outstanding obligations unless an explicit authorized rule changes them.
 
-For obligation \(o\in O(m)\), at-least-once transport may yield \(D_{m,o}\ge1\), while an idempotent/conditional effect boundary targets \(E_{m,o}\in\{0,1\}\). Flow completion is
+For obligation $o\in O(m)$, at-least-once transport may yield $D_{m,o}\ge1$, while an idempotent/conditional effect boundary targets $E_{m,o}\in\{0,1\}$. Flow completion is
 
-\[
+$$
 Complete(m)\iff\forall o\in O(m),\ outcome(m,o)\in Terminal_{policy}.
-\]
+$$
 
 Broker acceptance, one subscriber acknowledgement, or an empty queue is not this predicate.
 
@@ -199,7 +199,7 @@ Encrypt appropriately, minimize payloads, protect Claim Checks and DLQs, rotate 
 
 ### Model capacity and backpressure end to end
 
-For serial stages, sustainable throughput is bounded by the slowest effective stage, including downstream effects. Fan-out work is \(\sum_m|O(m)|\) before retries. Retry amplification and catch-up after outage consume additional capacity. Partition skew makes aggregate averages misleading.
+For serial stages, sustainable throughput is bounded by the slowest effective stage, including downstream effects. Fan-out work is $\sum_m|O(m)|$ before retries. Retry amplification and catch-up after outage consume additional capacity. Partition skew makes aggregate averages misleading.
 
 Set per-stage queues, concurrency, prefetch, rate/tenant quotas, storage/lag budgets and overload policies. Backpressure cannot travel automatically across every asynchronous boundary; define how signals become admission, throttling, pause, retention extension, or explicitly permitted shedding.
 
@@ -219,30 +219,30 @@ High-stakes flows additionally need named domain, safety, legal, privacy and pra
 
 | Symbol or term | Meaning |
 | --- | --- |
-| \(G=(V,E)\) | Directed integration-flow graph of stages and channels |
-| \(S_i\) | Semantic contract visible before stage \(i\) |
-| \(T_i\) | Typed, evidence-producing stage transition |
-| \(O(m)\) | Logical obligation set created for message \(m\) |
-| \(D_{m,o}\) | Delivery attempts for obligation \(o\) of \(m\) |
-| \(E_{m,o}\) | Accepted business effects for that obligation |
-| \(C_i\) | Sustainable useful capacity of stage \(i\) |
-| \(h(m)\) | Stable partition/order key when required |
+| $G=(V,E)$ | Directed integration-flow graph of stages and channels |
+| $S_i$ | Semantic contract visible before stage $i$ |
+| $T_i$ | Typed, evidence-producing stage transition |
+| $O(m)$ | Logical obligation set created for message $m$ |
+| $D_{m,o}$ | Delivery attempts for obligation $o$ of $m$ |
+| $E_{m,o}$ | Accepted business effects for that obligation |
+| $C_i$ | Sustainable useful capacity of stage $i$ |
+| $h(m)$ | Stable partition/order key when required |
 | correlation | Groups related interactions; does not imply causation or authority |
 | causation | Identifies the message/decision that directly caused another message |
 | terminal policy | Enumerated outcomes that close or explicitly retain an obligation |
 | semantic drift | Change in meaning without corresponding contract/version/provenance change |
 
-For a serial path, useful throughput is upper-bounded by \(\min_i C_i\). For fan-out, work grows with obligation count and each obligation has independent attempts/effects. These are capacity/accounting models, not latency or liveness proofs.
+For a serial path, useful throughput is upper-bounded by $\min_i C_i$. For fan-out, work grows with obligation count and each obligation has independent attempts/effects. These are capacity/accounting models, not latency or liveness proofs.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 ### Composition argument
 
-Assume the producer creates authenticated semantic contract \(S_0\). Every stage validates its input, preserves stable identity/authority/provenance/classification/outstanding obligations, or records an authorized typed change, and emits durable evidence. By induction over a finite path, the final effect can be traced to \(S_0\) with every semantic change explicit. A stage that silently defaults, drops identity, changes type, or loses obligations breaks the induction.
+Assume the producer creates authenticated semantic contract $S_0$. Every stage validates its input, preserves stable identity/authority/provenance/classification/outstanding obligations, or records an authorized typed change, and emits durable evidence. By induction over a finite path, the final effect can be traced to $S_0$ with every semantic change explicit. A stage that silently defaults, drops identity, changes type, or loses obligations breaks the induction.
 
 ### Effect-safety argument
 
-For each obligation, all delivery/redrive attempts reuse stable operation identity and commit through an atomic unique or conditional effect boundary before acknowledgement. Thus \(E_{m,o}\le1\). A valid available attempt plus recovery may establish \(E_{m,o}\ge1\); this liveness premise is separate. Flow completion additionally requires every obligation to reach an allowed terminal state.
+For each obligation, all delivery/redrive attempts reuse stable operation identity and commit through an atomic unique or conditional effect boundary before acknowledgement. Thus $E_{m,o}\le1$. A valid available attempt plus recovery may establish $E_{m,o}\ge1$; this liveness premise is separate. Flow completion additionally requires every obligation to reach an allowed terminal state.
 
 ### Capacity bound
 
@@ -484,11 +484,11 @@ Design and review an integration flow for cross-border emergency blood-product a
 
 Every message on the serial path must traverse every stage, so the upper bound is
 
-\[
+$$
 \min(900,650,800,500)=500\text{ messages/s}.
-\]
+$$
 
-Four subscribers create \(4\times1000=4000\) baseline obligation attempts. A 5% one-time retry adds \(0.05\times4000=200\), for 4,200 expected attempts under the simplified assumptions. This does not prove throughput or latency because fan-out stages may have different capacities, retry failures may correlate, message costs/sizes vary, partitions skew, downstream effects bind, queues absorb bursts, and the 500/s stage might occur before or after fan-out. Load/fault measurements and topology detail are required.
+Four subscribers create $4\times1000=4000$ baseline obligation attempts. A 5% one-time retry adds $0.05\times4000=200$, for 4,200 expected attempts under the simplified assumptions. This does not prove throughput or latency because fan-out stages may have different capacities, retry failures may correlate, message costs/sizes vary, partitions skew, downstream effects bind, queues absorb bursts, and the 500/s stage might occur before or after fan-out. Load/fault measurements and topology detail are required.
 
 ### Answer 3
 

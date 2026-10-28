@@ -33,15 +33,15 @@ Which design decisions are architecturally significant, and how can engineers co
 
 Represent a decision as
 
-\[
+$$
 d=(context,drivers,options,choice,rationale,consequences,evidence,triggers).
-\]
+$$
 
 Its significance is multi-dimensional rather than a single universal score:
 
-\[
+$$
 Sig(d)=f(impact,reach,risk,reversal\ cost,time\ horizon,coordination,uncertainty).
-\]
+$$
 
 Architecture work traces **goal/concern → scenario/constraint → decision → structure → evidence → consequence**. A decision is justified only relative to explicit drivers and competing options. A structural diagram without decisions and rationale is incomplete; a decision record without correspondence to the implemented and operated system is stale intent.
 

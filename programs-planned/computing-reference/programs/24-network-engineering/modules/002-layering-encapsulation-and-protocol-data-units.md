@@ -32,7 +32,7 @@ How can independently evolving network functions cooperate across heterogeneous 
 
 For layer `i`, write
 
-`P_i = H_i \parallel S_i \parallel T_i, \quad S_i=P_{i+1},`
+$P_i = H_i \parallel S_i \parallel T_i, \quad S_i=P_{i+1},$
 
 where `H_i` and `T_i` are that layer's header and trailer and `P_{i+1}` is the upper-layer PDU carried as its SDU. The receiver reverses this nesting only after validating lengths, identifiers, integrity rules, and local policy. Encapsulation preserves an inner unit as bytes; it does not preserve every semantic guarantee across the path.
 
@@ -119,7 +119,7 @@ Layer numbers are not packet fields. A capture contains protocol headers whose s
 
 Suppose an application produces message `M`. A transport entity accepts `M` as an SDU and creates transport PDU `P_T`. The internet layer accepts `P_T` and produces IP packet `P_I`. A link entity accepts `P_I` and creates frame `P_L`. Schematically:
 
-`P_T=H_T\parallel M,\quad P_I=H_I\parallel P_T,\quad P_L=H_L\parallel P_I\parallel T_L.`
+$P_T=H_T\parallel M,\quad P_I=H_I\parallel P_T,\quad P_L=H_L\parallel P_I\parallel T_L.$
 
 The same bytes have different roles at different boundaries. The transport PDU is an IP payload; the IP packet is a link payload. “Payload” therefore always means payload **of a named layer**.
 
@@ -145,9 +145,9 @@ An integrity check also has scope. Ethernet's frame check sequence protects a re
 
 If original application data has length `L_0` and each layer adds `h_i` header bytes and `t_i` trailer bytes without other transformation, total length at the chosen boundary is
 
-`L=L_0+\sum_i(h_i+t_i).`
+$L=L_0+\sum_i(h_i+t_i).$
 
-Payload efficiency at that boundary is `\eta=L_0/L`. The ratio says nothing by itself about useful throughput: retransmissions, padding, inter-frame gaps, physical preambles, encryption records, acknowledgements, and competing traffic may sit inside or outside the count. Always publish the boundary.
+Payload efficiency at that boundary is $\eta=L_0/L$. The ratio says nothing by itself about useful throughput: retransmissions, padding, inter-frame gaps, physical preambles, encryption records, acknowledgements, and competing traffic may sit inside or outside the count. Always publish the boundary.
 
 Maximum transmission unit (MTU) is likewise scoped. A link MTU bounds the network-layer unit carried without link-specific fragmentation. Encapsulation consumes space within an outer path's limit. A tunnel that adds an outer IP header reduces room available for the inner packet unless the path supports a larger unit. Oversize behavior can include source fragmentation where specified, path-MTU adaptation, segmentation, drop, or an error signal.
 
@@ -233,15 +233,15 @@ Passing this example proves six outputs for a prefix-and-strip Python model. It 
 
 Let layers be ordered from lower `0` to upper `n`. Let `S_i` be the SDU offered to layer `i`, and `P_i` its PDU. With header `H_i` and optional trailer `T_i`:
 
-`P_i=H_i\parallel S_i\parallel T_i,\qquad S_i=P_{i+1}.`
+$P_i=H_i\parallel S_i\parallel T_i,\qquad S_i=P_{i+1}.$
 
-Concatenation `\parallel` describes representation, not timing. A decoder `D_i` should either produce a validated upper unit and metadata or a typed rejection:
+Concatenation $\parallel$ describes representation, not timing. A decoder `D_i` should either produce a validated upper unit and metadata or a typed rejection:
 
-`D_i(P_i)\in\{(S_i,m_i),\operatorname{reject}(reason)\}.`
+$D_i(P_i)\in\{(S_i,m_i),\operatorname{reject}(reason)\}.$
 
 Required preconditions include `|P_i|≥|H_i|+|T_i|` and consistency between declared and available lengths. In variable formats, the parser must establish each boundary before following the next.
 
-Define the header chain `C(P)=(p_0,p_1,\ldots,p_k)` as the ordered protocol instances a particular observation can parse. A tunnel can yield repeated types, such as `(\text{Ethernet},\text{IPv6}_{outer},\text{IPv6}_{inner},\text{TCP},\text{application})`.
+Define the header chain $C(P)=(p_0,p_1,\ldots,p_k)$ as the ordered protocol instances a particular observation can parse. A tunnel can yield repeated types, such as $(\text{Ethernet},\text{IPv6}_{outer},\text{IPv6}_{inner},\text{TCP},\text{application})$.
 
 **Endpoint** is scoped to a protocol: a tunnel endpoint, transport endpoint, and application principal need not coincide. **Next hop** is the adjacent forwarding target in a given layer context. **Protocol overhead** is bytes or processing attributable to a named protocol at a named boundary. **Goodput** counts useful application data over time and must not be inferred from efficiency alone.
 
@@ -318,7 +318,7 @@ For a forwarding hop, a useful invariant is that removal of incoming link PDU `P
 
 **Question:** A 1,000-byte application PDU gains 40 transport/internet bytes and 18 link bytes. What is efficiency at the stated link-PDU boundary?
 
-**Reasoning:** Total is 1,058 bytes, so `\eta=1000/1058≈0.945`.
+**Reasoning:** Total is 1,058 bytes, so $\eta=1000/1058≈0.945$.
 
 **Conclusion:** Application-byte efficiency is about 94.5% for that one unit and boundary, excluding all unlisted overhead and loss.
 
