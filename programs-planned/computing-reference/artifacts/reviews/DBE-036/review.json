@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-036",
+  "chapter_digest": "256514c917e101d7d2025a4d20e8208c813b2b461935c38b8e5981c539b5cb07",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed current PostgreSQL partial/expression/volatility/CREATE INDEX documentation; official SQLite partial, expression, and deterministic-function documentation; current MySQL 8.4 generated-column and functional-key documentation; and the cited textbook. Seven official destinations returned HTTP 200. Both MySQL destinations returned automated-access HTTP 403 while remaining official research-index readable. Product behavior is version scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked row domain R, expression E, three-valued partial predicate P, query Q, indexed set I_P, implication Q=>P, and engine match relation.",
+        "Checked population rho, transition count t, expression/predicate costs, size S, and false-negative count FN.",
+        "Checked membership definition uses P=TRUE while FALSE and UNKNOWN are excluded."
+      ],
+      "notes": "Expression equivalence, optimizer recognition, and access-path cost are kept separate."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Independently recomputed active index IDs 1,3,4 after trim/lower normalization and deleted-at filtering.",
+        "Recomputed active query result (1), unrestricted result (1,2), and partial-index result (1), establishing archived row 2 as the implication counterexample.",
+        "Recomputed uniqueness of active (tenant,normalized_email) keys while permitting the archived duplicate."
+      ],
+      "notes": "A separate implementation printed independent_implication_witness=True."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived partial-index soundness from set containment of Q-true rows in P-true rows.",
+        "Re-derived unsoundness from a witness with Q=TRUE and P not TRUE.",
+        "Re-derived why an unknown parameter cannot establish a literal-bound implication universally.",
+        "Re-derived old/new membership transition cases and conditional uniqueness scope."
+      ],
+      "notes": "The proof sketch assumes correct expression semantics, maintenance, visibility, and access-method search."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed TRUE/FALSE/UNKNOWN, IS NULL versus comparison, excluded/included rows, all four update transitions, changed expression, and concurrent predicate entry.",
+        "Reviewed literals versus parameters, custom/generic prepared plans, algebraic/syntactic variants, casts, result types, collations, JSON quoting, missing values, and ORM rewrites.",
+        "Reviewed time zone/configuration/table/library/collation/function-version drift, false immutability, replica/restore compatibility, invalidation, rebuild, and rollback.",
+        "Reviewed tiny-hot subsets, churn, uniqueness conflicts, WAL/dead tuples, many-partial-index anti-pattern, statistics, crashes, and dependency upgrades."
+      ],
+      "notes": "Engine-specific implication and matching capability is verified rather than generalized."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "The repository verifier matched exact eight-line stdout, empty stderr, and zero exit status.",
+        "The model checks exact membership, active key uniqueness, safe active lookup, rejected unrestricted/parameterized use, and the explicit false-negative witness.",
+        "Draft validation accepted front matter, section order, ten examples, five exercises/answers, local links, and snippet execution before stopping only for review evidence."
+      ],
+      "notes": "The model is not a SQL three-valued prover, optimizer, MVCC engine, B+ tree, WAL implementation, or benchmark."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed implication sufficiency and witness-based refutation line by line.",
+        "Reviewed expression stability and recognition as independent necessary conditions.",
+        "Reviewed partial unique transition/concurrency obligations and time-based predicate hazard.",
+        "Reviewed all exercise answers for implication classification, transition traces, JSON expression design, lease uniqueness, and comparative experiments."
+      ],
+      "notes": "No proof of optimizer completeness, concurrency linearizability, recovery implementation, or performance dominance is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The set-containment argument is explicitly labeled a proof sketch with assumptions.",
+        "The executable artifact is explicitly bounded and disclaims SQL/planner/MVCC behavior.",
+        "PostgreSQL, SQLite, and MySQL matching/volatility rules are product scoped.",
+        "Audited immutable, deterministic, equivalent, implies, unique, safe, exact, current, and always language for scope."
+      ],
+      "notes": "Mathematical implication never substitutes for actual optimizer-recognition evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library expression/partial model executed successfully through the repository verifier.",
+        "Independent computation reproduced membership, results, uniqueness, and the missing-row witness.",
+        "Seven official destinations were retrieved; two automated vendor requests returned HTTP 403 and are recorded.",
+        "Plan and performance recommendations require actual prepared-plan, result-oracle, workload, canary, and rollback evidence."
+      ],
+      "notes": "No live DBMS, planner, MVCC transition, concurrent uniqueness conflict, crash recovery, semantic upgrade, or benchmark was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter cleanly separates expression stability, engine matching, partial predicate implication, physical maintenance, conditional uniqueness, and economic value."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed parameters/prepared plans, NULL/casts/collations/JSON, volatility promises, predicate transitions, conditional uniqueness, hot subsets, WAL, validation, upgrades, rebuilds, canaries, and drift monitoring."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, executable counterexample, ten distinct examples, and five exercises progress from implication and expression matching through lifecycle and production comparison."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter does not certify an expression, function volatility promise, partial predicate, optimizer plan, uniqueness implementation, semantic upgrade, workload result, or production fitness."
+}

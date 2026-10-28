@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-066",
+  "chapter_digest": "a1f7f0c72f1853fe8e2f8b27121a8406a5254d7b4cd2506d0dc72d93b0db431e",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Crossref metadata independently confirmed the exact titles, years, and DOI identifiers for VeriSoft, DPOR, iterative context bounding, PCT, and optimal DPOR; ACM landing pages returned publisher HTTP 403 after DOI resolution. The USENIX CHESS paper and Microsoft technical report resolved directly and support systematic scheduling, reproduction, and bounded exploration. Current Coyote documentation resolved directly and supports controlled scheduling, systematic iterations, traces, replay, bounds, and external-concurrency limitations. Current loom 0.7.2 documentation resolved directly and supports deterministic permutation, model replacement types, preemption bounds, state reduction, and explicit relaxed-memory/model limitations. Claims are paraphrased and scoped; no inaccessible quotation is used."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation consistently defines modeled state s, enabled set E(s), transition function delta, schedule trace pi, happens-before, independence, preemption bound, bug depth, step bound, model M, and property phi.",
+        "The chapter distinguishes exhaustive finite-model quantification from bounded, reduced, and probabilistic evidence and retains model, fixture, and bound parameters in each claim."
+      ],
+      "notes": "Checked set membership, state-transition, trace, independence, happens-before, universal quantification, factorial interleaving expression, and probability-bound prose for consistent domains and scopes."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the local-order interleaving count as 4!/(2!2!) = 6.",
+        "Enumerated all six traces manually: two serial traces end at two and four overlapping-read traces end at one.",
+        "artifacts/snippets/CONPAR-066/report.json records schedules=6, outcomes one:4/two:2, failing=4, the expected first failure, successful replay to one, empty stderr, and exit code zero."
+      ],
+      "notes": "The numerical result establishes only the finite lost-update teaching model. PCT probability language is attributed to the cited formulation and remains conditional on task, step, depth, independence, and control assumptions."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "For two task-local sequences of lengths l_A and l_B, order-preserving shuffles are binomial (l_A+l_B)!/(l_A!l_B!); substituting two and two gives six.",
+        "Replay induction was rechecked: equal isolated state plus compatible enabled choice and deterministic transition yields equal successor state at every recorded choice.",
+        "The exhaustive-safety conclusion follows only after covering every modeled enabled alternative or a sound equivalence representative and checking phi at every classified leaf."
+      ],
+      "notes": "The arguments are proof obligations for a scheduler/model implementation, not a mechanized proof of this repository's verifier, Coyote, loom, CHESS, an arbitrary runtime, or production hardware."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/single/multiple enabled sets, completion versus deadlock, pending timers and environment choices, step-bound exhaustion, livelock cycles, fairness, task leakage, dirty global state, trace divergence, unstable IDs, and source/model version drift.",
+        "Reviewed native threads, foreign synchronization, finalizers, signals, wall time, hidden randomness, file/socket/database state, external side effects, async I/O readiness, cancellation, restart, retries, response order, and fault budgets as control boundaries.",
+        "Reviewed DPOR under- and over-approximation, conditional aliasing, message matching, monitor visibility, context/preemption/delay definitions, state explosion, hash/symmetry/abstraction risks, relaxed atomics, undefined races, CI cache invalidation, trace minimization, and high-stakes physical timing."
+      ],
+      "notes": "Boundary review covers semantic, algorithmic, lifecycle, temporal, fault, external-state, runtime, memory-model, operational, security/privacy, evidence-retention, and safety cases."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every result-affecting nondeterministic operation must cross the controlled model or be reported as an escape; every iteration resets to equivalent isolated state.",
+        "Every replay choice uses stable identity and compatible enabled context; divergence stops rather than silently selecting another transition.",
+        "Every reduction preserves a property-relevant representative under a conservative dependency relation; every bounded, probabilistic, memory-model, fairness, and external-input limitation remains attached to evidence."
+      ],
+      "notes": "Checked invariants across initialization, task creation, scheduling, blocking/wakeup, timers, injected outcomes, monitoring, terminal classification, backtracking, replay, minimization, reporting, CI reuse, and shutdown."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Replay induction explicitly requires equivalent initial state, compatible model digest, deterministic transition semantics, and recorded nondeterministic outcomes at each step.",
+        "Exhaustive safety requires complete finite prefix exploration, equivalent reset, correct assertions, and a sound reduction proof when schedules are omitted.",
+        "The partial-order obligation requires mutual enabledness and equivalent relevant future behavior for independent swaps; the liveness obligation separately requires fairness and ranking, cycle, or temporal-search evidence."
+      ],
+      "notes": "Proof review found no conversion of finite safety exploration into universal liveness, weak-memory, performance, implementation-equivalence, or safety-certification claims."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable fence is explicitly labeled a sequential finite teaching harness and disclaims threads, DPOR, weak memory, and production scheduler implementation.",
+        "Passing exhaustive, bounded, reduced, randomized, replay, real-runtime stress, race detection, memory-model analysis, proof, and external review claims remain distinct throughout.",
+        "The high-stakes example explicitly states that physical timing and devices need separate evidence and that no external human review is claimed."
+      ],
+      "notes": "No iteration count, seed, trace, clean run, source, internal review, or model checker label is presented as universal correctness, completeness outside scope, performance proof, certification, or deployment safety."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-066 passed the annotated Python example under Python 3.14.4 with exact expected stdout, empty stderr, zero exit code, and retained command/toolchain artifacts.",
+        "The chapter requires machine-readable counts for completed, failing, pruned, bounded, escaped, divergent, and inconclusive executions and rejects an undefined percentage-of-all-schedules claim.",
+        "The evidence plan combines controlled schedules with real-runtime stress, race and memory tools, model checking, proof, hardware tests where applicable, and human assurance rather than treating one method as sufficient."
+      ],
+      "notes": "Empirical output establishes the six finite traces and their outcomes only. It establishes no scheduler implementation, production concurrency, DPOR soundness, probability assumption, weak-memory behavior, performance, real-time, railway, medical, or safety claim."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed controlled semantics, instrumentation boundary, trace compatibility, stateless re-execution, exhaustive search, DPOR, context/preemption/delay bounds, PCT, executable enumeration, virtual time, faults, deadlock/livelock/fairness, memory models, coverage reporting, minimization, repair validation, and high-stakes assurance."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed stable IDs and enabled fingerprints, exact model/configuration digests, isolation/process reset, modeled synchronization adapters, escape diagnostics, versioned direct traces, virtual timer tie policy, fault budgets, safe external-effect simulation, terminal classification, scope-specific CI portfolios, metrics, cache invalidation, minimization, and post-repair neighborhood search."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter separates production determinism from controlled testing, develops the transition model before search strategies, provides one fully recomputed six-schedule example, contrasts complementary techniques, supplies ten distinct examples including high-stakes limits, and includes five progressive exercises with complete scoped answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external concurrency-testing, formal-methods, language/runtime, operating-system, Coyote, loom, CHESS, DPOR/PCT, probability, memory-model, distributed-systems, real-time, hardware, cybersecurity, medical, railway, regulatory, operations, human-factors, or safety review is claimed. The chapter and executable model establish neither correctness or completeness of a named scheduler/tool, model equivalence to production, absence of races/deadlocks/liveness failures, weak-memory coverage, probabilistic assumptions, performance/timing, certification, nor deployment safety."
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-047",
+  "chapter_digest": "ff8ff40c4107185dff880818c66bb6551ff079c3550e93208c6859ef4eeb349d",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. The classical strict-computation bound and Cilk implementation claims were checked against the Blumofe-Leiserson and Frigo-Leiserson-Randall papers; multiprogrammed scheduling, deque design, and weak-memory correctness against the Arora-Blumofe-Plaxton, Chase-Lev, and Le et al. papers; and current runtime behavior against official Java 21, Rayon, oneTBB, Crossbeam, and OpenCilk documentation. The five ACM DOI links resolved to the correct publisher records but denied automated content retrieval, so they support durable bibliographic and theorem attribution only, not inaccessible quotations. The five official implementation documents resolved directly."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation consistently distinguishes T1 total work, T_infinity span, P workers, per-task cost g, steal cost s, attempts A, successes S, and worker deque endpoints.",
+        "The chapter states domains and scope for time bounds, amortization conditions, probabilities, task states, linearization, and visibility relations."
+      ],
+      "notes": "Reviewed subscripts, asymptotic notation, ratios, nonnegative costs, finite-computation assumptions, and the distinction between logical ownership and physical storage."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "artifacts/snippets/CONPAR-047/report.json records the exact initial deques, five deterministic task claims, two attempts, two successes, all tasks exactly once, and empty final queues.",
+        "Independently replaying left steals and right owner pops yields task sequence A,E,D,B,C with stable worker assignments w2,w1,w0,w1,w0."
+      ],
+      "notes": "Recomputed both deque mutations and the uniqueness/set checks; no timing, parallel speedup, or contention value is inferred from this sequential trace."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "For the cited fully strict randomized scheduler model, the chapter preserves the scoped expected-time form T1/P+O(T_infinity) and does not turn it into a deterministic runtime guarantee.",
+        "The granularity condition g much greater than s is presented as an amortization objective whose threshold depends on measured steal, cache, and runtime costs, not as a universal constant."
+      ],
+      "notes": "Checked that the bound is not applied to arbitrary DAGs, blocking services, priorities, distributed execution, weak-memory bugs, heterogeneous workers, or safety deadlines."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty, one-item, and multi-item deques; owner-thief and thief-thief races; stale indices; wraparound; resize; retired buffers; tiny and giant tasks; and failed steals.",
+        "Reviewed synchronized victim probing, starvation, priorities, affinity, NUMA, blocking, nested pools, worker loss, cancellation during transfer, child spawning, lost wakeups, false termination, and safety-critical use."
+      ],
+      "notes": "Boundary analysis spans abstract ownership, implementation memory safety, scheduler progress, locality, lifecycle settlement, global quiescence, and deployment limits."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every admitted task is in exactly one logical state: uniquely queued, in one declared transfer, running once, or terminal once; last-item contention has exactly one winner.",
+        "Publication precedes visibility, retired storage remains protected, parent-child obligations register before publication, cancellation follows task identity, and termination includes active, queued, spawning, and in-transit work."
+      ],
+      "notes": "Checked invariants across push, pop, steal, resize, park/wake, spawn, run, cancel, fail, cleanup, completion, and termination transitions."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "The deterministic teaching deque preserves exactly-once ownership because each mutation removes one named task from one deque before recording one execution claim, and the final multiset equals the initial task set.",
+        "The one-item argument requires a validated atomic top/generation transition so owner and thief cannot both linearize a claim; the loser observes failure or a fresh state."
+      ],
+      "notes": "The chapter gives proof obligations and scoped arguments, not a machine-checked proof of Chase-Lev, a production deque, scheduler liveness, or the classical randomized theorem."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Classical expected bounds are explicitly attributed with computation and scheduler assumptions; deque safety obligations are separated from scheduler-level performance and fairness.",
+        "Victim choice, batching, backoff, affinity, NUMA hierarchy, parking, priority integration, and adaptive policies are labeled as design choices requiring workload-specific evidence."
+      ],
+      "notes": "Theorem attribution, implementation invariants, proof obligations, heuristics, empirical claims, and human safety review remain distinguishable."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-047 passed the deterministic deque trace with recorded Python version, exact stdout, empty stderr, and exit code zero.",
+        "The chapter requires attempts/success, stolen work, idle-search time, queue contention, cache/NUMA movement, wake latency, makespan, tail latency, fairness, and semantic-oracle evidence for runtime claims."
+      ],
+      "notes": "The executable model demonstrates endpoint policy and accounting only; it proves no concurrent deque, memory ordering, reclamation, speedup, liveness, fairness, termination protocol, or deployment safety."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed decentralized load balancing, owner/thief endpoint policy, last-item linearization, publication, resize/reclamation, work-first scheduling, strict-computation bound scope, victim choice, granularity, progress/fairness, determinism, blocking, cancellation/failure, termination, locality, observability, and verification."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed stable task identity, explicit ownership states, generation-aware ring slots, protected old buffers, randomized/hierarchical victims, bounded probes and batches, directed wakeups, managed blocking, pinned/capability queues, priority/fairness controls, obligation-ledger termination, trace sampling, model checking, and semantic oracles."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet distinguishes deque safety from load-balancing performance; exposition progresses from ownership to hardware and lifecycle behavior; the executable trace is reproducible; ten worked examples cover distinct mechanisms; and five exercises progress from last-item reasoning to railway-safety transfer with complete matching answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external concurrency-theory, programming-language, runtime, operating-system, hardware, distributed-systems, performance, railway, regulatory, real-time, or safety review is claimed. The model establishes neither production deque correctness nor scheduler speedup, liveness, fairness, termination, latency, or safety."
+}

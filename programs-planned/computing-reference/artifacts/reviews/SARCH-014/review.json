@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-014",
+  "chapter_digest": "ba795de501974dd81e2cc7cecb3945aa24834296e22df0c182b1526b5395e730",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked the current official NIST CSF 2.0, SP 800-53 Rev. 5 update, SP 800-207, Privacy Framework, OWASP ASVS 5.0.0, and RFC 8446 records. Durable protection-principle and system-security claims were reviewed against the cited primary paper and current third-edition textbook."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the authorization predicate over subject, action, object, and context; granted and required authority sets; excess-authority difference; expected-loss expression; and control-coverage relation.",
+        "Confirmed set domains, Boolean codomain, subset direction, compatible consequence units, bounded probabilities, and scope limitations are introduced before use."
+      ],
+      "notes": "The notation separates policy, enforcement, authority minimization, risk sensitivity, and evidence coverage."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Under the explicitly hypothetical independence assumption, recomputed two 0.9-effective controls as joint bypass probability 0.1 x 0.1 = 0.01 and joint protection 0.99.",
+        "Recomputed simplified expected loss as 0.02 x 100,000 + 0.001 x 5,000,000 = 2,000 + 5,000 = 7,000.",
+        "Recomputed Exercise 2 set difference {read, write, export, admin} minus {read, export} as {write, admin}."
+      ],
+      "notes": "The chapter explicitly rejects independence and expected-loss arithmetic as sufficient security or privacy decisions."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified that default denial requires affirmative Allow(s,a,o,c) under current evidence and that excess authority P(s) minus R(s) is empty when granted authority is contained in required authority.",
+        "Checked linear expected-loss aggregation only for enumerated scenarios with compatible consequence units and the control-coverage relation as a scoped relation rather than a scalar score."
+      ],
+      "notes": "Policy predicates and risk expressions are bounded models, not claims of complete mediation implementation or universal risk quantification."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed object enumeration, excessive service authority, policy outage, internal plaintext, correlated control bypass, sensitive logging, restored deleted data, compromised build paths, resource exhaustion, break-glass authority, and key recovery.",
+        "Checked medication-dispenser and emergency-shelter transfers for physical and human harm, privacy lifecycle, qualified authority, and explicit release blockers."
+      ],
+      "notes": "The examples span authentication and authorization boundaries, safe failure, cryptography, control dependence, risk arithmetic, observability, privacy recovery, supply chains, and high-consequence systems."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced explicit assets and harms, complete mediation, least authority, safe defaults, protected identity and keys, bounded interpretation, lifecycle privacy, independent containment, observable decisions, secure recovery, and evidence-bounded claims through exposition, examples, and answers."
+      ],
+      "notes": "Security tactics preserve legitimate operation and privacy purposes rather than optimizing control count or nominal denial."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed default-denial and least-privilege set consequences against their policy and authority premises.",
+        "Confirmed that probability multiplication is explicitly conditional on justified independence and that expected loss is not asserted to capture adversarial adaptation, correlation, catastrophic outcomes, equity, or incomparable harms."
+      ],
+      "notes": "The formal material supports explicit policy and sensitivity reasoning, not a theorem that a system is secure or privacy preserving."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of secure, safe, prove, guarantee, trusted, anonymous, verified, control, compliance, risk, evidence, and qualified authority."
+      ],
+      "notes": "No proof sketch is presented; standards coverage, signatures, encryption, tests, and internal review are explicitly bounded."
+    },
+    "empirical_evidence_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No new penetration test, experiment, benchmark, executable snippet, or reproduced empirical result is presented. Verification and exercises are specified as evidence designs rather than claimed outcomes."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed assets and harms, threat actors and surfaces, identity, authorization, complete mediation, least privilege, data and key protection, validation, isolation, availability, accountability, privacy lifecycle, supply paths, response, recovery, and assurance for conceptual coherence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed object-level authorization, policy caches, short-lived workload identity, channel termination, key lifecycle, parser bounds, tenant isolation, break glass, rate control, protected logging, deletion restoration, artifact provenance, revocation, and clean recovery. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles security and privacy distinctions, bounded formal models, tactic trade-offs, twelve explicit misconceptions, ten distinct worked examples, and five progressive exercises with complete answers ending in unfamiliar emergency-shelter transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

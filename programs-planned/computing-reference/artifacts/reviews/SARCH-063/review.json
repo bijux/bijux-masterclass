@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "module_id": "SARCH-063",
+  "chapter_digest": "9ee69628fc0b895c7ba25ef529912f8e938edb4fbb94bfd1223efd0b4835b410",
+  "review_date": "2026-09-06",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-06",
+    "notes": "Reviewed ten sources covering ATAM findings, local and global sensitivity, CBAM, risk guidance, multi-objective decisions, and architecture descriptions. Crossref metadata confirmed all five cited DOI identities used for method and standards claims; official Wiley pages confirmed both sensitivity books; the official NIST SP 800-30 and IEEE 42010 pages returned successfully. The official ISO 31000 page identified the reference but denied automated retrieval, so no live page-content claim is made. No mutable vendor or product behavior is asserted."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed response function, local finite difference, elasticity, two-factor interaction contrast, response vector, Boolean guardrails, expected-loss model, and uncertainty notation.",
+        "Confirmed baselines, perturbations, units, denominators, binary factor indices, horizons, probabilities, losses, and truth-valued constraints are defined before use."
+      ],
+      "notes": "Local, normalized, interaction, optimization, and risk quantities retain distinct meanings."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed TTL-call sensitivity as (650-1000)/(60-30)=-11.6667 calls/s per TTL-second and approximate elasticity as -0.35.",
+        "Recomputed the recovery interaction as 30-14-13+10=13 minutes.",
+        "Recomputed batch CPU sensitivity as -0.04 ms per added record and elasticity as -0.5.",
+        "Recomputed batch p99 latency sensitivity as 6 ms per added record and elasticity as 1.5.",
+        "Verified the queue threshold example changes from positive spare capacity to 100 requests/s backlog growth above 1,000 requests/s service."
+      ],
+      "notes": "All results are scoped to stated finite intervals or simple constant-rate models; none is extrapolated as universal behavior."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified finite-difference and elasticity transformations and the nonzero-denominator requirements.",
+        "Verified the two-factor contrast subtracts both isolated changes from the joint change relative to baseline.",
+        "Verified Pareto dominance requires no worse response on every included dimension and strict improvement on at least one.",
+        "Verified expected loss requires numeric probabilities and commensurable losses over one declared horizon."
+      ],
+      "notes": "The chapter explicitly rejects causal, global, or probability interpretations absent additional model and evidence."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed local versus global range, smooth versus threshold behavior, categorical decisions, zero denominators, interacting factors, common causes, and stateful recovery paths.",
+        "Reviewed unknown likelihood, ordinal arithmetic, normalization reversal, omitted guardrails, minority harm, catastrophic and adversarial events, and transfer limits.",
+        "Reviewed queue instability, identity-plus-database recovery, stale authority, circuit-breaker secondary risk, rail safety, and wildfire emergency operation."
+      ],
+      "notes": "Mandatory safety, security, privacy, accessibility, legal, and ethical constraints remain noncompensatory."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced risk statements from decisions and conditions through scenarios, consequences, evidence gaps, owners, treatment, and residual risk.",
+        "Confirmed every sensitivity example states baseline, perturbation, response, direction, units, interval, and limitations.",
+        "Confirmed weighted preference, Pareto relation, ordinal matrix, expected loss, and guardrail feasibility are not conflated."
+      ],
+      "notes": "Dissent, residual risk, and reevaluation triggers remain visible after decisions."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the capacity-cliff argument and confirmed backlog becomes unbounded in the constant-rate model when arrival exceeds service.",
+        "Reviewed the interaction derivation and confirmed the additive prediction is 17 minutes while the observed joint response is 30 minutes.",
+        "Reviewed dominance and ordinal-scale counterexamples and confirmed their conclusions depend on declared dimensions and measurement scales."
+      ],
+      "notes": "The chapter provides mathematical reasoning and proof obligations, not proof that a deployed architecture is safe or optimal."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of probability, risk, robust, optimal, dominated, independent, sensitivity, safety, transfer, closed, and accepted for explicit scope.",
+        "Verified observations, causal inference, modeled response, stakeholder values, and acceptance authority remain distinct.",
+        "Verified quantitative precision never substitutes for model limits or affected-stakeholder legitimacy."
+      ],
+      "notes": "All prescriptive outcomes retain accountable governance and evidence limitations."
+    },
+    "empirical_evidence_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter uses explicitly hypothetical numerical observations and prescribes experiments but reports no executed architecture benchmark, incident study, safety test, or wildfire exercise."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed causal risks, issues, uncertainty and variability, scoped nonrisks, variables, local and global sensitivity, nonlinear thresholds, interactions, importance, trade-offs, response vectors, Pareto reasoning, weights, matrices, expected loss, uncertainty, evidence choice, themes, treatment, recording, and authority for coherence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed broker risk, authorization TTL, capacity cliff, recovery interaction, dominated alternatives, ordinal matrices, score fragility, variability versus uncertainty, circuit-breaker mitigation, and rail safety. Verified operationally useful evidence and ownership. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified graduate-depth quantitative and governance reasoning, eighteen distinct misconceptions, ten different worked examples with explicit conclusions, and five progressive exercises with complete answers ending in an unfamiliar international wildfire transfer problem."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed. Source checks, recomputation, and reasoning do not constitute a deployed sensitivity study, quantitative risk assessment, security analysis, safety case, financial valuation, regulatory decision, or emergency field validation."
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-062",
+  "chapter_digest": "edf2d397157cf991f98919979499e4a180e7edf87d400d11dd4378d67250de2e",
+  "review_date": "2026-08-31",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked IEC 61025:2006 and current TC 56 status; the official NRC NUREG-0492 record; NASA aerospace handbook, Small Spacecraft knowledge base, System Safety resources, KSC preferred practices, historical FTA and PRA procedural records; and IEC 62502 event-tree record. All ten final URLs returned HTTP 200. Current, stable, historical and complementary-method sources are explicitly distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed binary structure function, monotonicity and AND/OR indicator forms.",
+        "Reviewed minimal-cut-set disjunctive normal form and rare-event approximation.",
+        "Reviewed independent-state enumeration probability and Birnbaum importance definitions.",
+        "Confirmed probability, frequency, rate and unavailability remain distinct."
+      ],
+      "notes": "Boolean identities and probabilistic assumptions are separately stated."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed fault-tree-enumeration-fixture under python3 with exact output recorded in artifacts/snippets/SYSENG-062/report.json.",
+        "Enumerated all 32 states of five events and confirmed three minimal cut sets.",
+        "Recomputed exact probability 0.00239836024 and displayed 0.00239836.",
+        "Recomputed rare cut-set sum 0.00240000 and relative overestimate 0.0684 percent.",
+        "Recomputed Exercise 2 exact probability 0.002374624 and rare-sum relative overestimate about 1.069 percent."
+      ],
+      "notes": "Calculations assume declared independent Bernoulli events for one compatible mission; they do not validate real-event data or independence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Confirmed the fixture tree reduces to power OR pump_a*pump_b OR sensor*controller.",
+        "Confirmed each declared cut set is sufficient and loses sufficiency when any member is removed.",
+        "Confirmed absorption A OR AB = A and the four cut sets of (A OR B)(C OR D).",
+        "Confirmed coherence by componentwise enumeration and distinguished noncoherent complemented logic.",
+        "Confirmed exact OR calculations subtract overlap while rare sums omit intersections."
+      ],
+      "notes": "MCS equivalence is claimed only for coherent positive trees under the declared Boolean semantics."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Challenged vague/composite top events, mixed mission phases, boundary omissions and unjustified undeveloped events.",
+        "Reviewed OR/AND sufficiency, timing windows, order, standby, detection, recovery and house/inhibit misuse.",
+        "Reviewed repeated identities, shared power/design/software/environment/maintenance, CCF and conditional dependence.",
+        "Reviewed probability versus frequency/rate/unavailability, constant-rate limits, demand and repair semantics.",
+        "Reviewed complemented/noncoherent logic, impossible combinations, mutual exclusion, solver errors and truncation.",
+        "Reviewed human/software events, guessed probabilities, importance misuse, uncertainty and field-driven revision.",
+        "Reviewed all ten examples and five complete answers for assumptions, reasoning, limitations and bounded conclusions."
+      ],
+      "notes": "Production FTA requires domain, reliability/PRA, safety, software, human-factors/operations, common-cause, data/statistical, tool and decision-authority review appropriate to consequence."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Confirmed every top event requires threshold, system/function, state/mission/time, environment and configuration.",
+        "Confirmed development uses immediate sufficient contributors at consistent abstraction.",
+        "Confirmed stable repeated identities and explicit dependencies prevent false independence.",
+        "Confirmed MCS, truncation, data, units, algorithms and uncertainty remain reproducible.",
+        "Confirmed physical, logical, probabilistic, computational and decision validity are separate gates.",
+        "Confirmed lifecycle updates retain prior baselines and cannot prove omitted contributors absent."
+      ],
+      "notes": "A low computed top-event value is never treated as completeness, safety or acceptance proof."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents Boolean derivations and validation obligations but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The fixture labels evidence synthetic_independent_events_only and enumerates excluded real-system behavior.",
+        "IEC edition/stability status and historical NASA/NRC procedural material are stated with dates/status.",
+        "Probability examples disclose independence, mission and approximation assumptions.",
+        "Importance, truncation and uncertainty conclusions remain model-conditional.",
+        "No external review, causal completeness, independence, real-system probability, safety or residual-risk acceptance is claimed."
+      ],
+      "notes": "Quantitative precision is not presented as evidence precision."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked top/intermediate/basic/undeveloped events, OR/AND/inhibit/house/transfer semantics, cut and minimal cut sets, prime implicants, coherence, common cause/dependency, qualitative/quantitative analysis and importance measures."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked top-event definition, ground rules, causal development, sufficiency, identities, stopping, AND challenge, Boolean reduction, noncoherence, quantification, overlap, CCF, human/software, detection/recovery, importance, uncertainty, truncation, validation, action and lifecycle maintenance."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from Boolean semantics through construction, quantification, dependency and decision use. Ten examples isolate recurrent faults; five complete solutions cover construction, exact arithmetic, dependency-aware redundancy, dynamic hybrid modeling and lifecycle validation."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external IEC/NRC/NASA expert, reliability/PRA statistician, domain architect, software/human-reliability specialist, operator/maintainer, common-cause analyst, solver vendor, independent V&V, hazard/safety, certification, technical-authority or residual-risk acceptance review is claimed."
+}

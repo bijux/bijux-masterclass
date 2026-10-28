@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "module_id": "API-084",
+  "chapter_digest": "6ca95af376ca239ee8c7be727ccdc869606b44e01b8bf124d7b091c756d341f5",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked seven official or primary sources. RFC 9745 defines the Deprecation Structured Field date, deprecation link relation, scope, ordering with Sunset, and the principle that deprecation does not itself change resource behavior. RFC 8594 defines Sunset as expected unresponsiveness and its HTTP-date/link semantics. RFC 9110 supports status and terminal-response semantics. OpenAPI 3.1 defines the operation deprecated flag. GraphQL defines @deprecated for fields and enum values with a reason. Google AIP-181 and Kubernetes document stability/deprecation/removal policy patterns and emergency or version-bound changes. Ecosystem-specific minimum periods are not generalized."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked timeline instants T_a/T_d/T_s/T_r, horizon components H, consumer counts U/M, request volumes Q_o/Q_n, and parity P/D.",
+        "Confirmed ordinary ordering is announcement <= deprecation <= sunset <= executed retirement.",
+        "Confirmed max-horizon and readiness-conjunction models are separate from traffic/consumer ratios."
+      ],
+      "notes": "Dates use exact instants/timezones and empirical ratios require credible nonzero denominators."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed 114/120=0.95=95% confirmed consumer migration.",
+        "Recomputed 999000/1000000=0.999=99.9% request migration, leaving 1000 calls.",
+        "Checked the 30-day scoped extension, 37 GraphQL operations, and six-month dormant horizon examples for internal consistency.",
+        "Confirmed all ten worked examples and five exercise/answer pairs are distinct."
+      ],
+      "notes": "Dates, counts, percentages, periods, and thresholds are scenarios unless directly attributed to a cited policy."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified timeline ordering and RFC 9745 constraint that Sunset must not precede Deprecation.",
+        "Verified max horizon exposes each governed ordinary cadence at least once but remains insufficient without inventory/readiness evidence.",
+        "Constructed 99.9%-traffic counterexample with one critical low-volume settlement consumer.",
+        "Verified readiness is conjunctive because one failed replacement, consumer, notice, state, or recovery gate can independently cause harm."
+      ],
+      "notes": "The horizon argument is a necessary lower-bound rationale, not a guarantee that passive observation sees every consumer."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed operation/field/enum/version/media/SDK/event/webhook scopes and announcement/deprecation/sunset/retirement/removal states.",
+        "Reviewed active, low-volume, shared-gateway, partner, mobile, offline, batch, dormant, replay, failover, backup, rollback, and disaster consumers.",
+        "Reviewed runtime headers/links, specs, SDK warnings, portals, direct notice, bounced contacts, missing telemetry, extensions, regional skew, terminal response, and cleanup.",
+        "Reviewed signed headers, malicious links, non-disclosure, broad legacy scopes, vulnerability/legal/privacy/corruption emergencies, allowlists, and permanent shadow exceptions."
+      ],
+      "notes": "Coverage spans lifecycle semantics, notice, identity, state, operations, recovery, security, and post-retirement evidence."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Confirmed deprecation leaves promised behavior/security/SLOs unchanged through the ordinary window.",
+        "Confirmed scope, replacement, dates, owner, terminal behavior, and migration guidance remain coherent across every channel.",
+        "Confirmed every required consumer/path is migrated, retired, or explicitly excepted before retirement.",
+        "Confirmed cleanup removes serving risk while preserving contracts, schemas, audit, replay, backup, and investigation evidence as required."
+      ],
+      "notes": "New adoption controls are distinct from degrading existing entitled consumers."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed timeline proof and confirmed signal disagreement invalidates reliable lifecycle planning.",
+        "Reviewed horizon lower bound and confirmed a shorter window can entirely miss a legitimate dormant cadence.",
+        "Reviewed traffic counterexample and confirmed request weighting does not imply consumer/risk completeness.",
+        "Reviewed readiness conjunction and confirmed averaging can mask a fatal zero gate."
+      ],
+      "notes": "Operational readiness remains evidence-driven; no formula alone authorizes sunset."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Confirmed four arguments are labeled as timeline invariant, lower bound, counterexample, or conjunction.",
+        "Confirmed IETF, OpenAPI, GraphQL, Google, and Kubernetes behaviors are attributed to their exact scope.",
+        "Confirmed calendar dates, counts, ratios, dormant periods, and terminal choices are scenarios/local policy rather than universal requirements."
+      ],
+      "notes": "Standards syntax, lifecycle policy, analytical reasoning, and empirical retirement evidence remain separate."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "All seven official or primary references were checked on 2026-09-02 where current guidance applies.",
+        "The chapter requires actual identity inventory, delivery/acknowledgement, replacement parity/capacity/security, state/rollback/recovery tests, and sunset rehearsal.",
+        "No production consumer inventory, traffic migration, communication delivery, replacement parity, support horizon, or retirement readiness is asserted."
+      ],
+      "notes": "Worked examples demonstrate evidence interpretation but cannot substitute for a product's owned lifecycle record."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed lifecycle states, scope, replacement, horizon, machine/artifact/direct notice, adoption control, inventory, usage, migration, parity/capacity, continued support, exceptions, readiness, execution, and cleanup as one sunset discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Checked implementability through one lifecycle record, standards-compliant headers/links, generated annotations, multi-channel delivery, per-consumer work states, migration tooling, reconciliation/load tests, conjunctive gates, canary terminal routing, incident/abort runbooks, and evidence-preserving cleanup."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The module distinguishes notice from behavior/removal, then develops scope, replacement, horizon, communication, evidence, migration, readiness, execution, and cleanup. Ten worked examples and five integrative exercises have complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

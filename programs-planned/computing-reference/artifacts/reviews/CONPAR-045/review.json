@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-045",
+  "chapter_digest": "1dfe507d0e3df97bf6aa1608d463b5d49fbf450f7817d541480e35c2baa5fbe6",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. General decomposition/partition/mapping design was checked against Foster's Argonne-hosted book; graph partitioning against primary Karypis-Kumar and Hendrickson-Leland records; current chunking/partitioner contracts against OpenMP 6.0, oneTBB, and Rayon; heterogeneous grain against NVIDIA guidance; communication/collectives against MPI 4.1; and graph-tool behavior against METIS. Nine sources resolved directly; the SIAM primary-paper DOI resolved but denied automated content retrieval, so its use is limited to durable bibliographic/algorithm attribution. A mismatched Cambridge DOI discovered during review was removed before this digest was signed."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation consistently defines D, item costs c_i, total W, resource count P, assignments A_j, loads L_j, makespan C_max, lower bound LB, imbalance beta, efficiency eta, task overhead h, and S/V.",
+        "The chapter separates scalar estimated useful cost, resource-cost vectors, actual elapsed time, communication, and ownership semantics."
+      ],
+      "notes": "Reviewed nonnegative costs, empty-work ratio caveat, maxima, pairwise disjointness, halo exception, units, and ideal-versus-measured terminology."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "artifacts/snippets/CONPAR-045/report.json records contiguous loads 24,15,6; greedy partitions [9,4,3],[8,5,2],[7,6,1]; loads 16,15,14; total 45; ideal 15; makespans 24/16; imbalance 1.067; exact coverage/uniqueness.",
+        "Independent exercise computation gives costs total 48, contiguous loads 30,11,7, lower bound 16, imbalance 1.875, and greedy loads 16,16,16."
+      ],
+      "notes": "Replayed deterministic tie-breaking and recomputed every assignment, sum, maximum, lower bound, factor, range endpoint, and exercise value."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Any P-resource schedule needs at least W/P by aggregate capacity and at least max c_i for an indivisible item; a fixed assignment needs at least max_j L_j.",
+        "Adjacent half-open range construction proves coverage/disjointness, while full binary logical overdecomposition gives the stated 2L-1 node relation only under its explicit tree assumptions."
+      ],
+      "notes": "The greedy demonstration is not labeled optimal; locality, dependencies, communication, migration, and heterogeneous costs are explicitly excluded from its scalar model."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero/one/n<P/nondivisible/maximum domains, clustered/periodic/heavy-tail costs, hot keys, expansion, indivisible tasks, hash/range resize, overlapping ownership, and halo epochs.",
+        "Reviewed tiny/huge grain, live-frontier memory, false sharing, NUMA migration, GPU staging, nested resources, repartition races, failure/retry, cancellation latency, and safety-critical use."
+      ],
+      "notes": "Boundary analysis spans structure, cost estimates, locality/topology, dynamic ownership, lifecycle, and external validation."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Partitions cover the required domain, exclusive mutable regions do not overlap, and replicated/halo state carries epoch and merge/read-only rules.",
+        "Stable logical IDs survive worker mapping; task/memory/output/retry bounds hold; repartition transfers authority safely; every partition has one terminal cleanup outcome."
+      ],
+      "notes": "Checked invariants across decomposition, partition construction, mapping, execution, halo exchange, splitting, migration, failure, retry, cancellation, drain, and reclamation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "The executable assignment preserves coverage because each input cost is processed once into exactly one target; uniqueness follows from distinct teaching values and list-length/set equality.",
+        "The `[0,17)` exercise quotient/remainder construction yields sizes 5,4,4,4 whose adjacent half-open endpoints prove exact coverage and nonoverlap."
+      ],
+      "notes": "Proofs apply to the stated finite unique-cost teaching instances; production identities cannot use cost values when duplicates exist."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Surface-to-volume, constant per-task overhead, cost estimates, and heterogeneous adaptive ratios are labeled models/heuristics rather than universal performance laws.",
+        "Executable limitations exclude dependencies, overhead, communication, migration, cache/NUMA/device effects, ownership transfer, faults, cancellation, optimality, and safety."
+      ],
+      "notes": "Structural proofs, lower bounds, heuristics, concrete runtime documentation, empirical tuning, and human review remain distinguishable."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-045 passed the deterministic weighted-assignment trace with recorded interpreter version, exact stdout, empty stderr, and exit code zero.",
+        "Cutoff/grain, task overhead, imbalance, locality, communication, NUMA, device ratios, memory high-water, cancellation, and recovery require the specified sweeps and environment metadata."
+      ],
+      "notes": "The sequential scalar model proves no optimality, real scheduling, speedup, migration correctness, fault tolerance, or deployment safety."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed decomposition/mapping separation, coverage/ownership, cost and imbalance, block/cyclic/hash/range/geometric/graph partitions, grain/overdecomposition, adaptation, locality, heterogeneity, communication, migration, lifecycle, and tuning evidence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed overflow-safe half-open boundaries, stable partition identity, scalar/vector costs, skew/hot-key policy, lazy task generation, halo epochs, cache-line/NUMA placement, accelerator staging, checkpoint/retry grain, versioned cutover, stale routing, cancellation checkpoints, adversarial distributions, and grain sweeps."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet states the balance/overhead/locality trade-off; exposition moves from ownership proof to dynamic operation; the exact weighted example is reproducible; ten examples are distinct; and five exercises progress from ranges to railway-safety transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external scheduling, graph-partitioning, CPU/GPU, distributed, performance, power-grid, railway, regulatory, real-time, or functional-safety review is claimed. The teaching assignment establishes neither optimal partitioning nor production scaling, ownership migration, timing, or safety."
+}

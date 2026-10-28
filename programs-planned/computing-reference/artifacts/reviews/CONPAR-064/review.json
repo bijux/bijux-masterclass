@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-064",
+  "chapter_digest": "1d91072bb4209aa274afff488ee42fa7e6b07191d5e3d462449a8d5bc398c4b3",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Dynamic STM and modular management were checked against Herlihy et al.; practical and theoretical contention policies against Scherer-Scott and the two Guerraoui-Herlihy-Pochon papers; detection/validation strategies against Spear et al. and TL2; safety/liveness foundations against Guerraoui-Kapalka, the Euro-TM volume, Herlihy-Shavit, and Shavit-Touitou. Four ACM DOI targets returned publisher HTTP 403 after DOI resolution; bibliographic metadata and scoped claims were checked through indexed publisher or institutional copies. The remaining six Springer or publisher targets resolved directly. Historical benchmark findings are explicitly dated and not treated as current rankings."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation consistently defines read/write sets, the conflict predicate, directed graph and edges, ownership/status, policy inputs, attempts, lost work, and fallback state.",
+        "The chapter distinguishes physical overlap, transactional conflict, host-language race, detection, validation, arbitration, semantic retry, false conflict, missed conflict, and isolation level."
+      ],
+      "notes": "Checked intersection syntax, direction-qualified RAW/WAR discussion, terminal-status language, graph/topological-order terminology, policy input units/authority, and progress vocabulary."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the executable relation: T_old and U_urgent conflict through x and y, while V_disjoint shares no read/write location with T_old.",
+        "Recomputed policy results: requester U wins; age 12 beats age 3; priority 5 beats priority 1; under oldest policy U is the loser.",
+        "artifacts/snippets/CONPAR-064/report.json records exact stdout, empty stderr, and zero exit code."
+      ],
+      "notes": "Ages and priorities are illustrative inputs. The deterministic model is not a runtime benchmark, concurrent arbiter, serializability validator, or liveness experiment."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "The conflict predicate includes T-write/U-read, T-write/U-write, and U-write/T-read intersections and excludes read-read overlap.",
+        "For T-read-x/U-write-x and U-read-y/T-write-y, the required edges T-to-U and U-to-T form a directed cycle, so both cannot appear in one serializable committed graph.",
+        "Aborting either vertex removes the two-vertex cycle; fresh reexecution can observe the survivor and produce the corresponding serial order."
+      ],
+      "notes": "The formula is explicitly scoped to complete single-version sets; predicates, multi-version rules, commutativity, and weakened isolation require different relations."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed RR, RAW/WAR, WAW, blind writes, predicates, aliases, graph cycles, write skew, eager/lazy/mixed detection, visible/invisible readers, global/per-object/striped metadata, and false/missed conflicts.",
+        "Reviewed simultaneous victim decisions, delayed aborted cores, manager exceptions, helping, nesting, preempted oldest holders, livelock, starvation, oversubscription, priority inversion/abuse, randomized behavior, and uncoordinated fallback.",
+        "Reviewed effects, cancellation at arbitration/commit, cleanup, reclamation, wrap/reuse, mode migration, shutdown/unload, hot-key concealment by averages, overload, and safety-critical robot/grid control."
+      ],
+      "notes": "Boundary analysis covers semantics, metadata, history, policy, scheduler, priority, security, resources, lifecycle, operations, and safety rather than only successful conflicts."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every forbidden dependency/cycle is represented or prevented; metadata remains paired with live data; and arbitration permits at most one incompatible attempt to remain commit-eligible.",
+        "Aborted status is terminal and prevents new ownership/publication; the survivor still validates; safety holds for every permitted victim choice.",
+        "Retry/fallback, priority tokens, effects, cancellation, nested logs, visible readers, lifetime state, and shutdown resources have bounded or explicit cleanup ownership."
+      ],
+      "notes": "Checked invariants across read/write instrumentation, detection, ownership, victim transition, survivor validation, publication, abort/retry, backoff, fallback, cancellation, close, and reclamation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Detection completeness maps every forbidden abstract dependency to metadata/version/validation, while conservative soundness allows reported false conflicts without accepting illegal histories.",
+        "The arbitration proof requires atomic status/ownership transition, at-most-one eligibility, loser nonpublication, and independent survivor validation.",
+        "The graph proof derives a topological serialization only after cycle prevention; liveness separately lists finite-delay, scheduler, allocation, cleanup, priority, and fallback assumptions."
+      ],
+      "notes": "Reviewed as proof obligations, not a formal proof of a named STM or contention manager. Exact memory ordering, graph model, isolation level, primitives, scheduler, and failure semantics remain implementation-specific."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The Python model explicitly disclaims concurrent STM, validation, serialization, waiting, and progress proof.",
+        "Conflict semantics, detection mechanism, correctness validation, victim policy, progress theorem, historical empirical findings, operational measurement, and human review are kept distinct.",
+        "The chapter states that policy rankings are workload/platform-specific and that priority/deadline rules do not create schedulability by themselves."
+      ],
+      "notes": "No source, benchmark, deterministic trace, or internal review is presented as universal performance dominance, fairness, real-time proof, external approval, or safety certification."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-064 passed one annotated Python model with recorded toolchain, source, command, exact stdout, empty stderr, and zero exit code.",
+        "The evidence plan separately requires model histories, every access/timing/mode pair, stripe collisions, wrap/reuse, manager faults, cancellation, pauses, fallback overlap, shutdown, deterministic randomness, and representative skew/topology/overload benchmarks."
+      ],
+      "notes": "The trace establishes only its declared set relation and policy choices; it proves no implementation safety, opacity, liveness, fairness, priority, resource bound, performance, security, or deployment suitability."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed legal histories, graph cycles, detection versus validation, eager/lazy/mixed strategies, reader visibility, metadata granularity, victim policies, policy-independent safety, starvation, priority, nesting, lifecycle, adaptation, and evidence for conceptual consistency."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed terminal atomic status, metadata identity/lifetime, manager callback constraints, authenticated priority, retry/deadline budgets, oversubscription, fallback subscription, mode-transition quiescence, privacy-safe conflict telemetry, false-conflict sampling, hysteresis, shutdown, and baseline parity."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter derives conflicts from legal histories before mechanisms, uses a cycle and executable policy model, separates correctness from heuristics, presents distinct examples spanning granularity through safety, and provides five progressively transferring exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external STM, concurrency-theory, database, formal-methods, runtime, scheduler, architecture, performance, real-time, security, robotics, power-grid, regulatory, operational, or safety review is claimed. The chapter and model establish neither a named implementation's conflict completeness, opacity, memory-order/lifetime correctness, liveness, fairness, priority bounds, resource behavior, performance, security, nor deployment safety."
+}

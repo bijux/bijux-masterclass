@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSP-003",
+  "chapter_digest": "81dd33a761319a65599936c2e736ad321a398b5663c09426ddcb4429b3ea4f73",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed IEEE 754-2019's authoritative landing material, Goldberg and Kahan primary texts, current Java SE 25, Rust, Python 3.14 and C++ working-draft documentation, and Cowlishaw's decimal specification. Nine destinations were retrieved directly; Kahan's Berkeley PDF timed out under the automated HEAD request but was retrieved and inspected through indexed browser content. Language, environment and conformance qualifications are retained."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Binary normal/subnormal equations distinguish precision, fraction integer, exponent and reserved exceptional categories.",
+        "Rounding, unit roundoff, absolute/relative/ulp error, classification and total-order relations have separate definitions."
+      ],
+      "notes": "Checked exponent bounds, subnormal formula, binary64 parameters and all exceptional-value exclusions."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed binary64 spacing at 2^53 as 2 and the 2^53+1 ties-to-even collision.",
+        "Recomputed non-associativity witness as zero versus one for the two groupings.",
+        "Recomputed toy p=4 spacing 0.125 and midpoint rounding of 1.3125 to 1.25; snippet passed exact output."
+      ],
+      "notes": "Calculations assume binary round-to-nearest ties-to-even exactly where stated."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified finite-binary criterion from reduced denominator divisibility by powers of two.",
+        "Derived normal binade spacing as 2^(e-p+1) by incrementing the fraction integer.",
+        "Verified continuity between largest subnormal and smallest normal and the limits of the one-operation relative-error model."
+      ],
+      "notes": "No long-computation or arbitrary-algorithm error bound is inferred."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed normal, subnormal, both zeros, infinities, quiet/signaling NaNs, payloads, overflow, underflow, invalid, division-by-zero and inexact conditions.",
+        "Reviewed decimal conversion, absorption, cancellation, reassociation, FMA contraction, excess precision, double rounding, parallel reductions and flush-to-zero modes.",
+        "Reviewed JSON/non-finite injection, native-byte serialization, malformed measurements, risk aggregation and radiation-treatment migration."
+      ],
+      "notes": "Covers representation, arithmetic, language, toolchain, storage, concurrency, security and high-stakes boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every reproducibility claim names format, rounding, intermediates, compiler/target, contraction, subnormal, library and reduction assumptions as applicable.",
+        "Finite-domain boundaries classify non-finite values explicitly before ordering or arithmetic.",
+        "Serialization aligns numeric equality, signed-zero/NaN policy, byte order and round-trip claims."
+      ],
+      "notes": "Range and precision, IEEE conditions and language exceptions, and value versus diagnostic provenance remain separated."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Finite-expansion proof states the reduced-rational premise and both necessity and sufficiency of a power-of-two denominator.",
+        "Spacing and integer-threshold arguments follow from precision and binade formulas.",
+        "Non-associativity uses one fully recomputed witness and is labeled only as refuting a universal identity."
+      ],
+      "notes": "No numerical stability, universal platform conformance or end-to-end safety theorem is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The Python example is labeled as recorded binary64-like platform evidence and disclaims broad language/platform and domain conclusions.",
+        "Format semantics, source-language behavior, implementation modes, algorithmic accuracy and domain fitness remain distinct.",
+        "Radiation and financial examples name required reviewers and explicitly claim none."
+      ],
+      "notes": "No clinical, financial, security, regulatory or production approval is inferred."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Executable decimal sum, integer collision, signed-zero equality, NaN comparison and minimum-subnormal hexadecimal form reproduced exactly.",
+        "Nine references retrieved directly and the Kahan timeout limitation is recorded with browser inspection evidence.",
+        "Migration plan distinguishes bitwise results, bounded errors, decision outcomes, benchmarks and named human review."
+      ],
+      "notes": "No Java, Rust, C/C++, alternate CPU, compiler-mode, risk service or treatment system was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed format anatomy, normals/subnormals, nonuniform spacing, conversion and rounding, unit roundoff, exceptional categories and flags, partial versus total ordering, signed zero, NaN payload limits, FMA, reproducibility and representation alternatives."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed boundary classification, comparison policy, accumulation, fast-math scope, floating environment, subnormal mode, binary/text serialization, schema validation, compiler and target pinning, differential tests, rollback, observability and benchmark evidence."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter follows integer representation, derives finite-binary and spacing results before source-language differences, includes one exact binary64 boundary script, counters fourteen misconceptions, supplies ten worked examples through radiation safety, and provides five matched exercises ending in risk-service migration."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner and pedagogical evidence only; no external IEEE/ISO, Java/Rust/Python/C/C++, compiler/runtime, numerical-analysis, security, finance/risk, clinical/medical-physics, safety, legal/regulatory, quality, accessibility/human-factors or independent validation review is claimed. The chapter and executable example prove neither arbitrary platform IEEE conformance, numerical stability, bitwise portability, financial-model validity, clinical dose correctness, regulatory compliance, performance nor deployment safety."
+}

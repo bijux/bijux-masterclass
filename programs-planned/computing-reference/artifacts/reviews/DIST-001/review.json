@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "module_id": "DIST-001",
+  "chapter_digest": "37149e22d29da0372fb7a2c98c744dfe205af6a728c0454362d68a0a1c656761",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked primary records or author-hosted copies for Lamport 1978, Fischer-Lynch-Paterson 1985, Chandy-Lamport 1985, Chandra-Toueg 1996, Gilbert-Lynch 2002, Waldo et al. 1994 and Gray 1985, plus Nancy Lynch's official book page. The chapter preserves the exact models and scopes of FLP and CAP and does not substitute distributed-systems folklore for the cited results."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked process set P, message set M, execution e, model M-script, local projection H_p(e), indistinguishability e1 ~_p e2 and happens-before notation.",
+        "Checked local-order, send-before-receive and transitive-closure definition of happens-before and concurrent-event definition.",
+        "Checked safety, liveness, fault tolerance, partial failure, acknowledgement and effect-boundary terminology."
+      ],
+      "notes": "Notation separates local histories from global executions and never implies a directly observable global trace."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Confirmed four encoded histories all yield client observation timeout.",
+        "Confirmed two histories contain an applied effect and two contain no applied effect.",
+        "Confirmed all five stdout lines and history counts exactly match the deterministic snippet report.",
+        "Checked three-replica and two-node examples avoid unsupported numerical reliability claims."
+      ],
+      "notes": "The encoded history counts are illustrative possibilities, not probabilities."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Traced the indistinguishability argument: equal local histories with differing effects prevent a timeout-only deterministic rule from knowing which effect state holds.",
+        "Checked happens-before is a partial causal order and physical timestamp comparison is not promoted to causality.",
+        "Checked retry identity, request fingerprint, authority, atomic state and acknowledgement levels form a bounded effect protocol rather than a transport claim.",
+        "Checked FLP and Gilbert-Lynch statements against their asynchronous, deterministic, crash, atomic-consistency, availability and partition conditions."
+      ],
+      "notes": "Conditional impossibility results are not generalized beyond their explicit models."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed request/reply loss before and after effect, delay, duplication, reordering, rejection, pending work, crash-stop, crash-recovery and partition.",
+        "Reviewed clocks, pause, overload, stale health observations, membership/epoch reuse, storage loss/corruption, correlated failures, version skew and hostile behavior.",
+        "Reviewed local database, outbox, message, payment/actuator and unrelated external-effect boundaries.",
+        "Reviewed medication-order and emergency-dispatch cases with clinical/public-safety, human-factors/accessibility, privacy/legal, security, operations, regulator and independent assurance roles."
+      ],
+      "notes": "Clinical, emergency-command and jurisdiction-specific operational acceptance remain named human-review obligations."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked every guarantee requires process, link, timing, clock, membership, storage, recovery and fault-model scope.",
+        "Checked local observations are never promoted to global facts without a protocol and model assumptions.",
+        "Checked retries preserve stable operation identity and semantic request equality.",
+        "Checked safety and liveness claims remain separate and effect/acknowledgement boundaries are named.",
+        "Checked failure tests include schedules, delay, loss, duplication, reorder, crash, restart, partition and recovery proportional to claims."
+      ],
+      "notes": "The executable evidence demonstrates only one local-observation ambiguity, not a complete protocol invariant suite."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed timeout ambiguity by construction of four locally identical histories with different effect states.",
+        "Reviewed two-node partition counterexample showing timeout-only dual promotion can violate single-writer safety.",
+        "Reviewed FLP as existence of a nonterminating admissible execution, not universal practical failure.",
+        "Reviewed CAP as a formal per-model trade-off, not the slogan pick any two.",
+        "Confirmed passing integration or snippet execution is not presented as proof of protocol correctness, availability, durability or safety."
+      ],
+      "notes": "The chapter gives model-dependent arguments and counterexamples, not formal verification of a production protocol."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of impossible, exactly once, failure, timeout, causal, ordered, durable, consensus, CAP, safety, liveness, reliable and proof.",
+        "Every universal or impossibility claim carries model scope and all exactly-once language names an effect boundary.",
+        "No external academic, practitioner, clinical, public-safety or regulatory review is claimed."
+      ],
+      "notes": "High-consequence approval remains explicitly outside automated and author review."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/DIST-001/report.json",
+        "Reproduced one timeout observation across four histories, split two effects applied and two not applied, under the recorded Python 3 toolchain.",
+        "Confirmed the output requires an idempotency or status protocol rather than selecting retry or no-retry from timeout alone.",
+        "Confirmed execution excludes network behavior, probabilities, database atomicity, durability, failure detection and protocol correctness."
+      ],
+      "notes": "Execution establishes the encoded indistinguishability example only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter explains distribution through local histories, partial knowledge, independent failure, communication ambiguity, scoped order, acknowledgement/effect boundaries and model-dependent results while preserving later modules' detailed ownership of models, failures, clocks, delivery, replication, consistency and consensus."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Production guidance covers distribution justification, explicit models, stable operation identity, payload fingerprints, atomic authoritative outcomes, acknowledgement levels, status lookup, fencing, reconciliation, compensation, adversarial schedules, fault injection and claim limits."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with ten distinct examples and five exercises progressing from remote-call and timeout ambiguity through retry protocols, clocks, replication, snapshots, dependency composition, theorem critique and high-stakes dispatch reasoning."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

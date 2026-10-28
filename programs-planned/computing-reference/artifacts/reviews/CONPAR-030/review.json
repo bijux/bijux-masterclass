@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-030",
+  "chapter_digest": "2d517de6f7d04a074d313aac6c17a705332928c4484e293af7084c135c36fd63",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Formal claims were checked against Boehm/Adve, Batty et al., Alglave/Maranget/Tautschnig, and current C++ draft sections on execution, races, atomics, and order. Current tooling was checked against the official herdtools7 repository. Java SE 26, current Go, Arm, Intel, and Linux model references were checked for layer-specific scope; the chapter avoids claiming one universal weak-memory model."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation defines Ev, sb, rf, mo_x, fr, sw, and hb before the formal worksheet uses them.",
+        "Event names and arrows remain directionally consistent across store-buffering, message-passing, CAS, and exercise derivations."
+      ],
+      "notes": "Relation composition, transitive closure, inverse/composition notation, and strict-order inequalities were checked; model-specific vocabulary is qualified."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "artifacts/snippets/CONPAR-030/report.json records four events, four SC constraints, a detected cycle, and SC both-zero false.",
+        "The adjacency closure was manually recomputed: each event reaches itself through the four-edge cycle."
+      ],
+      "notes": "Exact executable output matches the independent four-node cycle calculation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Store buffering both-zero re-derives Ix0 rf->Rx, Iy0 rf->Ry, Ix0 mo->Wx, Iy0 mo->Wy, then Rx fr->Wx and Ry fr->Wy.",
+        "SC constraints re-derive Wx<Ry<Wy<Rx<Wx, contradicting irreflexivity of a strict total order."
+      ],
+      "notes": "The symbolic proof excludes the SC outcome only and explicitly leaves a relaxed verdict to the complete named model."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed all store-buffering outcomes, old versus publication rf, initial writes, mixed modes, data races, failed/spurious CAS, fences, dependencies, and RMW atomicity.",
+        "Reviewed compiler/ISA layering, mixed languages, mixed widths, object lifetime, ABA/reclamation, devices, durability, and safety-critical transfer."
+      ],
+      "notes": "Boundary review spans graph construction, source definition, model revision, tool scope, mapping, lifecycle, and external-system claims."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every candidate read requires a compatible rf source, every atomic object one total mo, and every ordinary conflict a valid hb/lifetime audit.",
+        "Repairs are mapped to missing publication, compound atomicity, reuse, lifetime, contention, progress, or device/durability ownership rather than indiscriminate strengthening."
+      ],
+      "notes": "The worksheet preserves layer/model identity and rejects candidates only after applying all applicable constraints."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "The SC cycle proof and release/acquire message-passing proof were reviewed edge by edge.",
+        "Negative arguments identify the first missing/violated premise: absent rf-conditioned sw, unordered ordinary conflict, invalid RMW history, or cyclic SC order."
+      ],
+      "notes": "No empirical non-observation is used as a prohibition proof, and no architecture story is used to define racy source."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Allowed and forbidden are explicitly defined as full-model satisfiability claims, while hardware observations are frequency/possibility evidence.",
+        "The executable limitations say the cycle model does not implement any named language or architecture model."
+      ],
+      "notes": "Formal derivation, bounded model simulation, runtime testing, race detection, mapping inspection, and system assurance are separately labeled."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-030 passed the one deterministic graph snippet with exact stdout and empty stderr.",
+        "Hardware litmus, stress, assembly, and race-detector results are assigned only their documented empirical scope."
+      ],
+      "notes": "The run validates graph closure, not a weak-memory execution or production program."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed candidate-execution methodology, sb/rf/mo/fr/sw/hb relationships, SC-cycle reasoning, data-race precedence, layer separation, fence/dependency conditions, CAS paths, tool scopes, and repair mapping. The chapter integrates modules 021–029 without collapsing their distinctions."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed source minimization, exact model/tool revisions, herd/litmus use, compiler mapping, supported-target testing, race/systematic tools, production-to-litmus mapping, FFI/lifetime, fault paths, regression evidence, and device/safety boundaries."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet is a compact method reference; exposition derives the worksheet incrementally; ten examples span positive, negative, tool, and transfer cases; five exercises progress from definitions to layered industrial transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring and verification evidence only; no external academic, standards-body, compiler, architecture, kernel, robotics, security, regulatory, or functional-safety review is claimed. The Python cycle checker is not a language/ISA memory-model simulator and establishes no production, device, timing, lifetime, or deployment correctness."
+}

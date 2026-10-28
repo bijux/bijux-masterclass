@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "module_id": "COMP-002",
+  "chapter_digest": "701127223bd9fcdda6b09732497cbbf9273deb114004a17ae3faa29e1a9e0751",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked Unicode 17.0 core material and UAX #29/#15/#31, the current Rust input-format contract, Python 3.14 lexical source rules, and the official LSP site/specification. Version-sensitive Unicode segmentation and protocol behavior are explicitly versioned."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed byte-boundary, half-open-span, decoder, line-start, position conversion, revision, and origin-relation notation."
+      ],
+      "notes": "All coordinate systems name their unit; bounds and partiality are explicit; the origin relation correctly allows one-to-many mappings."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed source-position-model and matched 12-byte length, line starts 0/4/11, five coordinate tuples, and invalid offset 2.",
+        "Recomputed UTF-8, scalar, UTF-16, CRLF, and EOF examples independently."
+      ],
+      "notes": "Byte counts and UTF-16 supplementary-scalar counts agree across exposition, examples, exercises, and model output."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived predecessor line lookup from sorted starts.",
+        "Re-derived canonical byte to consumer-position conversion and partial inverse.",
+        "Checked revision-bound span and many-to-many origin obligations."
+      ],
+      "notes": "Derivations distinguish physical encoding boundaries from presentation and protocol policies."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty source, EOF, final newline, LF/CRLF/lone CR, continuation byte, UTF-16 surrogate split, combining sequences, ZWJ emoji, bidi controls, tabs, stale revisions, overlapping edits, malformed bytes, and long-line/resource cases."
+      ],
+      "notes": "Exact edits reject invalid boundaries; recovery and rendering policies are explicitly separated from compiler acceptance."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced source identity/revision, ordered in-bounds spans, encoding boundaries, newline policy, negotiated unit, origin provenance, round trips, and resource limits."
+      ],
+      "notes": "No stored byte span is dereferenced against a different revision and no display column is treated as a canonical storage coordinate."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed uniqueness of predecessor line lookup.",
+        "Reviewed round-trip obligation for valid boundaries.",
+        "Reviewed UTF-8 boundary argument and explicit limitation of the finite model."
+      ],
+      "notes": "Arguments state well-formedness, sorted-index, unit, and snapshot premises; they do not claim a complete Unicode decoder proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited every use of proof, invariant, property, model, and conformance language."
+      ],
+      "notes": "The executable code is explicitly a restricted deterministic model; broader correctness is presented as test/proof obligations against versioned specifications."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed executable output, complexity statements, protocol-version statements, and all safety limitations."
+      ],
+      "notes": "Complexity follows the stated scan/binary-search algorithms; current claims are specification-backed. No performance benchmark, clinical validation, or external review claim is made."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed distinctions among bytes, code units, scalars, graphemes, glyphs, display cells, normalization, source identity, revisions, line indexes, protocol positions, and expansion origins."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed strict and recovery decoding, immutable snapshots, LSP conversion, incremental edits, safe terminal rendering, generator provenance, fuzzing, and production resource limits. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from raw bytes through encoding and canonical spans to human/protocol positions; ten examples are distinct and five exercises progress to railway assurance transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

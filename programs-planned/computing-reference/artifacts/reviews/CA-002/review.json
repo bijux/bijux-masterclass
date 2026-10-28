@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "CA-002",
+  "chapter_digest": "2ad6cab84708de87e725bca2bcb728e4a48cd64a42e7dee287046a2389b6f611",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked the active IEEE 1800-2023 record, Harris and Harris author resources, Chaney-Molnar primary paper metadata and DOI, AMD 2026.1 CDC and MTBF guidance, Intel's official metastability analysis documentation, and the current publisher record for Weste and Harris."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked state, input, output, recurrence, transition tuple, invariant, timing, uncertainty, and clock-domain notation for definition before use.",
+        "Verified prime marks, cycle indices, units, and maximum/minimum timing subscripts remain consistent."
+      ],
+      "notes": "Discrete recurrence, HDL semantics, timing constraints, and analog metastability are represented as distinct models."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed Example 4 as 80+620+70+50 = 820 ps and 1/820 ps = approximately 1.22 GHz.",
+        "Recomputed Exercise 2 as a 950 ps setup period, approximately 1.053 GHz, and a 55 ps arrival against 65 ps hold requirement for a 10 ps deficit.",
+        "Executed the shift and counter traces and independently checked reset, enable, wraparound, and range outcomes."
+      ],
+      "notes": "Every number is labeled as a simplified teaching calculation or finite trace rather than physical-design sign-off."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived S_(k+1)=F(S_k,X_k), output forms, enable-as-hold, two-stage shift recurrence, and the inductive invariant obligation.",
+        "Checked setup and hold equations against the declared uncertainty sign convention and maximum/minimum path roles."
+      ],
+      "notes": "The simplified equations explicitly defer architecture and technology-specific arcs, corners, clock relationships, and exceptions to static timing."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed illegal and unreachable state, latch transparency, setup and hold failure, asynchronous controls, narrow pulses, incoherent multi-bit CDC, reset assertion/release, clock loss, brownout, upset, and common-cause failure.",
+        "Reviewed the infusion-pump and rail-braking transfers for independent shutdown, physical effects, operational configuration, and accountable human review."
+      ],
+      "notes": "Functional, temporal, electrical, crossing, reset, power, fault, and system-safety boundaries are not collapsed."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced state sufficiency, common old-state snapshot, transition completeness, range, setup, hold, CDC, reset coherence, and evidence-scope invariants through examples and answers.",
+        "Confirmed the executable model calculates next tuples before commit and checks all encoded state values remain in range."
+      ],
+      "notes": "No finite recurrence trace is presented as evidence about HDL scheduling, timing closure, metastability, reset trees, or silicon."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the parity invariant base case and preservation step line by line.",
+        "Reviewed the state-sufficiency argument and verified its dependence on permitted future inputs and declared observations.",
+        "Checked the synchronous-abstraction argument against explicit setup, hold, clock, reset, and electrical assumptions."
+      ],
+      "notes": "Induction proves a property of the stated transition model only; physical realization remains a separate obligation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of prove, invariant, sufficient, safe, eliminate, exhaustive, all, never, and authorize.",
+        "Verified that MTBF, CDC tools, formal checks, and timing equations are scoped to assumptions and implementation evidence."
+      ],
+      "notes": "The chapter does not promote verification-tool success, synchronizer patterns, or RTL exploration into universal hardware correctness."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "artifacts/snippets/CA-002/report.json records the exact shift trace, counter trace, and range assertion under the available Python toolchain.",
+        "Vendor MTBF and CDC claims are attributed to current official guidance and kept device, rate, placement, and operating-condition dependent."
+      ],
+      "notes": "No benchmark, field-reliability, silicon, medical-safety, rail-safety, certification, or external-review claim is made."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed history, sufficient state, transition, output, latch, flip-flop, clocked snapshot, setup, hold, metastability, CDC, reset, and verification layers as a coherent progression without preempting later register or finite-state-control modules."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed nonblocking sequential semantics, enable ownership, timing equations, synchronizer limitations, pulse and bus crossings, asynchronous assertion/synchronous release, constraints, waivers, tool evidence, and physical implementation concerns. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles progression from history compression through storage and timing to assurance. Ten examples and five complete exercises cover tracing, recomputation, diagnosis, comparison, protocol selection, and high-consequence unfamiliar transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, digital-design practitioner, semiconductor-vendor, medical-safety, rail-safety, or certification review is claimed."
+}

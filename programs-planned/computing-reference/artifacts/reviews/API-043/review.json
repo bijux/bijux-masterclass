@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "module_id": "API-043",
+  "chapter_digest": "9da0d0549fcfe66dd43a84f563109de1612764f5dba25af12d7975cfe61e059c",
+  "review_date": "2026-09-01",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-01",
+    "notes": "Checked all eight structured references at the RFC Editor. RFC 9700 is the current January 2025 OAuth security BCP and requires public-client PKCE, exact redirect matching, prohibits resource-owner-password credentials, and deprecates implicit use. RFC 10017 is the current 2026 browser-app guidance covering BFF, token-mediating backend, and browser public-client patterns. RFC 8252 governs native external user agents; RFCs 7636, 8628, 9207, and 8414 support PKCE, device authorization, response issuer identity, and trusted metadata."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+        "status": "passed",
+        "method": "manual_review",
+        "evidence": [
+          "Reviewed flow function F=f(A,C,U,R,K,T), completion conjunction, transaction q, and symbols c, r, v, h, and iss for consistent definition and reuse.",
+          "Confirmed H(v)=h is described as the configured PKCE transformation and that exact-match/single-use/time predicates are logical requirements rather than arithmetic claims."
+        ],
+        "notes": "Notation cleanly separates flow selection dimensions from authorization-code transaction bindings and uses GitHub-compatible math delimiters."
+    },
+    "numerical_recomputation": {
+        "status": "not_applicable",
+        "method": "not_applicable",
+        "evidence": [],
+        "notes": "The module makes no numerical probability, entropy quantity, performance benchmark, or cost computation. It calls for high entropy and bounded lifetimes according to standards/threat models without inventing numerical guarantees."
+    },
+    "symbolic_recomputation": {
+        "status": "passed",
+        "method": "symbolic_recomputation",
+        "evidence": [
+          "Expanded the completion conjunction into issued/redeemed client, exact redirect, PKCE verifier/challenge, expected issuer, single-use, and expiry checks and matched them to the code-flow state machine.",
+          "Mapped actor/client/user/redirect/key/threat dimensions to server, BFF/browser, native, device, and machine decisions in exposition and executable policy."
+        ],
+        "notes": "The symbolic model preserves the distinction between confidential-client authentication and PKCE code binding and never treats either as user or resource authorization."
+    },
+    "boundary_and_adversarial_cases": {
+        "status": "passed",
+        "method": "boundary_analysis",
+        "evidence": [
+          "Reviewed code interception/injection, CSRF/login CSRF, issuer mix-up, exact-redirect/parser/open-redirect failures, app-link/private-scheme interception, embedded webviews, malicious browser script, and public-client secret recovery.",
+          "Reviewed concurrent code redemption, verifier reuse/downgrade, device-code guessing/phishing/poll flooding, consent overreach, refresh replay, cross-tenant selection, metadata SSRF, key/issuer outage, and log/referrer leakage.",
+          "Checked lost browser/token responses, partial redirect deployment, clock expiry, and logout/revocation ambiguity."
+        ],
+        "notes": "Coverage spans all front/back-channel boundaries and each client architecture without assuming same ownership, TLS, CORS, consent, or authentication eliminates authorization threats."
+    },
+    "invariant_checking": {
+        "status": "passed",
+        "method": "invariant_analysis",
+        "evidence": [
+          "Executed oauth-flow-selection-policy: interactive server/native users selected code+PKCE, browser selected BFF code+PKCE, constrained device selected device authorization, and service self-authority selected client credentials.",
+          "Observed explicit rejection of implicit, password grant, and service-as-user actor mismatch."
+        ],
+        "notes": "The example verifies a finite local policy only; the chapter labels it non-protocol and requires real message/attack testing for a deployment."
+    },
+    "proof_review": {
+        "status": "not_applicable",
+        "method": "not_applicable",
+        "evidence": [],
+        "notes": "No protocol security proof or completeness theorem is claimed. Security depends on full standards profiles, cryptographic libraries, registrations, configuration, storage, and all participants."
+    },
+    "proof_sketch_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Confirmed the mechanism section limits its invariants to correct implementation of selected RFCs/profiles and explicit secure libraries/configuration.",
+          "Confirmed BFF preference, alternate browser patterns, extension grants, consent, and sender constraint are stated as contextual design decisions rather than universal proofs."
+        ],
+        "notes": "Standards requirements, architectural recommendations, local policy, and deployment evidence remain visibly distinct."
+    },
+    "empirical_evidence_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Snippet report artifacts/snippets/API-043/report.json records one deterministic local flow-selection execution as passing.",
+          "Transaction, redirect, browser, native, device, refresh, fault, and attack tests are presented as required verification work, not measurements performed for a real issuer/client."
+        ],
+        "notes": "No live authorization server, browser, native app, token endpoint, or penetration test is claimed to have been empirically evaluated."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed roles, authority, client classification, code flow, PKCE, correlation controls, redirects, server/BFF/browser/native/device/machine architectures, obsolete-flow rejection, consent, refresh/logout, metadata, errors, and verification as one consistent model. OAuth delegation and OIDC authentication remain deliberately separate."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Checked practical ownership for registrations, issuer metadata, browser sessions, client authentication, native redirects, device polling, workload keys, token storage, refresh/revocation, rotation, error handling, inventory, and migration. The guidance acknowledges direct-upload/WebSocket and same-domain alternatives rather than prescribing one deployment shape."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter begins from actor/authority and client reality, explains each binding by attack prevented, compares five deployment classes, and closes with transaction/attack verification. Ten examples and five design exercises progress from selection through state machines, multi-issuer redirects, browser architecture, and legacy migration, with substantive answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

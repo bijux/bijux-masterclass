@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "module_id": "API-036",
+  "chapter_digest": "caf97a063bea69d7a8f24eee171ac3c2fbfd0e0e68fbc9b2a26dcb2186610c35",
+  "review_date": "2026-09-01",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 5,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-01",
+    "notes": "Checked current PostgreSQL transaction, isolation, and explicit-locking documentation for atomic visibility, snapshot behavior, lock duration, deadlock guidance, and serialization failure; checked Fowler's primary Unit of Work catalog entry; checked current AWS transactional-outbox guidance for the dual-write gap, committed outbox visibility, ordering, rollback, and duplicate delivery; and checked RFC 9110 for HTTP request/response and method boundaries."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the transaction sequence B, begin/commit interval, read/write sets, state-transition invariant, and logical-operation versus attempt terminology against their definitions."
+      ],
+      "notes": "Symbols are introduced before use and the local-store scope of every atomicity statement is explicit."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the three-case local transaction model: successful debit yields balance 70 with one outbox record, insufficient funds preserves balance 100 with no outbox record, and response loss preserves the same committed balance 70 and outbox record while changing only client knowledge."
+      ],
+      "notes": "Exact stdout is recorded in artifacts/snippets/API-036/report.json; the model is explicitly limited to in-memory teaching evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked that business writes, required audit/idempotency state, and outbox intent form one local write set, while HTTP delivery and remote effects are excluded.",
+        "Checked that retry recreates begin, authoritative reads, decisions, writes, and commit rather than replaying only the failed statement."
+      ],
+      "notes": "The reasoning preserves the distinction between atomicity, isolation, durability acknowledgement, and distributed workflow."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed parsing before begin, correctness-critical reads, multiple repositories, nested calls/savepoints, opposing lock order, serialization conflict, deferred constraints, remote calls, event dual writes, streaming, cancellation before/during/after commit, response serialization failure, pool cleanup, and shutdown.",
+        "Reviewed definitive rollback versus ambiguous acknowledgement and synchronous request lifetime versus multi-request business workflow."
+      ],
+      "notes": "Local-store, resource, concurrency, cancellation, delivery, and client-knowledge boundaries are not conflated."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced one application-owned transaction, shared repository context, inside-boundary invariant enforcement, explicit isolation, no success before commit, no publication for rollback, bounded duration, terminal cleanup, and post-commit ambiguity through exposition, examples, and answers.",
+        "Verified that every remote effect is either separately reconcilable or represented as durable workflow/outbox intent rather than described as part of local rollback."
+      ],
+      "notes": "The chapter consistently treats transaction-per-request as a heuristic subordinate to the local business invariant."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No formal proof of arbitrary database isolation, crash durability, or distributed atomicity is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The equations state local design obligations and do not purport to prove a database or service implementation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable example explicitly disclaims database isolation, crash durability, and message-delivery evidence.",
+        "Concurrency, fault-injection, pool-leak, and operational tests are presented as required future evidence, not as completed production validation."
+      ],
+      "notes": "One deterministic model and source retrieval are bounded internal evidence only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed HTTP, application-operation, unit-of-work, and database-transaction lifetimes; atomic local effects; begin placement; shared repositories; isolation and locking; bounded critical sections; remote effects; outbox; commit/response ordering; cancellation; streaming; retries; and observability as one coherent boundary model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed middleware and ORM lifetime traps, connection pools, aborted sessions, deferred commit failures, canonical lock order, retry purity, remote latency, outbox crash gaps, response loss, worker shutdown, metrics, deterministic interleaving tests, and batch capacity limits."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Reviewed the one-page retrieval aid, progressive exposition from lifetimes through testing, executable three-outcome model, ten distinct worked examples, and five exercises advancing from boundary placement through concurrency, diagnosis, cancellation, and atomic batch verification."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source-retrieval, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external academic, practitioner, database-vendor-specific deployment, distributed-systems, performance, reliability, production, or independent validation review is claimed."
+}

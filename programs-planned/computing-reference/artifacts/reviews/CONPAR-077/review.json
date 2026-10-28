@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "module_id": "CONPAR-077",
+  "chapter_digest": "b6d4d84b607bc5f6314b9cd5398b92e93a56a6160ee17b4d6ce5ca4fd9e57ad9",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Reviewed all ten references. Crossref confirmed the exact Hong-Kim analytical-model and Volkov-Demmel GPU-tuning papers. Current NVIDIA CUDA best-practices, programming, and profiler documentation, AMD HIP performance and occupancy API documentation, SYCL 2020 revision 12, and OpenCL 3.0 all resolve and support the scoped coalescing, divergence, occupancy, subgroup, and measurement claims. Target-specific behavior is not presented as a language-level universal."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Definitions and Notation consistently defines execution-group width, active masks, lane addresses, transaction mapping, useful/transferred bytes, block and resource quantities, occupancy, latency/readiness, and measured time.",
+        "The chapter keeps theoretical occupancy, achieved occupancy, readiness, utilization, transaction efficiency, lane-slot efficiency, and elapsed time distinct."
+      ],
+      "notes": "Checked masks, byte intervals, segment indexing, ceilings/floors, allocation-qualified resource quantities, ratios, units, and target/workload conditioning."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed contiguous teaching addresses zero through 28 as two 16-byte segments, 32 transferred bytes, and efficiency 1.000; 16-byte stride as eight segments, 128 transferred bytes, and efficiency 0.250.",
+        "Recomputed two complementary four-lane paths as eight useful lane-instructions over sixteen issued lane slots, efficiency 0.500.",
+        "Recomputed fictional occupancy limits as threads 4, warps 4, blocks 4, registers 3, shared 2; two resident blocks, four active warps, and occupancy 0.500.",
+        "Recomputed Exercise 1 base-four offset as three segments and efficiency 32/48 equals two-thirds, and Exercise 3 limits as 8, 8, 16, 6, 3 with 24/64 equals 0.375 occupancy.",
+        "artifacts/snippets/CONPAR-077/report.json retains exact stdout, empty stderr, zero exit code, and toolchain evidence."
+      ],
+      "notes": "All calculations are simplified declared models; none predicts an unspecified device's transactions, allocation, counters, or elapsed time."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived transaction coverage as the deduplicated union of target units intersecting every active lane byte interval.",
+        "Re-derived resident blocks as the minimum of independently legal thread, warp/wave, block, allocated-register, shared-memory, and target-specific ceilings.",
+        "Rechecked control equivalence conditions for predication, partitioning, identity/order, exceptions, memory validity, synchronization, and side effects.",
+        "Rechecked the causal argument structure from invariant outputs and one changed variable through predicted and observed counter movement to a timing distribution."
+      ],
+      "notes": "Ratios are descriptive under named assumptions and are never multiplied into a universal speed equation."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero/one, alignment-minus-one/alignment/alignment-plus-one, element widths crossing units, pitches/subviews, all-active/all-inactive/sparse masks, group/grid tails, gathers/scatters, and store ownership.",
+        "Reviewed uniform versus divergent branches, lane-dependent loop lengths, invalid speculation, exceptions/side effects, collectives, numeric order, skew, queues, fairness, and termination.",
+        "Reviewed register/shared/block allocation cliffs, spills, insufficient grids, achieved versus static occupancy, ILP/MLP, concurrency/interference, compiler drift, heterogeneous subgroup sizes, clocks/thermal state, profiler replay, device loss, privacy, and high-stakes pathology/genomics."
+      ],
+      "notes": "Boundary analysis covers addresses, control, numeric semantics, resources, scheduling, measurements, target portability, lifecycle, multi-tenancy, security/privacy, operations, and safety."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Every active lane address is valid and mapped to its intended identity; inactive lanes perform no forbidden effect; stores retain unique ownership or a valid atomic protocol.",
+        "Collective masks exactly name participants and work-group barriers remain convergent across every transformed control path.",
+        "Every launch is legal under final-binary resource reports and current device limits, with correctness independent of resident block count or simultaneous scheduling.",
+        "Every accepted performance comparison holds outputs/workload constant and records target/build, timing distributions, counter definitions, confounders, and operational fallback."
+      ],
+      "notes": "Checked invariants across mapping, transaction formation, control, collectives, allocation/residency, scheduling, measurement, rollout, failure, and fallback."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Transaction proof explicitly conditions units on the target and counts byte-interval intersections rather than assuming adjacent source indices suffice.",
+        "Control proof explicitly rejects unsafe speculative loads, exceptional arithmetic, duplicate side effects, and lost identity/order.",
+        "Residency proof uses allocated rather than requested resources and concludes feasibility only, while causal proof requires aligned counter and time evidence with correctness preserved."
+      ],
+      "notes": "No specification, calculator, profiler percentage, micro-model, source check, or successful snippet is claimed as universal causality, optimality, diagnostic validity, certification, or safety."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Target-specific segment and compute-unit limits are repeatedly labeled fictional teaching assumptions.",
+        "The executable fence explicitly disclaims GPU, cache, compiler, scheduler, allocation-granularity, timing, and profiler emulation.",
+        "The digital-pathology and genomics cases name required human reviewers and explicitly state that no review or validity is claimed."
+      ],
+      "notes": "Programming semantics, architecture/compiler mechanisms, measured counters, hypotheses, and high-stakes acceptance remain separate evidence categories."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "python3 tools/verify_snippets.py CONPAR-077 passed under the recorded Python toolchain with exact stdout, empty stderr, zero exit code, and retained artifacts.",
+        "The chapter separately requires actual requested/transaction/cache, mask/branch, issued/eligible/active-warp, stall, pipeline, resource/spill, block-duration, scheduling-wave, timing, and correctness evidence.",
+        "Experiments require representative sizes/distributions, warm/cold state, devices, concurrency, pressure/failure, repetitions, uncertainty, source correlation, profiler-impact review, and end-to-end context."
+      ],
+      "notes": "The snippet reproduces ledger arithmetic only; it supplies no evidence of hardware coalescing, divergence implementation, achieved occupancy, profiler accuracy, or speed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed transaction mapping and useful bytes, stores/layout/reuse, mask evolution, predication and partitioning, occupancy ceilings/granularity, register/shared/ILP/MLP trade-offs, readiness, grid tails, concurrency, causal profiling, correctness, portability, privacy, operations, and high-stakes limits."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed final-binary resource capture, launch/device queries, alignment/tail/stride and mask tests, store ownership, sanitizer/race/reference checks, one-variable experiments, multi-counter source correlation, block/resource sweeps, timing distributions, profiler perturbation, heterogeneous targets, concurrent workloads, canary/rollback, sensitive trace controls, and device-loss fallback."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter separates three seductive metrics before explaining their interactions, includes one exact three-ledger model, counters eighteen misconceptions, supplies ten distinct examples through digital pathology, and ends with five progressive exercises and complete derivations including genomics."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, snippet, conceptual, practitioner, and pedagogical evidence only; no external NVIDIA/CUDA/Nsight, AMD/HIP/ROCm, Khronos/OpenCL/SYCL, GPU compiler/runtime/driver, hardware/cache/memory/scheduler/profiler, numerical, ML/statistics, genomics/bioinformatics, pathology/clinical/laboratory/imaging, security/privacy, multi-tenant platform, operations/SRE, quality/regulatory/certification, human-factors, or safety review is claimed. The chapter and teaching model establish neither a real GPU kernel's correctness, causality, optimality, or portability, nor biological/diagnostic validity, regulatory approval, or deployment safety."
+}
