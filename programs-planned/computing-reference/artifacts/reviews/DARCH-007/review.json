@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-007",
+  "chapter_digest": "21861059243602ac991a3697121ce602c0961811b357e0e412b04d9497814a74",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked the official IEEE 42010, ISO/IEC 25010:2023 and 25030:2019 records, SEI QAW and ATAM materials, The Open Group TOGAF page, NIST CSF 2.0, and NIST Privacy Framework. The six non-ISO destinations returned HTTP 200; both official ISO records were retrievable through source review but rejected the command-line client with HTTP 403. Claims are limited to the published records and method scope."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed driver, hard and negotiable constraint, assumption, uncertainty, evidence, option, feasibility, quality-scenario, response, and decision-trace notation.",
+        "Checked the source, stimulus, environment, artifact, response, measure structure and the separation of bounds from preferences."
+      ],
+      "notes": "Notation consistently separates imposed context, uncertain propositions, stakeholder scenarios, options, and decisions."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed driver-context-integrity with Python 3.14.4 and reproduced 5 items, 1 valid item, 4 sorted findings, and ready=false.",
+        "Independently traced the missing driver measure, unauthorized supposed constraint, design choice mislabeled as constraint, and untested scale assumption.",
+        "Checked the sample 99.9%, 20-second, 60-second, and 50,000-events-per-second values for units and explicit illustrative scope."
+      ],
+      "notes": "Fixture counts are exact; scenario thresholds remain examples requiring local baselines and authority."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived feasibility as satisfaction of every applicable hard constraint before preference comparison.",
+        "Checked the stakeholder-concern to driver or constraint to scenario to option-response to decision to evidence to trigger trace.",
+        "Verified that assumptions retain confidence basis, consequence, test, due date, and dependent decisions rather than becoming facts."
+      ],
+      "notes": "The central model supports scenario-based option evaluation while preserving uncertainty and source authority."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed normal, peak, degraded, attack, migration, recovery, correction, deletion, merger, vendor-exit, and staff-turnover scenarios.",
+        "Tested unknown versus assumption, hard versus negotiable constraint, preference versus prior decision, statutory versus arbitrary deadline, and transition versus target constraint.",
+        "Reviewed distributional harm, low-frequency mandatory scenarios, prototype selection bias, synthetic benchmark limits, legal ambiguity, and conflicting constraints."
+      ],
+      "notes": "Boundary cases preserve authority, scope, time, uncertainty, and affected stakeholders rather than treating all forces as commensurable."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced driver, constraint, assumption, decision-label, quality-scenario, hard-filter, and trade-off evidence invariants through examples and answers.",
+        "Verified that every recommended constraint record includes source authority, exact scope, effective period, negotiability, evidence, and change path.",
+        "Confirmed that review triggers cover invalidated assumptions, breached measures, new constraints, priority changes, incidents, scale, and organizational change."
+      ],
+      "notes": "The nine-gate mechanism preserves context and traceability from stakeholder concern through decision evolution."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the nine boundary, stakeholder, driver, scenario, constraint, assumption, option, evidence, and decision gates.",
+        "Checked counterexamples for requirement-as-driver, adjective-as-scenario, permanent constraint, prior-decision inevitability, assumption-as-fact, stakeholder-vote authority, single-score trade-offs, and prototype proof.",
+        "Verified that sensitivity and trade-off points are supported by explicit affected responses and stakeholder consequences."
+      ],
+      "notes": "The chapter provides a structured architecture argument, not proof that one generic priority set or method fits every context."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of driver, constraint, must, hard, assumption, fact, valid, feasible, prove, satisfy, appropriate, official, and required.",
+        "Confirmed that organizational choices, external authorities, empirical observations, predictions, and preferences are not conflated.",
+        "Verified that the checker is labeled as registry-predicate validation and excludes substantive target, authority, and production-fitness proof."
+      ],
+      "notes": "Claims are scoped to a system boundary, stakeholder authority, time, scenario, and evidence level."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed source currency, standard and method scope, scenario numbers, prototype and benchmark limits, economics, policy interpretation, and fixture output.",
+        "Confirmed that no fictitious ATAM evaluation, certification, legal opinion, production benchmark, stakeholder approval, quality outcome, or external review is claimed.",
+        "Checked that local conclusions require representative tests, source records, stakeholder participation, policy authority, and operational evidence."
+      ],
+      "notes": "Official standards, primary methods, hypothetical examples, predictions, and empirical evidence are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed drivers, constraints, assumptions, preferences, decisions, quality scenarios, measures, authority, uncertainty, sensitivities, trade-offs, options, evidence, distributional effects, economics, traceability, and review triggers as one coherent context model."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable stakeholder, scenario, constraint, and assumption records plus alternative generation, hard filtering, evidence planning, decision recording, monitoring, and trigger-based reassessment. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from architectural significance through scenarios, constraints, assumptions, trade-offs, evidence, and decisions. Ten examples and five complete exercises cover vague analytics, cloud preference, recovery, volume assumptions, residency, replication, stakeholder conflict, pilots, constraint change, driver packages, acquisition, and streaming evidence."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, architecture-method, legal, privacy, security, finance, domain-stakeholder, or practitioner review is claimed."
+}

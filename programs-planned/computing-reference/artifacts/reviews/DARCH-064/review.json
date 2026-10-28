@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-064",
+  "chapter_digest": "18cd42478a93a014466188672219c17c5eece674cabbeb095675f56c07e3e8e3",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked W3C PROV-DM, PROV-O, PROV-CONSTRAINTS, and PROV-AQ; current OpenLineage object-model, run-cycle, and lineage-dataset-facet documentation; Apache Atlas project documentation; current OpenTelemetry trace documentation; and approved SLSA 1.2 provenance guidance. All ten primary or official destinations returned HTTP 200. Claims remain bounded to provenance entities, activities, agents, relations, validation and access; job, run, dataset, field, facet, and event concepts; metadata graph capabilities; operational traces; and verifiable artifact provenance."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the entity, activity, agent, assertion, evidence-class, relation-type, time, assurance-profile, consumer, and decision sets.",
+        "Checked the qualified assertion tuple and Derive, Active, Permitted, graph-slice, Reach, Coverage, Agree, Impact, and FitLineage notation for scope and declared predicates.",
+        "Verified that unqualified endpoint pairs are identified as display projections and that reachability is explicitly relative to time and policy."
+      ],
+      "notes": "Notation supports lineage assurance reasoning without claiming that adjacency establishes derivation, reachability establishes causal necessity, or structural validity establishes capture completeness."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed temporal-lineage-reachability-integrity with Python 3.14.4 and reproduced the declared ten-line output.",
+        "Confirmed five assets, four activities, four active assertions, three observed assertions, one declared assertion, zero orphan endpoints, and zero invalid intervals.",
+        "Confirmed the report has one asserted upstream root, the source has four downstream impact candidates, and the accepted illustrative asset graph has zero cycles."
+      ],
+      "notes": "The recomputation covers trusted in-memory records and normalized ISO date strings only; it does not authenticate evidence, validate transformation semantics, prove capture completeness, or establish actual impact."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified Derive implies declared use, generation, and influence while the reverse implication is explicitly rejected.",
+        "Checked that G(t,p) includes only assertions active for the selected time and admitted by the selected decision policy.",
+        "Verified Coverage names its inventory scope and stage, Impact is bounded reachability, and FitLineage is conjunctive across eleven assurance dimensions."
+      ],
+      "notes": "The reasoning separates definition from run, use from derivation, design from observation, graph reachability from causality, and lineage from policy propagation."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed logical and physical asset, version, subset, field, record, value, activity-definition, run, attempt, query, agent, evidence, consumer, and decision boundaries.",
+        "Tested renamed and reused assets, dynamic SQL, wildcard fields, UDFs, failed and retried runs, partial commits, late events, backfills, streaming state, manual exports, and cross-platform identity.",
+        "Reviewed forged assertions, connector loss, source restore, hidden nodes, traversal side channels, misleading redaction, classification over-propagation, cycles, stale evidence, correction, replay, and migration loss."
+      ],
+      "notes": "Boundary cases prevent names, workflow order, task success, parser output, runtime events, query logs, signatures, or a current graph from standing in for qualified historical lineage."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced entity and activity identity, assertion qualification, evidence class, derivation semantics, granularity, temporal context, traversal policy, negative evidence, propagation, correction, and closure throughout the chapter.",
+        "Verified dataset evidence does not imply field coverage, absence of an edge does not imply independence, and corrected assertions remain historically explainable.",
+        "Checked all outcome, boundary, identity, activity, assertion, semantic, capture, temporal, normalization, reconciliation, validation, query, propagation, protection, operations, correction, recovery, and closure gates."
+      ],
+      "notes": "The invariants keep lineage versioned, typed, attributable, temporally scoped, evidence-aware, query-explicit, protected, correctable, recoverable, and historically interpretable."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the eighteen assurance gates as a trace from decision outcomes and boundaries through capture, graph semantics, consumption, operation, repair, and retirement.",
+        "Checked counterexamples to arrow-is-derivation, workflow-is-lineage, static-is-truth, runtime-is-complete, no-edge-is-independent, reachability-is-impact, and valid-graph-is-accurate claims.",
+        "Verified FitLineage requires all named assurance dimensions and does not imply one granularity, capture source, store, graph policy, or retention model fits every decision."
+      ],
+      "notes": "The chapter provides a scoped lineage assurance framework, not a formal proof of actual causality, complete observation, reproducibility, legal compliance, or beneficial organizational outcome."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of lineage, provenance, dependency, flow, trace, entity, activity, agent, use, generation, derivation, influence, observed, declared, reconstructed, valid, complete, current, root, impact, causal, and retired.",
+        "Confirmed job definitions, runs, attempts, traces, lineage assertions, semantic mappings, policy decisions, capture observations, graph views, and historical beliefs remain distinct.",
+        "Verified executable evidence is explicitly limited to invented accepted records and excludes authentication, completeness, field semantics, conflict, redaction, and causal claims."
+      ],
+      "notes": "Claims remain bounded to named identities, versions, subsets, activities, evidence sources, relation types, granularities, times, policies, consumers, confidence, access, and failure assumptions."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated W3C Recommendations and Notes, current project specifications, and official product documentation from internal architectural synthesis and illustrative examples.",
+        "Confirmed no production lineage completeness, transformation correctness, causal explanation, reproducibility, authorization, classification decision, privacy, legal compliance, reliability, recovery, cost saving, or user outcome is claimed.",
+        "Checked that local adoption requires source guarantee review, authenticated evidence, inventory-based coverage, representative code and run comparison, temporal queries, access and redaction tests, reconciliation, correction, recovery exercises, consumer validation, and accountable approval."
+      ],
+      "notes": "Published model behavior, producer claims, captured observations, normalized assertions, materialized graph views, policy decisions, consumer outcomes, and independent assurance are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed decision profiles, lineage versus provenance and adjacent graph types, logical and physical identity, versions and subsets, activity definitions and occurrences, agents, first-class assertions, evidence classes, use and generation versus derivation, transformation types, field and control dependence, granularity, batch, streaming, API, file, manual, metric, feature and model paths, capture, normalization, reconciliation, temporal graphs, queries, cycles, impact, origin, propagation, protection, redaction, validation, coverage, operations, correction, recovery, economics, migration, and retirement as one coherent discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable entity, version, subset, field, activity, run, attempt, assertion, relation, evidence, producer, interval, confidence, resolver, reconciliation, query-profile, propagation, redaction, coverage, service-objective, correction, recovery, migration, and closure records. Partial, conflicting, stale, hidden, and unavailable behavior is explicit. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from decision need and graph distinctions through identity, activity, assertions, semantics, granularity, workload capture, evidence, normalization, temporal querying, impact, policy, protection, assurance, operations, recovery, and retirement. Ten differentiated examples, one executable temporal reachability check with explicit limitations, twenty-eight misconceptions, five progressive exercises, and complete answers prepare ontologies and knowledge graphs in DARCH-065."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, provenance, lineage, graph-theory, database, distributed-systems, data-engineering, streaming, API, platform, metadata, ontology, machine-learning, security, privacy, legal, audit, records-management, reliability, observability, organizational-design, economics, affected-stakeholder, domain-expert, independent-assurance, or practitioner review is claimed."
+}

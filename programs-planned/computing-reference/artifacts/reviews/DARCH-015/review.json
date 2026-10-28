@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-015",
+  "chapter_digest": "201ef45b36324e624eb37486c6f297448828cf1c03f75ac7aeb93a4a7e36bd24",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked ISO 704:2022, ISO 1087:2019 as confirmed in 2025, ISO/IEC 11179-3:2023, the W3C SKOS Reference, OMG SBVR 1.5, W3C DCAT 3, W3C PROV-O, and DCMI Metadata Terms. W3C, OMG, and DCMI destinations returned HTTP 200. The three official ISO records were retrievable through source review but rejected the command-line client with HTTP 403. Claims remain limited to terminology principles, registry facilities, concept-scheme representation, business-vocabulary semantics, catalog description, provenance, and metadata-term publication within each source's scope."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the glossary-entry, designation, and mapping-assertion tuples for distinct components and consistent symbols.",
+        "Checked separation of stable concept identity, scope, definition, labels, relations, rules, operational links, authority, provenance, status, time, and mappings.",
+        "Verified that lexical form, language, locale, designation kind, acceptability, source, and validity remain explicit."
+      ],
+      "notes": "Notation preserves the separation among concepts, their designations, operational artifacts, lifecycle versions, and inter-scheme mapping claims."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed glossary-integrity with Python 3.14.4 and reproduced 4 entries, 0 valid entries, 4 sorted findings, and ready=false.",
+        "Independently counted one intended failing predicate for customer, order, revenue, and subscriber.",
+        "Verified that valid counts entries with no local findings and ready becomes true only when all entries are valid."
+      ],
+      "notes": "The counts are exact for the declared fixture and do not estimate glossary quality, semantic agreement, or organizational adoption."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived the separation of one concept with several designations from one lexical form designating several scoped concepts.",
+        "Checked mapping assertions as source, target, relation, purpose, evidence, authority, time, versions, and information loss rather than label equality.",
+        "Verified that definitional graph acyclicity detects only structural non-circularity and cannot establish truth or intelligibility."
+      ],
+      "notes": "The symbolic structure prevents labels, hierarchy placement, or mapping chains from silently proving semantic equivalence."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed concept versus term, glossary versus data dictionary versus catalog, definition versus rule, generic versus partitive versus associative relation, and exact versus close mapping.",
+        "Tested homonyms, false synonyms, circular definitions, hidden disjunctions, hierarchy cycles, multiple parents, deprecated labels, missing context, and nominal owners.",
+        "Reviewed multilingual non-equivalence, legal scope, mapping chains, future-effective changes, ambiguous reclassification, generated suggestions, protected vocabulary, and historical interpretation."
+      ],
+      "notes": "Boundary cases prevent lexical similarity, structural completeness, translation fluency, or enterprise scope labels from standing in for shared meaning."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced stable concept identity through scope, distinguishing definition, designations, examples, counterexamples, relations, rules, owner, source, status, time, and mappings.",
+        "Verified preferred, alternate, hidden, abbreviated, translated, and deprecated designation lifecycle obligations.",
+        "Checked operational links, mapping strength, provenance, approval, effective time, impact analysis, migration, notification, rollback, and retirement across all ten gates."
+      ],
+      "notes": "The invariants preserve contextual meaning and evidence through federation, implementation, semantic change, and historical use."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the purpose-and-scope, concept, definition, designation, relation-and-mapping, authority-and-provenance, operationalization, challenge, lifecycle-and-change, and outcome gates.",
+        "Checked counterexamples to one-enterprise-word, dictionary-definition-is-sufficient, broader-means-part-of, same-label-means-exact, and more-terms-means-maturity reasoning.",
+        "Verified that acceptance requires domain distinctions, evidence-backed mappings, accountable decisions, operational traceability, representative boundary tests, and controlled change."
+      ],
+      "notes": "The chapter provides a glossary assurance argument, not proof that one vocabulary, formalism, hierarchy, or definition style fits every community."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of shared, exact, equivalent, same, preferred, approved, authoritative, complete, valid, formal, required, and prove.",
+        "Confirmed that lexical labels, contextual concepts, mapping relations, formal entailments, operational transformations, approved decisions, and historical versions remain distinct.",
+        "Verified that the executable checker is labeled as four registry predicates and excludes concept truth, linguistic adequacy, equivalence, source authority, adoption, or legal interpretation proof."
+      ],
+      "notes": "Claims remain bounded to declared communities, domains, decisions, languages, jurisdictions, schemes, versions, authorities, evidence, and permitted uses."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed standards-backed constructs, illustrative definitions, boundary examples, executable fixture output, inter-reviewer evidence, catalog metrics, operational observations, and generated suggestions as distinct evidence types.",
+        "Confirmed that no production adoption rate, semantic agreement score, translation quality, legal determination, automated-mapping accuracy, incident reduction, or external review is claimed.",
+        "Checked that local use requires authoritative sources, domain and linguistic review, representative boundary cases, mapped-consumer tests, change rehearsal, protection review, and accountable approval."
+      ],
+      "notes": "Standards, domain decisions, structural checks, qualitative review, sampled agreement, operational metrics, generated proposals, and outcome claims are explicitly distinguished."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed objects, concepts, designations, definitions, schemes, labels, relation types, bounded contexts, business rules, provenance, ownership, mappings, operational links, federation, validation, automation, migration, and retirement as one coherent semantic-governance discipline."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable concept-entry fields, vocabulary scopes, definition templates, label controls, graph and mapping checks, ownership workflow, API behavior, catalog links, lifecycle states, impact analysis, metrics, migrations, and retirement evidence. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified progression from concept/term separation through definition, language, relations, mappings, provenance, operationalization, validation, federation, and semantic change. Ten examples, executable evidence, fifteen misconceptions, five exercises, and complete answers cover design and assurance limits."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, terminology, linguistics, domain, legal, metadata-registry, ontology, governance, accessibility, security, privacy, internationalization, automation, or practitioner review is claimed."
+}

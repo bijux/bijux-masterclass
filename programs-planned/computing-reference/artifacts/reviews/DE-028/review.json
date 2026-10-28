@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "module_id": "DE-028",
+  "chapter_digest": "4772bb5dd6ff67c555c6188e026568ff85ead18825652702e5472c4a219e0711",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked all eight structured references at the RFC Editor, Unicode Consortium, PostgreSQL, Google BigQuery, Apache Beam, Splink, and W3C; each returned HTTP 200. Claims about UUID scope, canonical JSON, Unicode normalization, PostgreSQL unique-null semantics, ROW_NUMBER peer nondeterminism, bounded Beam deduplication, Fellegi-Sunter parameters/weights, and provenance representation match the cited sources and remain explicitly scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked grain G, occurrence identity O(r), source identity S(r), canonical entity identity E(r), canonicalization C_v, field projection F, digest H, block keys B, comparison outcomes gamma_i, match/non-match probabilities m_i/u_i, score W, thresholds, mapping generation, provenance, and duplicate horizon for stable meanings.",
+        "Draft chapter validation accepted every required heading and all GitHub-compatible inline and display-math delimiters."
+      ],
+      "notes": "Occurrence, source record, canonical entity, cluster generation, survivor, and payload representation identities remain distinct throughout."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the annotated Python fixture: six total deliveries/attempts yield four accepted occurrence IDs, one equal replay, one changed-payload conflict, two canonical entities, three acct-101 members, survivor Ada Lovelace, and identical survivors/mapping keys under reversed delivery order.",
+        "Recomputed Exercise 3: 2,000 records produce 1,999,000 unordered pairs; 18,000 candidates imply reduction ratio 0.9909955 (99.10%); 930/1,000 pairs completeness is 93%; with 99% candidate-scorer recall the optimistic end-to-end recall is 92.07%.",
+        "Recomputed Exercise 5: 920/(920+20)=97.8723% precision and 920/(920+80)=92% recall; the stated false bridge can join 800+600=1,400 records."
+      ],
+      "notes": "All explicit delivery, occurrence, entity, candidate, blocking, metric, and cluster-size quantities reproduce."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified exact representation equivalence is parameterized by projection F and canonicalization version v and therefore does not imply occurrence or entity equality.",
+        "Verified equal occurrence identity partitions outcomes into equal-payload replay and unequal-payload conflict, while unequal occurrence identity makes no entity claim.",
+        "Verified all-pairs complexity n(n-1)/2, candidate set Q from shared blocks, and the implication that true matches outside Q are unreachable to scoring.",
+        "Verified the simplified Fellegi-Sunter log-odds expression and the two-threshold match/unresolved/non-match partition under stated model/calibration assumptions."
+      ],
+      "notes": "The equations preserve the boundaries between exact equality, candidate reachability, probabilistic evidence, decisions, and equivalence-relation clustering."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed equal replay, same-ID/different-payload conflict, concurrent first occurrence, source epoch/key reuse, UUID collision/misuse, hash/canonicalizer migration, and expired dedup state.",
+        "Reviewed null/empty/redacted/malformed values, Unicode variants, locale/case/punctuation/leading zeros, shared identifiers, twins, aliases, transliteration, reassignment, valid-time incompatibility, and legitimate identical events.",
+        "Reviewed missing/oversized blocks, candidate skew, missing/correlated features, exact threshold ties, score calibration/drift, binary forcing, label error/leakage, and subgroup harm.",
+        "Reviewed pairwise bridge contradictions, source-cardinality constraints, canonical-ID instability, merge/split/alias history, survivor provenance, late deletes, privacy erasure, streaming TTL, backfill, restore, and downstream corrections."
+      ],
+      "notes": "The ten examples and five exercises span transport, exact representation, entity inference, clusters, survivors, temporal identity, streaming, privacy, and recovery."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked declared grain and duplicate class, source/tenant/entity-type/epoch namespaces, atomic occurrence-to-payload binding, raw evidence retention, and target-enforced uniqueness.",
+        "Checked versioned field-specific canonicalization, deterministic total representative order, measured blocking recall, explicit missingness, and match/non-match/unresolved provenance.",
+        "Checked temporal/strong-identifier/source-cardinality cluster constraints, registry-allocated canonical IDs, versioned merge/split aliases, and field-level survivor provenance.",
+        "Checked dedup/tombstone retention through the permitted horizon and evaluation of candidate, pair, cluster, stability, cost, subgroup, and downstream correction behavior."
+      ],
+      "notes": "The invariants prevent transport suppression, representation grouping, entity linkage, clustering, and survivorship from collapsing into one destructive operation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the conditional exact-replay proof: unique atomic occurrence binding creates one effect, concurrent claims serialize/conflict, equal later payload returns replay, and unequal later payload returns conflict.",
+        "Checked that the proof depends on durable binding retention, canonical payload stability, and atomic effect coupling and explicitly does not prove source completeness or entity equality.",
+        "Reviewed candidate reachability to confirm scorer accuracy cannot recover labeled true matches excluded by blocking.",
+        "Reviewed equivalence-relation requirements and confirmed thresholded pairwise links need a constrained clustering policy; connected-component transitivity can introduce unsupported co-memberships."
+      ],
+      "notes": "The sole theorem is narrow and conditional; linkage quality, canonical identity, survivor truth, and downstream safety require independent evidence."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The exact-replay result is labeled conditional and immediately identifies unique registry, atomic binding/effect, concurrency, and retention premises.",
+        "Grain, namespace, canonicalization, representative, blocking, decision, cluster, canonical-ID, survivorship, retention, and evaluation claims are labeled invariants or boundaries.",
+        "UUID, JSON/Unicode normalization, PostgreSQL, BigQuery, Beam, Splink, and W3C behaviors are source-attributed rather than generalized across systems."
+      ],
+      "notes": "Deductive replay behavior, probabilistic model assumptions, product contracts, operational policy, and empirical observation remain distinguishable."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable model explicitly limits itself to a trusted account crosswalk, in-memory occurrence registry, deterministic source/version precedence, and simple strings; it disclaims probabilistic matching, concurrency, durable constraints, Unicode/domain normalization, merge/split, and privacy controls.",
+        "Source retrieval establishes current content at eight checked URLs but does not prove deployed database, stream processor, linkage model, or identity-registry behavior.",
+        "Precision/recall, volume reduction, pair scores, current cluster equality, and finite test outputs are each assigned explicit evidence limits and do not substitute for source truth or production evaluation."
+      ],
+      "notes": "Production identity claims require representative labels, deployed rules/models, registry constraints, provenance, correction testing, monitoring, and lawful governance."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed distinctions among grain and row shape; attempt, occurrence, source record, entity, cluster, effect, and payload identities; replay, exact duplicate, source duplicate, and entity link; canonicalization and truth; blocking and non-match; similarity, calibrated probability, and decision; pair edge and cluster; linkage and survivorship; merge, split, alias, and deletion."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable identity contracts, namespace/epoch keys, atomic payload binding, raw preservation, canonicalization versions, exact groups, deterministic survivors, database constraints/nulls, deterministic rules, blocking, comparison features, probabilistic thresholds, abstention, constrained clustering, canonical registries, merge/split events, field provenance, streaming horizons, privacy, reconciliation, evaluation, and adversarial tests."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The one-page review separates three duplicate problems; exposition progresses from grain/identity through exact equality, candidates, scoring, clusters, stable IDs, survivorship, operations, and evaluation; notation formalizes each boundary; the runnable example demonstrates layered identity; and ten examples plus five solved exercises require quantitative and architectural judgment."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed. References and local execution were checked on 2026-09-02. The finite model and documentation review do not establish any deployed producer's identity fidelity, canonicalization correctness, database concurrency semantics, blocking recall, linkage calibration, cluster truth, canonical-registry durability, survivor accuracy, subgroup fairness, privacy/legal compliance, streaming horizon, merge/split propagation, or downstream correction; those require domain-specific contracts and production evidence."
+}

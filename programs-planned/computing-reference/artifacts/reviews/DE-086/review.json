@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "DE-086",
+  "chapter_digest": "f599e21ac9ef330f77f90ff3a9bb508e3e6902e2d83f2edc75fb0bebb4511dcc",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 15,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked all 15 structured references against current official NIST, Open Policy Agent, PostgreSQL, Google Cloud, Snowflake, Apache Ranger, and OWASP sources. Verified ABAC/RBAC terminology, zero-trust resource and identity principles, least privilege, PDP/PEP and decision-log behavior, default-deny row policy, row/column policy behavior and limitations, masking and row-filter policy concepts, and authorization-testing guidance in their stated scopes; every final URL returned HTTP 200."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked definitions and uses of principal, action, resource, context, time, policy revision, attributes, entitlement, permit/deny/indeterminate, constraint set, expiry, decision ID, query inputs and propagated governance.", "Checked set-builder, case-function, projection, transform, conjunction, negation and implication notation for balanced GitHub-renderable syntax and defined symbols."],
+      "notes": "The formal model consistently separates policy decisions, constrained input relations, output computation, governance propagation and enforcement assumptions."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Executed analytical-access-decision and matched the permitted EU row constraint, exact two-column projection, false export constraint and three non-permit outcomes exactly.", "Confirmed the five printed cases demonstrate permit, wrong-purpose deny, missing-training indeterminate, investigation-hold deny and the false role-sufficiency conclusion without nondeterministic inputs."],
+      "notes": "The deterministic fixture output agrees exactly with the annotation and the chapter's policy trace."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Expanded the permit branch and confirmed valid identity, active entitlement, policy predicates and absence of overriding deny are jointly necessary.", "Confirmed missing required evidence maps to indeterminate rather than permit and that readable rows plus permitted projection remain subject to query-shape and derivative governance constraints.", "Confirmed the path-completeness proof derives authorized effect only under explicitly enumerated PEP, binding, freshness, fail-safe and derivative assumptions."],
+      "notes": "The equations support the prose claims without turning RBAC, row filtering or a scalar classification into a sufficient authorization condition."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Reviewed missing/stale attributes, explicit denies, PDP/PIP outage, cache validity, policy rollout lag, schema additions, null/new row-policy values, owner/admin bypass, copy/replace behavior and direct-storage paths.", "Reviewed nested groups, team transfer, shared BI identities/caches, notebook scheduling, expired JIT access, service-account ownership, break-glass, alternate engines, replicas, recovery tools and derivative artifacts.", "Reviewed small groups, repeated-query differencing, joins, hidden-column predicates, wildcard/nested fields, errors/timing, aggregate semantics, exports, jurisdiction change and revocation of sessions/tokens/jobs/shares/caches."],
+      "notes": "Adversarial analysis covers identity, control-plane, decision, enforcement, query, inference, artifact, exception and revocation boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Traced actor/effective subject/workload, stable action/resource/generation, attribute provenance, role/relationship/grant, explicit deny, policy revision, constraint, expiry and decision ID through exposition, examples and answers.", "Confirmed every observation/effect requires a PEP; base paths remain protected; errors do not permit; row/column decisions precede relevant computation; and derivatives receive classification, owner, audience, location, retention and expiry.", "Confirmed desired, configured, effective and observed access remain distinct, and revocation includes inherited authority, sessions, tokens, cached decisions, jobs, shares, extracts and downstream artifacts."],
+      "notes": "No authentication, role, scope, ticket, mask, view, network, log absence, aggregate or technical control is described as broader proof than it supplies."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed the arbitrary-effect argument from path completeness to PEP mediation, valid bound permit, fail-safe evidence handling and derivative propagation.", "Confirmed the conclusion is conditional on every capable path being inventoried and every PEP binding the same decision tuple and obligations to the protected effect.", "Confirmed counterexamples such as direct storage, administrator bypass, stale groups, shared caches and ungoverned extracts are stated as assumption violations."],
+      "notes": "The proof establishes only modeled authorization mediation and explicitly excludes policy ethics, lawfulness, classification correctness, inference safety and compromised-authorized-principal resistance."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["The conditional path-completeness argument is explicitly labeled a proof sketch.", "The claim states its assumptions before the derivation and the following paragraph enumerates operational violations and excluded conclusions.", "The executable is explicitly labeled a deterministic illustration rather than a production policy engine or legal-purpose evaluator."],
+      "notes": "Formal claim, proof sketch, operational assumption, deterministic example, implementation guidance and legal/governance judgment remain distinguishable."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Current engine and policy-system behavior is attributed to dated official standards or current project/vendor documentation rather than presented as universal semantics.", "The chapter distinguishes desired policy, configured state, effective-access proof paths, observed logs, test evidence and enforcement receipts.", "Purpose, legal applicability, declassification, inference resistance and compliance are explicitly bounded rather than inferred from a role, product feature or decision log."],
+      "notes": "Standards models, current implementation behavior, formal reasoning, synthetic examples, operational measurements and qualified governance/legal decisions are labeled distinctly."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the chapter end to end. It integrates human/workload/delegated identity, stable resource/action modeling, RBAC/ABAC/relationships, purpose, explicit denies, PDP/PIP/PEP architecture, coarse and fine-grained controls, query/inference constraints, governed derivatives, JIT/break-glass workflows, effective-access reconciliation and revocation without conflating authentication, approval, authorization, masking or audit."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed the access-policy record, falsifiable claim, decision sequence, constrained permit, base/view/storage boundaries, row/column/cache behavior, BI/notebook/workload identity, result registration, export gating, access requests, JIT, break-glass, policy rollout, drift reconciliation, metrics, ten production examples and merger migration answer for implementability and operational failure handling."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from the one-page model through prerequisites, identities, resources/actions, policy composition, architecture, fine-grained enforcement, inference, derivatives, workflows, effective access, notation, proof, executable, 12 trade-offs, 30 misconceptions, ten distinct examples, cross-program links and five exercises with complete answers. Connections accurately retrieve DE-066/076-078/081-085 and API-034/046 and prepare DE-087."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

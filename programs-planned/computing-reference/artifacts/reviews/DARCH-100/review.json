@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "module_id": "DARCH-100",
+  "chapter_digest": "533aaf2022c9440fc1ecbe24dd7ed8774df90692f35e0a5128e773a7966610f3",
+  "review_date": "2026-09-03",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 17,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-03",
+    "notes": "Checked current UK Green Book, Cost Estimating Guidance, Project Delivery Functional Standard, Orange Book, Magenta Book, and benefits-management guidance; NASA Technical Planning, Decision Analysis, Technical Risk Management, Technical Assessment, Configuration Management, and Product Transition; NIST CSF 2.0 Profiles; TOGAF catalog; FinOps Framework; DORA platform guidance; and Google SRE objective guidance. All seventeen destinations returned HTTP 200. Government standards and guidance, public frameworks, architecture methods, provider research, and engineering guidance remain bounded by provenance; none selects a local roadmap, predicts cost or schedule, authorizes risk, guarantees delivery, or proves benefits."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed R and its outcome, baseline, target, alternative, dependency, sequence, cost, evidence, uncertainty, governance, exception, and lifecycle components.",
+        "Checked roadmap, hypothesis, increment, dependency-graph, value, commitment, decision, and forecast-error notation for stable identities, types, scopes, versions, and noncompensable constraints."
+      ],
+      "notes": "Notation keeps forecasts, budgets, targets, commitments, actuals, options, increments, outputs, capabilities, adoption, benefits, and decisions distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed roadmap-increment-admission with Python 3.14.4 and reproduced the declared thirteen-line output exactly.",
+        "Confirmed ten invented increments yield four admissible and one each missing outcome, unready dependency, missing capacity, unreliable estimate, missing evidence, and missing exit across eight kinds, seven domains, five horizons, ten receipts, and ten events."
+      ],
+      "notes": "The fixture verifies deterministic gate order and cardinalities only; it does not establish roadmap value, feasibility, estimate credibility, acceptable risk, or benefit realization."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified that increment commitment requires mandatory feasibility, dependency and capacity credibility, accepted estimate uncertainty, gate evidence, residual-risk authority, and adequate exit without compensatory scoring.",
+        "Verified dependency edges preserve provider, consumer, state, acceptance, timing, confidence, fallback, and consequence; present value does not establish affordability or satisfy nonmonetizable constraints; reforecasting does not overwrite original forecast error."
+      ],
+      "notes": "The review separates expected value from affordability, scenario from forecast, output from benefit, approval from truth, and spent cost from future option choice."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed architecture, product, domain, consumer, policy, jurisdiction, platform, supplier, commercial, financial, operational, recovery, benefit, evidence, and lifecycle boundaries.",
+        "Tested hidden business-as-usual costs, weak alternatives, circular dependencies, constrained reviewers, fixed deadlines, omitted lifecycle cost, showcase pilots, displaced domain burden, sunk-cost continuation, failed gates, supplier exit, and restored obsolete authority."
+      ],
+      "notes": "Boundary cases prevent a timeline, target diagram, backlog, point estimate, platform deployment, percent complete, pilot, approval, or sunk investment from standing in for a defensible roadmap."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced stable identities, honest baselines, business-as-usual comparison, distinct options, contextual targets, operable transitions, typed dependencies, ranges, lifecycle costs, capacity, benefit ownership, evidence gates, reforecasting, and closure throughout the chapter.",
+        "Checked mandate, case, baseline, outcome, target, transition, option, feasibility, appraisal, sensitivity, scenario, reversibility, increment, dependency, critical-path, estimate, cost, affordability, capacity, commercial, adoption, benefit, gate, pilot, risk, assumption, contingency, distribution, dissent, version, replan, closure, and evaluation gates."
+      ],
+      "notes": "The invariants preserve hard obligations, unfavorable evidence, uncertainty, distributional effects, future alternatives, dissent, and forecast history."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the assurance chain from mandate and baseline through outcomes, targets, options, appraisal, increments, dependencies, estimates, funding, evidence gates, replanning, benefit transfer, and closure.",
+        "Checked counterexamples to roadmap-is-timeline, technology-is-outcome, business-as-usual-is-free, output-is-benefit, one-target-fits-all, score-offsets-constraint, date-is-schedule, build-cost-is-total, pilot-proves-scale, gate-means-approve, sunk-cost-means-continue, and project-end-means-closure claims."
+      ],
+      "notes": "The chapter provides a scoped assurance case and falsifiers, not a formal proof that any local roadmap, forecast, option, investment, transition, risk decision, or benefit is correct."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of feasible, preferred, credible, affordable, reliable, ready, committed, accepted, beneficial, efficient, safe, recovered, retired, nonactivatable, and closed.",
+        "Confirmed government standards and guidance, public frameworks, provider research, internal synthesis, conditional recommendations, invented examples, deterministic toy evidence, and local decisions remain separately labeled."
+      ],
+      "notes": "Claims remain scoped to named mandates, baselines, options, versions, products, transitions, dependencies, estimates, horizons, scenarios, owners, evidence gates, and decisions."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated government standards and guidance, public frameworks, architecture methods, provider research, engineering guidance, internal recommendations, invented scenarios, and deterministic fixture results.",
+        "Confirmed no production baseline completeness, option superiority, dependency readiness, available capacity, schedule or cost accuracy, affordable funding, supplier suitability, pilot representativeness, acceptable risk, adoption, closure, causal impact, or realized benefit is claimed."
+      ],
+      "notes": "Local defense requires authorized baselines, comparable options, reconciled dependency and resource models, validated estimates, contracts, representative pilots, operational evidence, affected-owner decisions, assurance, benefit measurements, recovery, exit, and nonactivation."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed multi-year data roadmaps as governed portfolios spanning mandate, baselines, outcomes, options, targets, transitions, dependencies, increments, capacity, lifecycle economics, funding, suppliers, risk, evidence gates, adoption, benefits, replanning, retirement, and closure."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed implementable baseline, option, outcome, increment, dependency, estimate, capacity, cost, benefit, risk, assumption, gate, decision, forecast, exception, transition, and closure records. Owners, authorities, ranges, confidence, evidence, fallbacks, failure behavior, dissent, and limitations are explicit. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified capstone progression from roadmap ambiguity through case for change, baselines, outcomes, targets, options, appraisal, scenarios, increments, dependencies, estimates, capacity, economics, pilots, gates, governance, replanning, sunk-cost decisions, benefits, and closure. Ten examples, one executable gate with explicit limitations, fifty misconceptions, five exercises, and complete answers synthesize DARCH-001 through DARCH-099."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external HM Treasury, UK Infrastructure and Projects Authority, NASA, NIST, Open Group, FinOps Foundation, DORA, Google, finance, procurement, supplier, domain, product, consumer, platform, operations, security, privacy, legal, regulator, benefit owner, affected group, independent-assurance, audit, or practitioner review is claimed."
+}
