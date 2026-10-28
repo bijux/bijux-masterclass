@@ -31,17 +31,18 @@ def program_inputs(root: Path, program: str) -> dict[str, str]:
     )
     result = {}
     for relative in filter(None, tracked):
-        # Other course trees and the series publication pages are independent
-        # inputs. Every shared recipe, script, workflow and configuration remains
-        # included; the complete selected course tree includes fixtures and docs.
+        # Planned content and other courses cannot invalidate a supported course's
+        # qualification. Shared recipes, scripts and configuration remain inputs.
         if relative.startswith("programs/") and not relative.startswith(prefix):
             continue
-        if relative.startswith("docs/"):
+        if relative.startswith(("docs/", "programs-planned/")):
             continue
         path = root / relative
         if path.is_symlink():
             target = path.resolve(strict=True)
             target.relative_to(root.resolve())
+            if target.is_relative_to(root.resolve() / "programs-planned"):
+                raise ValueError(f"execution input references planned content: {relative}")
             if not target.is_file():
                 raise ValueError(f"unsupported directory execution symlink: {relative}")
             content = (
