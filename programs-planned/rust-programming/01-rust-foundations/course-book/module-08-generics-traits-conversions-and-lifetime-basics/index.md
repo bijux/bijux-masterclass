@@ -1,9 +1,9 @@
 # 08 — Generics, Traits, Conversions, and Lifetime Basics
 
-**Course 1, day 8 · Module 8 of 60**  
-`███░░░░░░░░░░░░░░░░░` **8/60**
+**Course 1, day 8 · Module 8 of 90**  
+`███░░░░░░░░░░░░░░░░░` **8/90**
 
-[← Module 7: Errors, Parsing, Files, and Persistence](../module-07-errors-parsing-files-and-persistence/index.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 9: Crates, Modules, Public APIs, Tests, and Documentation →](../module-09-crates-modules-public-apis-tests-and-documentation/index.md)
+[← Module 7: Errors, Parsing, Files, and Persistence](../module-07-errors-parsing-files-and-persistence/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 9: Crates, Modules, Public APIs, Tests, and Documentation →](../module-09-crates-modules-public-apis-tests-and-documentation/index.md)
 
 ## The question
 
@@ -855,7 +855,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Generics, Traits, and Lifetimes](https://doc.rust-lang.org/book/ch10-00-generics.html)
 - [Rust Reference: Trait bounds](https://doc.rust-lang.org/reference/trait-bounds.html)
 
-[← Module 7](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 9 →](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md)
+[← Module 7](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 9 →](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md)
 
 ## Continue
 

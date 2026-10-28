@@ -1,8 +1,8 @@
 # Module 61: Threads, Schedules, Send, Sync, and Race Freedom
 
-**Course 7, day 1 · Module 61 of 70**  
+**Course 7, day 1 · Module 61 of 90**  
 
-**61/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**61/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

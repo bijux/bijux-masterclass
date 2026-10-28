@@ -1,9 +1,9 @@
 # 54 — Processes, Environments, and Standard Streams
 
-**Course 6, day 4 · Module 54 of 60**  
-`██████████████████░░` **54/60**
+**Course 6, day 4 · Module 54 of 90**  
+`██████████████████░░` **54/90**
 
-[← Module 53: Paths, Names, and Platform Boundaries](../module-53-paths-names-and-platform-boundaries/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 55: Unsafe Rust as a Proof Boundary →](../module-55-unsafe-rust-and-safety-proofs/index.md)
+[← Module 53: Paths, Names, and Platform Boundaries](../module-53-paths-names-and-platform-boundaries/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 55: Unsafe Rust as a Proof Boundary →](../module-55-unsafe-rust-and-safety-proofs/index.md)
 
 ## The question
 
@@ -66,7 +66,7 @@ Keep streams separate. Concatenating them after completion destroys their tempor
 
 A classic deadlock occurs when the parent writes a large stdin while the child writes enough stdout to fill its pipe, and neither side reads the stream the other needs. Similarly, reading stdout to completion before reading stderr can block if stderr fills.
 
-`Command::output` and `wait_with_output` handle the common finite no-input capture. If you manually drive multiple pipes, you need concurrent I/O, nonblocking facilities, or a protocol that bounds and orders writes. Course 7 will teach threads and synchronization; Course 8 will teach asynchronous I/O. Course 6 identifies the boundary and refuses to hide it behind a naïve sequential loop.
+`Command::output` and `wait_with_output` handle the common finite no-input capture. If you manually drive multiple pipes, you need concurrent I/O, nonblocking facilities, or a protocol that bounds and orders writes. Course 7 teaches threads and synchronization; Course 8 adds asynchronous I/O. Course 6 identifies the boundary and refuses to hide it behind a naïve sequential loop.
 
 ### Child ownership includes reaping
 

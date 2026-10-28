@@ -1,0 +1,1 @@
+use std::collections::BTreeMap; fn main() { let fields=BTreeMap::from([("artifact","app"),("target","x86")]); let s:String=fields.into_iter().map(|(k,v)|format!("{k}={v}\n")).collect(); assert!(s.starts_with("artifact=")); }

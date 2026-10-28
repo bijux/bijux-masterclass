@@ -1,9 +1,9 @@
 # 22 — Associated Types and Type Families
 
-**Course 3, day 2 · Module 22 of 60**  
-`███████░░░░░░░░░░░░░` **22/60**
+**Course 3, day 2 · Module 22 of 90**  
+`███████░░░░░░░░░░░░░` **22/90**
 
-[← Module 21: Traits as Behavioral Contracts](../module-21-traits-as-behavioral-contracts/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 23: Coherence and Implementation Ownership →](../module-23-coherence-and-implementation-ownership/index.md)
+[← Module 21: Traits as Behavioral Contracts](../module-21-traits-as-behavioral-contracts/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 23: Coherence and Implementation Ownership →](../module-23-coherence-and-implementation-ownership/index.md)
 
 ## The question
 
@@ -603,7 +603,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Associated items](https://doc.rust-lang.org/reference/items/associated-items.html)
 - [Rust Reference: Generic parameters](https://doc.rust-lang.org/reference/items/generics.html)
 
-[← Module 21](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 23 →](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md)
+[← Module 21](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 23 →](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md)
 
 ## Continue
 

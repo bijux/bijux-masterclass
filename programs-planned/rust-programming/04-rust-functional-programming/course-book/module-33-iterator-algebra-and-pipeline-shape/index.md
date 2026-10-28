@@ -1,9 +1,9 @@
 # 33 — Iterator Algebra and Pipeline Shape
 
-**Course 4, day 3 · Module 33 of 60**  
-`███████████░░░░░░░░░` **33/60**
+**Course 4, day 3 · Module 33 of 90**  
+`███████████░░░░░░░░░` **33/90**
 
-[← Module 32: The Iterator Model](../module-32-the-iterator-model/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 34: Folds, Scans, and Short-Circuiting →](../module-34-folds-scans-and-short-circuiting/index.md)
+[← Module 32: The Iterator Model](../module-32-the-iterator-model/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 34: Folds, Scans, and Short-Circuiting →](../module-34-folds-scans-and-short-circuiting/index.md)
 
 ## The question
 
@@ -514,7 +514,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator adapters](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [std::iter](https://doc.rust-lang.org/std/iter/)
 
-[← Module 32](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 34 →](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md)
+[← Module 32](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 34 →](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md)
 
 ## Continue
 

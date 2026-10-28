@@ -1,9 +1,9 @@
 # 50 — Build Scripts, Generated Code, and Compile-Time Architecture
 
-**Course 5, day 10 · Module 50 of 60**  
-`█████████████████░░░` **50/60**
+**Course 5, day 10 · Module 50 of 90**  
+`█████████████████░░░` **50/90**
 
-[← Module 49: Function-Like Procedural Macros and Typed DSLs](../module-49-function-like-procedural-macros-and-typed-dsls/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing →](../../../06-rust-systems-programming/course-book/module-51-binary-data-contracts/index.md)
+[← Module 49: Function-Like Procedural Macros and Typed DSLs](../module-49-function-like-procedural-macros-and-typed-dsls/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing →](../../../06-rust-systems-programming/course-book/module-51-binary-data-contracts/index.md)
 
 ## The question
 

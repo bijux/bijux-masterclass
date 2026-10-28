@@ -1,9 +1,9 @@
 # 32 — The Iterator Model
 
-**Course 4, day 2 · Module 32 of 60**  
-`███████████░░░░░░░░░` **32/60**
+**Course 4, day 2 · Module 32 of 90**  
+`███████████░░░░░░░░░` **32/90**
 
-[← Module 31: Closures, Capture, and Callable Contracts](../module-31-closures-capture-and-callable-contracts/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 33: Iterator Algebra and Pipeline Shape →](../module-33-iterator-algebra-and-pipeline-shape/index.md)
+[← Module 31: Closures, Capture, and Callable Contracts](../module-31-closures-capture-and-callable-contracts/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 33: Iterator Algebra and Pipeline Shape →](../module-33-iterator-algebra-and-pipeline-shape/index.md)
 
 ## The question
 
@@ -559,7 +559,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [IntoIterator](https://doc.rust-lang.org/std/iter/trait.IntoIterator.html)
 
-[← Module 31](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 33 →](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md)
+[← Module 31](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 33 →](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md)
 
 ## Continue
 

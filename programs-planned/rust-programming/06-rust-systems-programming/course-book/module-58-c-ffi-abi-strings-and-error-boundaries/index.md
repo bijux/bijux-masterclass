@@ -1,9 +1,9 @@
 # 58 — C FFI: ABI, Strings, Pointers, and Error Boundaries
 
-**Course 6, day 8 · Module 58 of 60**  
-`███████████████████░` **58/60**
+**Course 6, day 8 · Module 58 of 90**  
+`███████████████████░` **58/90**
 
-[← Module 57: Manual Allocation and Owning Unsafe Abstractions](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 59: Foreign Resources, Callbacks, and Wrapper Architecture →](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md)
+[← Module 57: Manual Allocation and Owning Unsafe Abstractions](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 59: Foreign Resources, Callbacks, and Wrapper Architecture →](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md)
 
 ## The question
 

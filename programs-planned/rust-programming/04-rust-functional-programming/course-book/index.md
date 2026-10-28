@@ -65,4 +65,4 @@ The course is complete when you can satisfy the public behavior, explain the dec
 
 Course 5 shifts from composing runtime values to generating source surfaces while preserving the same requirements for authority, failure, and comprehensibility.
 
-[Return to the program start](../../README.md) · [Open the sixty-module map](../../COURSE_MAP.md)
+[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)

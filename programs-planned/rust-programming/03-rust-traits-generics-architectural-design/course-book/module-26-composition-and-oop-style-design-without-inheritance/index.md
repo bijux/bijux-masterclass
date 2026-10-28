@@ -1,9 +1,9 @@
 # 26 — Composition and OOP-Style Design Without Inheritance
 
-**Course 3, day 6 · Module 26 of 60**  
-`█████████░░░░░░░░░░░` **26/60**
+**Course 3, day 6 · Module 26 of 90**  
+`█████████░░░░░░░░░░░` **26/90**
 
-[← Module 25: Trait Objects and Dynamic Polymorphism](../module-25-trait-objects-and-dynamic-polymorphism/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 27: Typestate and Capability-Oriented APIs →](../module-27-typestate-and-capability-oriented-apis/index.md)
+[← Module 25: Trait Objects and Dynamic Polymorphism](../module-25-trait-objects-and-dynamic-polymorphism/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 27: Typestate and Capability-Oriented APIs →](../module-27-typestate-and-capability-oriented-apis/index.md)
 
 ## The question
 
@@ -521,7 +521,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Object-Oriented Features](https://doc.rust-lang.org/book/ch18-00-oop.html)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-[← Module 25](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 27 →](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md)
+[← Module 25](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 27 →](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md)
 
 ## Continue
 

@@ -12,6 +12,9 @@ COURSES=[
  ('04-rust-functional-programming',range(31,41),80,1800,1400,900),
  ('05-rust-metaprogramming',range(41,51),80,1800,950,1100),
  ('06-rust-systems-programming',range(51,61),80,1800,650,650),
+ ('07-rust-concurrency-parallelism',range(61,71),80,1500,850,650),
+ ('08-rust-async-networked-services',range(71,81),80,1600,450,400),
+ ('09-rust-performance-production-engineering',range(81,91),80,1800,800,700),
 ]
 errors=[]
 CHAPTER_SPINE=[
@@ -50,6 +53,8 @@ for required in ('README.md','START_HERE.md','REASONING_MODEL.md','SKILL_MAP.md'
 
 all_modules=[]; compiler_ids=set(); package_names={}; normalized={}; substantial=defaultdict(list)
 allowed_versions={'proc-macro2':'=1.0.107','quote':'=1.0.47','syn':'=3.0.3'}
+allowed_course8_versions={'tokio':'=1.53.1','tokio-util':'=0.7.19','bytes':'=1.12.1','futures-util':'=0.3.33','hyper':'=1.8.0','hyper-util':'=0.1.20','http-body-util':'=0.1.4'}
+allowed_course9_versions={'criterion':'=0.8.2','bytes':'=1.12.1','tokio':'=1.53.1','tracing':'=0.1.44','tracing-subscriber':'=0.3.23','hyper':'=1.8.0','hyper-util':'=0.1.20','http-body-util':'=0.1.4'}
 
 for course_name,module_range,expected_cases,min_chapter,min_workbook,min_solution in COURSES:
     course=ROOT/course_name
@@ -71,8 +76,8 @@ for course_name,module_range,expected_cases,min_chapter,min_workbook,min_solutio
         continue_body=text.split('## Continue',1)[1]
         for needle in ('workbook.md','solutions.md','../../labs/','../capstone.md'):
             if needle not in continue_body: fail(f'module {n:02d} Continue section omits {needle}')
-        if f'**{n}/60**' not in text or 'Module %d of 60'%n not in text:
-            fail(f'module {n:02d} has stale/missing sixty-module marker')
+        if f'**{n}/90**' not in text or 'Module %d of 90'%n not in text:
+            fail(f'module {n:02d} has stale/missing ninety-module marker')
         for name,minimum in (('workbook.md',min_workbook),('solutions.md',min_solution)):
             p=chapter.parent/name
             if not p.is_file(): fail(f'module {n:02d} missing {name}'); continue
@@ -153,9 +158,9 @@ for course_name,module_range,expected_cases,min_chapter,min_workbook,min_solutio
             for answer_marker in ('specimen-outcome:','diagnostic-contract:','expected to compile','expected to fail'):
                 if answer_marker in specimen_text: fail(f'{cid}: learner specimen reveals answer through {answer_marker!r}')
 
-if sorted(all_modules)!=list(range(1,61)): fail(f'global module sequence is not 1..60: {sorted(all_modules)}')
+if sorted(all_modules)!=list(range(1,91)): fail(f'global module sequence is not 1..90: {sorted(all_modules)}')
 progress=(ROOT/'PROGRESS.md').read_text(errors='strict')
-if len(re.findall(r'(?m)^- \[ \] \*\*\d{2}\.',progress))!=60: fail('PROGRESS.md must contain exactly 60 checkboxes')
+if len(re.findall(r'(?m)^- \[ \] \*\*\d{2}\.',progress))!=90: fail('PROGRESS.md must contain exactly 90 checkboxes')
 
 retired=('publication-candidate','evidence gate','review tier','submission package','coming soon','lorem ipsum','proof transcript')
 for p in ROOT.rglob('*.md'):
@@ -229,8 +234,15 @@ for manifest in ROOT.rglob('Cargo.toml'):
                 continue
             version=spec if isinstance(spec,str) else spec.get('version') if isinstance(spec,dict) else None
             in_c5=rel.parts and rel.parts[0]=='05-rust-metaprogramming'
+            in_c7=rel.parts and rel.parts[0]=='07-rust-concurrency-parallelism'
+            in_c8=rel.parts and rel.parts[0]=='08-rust-async-networked-services'
+            in_c9=rel.parts and rel.parts[0]=='09-rust-performance-production-engineering'
             proc_macro=(data.get('lib',{}) or {}).get('proc-macro') is True
-            if not (in_c5 and proc_macro and dep in allowed_versions and version==allowed_versions[dep]):
+            approved_proc_macro = in_c5 and proc_macro and dep in allowed_versions and version==allowed_versions[dep]
+            approved_rayon = in_c7 and dep=='rayon' and version=='=1.12.0'
+            approved_async = in_c8 and dep in allowed_course8_versions and version==allowed_course8_versions[dep]
+            approved_production = in_c9 and dep in allowed_course9_versions and version==allowed_course9_versions[dep]
+            if not (approved_proc_macro or approved_rayon or approved_async or approved_production):
                 fail(f'{rel}: unapproved external dependency {dep} ({table_name})')
 
 for source in ROOT.rglob('*.rs'):
@@ -239,9 +251,14 @@ for source in ROOT.rglob('*.rs'):
     for token in ('todo!','unimplemented!','dbg!'):
         if token in text: fail(f'{rel} contains {token}')
     has_unsafe=bool(re.search(r'\bunsafe\s*(?:fn|trait|impl|\{)|#\[unsafe\(',text))
-    if has_unsafe and (not rel.parts or rel.parts[0]!='06-rust-systems-programming'):
-        fail(f'unsafe Rust outside Course 6: {rel}')
-    if rel.parts and rel.parts[0]=='06-rust-systems-programming' and has_unsafe:
+    course_part = rel.parts[0] if rel.parts else ''
+    course7_unsafe_lab = (
+        course_part=='07-rust-concurrency-parallelism'
+        and rel.as_posix().startswith('07-rust-concurrency-parallelism/labs/module-08-spsc-ring/solution/')
+    )
+    if has_unsafe and course_part!='06-rust-systems-programming' and not course7_unsafe_lab:
+        fail(f'unsafe Rust outside approved Course 6/7 proof surfaces: {rel}')
+    if has_unsafe and (course_part=='06-rust-systems-programming' or course7_unsafe_lab):
         lines=text.splitlines()
         test_region=False
         unsafe_definition=re.compile(r'^\s*(?:pub(?:\([^)]*\))?\s+)?unsafe\s+(?:extern\s+"[^"]+"\s+)?fn\s+[A-Za-z_][A-Za-z0-9_]*')
@@ -284,7 +301,7 @@ for path in ROOT.rglob('*'):
     if any(part in {'__MACOSX','__pycache__','target','site','.git'} for part in rel.parts) or path.name=='.DS_Store':
         fail(f'generated/platform artifact: {rel}')
 
-print('Rust Courses 1–6 curriculum audit')
+print('Rust Courses 1–9 curriculum audit')
 print(f'  modules: {len(all_modules)}')
 print(f'  compiler specimens: {len(compiler_ids)}')
 print(f'  Cargo packages: {len(package_names)}')

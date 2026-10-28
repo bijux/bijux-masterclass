@@ -1,8 +1,8 @@
 # Module 73: Async I/O, Buffers, Streams, and Framing
 
-**Course 8, day 3 · Module 73 of 80**
+**Course 8, day 3 · Module 73 of 90**
 
-**73/80** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+**73/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
 
 ## The question
 

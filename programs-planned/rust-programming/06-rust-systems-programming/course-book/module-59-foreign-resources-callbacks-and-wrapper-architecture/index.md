@@ -1,9 +1,9 @@
 # 59 — Foreign Resources, Callbacks, and Wrapper Architecture
 
-**Course 6, day 9 · Module 59 of 60**  
-`████████████████████` **59/60**
+**Course 6, day 9 · Module 59 of 90**  
+`████████████████████` **59/90**
 
-[← Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 60: Integrated Systems Design, Testing, and Audit →](../module-60-integrated-systems-design-and-audit/index.md)
+[← Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 60: Integrated Systems Design, Testing, and Audit →](../module-60-integrated-systems-design-and-audit/index.md)
 
 ## The question
 
@@ -129,7 +129,7 @@ Prefer borrowing traits when passing an existing resource to another API. Raw ex
 
 A foreign library may state that handles are confined to one thread, shareable for reads, or internally synchronized. Rust wrappers must reflect that in `Send` and `Sync` behavior. Raw pointers do not automatically encode the correct answer.
 
-Course 6 does not add manual `Send` or `Sync` to its opaque session. Course 7 will revisit foreign handles under concurrency with explicit guarantees. This prevents an accidental auto-trait promise from entering the public API before it has been proved.
+Course 6 does not add manual `Send` or `Sync` to its opaque session. Course 7 revisits foreign handles under concurrency and requires explicit ownership, synchronization, shutdown, and auto-trait guarantees. This prevents an accidental auto-trait promise from entering the public API before it has been proved.
 
 ### A safe wrapper can still preserve an unsafe escape hatch
 

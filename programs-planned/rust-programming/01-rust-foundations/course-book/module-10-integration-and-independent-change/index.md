@@ -1,9 +1,9 @@
 # 10 — Integration and Independent Change
 
-**Course 1, day 10 · Module 10 of 60**  
-`███░░░░░░░░░░░░░░░░░` **10/60**
+**Course 1, day 10 · Module 10 of 90**  
+`███░░░░░░░░░░░░░░░░░` **10/90**
 
-[← Module 9: Crates, Modules, Public APIs, Tests, and Documentation](../module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 11: Places, Move Paths, and Advanced Borrowing →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
+[← Module 9: Crates, Modules, Public APIs, Tests, and Documentation](../module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 11: Places, Move Paths, and Advanced Borrowing →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
 
 ## The question
 
@@ -645,7 +645,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [Cargo Book: Package layout](https://doc.rust-lang.org/cargo/guide/project-layout.html)
 
-[← Module 9](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 11 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
+[← Module 9](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 11 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
 
 ## Continue
 

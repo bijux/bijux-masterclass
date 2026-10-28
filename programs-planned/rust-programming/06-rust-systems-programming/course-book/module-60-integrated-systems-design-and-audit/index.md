@@ -1,9 +1,9 @@
 # 60 — Integrated Systems Design, Testing, and Audit
 
-**Course 6, day 10 · Module 60 of 60**  
-`████████████████████` **60/60**
+**Course 6, day 10 · Module 60 of 90**  
+`████████████████████` **60/90**
 
-[← Module 59: Foreign Resources, Callbacks, and Wrapper Architecture](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Program progress](../../../PROGRESS.md)
+[← Module 59: Foreign Resources, Callbacks, and Wrapper Architecture](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Program progress](../../../PROGRESS.md)
 
 ## The question
 

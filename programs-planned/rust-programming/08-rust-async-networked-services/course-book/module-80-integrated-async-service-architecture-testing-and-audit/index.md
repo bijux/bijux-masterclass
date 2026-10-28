@@ -1,8 +1,8 @@
 # Module 80: Integrated Async Service Architecture, Testing, and Audit
 
-**Course 8, day 10 · Module 80 of 80**
+**Course 8, day 10 · Module 80 of 90**
 
-**80/80** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+**80/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
 
 ## The question
 

@@ -1,9 +1,9 @@
 # 55 — Unsafe Rust as a Proof Boundary
 
-**Course 6, day 5 · Module 55 of 60**  
-`██████████████████░░` **55/60**
+**Course 6, day 5 · Module 55 of 90**  
+`██████████████████░░` **55/90**
 
-[← Module 54: Processes, Environments, and Standard Streams](../module-54-processes-environments-and-standard-streams/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 56: Raw Pointers, Provenance, and Uninitialized Memory →](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md)
+[← Module 54: Processes, Environments, and Standard Streams](../module-54-processes-environments-and-standard-streams/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 56: Raw Pointers, Provenance, and Uninitialized Memory →](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md)
 
 ## The question
 

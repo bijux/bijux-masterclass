@@ -1,9 +1,9 @@
 # 28 — Boundary Traits and Adapters
 
-**Course 3, day 8 · Module 28 of 60**  
-`█████████░░░░░░░░░░░` **28/60**
+**Course 3, day 8 · Module 28 of 90**  
+`█████████░░░░░░░░░░░` **28/90**
 
-[← Module 27: Typestate and Capability-Oriented APIs](../module-27-typestate-and-capability-oriented-apis/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 29: Public API Evolution →](../module-29-public-api-evolution/index.md)
+[← Module 27: Typestate and Capability-Oriented APIs](../module-27-typestate-and-capability-oriented-apis/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 29: Public API Evolution →](../module-29-public-api-evolution/index.md)
 
 ## The question
 
@@ -476,7 +476,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [AsRef](https://doc.rust-lang.org/std/convert/trait.AsRef.html)
 - [Borrow](https://doc.rust-lang.org/std/borrow/trait.Borrow.html)
 
-[← Module 27](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 29 →](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md)
+[← Module 27](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 29 →](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md)
 
 ## Continue
 

@@ -1,6 +1,14 @@
-# Progress through the sixty modules
+# Progress Through the Ninety Modules
 
-Mark a module only after completing the chapter, freezing and checking the predictions, finishing the lab, applying the capstone increment, and explaining the governing rule without the page.
+Mark a module only after completing its chapter, workbook predictions, causal repairs, independent laboratory, capstone increment, and closed-book reconstruction.
+
+Use the repository command for a calculated progress bar:
+
+```bash
+make progress
+```
+
+The checklist is intentionally simple. It records completion, not mastery scores or time spent.
 
 ## Course 1 — Rust Foundations
 
@@ -80,6 +88,45 @@ Mark a module only after completing the chapter, freezing and checking the predi
 - [ ] **59. Foreign Resources, Callbacks, and Wrapper Architecture**
 - [ ] **60. Integrated Systems Design, Testing, and Audit**
 
-## Local progress tool
+## Course 7 — Rust Concurrency and Parallelism
 
-Use `python3 tools/progress.py done 51` to mark a module, `undo 51` to reverse it, `show` to print the bar, and `reset` to clear local state. The local `.progress.json` file is not part of the release.
+- [ ] **61. Module 61: Threads, Schedules, Send, Sync, and Race Freedom**
+- [ ] **62. Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries**
+- [ ] **63. Module 63: Shared State: Locks and Protected Invariants**
+- [ ] **64. Module 64: Coordination: Condvars, Barriers, and Phase Protocols**
+- [ ] **65. Module 65: Message Passing, Backpressure, and Shutdown**
+- [ ] **66. Module 66: Liveness: Deadlock, Cancellation, and Recovery**
+- [ ] **67. Module 67: Atomics, Happens-Before, and Memory Ordering**
+- [ ] **68. Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync**
+- [ ] **69. Module 69: Rayon, Work Stealing, and Deterministic Parallelism**
+- [ ] **70. Module 70: Integrated Concurrent Architecture, Testing, and Audit**
+
+## Course 8 — Rust Async and Networked Services
+
+- [ ] **71. Module 71: Futures, Polling, Wakers, and Async State Machines**
+- [ ] **72. Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles**
+- [ ] **73. Module 73: Async I/O, Buffers, Streams, and Framing**
+- [ ] **74. Module 74: TCP, UDP, DNS, and Connection Lifecycles**
+- [ ] **75. Module 75: Protocol State Machines, Versioning, and Defensive Parsing**
+- [ ] **76. Module 76: Backpressure, Admission Control, and Fair Work Distribution**
+- [ ] **77. Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown**
+- [ ] **78. Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections**
+- [ ] **79. Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing**
+- [ ] **80. Module 80: Integrated Async Service Architecture, Testing, and Audit**
+
+## Course 9 — Rust Performance and Production Engineering
+
+- [ ] **81. Performance Contracts, Workloads, and Benchmark Design**
+- [ ] **82. CPU Profiling, Cost Models, and Hot-Path Optimization**
+- [ ] **83. Allocation, Memory Footprint, and Ownership Cost**
+- [ ] **84. Data Movement, Buffering, and Zero-Copy Boundaries**
+- [ ] **85. Runtime Efficiency: Contention, Queueing, Batching, and Async Load**
+- [ ] **86. Observability: Structured Tracing, Metrics, and Diagnostic Context**
+- [ ] **87. Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation**
+- [ ] **88. Security and Supply-Chain Engineering**
+- [ ] **89. Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases**
+- [ ] **90. Production Readiness, Capacity Planning, Rollouts, and Incident Learning**
+
+## Course completion
+
+A course is complete when all ten modules are marked and the capstone can be reconstructed and defended without following the engineering guide line by line. The final artifact must preserve earlier-course guarantees; a later mechanism does not excuse regressions in ownership, errors, cleanup, determinism, or boundedness.

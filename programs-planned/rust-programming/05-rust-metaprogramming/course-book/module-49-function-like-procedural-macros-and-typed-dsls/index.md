@@ -1,9 +1,9 @@
 # 49 — Function-Like Procedural Macros and Typed DSLs
 
-**Course 5, day 9 · Module 49 of 60**  
-`████████████████░░░░` **49/60**
+**Course 5, day 9 · Module 49 of 90**  
+`████████████████░░░░` **49/90**
 
-[← Module 48: Attribute Macros and Item Transformation](../module-48-attribute-macros-and-item-transformation/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 50: Build Scripts, Generated Code, and Compile-Time Architecture →](../module-50-build-scripts-generated-code-and-compile-time-architecture/index.md)
+[← Module 48: Attribute Macros and Item Transformation](../module-48-attribute-macros-and-item-transformation/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 50: Build Scripts, Generated Code, and Compile-Time Architecture →](../module-50-build-scripts-generated-code-and-compile-time-architecture/index.md)
 
 ## The question
 

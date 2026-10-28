@@ -1,9 +1,9 @@
 # 11 — Places, Move Paths, and Advanced Borrowing
 
-**Course 2, day 1 · Module 11 of 60**  
-`████░░░░░░░░░░░░░░░░` **11/60**
+**Course 2, day 1 · Module 11 of 90**  
+`████░░░░░░░░░░░░░░░░` **11/90**
 
-[← Module 10: Integration and Independent Change](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 12: Lifetime Relationships and Borrowed APIs →](../module-12-lifetime-relationships-and-borrowed-apis/index.md)
+[← Module 10: Integration and Independent Change](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 12: Lifetime Relationships and Borrowed APIs →](../module-12-lifetime-relationships-and-borrowed-apis/index.md)
 
 ## The question
 
@@ -949,7 +949,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Place expressions](https://doc.rust-lang.org/reference/expressions.html#place-expressions-and-value-expressions)
 - [Rust Reference: Borrow expressions](https://doc.rust-lang.org/reference/expressions/operator-expr.html#borrow-operators)
 
-[← Module 10](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 12 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md)
+[← Module 10](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 12 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md)
 
 ## Continue
 

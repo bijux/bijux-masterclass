@@ -1,9 +1,9 @@
 # 35 — Option, Result, and Fallible Traversal
 
-**Course 4, day 5 · Module 35 of 60**  
-`████████████░░░░░░░░` **35/60**
+**Course 4, day 5 · Module 35 of 90**  
+`████████████░░░░░░░░` **35/90**
 
-[← Module 34: Folds, Scans, and Short-Circuiting](../module-34-folds-scans-and-short-circuiting/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 36: Custom Iterators and Collection Protocols →](../module-36-custom-iterators-and-collection-protocols/index.md)
+[← Module 34: Folds, Scans, and Short-Circuiting](../module-34-folds-scans-and-short-circuiting/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 36: Custom Iterators and Collection Protocols →](../module-36-custom-iterators-and-collection-protocols/index.md)
 
 ## The question
 
@@ -496,7 +496,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Result](https://doc.rust-lang.org/std/result/enum.Result.html)
 - [FromIterator for Result](https://doc.rust-lang.org/std/result/enum.Result.html#impl-FromIterator%3CResult%3CA,+E%3E%3E-for-Result%3CV,+E%3E)
 
-[← Module 34](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 36 →](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md)
+[← Module 34](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 36 →](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md)
 
 ## Continue
 

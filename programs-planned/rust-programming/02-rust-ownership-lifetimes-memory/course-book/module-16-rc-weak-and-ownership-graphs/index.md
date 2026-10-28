@@ -1,9 +1,9 @@
 # 16 — Rc, Weak, and Ownership Graphs
 
-**Course 2, day 6 · Module 16 of 60**  
-`█████░░░░░░░░░░░░░░░` **16/60**
+**Course 2, day 6 · Module 16 of 90**  
+`█████░░░░░░░░░░░░░░░` **16/90**
 
-[← Module 15: Box, Deref, Dynamically Sized Types, and Cow](../module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 17: Interior Mutability and Runtime Borrows →](../module-17-interior-mutability-and-runtime-borrows/index.md)
+[← Module 15: Box, Deref, Dynamically Sized Types, and Cow](../module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 17: Interior Mutability and Runtime Borrows →](../module-17-interior-mutability-and-runtime-borrows/index.md)
 
 ## The question
 
@@ -527,7 +527,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
 - [Weak](https://doc.rust-lang.org/std/rc/struct.Weak.html)
 
-[← Module 15](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 17 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md)
+[← Module 15](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 17 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md)
 
 ## Continue
 

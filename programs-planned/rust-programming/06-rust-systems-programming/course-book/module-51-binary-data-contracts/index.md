@@ -1,9 +1,9 @@
 # 51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing
 
-**Course 6, day 1 · Module 51 of 60**  
-`█████████████████░░░` **51/60**
+**Course 6, day 1 · Module 51 of 90**  
+`█████████████████░░░` **51/90**
 
-[← Module 50: Build Scripts, Generated Code, and Compile-Time Architecture](../../../05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 52: Files, Durability, and Transactional Replacement →](../module-52-files-durability-and-transactional-replacement/index.md)
+[← Module 50: Build Scripts, Generated Code, and Compile-Time Architecture](../../../05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 52: Files, Durability, and Transactional Replacement →](../module-52-files-durability-and-transactional-replacement/index.md)
 
 ## The question
 

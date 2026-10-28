@@ -1,9 +1,9 @@
 # 27 — Typestate and Capability-Oriented APIs
 
-**Course 3, day 7 · Module 27 of 60**  
-`█████████░░░░░░░░░░░` **27/60**
+**Course 3, day 7 · Module 27 of 90**  
+`█████████░░░░░░░░░░░` **27/90**
 
-[← Module 26: Composition and OOP-Style Design Without Inheritance](../module-26-composition-and-oop-style-design-without-inheritance/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 28: Boundary Traits and Adapters →](../module-28-boundary-traits-and-adapters/index.md)
+[← Module 26: Composition and OOP-Style Design Without Inheritance](../module-26-composition-and-oop-style-design-without-inheritance/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 28: Boundary Traits and Adapters →](../module-28-boundary-traits-and-adapters/index.md)
 
 ## The question
 
@@ -506,7 +506,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 - [Rust Reference: Visibility](https://doc.rust-lang.org/reference/visibility-and-privacy.html)
 
-[← Module 26](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 28 →](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md)
+[← Module 26](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 28 →](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md)
 
 ## Continue
 

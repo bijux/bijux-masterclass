@@ -535,7 +535,7 @@ This is an analytical model, not a benchmark result.
 
 ### Persistent-history alternatives
 
-A `Vec<AuditEntry>` is simpler and likely preferable if no historical versions must survive. Cloning the vector after each event would be quadratic in copied elements. A tree is unnecessary because the history has one predecessor per version. `Arc` is unnecessary because Course 4 is single-threaded; Course 7 will revisit thread-safe sharing.
+A `Vec<AuditEntry>` is simpler and likely preferable if no historical versions must survive. Cloning the vector after each event would be quadratic in copied elements. A tree is unnecessary because the history has one predecessor per version. `Arc` is unnecessary because Course 4 is single-threaded; Course 7 revisits thread-safe sharing and asks which liveness and synchronization contract justifies `Arc`.
 
 ### Transfer task
 
@@ -990,7 +990,7 @@ A single vector is suitable if only the final audit is needed. Cloning it after 
 
 ### `Arc<Mutex<_>>` for future parallelism
 
-Rejected because Course 4 is single-threaded and no concurrent ownership requirement exists. It would add runtime synchronization and obscure deterministic state flow. Course 7 will choose concurrency mechanisms from actual work decomposition.
+Rejected because Course 4 is single-threaded and no concurrent ownership requirement exists. It would add runtime synchronization and obscure deterministic state flow. Course 7 chooses concurrency mechanisms from actual work decomposition rather than adding synchronization by habit.
 
 ### Box every closure
 

@@ -1,9 +1,9 @@
 # 41 — Metaprogramming Boundaries and the Expansion Model
 
-**Course 5, day 1 · Module 41 of 60**  
-`██████████████░░░░░░` **41/60**
+**Course 5, day 1 · Module 41 of 90**  
+`██████████████░░░░░░` **41/90**
 
-[← Module 40: Functional Architecture Synthesis](../../../04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 42: Declarative Macros: Matchers, Fragments, and Repetition →](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md)
+[← Module 40: Functional Architecture Synthesis](../../../04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 42: Declarative Macros: Matchers, Fragments, and Repetition →](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md)
 
 ## The question
 

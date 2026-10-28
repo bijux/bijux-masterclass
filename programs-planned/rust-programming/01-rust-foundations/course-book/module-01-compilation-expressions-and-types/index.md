@@ -1,9 +1,9 @@
 # 01 — Compilation, Expressions, and Types
 
-**Course 1, day 1 · Module 1 of 60**  
-`░░░░░░░░░░░░░░░░░░░░` **1/60**
+**Course 1, day 1 · Module 1 of 90**  
+`░░░░░░░░░░░░░░░░░░░░` **1/90**
 
-[Program start](../../../README.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 2: Control Flow, Functions, and Invariants →](../module-02-control-flow-functions-and-invariants/index.md)
+[Program start](../../../README.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 2: Control Flow, Functions, and Invariants →](../module-02-control-flow-functions-and-invariants/index.md)
 
 ## The question
 
@@ -768,7 +768,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Cargo Book](https://doc.rust-lang.org/cargo/)
 - [Rust Reference: Expressions](https://doc.rust-lang.org/reference/expressions.html)
 
-[sixty-module map](../../../COURSE_MAP.md) · [Module 2 →](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md)
+[ninety-module map](../../../COURSE_MAP.md) · [Module 2 →](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md)
 
 ## Continue
 

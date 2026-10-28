@@ -1,9 +1,9 @@
 # 04 — Borrowing, References, Slices, and Strings
 
-**Course 1, day 4 · Module 4 of 60**  
-`█░░░░░░░░░░░░░░░░░░░` **4/60**
+**Course 1, day 4 · Module 4 of 90**  
+`█░░░░░░░░░░░░░░░░░░░` **4/90**
 
-[← Module 3: Ownership, Moves, Copying, and Destruction](../module-03-ownership-moves-copying-and-destruction/index.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 5: Structs, Enums, Methods, and Pattern Matching →](../module-05-structs-enums-methods-and-pattern-matching/index.md)
+[← Module 3: Ownership, Moves, Copying, and Destruction](../module-03-ownership-moves-copying-and-destruction/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 5: Structs, Enums, Methods, and Pattern Matching →](../module-05-structs-enums-methods-and-pattern-matching/index.md)
 
 ## The question
 
@@ -726,7 +726,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: References and Borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
 - [The Rust Book: Slices](https://doc.rust-lang.org/book/ch04-03-slices.html)
 
-[← Module 3](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 5 →](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md)
+[← Module 3](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 5 →](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md)
 
 ## Continue
 

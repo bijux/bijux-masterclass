@@ -1,9 +1,9 @@
 # 34 — Folds, Scans, and Short-Circuiting
 
-**Course 4, day 4 · Module 34 of 60**  
-`███████████░░░░░░░░░` **34/60**
+**Course 4, day 4 · Module 34 of 90**  
+`███████████░░░░░░░░░` **34/90**
 
-[← Module 33: Iterator Algebra and Pipeline Shape](../module-33-iterator-algebra-and-pipeline-shape/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 35: Option, Result, and Fallible Traversal →](../module-35-option-result-and-fallible-traversal/index.md)
+[← Module 33: Iterator Algebra and Pipeline Shape](../module-33-iterator-algebra-and-pipeline-shape/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 35: Option, Result, and Fallible Traversal →](../module-35-option-result-and-fallible-traversal/index.md)
 
 ## The question
 
@@ -502,7 +502,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator::try_fold](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.try_fold)
 - [ControlFlow](https://doc.rust-lang.org/std/ops/enum.ControlFlow.html)
 
-[← Module 33](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 35 →](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md)
+[← Module 33](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 35 →](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md)
 
 ## Continue
 

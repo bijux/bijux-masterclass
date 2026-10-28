@@ -1,9 +1,9 @@
 # 29 — Public API Evolution
 
-**Course 3, day 9 · Module 29 of 60**  
-`██████████░░░░░░░░░░` **29/60**
+**Course 3, day 9 · Module 29 of 90**  
+`██████████░░░░░░░░░░` **29/90**
 
-[← Module 28: Boundary Traits and Adapters](../module-28-boundary-traits-and-adapters/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 30: Architectural Synthesis →](../module-30-architectural-synthesis/index.md)
+[← Module 28: Boundary Traits and Adapters](../module-28-boundary-traits-and-adapters/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 30: Architectural Synthesis →](../module-30-architectural-synthesis/index.md)
 
 ## The question
 
@@ -424,7 +424,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Cargo SemVer compatibility](https://doc.rust-lang.org/cargo/reference/semver.html)
 - [Rust API Guidelines: Dependability](https://rust-lang.github.io/api-guidelines/dependability.html)
 
-[← Module 28](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 30 →](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md)
+[← Module 28](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 30 →](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md)
 
 ## Continue
 

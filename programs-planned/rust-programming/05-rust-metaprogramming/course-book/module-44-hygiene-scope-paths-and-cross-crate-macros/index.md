@@ -1,9 +1,9 @@
 # 44 — Hygiene, Scope, Paths, and Cross-Crate Macros
 
-**Course 5, day 4 · Module 44 of 60**  
-`███████████████░░░░░` **44/60**
+**Course 5, day 4 · Module 44 of 90**  
+`███████████████░░░░░` **44/90**
 
-[← Module 43: Recursive Macro Parsing and Token-Tree Techniques](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 45: Macro Diagnostics, Testing, and Public API Design →](../module-45-macro-diagnostics-testing-and-public-api-design/index.md)
+[← Module 43: Recursive Macro Parsing and Token-Tree Techniques](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 45: Macro Diagnostics, Testing, and Public API Design →](../module-45-macro-diagnostics-testing-and-public-api-design/index.md)
 
 ## The question
 

@@ -1,9 +1,9 @@
 # 39 — Combinator Laws and Cost Models
 
-**Course 4, day 9 · Module 39 of 60**  
-`█████████████░░░░░░░` **39/60**
+**Course 4, day 9 · Module 39 of 90**  
+`█████████████░░░░░░░` **39/90**
 
-[← Module 38: Functional Core and Effect Isolation](../module-38-functional-core-and-effect-isolation/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 40: Functional Architecture Synthesis →](../module-40-functional-architecture-synthesis/index.md)
+[← Module 38: Functional Core and Effect Isolation](../module-38-functional-core-and-effect-isolation/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 40: Functional Architecture Synthesis →](../module-40-functional-architecture-synthesis/index.md)
 
 ## The question
 
@@ -396,7 +396,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-[← Module 38](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 40 →](../../../04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md)
+[← Module 38](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 40 →](../../../04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md)
 
 ## Continue
 

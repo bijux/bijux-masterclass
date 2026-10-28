@@ -1,9 +1,9 @@
 # 43 — Recursive Macro Parsing and Token-Tree Techniques
 
-**Course 5, day 3 · Module 43 of 60**  
-`██████████████░░░░░░` **43/60**
+**Course 5, day 3 · Module 43 of 90**  
+`██████████████░░░░░░` **43/90**
 
-[← Module 42: Declarative Macros: Matchers, Fragments, and Repetition](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros →](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md)
+[← Module 42: Declarative Macros: Matchers, Fragments, and Repetition](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros →](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md)
 
 ## The question
 

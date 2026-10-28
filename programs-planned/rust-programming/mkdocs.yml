@@ -1,5 +1,5 @@
-site_name: Rust Programming — Courses 1–6
-site_description: A reader-first sixty-module Rust curriculum
+site_name: Rust Programming — Courses 1–9
+site_description: A reader-first ninety-module Rust curriculum
 docs_dir: .
 site_dir: ../rust-programming-site
 theme:
@@ -9,7 +9,7 @@ nav:
 - How to study: START_HERE.md
 - Shared reasoning model: REASONING_MODEL.md
 - Skill map: SKILL_MAP.md
-- Sixty-module map: COURSE_MAP.md
+- Ninety-module map: COURSE_MAP.md
 - Progress: PROGRESS.md
 - Glossary: GLOSSARY.md
 - Course 1 — Rust Foundations:
@@ -288,6 +288,152 @@ nav:
   - FrameVault engineering guide: 06-rust-systems-programming/course-book/capstone.md
   - Course reference: 06-rust-systems-programming/course-book/reference.md
   - Final review: 06-rust-systems-programming/course-book/final-review.md
+- Course 7 — Rust Concurrency and Parallelism:
+  - Course overview: 07-rust-concurrency-parallelism/course-book/index.md
+  - Ten-day plan: 07-rust-concurrency-parallelism/course-book/study-plan.md
+  - '61 — Module 61: Threads, Schedules, Send, Sync, and Race Freedom':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-61-threads-schedules-send-sync-and-race-freedom/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-61-threads-schedules-send-sync-and-race-freedom/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-61-threads-schedules-send-sync-and-race-freedom/solutions.md
+  - '62 — Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-62-structured-threads-scopes-joins-and-panic-boundaries/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-62-structured-threads-scopes-joins-and-panic-boundaries/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-62-structured-threads-scopes-joins-and-panic-boundaries/solutions.md
+  - '63 — Module 63: Shared State: Locks and Protected Invariants':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-63-shared-state-locks-and-protected-invariants/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-63-shared-state-locks-and-protected-invariants/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-63-shared-state-locks-and-protected-invariants/solutions.md
+  - '64 — Module 64: Coordination: Condvars, Barriers, and Phase Protocols':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-64-coordination-condvars-barriers-and-phase-protocols/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-64-coordination-condvars-barriers-and-phase-protocols/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-64-coordination-condvars-barriers-and-phase-protocols/solutions.md
+  - '65 — Module 65: Message Passing, Backpressure, and Shutdown':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-65-message-passing-backpressure-and-shutdown/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-65-message-passing-backpressure-and-shutdown/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-65-message-passing-backpressure-and-shutdown/solutions.md
+  - '66 — Module 66: Liveness: Deadlock, Cancellation, and Recovery':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-66-liveness-deadlock-cancellation-and-recovery/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-66-liveness-deadlock-cancellation-and-recovery/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-66-liveness-deadlock-cancellation-and-recovery/solutions.md
+  - '67 — Module 67: Atomics, Happens-Before, and Memory Ordering':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-67-atomics-happens-before-and-memory-ordering/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-67-atomics-happens-before-and-memory-ordering/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-67-atomics-happens-before-and-memory-ordering/solutions.md
+  - '68 — Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-68-lock-free-protocols-reclamation-and-unsafe-send-sync/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-68-lock-free-protocols-reclamation-and-unsafe-send-sync/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-68-lock-free-protocols-reclamation-and-unsafe-send-sync/solutions.md
+  - '69 — Module 69: Rayon, Work Stealing, and Deterministic Parallelism':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-69-rayon-work-stealing-and-deterministic-parallelism/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-69-rayon-work-stealing-and-deterministic-parallelism/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-69-rayon-work-stealing-and-deterministic-parallelism/solutions.md
+  - '70 — Module 70: Integrated Concurrent Architecture, Testing, and Audit':
+    - Chapter: 07-rust-concurrency-parallelism/course-book/module-70-integrated-concurrent-architecture-testing-and-audit/index.md
+    - Workbook: 07-rust-concurrency-parallelism/course-book/module-70-integrated-concurrent-architecture-testing-and-audit/workbook.md
+    - Reasoned solutions: 07-rust-concurrency-parallelism/course-book/module-70-integrated-concurrent-architecture-testing-and-audit/solutions.md
+  - BatchWeave engineering guide: 07-rust-concurrency-parallelism/course-book/capstone.md
+  - Course reference: 07-rust-concurrency-parallelism/course-book/reference.md
+  - Final review: 07-rust-concurrency-parallelism/course-book/final-review.md
+- Course 8 — Rust Async and Networked Services:
+  - Course overview: 08-rust-async-networked-services/course-book/index.md
+  - Ten-day plan: 08-rust-async-networked-services/course-book/study-plan.md
+  - '71 — Module 71: Futures, Polling, Wakers, and Async State Machines':
+    - Chapter: 08-rust-async-networked-services/course-book/module-71-futures-polling-wakers-and-async-state-machines/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-71-futures-polling-wakers-and-async-state-machines/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-71-futures-polling-wakers-and-async-state-machines/solutions.md
+  - '72 — Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles':
+    - Chapter: 08-rust-async-networked-services/course-book/module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/solutions.md
+  - '73 — Module 73: Async I/O, Buffers, Streams, and Framing':
+    - Chapter: 08-rust-async-networked-services/course-book/module-73-async-io-buffers-streams-and-framing/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-73-async-io-buffers-streams-and-framing/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-73-async-io-buffers-streams-and-framing/solutions.md
+  - '74 — Module 74: TCP, UDP, DNS, and Connection Lifecycles':
+    - Chapter: 08-rust-async-networked-services/course-book/module-74-tcp-udp-dns-and-connection-lifecycles/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-74-tcp-udp-dns-and-connection-lifecycles/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-74-tcp-udp-dns-and-connection-lifecycles/solutions.md
+  - '75 — Module 75: Protocol State Machines, Versioning, and Defensive Parsing':
+    - Chapter: 08-rust-async-networked-services/course-book/module-75-protocol-state-machines-versioning-and-defensive-parsing/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-75-protocol-state-machines-versioning-and-defensive-parsing/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-75-protocol-state-machines-versioning-and-defensive-parsing/solutions.md
+  - '76 — Module 76: Backpressure, Admission Control, and Fair Work Distribution':
+    - Chapter: 08-rust-async-networked-services/course-book/module-76-backpressure-admission-control-and-fair-work-distribution/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-76-backpressure-admission-control-and-fair-work-distribution/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-76-backpressure-admission-control-and-fair-work-distribution/solutions.md
+  - '77 — Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown':
+    - Chapter: 08-rust-async-networked-services/course-book/module-77-cancellation-safety-deadlines-and-graceful-shutdown/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-77-cancellation-safety-deadlines-and-graceful-shutdown/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-77-cancellation-safety-deadlines-and-graceful-shutdown/solutions.md
+  - '78 — Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections':
+    - Chapter: 08-rust-async-networked-services/course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/solutions.md
+  - '79 — Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing':
+    - Chapter: 08-rust-async-networked-services/course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/solutions.md
+  - '80 — Module 80: Integrated Async Service Architecture, Testing, and Audit':
+    - Chapter: 08-rust-async-networked-services/course-book/module-80-integrated-async-service-architecture-testing-and-audit/index.md
+    - Workbook: 08-rust-async-networked-services/course-book/module-80-integrated-async-service-architecture-testing-and-audit/workbook.md
+    - Reasoned solutions: 08-rust-async-networked-services/course-book/module-80-integrated-async-service-architecture-testing-and-audit/solutions.md
+  - JobWire engineering guide: 08-rust-async-networked-services/course-book/capstone.md
+  - Course reference: 08-rust-async-networked-services/course-book/reference.md
+  - Final review: 08-rust-async-networked-services/course-book/final-review.md
+- Course 9 — Rust Performance and Production Engineering:
+  - Course overview: 09-rust-performance-production-engineering/course-book/index.md
+  - Ten-day plan: 09-rust-performance-production-engineering/course-book/study-plan.md
+  - '81 — Performance Contracts, Workloads, and Benchmark Design':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-81-performance-contracts-workloads-and-benchmark-design/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-81-performance-contracts-workloads-and-benchmark-design/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-81-performance-contracts-workloads-and-benchmark-design/solutions.md
+  - '82 — CPU Profiling, Cost Models, and Hot-Path Optimization':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-82-cpu-profiling-cost-models-and-hot-path-optimization/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-82-cpu-profiling-cost-models-and-hot-path-optimization/solutions.md
+  - '83 — Allocation, Memory Footprint, and Ownership Cost':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-83-allocation-memory-footprint-and-ownership-cost/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-83-allocation-memory-footprint-and-ownership-cost/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-83-allocation-memory-footprint-and-ownership-cost/solutions.md
+  - '84 — Data Movement, Buffering, and Zero-Copy Boundaries':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-84-data-movement-buffering-and-zero-copy-boundaries/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-84-data-movement-buffering-and-zero-copy-boundaries/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-84-data-movement-buffering-and-zero-copy-boundaries/solutions.md
+  - '85 — Runtime Efficiency: Contention, Queueing, Batching, and Async Load':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-85-runtime-efficiency-contention-queueing-batching-and-async-load/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-85-runtime-efficiency-contention-queueing-batching-and-async-load/solutions.md
+  - '86 — Observability: Structured Tracing, Metrics, and Diagnostic Context':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-86-observability-structured-tracing-metrics-and-diagnostic-context/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-86-observability-structured-tracing-metrics-and-diagnostic-context/solutions.md
+  - '87 — Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/solutions.md
+  - '88 — Security and Supply-Chain Engineering':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-88-security-and-supply-chain-engineering/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-88-security-and-supply-chain-engineering/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-88-security-and-supply-chain-engineering/solutions.md
+  - '89 — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/solutions.md
+  - '90 — Production Readiness, Capacity Planning, Rollouts, and Incident Learning':
+    - Chapter: 09-rust-performance-production-engineering/course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md
+    - Workbook: 09-rust-performance-production-engineering/course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/workbook.md
+    - Reasoned solutions: 09-rust-performance-production-engineering/course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/solutions.md
+  - MetricRail engineering guide: 09-rust-performance-production-engineering/course-book/capstone.md
+  - MetricRail operations:
+    - Configuration: 09-rust-performance-production-engineering/capstone/operations/CONFIGURATION.md
+    - Capacity: 09-rust-performance-production-engineering/capstone/operations/CAPACITY.md
+    - Observability: 09-rust-performance-production-engineering/capstone/operations/OBSERVABILITY.md
+    - Security: 09-rust-performance-production-engineering/capstone/operations/SECURITY.md
+    - Runbook: 09-rust-performance-production-engineering/capstone/operations/RUNBOOK.md
+    - Rollout: 09-rust-performance-production-engineering/capstone/operations/ROLLOUT.md
+    - Incident drill: 09-rust-performance-production-engineering/capstone/operations/INCIDENT-DRILL.md
+  - Course reference: 09-rust-performance-production-engineering/course-book/reference.md
+  - Final review: 09-rust-performance-production-engineering/course-book/final-review.md
 - Source notes: SOURCE_NOTES.md
 exclude_docs: |
   **/target/**

@@ -1,9 +1,9 @@
 # 38 — Functional Core and Effect Isolation
 
-**Course 4, day 8 · Module 38 of 60**  
-`█████████████░░░░░░░` **38/60**
+**Course 4, day 8 · Module 38 of 90**  
+`█████████████░░░░░░░` **38/90**
 
-[← Module 37: Recursive Data and Structural Sharing](../module-37-recursive-data-and-structural-sharing/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 39: Combinator Laws and Cost Models →](../module-39-combinator-laws-and-cost-models/index.md)
+[← Module 37: Recursive Data and Structural Sharing](../module-37-recursive-data-and-structural-sharing/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 39: Combinator Laws and Cost Models →](../module-39-combinator-laws-and-cost-models/index.md)
 
 ## The question
 
@@ -360,7 +360,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [std::io](https://doc.rust-lang.org/std/io/)
 
-[← Module 37](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 39 →](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md)
+[← Module 37](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 39 →](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md)
 
 ## Continue
 

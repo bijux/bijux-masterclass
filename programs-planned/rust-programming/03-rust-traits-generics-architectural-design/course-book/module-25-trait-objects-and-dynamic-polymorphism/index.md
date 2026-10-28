@@ -1,9 +1,9 @@
 # 25 — Trait Objects and Dynamic Polymorphism
 
-**Course 3, day 5 · Module 25 of 60**  
-`████████░░░░░░░░░░░░` **25/60**
+**Course 3, day 5 · Module 25 of 90**  
+`████████░░░░░░░░░░░░` **25/90**
 
-[← Module 24: Static Polymorphism and Opaque Types](../module-24-static-polymorphism-and-opaque-types/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 26: Composition and OOP-Style Design Without Inheritance →](../module-26-composition-and-oop-style-design-without-inheritance/index.md)
+[← Module 24: Static Polymorphism and Opaque Types](../module-24-static-polymorphism-and-opaque-types/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 26: Composition and OOP-Style Design Without Inheritance →](../module-26-composition-and-oop-style-design-without-inheritance/index.md)
 
 ## The question
 
@@ -473,7 +473,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
 - [Rust Reference: Dyn compatibility](https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility)
 
-[← Module 24](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 26 →](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md)
+[← Module 24](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 26 →](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md)
 
 ## Continue
 

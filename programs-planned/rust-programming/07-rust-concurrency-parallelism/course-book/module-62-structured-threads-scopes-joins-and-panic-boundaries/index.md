@@ -1,8 +1,8 @@
 # Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries
 
-**Course 7, day 2 · Module 62 of 70**  
+**Course 7, day 2 · Module 62 of 90**  
 
-**62/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**62/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

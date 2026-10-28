@@ -1,8 +1,8 @@
 # Module 70: Integrated Concurrent Architecture, Testing, and Audit
 
-**Course 7, day 10 · Module 70 of 70**  
+**Course 7, day 10 · Module 70 of 90**  
 
-**70/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**70/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

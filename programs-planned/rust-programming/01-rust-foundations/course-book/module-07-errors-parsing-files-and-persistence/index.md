@@ -1,9 +1,9 @@
 # 07 — Errors, Parsing, Files, and Persistence
 
-**Course 1, day 7 · Module 7 of 60**  
-`██░░░░░░░░░░░░░░░░░░` **7/60**
+**Course 1, day 7 · Module 7 of 90**  
+`██░░░░░░░░░░░░░░░░░░` **7/90**
 
-[← Module 6: Collections, Iterators, and Closures](../module-06-collections-iterators-and-closures/index.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 8: Generics, Traits, Conversions, and Lifetime Basics →](../module-08-generics-traits-conversions-and-lifetime-basics/index.md)
+[← Module 6: Collections, Iterators, and Closures](../module-06-collections-iterators-and-closures/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 8: Generics, Traits, Conversions, and Lifetime Basics →](../module-08-generics-traits-conversions-and-lifetime-basics/index.md)
 
 ## The question
 
@@ -864,7 +864,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [std::io](https://doc.rust-lang.org/std/io/)
 
-[← Module 6](../../../01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 8 →](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md)
+[← Module 6](../../../01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 8 →](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md)
 
 ## Continue
 

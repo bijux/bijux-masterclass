@@ -65,4 +65,4 @@ The course is complete when you can satisfy the public behavior, explain the dec
 
 Course 3 turns the memory contracts established here into trait contracts, polymorphic boundaries, typestate protocols, and evolvable public architecture.
 
-[Return to the program start](../../README.md) · [Open the sixty-module map](../../COURSE_MAP.md)
+[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)

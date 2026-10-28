@@ -1,9 +1,9 @@
 # 37 — Recursive Data and Structural Sharing
 
-**Course 4, day 7 · Module 37 of 60**  
-`████████████░░░░░░░░` **37/60**
+**Course 4, day 7 · Module 37 of 90**  
+`████████████░░░░░░░░` **37/90**
 
-[← Module 36: Custom Iterators and Collection Protocols](../module-36-custom-iterators-and-collection-protocols/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 38: Functional Core and Effect Isolation →](../module-38-functional-core-and-effect-isolation/index.md)
+[← Module 36: Custom Iterators and Collection Protocols](../module-36-custom-iterators-and-collection-protocols/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 38: Functional Core and Effect Isolation →](../module-38-functional-core-and-effect-isolation/index.md)
 
 ## The question
 
@@ -438,7 +438,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
 - [The Rust Book: Recursive types](https://doc.rust-lang.org/book/ch15-01-box.html)
 
-[← Module 36](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 38 →](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md)
+[← Module 36](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 38 →](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md)
 
 ## Continue
 

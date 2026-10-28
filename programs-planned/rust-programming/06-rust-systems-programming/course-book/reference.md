@@ -82,4 +82,4 @@ Classify systems claims as language guarantee, library contract, target-conditio
 
 ## Course 6 completion
 
-You are ready for Course 7 when you can decode hostile bytes safely, describe transactional file states, preserve native path and process boundaries, write and review a safety ledger, implement one owning unsafe abstraction, align a C header with Rust exports, and defend the entire FrameVault boundary without treating successful compilation as proof of external behavior.
+You are ready to begin [Course 7](../../07-rust-concurrency-parallelism/course-book/index.md) when you can decode hostile bytes safely, describe transactional file states, preserve native path and process boundaries, write and review a safety ledger, implement one owning unsafe abstraction, align a C header with Rust exports, and defend the entire FrameVault boundary without treating successful compilation as proof of external behavior.

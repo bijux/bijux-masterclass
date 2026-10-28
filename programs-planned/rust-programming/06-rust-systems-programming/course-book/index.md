@@ -63,6 +63,6 @@ The course is complete when you can satisfy the public behavior, explain the dec
 
 ## Course handoff
 
-Course 7 will add concurrency and parallelism, where every ownership, cleanup, unsafe, and external-boundary claim must remain valid under simultaneous execution.
+Continue with [Course 7 — Rust Concurrency and Parallelism](../../07-rust-concurrency-parallelism/course-book/index.md), where every ownership, cleanup, unsafe, and external-boundary claim must remain valid under simultaneous execution.
 
-[Return to the program start](../../README.md) · [Open the sixty-module map](../../COURSE_MAP.md)
+[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)

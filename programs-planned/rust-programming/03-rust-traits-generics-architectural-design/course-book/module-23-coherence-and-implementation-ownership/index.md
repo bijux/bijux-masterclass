@@ -1,9 +1,9 @@
 # 23 — Coherence and Implementation Ownership
 
-**Course 3, day 3 · Module 23 of 60**  
-`████████░░░░░░░░░░░░` **23/60**
+**Course 3, day 3 · Module 23 of 90**  
+`████████░░░░░░░░░░░░` **23/90**
 
-[← Module 22: Associated Types and Type Families](../module-22-associated-types-and-type-families/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 24: Static Polymorphism and Opaque Types →](../module-24-static-polymorphism-and-opaque-types/index.md)
+[← Module 22: Associated Types and Type Families](../module-22-associated-types-and-type-families/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 24: Static Polymorphism and Opaque Types →](../module-24-static-polymorphism-and-opaque-types/index.md)
 
 ## The question
 
@@ -505,7 +505,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Implementations](https://doc.rust-lang.org/reference/items/implementations.html)
 - [Rust Reference: Trait implementation coherence](https://doc.rust-lang.org/reference/items/implementations.html#trait-implementation-coherence)
 
-[← Module 22](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 24 →](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md)
+[← Module 22](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 24 →](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md)
 
 ## Continue
 

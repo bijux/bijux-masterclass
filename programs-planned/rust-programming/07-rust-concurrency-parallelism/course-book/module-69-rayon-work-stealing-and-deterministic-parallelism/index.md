@@ -1,8 +1,8 @@
 # Module 69: Rayon, Work Stealing, and Deterministic Parallelism
 
-**Course 7, day 9 · Module 69 of 70**  
+**Course 7, day 9 · Module 69 of 90**  
 
-**69/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**69/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

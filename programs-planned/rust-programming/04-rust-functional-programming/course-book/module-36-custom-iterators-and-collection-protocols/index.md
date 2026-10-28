@@ -1,9 +1,9 @@
 # 36 — Custom Iterators and Collection Protocols
 
-**Course 4, day 6 · Module 36 of 60**  
-`████████████░░░░░░░░` **36/60**
+**Course 4, day 6 · Module 36 of 90**  
+`████████████░░░░░░░░` **36/90**
 
-[← Module 35: Option, Result, and Fallible Traversal](../module-35-option-result-and-fallible-traversal/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 37: Recursive Data and Structural Sharing →](../module-37-recursive-data-and-structural-sharing/index.md)
+[← Module 35: Option, Result, and Fallible Traversal](../module-35-option-result-and-fallible-traversal/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 37: Recursive Data and Structural Sharing →](../module-37-recursive-data-and-structural-sharing/index.md)
 
 ## The question
 
@@ -473,7 +473,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [FromIterator](https://doc.rust-lang.org/std/iter/trait.FromIterator.html)
 - [Extend](https://doc.rust-lang.org/std/iter/trait.Extend.html)
 
-[← Module 35](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 37 →](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md)
+[← Module 35](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 37 →](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md)
 
 ## Continue
 

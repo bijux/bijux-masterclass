@@ -1,9 +1,9 @@
 # 09 — Crates, Modules, Public APIs, Tests, and Documentation
 
-**Course 1, day 9 · Module 9 of 60**  
-`███░░░░░░░░░░░░░░░░░` **9/60**
+**Course 1, day 9 · Module 9 of 90**  
+`███░░░░░░░░░░░░░░░░░` **9/90**
 
-[← Module 8: Generics, Traits, Conversions, and Lifetime Basics](../module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 10: Integration and Independent Change →](../module-10-integration-and-independent-change/index.md)
+[← Module 8: Generics, Traits, Conversions, and Lifetime Basics](../module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 10: Integration and Independent Change →](../module-10-integration-and-independent-change/index.md)
 
 ## The question
 
@@ -688,7 +688,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Testing](https://doc.rust-lang.org/book/ch11-00-testing.html)
 - [rustdoc Book](https://doc.rust-lang.org/rustdoc/)
 
-[← Module 8](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 10 →](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md)
+[← Module 8](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 10 →](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md)
 
 ## Continue
 

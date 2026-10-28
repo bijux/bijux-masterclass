@@ -1,9 +1,9 @@
 # 48 — Attribute Macros and Item Transformation
 
-**Course 5, day 8 · Module 48 of 60**  
-`████████████████░░░░` **48/60**
+**Course 5, day 8 · Module 48 of 90**  
+`████████████████░░░░` **48/90**
 
-[← Module 47: Custom Derive Macros and Structural Generation](../module-47-custom-derive-macros-and-structural-generation/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 49: Function-Like Procedural Macros and Typed DSLs →](../module-49-function-like-procedural-macros-and-typed-dsls/index.md)
+[← Module 47: Custom Derive Macros and Structural Generation](../module-47-custom-derive-macros-and-structural-generation/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 49: Function-Like Procedural Macros and Typed DSLs →](../module-49-function-like-procedural-macros-and-typed-dsls/index.md)
 
 ## The question
 

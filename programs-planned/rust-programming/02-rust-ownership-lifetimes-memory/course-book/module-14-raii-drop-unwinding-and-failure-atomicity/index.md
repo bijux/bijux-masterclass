@@ -1,9 +1,9 @@
 # 14 — RAII, Drop, Unwinding, and Failure Atomicity
 
-**Course 2, day 4 · Module 14 of 60**  
-`█████░░░░░░░░░░░░░░░` **14/60**
+**Course 2, day 4 · Module 14 of 90**  
+`█████░░░░░░░░░░░░░░░` **14/90**
 
-[← Module 13: Scoped Access and Escape Prevention](../module-13-scoped-access-and-escape-prevention/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 15: Box, Deref, Dynamically Sized Types, and Cow →](../module-15-box-deref-dynamically-sized-types-and-cow/index.md)
+[← Module 13: Scoped Access and Escape Prevention](../module-13-scoped-access-and-escape-prevention/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 15: Box, Deref, Dynamically Sized Types, and Cow →](../module-15-box-deref-dynamically-sized-types-and-cow/index.md)
 
 ## The question
 
@@ -687,7 +687,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [std::mem](https://doc.rust-lang.org/std/mem/)
 - [std::panic](https://doc.rust-lang.org/std/panic/)
 
-[← Module 13](../../../02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 15 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md)
+[← Module 13](../../../02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 15 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md)
 
 ## Continue
 

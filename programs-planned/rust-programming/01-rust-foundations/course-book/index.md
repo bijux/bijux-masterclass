@@ -65,4 +65,4 @@ The course is complete when you can satisfy the public behavior, explain the dec
 
 Course 2 keeps the same ownership model but studies it at the level of places, provenance, destruction, sharing, layout, and address sensitivity.
 
-[Return to the program start](../../README.md) · [Open the sixty-module map](../../COURSE_MAP.md)
+[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)

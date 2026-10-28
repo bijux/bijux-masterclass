@@ -1,8 +1,8 @@
 # Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing
 
-**Course 8, day 9 · Module 79 of 80**
+**Course 8, day 9 · Module 79 of 90**
 
-**79/80** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+**79/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
 
 ## The question
 

@@ -1,9 +1,9 @@
 # 42 — Declarative Macros: Matchers, Fragments, and Repetition
 
-**Course 5, day 2 · Module 42 of 60**  
-`██████████████░░░░░░` **42/60**
+**Course 5, day 2 · Module 42 of 90**  
+`██████████████░░░░░░` **42/90**
 
-[← Module 41: Metaprogramming Boundaries and the Expansion Model](../module-41-metaprogramming-boundaries-and-expansion-model/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 43: Recursive Macro Parsing and Token-Tree Techniques →](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md)
+[← Module 41: Metaprogramming Boundaries and the Expansion Model](../module-41-metaprogramming-boundaries-and-expansion-model/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 43: Recursive Macro Parsing and Token-Tree Techniques →](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md)
 
 ## The question
 

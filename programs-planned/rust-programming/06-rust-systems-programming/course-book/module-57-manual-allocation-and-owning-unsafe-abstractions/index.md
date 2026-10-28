@@ -1,9 +1,9 @@
 # 57 — Manual Allocation and Owning Unsafe Abstractions
 
-**Course 6, day 7 · Module 57 of 60**  
-`███████████████████░` **57/60**
+**Course 6, day 7 · Module 57 of 90**  
+`███████████████████░` **57/90**
 
-[← Module 56: Raw Pointers, Provenance, and Uninitialized Memory](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries →](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md)
+[← Module 56: Raw Pointers, Provenance, and Uninitialized Memory](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries →](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md)
 
 ## The question
 

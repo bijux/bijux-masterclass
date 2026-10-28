@@ -1,9 +1,9 @@
 # 30 — Architectural Synthesis
 
-**Course 3, day 10 · Module 30 of 60**  
-`██████████░░░░░░░░░░` **30/60**
+**Course 3, day 10 · Module 30 of 90**  
+`██████████░░░░░░░░░░` **30/90**
 
-[← Module 29: Public API Evolution](../module-29-public-api-evolution/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 31: Closures, Capture, and Callable Contracts →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
+[← Module 29: Public API Evolution](../module-29-public-api-evolution/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 31: Closures, Capture, and Callable Contracts →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
 
 ## The question
 
@@ -387,7 +387,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-[← Module 29](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 31 →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
+[← Module 29](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 31 →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
 
 ## Continue
 

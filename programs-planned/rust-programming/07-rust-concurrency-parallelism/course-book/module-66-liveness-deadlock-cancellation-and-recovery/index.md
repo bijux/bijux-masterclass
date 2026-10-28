@@ -1,8 +1,8 @@
 # Module 66: Liveness: Deadlock, Cancellation, and Recovery
 
-**Course 7, day 6 · Module 66 of 70**  
+**Course 7, day 6 · Module 66 of 90**  
 
-**66/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**66/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

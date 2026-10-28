@@ -1,9 +1,9 @@
 # 47 — Custom Derive Macros and Structural Generation
 
-**Course 5, day 7 · Module 47 of 60**  
-`████████████████░░░░` **47/60**
+**Course 5, day 7 · Module 47 of 90**  
+`████████████████░░░░` **47/90**
 
-[← Module 46: Procedural Macro Execution and TokenStream Engineering](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 48: Attribute Macros and Item Transformation →](../module-48-attribute-macros-and-item-transformation/index.md)
+[← Module 46: Procedural Macro Execution and TokenStream Engineering](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 48: Attribute Macros and Item Transformation →](../module-48-attribute-macros-and-item-transformation/index.md)
 
 ## The question
 

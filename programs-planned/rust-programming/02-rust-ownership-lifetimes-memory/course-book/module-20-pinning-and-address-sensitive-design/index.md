@@ -1,9 +1,9 @@
 # 20 — Pinning and Address-Sensitive Design
 
-**Course 2, day 10 · Module 20 of 60**  
-`███████░░░░░░░░░░░░░` **20/60**
+**Course 2, day 10 · Module 20 of 90**  
+`███████░░░░░░░░░░░░░` **20/90**
 
-[← Module 19: Subtyping, Variance, PhantomData, and Drop Checking](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 21: Traits as Behavioral Contracts →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
+[← Module 19: Subtyping, Variance, PhantomData, and Drop Checking](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 21: Traits as Behavioral Contracts →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
 
 ## The question
 
@@ -533,7 +533,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Pin](https://doc.rust-lang.org/std/pin/struct.Pin.html)
 - [Unpin](https://doc.rust-lang.org/std/marker/trait.Unpin.html)
 
-[← Module 19](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 21 →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
+[← Module 19](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 21 →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
 
 ## Continue
 

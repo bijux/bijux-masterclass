@@ -1,8 +1,8 @@
 # Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync
 
-**Course 7, day 8 · Module 68 of 70**  
+**Course 7, day 8 · Module 68 of 90**  
 
-**68/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**68/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

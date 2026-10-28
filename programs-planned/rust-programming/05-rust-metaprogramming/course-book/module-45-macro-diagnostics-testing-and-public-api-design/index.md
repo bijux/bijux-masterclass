@@ -1,9 +1,9 @@
 # 45 — Macro Diagnostics, Testing, and Public API Design
 
-**Course 5, day 5 · Module 45 of 60**  
-`███████████████░░░░░` **45/60**
+**Course 5, day 5 · Module 45 of 90**  
+`███████████████░░░░░` **45/90**
 
-[← Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 46: Procedural Macro Execution and TokenStream Engineering →](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md)
+[← Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 46: Procedural Macro Execution and TokenStream Engineering →](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md)
 
 ## The question
 

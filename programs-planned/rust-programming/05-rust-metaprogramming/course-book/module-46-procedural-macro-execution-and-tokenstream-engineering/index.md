@@ -1,9 +1,9 @@
 # 46 — Procedural Macro Execution and TokenStream Engineering
 
-**Course 5, day 6 · Module 46 of 60**  
-`███████████████░░░░░` **46/60**
+**Course 5, day 6 · Module 46 of 90**  
+`███████████████░░░░░` **46/90**
 
-[← Module 45: Macro Diagnostics, Testing, and Public API Design](../module-45-macro-diagnostics-testing-and-public-api-design/index.md) · [Course 5 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 47: Custom Derive Macros and Structural Generation →](../module-47-custom-derive-macros-and-structural-generation/index.md)
+[← Module 45: Macro Diagnostics, Testing, and Public API Design](../module-45-macro-diagnostics-testing-and-public-api-design/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 47: Custom Derive Macros and Structural Generation →](../module-47-custom-derive-macros-and-structural-generation/index.md)
 
 ## The question
 

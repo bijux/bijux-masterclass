@@ -4,7 +4,7 @@
 
 Cross external boundaries without losing the guarantees built in the first five courses: define representations, track resources, isolate unsafe obligations, and expose safe interfaces with claims no stronger than the platform evidence.
 
-This directory is one ten-day course in the [sixty-module Rust program](../README.md). The [course book](course-book/index.md) is the primary learning path. The labs isolate one mechanism at a time, compiler specimens train causal prediction, and **FrameVault** tests whether the ten mechanisms can coexist in one product.
+This directory is one ten-day course in the [ninety-module Rust program](../README.md). The [course book](course-book/index.md) is the primary learning path. The labs isolate one mechanism at a time, compiler specimens train causal prediction, and **FrameVault** tests whether the ten mechanisms can coexist in one product.
 
 ## Begin here
 

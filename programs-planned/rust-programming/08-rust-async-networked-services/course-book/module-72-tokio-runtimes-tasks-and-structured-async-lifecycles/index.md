@@ -1,8 +1,8 @@
 # Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles
 
-**Course 8, day 2 · Module 72 of 80**
+**Course 8, day 2 · Module 72 of 90**
 
-**72/80** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+**72/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
 
 ## The question
 

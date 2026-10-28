@@ -1,9 +1,9 @@
 # 18 — Memory Representation, Validity, and Layout
 
-**Course 2, day 8 · Module 18 of 60**  
-`██████░░░░░░░░░░░░░░` **18/60**
+**Course 2, day 8 · Module 18 of 90**  
+`██████░░░░░░░░░░░░░░` **18/90**
 
-[← Module 17: Interior Mutability and Runtime Borrows](../module-17-interior-mutability-and-runtime-borrows/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 19: Subtyping, Variance, PhantomData, and Drop Checking →](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
+[← Module 17: Interior Mutability and Runtime Borrows](../module-17-interior-mutability-and-runtime-borrows/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 19: Subtyping, Variance, PhantomData, and Drop Checking →](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
 
 ## The question
 
@@ -543,7 +543,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Type layout](https://doc.rust-lang.org/reference/type-layout.html)
 - [Rust Reference: Type validity](https://doc.rust-lang.org/reference/behavior-considered-undefined.html)
 
-[← Module 17](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 19 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
+[← Module 17](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 19 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
 
 ## Continue
 

@@ -1,9 +1,9 @@
 # 31 — Closures, Capture, and Callable Contracts
 
-**Course 4, day 1 · Module 31 of 60**  
-`██████████░░░░░░░░░░` **31/60**
+**Course 4, day 1 · Module 31 of 90**  
+`██████████░░░░░░░░░░` **31/90**
 
-[← Module 30: Architectural Synthesis](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 32: The Iterator Model →](../module-32-the-iterator-model/index.md)
+[← Module 30: Architectural Synthesis](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 32: The Iterator Model →](../module-32-the-iterator-model/index.md)
 
 ## The question
 
@@ -713,7 +713,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Closure expressions](https://doc.rust-lang.org/reference/expressions/closure-expr.html)
 - [Fn traits](https://doc.rust-lang.org/std/ops/trait.Fn.html)
 
-[← Module 30](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 32 →](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md)
+[← Module 30](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 32 →](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md)
 
 ## Continue
 

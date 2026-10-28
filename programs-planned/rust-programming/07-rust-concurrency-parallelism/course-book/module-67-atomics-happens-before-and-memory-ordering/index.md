@@ -1,8 +1,8 @@
 # Module 67: Atomics, Happens-Before, and Memory Ordering
 
-**Course 7, day 7 · Module 67 of 70**  
+**Course 7, day 7 · Module 67 of 90**  
 
-**67/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**67/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

@@ -1,8 +1,8 @@
 # Module 65: Message Passing, Backpressure, and Shutdown
 
-**Course 7, day 5 · Module 65 of 70**  
+**Course 7, day 5 · Module 65 of 90**  
 
-**65/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**65/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

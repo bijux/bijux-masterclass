@@ -1,9 +1,9 @@
 # 13 — Scoped Access and Escape Prevention
 
-**Course 2, day 3 · Module 13 of 60**  
-`████░░░░░░░░░░░░░░░░` **13/60**
+**Course 2, day 3 · Module 13 of 90**  
+`████░░░░░░░░░░░░░░░░` **13/90**
 
-[← Module 12: Lifetime Relationships and Borrowed APIs](../module-12-lifetime-relationships-and-borrowed-apis/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 14: RAII, Drop, Unwinding, and Failure Atomicity →](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
+[← Module 12: Lifetime Relationships and Borrowed APIs](../module-12-lifetime-relationships-and-borrowed-apis/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 14: RAII, Drop, Unwinding, and Failure Atomicity →](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
 
 ## The question
 
@@ -853,7 +853,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Higher-ranked trait bounds](https://doc.rust-lang.org/reference/trait-bounds.html#higher-ranked-trait-bounds)
 - [Rust Reference: Closure expressions](https://doc.rust-lang.org/reference/expressions/closure-expr.html)
 
-[← Module 12](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 14 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
+[← Module 12](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 14 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
 
 ## Continue
 

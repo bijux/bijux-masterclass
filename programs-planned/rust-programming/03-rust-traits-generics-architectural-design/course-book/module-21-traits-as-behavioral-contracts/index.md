@@ -1,9 +1,9 @@
 # 21 — Traits as Behavioral Contracts
 
-**Course 3, day 1 · Module 21 of 60**  
-`███████░░░░░░░░░░░░░` **21/60**
+**Course 3, day 1 · Module 21 of 90**  
+`███████░░░░░░░░░░░░░` **21/90**
 
-[← Module 20: Pinning and Address-Sensitive Design](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 22: Associated Types and Type Families →](../module-22-associated-types-and-type-families/index.md)
+[← Module 20: Pinning and Address-Sensitive Design](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 22: Associated Types and Type Families →](../module-22-associated-types-and-type-families/index.md)
 
 ## The question
 
@@ -777,7 +777,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Traits](https://doc.rust-lang.org/reference/items/traits.html)
 - [The Rust Book: Traits](https://doc.rust-lang.org/book/ch10-02-traits.html)
 
-[← Module 20](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 22 →](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md)
+[← Module 20](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 22 →](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md)
 
 ## Continue
 

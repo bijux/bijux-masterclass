@@ -1,8 +1,8 @@
 # Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown
 
-**Course 8, day 7 · Module 77 of 80**
+**Course 8, day 7 · Module 77 of 90**
 
-**77/80** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+**77/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
 
 ## The question
 

@@ -1,9 +1,9 @@
 # 06 — Collections, Iterators, and Closures
 
-**Course 1, day 6 · Module 6 of 60**  
-`██░░░░░░░░░░░░░░░░░░` **6/60**
+**Course 1, day 6 · Module 6 of 90**  
+`██░░░░░░░░░░░░░░░░░░` **6/90**
 
-[← Module 5: Structs, Enums, Methods, and Pattern Matching](../module-05-structs-enums-methods-and-pattern-matching/index.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 7: Errors, Parsing, Files, and Persistence →](../module-07-errors-parsing-files-and-persistence/index.md)
+[← Module 5: Structs, Enums, Methods, and Pattern Matching](../module-05-structs-enums-methods-and-pattern-matching/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 7: Errors, Parsing, Files, and Persistence →](../module-07-errors-parsing-files-and-persistence/index.md)
 
 ## The question
 
@@ -1020,7 +1020,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Closures and Iterators](https://doc.rust-lang.org/book/ch13-00-functional-features.html)
 - [Iterator documentation](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 
-[← Module 5](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 7 →](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md)
+[← Module 5](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 7 →](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md)
 
 ## Continue
 

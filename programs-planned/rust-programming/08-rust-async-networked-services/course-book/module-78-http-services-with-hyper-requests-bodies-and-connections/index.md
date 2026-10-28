@@ -1,8 +1,8 @@
 # Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections
 
-**Course 8, day 8 · Module 78 of 80**
+**Course 8, day 8 · Module 78 of 90**
 
-**78/80** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+**78/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
 
 ## The question
 

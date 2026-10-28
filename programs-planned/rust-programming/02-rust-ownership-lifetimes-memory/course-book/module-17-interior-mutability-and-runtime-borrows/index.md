@@ -1,9 +1,9 @@
 # 17 — Interior Mutability and Runtime Borrows
 
-**Course 2, day 7 · Module 17 of 60**  
-`██████░░░░░░░░░░░░░░` **17/60**
+**Course 2, day 7 · Module 17 of 90**  
+`██████░░░░░░░░░░░░░░` **17/90**
 
-[← Module 16: Rc, Weak, and Ownership Graphs](../module-16-rc-weak-and-ownership-graphs/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 18: Memory Representation, Validity, and Layout →](../module-18-memory-representation-validity-and-layout/index.md)
+[← Module 16: Rc, Weak, and Ownership Graphs](../module-16-rc-weak-and-ownership-graphs/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 18: Memory Representation, Validity, and Layout →](../module-18-memory-representation-validity-and-layout/index.md)
 
 ## The question
 
@@ -634,7 +634,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [RefCell](https://doc.rust-lang.org/std/cell/struct.RefCell.html)
 - [UnsafeCell](https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html)
 
-[← Module 16](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 18 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md)
+[← Module 16](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 18 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md)
 
 ## Continue
 

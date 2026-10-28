@@ -1,5 +1,5 @@
 PYTHON ?= python3
-COURSES := 01-rust-foundations 02-rust-ownership-lifetimes-memory 03-rust-traits-generics-architectural-design 04-rust-functional-programming 05-rust-metaprogramming 06-rust-systems-programming
+COURSES := 01-rust-foundations 02-rust-ownership-lifetimes-memory 03-rust-traits-generics-architectural-design 04-rust-functional-programming 05-rust-metaprogramming 06-rust-systems-programming 07-rust-concurrency-parallelism 08-rust-async-networked-services 09-rust-performance-production-engineering
 
 .PHONY: help audit links rust-source-audit static-proof progress compiler-labs check test starters fmt clippy docs c-header proof clean
 help:

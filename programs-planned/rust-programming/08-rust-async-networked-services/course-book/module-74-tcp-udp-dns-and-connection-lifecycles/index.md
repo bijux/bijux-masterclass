@@ -1,8 +1,8 @@
 # Module 74: TCP, UDP, DNS, and Connection Lifecycles
 
-**Course 8, day 4 · Module 74 of 80**
+**Course 8, day 4 · Module 74 of 90**
 
-**74/80** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+**74/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
 
 ## The question
 

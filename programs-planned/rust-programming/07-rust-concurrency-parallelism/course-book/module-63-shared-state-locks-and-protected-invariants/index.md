@@ -1,8 +1,8 @@
 # Module 63: Shared State: Locks and Protected Invariants
 
-**Course 7, day 3 · Module 63 of 70**  
+**Course 7, day 3 · Module 63 of 90**  
 
-**63/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**63/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

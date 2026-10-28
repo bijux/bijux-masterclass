@@ -65,4 +65,4 @@ The course is complete when you can satisfy the public behavior, explain the dec
 
 Course 6 takes the phase and contract discipline developed here across byte, operating-system, unsafe, allocator, and foreign-language boundaries.
 
-[Return to the program start](../../README.md) · [Open the sixty-module map](../../COURSE_MAP.md)
+[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)

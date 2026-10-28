@@ -4,7 +4,7 @@
 
 Learn to read Rust as a typed language, make ownership and failure visible, model valid states, and finish a complete tested program without depending on framework magic.
 
-This directory is one ten-day course in the [sixty-module Rust program](../README.md). The [course book](course-book/index.md) is the primary learning path. The labs isolate one mechanism at a time, compiler specimens train causal prediction, and **Taskboard** tests whether the ten mechanisms can coexist in one product.
+This directory is one ten-day course in the [ninety-module Rust program](../README.md). The [course book](course-book/index.md) is the primary learning path. The labs isolate one mechanism at a time, compiler specimens train causal prediction, and **Taskboard** tests whether the ten mechanisms can coexist in one product.
 
 ## Begin here
 

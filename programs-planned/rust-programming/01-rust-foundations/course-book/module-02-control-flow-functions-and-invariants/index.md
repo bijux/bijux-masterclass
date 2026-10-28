@@ -1,9 +1,9 @@
 # 02 — Control Flow, Functions, and Invariants
 
-**Course 1, day 2 · Module 2 of 60**  
-`█░░░░░░░░░░░░░░░░░░░` **2/60**
+**Course 1, day 2 · Module 2 of 90**  
+`█░░░░░░░░░░░░░░░░░░░` **2/90**
 
-[← Module 1: Compilation, Expressions, and Types](../module-01-compilation-expressions-and-types/index.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 3: Ownership, Moves, Copying, and Destruction →](../module-03-ownership-moves-copying-and-destruction/index.md)
+[← Module 1: Compilation, Expressions, and Types](../module-01-compilation-expressions-and-types/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 3: Ownership, Moves, Copying, and Destruction →](../module-03-ownership-moves-copying-and-destruction/index.md)
 
 ## The question
 
@@ -791,7 +791,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Functions and Control Flow](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html)
 - [Rust Reference: Control-flow expressions](https://doc.rust-lang.org/reference/expressions/loop-expr.html)
 
-[← Module 1](../../../01-rust-foundations/course-book/module-01-compilation-expressions-and-types/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 3 →](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md)
+[← Module 1](../../../01-rust-foundations/course-book/module-01-compilation-expressions-and-types/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 3 →](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md)
 
 ## Continue
 

@@ -1,9 +1,9 @@
 # 19 — Subtyping, Variance, PhantomData, and Drop Checking
 
-**Course 2, day 9 · Module 19 of 60**  
-`██████░░░░░░░░░░░░░░` **19/60**
+**Course 2, day 9 · Module 19 of 90**  
+`██████░░░░░░░░░░░░░░` **19/90**
 
-[← Module 18: Memory Representation, Validity, and Layout](../module-18-memory-representation-validity-and-layout/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 20: Pinning and Address-Sensitive Design →](../module-20-pinning-and-address-sensitive-design/index.md)
+[← Module 18: Memory Representation, Validity, and Layout](../module-18-memory-representation-validity-and-layout/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 20: Pinning and Address-Sensitive Design →](../module-20-pinning-and-address-sensitive-design/index.md)
 
 ## The question
 
@@ -624,7 +624,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [PhantomData](https://doc.rust-lang.org/std/marker/struct.PhantomData.html)
 - [Rustonomicon: Drop checking](https://doc.rust-lang.org/nomicon/dropck.html)
 
-[← Module 18](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 20 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md)
+[← Module 18](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 20 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md)
 
 ## Continue
 

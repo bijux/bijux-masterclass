@@ -4,7 +4,7 @@
 
 Turn type-level knowledge into architecture: define lawful contracts, choose static or dynamic variation, compose behavior, encode protocols, adapt boundaries, and evolve public APIs without inheritance-shaped thinking.
 
-This directory is one ten-day course in the [sixty-module Rust program](../README.md). The [course book](course-book/index.md) is the primary learning path. The labs isolate one mechanism at a time, compiler specimens train causal prediction, and **Review Engine** tests whether the ten mechanisms can coexist in one product.
+This directory is one ten-day course in the [ninety-module Rust program](../README.md). The [course book](course-book/index.md) is the primary learning path. The labs isolate one mechanism at a time, compiler specimens train causal prediction, and **Review Engine** tests whether the ten mechanisms can coexist in one product.
 
 ## Begin here
 

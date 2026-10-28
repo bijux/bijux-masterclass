@@ -1,8 +1,8 @@
 # Module 75: Protocol State Machines, Versioning, and Defensive Parsing
 
-**Course 8, day 5 · Module 75 of 80**
+**Course 8, day 5 · Module 75 of 90**
 
-**75/80** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+**75/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
 
 ## The question
 

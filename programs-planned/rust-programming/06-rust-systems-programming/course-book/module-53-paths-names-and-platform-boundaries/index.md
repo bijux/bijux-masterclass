@@ -1,9 +1,9 @@
 # 53 — Paths, Names, and Platform Boundaries
 
-**Course 6, day 3 · Module 53 of 60**  
-`██████████████████░░` **53/60**
+**Course 6, day 3 · Module 53 of 90**  
+`██████████████████░░` **53/90**
 
-[← Module 52: Files, Durability, and Transactional Replacement](../module-52-files-durability-and-transactional-replacement/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 54: Processes, Environments, and Standard Streams →](../module-54-processes-environments-and-standard-streams/index.md)
+[← Module 52: Files, Durability, and Transactional Replacement](../module-52-files-durability-and-transactional-replacement/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 54: Processes, Environments, and Standard Streams →](../module-54-processes-environments-and-standard-streams/index.md)
 
 ## The question
 

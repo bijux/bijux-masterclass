@@ -1,9 +1,9 @@
 # 24 — Static Polymorphism and Opaque Types
 
-**Course 3, day 4 · Module 24 of 60**  
-`████████░░░░░░░░░░░░` **24/60**
+**Course 3, day 4 · Module 24 of 90**  
+`████████░░░░░░░░░░░░` **24/90**
 
-[← Module 23: Coherence and Implementation Ownership](../module-23-coherence-and-implementation-ownership/index.md) · [Course 3 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 25: Trait Objects and Dynamic Polymorphism →](../module-25-trait-objects-and-dynamic-polymorphism/index.md)
+[← Module 23: Coherence and Implementation Ownership](../module-23-coherence-and-implementation-ownership/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 25: Trait Objects and Dynamic Polymorphism →](../module-25-trait-objects-and-dynamic-polymorphism/index.md)
 
 ## The question
 
@@ -432,7 +432,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: impl Trait](https://doc.rust-lang.org/reference/types/impl-trait.html)
 - [Rust Compiler Development Guide: Monomorphization](https://rustc-dev-guide.rust-lang.org/backend/monomorph.html)
 
-[← Module 23](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 25 →](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md)
+[← Module 23](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 25 →](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md)
 
 ## Continue
 

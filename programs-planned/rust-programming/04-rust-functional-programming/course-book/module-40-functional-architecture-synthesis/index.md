@@ -1,9 +1,9 @@
 # 40 — Functional Architecture Synthesis
 
-**Course 4, day 10 · Module 40 of 60**  
-`█████████████░░░░░░░` **40/60**
+**Course 4, day 10 · Module 40 of 90**  
+`█████████████░░░░░░░` **40/90**
 
-[← Module 39: Combinator Laws and Cost Models](../module-39-combinator-laws-and-cost-models/index.md) · [Course 4 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 41: Metaprogramming Boundaries and the Expansion Model →](../../../05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/index.md)
+[← Module 39: Combinator Laws and Cost Models](../module-39-combinator-laws-and-cost-models/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 41: Metaprogramming Boundaries and the Expansion Model →](../../../05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/index.md)
 
 ## The question
 
@@ -345,7 +345,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Closures and Iterators](https://doc.rust-lang.org/book/ch13-00-functional-features.html)
 - [Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 
-[← Module 39](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md) · [sixty-module map](../../../COURSE_MAP.md)
+[← Module 39](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md) · [ninety-module map](../../../COURSE_MAP.md)
 
 ## Continue
 

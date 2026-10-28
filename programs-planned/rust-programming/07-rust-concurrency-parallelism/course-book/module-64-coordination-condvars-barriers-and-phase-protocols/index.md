@@ -1,8 +1,8 @@
 # Module 64: Coordination: Condvars, Barriers, and Phase Protocols
 
-**Course 7, day 4 · Module 64 of 70**  
+**Course 7, day 4 · Module 64 of 90**  
 
-**64/70** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+**64/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
 
 ## The question
 

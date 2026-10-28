@@ -1,9 +1,9 @@
 # 03 — Ownership, Moves, Copying, and Destruction
 
-**Course 1, day 3 · Module 3 of 60**  
-`█░░░░░░░░░░░░░░░░░░░` **3/60**
+**Course 1, day 3 · Module 3 of 90**  
+`█░░░░░░░░░░░░░░░░░░░` **3/90**
 
-[← Module 2: Control Flow, Functions, and Invariants](../module-02-control-flow-functions-and-invariants/index.md) · [Course 1 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 4: Borrowing, References, Slices, and Strings →](../module-04-borrowing-references-slices-and-strings/index.md)
+[← Module 2: Control Flow, Functions, and Invariants](../module-02-control-flow-functions-and-invariants/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 4: Borrowing, References, Slices, and Strings →](../module-04-borrowing-references-slices-and-strings/index.md)
 
 ## The question
 
@@ -715,7 +715,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Ownership](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
 - [Rust Reference: Destructors](https://doc.rust-lang.org/reference/destructors.html)
 
-[← Module 2](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 4 →](../../../01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md)
+[← Module 2](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 4 →](../../../01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md)
 
 ## Continue
 

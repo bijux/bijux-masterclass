@@ -70,6 +70,51 @@ The repository pins Rust 1.97.1 and uses Rust 2024 Edition. The program changes 
 - FFI chapter of the Rustonomicon: <https://doc.rust-lang.org/nomicon/ffi.html>
 - C ABI type layout: <https://doc.rust-lang.org/reference/type-layout.html#the-c-representation>
 
+
+## Course 7 — concurrency and parallelism
+
+- Threads and scoped threads: <https://doc.rust-lang.org/std/thread/>
+- Synchronization primitives: <https://doc.rust-lang.org/std/sync/>
+- `Send`: <https://doc.rust-lang.org/std/marker/trait.Send.html>
+- `Sync`: <https://doc.rust-lang.org/std/marker/trait.Sync.html>
+- `Mutex`: <https://doc.rust-lang.org/std/sync/struct.Mutex.html>
+- `Condvar`: <https://doc.rust-lang.org/std/sync/struct.Condvar.html>
+- Message passing: <https://doc.rust-lang.org/std/sync/mpsc/>
+- Atomic types and ordering: <https://doc.rust-lang.org/std/sync/atomic/>
+- Rust Reference memory model note: <https://doc.rust-lang.org/reference/memory-model.html>
+- Rustonomicon atomics chapter: <https://doc.rust-lang.org/nomicon/atomics.html>
+- Rayon 1.12.0: <https://docs.rs/rayon/1.12.0/rayon/>
+
+
+## Course 8 — async and networked services
+
+- `Future`, `Poll`, `Context`, and `Waker`: <https://doc.rust-lang.org/std/future/trait.Future.html> and <https://doc.rust-lang.org/std/task/>
+- Pinning: <https://doc.rust-lang.org/std/pin/>
+- Standard-library networking: <https://doc.rust-lang.org/std/net/>
+- Tokio 1.53.1: <https://docs.rs/tokio/1.53.1/tokio/>
+- Tokio Util 0.7.19: <https://docs.rs/tokio-util/0.7.19/tokio_util/>
+- Bytes 1.12.1: <https://docs.rs/bytes/1.12.1/bytes/>
+- Futures Util 0.3.33: <https://docs.rs/futures-util/0.3.33/futures_util/>
+- Hyper 1.8.0: <https://docs.rs/hyper/1.8.0/hyper/>
+- Hyper Util 0.1.20: <https://docs.rs/hyper-util/0.1.20/hyper_util/>
+- HTTP Body Util 0.1.4: <https://docs.rs/http-body-util/0.1.4/http_body_util/>
+
+
+## Course 9 — performance and production engineering
+
+- Cargo profiles: <https://doc.rust-lang.org/cargo/reference/profiles.html>
+- Cargo features: <https://doc.rust-lang.org/cargo/reference/features.html>
+- Criterion 0.8.2: <https://docs.rs/criterion/0.8.2/criterion/>
+- Criterion user guide: <https://bheisler.github.io/criterion.rs/book/>
+- Rust Performance Book: <https://nnethercote.github.io/perf-book/>
+- Bytes 1.12.1: <https://docs.rs/bytes/1.12.1/bytes/>
+- Tracing 0.1.44: <https://docs.rs/tracing/0.1.44/tracing/>
+- Tracing Subscriber 0.3.23: <https://docs.rs/tracing-subscriber/0.3.23/tracing_subscriber/>
+- Tokio 1.53.1: <https://docs.rs/tokio/1.53.1/tokio/>
+- RustSec advisory database: <https://rustsec.org/>
+- `cargo-audit`: <https://docs.rs/cargo-audit/>
+- `cargo-deny`: <https://embarkstudios.github.io/cargo-deny/>
+
 ## Claim discipline
 
 Technical statements in these courses belong to one of these categories:

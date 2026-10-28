@@ -1,9 +1,9 @@
 # 56 — Raw Pointers, Provenance, and Uninitialized Memory
 
-**Course 6, day 6 · Module 56 of 60**  
-`███████████████████░` **56/60**
+**Course 6, day 6 · Module 56 of 90**  
+`███████████████████░` **56/90**
 
-[← Module 55: Unsafe Rust as a Proof Boundary](../module-55-unsafe-rust-and-safety-proofs/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 57: Manual Allocation and Owning Unsafe Abstractions →](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md)
+[← Module 55: Unsafe Rust as a Proof Boundary](../module-55-unsafe-rust-and-safety-proofs/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 57: Manual Allocation and Owning Unsafe Abstractions →](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md)
 
 ## The question
 

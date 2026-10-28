@@ -1,9 +1,9 @@
 # 52 — Files, Durability, and Transactional Replacement
 
-**Course 6, day 2 · Module 52 of 60**  
-`█████████████████░░░` **52/60**
+**Course 6, day 2 · Module 52 of 90**  
+`█████████████████░░░` **52/90**
 
-[← Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing](../module-51-binary-data-contracts/index.md) · [Course 6 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 53: Paths, Names, and Platform Boundaries →](../module-53-paths-names-and-platform-boundaries/index.md)
+[← Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing](../module-51-binary-data-contracts/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 53: Paths, Names, and Platform Boundaries →](../module-53-paths-names-and-platform-boundaries/index.md)
 
 ## The question
 

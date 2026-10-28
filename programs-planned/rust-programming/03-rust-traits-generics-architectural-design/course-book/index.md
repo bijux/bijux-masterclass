@@ -65,4 +65,4 @@ The course is complete when you can satisfy the public behavior, explain the dec
 
 Course 4 uses these contracts as the joints of explicit dataflow, fallible traversal, reduction, and effect isolation.
 
-[Return to the program start](../../README.md) · [Open the sixty-module map](../../COURSE_MAP.md)
+[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)

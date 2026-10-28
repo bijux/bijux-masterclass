@@ -1,9 +1,9 @@
 # 15 — Box, Deref, Dynamically Sized Types, and Cow
 
-**Course 2, day 5 · Module 15 of 60**  
-`█████░░░░░░░░░░░░░░░` **15/60**
+**Course 2, day 5 · Module 15 of 90**  
+`█████░░░░░░░░░░░░░░░` **15/90**
 
-[← Module 14: RAII, Drop, Unwinding, and Failure Atomicity](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [Course 2 overview](../index.md) · [Sixty-module map](../../../COURSE_MAP.md) · [Module 16: Rc, Weak, and Ownership Graphs →](../module-16-rc-weak-and-ownership-graphs/index.md)
+[← Module 14: RAII, Drop, Unwinding, and Failure Atomicity](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 16: Rc, Weak, and Ownership Graphs →](../module-16-rc-weak-and-ownership-graphs/index.md)
 
 ## The question
 
@@ -579,7 +579,7 @@ This chapter is self-contained. These official sources are included for verifica
 - [std::ops::Deref](https://doc.rust-lang.org/std/ops/trait.Deref.html)
 - [std::borrow::Cow](https://doc.rust-lang.org/std/borrow/enum.Cow.html)
 
-[← Module 14](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [sixty-module map](../../../COURSE_MAP.md) · [Module 16 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md)
+[← Module 14](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 16 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md)
 
 ## Continue
 
