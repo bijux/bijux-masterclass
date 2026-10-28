@@ -13128,8 +13128,8 @@
       "sha256": "8273111904a6926ff7f7428b0a3fd4c949d13ffbb833464a8f201439b8e7bac0",
       "bytes": 38,
       "mode": "100644",
-      "sha256_after": "8273111904a6926ff7f7428b0a3fd4c949d13ffbb833464a8f201439b8e7bac0",
-      "transformation": null
+      "sha256_after": "9657ea3783112a0803c3960eb5a980324d480c79b9acec606297bf3639fa1d06",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/01-linux-networking-and-cloud-systems-engineering/requirements.txt",
@@ -14757,8 +14757,8 @@
       "sha256": "46c0f72057f502b22bb01bf7e8c48fed3fecd5e1efc156dab1b02b63dd83f044",
       "bytes": 38,
       "mode": "100644",
-      "sha256_after": "46c0f72057f502b22bb01bf7e8c48fed3fecd5e1efc156dab1b02b63dd83f044",
-      "transformation": null
+      "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/02-infrastructure-as-code-and-cloud-foundation-engineering/requirements.txt",
@@ -14766,8 +14766,8 @@
       "sha256": "d88ddf5b1390c939dea5cf4b095d7906d4da7b14f2cfa17e64dd07d8be85b7fd",
       "bytes": 47,
       "mode": "100644",
-      "sha256_after": "d88ddf5b1390c939dea5cf4b095d7906d4da7b14f2cfa17e64dd07d8be85b7fd",
-      "transformation": null
+      "sha256_after": "7d230ef910027fda82fde78e1dd7d90baafb2facfc4590d8c157b248d660f869",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/02-infrastructure-as-code-and-cloud-foundation-engineering/tool-versions.json",
@@ -17466,8 +17466,8 @@
       "sha256": "6c41518522035e177051b965981afea3176ff3b04f27033145a29b8c5a36d60b",
       "bytes": 40,
       "mode": "100644",
-      "sha256_after": "6c41518522035e177051b965981afea3176ff3b04f27033145a29b8c5a36d60b",
-      "transformation": null
+      "sha256_after": "9657ea3783112a0803c3960eb5a980324d480c79b9acec606297bf3639fa1d06",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/03-container-oci-and-software-supply-chain-engineering/requirements.txt",
@@ -17475,8 +17475,8 @@
       "sha256": "0ffa8431e172246bd57bdcc39c2f6705ab215d7e097726aa00c8268f0ee987b7",
       "bytes": 48,
       "mode": "100644",
-      "sha256_after": "0ffa8431e172246bd57bdcc39c2f6705ab215d7e097726aa00c8268f0ee987b7",
-      "transformation": null
+      "sha256_after": "b6d60568f933212510f0577348140acf4ba7a1039f52b7a9236a75b85d478c75",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/03-container-oci-and-software-supply-chain-engineering/tool-versions.json",
@@ -19617,8 +19617,8 @@
       "sha256": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
       "bytes": 38,
       "mode": "100644",
-      "sha256_after": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
-      "transformation": null
+      "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/04-kubernetes-architecture-and-workload-engineering/requirements.txt",
@@ -19626,8 +19626,8 @@
       "sha256": "a4866424ba8e3f305b1c3cb4bc82284baf3f4891745126dcdbddb292b3b32dd5",
       "bytes": 47,
       "mode": "100644",
-      "sha256_after": "a4866424ba8e3f305b1c3cb4bc82284baf3f4891745126dcdbddb292b3b32dd5",
-      "transformation": null
+      "sha256_after": "146a65131f9532278046f8bd2ba58e7ac61beab4e8e7ec9dd6e0c530f81cda25",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/04-kubernetes-architecture-and-workload-engineering/standards-profile.json",
@@ -21849,8 +21849,8 @@
       "sha256": "968aea3f4765290926a2bcae19575a0dfead0afb322162a7560f18db237d5a78",
       "bytes": 23,
       "mode": "100644",
-      "sha256_after": "968aea3f4765290926a2bcae19575a0dfead0afb322162a7560f18db237d5a78",
-      "transformation": null
+      "sha256_after": "dc9781b6b60b22d67ea8e173733ea3398c7fad1f6c9f9b2de371210e97019ab4",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/05-kubernetes-networking-gateway-and-service-connectivity-engineering/requirements.txt",
@@ -21858,8 +21858,8 @@
       "sha256": "3ec2dc9e81fd8dfcc4c174e21f659f459934a873c8faa30aa2524f8fdf25ef68",
       "bytes": 29,
       "mode": "100644",
-      "sha256_after": "3ec2dc9e81fd8dfcc4c174e21f659f459934a873c8faa30aa2524f8fdf25ef68",
-      "transformation": null
+      "sha256_after": "710217634355de420f06dfc5edc25af406e083288f8de62b0b3ffaff982035e9",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/05-kubernetes-networking-gateway-and-service-connectivity-engineering/standards-profile.json",
@@ -24450,8 +24450,8 @@
       "sha256": "8273111904a6926ff7f7428b0a3fd4c949d13ffbb833464a8f201439b8e7bac0",
       "bytes": 38,
       "mode": "100644",
-      "sha256_after": "8273111904a6926ff7f7428b0a3fd4c949d13ffbb833464a8f201439b8e7bac0",
-      "transformation": null
+      "sha256_after": "9657ea3783112a0803c3960eb5a980324d480c79b9acec606297bf3639fa1d06",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-platform [7]/06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/requirements.txt",
@@ -29440,5 +29440,62 @@
       "transformation": null
     }
   ],
-  "duplicate_source_aliases": []
+  "duplicate_source_aliases": [],
+  "maintenance": [
+    {
+      "intent": "Qualify patched Python dependencies against the retained contract fixtures; original source snapshots remain unchanged.",
+      "files": [
+        {
+          "path": "programs-planned/platform-engineering/01-linux-networking-and-cloud-systems-engineering/requirements-docs.txt",
+          "sha256_before": "8273111904a6926ff7f7428b0a3fd4c949d13ffbb833464a8f201439b8e7bac0",
+          "sha256_after": "9657ea3783112a0803c3960eb5a980324d480c79b9acec606297bf3639fa1d06"
+        },
+        {
+          "path": "programs-planned/platform-engineering/02-infrastructure-as-code-and-cloud-foundation-engineering/requirements-docs.txt",
+          "sha256_before": "46c0f72057f502b22bb01bf7e8c48fed3fecd5e1efc156dab1b02b63dd83f044",
+          "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7"
+        },
+        {
+          "path": "programs-planned/platform-engineering/02-infrastructure-as-code-and-cloud-foundation-engineering/requirements.txt",
+          "sha256_before": "d88ddf5b1390c939dea5cf4b095d7906d4da7b14f2cfa17e64dd07d8be85b7fd",
+          "sha256_after": "7d230ef910027fda82fde78e1dd7d90baafb2facfc4590d8c157b248d660f869"
+        },
+        {
+          "path": "programs-planned/platform-engineering/03-container-oci-and-software-supply-chain-engineering/requirements-docs.txt",
+          "sha256_before": "6c41518522035e177051b965981afea3176ff3b04f27033145a29b8c5a36d60b",
+          "sha256_after": "9657ea3783112a0803c3960eb5a980324d480c79b9acec606297bf3639fa1d06"
+        },
+        {
+          "path": "programs-planned/platform-engineering/03-container-oci-and-software-supply-chain-engineering/requirements.txt",
+          "sha256_before": "0ffa8431e172246bd57bdcc39c2f6705ab215d7e097726aa00c8268f0ee987b7",
+          "sha256_after": "b6d60568f933212510f0577348140acf4ba7a1039f52b7a9236a75b85d478c75"
+        },
+        {
+          "path": "programs-planned/platform-engineering/04-kubernetes-architecture-and-workload-engineering/requirements-docs.txt",
+          "sha256_before": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
+          "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7"
+        },
+        {
+          "path": "programs-planned/platform-engineering/04-kubernetes-architecture-and-workload-engineering/requirements.txt",
+          "sha256_before": "a4866424ba8e3f305b1c3cb4bc82284baf3f4891745126dcdbddb292b3b32dd5",
+          "sha256_after": "146a65131f9532278046f8bd2ba58e7ac61beab4e8e7ec9dd6e0c530f81cda25"
+        },
+        {
+          "path": "programs-planned/platform-engineering/05-kubernetes-networking-gateway-and-service-connectivity-engineering/requirements-docs.txt",
+          "sha256_before": "968aea3f4765290926a2bcae19575a0dfead0afb322162a7560f18db237d5a78",
+          "sha256_after": "dc9781b6b60b22d67ea8e173733ea3398c7fad1f6c9f9b2de371210e97019ab4"
+        },
+        {
+          "path": "programs-planned/platform-engineering/05-kubernetes-networking-gateway-and-service-connectivity-engineering/requirements.txt",
+          "sha256_before": "3ec2dc9e81fd8dfcc4c174e21f659f459934a873c8faa30aa2524f8fdf25ef68",
+          "sha256_after": "710217634355de420f06dfc5edc25af406e083288f8de62b0b3ffaff982035e9"
+        },
+        {
+          "path": "programs-planned/platform-engineering/06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering/requirements-docs.txt",
+          "sha256_before": "8273111904a6926ff7f7428b0a3fd4c949d13ffbb833464a8f201439b8e7bac0",
+          "sha256_after": "9657ea3783112a0803c3960eb5a980324d480c79b9acec606297bf3639fa1d06"
+        }
+      ]
+    }
+  ]
 }

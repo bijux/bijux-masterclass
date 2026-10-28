@@ -10,4 +10,4 @@ dependencies = []
 
 [project.optional-dependencies]
 server = ["strawberry-graphql[fastapi]>=0.278,<0.279", "graphql-core>=3.2,<3.3"]
-test = ["pytest>=8.4,<9"]
+test = ["pytest>=9.0.3,<10"]

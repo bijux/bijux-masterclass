@@ -49738,8 +49738,8 @@
       "sha256": "54a2a8cf17c2dab877ae75cd272ca33a20e4a085b6456d0e885e047007ba0f3c",
       "bytes": 988,
       "mode": "100644",
-      "sha256_after": "54a2a8cf17c2dab877ae75cd272ca33a20e4a085b6456d0e885e047007ba0f3c",
-      "transformation": null
+      "sha256_after": "0b22f64f210164d5d5fe16f56a9154a0b43f44784233542ce001179fb64727bf",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/redocly.yaml",
@@ -49756,8 +49756,8 @@
       "sha256": "e88da7be4bda12d2bd808bd080dfa9f1223655a0ede2a8e843666cc7c053ce57",
       "bytes": 238,
       "mode": "100644",
-      "sha256_after": "e88da7be4bda12d2bd808bd080dfa9f1223655a0ede2a8e843666cc7c053ce57",
-      "transformation": null
+      "sha256_after": "92f7aad3811322c7152fcdaade7a1fc7a9d3f5a9e48214280ec944428dce197f",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/schemathesis.toml",
@@ -51133,8 +51133,8 @@
       "sha256": "034e87e4322e17f63c69f84cf02410b8c4869d65d251337729f841990dd8b59e",
       "bytes": 273,
       "mode": "100644",
-      "sha256_after": "034e87e4322e17f63c69f84cf02410b8c4869d65d251337729f841990dd8b59e",
-      "transformation": null
+      "sha256_after": "4daed372212c6b02c9f222b326e3909826438665383018832f6eaa39ab041893",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/services/python-fastapi/src/analysis_api/__init__.py",
@@ -53437,8 +53437,8 @@
       "sha256": "57187a9c2b380e508922d9d38864dd7557b0d82a703a2d8a95028ea65dd4e816",
       "bytes": 85,
       "mode": "100644",
-      "sha256_after": "57187a9c2b380e508922d9d38864dd7557b0d82a703a2d8a95028ea65dd4e816",
-      "transformation": null
+      "sha256_after": "86feb8799ec07e1d5732b4d232e4da0482eb2ec219e552f3ae7e3becd5e8a684",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/tool-versions.json",
@@ -53581,8 +53581,8 @@
       "sha256": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
       "bytes": 573,
       "mode": "100644",
-      "sha256_after": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
-      "transformation": null
+      "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -54562,8 +54562,8 @@
       "sha256": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
       "bytes": 573,
       "mode": "100644",
-      "sha256_after": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
-      "transformation": null
+      "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -57109,8 +57109,8 @@
       "sha256": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
       "bytes": 573,
       "mode": "100644",
-      "sha256_after": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
-      "transformation": null
+      "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/predecessor/reference-tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -58144,8 +58144,8 @@
       "sha256": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
       "bytes": 867,
       "mode": "100644",
-      "sha256_after": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
-      "transformation": null
+      "sha256_after": "9b5bcc767ece95a029804e48aef763209e25ab6e6bff34e966f90bd065ae58aa",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -58567,8 +58567,8 @@
       "sha256": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
       "bytes": 751,
       "mode": "100644",
-      "sha256_after": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
-      "transformation": null
+      "sha256_after": "681ca6e6d06067ada4421140a94ff63fac17f35af3721745bfb28abc3b43741c",
+      "transformation": "validation-fixture-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/python-fastapi/tests/test_postgres_integration.py",
@@ -59953,8 +59953,8 @@
       "sha256": "0092a79bb85e19422fccd49544cca79add8ea08c553017499f23f3ded24b633b",
       "bytes": 52,
       "mode": "100644",
-      "sha256_after": "0092a79bb85e19422fccd49544cca79add8ea08c553017499f23f3ded24b633b",
-      "transformation": null
+      "sha256_after": "b22c9e37c6268d52095bca5e7600ba768881e2264cf6db6fad5c7401b3d1a33b",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/tool-versions.json",
@@ -60907,8 +60907,8 @@
       "sha256": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
       "bytes": 867,
       "mode": "100644",
-      "sha256_after": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
-      "transformation": null
+      "sha256_after": "9b5bcc767ece95a029804e48aef763209e25ab6e6bff34e966f90bd065ae58aa",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -62599,8 +62599,8 @@
       "sha256": "ce72b5f3f4014c7b01884903170129f0a65882d9a4410fb148142178f02a730c",
       "bytes": 1150,
       "mode": "100644",
-      "sha256_after": "ce72b5f3f4014c7b01884903170129f0a65882d9a4410fb148142178f02a730c",
-      "transformation": null
+      "sha256_after": "df020ee553481a463aa0d95907b8f221f677638e3c4b45e2eeac9293c7d4111d",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -64939,8 +64939,8 @@
       "sha256": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
       "bytes": 38,
       "mode": "100644",
-      "sha256_after": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
-      "transformation": null
+      "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/05-api-performance-capacity-and-traffic-engineering/tool-versions.json",
@@ -66037,8 +66037,8 @@
       "sha256": "589435fbc6ec00b34b8e96c03dff342d38479ca3fe38426d8eadb0ed9b010955",
       "bytes": 608,
       "mode": "100644",
-      "sha256_after": "589435fbc6ec00b34b8e96c03dff342d38479ca3fe38426d8eadb0ed9b010955",
-      "transformation": null
+      "sha256_after": "903e89b1c3be5f7b134252efad199990b8e6b9014924753c00118a7fd7ecade6",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/05-api-performance-capacity-and-traffic-engineering/capstone/tracks/python-fastapi/migrations/001_base.sql",
@@ -68926,8 +68926,8 @@
       "sha256": "813fd3df1843ad63b034bdf698d7b2c798c14b7931107c5f47dda7270172d2db",
       "bytes": 466,
       "mode": "100644",
-      "sha256_after": "813fd3df1843ad63b034bdf698d7b2c798c14b7931107c5f47dda7270172d2db",
-      "transformation": null
+      "sha256_after": "ba94d2494f7e8bc791d3d8989b37e208787432cfad9d4a5e7e55da4bb1350609",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/06-event-driven-api-engineering/capstone/tracks/python-fastapi/migrations/001_base.sql",
@@ -72067,8 +72067,8 @@
       "sha256": "ae85259f0dd59d7c1825d5b8506a01b834f686a42aef2820d12c298d6a74e38d",
       "bytes": 233,
       "mode": "100644",
-      "sha256_after": "ae85259f0dd59d7c1825d5b8506a01b834f686a42aef2820d12c298d6a74e38d",
-      "transformation": null
+      "sha256_after": "886d42c9b747a4a2be0dd3a0507fd63bc308cdcb6e15bd069268ac8bf9472191",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/07-grpc-and-protobuf-engineering/capstone/tracks/python-grpc/migrations/001_base.sql",
@@ -76108,8 +76108,8 @@
       "sha256": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
       "bytes": 38,
       "mode": "100644",
-      "sha256_after": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
-      "transformation": null
+      "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/tool-versions.json",
@@ -77152,8 +77152,8 @@
       "sha256": "16df9e448dd9744bfffb2fadb683e00b4afeb84ebf15c526aa39204efb9eca99",
       "bytes": 330,
       "mode": "100644",
-      "sha256_after": "16df9e448dd9744bfffb2fadb683e00b4afeb84ebf15c526aa39204efb9eca99",
-      "transformation": null
+      "sha256_after": "0af4937d309f84bebb857d6ab22d5c0666359cb466d9ac4b490c276f67dcdc67",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/src/graph_api/__init__.py",
@@ -78394,8 +78394,8 @@
       "sha256": "1d3517d5ba0be958a3165b94c7f20b529477e9efc74597677b97662320cf703e",
       "bytes": 66,
       "mode": "100644",
-      "sha256_after": "1d3517d5ba0be958a3165b94c7f20b529477e9efc74597677b97662320cf703e",
-      "transformation": null
+      "sha256_after": "88c3c4bf331e6c0de8df21ff945346adc6103b63c736997a95edfc6ead409090",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/10-api-platform-governance-and-developer-experience-engineering/tool-versions.json",
@@ -81557,5 +81557,108 @@
       "transformation": null
     }
   ],
-  "duplicate_source_aliases": []
+  "duplicate_source_aliases": [],
+  "maintenance": [
+    {
+      "intent": "Qualify patched Python dependencies against the retained contract fixtures; original source snapshots remain unchanged.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/services/python-fastapi/pyproject.toml",
+          "sha256_before": "034e87e4322e17f63c69f84cf02410b8c4869d65d251337729f841990dd8b59e",
+          "sha256_after": "4daed372212c6b02c9f222b326e3909826438665383018832f6eaa39ab041893"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/pyproject.toml",
+          "sha256_before": "54a2a8cf17c2dab877ae75cd272ca33a20e4a085b6456d0e885e047007ba0f3c",
+          "sha256_after": "0b22f64f210164d5d5fe16f56a9154a0b43f44784233542ce001179fb64727bf"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/requirements.txt",
+          "sha256_before": "e88da7be4bda12d2bd808bd080dfa9f1223655a0ede2a8e843666cc7c053ce57",
+          "sha256_after": "92f7aad3811322c7152fcdaade7a1fc7a9d3f5a9e48214280ec944428dce197f"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
+          "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
+          "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/requirements.txt",
+          "sha256_before": "57187a9c2b380e508922d9d38864dd7557b0d82a703a2d8a95028ea65dd4e816",
+          "sha256_after": "86feb8799ec07e1d5732b4d232e4da0482eb2ec219e552f3ae7e3becd5e8a684"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/predecessor/reference-tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
+          "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
+          "sha256_after": "9b5bcc767ece95a029804e48aef763209e25ab6e6bff34e966f90bd065ae58aa"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
+          "sha256_after": "9b5bcc767ece95a029804e48aef763209e25ab6e6bff34e966f90bd065ae58aa"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "ce72b5f3f4014c7b01884903170129f0a65882d9a4410fb148142178f02a730c",
+          "sha256_after": "df020ee553481a463aa0d95907b8f221f677638e3c4b45e2eeac9293c7d4111d"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/requirements-docs.txt",
+          "sha256_before": "0092a79bb85e19422fccd49544cca79add8ea08c553017499f23f3ded24b633b",
+          "sha256_after": "b22c9e37c6268d52095bca5e7600ba768881e2264cf6db6fad5c7401b3d1a33b"
+        },
+        {
+          "path": "programs-planned/api-engineering/05-api-performance-capacity-and-traffic-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "589435fbc6ec00b34b8e96c03dff342d38479ca3fe38426d8eadb0ed9b010955",
+          "sha256_after": "903e89b1c3be5f7b134252efad199990b8e6b9014924753c00118a7fd7ecade6"
+        },
+        {
+          "path": "programs-planned/api-engineering/05-api-performance-capacity-and-traffic-engineering/requirements-docs.txt",
+          "sha256_before": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
+          "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7"
+        },
+        {
+          "path": "programs-planned/api-engineering/06-event-driven-api-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "813fd3df1843ad63b034bdf698d7b2c798c14b7931107c5f47dda7270172d2db",
+          "sha256_after": "ba94d2494f7e8bc791d3d8989b37e208787432cfad9d4a5e7e55da4bb1350609"
+        },
+        {
+          "path": "programs-planned/api-engineering/07-grpc-and-protobuf-engineering/capstone/tracks/python-grpc/pyproject.toml",
+          "sha256_before": "ae85259f0dd59d7c1825d5b8506a01b834f686a42aef2820d12c298d6a74e38d",
+          "sha256_after": "886d42c9b747a4a2be0dd3a0507fd63bc308cdcb6e15bd069268ac8bf9472191"
+        },
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/pyproject.toml",
+          "sha256_before": "16df9e448dd9744bfffb2fadb683e00b4afeb84ebf15c526aa39204efb9eca99",
+          "sha256_after": "0af4937d309f84bebb857d6ab22d5c0666359cb466d9ac4b490c276f67dcdc67"
+        },
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/requirements-docs.txt",
+          "sha256_before": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
+          "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7"
+        },
+        {
+          "path": "programs-planned/api-engineering/10-api-platform-governance-and-developer-experience-engineering/requirements-docs.txt",
+          "sha256_before": "1d3517d5ba0be958a3165b94c7f20b529477e9efc74597677b97662320cf703e",
+          "sha256_after": "88c3c4bf331e6c0de8df21ff945346adc6103b63c736997a95edfc6ead409090"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/python-fastapi/tests/test_operation_map.py",
+          "kind": "validation-fixture-maintenance",
+          "sha256_before": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
+          "sha256_after": "681ca6e6d06067ada4421140a94ff63fac17f35af3721745bfb28abc3b43741c"
+        }
+      ]
+    }
+  ]
 }
