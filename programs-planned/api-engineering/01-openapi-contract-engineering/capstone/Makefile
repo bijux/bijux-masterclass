@@ -13,7 +13,6 @@ NODE_BIN := $(COURSE_ROOT)/node_modules/.bin
 TOOLS_BIN := $(COURSE_ROOT)/.tools/bin
 REDOCLY := $(NODE_BIN)/redocly
 SPECTRAL := $(NODE_BIN)/spectral
-PRISM := $(NODE_BIN)/prism
 OPENAPI_TYPESCRIPT := $(NODE_BIN)/openapi-typescript
 OASDIFF := $(if $(wildcard $(TOOLS_BIN)/oasdiff),$(TOOLS_BIN)/oasdiff,oasdiff)
 REPORTS := reports
@@ -189,17 +188,10 @@ typescript-live: ## Start a clean TypeScript provider and run shared live confor
 live-conformance: python-live typescript-live ## Prove both providers against one behavioral suite.
 	@printf '%s\n' 'PASS cross-provider live conformance'
 
-prism-mock: bundle ## Start Prism mock server on port 4010.
-	@test -x "$(PRISM)" || { printf '%s\n' 'Prism is missing; run make setup'; exit 2; }
-	@"$(PRISM)" mock spec/dist/openapi.bundle.yaml -h 127.0.0.1 -p 4010
-
-prism-smoke: bundle ## Start Prism, exercise examples, and prove invalid-request rejection.
-	@test -x "$(PRISM)" || { printf '%s\n' 'Prism is missing; run make setup'; exit 2; }
-	@mkdir -p "$(REPORTS)"; \
-	"$(PRISM)" mock spec/dist/openapi.bundle.yaml -h 127.0.0.1 -p 4010 >"$(REPORTS)/prism.log" 2>&1 & \
-	pid=$$!; trap 'kill $$pid >/dev/null 2>&1 || true; wait $$pid >/dev/null 2>&1 || true' EXIT; \
-	$(PY) scripts/wait_for_http.py http://127.0.0.1:4010/health; \
-	$(PY) scripts/prism_smoke.py --base-url http://127.0.0.1:4010
+prism-mock prism-smoke: ## Explain why mock/proxy verification is unavailable.
+	@printf '%s\n' 'Prism is excluded from the installable toolchain because its dependency chain has unresolved security advisories.'
+	@printf '%s\n' 'The lessons are retained, but mock/proxy verification requires a qualified replacement. See ../README.md.'
+	@exit 2
 
 schemathesis: client-view ## Run deterministic generated contract tests against Python.
 	@command -v "$(SCHEMATHESIS)" >/dev/null 2>&1 || test -x "$(SCHEMATHESIS)" || { printf '%s\n' 'Schemathesis is missing; run make setup'; exit 2; }

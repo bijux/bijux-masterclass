@@ -5,7 +5,7 @@ import { authorize } from "../dist-security/security/authorization.js";
 import { confinedPath, validateFilename, validateArchiveMembers } from "../dist-security/security/input-security.js";
 import { validateDestination, verifyConnectedPeer } from "../dist-security/security/ssrf.js";
 
-const capstone = new URL("../../../", import.meta.url);
+const capstone = new URL("../../../../", import.meta.url);
 const load = async (relative) => JSON.parse(await readFile(new URL(relative,capstone),"utf8"));
 function policies(rows){return new Map(rows.map((r)=>[r.operationId,{operationId:r.operationId,scopes:new Set(r.scopes),roles:new Set(r.roles),relationship:r.relationship,tenantBound:r.tenantBound,conceal:r.concealment==="concealed",requiredAssurance:r.assurance,maxAuthAgeSeconds:r.freshAuthentication?300:undefined}]));}
 function principal(raw){return raw===null||raw===undefined?undefined:{subject:raw.sub,tenant:raw.tenant,scopes:new Set(raw.scopes??[]),roles:new Set(raw.roles??[]),assurance:raw.assurance??"baseline",authAgeSeconds:raw.authAgeSeconds??0};}

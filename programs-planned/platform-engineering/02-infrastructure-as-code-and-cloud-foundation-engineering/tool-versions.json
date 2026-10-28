@@ -4,10 +4,11 @@
   "awsProvider": "6.58.0",
   "python": ">=3.12",
   "awsCli": "2.x; pin in the learner environment",
-  "mkdocsMaterial": "optional; see requirements-docs.txt",
+  "mkdocsMaterial": "9.7.7",
   "notes": [
     "OpenTofu 1.12.5 is the pinned executable reference release.",
     "Provider source is hashicorp/aws from registry.opentofu.org.",
     "No cloud resource is created by default proof targets."
-  ]
+  ],
+  "maintained_on": "2026-10-28"
 }

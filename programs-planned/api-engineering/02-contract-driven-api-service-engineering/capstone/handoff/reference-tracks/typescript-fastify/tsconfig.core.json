@@ -12,12 +12,11 @@
       "ES2023",
       "DOM"
     ],
-    "types": [],
+    "types": [
+      "node"
+    ],
     "skipLibCheck": true
   },
-  "files": [
-    "../../scripts/typescript_audit_shims.d.ts"
-  ],
   "include": [
     "src/core/domain.ts",
     "src/domain.ts",

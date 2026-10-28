@@ -8,7 +8,9 @@
     "skipLibCheck": true,
     "outDir": "dist-reliability",
     "rootDir": "src/reliability",
-    "types": [],
+    "types": [
+      "node"
+    ],
     "lib": [
       "ES2023",
       "DOM"
@@ -18,8 +20,5 @@
   },
   "include": [
     "src/reliability/**/*.ts"
-  ],
-  "files": [
-    "../../scripts/typescript_audit_shims.d.ts"
   ]
 }

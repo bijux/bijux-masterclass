@@ -1,6 +1,6 @@
 {
   "extra": "dev",
-  "lock_sha256": "24cda4ccc2b713db523382a8ff5de6d6df02145946519ca630112fd08973caaf",
-  "pyproject_sha256": "48016962c84118000dd73e7345cdac221cb57b84bc13951ba9051373ebfac0a4",
+  "lock_sha256": "45c37ce05661e9481ce2f7962bc8c92836a3fac12d64cc9879e60ced3fd71d03",
+  "pyproject_sha256": "2a80be76401da04958a49f0b36c9bbc8accfe3916c4eccf3dc5bd57767b3e838",
   "schema": 1
 }

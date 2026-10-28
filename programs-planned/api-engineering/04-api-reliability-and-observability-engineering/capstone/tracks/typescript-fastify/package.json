@@ -13,7 +13,7 @@
     "migrate": "node dist/src/migrate.js",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run",
+    "test": "vitest run test/ && npm run core:test && npm run security:test && npm run reliability:test",
     "core:build": "tsc -p tsconfig.core.json",
     "core:test": "npm run core:build && node --test test-core/*.test.mjs",
     "security:build": "tsc -p tsconfig.security-core.json",
@@ -24,9 +24,9 @@
   "dependencies": {
     "@fastify/multipart": "10.1.0",
     "@fastify/swagger": "9.8.1",
-    "@fastify/swagger-ui": "6.1.1",
+    "@fastify/swagger-ui": "6.1.2",
     "@sinclair/typebox": "0.34.52",
-    "fastify": "5.11.2",
+    "fastify": "5.12.7",
     "pg": "8.22.0"
   },
   "devDependencies": {
@@ -34,7 +34,7 @@
     "@types/pg": "8.20.4",
     "tsx": "4.23.5",
     "typescript": "5.9.2",
-    "vitest": "4.1.10"
+    "vitest": "4.1.12"
   },
   "optionalDependencies": {
     "@opentelemetry/api": "1.9.1",

@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { parseStrictJson } from "../dist-security/security/strict-json.js";
 import { evaluateEdge } from "../dist-security/security/edge.js";
 
-const vectors = new URL("../../../shared/vectors/", import.meta.url);
+const vectors = new URL("../../../../shared/vectors/", import.meta.url);
 const load = async (name) => JSON.parse(await readFile(new URL(name, vectors), "utf8"));
 
 test("strict JSON shared vectors", async () => {

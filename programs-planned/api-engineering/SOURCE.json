@@ -49702,8 +49702,8 @@
       "sha256": "1b034d37154cc003de7702558ac07cdbff4b2a66cb47c1ed17bd7c1a5544bac4",
       "bytes": 1036,
       "mode": "100644",
-      "sha256_after": "1b034d37154cc003de7702558ac07cdbff4b2a66cb47c1ed17bd7c1a5544bac4",
-      "transformation": null
+      "sha256_after": "ca5322636d7c30461d180fb6e187f3fe99562f6455f39e68084a65fd131d291c",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/course.json",
@@ -49729,8 +49729,8 @@
       "sha256": "0791ba7361504cd70c0f8025741b9d03101eb1a5f6d0040fc12e4b089e575cad",
       "bytes": 1195,
       "mode": "100644",
-      "sha256_after": "0791ba7361504cd70c0f8025741b9d03101eb1a5f6d0040fc12e4b089e575cad",
-      "transformation": null
+      "sha256_after": "e0612c315f1cd6ee0386d78ea3f36ab1361e487207abdb648b326ef0e6d66951",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/pyproject.toml",
@@ -49738,8 +49738,8 @@
       "sha256": "54a2a8cf17c2dab877ae75cd272ca33a20e4a085b6456d0e885e047007ba0f3c",
       "bytes": 988,
       "mode": "100644",
-      "sha256_after": "54a2a8cf17c2dab877ae75cd272ca33a20e4a085b6456d0e885e047007ba0f3c",
-      "transformation": null
+      "sha256_after": "0b22f64f210164d5d5fe16f56a9154a0b43f44784233542ce001179fb64727bf",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/redocly.yaml",
@@ -49756,8 +49756,8 @@
       "sha256": "e88da7be4bda12d2bd808bd080dfa9f1223655a0ede2a8e843666cc7c053ce57",
       "bytes": 238,
       "mode": "100644",
-      "sha256_after": "e88da7be4bda12d2bd808bd080dfa9f1223655a0ede2a8e843666cc7c053ce57",
-      "transformation": null
+      "sha256_after": "92f7aad3811322c7152fcdaade7a1fc7a9d3f5a9e48214280ec944428dce197f",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/schemathesis.toml",
@@ -49774,8 +49774,8 @@
       "sha256": "a74c9e1bdb55407d781c2696d89dae8c7bf3f844d9bf5546e55b8a6196bc91fd",
       "bytes": 1106,
       "mode": "100644",
-      "sha256_after": "a74c9e1bdb55407d781c2696d89dae8c7bf3f844d9bf5546e55b8a6196bc91fd",
-      "transformation": null
+      "sha256_after": "8213e6c19b908aafa804f3756c31def48cf80ebaaf5c92a57fdfb83361235ea0",
+      "transformation": "dependency-and-contract-maintenance; maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/.env.example",
@@ -49792,8 +49792,8 @@
       "sha256": "433cf44c561ebdce077ed36dea0140edfa7b6e6906057c2abe359e14dae4f8a5",
       "bytes": 12675,
       "mode": "100644",
-      "sha256_after": "433cf44c561ebdce077ed36dea0140edfa7b6e6906057c2abe359e14dae4f8a5",
-      "transformation": null
+      "sha256_after": "52d44f1c2eba75bbfde84787917b277334956d31ab3bf40b8b706037e03b9cbb",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/README.md",
@@ -49801,8 +49801,8 @@
       "sha256": "cb5363c41ff1e2d07af93706cefad681b6a7984f3f05f9c79ac4bcea2166038b",
       "bytes": 5303,
       "mode": "100644",
-      "sha256_after": "cb5363c41ff1e2d07af93706cefad681b6a7984f3f05f9c79ac4bcea2166038b",
-      "transformation": null
+      "sha256_after": "e6b8f7c3a03678b4176414715f830a8070cca1e2171a18f818a599c13f4d9866",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/compose.yaml",
@@ -49909,8 +49909,8 @@
       "sha256": "3605e530a14a2cb15b2f57cfa319079f180c7dff169668b2acc9269560a8753b",
       "bytes": 463,
       "mode": "100644",
-      "sha256_after": "3605e530a14a2cb15b2f57cfa319079f180c7dff169668b2acc9269560a8753b",
-      "transformation": null
+      "sha256_after": "948ff2166464d5dce0044ca737a5e9b21dbfb7f71017aa9cf3072b82b6204d84",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/clients/typescript/tsconfig.json",
@@ -49981,8 +49981,8 @@
       "sha256": "e625e388605f821296e8386ea7890e7281e5ed40438a343bfd0bde7b454d65e6",
       "bytes": 5512,
       "mode": "100644",
-      "sha256_after": "e625e388605f821296e8386ea7890e7281e5ed40438a343bfd0bde7b454d65e6",
-      "transformation": null
+      "sha256_after": "fbb69063b8382b47b079743073cc64f57ccb1ff141b32170b923beb36efd452a",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/docs/architecture.md",
@@ -51016,8 +51016,8 @@
       "sha256": "3dab3b7858c7b4dccc4d0d5a1af2b949124870a18fd6f767faafd8e862c7f115",
       "bytes": 18815,
       "mode": "100755",
-      "sha256_after": "3dab3b7858c7b4dccc4d0d5a1af2b949124870a18fd6f767faafd8e862c7f115",
-      "transformation": null
+      "sha256_after": "d6cf1fe2701bbcc6d0303dc04f1b2c9d8d2c437ea579917d70549e8d6f879e71",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/scripts/doctor.py",
@@ -51133,8 +51133,8 @@
       "sha256": "034e87e4322e17f63c69f84cf02410b8c4869d65d251337729f841990dd8b59e",
       "bytes": 273,
       "mode": "100644",
-      "sha256_after": "034e87e4322e17f63c69f84cf02410b8c4869d65d251337729f841990dd8b59e",
-      "transformation": null
+      "sha256_after": "4daed372212c6b02c9f222b326e3909826438665383018832f6eaa39ab041893",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/services/python-fastapi/src/analysis_api/__init__.py",
@@ -51259,8 +51259,8 @@
       "sha256": "6ae99adde92661f0ecd4369f92452118db8193e68742ace76e6c70128f8eeac5",
       "bytes": 695,
       "mode": "100644",
-      "sha256_after": "6ae99adde92661f0ecd4369f92452118db8193e68742ace76e6c70128f8eeac5",
-      "transformation": null
+      "sha256_after": "5dd4c79c286730192817ce1a602ad513020db3ee82ca1f4663aafbca19a807ac",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/services/typescript-fastify/tsconfig.json",
@@ -51304,8 +51304,8 @@
       "sha256": "3e916d31f751b57e432742dab41a50afe79a4bba146099123fde9edeec6dc4e3",
       "bytes": 10307,
       "mode": "100644",
-      "sha256_after": "3e916d31f751b57e432742dab41a50afe79a4bba146099123fde9edeec6dc4e3",
-      "transformation": null
+      "sha256_after": "876c7a7659d71746909d6089451a5dbe8f2a00d854acff5e64ebfa21c641f9bf",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/capstone/services/typescript-fastify/src/server.ts",
@@ -53176,8 +53176,8 @@
       "sha256": "e96699e196e1a9ec17d0ac86ad9f644bfc0477b013e9db320f1cbf2cbcff78bb",
       "bytes": 2499,
       "mode": "100644",
-      "sha256_after": "e96699e196e1a9ec17d0ac86ad9f644bfc0477b013e9db320f1cbf2cbcff78bb",
-      "transformation": null
+      "sha256_after": "67d011b840b76d42175469005aacb98f83a55becb49de340947d7a109f3d3105",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/exercise-answers.md",
@@ -53203,8 +53203,8 @@
       "sha256": "4b4cd1c679dba052bd4db7aa9be2c105acbfb596b91d4c9820d1115e67dcda58",
       "bytes": 22355,
       "mode": "100644",
-      "sha256_after": "4b4cd1c679dba052bd4db7aa9be2c105acbfb596b91d4c9820d1115e67dcda58",
-      "transformation": null
+      "sha256_after": "6877ffd924cbba7d509b3ce78f819735c2ce8128766c49132e30c386215d1627",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/lab.md",
@@ -53437,8 +53437,8 @@
       "sha256": "57187a9c2b380e508922d9d38864dd7557b0d82a703a2d8a95028ea65dd4e816",
       "bytes": 85,
       "mode": "100644",
-      "sha256_after": "57187a9c2b380e508922d9d38864dd7557b0d82a703a2d8a95028ea65dd4e816",
-      "transformation": null
+      "sha256_after": "86feb8799ec07e1d5732b4d232e4da0482eb2ec219e552f3ae7e3becd5e8a684",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/tool-versions.json",
@@ -53446,8 +53446,8 @@
       "sha256": "5363ef2992aa300acbf2e6745a74477170f1c996e8563a865d9d2e41edd78edf",
       "bytes": 319,
       "mode": "100644",
-      "sha256_after": "5363ef2992aa300acbf2e6745a74477170f1c996e8563a865d9d2e41edd78edf",
-      "transformation": null
+      "sha256_after": "d17fa71726d181fc0c7333e793448345bf8b11fc2e7a0419a7470ecab38fffbd",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/.env.example",
@@ -53581,8 +53581,8 @@
       "sha256": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
       "bytes": 573,
       "mode": "100644",
-      "sha256_after": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
-      "transformation": null
+      "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -53887,8 +53887,8 @@
       "sha256": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
       "bytes": 925,
       "mode": "100644",
-      "sha256_after": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
-      "transformation": null
+      "sha256_after": "9ecfd8c84015fae8b27a2f78fd48fb1cb33009b20949988f4e32308f74a69a35",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/tsconfig.audit.json",
@@ -53905,8 +53905,8 @@
       "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
       "bytes": 605,
       "mode": "100644",
-      "sha256_after": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
-      "transformation": null
+      "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/tsconfig.json",
@@ -53977,8 +53977,8 @@
       "sha256": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
       "bytes": 17896,
       "mode": "100644",
-      "sha256_after": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
-      "transformation": null
+      "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/src/artifacts.ts",
@@ -54112,8 +54112,8 @@
       "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
       "bytes": 2458,
       "mode": "100644",
-      "sha256_after": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
-      "transformation": null
+      "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/src/worker.ts",
@@ -54562,8 +54562,8 @@
       "sha256": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
       "bytes": 573,
       "mode": "100644",
-      "sha256_after": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
-      "transformation": null
+      "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -54868,8 +54868,8 @@
       "sha256": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
       "bytes": 925,
       "mode": "100644",
-      "sha256_after": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
-      "transformation": null
+      "sha256_after": "9ecfd8c84015fae8b27a2f78fd48fb1cb33009b20949988f4e32308f74a69a35",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/tsconfig.audit.json",
@@ -54886,8 +54886,8 @@
       "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
       "bytes": 605,
       "mode": "100644",
-      "sha256_after": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
-      "transformation": null
+      "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/tsconfig.json",
@@ -54958,8 +54958,8 @@
       "sha256": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
       "bytes": 17896,
       "mode": "100644",
-      "sha256_after": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
-      "transformation": null
+      "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/src/artifacts.ts",
@@ -55093,8 +55093,8 @@
       "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
       "bytes": 2458,
       "mode": "100644",
-      "sha256_after": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
-      "transformation": null
+      "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/src/worker.ts",
@@ -57109,8 +57109,8 @@
       "sha256": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
       "bytes": 573,
       "mode": "100644",
-      "sha256_after": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
-      "transformation": null
+      "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/predecessor/reference-tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -57415,8 +57415,8 @@
       "sha256": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
       "bytes": 925,
       "mode": "100644",
-      "sha256_after": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
-      "transformation": null
+      "sha256_after": "9ecfd8c84015fae8b27a2f78fd48fb1cb33009b20949988f4e32308f74a69a35",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.audit.json",
@@ -57433,8 +57433,8 @@
       "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
       "bytes": 605,
       "mode": "100644",
-      "sha256_after": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
-      "transformation": null
+      "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.json",
@@ -57505,8 +57505,8 @@
       "sha256": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
       "bytes": 17896,
       "mode": "100644",
-      "sha256_after": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
-      "transformation": null
+      "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/artifacts.ts",
@@ -57640,8 +57640,8 @@
       "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
       "bytes": 2458,
       "mode": "100644",
-      "sha256_after": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
-      "transformation": null
+      "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/worker.ts",
@@ -58144,8 +58144,8 @@
       "sha256": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
       "bytes": 867,
       "mode": "100644",
-      "sha256_after": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
-      "transformation": null
+      "sha256_after": "9b5bcc767ece95a029804e48aef763209e25ab6e6bff34e966f90bd065ae58aa",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -58567,8 +58567,8 @@
       "sha256": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
       "bytes": 751,
       "mode": "100644",
-      "sha256_after": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
-      "transformation": null
+      "sha256_after": "681ca6e6d06067ada4421140a94ff63fac17f35af3721745bfb28abc3b43741c",
+      "transformation": "validation-fixture-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/python-fastapi/tests/test_postgres_integration.py",
@@ -58756,8 +58756,8 @@
       "sha256": "1b95451e85d8a51fb43aff997c8f71a237d8d420a2a3f1aebeb7c86b8da74591",
       "bytes": 1086,
       "mode": "100644",
-      "sha256_after": "1b95451e85d8a51fb43aff997c8f71a237d8d420a2a3f1aebeb7c86b8da74591",
-      "transformation": null
+      "sha256_after": "09ce0b71ff5c5cffc0f6cb8672a64f3c799557eee7e8bfada5d2730f090de4f9",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/typescript-fastify/tsconfig.audit.json",
@@ -58774,8 +58774,8 @@
       "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
       "bytes": 605,
       "mode": "100644",
-      "sha256_after": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
-      "transformation": null
+      "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/typescript-fastify/tsconfig.json",
@@ -58792,8 +58792,8 @@
       "sha256": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
       "bytes": 483,
       "mode": "100644",
-      "sha256_after": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
-      "transformation": null
+      "sha256_after": "f52ba25cc9f8d8499c7a85e01e240d6050f129bb92588b6e19ce6a3cbc73f3e9",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/typescript-fastify/fixtures/remote/remote-dataset.json",
@@ -58855,8 +58855,8 @@
       "sha256": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
       "bytes": 17896,
       "mode": "100644",
-      "sha256_after": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
-      "transformation": null
+      "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/typescript-fastify/src/artifacts.ts",
@@ -58990,8 +58990,8 @@
       "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
       "bytes": 2458,
       "mode": "100644",
-      "sha256_after": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
-      "transformation": null
+      "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/typescript-fastify/src/worker.ts",
@@ -59152,8 +59152,8 @@
       "sha256": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
       "bytes": 5622,
       "mode": "100644",
-      "sha256_after": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
-      "transformation": null
+      "sha256_after": "770a135a6cbaf1ee9f1ade1619e13f4f7018731ea9f18f85531e40b4c0c621e6",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/03-api-security-engineering/capstone/tracks/typescript-fastify/src/security/webhooks.ts",
@@ -59953,8 +59953,8 @@
       "sha256": "0092a79bb85e19422fccd49544cca79add8ea08c553017499f23f3ded24b633b",
       "bytes": 52,
       "mode": "100644",
-      "sha256_after": "0092a79bb85e19422fccd49544cca79add8ea08c553017499f23f3ded24b633b",
-      "transformation": null
+      "sha256_after": "b22c9e37c6268d52095bca5e7600ba768881e2264cf6db6fad5c7401b3d1a33b",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/tool-versions.json",
@@ -59962,8 +59962,8 @@
       "sha256": "a11186ff8adc2e23147162cee7ec54f21b4ee8854c12c4ffbda46c1e4705ed49",
       "bytes": 853,
       "mode": "100644",
-      "sha256_after": "a11186ff8adc2e23147162cee7ec54f21b4ee8854c12c4ffbda46c1e4705ed49",
-      "transformation": null
+      "sha256_after": "380b23eea9ae38123112bd2e2379ca96cd364513697a026024a8a5d0703ba51b",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/assessment/README.md",
@@ -60907,8 +60907,8 @@
       "sha256": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
       "bytes": 867,
       "mode": "100644",
-      "sha256_after": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
-      "transformation": null
+      "sha256_after": "9b5bcc767ece95a029804e48aef763209e25ab6e6bff34e966f90bd065ae58aa",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -61519,8 +61519,8 @@
       "sha256": "1b95451e85d8a51fb43aff997c8f71a237d8d420a2a3f1aebeb7c86b8da74591",
       "bytes": 1086,
       "mode": "100644",
-      "sha256_after": "1b95451e85d8a51fb43aff997c8f71a237d8d420a2a3f1aebeb7c86b8da74591",
-      "transformation": null
+      "sha256_after": "09ce0b71ff5c5cffc0f6cb8672a64f3c799557eee7e8bfada5d2730f090de4f9",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.audit.json",
@@ -61537,8 +61537,8 @@
       "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
       "bytes": 605,
       "mode": "100644",
-      "sha256_after": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
-      "transformation": null
+      "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.json",
@@ -61555,8 +61555,8 @@
       "sha256": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
       "bytes": 483,
       "mode": "100644",
-      "sha256_after": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
-      "transformation": null
+      "sha256_after": "f52ba25cc9f8d8499c7a85e01e240d6050f129bb92588b6e19ce6a3cbc73f3e9",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/fixtures/remote/remote-dataset.json",
@@ -61618,8 +61618,8 @@
       "sha256": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
       "bytes": 17896,
       "mode": "100644",
-      "sha256_after": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
-      "transformation": null
+      "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/artifacts.ts",
@@ -61753,8 +61753,8 @@
       "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
       "bytes": 2458,
       "mode": "100644",
-      "sha256_after": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
-      "transformation": null
+      "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/worker.ts",
@@ -61915,8 +61915,8 @@
       "sha256": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
       "bytes": 5622,
       "mode": "100644",
-      "sha256_after": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
-      "transformation": null
+      "sha256_after": "770a135a6cbaf1ee9f1ade1619e13f4f7018731ea9f18f85531e40b4c0c621e6",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/security/webhooks.ts",
@@ -62005,8 +62005,8 @@
       "sha256": "87c0a3558aee7022a3b0c86ccc2400c88b09b4f3125a99272f262768e221c4f1",
       "bytes": 3207,
       "mode": "100644",
-      "sha256_after": "87c0a3558aee7022a3b0c86ccc2400c88b09b4f3125a99272f262768e221c4f1",
-      "transformation": null
+      "sha256_after": "04d4be38c7246c0965df53488b462ad5590fe8b8a64b7b5e1261299ff7cbc61c",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/test-security-core/gateway.test.mjs",
@@ -62023,8 +62023,8 @@
       "sha256": "8fc790a0324442fb930b30188146e2c693e8b05406c94cd99c6b95ef6a8afafc",
       "bytes": 1277,
       "mode": "100644",
-      "sha256_after": "8fc790a0324442fb930b30188146e2c693e8b05406c94cd99c6b95ef6a8afafc",
-      "transformation": null
+      "sha256_after": "9d39768bceedb85458c18d4f961f6e92405060b4097308409532ccf0d8cbd5ef",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/test-security-core/token-api-key.test.mjs",
@@ -62032,8 +62032,8 @@
       "sha256": "85a7eb92193365c4047f98bd6cabd3eb96da50af80210ac2db093bd35b3b9ddb",
       "bytes": 1967,
       "mode": "100644",
-      "sha256_after": "85a7eb92193365c4047f98bd6cabd3eb96da50af80210ac2db093bd35b3b9ddb",
-      "transformation": null
+      "sha256_after": "e670087e9dd6165787f0e0f06fd2b7c81c9b8c8ed50cf9cd5f08dcd4d9785918",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/test-security-core/webhook-secrets-audit-abuse-incident.test.mjs",
@@ -62041,8 +62041,8 @@
       "sha256": "9336760701d692ce89db25888e60e7c26a7dcab6784342218ecbd048527ccf2f",
       "bytes": 3299,
       "mode": "100644",
-      "sha256_after": "9336760701d692ce89db25888e60e7c26a7dcab6784342218ecbd048527ccf2f",
-      "transformation": null
+      "sha256_after": "eca523055529376ad9b7017435f1f0576aa4061886e0af1970de6a7400ea743d",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/webhook-receiver/README.md",
@@ -62599,8 +62599,8 @@
       "sha256": "ce72b5f3f4014c7b01884903170129f0a65882d9a4410fb148142178f02a730c",
       "bytes": 1150,
       "mode": "100644",
-      "sha256_after": "ce72b5f3f4014c7b01884903170129f0a65882d9a4410fb148142178f02a730c",
-      "transformation": null
+      "sha256_after": "df020ee553481a463aa0d95907b8f221f677638e3c4b45e2eeac9293c7d4111d",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/python-fastapi/fixtures/remote/remote-dataset.json",
@@ -63490,8 +63490,8 @@
       "sha256": "953560ad9cd2b412430f8e22c3233fdd453394d45cf569e752a1d1831fafe4e5",
       "bytes": 1423,
       "mode": "100644",
-      "sha256_after": "953560ad9cd2b412430f8e22c3233fdd453394d45cf569e752a1d1831fafe4e5",
-      "transformation": null
+      "sha256_after": "13115645bf047b054dae6a6abaf87af6b890c0fd80bd0e30e473f941f82e8a1d",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/tsconfig.audit.json",
@@ -63508,8 +63508,8 @@
       "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
       "bytes": 605,
       "mode": "100644",
-      "sha256_after": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
-      "transformation": null
+      "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/tsconfig.json",
@@ -63526,8 +63526,8 @@
       "sha256": "3a87c1d617a434634495e383e4b399a52f01c11a417ab522af8b30f1981a5d25",
       "bytes": 515,
       "mode": "100644",
-      "sha256_after": "3a87c1d617a434634495e383e4b399a52f01c11a417ab522af8b30f1981a5d25",
-      "transformation": null
+      "sha256_after": "1411a8ee3d15ed407c379e8245f2d7c886b16d14b86563b4f1a47c32ef5b3959",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/tsconfig.security-core.json",
@@ -63535,8 +63535,8 @@
       "sha256": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
       "bytes": 483,
       "mode": "100644",
-      "sha256_after": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
-      "transformation": null
+      "sha256_after": "f52ba25cc9f8d8499c7a85e01e240d6050f129bb92588b6e19ce6a3cbc73f3e9",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/fixtures/remote/remote-dataset.json",
@@ -63625,8 +63625,8 @@
       "sha256": "a88875385b1d2bde1426a963e8d45a2010104b1f2f935010e589325546e6f8ba",
       "bytes": 19110,
       "mode": "100644",
-      "sha256_after": "a88875385b1d2bde1426a963e8d45a2010104b1f2f935010e589325546e6f8ba",
-      "transformation": null
+      "sha256_after": "df0099d5c15d8c86f926bb7d94b2db4ec0c7f8689fd5ee5ab130ce40ab7d0f78",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/src/artifacts.ts",
@@ -63778,8 +63778,8 @@
       "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
       "bytes": 2458,
       "mode": "100644",
-      "sha256_after": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
-      "transformation": null
+      "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/src/worker.ts",
@@ -64093,8 +64093,8 @@
       "sha256": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
       "bytes": 5622,
       "mode": "100644",
-      "sha256_after": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
-      "transformation": null
+      "sha256_after": "770a135a6cbaf1ee9f1ade1619e13f4f7018731ea9f18f85531e40b4c0c621e6",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/src/security/webhooks.ts",
@@ -64939,8 +64939,8 @@
       "sha256": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
       "bytes": 38,
       "mode": "100644",
-      "sha256_after": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
-      "transformation": null
+      "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/05-api-performance-capacity-and-traffic-engineering/tool-versions.json",
@@ -64948,8 +64948,8 @@
       "sha256": "12ed72d2447820b3f6b54ed8415da0fc3888ecb793bc8deeffa10c53ba6e8533",
       "bytes": 610,
       "mode": "100644",
-      "sha256_after": "12ed72d2447820b3f6b54ed8415da0fc3888ecb793bc8deeffa10c53ba6e8533",
-      "transformation": null
+      "sha256_after": "b85444bb1fb55fbf4995ee5001abd8beefd124470590dd73298929765b3cefc1",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/05-api-performance-capacity-and-traffic-engineering/assessment/README.md",
@@ -66037,8 +66037,8 @@
       "sha256": "589435fbc6ec00b34b8e96c03dff342d38479ca3fe38426d8eadb0ed9b010955",
       "bytes": 608,
       "mode": "100644",
-      "sha256_after": "589435fbc6ec00b34b8e96c03dff342d38479ca3fe38426d8eadb0ed9b010955",
-      "transformation": null
+      "sha256_after": "903e89b1c3be5f7b134252efad199990b8e6b9014924753c00118a7fd7ecade6",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/05-api-performance-capacity-and-traffic-engineering/capstone/tracks/python-fastapi/migrations/001_base.sql",
@@ -66388,8 +66388,8 @@
       "sha256": "45ed90378bdae8f4abff66fccb62b771e21c09dd309f3a20d7ac314dcd328c3a",
       "bytes": 388,
       "mode": "100644",
-      "sha256_after": "45ed90378bdae8f4abff66fccb62b771e21c09dd309f3a20d7ac314dcd328c3a",
-      "transformation": null
+      "sha256_after": "7b933f1382cc5904dae9c6d778b1a138ea4a6c48125be3362c29f0e489835318",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/05-api-performance-capacity-and-traffic-engineering/capstone/tracks/typescript-fastify/tsconfig.json",
@@ -68926,8 +68926,8 @@
       "sha256": "813fd3df1843ad63b034bdf698d7b2c798c14b7931107c5f47dda7270172d2db",
       "bytes": 466,
       "mode": "100644",
-      "sha256_after": "813fd3df1843ad63b034bdf698d7b2c798c14b7931107c5f47dda7270172d2db",
-      "transformation": null
+      "sha256_after": "ba94d2494f7e8bc791d3d8989b37e208787432cfad9d4a5e7e55da4bb1350609",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/06-event-driven-api-engineering/capstone/tracks/python-fastapi/migrations/001_base.sql",
@@ -69331,8 +69331,8 @@
       "sha256": "a16ba02919947c058a63326b8b9dc2209770f5ea0f35b47dfa2824414ddf9217",
       "bytes": 567,
       "mode": "100644",
-      "sha256_after": "a16ba02919947c058a63326b8b9dc2209770f5ea0f35b47dfa2824414ddf9217",
-      "transformation": null
+      "sha256_after": "d305198fb1bb4af03d0b41fc64b0201f62da98725d28c688d65a4294fc7ec7f3",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/06-event-driven-api-engineering/capstone/tracks/typescript-fastify/tsconfig.json",
@@ -70447,8 +70447,8 @@
       "sha256": "7ea47699ae586fe8a74c82986c89bb5dee5fe58e014243f1a106008248a6dd85",
       "bytes": 569,
       "mode": "100644",
-      "sha256_after": "7ea47699ae586fe8a74c82986c89bb5dee5fe58e014243f1a106008248a6dd85",
-      "transformation": null
+      "sha256_after": "73e86e2e737a929ae25288d691cc064904c994e00007286f5c2478e4f3945225",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/07-grpc-and-protobuf-engineering/assessment/final-defense-rubric.md",
@@ -72067,8 +72067,8 @@
       "sha256": "ae85259f0dd59d7c1825d5b8506a01b834f686a42aef2820d12c298d6a74e38d",
       "bytes": 233,
       "mode": "100644",
-      "sha256_after": "ae85259f0dd59d7c1825d5b8506a01b834f686a42aef2820d12c298d6a74e38d",
-      "transformation": null
+      "sha256_after": "886d42c9b747a4a2be0dd3a0507fd63bc308cdcb6e15bd069268ac8bf9472191",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/07-grpc-and-protobuf-engineering/capstone/tracks/python-grpc/migrations/001_base.sql",
@@ -72364,8 +72364,8 @@
       "sha256": "bdcd52488d7a65386824f8848f96bc3f1c592c7e2d7237f49e9940ea800b5b29",
       "bytes": 493,
       "mode": "100644",
-      "sha256_after": "bdcd52488d7a65386824f8848f96bc3f1c592c7e2d7237f49e9940ea800b5b29",
-      "transformation": null
+      "sha256_after": "1c82ae5343c615c6736aa85eb5ac9da6544e0776506cc712635d01262274f0d0",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/07-grpc-and-protobuf-engineering/capstone/tracks/typescript-grpc/tsconfig.json",
@@ -76108,8 +76108,8 @@
       "sha256": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
       "bytes": 38,
       "mode": "100644",
-      "sha256_after": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
-      "transformation": null
+      "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/tool-versions.json",
@@ -76117,8 +76117,8 @@
       "sha256": "54430de198c21a05083443eb51caa5447cde16bb8c6669d18f5e06828d4e3084",
       "bytes": 427,
       "mode": "100644",
-      "sha256_after": "54430de198c21a05083443eb51caa5447cde16bb8c6669d18f5e06828d4e3084",
-      "transformation": null
+      "sha256_after": "57a4c7a03cb31d415b6b1d4455065fca45230ff560870ebe6cbc8d8a65e489ac",
+      "transformation": "maintained-tool-version-inventory"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/assessment/final-defense.md",
@@ -77152,8 +77152,8 @@
       "sha256": "16df9e448dd9744bfffb2fadb683e00b4afeb84ebf15c526aa39204efb9eca99",
       "bytes": 330,
       "mode": "100644",
-      "sha256_after": "16df9e448dd9744bfffb2fadb683e00b4afeb84ebf15c526aa39204efb9eca99",
-      "transformation": null
+      "sha256_after": "0fa80ce9b5ca4bf265d913774ebe357d8f7b0469648739f6d29c5863cc07d168",
+      "transformation": "dependency-security-maintenance; dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/src/graph_api/__init__.py",
@@ -77314,8 +77314,8 @@
       "sha256": "0a9173c035872c1849832f0fdaaf40baa30cde29c66bf9e64a099ef9ed3bea25",
       "bytes": 829,
       "mode": "100644",
-      "sha256_after": "0a9173c035872c1849832f0fdaaf40baa30cde29c66bf9e64a099ef9ed3bea25",
-      "transformation": null
+      "sha256_after": "ed806ebc5d534ae8b20f54a07f62824ca828b8e6f9ecc3bb1b7b4957d1e902fa",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/tests/test_gateway.py",
@@ -78394,8 +78394,8 @@
       "sha256": "1d3517d5ba0be958a3165b94c7f20b529477e9efc74597677b97662320cf703e",
       "bytes": 66,
       "mode": "100644",
-      "sha256_after": "1d3517d5ba0be958a3165b94c7f20b529477e9efc74597677b97662320cf703e",
-      "transformation": null
+      "sha256_after": "88c3c4bf331e6c0de8df21ff945346adc6103b63c736997a95edfc6ead409090",
+      "transformation": "dependency-security-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/10-api-platform-governance-and-developer-experience-engineering/tool-versions.json",
@@ -81557,5 +81557,629 @@
       "transformation": null
     }
   ],
-  "duplicate_source_aliases": []
+  "duplicate_source_aliases": [],
+  "maintenance": [
+    {
+      "intent": "Qualify patched Python dependencies against the retained contract fixtures; original source snapshots remain unchanged.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/services/python-fastapi/pyproject.toml",
+          "sha256_before": "034e87e4322e17f63c69f84cf02410b8c4869d65d251337729f841990dd8b59e",
+          "sha256_after": "4daed372212c6b02c9f222b326e3909826438665383018832f6eaa39ab041893"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/pyproject.toml",
+          "sha256_before": "54a2a8cf17c2dab877ae75cd272ca33a20e4a085b6456d0e885e047007ba0f3c",
+          "sha256_after": "0b22f64f210164d5d5fe16f56a9154a0b43f44784233542ce001179fb64727bf"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/requirements.txt",
+          "sha256_before": "e88da7be4bda12d2bd808bd080dfa9f1223655a0ede2a8e843666cc7c053ce57",
+          "sha256_after": "92f7aad3811322c7152fcdaade7a1fc7a9d3f5a9e48214280ec944428dce197f"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
+          "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
+          "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/requirements.txt",
+          "sha256_before": "57187a9c2b380e508922d9d38864dd7557b0d82a703a2d8a95028ea65dd4e816",
+          "sha256_after": "86feb8799ec07e1d5732b4d232e4da0482eb2ec219e552f3ae7e3becd5e8a684"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/predecessor/reference-tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
+          "sha256_after": "e26c6d90f59634c4991038b63e6db568b7925a3363abf489dfd394a30f40cd3b"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
+          "sha256_after": "9b5bcc767ece95a029804e48aef763209e25ab6e6bff34e966f90bd065ae58aa"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
+          "sha256_after": "9b5bcc767ece95a029804e48aef763209e25ab6e6bff34e966f90bd065ae58aa"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "ce72b5f3f4014c7b01884903170129f0a65882d9a4410fb148142178f02a730c",
+          "sha256_after": "df020ee553481a463aa0d95907b8f221f677638e3c4b45e2eeac9293c7d4111d"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/requirements-docs.txt",
+          "sha256_before": "0092a79bb85e19422fccd49544cca79add8ea08c553017499f23f3ded24b633b",
+          "sha256_after": "b22c9e37c6268d52095bca5e7600ba768881e2264cf6db6fad5c7401b3d1a33b"
+        },
+        {
+          "path": "programs-planned/api-engineering/05-api-performance-capacity-and-traffic-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "589435fbc6ec00b34b8e96c03dff342d38479ca3fe38426d8eadb0ed9b010955",
+          "sha256_after": "903e89b1c3be5f7b134252efad199990b8e6b9014924753c00118a7fd7ecade6"
+        },
+        {
+          "path": "programs-planned/api-engineering/05-api-performance-capacity-and-traffic-engineering/requirements-docs.txt",
+          "sha256_before": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
+          "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7"
+        },
+        {
+          "path": "programs-planned/api-engineering/06-event-driven-api-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "813fd3df1843ad63b034bdf698d7b2c798c14b7931107c5f47dda7270172d2db",
+          "sha256_after": "ba94d2494f7e8bc791d3d8989b37e208787432cfad9d4a5e7e55da4bb1350609"
+        },
+        {
+          "path": "programs-planned/api-engineering/07-grpc-and-protobuf-engineering/capstone/tracks/python-grpc/pyproject.toml",
+          "sha256_before": "ae85259f0dd59d7c1825d5b8506a01b834f686a42aef2820d12c298d6a74e38d",
+          "sha256_after": "886d42c9b747a4a2be0dd3a0507fd63bc308cdcb6e15bd069268ac8bf9472191"
+        },
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/pyproject.toml",
+          "sha256_before": "16df9e448dd9744bfffb2fadb683e00b4afeb84ebf15c526aa39204efb9eca99",
+          "sha256_after": "0af4937d309f84bebb857d6ab22d5c0666359cb466d9ac4b490c276f67dcdc67"
+        },
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/requirements-docs.txt",
+          "sha256_before": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
+          "sha256_after": "1a7bb96ceecf77fdd2396d81aa08f0b090d085b88689776df32585e156ca3de7"
+        },
+        {
+          "path": "programs-planned/api-engineering/10-api-platform-governance-and-developer-experience-engineering/requirements-docs.txt",
+          "sha256_before": "1d3517d5ba0be958a3165b94c7f20b529477e9efc74597677b97662320cf703e",
+          "sha256_after": "88c3c4bf331e6c0de8df21ff945346adc6103b63c736997a95edfc6ead409090"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/python-fastapi/tests/test_operation_map.py",
+          "kind": "validation-fixture-maintenance",
+          "sha256_before": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
+          "sha256_after": "681ca6e6d06067ada4421140a94ff63fac17f35af3721745bfb28abc3b43741c"
+        }
+      ]
+    },
+    {
+      "intent": "Pin patched Node dependency closures and verify retained API examples using installed package types and their owned test runners.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/clients/typescript/package.json",
+          "sha256_before": "3605e530a14a2cb15b2f57cfa319079f180c7dff169668b2acc9269560a8753b",
+          "sha256_after": "948ff2166464d5dce0044ca737a5e9b21dbfb7f71017aa9cf3072b82b6204d84"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/clients/typescript/test/client.test.ts",
+          "sha256_before": "e625e388605f821296e8386ea7890e7281e5ed40438a343bfd0bde7b454d65e6",
+          "sha256_after": "fbb69063b8382b47b079743073cc64f57ccb1ff141b32170b923beb36efd452a"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/services/typescript-fastify/package.json",
+          "sha256_before": "6ae99adde92661f0ecd4369f92452118db8193e68742ace76e6c70128f8eeac5",
+          "sha256_after": "5dd4c79c286730192817ce1a602ad513020db3ee82ca1f4663aafbca19a807ac"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/services/typescript-fastify/src/schemas.ts",
+          "sha256_before": "3e916d31f751b57e432742dab41a50afe79a4bba146099123fde9edeec6dc4e3",
+          "sha256_after": "876c7a7659d71746909d6089451a5dbe8f2a00d854acff5e64ebfa21c641f9bf"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/package.json",
+          "sha256_before": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
+          "sha256_after": "9ecfd8c84015fae8b27a2f78fd48fb1cb33009b20949988f4e32308f74a69a35"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/tsconfig.core.json",
+          "sha256_before": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+          "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/src/app.ts",
+          "sha256_before": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
+          "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/src/webhooks.ts",
+          "sha256_before": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+          "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/package.json",
+          "sha256_before": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
+          "sha256_after": "9ecfd8c84015fae8b27a2f78fd48fb1cb33009b20949988f4e32308f74a69a35"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/tsconfig.core.json",
+          "sha256_before": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+          "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/src/app.ts",
+          "sha256_before": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
+          "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/src/webhooks.ts",
+          "sha256_before": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+          "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/package.json",
+          "sha256_before": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
+          "sha256_after": "9ecfd8c84015fae8b27a2f78fd48fb1cb33009b20949988f4e32308f74a69a35"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.core.json",
+          "sha256_before": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+          "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/app.ts",
+          "sha256_before": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
+          "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/webhooks.ts",
+          "sha256_before": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+          "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/typescript-fastify/package.json",
+          "sha256_before": "1b95451e85d8a51fb43aff997c8f71a237d8d420a2a3f1aebeb7c86b8da74591",
+          "sha256_after": "09ce0b71ff5c5cffc0f6cb8672a64f3c799557eee7e8bfada5d2730f090de4f9"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/typescript-fastify/tsconfig.core.json",
+          "sha256_before": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+          "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/typescript-fastify/tsconfig.security-core.json",
+          "sha256_before": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
+          "sha256_after": "f52ba25cc9f8d8499c7a85e01e240d6050f129bb92588b6e19ce6a3cbc73f3e9"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/typescript-fastify/src/app.ts",
+          "sha256_before": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
+          "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/typescript-fastify/src/webhooks.ts",
+          "sha256_before": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+          "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/typescript-fastify/src/security/tokens.ts",
+          "sha256_before": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
+          "sha256_after": "770a135a6cbaf1ee9f1ade1619e13f4f7018731ea9f18f85531e40b4c0c621e6"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/package.json",
+          "sha256_before": "1b95451e85d8a51fb43aff997c8f71a237d8d420a2a3f1aebeb7c86b8da74591",
+          "sha256_after": "09ce0b71ff5c5cffc0f6cb8672a64f3c799557eee7e8bfada5d2730f090de4f9"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.core.json",
+          "sha256_before": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+          "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.security-core.json",
+          "sha256_before": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
+          "sha256_after": "f52ba25cc9f8d8499c7a85e01e240d6050f129bb92588b6e19ce6a3cbc73f3e9"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/app.ts",
+          "sha256_before": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
+          "sha256_after": "2ee559caea8e5bd285c5a50b09f5f6d9d0612085169cbc4237cc867b261e3d51"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/webhooks.ts",
+          "sha256_before": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+          "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/src/security/tokens.ts",
+          "sha256_before": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
+          "sha256_after": "770a135a6cbaf1ee9f1ade1619e13f4f7018731ea9f18f85531e40b4c0c621e6"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/test-security-core/authorization-input-ssrf.test.mjs",
+          "sha256_before": "87c0a3558aee7022a3b0c86ccc2400c88b09b4f3125a99272f262768e221c4f1",
+          "sha256_after": "04d4be38c7246c0965df53488b462ad5590fe8b8a64b7b5e1261299ff7cbc61c"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/test-security-core/strict-edge.test.mjs",
+          "sha256_before": "8fc790a0324442fb930b30188146e2c693e8b05406c94cd99c6b95ef6a8afafc",
+          "sha256_after": "9d39768bceedb85458c18d4f961f6e92405060b4097308409532ccf0d8cbd5ef"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/test-security-core/token-api-key.test.mjs",
+          "sha256_before": "85a7eb92193365c4047f98bd6cabd3eb96da50af80210ac2db093bd35b3b9ddb",
+          "sha256_after": "e670087e9dd6165787f0e0f06fd2b7c81c9b8c8ed50cf9cd5f08dcd4d9785918"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/test-security-core/webhook-secrets-audit-abuse-incident.test.mjs",
+          "sha256_before": "9336760701d692ce89db25888e60e7c26a7dcab6784342218ecbd048527ccf2f",
+          "sha256_after": "eca523055529376ad9b7017435f1f0576aa4061886e0af1970de6a7400ea743d"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/package.json",
+          "sha256_before": "953560ad9cd2b412430f8e22c3233fdd453394d45cf569e752a1d1831fafe4e5",
+          "sha256_after": "13115645bf047b054dae6a6abaf87af6b890c0fd80bd0e30e473f941f82e8a1d"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/tsconfig.core.json",
+          "sha256_before": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+          "sha256_after": "c056ebd94f70999707e751c733ef9ee46538859c75b80d9e36fce9c3d3147343"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/tsconfig.reliability-core.json",
+          "sha256_before": "3a87c1d617a434634495e383e4b399a52f01c11a417ab522af8b30f1981a5d25",
+          "sha256_after": "1411a8ee3d15ed407c379e8245f2d7c886b16d14b86563b4f1a47c32ef5b3959"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/tsconfig.security-core.json",
+          "sha256_before": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
+          "sha256_after": "f52ba25cc9f8d8499c7a85e01e240d6050f129bb92588b6e19ce6a3cbc73f3e9"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/src/app.ts",
+          "sha256_before": "a88875385b1d2bde1426a963e8d45a2010104b1f2f935010e589325546e6f8ba",
+          "sha256_after": "df0099d5c15d8c86f926bb7d94b2db4ec0c7f8689fd5ee5ab130ce40ab7d0f78"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/src/webhooks.ts",
+          "sha256_before": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+          "sha256_after": "ed67d677406ce0c9717dc22a3b171a56b09ec591ac063b8ebe70e36583223329"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/src/security/tokens.ts",
+          "sha256_before": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
+          "sha256_after": "770a135a6cbaf1ee9f1ade1619e13f4f7018731ea9f18f85531e40b4c0c621e6"
+        },
+        {
+          "path": "programs-planned/api-engineering/05-api-performance-capacity-and-traffic-engineering/capstone/tracks/typescript-fastify/package.json",
+          "sha256_before": "45ed90378bdae8f4abff66fccb62b771e21c09dd309f3a20d7ac314dcd328c3a",
+          "sha256_after": "7b933f1382cc5904dae9c6d778b1a138ea4a6c48125be3362c29f0e489835318"
+        },
+        {
+          "path": "programs-planned/api-engineering/06-event-driven-api-engineering/capstone/tracks/typescript-fastify/package.json",
+          "sha256_before": "a16ba02919947c058a63326b8b9dc2209770f5ea0f35b47dfa2824414ddf9217",
+          "sha256_after": "d305198fb1bb4af03d0b41fc64b0201f62da98725d28c688d65a4294fc7ec7f3"
+        },
+        {
+          "path": "programs-planned/api-engineering/07-grpc-and-protobuf-engineering/capstone/tracks/typescript-grpc/package.json",
+          "sha256_before": "bdcd52488d7a65386824f8848f96bc3f1c592c7e2d7237f49e9940ea800b5b29",
+          "sha256_after": "1c82ae5343c615c6736aa85eb5ac9da6544e0776506cc712635d01262274f0d0"
+        }
+      ],
+      "added_dependency_locks": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/clients/typescript/package-lock.json",
+          "sha256": "072d8e0609da881b6c540cc3163e276eb6ae33f2e525811794a835b952b41b9e"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/services/typescript-fastify/package-lock.json",
+          "sha256": "3a91d343f45979f948808d23cfac74f9fac78d91978a679f4f611bda82f4a71c"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/package-lock.json",
+          "sha256": "a60a430a85aadcf1858b4d117b662ccd5b820e849bc27449e3c157140c368071"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/package-lock.json",
+          "sha256": "a60a430a85aadcf1858b4d117b662ccd5b820e849bc27449e3c157140c368071"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/package-lock.json",
+          "sha256": "a60a430a85aadcf1858b4d117b662ccd5b820e849bc27449e3c157140c368071"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/typescript-fastify/package-lock.json",
+          "sha256": "ba7371a148d918468ca2b546a827352ffbeea18793a68e3d3d6ddd3814a8def2"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/package-lock.json",
+          "sha256": "ba7371a148d918468ca2b546a827352ffbeea18793a68e3d3d6ddd3814a8def2"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/package-lock.json",
+          "sha256": "24962e4501d68567a5fc29665baf5c146487213266f341fe3a7c489eef72b5e1"
+        },
+        {
+          "path": "programs-planned/api-engineering/05-api-performance-capacity-and-traffic-engineering/capstone/tracks/typescript-fastify/package-lock.json",
+          "sha256": "7aca871309200da86f7a231e4e8f66965956beeb130a0b7d39f4bab57f19af22"
+        },
+        {
+          "path": "programs-planned/api-engineering/06-event-driven-api-engineering/capstone/tracks/typescript-fastify/package-lock.json",
+          "sha256": "65b015c4be2843807f4b70d94d3e08c7af3a455484970988389f54804cb6da22"
+        },
+        {
+          "path": "programs-planned/api-engineering/07-grpc-and-protobuf-engineering/capstone/tracks/typescript-grpc/package-lock.json",
+          "sha256": "04c24a8dcfd1c09c80f48b31f224db013f6a28e0692543e76cf4610ad55965ea"
+        }
+      ]
+    },
+    {
+      "intent": "Exclude Prism from installable tooling while retaining its lessons and explicitly blocking unavailable mock/proxy qualification.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/README.md",
+          "sha256_before": "1b034d37154cc003de7702558ac07cdbff4b2a66cb47c1ed17bd7c1a5544bac4",
+          "sha256_after": "ca5322636d7c30461d180fb6e187f3fe99562f6455f39e68084a65fd131d291c"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/package.json",
+          "sha256_before": "0791ba7361504cd70c0f8025741b9d03101eb1a5f6d0040fc12e4b089e575cad",
+          "sha256_after": "e0612c315f1cd6ee0386d78ea3f36ab1361e487207abdb648b326ef0e6d66951"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/tool-versions.json",
+          "sha256_before": "a74c9e1bdb55407d781c2696d89dae8c7bf3f844d9bf5546e55b8a6196bc91fd",
+          "sha256_after": "eea32743d7d24f0f4796751921dcedaf90c6257adc1a52d8f6855185340b0bec"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/Makefile",
+          "sha256_before": "433cf44c561ebdce077ed36dea0140edfa7b6e6906057c2abe359e14dae4f8a5",
+          "sha256_after": "52d44f1c2eba75bbfde84787917b277334956d31ab3bf40b8b706037e03b9cbb"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/README.md",
+          "sha256_before": "cb5363c41ff1e2d07af93706cefad681b6a7984f3f05f9c79ac4bcea2166038b",
+          "sha256_after": "e6b8f7c3a03678b4176414715f830a8070cca1e2171a18f818a599c13f4d9866"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/scripts/course_tool.py",
+          "sha256_before": "3dab3b7858c7b4dccc4d0d5a1af2b949124870a18fd6f767faafd8e862c7f115",
+          "sha256_after": "d6cf1fe2701bbcc6d0303dc04f1b2c9d8d2c437ea579917d70549e8d6f879e71"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/checkpoint.md",
+          "sha256_before": "e96699e196e1a9ec17d0ac86ad9f644bfc0477b013e9db320f1cbf2cbcff78bb",
+          "sha256_after": "67d011b840b76d42175469005aacb98f83a55becb49de340947d7a109f3d3105"
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/index.md",
+          "sha256_before": "4b4cd1c679dba052bd4db7aa9be2c105acbfb596b91d4c9820d1115e67dcda58",
+          "sha256_after": "6877ffd924cbba7d509b3ce78f819735c2ce8128766c49132e30c386215d1627"
+        }
+      ],
+      "added_dependency_locks": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/package-lock.json",
+          "sha256": "48cac01c627d16a77d97992b34c65e6dc3262732d884401c253961378dbd6b08"
+        }
+      ]
+    },
+    {
+      "intent": "Qualify patched Strawberry server dependencies and resolve factory-local annotations when constructing the optional GraphQL schema.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/pyproject.toml",
+          "sha256_before": "0af4937d309f84bebb857d6ab22d5c0666359cb466d9ac4b490c276f67dcdc67",
+          "sha256_after": "0fa80ce9b5ca4bf265d913774ebe357d8f7b0469648739f6d29c5863cc07d168"
+        },
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/src/graph_api/adapters/strawberry_app.py",
+          "sha256_before": "0a9173c035872c1849832f0fdaaf40baa30cde29c66bf9e64a099ef9ed3bea25",
+          "sha256_after": "ed806ebc5d534ae8b20f54a07f62824ca828b8e6f9ecc3bb1b7b4957d1e902fa"
+        }
+      ],
+      "added_dependency_locks": [],
+      "added_maintained_files": [
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/tests/test_server_adapter.py",
+          "sha256": "2dee865416d9c0c1c1ab2e5d71519cc22e8a2007a9674120df79057d609af0ba"
+        }
+      ]
+    },
+    {
+      "intent": "Describe the maintained dependency versions in course tool inventories; original source snapshot identities remain unchanged.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/tool-versions.json",
+          "sha256_before": "5363ef2992aa300acbf2e6745a74477170f1c996e8563a865d9d2e41edd78edf",
+          "sha256_after": "d17fa71726d181fc0c7333e793448345bf8b11fc2e7a0419a7470ecab38fffbd",
+          "packages": [
+            {
+              "name": "fastapi",
+              "before": "0.141.1",
+              "after": "0.162.0"
+            },
+            {
+              "name": "fastify",
+              "before": "5.11.2",
+              "after": "5.12.7"
+            },
+            {
+              "name": "mkdocs-material",
+              "before": "9.6.18",
+              "after": "9.7.7"
+            },
+            {
+              "name": "pytest",
+              "before": "9.1.1",
+              "after": "9.0.3"
+            },
+            {
+              "name": "vitest",
+              "before": "4.1.10",
+              "after": "4.1.12"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/05-api-performance-capacity-and-traffic-engineering/tool-versions.json",
+          "sha256_before": "12ed72d2447820b3f6b54ed8415da0fc3888ecb793bc8deeffa10c53ba6e8533",
+          "sha256_after": "b85444bb1fb55fbf4995ee5001abd8beefd124470590dd73298929765b3cefc1",
+          "packages": [
+            {
+              "name": "fastapi",
+              "before": "0.128.2",
+              "after": "0.162.0"
+            },
+            {
+              "name": "pytest",
+              "before": "9.0.2",
+              "after": "9.0.3"
+            },
+            {
+              "name": "fastify",
+              "before": "5.11.2",
+              "after": "5.12.7"
+            },
+            {
+              "name": "vitest",
+              "before": "4.1.10",
+              "after": "4.1.12"
+            },
+            {
+              "name": "mkdocsMaterial",
+              "before": "9.6.18",
+              "after": "9.7.7"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/tool-versions.json",
+          "sha256_before": "a11186ff8adc2e23147162cee7ec54f21b4ee8854c12c4ffbda46c1e4705ed49",
+          "sha256_after": "380b23eea9ae38123112bd2e2379ca96cd364513697a026024a8a5d0703ba51b",
+          "packages": [
+            {
+              "name": "fastapi",
+              "before": "0.128.2",
+              "after": "0.162.0"
+            },
+            {
+              "name": "pytest",
+              "before": "9.0.2",
+              "after": "9.0.3"
+            },
+            {
+              "name": "fastify",
+              "before": "5.11.2",
+              "after": "5.12.7"
+            },
+            {
+              "name": "fastifySwaggerUi",
+              "before": "6.1.1",
+              "after": "6.1.2"
+            },
+            {
+              "name": "vitest",
+              "before": "4.1.10",
+              "after": "4.1.12"
+            },
+            {
+              "name": "opentelemetryPythonSdk",
+              "before": "1.44.0",
+              "after": "1.45.1"
+            },
+            {
+              "name": "opentelemetryPythonInstrumentation",
+              "before": "0.65b0",
+              "after": "0.66b1"
+            },
+            {
+              "name": "mkdocsMaterial",
+              "before": "9.6.18",
+              "after": "9.7.7"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/tool-versions.json",
+          "sha256_before": "eea32743d7d24f0f4796751921dcedaf90c6257adc1a52d8f6855185340b0bec",
+          "sha256_after": "8213e6c19b908aafa804f3756c31def48cf80ebaaf5c92a57fdfb83361235ea0",
+          "packages": [
+            {
+              "name": "fastapi",
+              "before": "0.128.2",
+              "after": "0.162.0"
+            },
+            {
+              "name": "pytest",
+              "before": "9.0.2",
+              "after": "9.0.3"
+            },
+            {
+              "name": "mkdocs-material",
+              "before": "9.7.0",
+              "after": "9.7.7"
+            },
+            {
+              "name": "openapi-python-client",
+              "before": "0.29.0",
+              "after": "0.29.1"
+            },
+            {
+              "name": "fastify",
+              "before": "5.11.2",
+              "after": "5.12.7"
+            },
+            {
+              "name": "@fastify/swagger-ui",
+              "before": "5.2.6",
+              "after": "6.1.2"
+            },
+            {
+              "name": "vitest",
+              "before": "4.1.10",
+              "after": "4.1.12"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/tool-versions.json",
+          "sha256_before": "54430de198c21a05083443eb51caa5447cde16bb8c6669d18f5e06828d4e3084",
+          "sha256_after": "57a4c7a03cb31d415b6b1d4455065fca45230ff560870ebe6cbc8d8a65e489ac",
+          "packages": [
+            {
+              "name": "mkdocs-material",
+              "before": "9.6.x",
+              "after": "9.7.7"
+            },
+            {
+              "name": "strawberry-graphql",
+              "before": "0.278.x",
+              "after": "0.327.2"
+            }
+          ]
+        },
+        {
+          "path": "programs-planned/api-engineering/07-grpc-and-protobuf-engineering/tool-versions.json",
+          "sha256_before": "7ea47699ae586fe8a74c82986c89bb5dee5fe58e014243f1a106008248a6dd85",
+          "sha256_after": "73e86e2e737a929ae25288d691cc064904c994e00007286f5c2478e4f3945225",
+          "packages": [
+            {
+              "name": "@grpc/grpc-js",
+              "before": "1.14.4",
+              "after": "1.14.5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

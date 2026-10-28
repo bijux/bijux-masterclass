@@ -1,4 +1,4 @@
-import { Type, type TSchema } from "@sinclair/typebox";
+import { Type, type Static, type TString, type TInteger } from "@sinclair/typebox";
 
 const Identifier = {
   project: Type.String({ pattern: "^prj_[0-9]{4,18}$" }),
@@ -9,7 +9,9 @@ const Identifier = {
 
 const OwnerId = Type.String({ pattern: "^[a-z][a-z0-9-]{2,31}$" });
 const DateTime = Type.String({ format: "date-time" });
-const Nullable = <T extends TSchema>(schema: T) => Type.Union([schema, Type.Null()]);
+// A primitive type union preserves null before Ajv attempts type coercion.
+const Nullable = <T extends TString | TInteger>(schema: T) =>
+  Type.Unsafe<Static<T> | null>({ ...schema, type: [schema.type, "null"] });
 
 export const HealthSchema = Type.Object(
   {

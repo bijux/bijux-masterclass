@@ -9,5 +9,5 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-server = ["strawberry-graphql[fastapi]>=0.278,<0.279", "graphql-core>=3.2,<3.3"]
-test = ["pytest>=8.4,<9"]
+server = ["strawberry-graphql[fastapi]>=0.327.2,<0.328", "graphql-core>=3.2,<3.3"]
+test = ["pytest>=9.0.3,<10", "httpx>=0.28.1,<0.29"]

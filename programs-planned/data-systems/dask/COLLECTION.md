@@ -28,6 +28,10 @@ retain both earlier authoring revisions.
 
 ## Promotion
 
+Dependency declarations receive security maintenance before course promotion.
+Original source snapshots remain unchanged; `SOURCE.json` records the maintained
+file hashes and the dependency changes separately from those original bytes.
+
 Before promotion, establish the intended learner scope, reconcile source variants,
 check references and relative links, qualify the actual supported commands and
 toolchains, and register the accepted material with its supported owner. Keep

@@ -20,7 +20,7 @@ dev = [
     "mypy >= 1.10",
     "pyyaml >= 6.0",
     "jsonschema >= 4.0",
-    "setuptools >= 83, < 84",
+    "setuptools >= 84.2.1, < 85",
     "wheel >= 0.45",
 ]
 

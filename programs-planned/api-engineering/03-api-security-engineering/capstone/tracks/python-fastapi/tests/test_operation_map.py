@@ -9,7 +9,7 @@ import yaml
 def test_python_provider_owns_every_frozen_operation() -> None:
     capstone = Path(__file__).parents[3]
     operation_map = yaml.safe_load(
-        (capstone / "shared" / "operation-map.yaml").read_text(
+        (capstone / "predecessor" / "shared" / "operation-map.yaml").read_text(
             encoding="utf-8"
         )
     )["operations"]

@@ -69,7 +69,7 @@ export class OutboundWebhookTransport {
     try {
       const response = await fetch(this.route(target), {
         method: "POST",
-        body,
+        body: new Uint8Array(body),
         headers,
         redirect: "error",
         signal: controller.signal,

@@ -331,7 +331,8 @@ def cmd_capability_report(_: argparse.Namespace) -> None:
             "proof_target": "lint-contract",
         },
         "prism": {
-            "candidates": [node_bin / "prism", "prism"],
+            "candidates": [],
+            "disabled_reason": "Prism is excluded because its dependency chain has unresolved security advisories; mock/proxy verification is unavailable.",
             "version_args": ["--version"],
             "proof_target": "prism-smoke",
         },
@@ -358,6 +359,15 @@ def cmd_capability_report(_: argparse.Namespace) -> None:
     }
     results: list[dict[str, Any]] = []
     for name, config in tools.items():
+        if "disabled_reason" in config:
+            results.append({
+                "tool": name,
+                "installed": False,
+                "classification": "excluded",
+                "reason": config["disabled_reason"],
+                "proofTarget": config["proof_target"],
+            })
+            continue
         executable = _resolve_tool(config["candidates"])
         if executable is None:
             results.append(
@@ -387,6 +397,7 @@ def cmd_capability_report(_: argparse.Namespace) -> None:
         "frontier": "OpenAPI 3.2.0",
         "results": results,
         "interpretation": {
+            "excluded": "the tool is intentionally absent; its proof target cannot qualify",
             "installed": "the pinned executable answered a version probe; no feature support is inferred",
             "probe-failed": "an executable was found but its version probe failed",
             "not-executed": "the executable was absent; this is not evidence of unsupported semantics",

@@ -1,5 +1,11 @@
 # Analysis Runs API capstone
 
+Prism is excluded from the installable toolchain because its dependency chain
+has unresolved security advisories. Mock/proxy lessons and fixtures remain as
+reference material. `make prism-mock` and `make prism-smoke` stop with an explicit
+error; `npm run mock` and `npm run proxy:python` are unavailable. Full course
+qualification remains blocked until a maintained replacement is qualified.
+
 This directory is the executable spine of **OpenAPI Contract Engineering**. It is deliberately larger than a toy CRUD example and smaller than a production platform: enough protocol depth to expose real contract failures, without hiding the contract behind databases, message brokers, cloud accounts, or framework magic.
 
 ## Outcome under test

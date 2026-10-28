@@ -1,5 +1,11 @@
 # OpenAPI Contract Engineering
 
+Prism is excluded from the installable toolchain because its dependency chain
+has unresolved security advisories. Mock/proxy lessons and fixtures remain as
+reference material. `make prism-mock` and `make prism-smoke` stop with an explicit
+error; `npm run mock` and `npm run proxy:python` are unavailable. Full course
+qualification remains blocked until a maintained replacement is qualified.
+
 **Course 1 of 10 — Specify the public promise**
 
 Define a precise, reviewable, executable HTTP API contract without confusing a description, a framework, and a running provider.

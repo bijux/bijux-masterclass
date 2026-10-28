@@ -1,5 +1,11 @@
 # Module 07 — Mocks, Clients, and Contract Testing
 
+Prism is excluded from the installable toolchain because its dependency chain
+has unresolved security advisories. Mock/proxy lessons and fixtures remain as
+reference material. `make prism-mock` and `make prism-smoke` stop with an explicit
+error; `npm run mock` and `npm run proxy:python` are unavailable. Full course
+qualification remains blocked until a maintained replacement is qualified.
+
 > **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How do mocks, generated clients, examples, property tests, and stateful tests provide different evidence?

@@ -17,12 +17,12 @@ capstone = [
   "snakemake>=8.0",
 ]
 docs = [
-  "mkdocs-material>=9.5",
+  "mkdocs-material>=9.7.7,<10",
   "mkdocs-git-revision-date-localized-plugin>=1.2",
-  "pymdown-extensions>=10.8",
+  "pymdown-extensions>=12.3,<13",
 ]
 dev = [
-  "pytest>=8.0",
+  "pytest>=9.0.3,<10",
   "ruff>=0.5",
   "mypy>=1.10",
 ]

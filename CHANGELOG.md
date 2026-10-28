@@ -4,6 +4,12 @@
 
 ### Changed
 
+- Harden documentation and retained course dependencies, qualify the documentation and Snakemake locks, and add reproducible Node locks. Record maintained source hashes separately from the original teaching snapshots; planned programs remain outside course CI and publication.
+
+- Remove Prism from the installable OpenAPI toolchain while retaining its lessons and history. Mock/proxy commands report their unavailability, and full course qualification requires a maintained replacement.
+
+- Adopt accepted shared renderer security and workflow action references while preserving the independent program runtime. Qualify the patched optional GraphQL server with an HTTP integration test.
+
 - Index preserved planned teaching collections and record their accepted import histories ([#118](https://github.com/bijux/bijux-masterclass/pull/118)).
 
 - Preserve planned research, testing, orchestration and HPC teaching material ([#111](https://github.com/bijux/bijux-masterclass/pull/111)).
