@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-014",
+  "chapter_digest": "2429b50147bce02121a473ff24578b8411aa7ca18c5303ce2ed7fe581438604e",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the official MIT Press CLRS fourth-edition record, InformIT TAOCP Volume 3 record, Oxford Academic record for Hoare's primary Quicksort paper, the Princeton Algorithms quicksort/three-way companion, Wiley records for the Bentley-McIlroy and Musser primary engineering papers, and the current official CS2023 Algorithmic Foundations scope. Scheme-specific boundary and fallback claims remain tied to their named contracts and sources."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked half-open range, two-way/three-way boundary, pivot-rank, recurrence, harmonic-number, probability, and stack-depth notation for defined domains.",
+        "Checked strict/equal/greater region inequalities against every update and recursive range.",
+        "Validated balanced GitHub-supported math delimiters and TeX placement through the focused draft validator."
+      ],
+      "notes": "The chapter distinguishes one three-outcome comparison from the executable's one-or-two Boolean tests."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the three-way ledger on (3,1,2,3,3,0,2): output (1,0,2,2,3,3,3), boundaries 2 and 4, and 12 Boolean comparisons.",
+        "Recomputed repeated-extreme totals as n(n-1)/2, including 28 for n=8 and 15 for n=6.",
+        "Recomputed H_5=137/60 and expected comparisons 37/5=7.4; recomputed H_6=49/20 and expected comparisons 103/10=10.3.",
+        "Exhaustively averaged first-pivot quicksort over every permutation through n=7 and matched 2(n+1)H_n-4n exactly."
+      ],
+      "notes": "Expected values are rational averages of integer execution counts and are not claimed as per-run counts."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived balanced and extreme recurrences from subproblem sizes k and n-k-1.",
+        "Re-derived pairwise comparison probability 2/(j-i+1) and summed indicators to 2(n+1)H_n-4n.",
+        "Re-derived the quadratic extreme comparison sum and linear-time all-equal three-way behavior.",
+        "Verified smaller-side recursion bounds live control depth by logarithmic halving while leaving possible quadratic work unchanged."
+      ],
+      "notes": "Randomized expectation, deterministic worst case, duplicate behavior, and physical runtime are kept as separate claims."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked empty, singleton, all-equal, two-key, sorted, reverse, rotated, organ-pipe, sawtooth, nearly sorted, and repeated-extreme pivot cases.",
+        "Checked empty/equal/greater regions, pivot copies, self-swaps, incoming unknown records, endpoint conventions, recursion exclusion, and stack exhaustion.",
+        "Checked fixed/middle/sample/random pivots against constructed inputs, biased/reused seeds, visible randomness, adaptive adversaries, and depth fallback.",
+        "Checked NaN/partial order, stateful/slow/failing callbacks, cancellation, partial permutation, record ownership, and multitenant resource limits."
+      ],
+      "notes": "Low-cardinality and adversarial inputs are first-class evaluation dimensions rather than deferred anomalies."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced sort contract, comparator, scheme, endpoints, pivot ownership, regions, preservation, progress, partition postcondition, recursive ranges, recursive proof, costs, risk controls, stack control, validation, and evaluation through the sixteen-step worksheet.",
+        "Checked the less/equal/unknown/greater regions are disjoint, cover the active range, and preserve identity multiplicity after every swap.",
+        "Exhaustively checked all ternary arrays through length six against every ternary pivot for region predicates and permutation."
+      ],
+      "notes": "Every branch classifies one unknown record even when the forward cursor intentionally stays fixed."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed Lomuto's scan invariant and pivot-placement postcondition separately from Hoare's split contract.",
+        "Reviewed three-way initialization, each swap/update preservation case, decreasing unknown length, termination, and identity permutation.",
+        "Reviewed recursive quicksort induction excluding the complete equal region.",
+        "Reviewed randomized pair indicators and the introspective depth/fallback argument without promoting pivot sampling into a worst-case proof."
+      ],
+      "notes": "The chapter never assumes that partitioned subregions are internally sorted before recursion."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished partition and recursive correctness proofs, exact worst sums, expected randomized results, heuristic sampling, and measured finite performance.",
+        "Qualified randomness by fixed-input independence and adversary visibility, and introspection by an explicit worst-case-safe fallback.",
+        "Labeled stack-depth protection as distinct from time protection and three-way grouping as distinct from stability."
+      ],
+      "notes": "No random, median-of-three, or fixed-position pivot policy is described as universally balanced."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-014/report.json records CPython 3.14.4 on macOS 13.7.8, isolated execution, zero exit status, empty stderr, and exact expected/actual output.",
+        "The run verifies the three region slices, boundaries, identity-preserving partition, and declared Boolean comparison count."
+      ],
+      "notes": "The run establishes one finite partition trace, not recursive correctness, expected timing, randomness quality, or adversarial resistance."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from scheme-specific contracts through Lomuto/Hoare distinctions, full three-way proof, recursive composition, worst/expected costs, pivot policies, duplicates, stack control, introspection, comparator safety, executable evidence, and adversarial evaluation. Hybrid tuning remains reserved for ALGE-019."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed sample pivots, equal-key workloads, seed lifecycle, hostile tenants, smaller-side recursion, fallback, callback budgets, NaN, partial mutation, cancellation, record ownership, telemetry, fuzz/differential checks, and fair benchmark inputs. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles partition contracts and invariant proof, expected-comparison derivation, a sixteen-step worksheet, one passing executable, exactly ten distinct worked examples, and five exercises progressing from endpoint interpretation and proof through expectation, recursive tracing, and an unfamiliar multitenant-service design with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable, conceptual, practitioner, and pedagogical review only; no external algorithms, security, library, academic, or practitioner review is claimed."
+}

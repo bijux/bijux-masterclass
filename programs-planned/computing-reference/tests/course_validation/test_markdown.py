@@ -57,6 +57,10 @@ class MarkdownStructureTests(unittest.TestCase):
     def test_rendering_lint_accepts_escaped_literal_dollar(self) -> None:
         self.assertEqual((), github_math_issues(r"Cost is \$5." + "\n"))
 
+    def test_normalization_preserves_multiple_escaped_currency_literals(self) -> None:
+        text = r"At \$0.12, cost is \$0.064; budgets are \$55k and \$10k." + "\n"
+        self.assertEqual(text, normalize_github_math(text))
+
     def test_programming_escapes_remain_inline_code(self) -> None:
         text = "Use `a\\r\\nb\\n`, `e\\u0301`, and `\\q` as literal source text.\n"
         self.assertEqual(text, normalize_github_math(text))

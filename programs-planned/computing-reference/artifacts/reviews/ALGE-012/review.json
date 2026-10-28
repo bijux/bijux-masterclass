@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-012",
+  "chapter_digest": "dea31f261041239fc77bada070d4180f1676c63e4ff55df6947d90f2c0d841fd",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the official MIT Press CLRS fourth-edition record, InformIT records for TAOCP Volume 3 and Programming Pearls, the Princeton Algorithms elementary-sorts companion, the ACM DOI record for Shell's primary 1959 paper, the Springer FCT 2001 proceedings record for Ciura's primary chapter, and the current official CS2023 Algorithmic Foundations scope. Gap-sequence claims are deliberately limited to their cited schedules and study domains."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked sortedness, permutation, stability, strict inversion, comparison, shift, swap, gap, and lifecycle notation for defined domains and resources.",
+        "Checked strict greater-than versus equivalence throughout the stability and inversion arguments.",
+        "Validated balanced GitHub-supported math delimiters and TeX placement through the focused draft validator."
+      ],
+      "notes": "Comparisons, shifts, swaps, slot writes, bytes, placements, and auxiliary storage remain explicitly different resources."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the executable ledger on (5,2,4,2,1): insertion 10 comparisons/8 shifts, selection 10 comparisons/2 swaps, and Shell gaps (3,1) 8 comparisons/5 shifts.",
+        "Enumerated the four strict inversions and both sort traces for identified records (4a,3b,4c,1d), including six selection comparisons and its stability reversal.",
+        "Recomputed the Shell passes on (8,1,6,3,5,2,7,4) as (5,1,6,3,8,2,7,4), then (5,1,6,2,7,3,8,4), then sorted order.",
+        "Checked selection counts for n=8 as 28 comparisons and at most 7 swaps."
+      ],
+      "notes": "Every finite count is bound to its exact implementation, input, and movement model."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived the bijection between strict inversions and stable insertion right shifts, yielding Theta(n+I) and 0<=I<=n(n-1)/2.",
+        "Re-derived insertion comparison bounds I<=C<=I+n-1 and the reverse/sorted extremes.",
+        "Re-derived selection's sum of suffix comparisons as n(n-1)/2 and its at-most n-1 non-self swaps.",
+        "Re-derived expected inversions n(n-1)/4 for a uniform random permutation of distinct keys by indicator variables and linearity of expectation."
+      ],
+      "notes": "The Shellsort family receives no gap-independent tight complexity claim; final correctness relies only on valid passes and a final gap of one."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked n=0, n=1, sorted, reverse, all-equal, duplicate-identity, nearly sorted, and one-long-displacement inputs.",
+        "Checked lost saved keys, self-swaps, equality shifting, long-swap instability, binary-insertion movement, large records, and persistent write costs.",
+        "Checked missing/zero/duplicate/increasing gaps, finite-table extension, integer overflow in gap generation, and schedule-specific worst cases.",
+        "Checked partial/NaN order, mutable/stateful comparators, comparator failure, partial mutation, and identity-preserving recovery."
+      ],
+      "notes": "Testing requirements assert order, identity permutation, and stability independently rather than accepting sorted keys alone."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced record identity, key relation, postconditions, resources, input structure, insertion prefix, selection prefix, suffix certification, h-sorted chains, schedule validity, movements, boundaries, execution, measurement, and decision through the sixteen-step worksheet.",
+        "Checked insertion preserves a stable sorted permutation of the consumed prefix and selection fixes one suffix minimum without losing the remaining multiset.",
+        "Checked each gapped insertion pass establishes every residue chain and the final gap-one pass establishes ordinary sortedness."
+      ],
+      "notes": "Local progress and global permutation preservation are established separately for all three mechanisms."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed initialization, preservation, termination, sortedness, permutation, and stability for strict-shift insertion.",
+        "Reviewed minimum-suffix selection correctness and the impossibility of ordinary input-sensitive early stopping without extra key-domain evidence.",
+        "Reviewed the inversion/shift correspondence in both directions and the selection instability counterexample.",
+        "Reviewed Shellsort correctness as pass correctness plus a final one-sort, without assuming later gaps preserve all earlier gap properties."
+      ],
+      "notes": "Stability is proved or refuted through identified equal-key records rather than inferred from sortedness."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished exact sums and invariant proofs from asymptotic cost models, expected values, sourced gap bounds, and empirical schedule performance.",
+        "Qualified the expected inversion result by uniform distinct-key permutations and Shellsort claims by exact schedules.",
+        "Labeled the executable counts as one implementation/input ledger and cutoff advice as an empirical engineering decision."
+      ],
+      "notes": "No empirically selected gap sequence or base-case cutoff is presented as universally optimal."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-012/report.json records CPython 3.14.4 on macOS 13.7.8, isolated execution, zero exit status, empty stderr, and exact expected/actual output.",
+        "The run verifies identical sorted values while keeping insertion comparisons/shifts, selection comparisons/swaps, and Shell comparisons/shifts separate."
+      ],
+      "notes": "The deterministic ledger is not a benchmark, average-case sample, stability proof, or claim about another implementation."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from full sorting contracts through insertion prefix/inversions, selection minima/low writes, Shell h-sortedness/gap schedules, stability, resource separation, executable mechanism evidence, and small-range engineering. The chapter prepares merge, quick, heap, stable, and hybrid sorting without absorbing their dedicated material."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed key projections, duplicate identities, large records, binary insertion, self-swaps, flash/persistent writes, gap overflow/extension, library preference, base-case cutoffs, held-out tuning, comparator corruption, recovery, counters, and measurement. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles contracts and three distinct invariant derivations, a sixteen-step review worksheet, one passing executable ledger, exactly ten distinct worked examples, and five exercises progressing from comparison through expectation derivation, identity tracing, gap execution, and an unfamiliar embedded-recorder design with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable, conceptual, practitioner, and pedagogical review only; no external algorithms, storage, embedded-systems, academic, or practitioner review is claimed."
+}

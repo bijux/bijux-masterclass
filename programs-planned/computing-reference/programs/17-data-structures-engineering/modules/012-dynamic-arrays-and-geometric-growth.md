@@ -5,7 +5,7 @@ level: 1
 module_number: 12
 title: Dynamic Arrays and Geometric Growth
 status: complete
-last_verified: 2026-08-29
+last_verified: 2026-09-04
 ---
 
 # Dynamic Arrays and Geometric Growth
@@ -169,7 +169,7 @@ An index often survives relocation as a numeric position, but insertion/erasure 
 
 Removal does not imply capacity shrink. Retaining capacity makes refill cheap and avoids allocator churn but can hold large memory. `shrink_to_fit`, `trimToSize`, or equivalent is often a request with language/library-specific strength. It can reallocate and invalidate views. Security-sensitive code must not assume removed or freed capacity is overwritten; use a documented secure-erasure facility when required.
 
-**Shrinking needs hysteresis.** If growth occurs at full capacity and shrink occurs immediately near the same boundary, alternating append/remove operations can trigger repeated $Theta(n)$ transfers. A common analytical policy grows by two and shrinks only at utilization at most one quarter, perhaps to half capacity. Between a shrink and the next grow, sufficiently many net inserts are required to pay for rebuilding. The exact thresholds and potential need proof, rounding rules, minimum capacity, and workload analysis.
+**Shrinking needs hysteresis.** If growth occurs at full capacity and shrink occurs immediately near the same boundary, alternating append/remove operations can trigger repeated $\Theta(n)$ transfers. A common analytical policy grows by two and shrinks only at utilization at most one quarter, perhaps to half capacity. Between a shrink and the next grow, sufficiently many net inserts are required to pay for rebuilding. The exact thresholds and potential need proof, rounding rules, minimum capacity, and workload analysis.
 
 Automatic shrinking is not always desirable: oscillating workloads, allocator fragmentation, pointer stability, and cache warming can favor retention. Expose an explicit compaction operation or application lifecycle boundary when predictable reclamation is more valuable than automatic response.
 
@@ -386,7 +386,7 @@ For $N$ appends, copied full capacities are powers of two whose sum is below $N$
 
 ### Answer 3
 
-For an analytical policy, grow from full positive `c` to `2c`; after removal, shrink to `c/2` only when `n<=c/4`, never below minimum 1, with explicit floor/ceiling and checked arithmetic. After shrinking, utilization is at most one half; reaching full requires $Theta(c)$ net appends, while reaching the next shrink requires $Theta(c)$ net removals, so transfers can be charged to intervening operations. A rigorous solution supplies aggregate charging or a piecewise potential for append and pop. Test equality at thresholds, odd capacities, zero/one, bulk changes, failures, alternating boundary sequences, maximum size, capacity traces, total transfers, and abstraction equality. Production choice can prefer no automatic shrink.
+For an analytical policy, grow from full positive `c` to `2c`; after removal, shrink to `c/2` only when `n<=c/4`, never below minimum 1, with explicit floor/ceiling and checked arithmetic. After shrinking, utilization is at most one half; reaching full requires $\Theta(c)$ net appends, while reaching the next shrink requires $\Theta(c)$ net removals, so transfers can be charged to intervening operations. A rigorous solution supplies aggregate charging or a piecewise potential for append and pop. Test equality at thresholds, odd capacities, zero/one, bulk changes, failures, alternating boundary sequences, maximum size, capacity traces, total transfers, and abstraction equality. Production choice can prefer no automatic shrink.
 
 ### Answer 4
 

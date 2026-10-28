@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "module_id": "SYSENG-043",
+  "chapter_digest": "6a12adb966639085fd63484f2e857b085e61fef3f1cdf065abbe65c333e932d4",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-31",
+    "notes": "Checked the current NASA Systems Engineering Handbook web guidance for Technical Planning, Technical Risk Management, Technical Assessment, and Decision Analysis; the official NASA Cost Estimating Handbook page and Appendices G and J; official GAO representations for GAO-20-195G and GAO-16-89G; and NASA's current Earned Value Management page. All eight NASA URLs returned HTTP 200. The two GAO URLs returned HTTP 403 to the command-line client after their current official web representations had been inspected through the web retrieval path. The chapter preserves the sources' central limits: estimates require technical baselines and documented uncertainty, schedules are logical models rather than target dates, risks couple performance domains, and EVM is one assessment stream rather than proof of technical or schedule completion."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Reviewed the integrated state tuple, conditional forecast, compatibility predicate, schedule precedence, PV/EV/AC definitions, variance and index equations, EAC alternatives, technical-margin conventions, expected values, and joint-confidence indicator sum.",
+        "Confirmed every threshold direction is explicit: lower cost and duration are better, higher performance is better, and upper-versus-lower TPM margin uses separate declared formulas.",
+        "Confirmed probability and EVM notation does not conflate budgets, actual cost, elapsed time, physical accomplishment, technical performance, or confidence."
+      ],
+      "notes": "The notation consistently separates baseline, observed status, point forecast, distribution, commitment thresholds, and authority-controlled reserves/margins."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed integrated-outcome-check and independently reproduced probability sum 1.00; expected cost 125.60, duration 24.15, and performance 95.80; marginal confidences 0.70, 0.55, and 0.70; and joint confidence 0.55.",
+        "Recomputed Exercise 1 as CV -18, SV -8, CPI 0.80, SPI 0.90, EAC_1 178, and EAC_2 200.",
+        "Recomputed Exercise 2 expected cost 104, duration 20.1, performance 99.4, marginal confidences 0.80/0.50/0.80, and joint confidence 0.50.",
+        "Recomputed nominal margins in the latency, power, and EVM examples, including 4 ms latency margin, 40 W initial power margin, 15 W post-feature margin, and 75 W post-mitigation point margin."
+      ],
+      "notes": "All displayed arithmetic agrees with independent recomputation; floating-point output is formatted to the declared precision and is not presented as input accuracy."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Confirmed the EVM equations follow directly from PV, EV, AC, and BAC definitions and that the two EAC equations encode different remaining-work assumptions.",
+        "Confirmed the scenario expectation is a probability-weighted summary while joint confidence sums only scenario probabilities satisfying every threshold.",
+        "Confirmed schedule early-start recurrence depends on predecessor finishes before calendar/resource effects and therefore does not justify a completion forecast from SPI.",
+        "Confirmed the compatibility predicate is a declared modeling invariant rather than a numerical theorem and is used consistently to reject arithmetic over mismatched baselines."
+      ],
+      "notes": "The chapter labels all forecast equations as conditional models and makes no claim that a passing expected value implies a feasible scenario or joint success."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Challenged mismatched architecture revisions, omitted lifecycle work, target dates without networks, hard constraints, missing resource calendars, obsolete TPMs, elapsed-time earning, low actual cost caused by delay, and schedule compression that creates rework.",
+        "Tested point estimates near requirements, zero or negative margin, uncertain supplier delivery, critical-path migration, shared facilities, inflation/common cause, marginal-versus-joint confidence, distribution dependence, and no alternative meeting commitments.",
+        "Reviewed risk-factor double counting, hidden conservatism, independent sampling defaults, reserve embedded in durations, transfer of contractual cost without mission consequence, baseline gaming, and deletion of verification to improve metrics.",
+        "Reviewed all ten worked examples and five answers for causal mapping, configuration, evidence, uncertainty, governance, adverse consequences, and bounded conclusions."
+      ],
+      "notes": "Consequential applications still require relevant safety, security, human-factors, economic, statistical, regulatory, operational, supplier, ethics, and affected-stakeholder review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced the shared baseline/data-date/WBS/schedule mapping invariant from framing through planning, status, forecasting, corrective action, and reporting.",
+        "Confirmed lifecycle scope, schedule logic/resources, cost phasing, TPM profiles, causal risk mapping, dependence, margin/reserve separation, status reconciliation, forecast semantics, and preserved baseline history are stated in the One-Page Review and applied in exposition/examples/answers.",
+        "Confirmed each scenario keeps cost, duration, and performance together and that neither expected triples nor marginal confidence substitutes for a joint threshold event.",
+        "Confirmed corrective action and reserve use update the joint model and preserve authorization, rationale, remaining posture, and original variance history."
+      ],
+      "notes": "No integrated result is treated as valid when scope, configuration, mapping, units, price basis, calendars, status, or evidence date are incompatible."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents definitions, accounting identities, conditional forecast relations, and scenario calculations but no theorem proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No passage is presented as a proof sketch."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed reliable, integrated, complete, credible, objective, current, favorable, critical, passing, accepted, validated, independent, and confident language for explicit baseline, evidence, assumptions, and limitations.",
+        "artifacts/snippets/SYSENG-043/report.json records exact local execution evidence for the four declared scenarios and no empirical generalization beyond them.",
+        "Historical data, parametric relationships, supplier evidence, expert judgment, simulations, prototypes, tests, EVM data, and operational evidence are conditioned on applicability, configuration, data date, calibration, uncertainty, and provenance."
+      ],
+      "notes": "No external review is claimed. Passing arithmetic, favorable indexes, or simulation output is never presented as proof of technical adequacy, future delivery, regulatory acceptance, safety, or affordability."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Internal conceptual review checked technical baseline, WBS, IMS, LCCE, TPM, EVM, PV/EV/AC, CPI/SPI, risk scenario, margin/contingency/reserve, JCL, EAC, compatibility, joint confidence, and rebaselining distinctions. Budget, estimate, baseline, actual, forecast, physical accomplishment, performance, risk, margin, and authority remain separate."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Internal practitioner-oriented review checked mismatched baselines, EVM diagnosis, critical-path migration, uncertain technical margin, risk double counting, joint confidence, reserve draws, schedule compression, supplier transfer, reliability corrective action, weak-plan audit recovery, and a hospital diagnostic platform. Each case links technical evidence to work, schedule, cost, performance, risk, authority, and history."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Internal pedagogical review confirmed progression from decision frame and compatible baseline through work/schedule/cost/TPM construction, causal risks and dependence, reserves and EVM, joint forecasting, sensitivity, corrective action, change governance, independent challenge, and bounded reporting. Ten examples and five complete answers require arithmetic, interpretation, adversarial audit, trade analysis, and sociotechnical assessment design."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic, practitioner, systems, cost-estimating, scheduling, EVM, statistics, architecture, mechanical, electrical, thermal, software, data, control, reliability, safety, security, privacy, accessibility, human-factors, economics, ethics, supplier, operations, verification, validation, regulatory, clinical, or affected-stakeholder review is claimed."
+}

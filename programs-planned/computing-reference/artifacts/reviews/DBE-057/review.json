@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-057",
+  "chapter_digest": "e6d32cc01db8a0c701af9cc01b58ed9e27c7478ab615949ce98b2dc47c5c7dae",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Retrieved and reviewed all ten final destinations: the Aggarwal-Vitter primary paper; Graefe's primary query-evaluation survey; PostgreSQL 18 EXPLAIN, resource, and executor documentation; current PostgreSQL tuplesort and logical-tape source; current DuckDB workload and ordering documentation; and official SQLite temporary-file documentation. Checked the external-memory bound, database merge-sort mechanics, per-operation memory/concurrency, blocking behavior, balanced k-way merge and prereading, logical-tape lifecycle, out-of-core limitations, order stability qualifications, and transient sort storage. Product and research claims are scoped separately."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked N and M denote records while n and m denote blocks, with B and both ceiling/floor conversions defined.",
+        "Checked R, k, and p are defined before use and comparator monotonicity is distinct from bag equality.",
+        "Checked Theta notation is limited to the conventional external-memory comparison regime and transfer formulas state their accounting boundaries."
+      ],
+      "notes": "The chapter keeps logical row order, physical comparator, record representation, blocks, transfers, bytes, requests, and elapsed time distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Independently recomputed 100 initial runs, generations 100->12->2->1, three passes, and 70,000 scoped transfers for Worked Example 1.",
+        "Independently recomputed 90 initial runs, generations 90->12->2->1, three passes, and 56,700 scoped transfers for Exercise 2.",
+        "Independently reconstructed all four finite runs, both merge generations, duplicate multiplicity, and 55 modeled record-occurrence I/Os."
+      ],
+      "notes": "Detailed independent arithmetic is retained in artifacts/reviews/DBE-057/independent-recomputation.txt."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived that one k-way pass leaves at most ceiling(R/k) runs and p passes leave at most ceiling(R/k^p).",
+        "Re-derived p=ceiling(log_k R) from requiring k^p >= R for R>1.",
+        "Reviewed multi-pass correctness as composition of ordered, bag-equivalent merges over disjoint run groups."
+      ],
+      "notes": "Ceilings and uneven last groups do not change the pass bound; a nonmaterialized final merge changes transfer accounting, not merge depth."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty and singleton input, duplicates, NULLs, equal keys, collation-sensitive and variable-width values, descending mixtures, and tiny budgets.",
+        "Reviewed one-run/no-spill and multi-pass cases, skewed incremental groups, excessive fan-in, inaccurate row/width estimates, and concurrent nodes/workers/sessions.",
+        "Reviewed short write, truncation, corruption, wrong owner/version, quota exhaustion, cancellation, worker/process loss, restart, orphan cleanup, and sensitive temporary data."
+      ],
+      "notes": "The finite executable covers duplicates and multiple passes; the remaining SQL, storage, concurrency, and fault cases require target-engine tests."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked every accepted occurrence resides in exactly one current batch, live run, merge output position, or explicit abort path.",
+        "Checked sealed-run and frontier monotonicity, one-owner cursor advancement, and bag preservation at every generation.",
+        "Checked comparator/format identity, complete-before-visible publication, charged-memory bound, tenant/query ownership, and idempotent cleanup."
+      ],
+      "notes": "Spilling is treated as a placement transition that cannot change order, multiplicity, snapshot, or visibility."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed run-generation proof from disjoint input batches, per-batch permutation, and internal order.",
+        "Reviewed k-way merge induction: the minimum frontier is globally least because every later run record is no smaller than its frontier.",
+        "Reviewed multi-pass induction and exactly-once cursor advancement as separate order and multiplicity obligations."
+      ],
+      "notes": "The proof depends on a consistent comparator, reliable framing/storage, disjoint ownership, and correct implementation; those assumptions are explicit."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The asymptotic transfer theorem is explicitly scoped to the conventional external-memory comparison model.",
+        "The executable states that record-occurrence counts are not physical block requests, bytes, or performance predictions.",
+        "Product-specific PostgreSQL, DuckDB, and SQLite observations are not generalized into universal database guarantees."
+      ],
+      "notes": "Finite evidence, idealized formulas, asymptotic theory, source observations, and unperformed production experiments are labeled separately."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Repository verification passed one standard-library Python snippet with exact twelve-line stdout, empty stderr, zero exit status, and recorded Python 3.14.4 toolchain.",
+        "Independent recomputation matched initial runs, both merge passes, final order, duplicate multiplicity, pass counts, and all three modeled transfer totals.",
+        "All ten source artifacts were retained under artifacts/references/DBE-057 and repository-local links resolved after draft correction."
+      ],
+      "notes": "No live DBMS plan, forced spill, filesystem fault, concurrency, encryption, cleanup, performance, or production workload experiment was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from exact SQL comparator semantics through representation, run generation, multiway merge, transfer theory, executable invariants, spill lifecycle, pipeline and parallel behavior, observation, testing, alternatives, and failures. Model, mechanism, implementation, guarantee, and resource policy remain distinct."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed diagnosis using required/presorted keys, estimated and actual rows/widths, physical record overhead, grants and peaks, run/fan-in/pass evidence, temporary reads/writes/bytes, workers and concurrent operators, device latency, quota failures, cancellation, and cleanup. Remedies target keys, projections, statistics, plan shape, admission, per-workload memory, or storage after measurement rather than assuming spill is always defective."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter derives separate order and bag proofs, provides an exact executable multi-pass trace, exposes formula boundaries, contrasts seven physical alternatives, lists fourteen misconceptions, includes ten distinct worked examples, and progresses five exercises from retrieval through multi-tenant spill-service design with complete model answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary-source, source-code, mathematical, executable-snippet, conceptual, practitioner, and pedagogical evidence only; no external academic, database-engine maintainer, storage/filesystem, security, performance, reliability, operations, or independent practitioner review is claimed. The chapter and finite model prove neither arbitrary SQL comparator/collation correctness, any named engine implementation, crash-safe or confidential temporary storage, correct parallel/distributed merge under every schedule, workload-independent fan-in or memory tuning, estimator accuracy, exact device I/O/latency, certification, nor deployment fitness."
+}

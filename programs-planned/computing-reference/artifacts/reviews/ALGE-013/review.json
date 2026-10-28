@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-013",
+  "chapter_digest": "972b0b5402a3320e210235525dc61930c766928fda9a053ab9dfbaa080f21e3a",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 6,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the official MIT Press CLRS fourth-edition record, InformIT records for TAOCP Volume 3 and Programming Pearls, the Princeton Algorithms mergesort companion, Suchenek's primary exact worst-case analysis, and the current official CS2023 Algorithmic Foundations scope. Implementation variants are described as designs rather than attributed to a library, and the exact comparison formula is limited to its declared conventional balanced merge schedule."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked half-open run ranges, cursor equations, merge variants, floor/ceiling splits, recurrences, comparison formulas, and buffer quantities for definitions and domains.",
+        "Checked all equality inequalities against stable left-first semantics and all sentinel/end positions against guarded access.",
+        "Validated balanced GitHub-supported math delimiters and TeX placement through the focused draft validator."
+      ],
+      "notes": "The exact W(n) expression is explicitly restricted to n>=1, with n=0 handled by the base case."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed merge traces for length pairs (3,3), (3,4), and (4,3), including their best and worst head-comparison totals.",
+        "Recomputed W(n) for n=1,2,3,4,8,10,16 as 0,1,3,5,17,25,49 and verified W(10)=W(5)+W(5)+9=25.",
+        "Verified the bottom-up n=13 merge triples for widths 1,2,4,8 and every short-tail endpoint.",
+        "Reproduced the executable stable record order and comparison count 5=W(4)."
+      ],
+      "notes": "Counts distinguish key comparisons from the Theta(p+q) records/references written by a materialized merge."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived merge bounds min(p,q)<=C<=p+q-1 for two nonempty runs.",
+        "Re-derived T(n)=T(floor(n/2))+T(ceil(n/2))+Theta(n)=Theta(n log n) from recursion levels and balanced depth.",
+        "Checked W(n)=W(floor(n/2))+W(ceil(n/2))+n-1 against the closed form n ceil(log_2 n)-2^ceil(log_2 n)+1.",
+        "Re-derived one-buffer peak Theta(n), recursion depth Theta(log n), and per-level total movement Theta(n) under the declared array model."
+      ],
+      "notes": "The exact merge-sort upper bound is never mislabeled as the exact minimum for the sorting problem."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked empty, singleton, odd length, non-power-of-two, one empty/exhausted run, short bottom-up tail, already ordered boundary, reverse, interleaved, and all-equal inputs.",
+        "Checked equal identities split across runs, right-first instability, sentinel collision, lost/duplicated records, and unsorted-half shortcut misuse.",
+        "Checked overlapping source/destination, midpoint and width overflow, recursion depth, buffer allocation failure, comparator failure, cancellation, and partial mutation.",
+        "Checked wide payloads, indirect references, linked nodes, external runs, restart, checksum, and temporary-storage ownership."
+      ],
+      "notes": "Failure postconditions and identity permutation remain explicit even when the success order is easy to observe."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced contract, relation, ranges, merge preconditions, frontiers, output prefix, tie rule, progress, exhaustion, recursive composition, recurrence, buffer ownership, iteration, optimizations, validation, and evaluation through the sixteen-step worksheet.",
+        "Checked o-lo=(i-lo)+(j-mid), exact consumed-record membership, sorted output prefix, and decreasing unconsumed count at every merge branch.",
+        "Checked top-down strong induction and bottom-up completed-block invariants independently."
+      ],
+      "notes": "The chapter derives stable sorted permutation as three simultaneous postconditions rather than treating sorted keys as sufficient."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed merge initialization, preservation for strict/equal keys, exhaustion, termination, order, permutation, and stability.",
+        "Reviewed merge-sort base cases and inductive composition for floor/ceiling halves.",
+        "Reviewed the p+q-1 attainability argument and exact worst-case recurrence/formula.",
+        "Reviewed boundary-skip soundness only after both recursive sortedness postconditions hold."
+      ],
+      "notes": "Conceptual sentinels and physical sentinel values are distinguished, and no proof reads a non-record endpoint."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished exact merge and comparison results, strong-induction correctness, asymptotic recurrence analysis, implementation-specific memory models, and empirical engineering choices.",
+        "Qualified linked, external, natural, parallel, half-buffer, ping-pong, and in-place variants rather than transferring the conventional array proof/cost blindly.",
+        "Labeled executable observations as one implementation/input trace and resource recommendations as decisions requiring measurement."
+      ],
+      "notes": "Stable API semantics are not used to infer a library's internal sorting algorithm."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-013/report.json records CPython 3.14.4 on macOS 13.7.8, isolated execution, zero exit status, empty stderr, and exact expected/actual output.",
+        "The executable verifies sorted identified records, stable order within both duplicate-key classes, and five live-head comparisons using one reusable auxiliary array."
+      ],
+      "notes": "The run corroborates a finite trace only; general correctness and W(n) rely on the separately reviewed proofs."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from the merge contract through frontier invariants, stability, comparison bounds, recursive proof, recurrence/exact count, buffers, bottom-up translation, ordered-boundary shortcuts, representation variants, failures, and resource evaluation. Specialized natural, parallel, and external merging remain assigned to later modules."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed left-first ties, record identities, reusable/half/ping-pong buffers, allocations, aliasing, wide payloads, indirect sorting, short tails, overflow, comparator exceptions, cancellation, crash publication, restart, checksums, counters, and fair lifecycle measurement. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles merge and recursive proofs, exact and asymptotic derivations, a sixteen-step worksheet, one passing stable-identity executable, exactly ten distinct worked examples, and five exercises progressing from tracing and proof through exact counts, bottom-up design, and an unfamiliar durable event service with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable, conceptual, practitioner, and pedagogical review only; no external algorithms, storage, distributed-data, academic, or practitioner review is claimed."
+}

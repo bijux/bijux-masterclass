@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-097",
+  "chapter_digest": "c9cd3cf797d1a4ce1defbdb50ecf8f0bafe17a854d82e3427b4a6ec3b48b4335",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked Fowler's revised Strangler Fig essay and current Microsoft/AWS architecture guidance, plus durable sources on legacy seams, incremental decomposition and continuous delivery. Cloud-specific proxy guidance is not generalized into universal guarantees."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked migration state machine, deterministic cohort function, single-authority predicate, normalized differential and data-boundary notation.",
+        "Checked route rollback and state rollback remain distinct."
+      ],
+      "notes": "Authority and equivalence are scoped per capability/cohort/record."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed tenant character sums times 13 modulo 100 as buckets 96, 9 and 22.",
+        "Confirmed a threshold of 10 routes only tenant-b to new, repeat is sticky, and counts are 1 new/2 legacy."
+      ],
+      "notes": "The corrected exact results agree with executable evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified the migration state sequence requires transition evidence rather than percentage-of-code progress.",
+        "Verified one authoritative writer prevents uncoordinated split-brain mutations, while durable propagation keeps the other store derived.",
+        "Verified deterministic entity assignment preserves cohort stickiness for repeated identities."
+      ],
+      "notes": "Incremental scope reduces blast radius only under valid slice, oracle and rollback premises."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed hidden jobs/admin/events, shared transactions, shadow effects, nondeterminism, random routing, sessions and long-running workflows.",
+        "Reviewed dual writes, backfill gaps, key/delete/schema mapping, old-writer fencing, irreversible new state, control-plane outage, rare cohorts and incomplete retirement."
+      ],
+      "notes": "High-stakes equivalence and rollback acceptability require named domain/human review."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced coherent slicing, seam parity, single authority, deterministic routing, semantic comparison, synchronized data, guarded promotion, honest rollback and retirement through examples/answers.",
+        "Confirmed shadow path is effect-disabled and decommission includes data/credentials/operations."
+      ],
+      "notes": "A proxy and 100% request routing alone never satisfy completion."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed conditional blast-radius/safety argument against independently controllable slices, valid oracles, single authority and rollback premises.",
+        "Checked counterexamples for controller-only slice, shared oracle, shadow charge, split writes and schema-incompatible rollback."
+      ],
+      "notes": "No proof that incremental migration reduces total complexity or that observed traffic covers all dependencies is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited safe, equivalent, authoritative, rollback, retired, complete and zero-traffic language.",
+        "Separated characterization evidence, contract decisions, current cloud documentation, model and empirical trace."
+      ],
+      "notes": "Legacy matching is explicitly evidence rather than automatic correctness."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-097/report.json",
+        "Reproduced deterministic bucket assignment, 10-bucket canary threshold, sticky tenant-b result and cohort counts under Python 3.",
+        "Confirmed the checksum is explicitly non-cryptographic/non-statistically proven and production routing/data/security are excluded."
+      ],
+      "notes": "Execution establishes one pure routing example only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter models strangling as controlled capability/data/operational ownership transfer rather than proxy deployment or rewrite progress."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers dependency inventory, contract classification, seam parity, shadow/canary isolation, data transition, write fencing, rollback horizons, control plane and decommission."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives map to ten varied examples and five exercises progressing from definitions/cohort evidence to diagnosis, strategy comparison and national high-stakes transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

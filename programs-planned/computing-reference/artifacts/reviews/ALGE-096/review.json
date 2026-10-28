@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-096",
+  "chapter_digest": "48f68075226b08718692b4f3dc50e9a2d1e7a39f49aba0d5a81c046d10b7dbc4",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked primary, society, DOI, or publisher records for rigorous benchmarking, managed-runtime evaluation, parallel-system benchmarking, bootstrap methods, stochastic-superiority effect size, ASA p-value interpretation, benchmark aggregation, and statistical methods. Claims are bounded to their stated designs and assumptions."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Defined observations, paired differences, target mean contrast, estimate, practical threshold, and positive performance ratios before use.",
+        "Checked effect direction, units, denominators, interval language, equivalence language, and assignment-unit terminology."
+      ],
+      "notes": "Confidence, randomization, bootstrap, Bayesian, equivalence, and practical-significance claims remain distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed differences 2, 3, 1, and 4 ms, mean and median 2.5 ms, aggregate reduction 10.0%, and mean pair reduction 12.1%.",
+        "Recomputed Exercise 2 differences 2, 2, 10, and -1 ms, mean 3.25 ms, aggregate reduction 16.25%, and mean pair reduction approximately 9.79%."
+      ],
+      "notes": "Aggregate and equally weighted per-pair percentages are reported as different estimands."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived cancellation of the additive block effect in the paired contrast.",
+        "Reviewed reciprocal log-ratio symmetry and the distinction between ratio of means and mean of ratios."
+      ],
+      "notes": "Symbolic claims retain their positivity and additive-block assumptions."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed tiny samples, heavy tails, dependence, missing pairs, carryover, order effects, timeouts, out-of-memory events, wrong answers, zeros, and negative measurements.",
+        "Reviewed multiplicity, favorable subset selection, heterogeneous workload reversals, influential units, and cross-machine generalization."
+      ],
+      "notes": "Failures and censoring remain outcomes rather than silently deleted observations."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked that paired resampling and sign flips preserve complete blocks and that analysis units match treatment assignment.",
+        "Exhaustively enumerated all 16 sign assignments and verified two statistics at least as extreme as observed; negating contrasts preserves the two-sided p-value."
+      ],
+      "notes": "Frozen tuning, workload, exclusion, stopping, and comparison rules remain prerequisites to confirmatory interpretation."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the paired-cancellation argument and its failure under treatment-by-block interaction.",
+        "Reviewed the exact randomization argument under a sharp null and exchangeable labels, including why four blocks yield coarse attainable p-values."
+      ],
+      "notes": "No randomization result is generalized beyond the actual assignment and exchangeability model."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited confidence, probability, compatibility, coverage, power, superiority, equivalence, non-inferiority, and no-detected-difference language.",
+        "Separated estimand, estimate, diagnostic, sensitivity analysis, empirical observation, and engineering decision."
+      ],
+      "notes": "A failure to reject is never presented as proof of equality."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-096/report.json",
+        "The CPython 3.14.4 fixture reproduced paired effects and the exact sign-randomization p-value on macOS 13.7.8 x86_64.",
+        "Independent enumeration and arithmetic checks reproduced the fixture and exercise results."
+      ],
+      "notes": "The fixture demonstrates analysis mechanics; it is not evidence that an implementation is faster in an external population."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed estimands, experimental units, pairing, hierarchy, diagnostics, effects, uncertainty, randomization, p-values, equivalence, heterogeneity, failures, multiplicity, sensitivity, and bounded decisions."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed frozen protocols, raw run identity, workload weights, process and machine replication, timeout and correctness handling, tail/resource constraints, mechanism checks, deployment guards, and replication needs."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter derives statistical comparison from the experiment, supplies one executable exact-analysis fixture, ten distinct worked examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external academic, statistical, benchmarking, performance, operations, or production review is claimed. Conclusions remain conditional on the estimand, experimental unit, randomization, pairing and hierarchy, workload and machine population, weights, failures and censoring, multiplicity family, model assumptions, practical thresholds, environment, platform, toolchain, and time."
+}

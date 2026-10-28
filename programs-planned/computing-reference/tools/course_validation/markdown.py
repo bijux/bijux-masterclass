@@ -129,7 +129,7 @@ def _map_unfenced_lines(text: str, transform: callable) -> str:
 
 def _normalize_broken_math_closers(line: str) -> str:
     """Repair a truncated legacy close delimiter without guessing prose spans."""
-    line = re.sub(r"\$([^$\n]*)\\\$", r"$\1$", line)
+    line = re.sub(r"(?<!\\)\$([^$\n]*)\\\$", r"$\1$", line)
 
     def replace_parenthesis(match: re.Match[str]) -> str:
         content = match.group(1)

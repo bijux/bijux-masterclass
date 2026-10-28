@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-017",
+  "chapter_digest": "55f58d07f0cd3e6888f3760352d7af59e2a207051f8cddb1d6b08175affd46cb",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the official MIT Press CLRS fourth-edition record, InformIT TAOCP Volume 3 record, ACM DOI metadata for Hoare's primary FIND algorithm, the Elsevier record for the Blum-Floyd-Pratt-Rivest-Tarjan primary deterministic selection paper, ACM and author records for the Floyd-Rivest expected selection paper, the current Princeton Algorithms quickselect companion/implementation, and the official CS2023 Algorithmic Foundations scope. Historical theorems, implementation contracts, and current curricular claims remain separated."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked zero-based rank domains, duplicate rank intervals, half-open active/equal regions, order-statistic subscripts, and quantile conventions.",
+        "Checked one-sided, geometric, worst-case, randomized-phase, protected-side, and median-of-medians recurrences for balanced GitHub-supported math delimiters.",
+        "Checked all expectation, probability, floor/ceiling, comparison, auxiliary-space, and asymptotic qualifiers against stated models."
+      ],
+      "notes": "Selected value, physical index, record identity, local/global rank, and interpolated quantile are consistently distinguished."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the executable two-partition trace at rank 5, including regions [2,3), [4,7), 20+15 Boolean comparisons, selected value 5, and side predicates.",
+        "Recomputed repeated-extreme totals n(n-1)/2, including 28 comparisons for n=8.",
+        "Recomputed the good-pivot geometric sum 2cn/(1-3/4)=8cn.",
+        "Recomputed the n=100 protected-side value 3n/10-6=24 and coarse continuing ceiling 7n/10+6=76.",
+        "Checked ceil(n/5)+7n/10+6 <= .95n for every integer n from 140 through 10000."
+      ],
+      "notes": "The executable comparison count uses one less-than test and, when needed, one greater-than test per classification."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived duplicate validity as L(v)<=k<L(v)+E(v) and its equivalence to one sorted rank value.",
+        "Re-derived active-range preservation, equal-region completion, strict progress, permutation, and final side inequalities.",
+        "Re-derived extreme quadratic work and balanced fractional geometric work from active-size sequences.",
+        "Re-derived randomized linear expectation from middle-half pivot probability and geometrically shrinking phases.",
+        "Re-derived the groups-of-five protected fraction, recurrence, and linear induction with an enlarged finite base range."
+      ],
+      "notes": "Expected randomized behavior, possible executions, deterministic BFPRT bounds, and empirical finite constants remain separate."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked empty rejection, singleton, minimum/maximum rank, odd/even medians, lower/upper/interpolated quantiles, all equal, and distinguishable duplicate identities.",
+        "Checked sorted, reverse, organ-pipe, sawtooth, low-cardinality, repeated-extreme, sampled, and adversary-visible pivot cases.",
+        "Checked global/local rank rebasing, Hoare/Lomuto/three-way endpoint mismatches, nonprogress, partial layouts, and repeated queries.",
+        "Checked NaN/partial order, stateful/slow/failing callbacks, mutation, allocation, cancellation, seed lifecycle, and deterministic fallback handoff."
+      ],
+      "notes": "The service discussion treats input, comparator, randomness, and resource exhaustion as separate adversarial surfaces."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced rank semantics, validation, comparator, partition, active target, discarded regions, equal completion, progress, cost, randomness, deterministic fallback, failure, and evaluation through the fifteen-step worksheet.",
+        "Exhaustively checked 73812 rank requests across all 9840 nonempty ternary arrays through length eight for selected value, permutation, side predicates, and strict active shrink.",
+        "Exhaustively checked 40319 rank requests across every distinct permutation through length seven against sorted reference values and the same invariants."
+      ],
+      "notes": "The largest observed iteration count in the bounded ternary run was three; this is finite evidence, not a universal bound."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed duplicate order-statistic and even-median semantics before algorithmic claims.",
+        "Reviewed three-way quickselect initialization, both continuation branches, equal return, termination, permutation, and selected-side postcondition.",
+        "Reviewed randomized good-pivot conditional probability, trial domination, phase charging, and geometric shrink assumptions.",
+        "Reviewed median-of-medians grouping, protected sides, both recursive terms, linear partition term, rounding allowance, and induction."
+      ],
+      "notes": "No proof requires discarded sides to be internally sorted or treats an arbitrary equal-key identity as uniquely ranked."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished exact rank/value identities, finite operation counts, proof sketches, asymptotic expected bounds, and deterministic worst-case bounds.",
+        "Qualified random pivots by fixed input, independent uniform sampling, and adversary visibility.",
+        "Qualified the 3n/10-6 guarantee as coarse and rounding-aware, and the .95 induction step by its n>=140 base threshold.",
+        "Separated sample heuristics, Floyd-Rivest expected refinement, median-of-medians protection, introselect composition, and heap top-k behavior."
+      ],
+      "notes": "No randomized or sampled policy is described as a standalone deterministic linear guarantee."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-017/report.json records isolated CPython 3.14.4 execution, zero exit status, empty stderr, and exact expected/actual output.",
+        "The run verifies one reproducible deterministic-pivot trace, selected rank, permutation, side contract, and declared Boolean comparison count.",
+        "Separate exhaustive bounded checks covered 114131 rank requests across duplicate and distinct families; their finite scope is explicit."
+      ],
+      "notes": "Execution does not establish random-pivot expectation, BFPRT constants, physical performance, callback safety, or adversarial resistance."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from duplicate-aware rank and quantile semantics through partial selection contracts, three-way quickselect proof, one-sided costs, randomized phase analysis, duplicate identity, median of medians, introselect/sampling, executable evidence, output-driven alternatives, failure semantics, and evaluation. Dynamic and approximate quantile structures remain cross-program concerns."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed rank validation, p99 conventions, mutation, key materialization, NaN, wide records, three-way duplicates, hidden unbiased randomness, work budgets, deterministic fallback, heap/streaming alternatives, cancellation, partial ownership, seed replay, telemetry, fault injection, and competing baselines. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles rank and algorithm proofs, randomized and deterministic linear derivations, a fifteen-step worksheet, one passing executable, exactly ten distinct worked examples, and five exercises progressing from rank semantics and loop correctness through expectation, BFPRT induction, and an unfamiliar hostile percentile API with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable, conceptual, practitioner, and pedagogical review only; no external algorithms, probability, statistics, systems, library, security, or practitioner review is claimed."
+}

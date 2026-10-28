@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-075",
+  "chapter_digest": "a7ef73bab76c19ff4148fae7dee8c48981699abe4d1ad2ed93ae488785930922",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked publisher, DOI, author, DMTCS, ACM, Springer, Harvard, Google Research, and proceedings records for Flajolet-Martin, Bar-Yossef et al., LogLog, HyperLogLog, HLL engineering, Kane-Nelson-Woodruff, distinct-value synopses, and mergeable summaries. The chapter makes durable algorithmic and systems claims and no current vendor-default, product-performance, or benchmark-leader claim."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked stream, canonicalization, set, cardinality, estimate, uniform-rank, order-statistic, beta-density, variance, hash-width, precision, register, rank, and error notation before use.",
+        "Checked insertion-only, collision-free, finite-hash, range, fixed-estimate, tracking, sparse, dense, and union qualifiers plus displayed equations and balanced GitHub math delimiters."
+      ],
+      "notes": "Frequency moment F0 is defined as support size, not confused with record count, multiplicity, or the vector's numeric zeroth power at zero coordinates."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the KMV compact example, executable ranks and estimate, k=1024 asymptotic dispersion, HLL p=14 register count and relative standard error, and intersection error amplification.",
+        "Recomputed 64-bit birthday expected pairs and collision probability at one billion identities and expected pairs at three billion identities."
+      ],
+      "notes": "Birthday probabilities are explicitly approximations under uniform independent finite hashing, distinct from sketch register sharing."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived inverse first and second moments of the beta order statistic using beta-function ratios.",
+        "Expanded Var((k-1)/R) to D(D-k+1)/(k-2) and derived its relative standard deviation."
+      ],
+      "notes": "The variance derivation requires k greater than two and D at least k; fewer than k retained collision-free ranks use exact sparse counting."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked empty and singleton sets, D below k, D equal to k, invalid k, zero hash rank avoidance, maximum HLL suffix rank, finite hash exhaustion, and sparse-to-dense transition.",
+        "Checked chosen-input hashing, rotating identities, namespace collisions, duplicate floods, deletion, expiry, late events, tiny intersections, many groups, repeated estimates, missing partitions, and mixed versions."
+      ],
+      "notes": "Privacy, entity resolution, and consequential threshold authority are treated as separate systems and governance requirements."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Exhaustively checked 262,144 KMV subset-pair and capacity cases for union-bottom-k equivalence.",
+        "Checked canonical key stability, duplicate idempotence, bottom-k retention, HLL maxima, compatible merge metadata, range guards, persistence, and independent audit provenance."
+      ],
+      "notes": "Union closure does not imply subtraction, deletion, or stable inclusion-exclusion for small intersections."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the order-statistic density normalization assumptions, inverse-moment existence, expectation, variance algebra, and asymptotic relative-dispersion claim.",
+        "Reviewed KMV bottom-k union and HLL registerwise-maximum union arguments for associativity, commutativity, idempotence, and compatibility premises."
+      ],
+      "notes": "HLL's detailed analytic-combinatorics proof is cited rather than reproduced; the chapter labels its estimator form, idealized range, and engineering corrections."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited exact, estimate, unbiased, variance, relative standard error, approximation, collision, typical, asymptotic, empirical, and independently checked language.",
+        "Separated identity semantics, ideal probability model, finite hashing, synopsis mechanism, estimator version, execution trace, operational policy, and downstream authority."
+      ],
+      "notes": "No standard error, finite trace, or implementation test is presented as a deterministic universal error guarantee."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-075/report.json",
+        "The CPython 3.14.4 snippet exited zero with exact KMV ranks, estimate, sparse result, duplicate replay, merged bottom-k state, and invalid-parameter rejection on macOS 13.7.8 x86_64.",
+        "artifacts/checks/ALGE-075/distinct-counting-checks.txt"
+      ],
+      "notes": "Execution supports tested mechanics and the finite merge domain only; it does not establish hash independence, HLL calibration, production accuracy, privacy, or ingestion correctness."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed F0 semantics, exact state, KMV order statistics, HLL registers and estimator, finite hashing, union algebra, intersection instability, deletion, windows, and probability scope."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed canonical identity, namespaces, sparse transitions, hash and seed versioning, serialization, partitions, checkpoints, late data, rebuilds, audits, upgrades, guardrails, fallback, and consequential use."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter derives the KMV moments, explains HLL without hiding range corrections, supplies ten distinct analytical and operational examples, and ends with five progressive exercises and complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external academic, probability, database, data-platform, security, privacy, public-health, performance, or operational review is claimed. Formal guarantees remain limited to their declared rank, hash, update, estimator, probability, and query models; production conclusions remain conditional on identity, ingestion, range, implementation, resource, workload, adversary, and downstream-decision assumptions."
+}

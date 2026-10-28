@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-004",
+  "chapter_digest": "d43e0dec2da7763e3128f05757006fa750dfc0bbf50a7708a63ded525cb914d7",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked intent/applicability separation and canonical catalog scope against Pearson and the Hillside Gang of Four template; checked context/forces/consequence treatment against POSA volumes and Meszaros-Doble; verified Fowler and Alexander bibliographic metadata. Sources support the durable model; no claim depends on a current product feature."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked the intent relation, three-valued precondition/problem/force/contraindication predicates, hard-admissibility gate, material-force support relation, hard-contraindication set, and three screen outcomes."
+      ],
+      "notes": "Unknown evidence remains a distinct result and the model never equates candidacy with selection."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed the Adapter screen and reproduced two passing preconditions, three of three signals, zero hard contraindications, candidate status, and the Exercise 2 branch when one hard contraindication is true."
+      ],
+      "notes": "Signal counts are structural summaries and cannot override hard gates."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked false precondition implies rejection, material unknown implies investigation, any hard contraindication blocks admissibility, and candidate status requires both admissibility and problem/force match."
+      ],
+      "notes": "The applicability predicate is a review obligation, not a universal decision theorem."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed one-algorithm Strategy, high object count without shareable state, fixed ordered observers, parameter count without staged construction, ambiguous payment timeout, raw provider API need, functional Strategy realization, unrelated product multiplicity, unsupported plugin governance, and obsolete Strategy instances."
+      ],
+      "notes": "Technical, organizational, safety, security, lifecycle, and temporal context can each change applicability."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked reusable intent, discriminating conditions, hard-gate precedence, local evidence provenance, explicit unknowns, mechanism independence, candidate-only screen meaning, and assumption expiry."
+      ],
+      "notes": "Every pattern example permits rejection or deferral when motivating forces or preconditions are absent."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter presents no proof theorem; mathematical displays specify screening semantics and evidence obligations."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of intent, applicability, precondition, indication, contraindication, hard constraint, candidate, select, prove, evidence, unknown, and conclusion."
+      ],
+      "notes": "Candidacy is consistently distinguished from implementation recommendation."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Checked that telemetry, change history, prototypes, incidents, interface inventories, contracts, and stakeholder decisions are proposed evidence sources rather than claimed results; executable evidence is bounded to the declared boolean screen."
+      ],
+      "notes": "No external academic, practitioner, production, or applicability review is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter cleanly separates recognition, intent, context, preconditions, indications, force match, hard contraindications, uncertainty, candidacy, selection, and later removal without consuming the full trade-off or selection modules."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Strategy, Flyweight, Observer, Builder, Retry, Adapter, Abstract Factory, plugin governance, checkout orchestration, and scientific extension cases provide realistic local evidence, disconfirmation, and lifecycle decisions."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet establishes a reusable screen; exposition derives each evidence category; ten examples include false positives, contraindications, syntax-independent realization, and removal; five exercises progress from intent through recomputation, investigation, composition, and uncertainty-aware transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

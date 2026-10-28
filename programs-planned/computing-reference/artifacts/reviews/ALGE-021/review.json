@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-021",
+  "chapter_digest": "031417667556cf9d102e2ee56ea341ea1168e458d2de7ccca904f809fa72683c",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked the official MIT Press CLRS fourth-edition record; MIT OpenCourseWare peak-finding lecture; Springer metadata for Akra and Bazzi's recurrence theorem and Strassen's primary paper; MathNet's primary Karatsuba–Ofman record; ACM metadata for Bentley and Shamos's multidimensional divide-and-conquer paper and Frigo–Leiserson–Prokop–Ramachandran's cache-oblivious paper; and official CS2023 Algorithmic Foundations scope. Historical results, model-conditional bounds, a dated current curriculum claim, and original implementation guidance remain separated."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked instance, well-founded measure, child, summary, combine, range, candidate-class, work, span, space, I/O, branching, shrink, and parallelism notation.",
+        "Checked all inline and display expressions for balanced GitHub-supported delimiters, subscripts, floors/ceilings, logarithm bases, aligned syntax, and unambiguous reuse of B by context.",
+        "Checked that exact identities, recurrence equalities, asymptotic classes, model assumptions, approximated exponents, and empirical cutoffs are labeled distinctly."
+      ],
+      "notes": "Summary S(x) and span S_p(n) use distinct notation, and half-open intervals remain global across recursive levels."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the executable's sum 9 interval [5,9), total 2, 21 calls, 10 combines, and maximum depth 4.",
+        "Recomputed merge-model work 64 for n=16, 16 leaves and 15 internal nodes, and size-1024 cutoff depth 5 with 32 leaves and 31 internal nodes.",
+        "Recomputed Karatsuba products 672, 2,652, 6,164, middle coefficient 2,840, and final product 7,006,652.",
+        "Recomputed log2(7)=2.807354922057604 and the work/span/space geometric and arithmetic sums in the examples and answers.",
+        "Checked 2n-1 calls, n-1 combines, and ceiling-log2 maximum depth for every singleton-balanced recursion size from 1 through 1,024."
+      ],
+      "notes": "Exact teaching ledgers are kept separate from asymptotic costs and target-dependent physical crossover points."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived termination from strict well-founded descent and parent correctness from division validity, child induction, candidate coverage, and combine soundness/completeness.",
+        "Re-derived total/prefix/suffix/best summary formulas by exhaustive classification of prefix, suffix, local, and crossing intervals.",
+        "Re-expanded Karatsuba reconstruction and re-derived three-product and seven-product recurrence exponents.",
+        "Re-derived one-child localization, balanced merge, worst-case unbalanced partition, work/span, and peak-live-space recurrences from their execution assumptions.",
+        "Re-derived the closest-pair need for identity partitioning, preserved secondary order, strip completeness, and linear per-level work at the chapter's stated proof-sketch depth."
+      ],
+      "notes": "ALGE-007 remains the owner of full recurrence theorem premises; this module emphasizes recurrence-to-design correspondence."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Checked excluded empty maximum-subarray input, singleton ranges, all-negative, all-zero, tied optima, odd lengths, non-power-of-two splits, and coordinate conversion.",
+        "Checked midpoint and numeric overflow, unequal digits and carries, matrix padding/precision, duplicate coordinates, equal split keys, and deterministic pair/interval ties.",
+        "Checked unchanged recursive children, all-equal partitions, maximally unbalanced partitions, overlapping subproblems, repeated slice copies, insufficient summaries, and repeated secondary sorting.",
+        "Checked sequential versus concurrent sibling liveness, shared scratch races, tiny task grain, cancellation, dual child failure, allocation failure, NUMA/cache assumptions, and partial publication."
+      ],
+      "notes": "Logical boundaries, numeric representation, recursion progress, memory ownership, hardware models, and failure concurrency are reviewed as separate dimensions."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced specification, measure, division, candidate classes, summary sufficiency, induction, combine, determinism, resource correspondence, boundary implementation, and evidence through the twelve-step proof worksheet.",
+        "Exhaustively matched total, prefix, suffix, best interval, and deterministic ties against independent brute force for 88,572 ternary sequences through length ten, totaling 841,449 positions.",
+        "Checked 63,972 alternate legal root splits through length eight, confirming that combining independently summarized adjacent ranges equals the direct parent summary.",
+        "Exhaustively validated the one-child peak result for 29,523 ternary arrays through length nine.",
+        "Checked Karatsuba reconstruction for all 65,536 integer pairs in [0,255] under a base-10 split."
+      ],
+      "notes": "Finite enumeration supports implementation evidence; universal claims rely on separately reviewed induction, algebra, candidate classification, and recurrence arguments."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed peak localization at missing and internal boundaries, strict interval shrinkage, and the distinction between existence localization and target search.",
+        "Reviewed maximum-subarray singleton base, prefix/suffix partitions, three best-subarray classes, interval construction, total tie order, and strong induction.",
+        "Reviewed merge identity coverage/stability, inversion cross-count sufficiency, and why preserving order avoids ancestor re-sorting.",
+        "Reviewed Karatsuba algebra and recurrence assumptions, Strassen recurrence scope, and closest-pair secondary-order/packing obligations.",
+        "Reviewed work addition, span maximum, peak liveness, cutoff equivalence, race-free scratch ownership, cancellation/join, and publish-after-success obligations."
+      ],
+      "notes": "No balance observation, task schedule, cache model, asymptotic exponent, or finite timing is used as a correctness or crossover proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Distinguished complete maximum-subarray and peak proofs from the intentionally summarized closest-pair packing and Strassen block constructions.",
+        "Qualified cache-oblivious results by their ideal-cache model and parallel spans by ideal task-DAG assumptions.",
+        "Qualified Karatsuba and Strassen exponents as asymptotic work rather than universal physical crossover claims.",
+        "Separated worst-case unbalanced partition analysis from balanced recurrence templates and expected behavior.",
+        "Separated exact sample ledgers and exhaustive bounded checks from universal induction and algebraic results."
+      ],
+      "notes": "The chapter points recurrence-method details back to ALGE-007 instead of silently omitting their premises."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-021/report.json records isolated CPython 3.14.4 execution, zero exit status, empty stderr, and exact expected/actual output.",
+        "The executable establishes one finite sufficient-summary tree, deterministic best interval, structural ledger, and agreement with an independent brute-force solver.",
+        "A separate bounded run checked 88,572 full summaries, 63,972 alternate splits, 29,523 peak arrays, 65,536 Karatsuba identities, and recursion shapes through size 1,024.",
+        "Benchmark guidance requires raw repetitions, target/build versions, cutoff and grain sweeps, full memory/task/counter telemetry, schedule variation, and sequential baselines."
+      ],
+      "notes": "Local execution does not establish fixed-width overflow safety, exception/cancellation semantics, race freedom, cache behavior, parallel speedup, or production thresholds."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed progression from separator recognition and paradigm boundaries through recursive interfaces, descent, combine soundness/completeness, recurrence correspondence, localization, merge, sufficient summaries, algebraic multiplication, geometry, work/span, peak space, scratch ownership, cutoffs, locality, executable evidence, and structural validation."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed half-open range arithmetic, view versus slice traffic, child identity ownership, scratch arenas, sequential/concurrent liveness, task grain, deterministic ties, fixed-width numeric policies, child failure and cancellation, publication, tuned-kernel crossover, cache/NUMA counters, sanitizers, canaries, and rollback. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles definitions, separation from neighboring paradigms and ALGE-007 recurrence mechanics, constructive correctness patterns, a twelve-step worksheet, one passing executable, exactly ten distinct worked examples, and five exercises progressing from localization and summary proof through algebra, resource analysis, and an unfamiliar parallel library design with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, source, mathematical, executable, conceptual, practitioner, and pedagogical review only; no external algorithms, computational-geometry, numerical-analysis, formal-methods, language-runtime, parallel-systems, performance, or practitioner review is claimed."
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "CA-006",
+  "chapter_digest": "20e29a698e5f1a934e00459159655b0c91f4a708240527206d2d2f5054c1cf12",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 7, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked the current IEEE 754 standard record, current RISC-V floating-point specification, Berkeley HardFloat primary repository, AMD and Intel floating-point IP documentation, Goldberg's numerical reference hosted by Oracle, and author resources for digital architecture. All seven authoritative URLs returned HTTP 200. Standard and ISA semantics, implementation examples, vendor IP behavior, simplified decoding and engineering recommendations remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked sign, biased exponent, bias, fraction, precision, binade, ulp, GRS, exact-result and tininess notation.", "Verified normal and subnormal equations differ in implicit leading bit and exponent treatment."],
+      "notes": "Notation separates encoding class, mathematical value, exact intermediate, rounded destination and accrued architectural status."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Decoded 0x3f800000 as positive normal 1, 0x80000000 as negative zero and 0x00000001 as positive 2^-149 subnormal.", "Decoded 0x7f800000 as positive infinity and 0x7fc00001 as quiet NaN with payload 0x400001."],
+      "notes": "The deterministic Python snippet reproduced all five expected binary32 classifications and details."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived normal value as signed 1.F times 2^(E-B) and subnormal value with leading zero at the minimum exponent.", "Checked alignment/normalization value preservation, midpoint ties-to-even, single-rounding FMA and quotient-free special-case selection."],
+      "notes": "The derivations assume declared binary interchange formats and rounding rules; they do not prove a particular implementation."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed signed zeros, least and greatest subnormals/normals, infinities, quiet/signaling NaNs, payloads, halfway cases, cancellation and exponent gaps.", "Reviewed invalid operations, divide zero, overflow, exact tiny results, double rounding, flush modes, inactive lanes, stalls, flushes, variable latency, side channels and faults."],
+      "notes": "Format, rounding, arithmetic, special-value, conversion, vector, pipeline, security and physical boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced operand classification through exact conceptual operation, alignment, normalization, GRS preservation, rounding, result class and flags.", "Verified FMA one-rounding, conversion ranges, pipeline tag/mode/mask alignment, IP configuration, timing and change control."],
+      "notes": "The invariant set prevents approximate magnitude or normal-case agreement from standing in for exact bits, flags and special-case behavior."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed fifteen format, classification, exactness, alignment, normalization, rounding, special-case, flag, FMA, conversion, pipeline, mapping, timing, evidence and change obligations.", "Constructed counterexamples for exponent-zero-as-zero, guard-only-rounding, tiny-as-underflow, FMA-as-two-operations and host-double-as-binary32-oracle claims."],
+      "notes": "The chapter supplies conformance and implementation obligations, not formal verification of IEEE 754, RISC-V, HardFloat, vendor IP, a physical FPU or a numerical application."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of exact, correctly rounded, normal, subnormal, overflow, underflow, invalid, fused, conformant and reproducible.", "Confirmed standard requirements, ISA choices, mathematical models, implementation behavior, empirical tests and application assurance remain separate."],
+      "notes": "The five-pattern decoder is explicitly limited and is not presented as general arithmetic, rounding or conformance evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/CA-006/report.json records source, expected and actual output, stderr, exit status, Python toolchain and environment for binary32 classification.", "Reviewed required exact-reference, directed, formal, RTL, IP, mapping, timing, power, pipeline, side-channel, fault and reviewer evidence."],
+      "notes": "The passing toy establishes five field classifications only; it provides no evidence for arithmetic, correct rounding, exception flags, HDL, synthesis, latency or hardware."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed floating-point hardware as exact format classification followed by conceptual exact operation, declared rounding, special-value selection and architectural flag behavior."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including normals, subnormals, GRS, add, multiply, divide, square root, FMA, flags, comparisons, conversions, recoding, pipelines, IP, vectors, reproducibility, security and physical validation. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from encoding and rounding through arithmetic and exceptions to implementation and verification, followed by fifteen obligations, fifteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external floating-point or computer-architecture academic, IEEE 754 or ISA expert, numerical analyst, RTL or IP designer, physical-design specialist, medical-domain reviewer, independent-verification or certification review is claimed."
+}

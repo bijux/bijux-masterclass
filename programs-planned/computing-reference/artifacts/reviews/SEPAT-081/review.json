@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-081",
+  "chapter_digest": "9178dfa1014c91204b510ddcd58db6789bb0c1cddfbfb32349737dea3f0aaeb2",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 13,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked RFC 9110 idempotent-method and Retry-After semantics; current gRPC retry guide and A6 client-retry proposal; current AWS Builders' Library, AWS SDK retry behavior and Google Cloud retry strategy; OpenTelemetry RPC metrics; and the cited reliability, distributed-systems, queueing and performance texts. Protocol defaults and implementation behavior are explicitly deployment/version qualified."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked logical/effect/attempt identities q, e and k; absolute deadline T, monotonic time t, remaining budget B(t), attempt time, retry delay, window and reserve notation.",
+        "Checked eligibility conjunction, capped-window, total-attempt, layered-amplification, expected full-jitter delay and attempt-arrival-rate expressions."
+      ],
+      "notes": "Retry count and total attempt count remain explicitly distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed snippet windows 100, 200, 400, 800, 1,000 ms; fixed-sample delays 0, 100, 400, 200, 750 ms; total scheduled delay 1,450 ms; three layers with two retries each = 27 leaf attempts; 800 + 150 + 50 > 900 so the fourth candidate does not fit.",
+        "Recomputed Exercise 2 windows 50, 100, 200, 400 ms; ideal full-jitter expected total 25 + 50 + 100 + 200 = 375 ms; three layers with four retries each = 5^3 = 125 leaf attempts.",
+        "Recomputed Exercise 3 admission: 120 + 300 + 100 = 520 ms fits; 350 + 500 + 100 = 950 ms fits at the stated instant; 800 + 200 + 100 = 1,100 ms does not fit."
+      ],
+      "notes": "Expected jitter delay is not a deadline guarantee or fleet peak bound; sequential attempts recompute against current remaining time."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified finite attempts plus one inherited finite deadline gives policy termination when waits/calls obey deadline and cancellation.",
+        "Verified deadline-preservation inequality t + delay + meaningful attempt + reserve <= T under declared local timing assumptions.",
+        "Verified atomic same-identity/request-fingerprint binding yields conditional replay safety within the authority scope; verified retry owners multiply total leaf attempts as the product of per-layer attempts."
+      ],
+      "notes": "Arguments do not prove scheduler timing, server durability, downstream effect uniqueness, random independence or availability."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed pre-dispatch, explicit transient, permanent, success and post-dispatch ambiguous outcomes; read-only load; changed idempotency payload/principal; concurrent duplicates; expiry; replica/process restart and downstream effects.",
+        "Reviewed zero remaining time, delay cap, exact deadline equality, uninterruptible work, server dates/skew, malformed/excessive pushback, cancellation/late success and shutdown with delayed/in-flight work.",
+        "Reviewed layered SDK/mesh/application attempts, saturated dependency, timer/backlog bounds, shared seeds/coarse timers, fleet recovery, tenant abuse and safety-critical irreversible actuation."
+      ],
+      "notes": "Real protocol, durable store, fleet, workload, security and safety evidence remains deployment specific."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced transient classification, replay safety, one retry owner, shared absolute deadline, finite attempts/time/delay/concurrency/queue/load and cancellation through exposition/examples/answers.",
+        "Traced preserved logical/effect identity, new attempt/span identity, pushback validation, continued jitter at cap/recovery and attempt-versus-logical telemetry accounting."
+      ],
+      "notes": "Ambiguous effects require replay proof or reconciliation; they are never silently classified as transient."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed termination and deadline-preservation premises including bounded waits and cleanup reserve.",
+        "Reviewed replay-safety proof against authority scope, atomic identity/fingerprint binding, retention and downstream-effect limits.",
+        "Reviewed load bound and desynchronization arguments, distinguishing per-operation attempts, scoped concurrent tokens and probabilistic spreading from fleet guarantees."
+      ],
+      "notes": "No formal proof of concrete scheduler, network, datastore, fleet capacity, security or actuation safety is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited transient, safe, idempotent, exactly once, bounded, full jitter, independent, deadline, rollback, durable, overload, stable and guarantee language.",
+        "Confirmed protocol semantics, conditional proofs, deterministic arithmetic, statistical/fleet tests and external human review are separated."
+      ],
+      "notes": "The chapter states that retry cannot guarantee success and idempotency keys alone do not establish idempotency."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-081/report.json",
+        "Reproduced deterministic capped-window, fixed-sample delay, total-delay, layered-amplification and deadline-admission outputs using Python 3.",
+        "Confirmed the executable block performs no sleeping, I/O, randomness, scheduling or external state mutation."
+      ],
+      "notes": "Execution establishes arithmetic for one finite vector only; it does not establish distributions, timing, cancellation, networking, durability, overload behavior or effect safety."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter treats retry as a semantic, temporal and load-governed protocol over one logical operation, not as a generic exception loop or backoff formula."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers outcome taxonomy, idempotency/reconciliation, owner inventory, exact schedules, deadline admission, pushback, retry tokens, recovery, durable scheduling, telemetry, shutdown, security and high-stakes review."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with definitions, conditional proofs, a deterministic executable vector, ten distinct cases and five exercises progressing from policy design through arithmetic, timing, diagnosis and safety-critical judgment."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

@@ -5,7 +5,7 @@ level: 1
 module_number: 45
 title: Uncertainty and Confidence
 status: complete
-last_verified: 2026-08-31
+last_verified: 2026-09-04
 ---
 
 # Uncertainty and Confidence
@@ -255,7 +255,7 @@ in a Bayesian representation; it retains outcome variability and parameter uncer
 For joint commitments:
 
 $$
-P_J=Pr(C\le C^*,T\le T^*,P\ge P^*\mid B,M,E,A),
+P_J=\Pr(C\le C^*,T\le T^*,P\ge P^*\mid B,M,E,A),
 $$
 
 explicitly conditional on baseline, model, evidence, and assumptions.

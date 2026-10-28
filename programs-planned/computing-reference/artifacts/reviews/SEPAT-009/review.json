@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-009",
+  "chapter_digest": "69876cbcca105a95aa90c221c81ed0d5bd9e0a8c6512f91a84aa15cca98e19d7",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked the Pearson records for Design Patterns and Working Effectively with Legacy Code; Fowler's Yagni article and IEEE Software paper; the IEEE Computer Society Brooks record; and Crossref metadata for both empirical reviews. Confirmed Wedyan-Abufakher authorship, IET Software volume/issue/pages, and Riaz-Breaux-Williams authorship, Information and Software Technology volume/pages. The Alexander book record is bibliographic background, not used for a current empirical claim."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked the conditional margin M, ordinal score S, adoption margin delta, threshold rule, force-mechanism-prediction-disconfirmation tuple, domains, subscripts, and baseline indexing for consistent use."
+      ],
+      "notes": "The chapter explicitly labels scores as conditional decision aids rather than measurements or theorems of design quality."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Independently recomputed stable scores direct=-1, table=-3, objects=-6; variable scores direct=-1, table=9, objects=6; and stateful scores direct=-1, table=9, objects=15.",
+        "Recomputed Exercise 2's explicit clarity modification as 4*1-1=3 and its negative-cost variant as 0-(-3)=3."
+      ],
+      "notes": "Executable output matches all three declared winners and scores; the answer identifies the negative-cost construction as semantically suspect."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Expanded delta(a)=S(a)-S(a0) and confirmed adoption compares against the baseline rather than a candidate's isolated positive score.",
+        "Checked that M=B-C-U and S=sum(w*r)-K-U express aligned benefit, cost, and uncertainty ideas without claiming cardinal comparability."
+      ],
+      "notes": "Hard constraints remain outside the weighted threshold rule, preventing compensation by unrelated scores."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero-force and negative-score cases, ties, arbitrary weights, omitted forces, non-comparable scales, changing contexts, hard constraints, generated boilerplate, irreversible data/API choices, sunk costs, and false transfer from large organizations.",
+        "Reviewed clinical adversarial cases including duplicate, delay, reorder, poison, unauthorized access, outage, commit failure, clock skew, patient merge, subscriber timeout, and partition."
+      ],
+      "notes": "The model is deliberately bounded to ordinal comparison and sensitivity; it cannot authorize safety-critical production use."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked force-before-name, role-to-mechanism traceability, fair baseline, alternatives, evidence provenance, full lifecycle cost, disconfirmation, reversibility, and prohibition on quality inference from pattern counts or diagram resemblance."
+      ],
+      "notes": "Worked examples and exercise answers preserve the same invariants across object, persistence, distributed, and high-stakes contexts."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the threshold statement as a declared conditional decision rule, not a proved theorem, and checked every inference from the executable model against the enumerated alternatives and forces."
+      ],
+      "notes": "No universal proof of pattern quality or causal benefit is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of theorem, rule, model, score, margin, hypothesis, mechanism, evidence, prediction, experiment, prove, validate, and conclusion."
+      ],
+      "notes": "Conditional reasoning and pedagogical assumptions are explicit; no proof sketch is presented as a proof."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Reproduced the Python output and checked the chapter's empirical claims against the two systematic studies' reported heterogeneity, contextual limits, and inconclusive evidence.",
+        "Checked that proposed repository measures, bounded experiments, production observations, and clinical reviews are framed as required future evidence rather than completed results."
+      ],
+      "notes": "No local production experiment, causal effect, external review, or universal transfer claim is made."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter distinguishes pattern literacy from hype, form from mechanism, hypothesis from decision, measurement from causality, delay from neglect, and skepticism from reflexive rejection. It supplies an evidence ladder, comparative baseline, falsifiable decision record, experiment, and de-adoption path."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Factory, Strategy, Repository, Singleton, Observer, microservices, CQRS, Visitor, plugin platforms, event sourcing, and medication notifications expose realistic construction, operations, governance, migration, and removal obligations."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet provides a reusable diagnostic; the executable score reveals both utility and limits of matrices; ten examples span code and architecture; five exercises progress from audit through model sensitivity, system experiment, de-adoption, and safety-critical transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

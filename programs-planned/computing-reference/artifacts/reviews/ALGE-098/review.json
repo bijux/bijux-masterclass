@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-098",
+  "chapter_digest": "a474ebb91c4b543ddf5833982f9a467a600b570dd1ae6af94efe79da0e1829fa",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 9,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked the active IEEE 754-2019 record, SIAM and ACM records for numerical stability and floating-point behavior, Shewchuk's primary robust-predicate work, accurate summation and mixed-precision refinement papers, classic rounding-error literature, and Python 3.14 official math.fsum documentation."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Defined exact and represented data, computed result, forward and backward error, residual, unit roundoff, condition number, ULP, and exceptional assumptions.",
+        "Checked norms, units, relative-versus-absolute domains, normal-range premises, nonzero denominators, and lower-level arithmetic semantics."
+      ],
+      "notes": "Conditioning, stability, residual, reproducibility, robustness, and precision are not conflated."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the adversarial summation target and all explicit naive-order and math.fsum results.",
+        "Recomputed the reciprocal example: relative input change 0.001, relative output change about -0.000999001, and condition number one.",
+        "Recomputed the scaled norm of two 1e308 components as approximately 1.414213562373095e308, below binary64 maximum finite range."
+      ],
+      "notes": "Observed CPython behavior is bounded to the recorded environment."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived the local scalar relative condition expression from first-order perturbation.",
+        "Verified the scaled Euclidean norm identity and the cancellation-safe quadratic root relation.",
+        "Reviewed the gamma-n bound assumptions and predicate-filter sign implication."
+      ],
+      "notes": "First-order approximations and bounds are labeled with their domains rather than treated as universal equalities."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero, signed zero, subnormals, overflow, underflow, infinity, NaN, near cancellation, repeated roots, singularity, ill conditioning, and mixed scales.",
+        "Reviewed adversarial predicate surfaces, long paths, integer overflow, thread/device reduction order, stagnation, fast-math reassociation, and mixed-precision fallback."
+      ],
+      "notes": "Exceptional values and indeterminate predicates have explicit handling paths."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked numeric type, rounding, range, scale, units, exceptional policy, operation-order, stopping, and independent-oracle invariants.",
+        "Checked that a predicate sign is accepted only when its magnitude exceeds a proved error bound and that adaptive escalation preserves semantics.",
+        "Checked mixed-precision and shortest-path fast paths against guarded fallback and verification requirements."
+      ],
+      "notes": "Performance optimization never overrides the declared numeric contract."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the condition-number derivation, scaled-norm equality, and filtered-predicate proof premises.",
+        "Reviewed backward-to-forward reasoning and why an ill-conditioned problem can amplify a backward-stable result."
+      ],
+      "notes": "The chapter distinguishes local derivation, exact identity, theorem-conditioned bound, and empirical observation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited exact, correctly rounded, faithful, stable, robust, reproducible, certified, residual, tolerance, approximation, and observed language.",
+        "Separated real-number identities, finite-arithmetic models, implementation contracts, compiler choices, and local evidence."
+      ],
+      "notes": "Higher precision and small residuals are never presented as standalone proofs of correctness."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-098/report.json",
+        "The CPython 3.14.4 fixture reproduced explicit naive-order loss and math.fsum recovery on macOS 13.7.8 x86_64.",
+        "Independent Decimal arithmetic reproduced reciprocal sensitivity and scaled-norm calculations."
+      ],
+      "notes": "The fixture illustrates one finite sequence and does not prove accuracy for arbitrary reductions."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed numeric contracts, conditioning, stability, rounding models, cancellation reformulation, scaling, summation, robust predicates, exceptional values, stopping, mixed precision, independent verification, and performance semantics."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed formats, compiler flags, hardware, FMA/reassociation, feature and fallback paths, cross-device reduction, independent oracles, adversarial generation, telemetry, and error-budget governance."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter develops conditioning and stability from first principles, supplies executable summation evidence, ten distinct worked examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external numerical-analysis, standards, compiler, hardware, library, scientific-computing, or production review is claimed. Conclusions remain conditional on input domain, scale, format, rounding and exception behavior, operation order, compiler and library, hardware, precision, conditioning, error norm and tolerance, verification oracle, environment, platform, toolchain, and reproducibility requirement."
+}
