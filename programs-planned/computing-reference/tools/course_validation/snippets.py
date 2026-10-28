@@ -31,6 +31,7 @@ SAFE_PYTHON_IMPORTS = {
     "enum",
     "fractions",
     "functools",
+    "hashlib",
     "heapq",
     "itertools",
     "math",
