@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-026",
+  "chapter_digest": "d70a35d83d6360c66f8bebd8894e21c5e06cc11c537e245e7653bf488f8e7bb7",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-04",
+    "notes": "Checked publisher/metadata records for Land and Doig's discrete-programming paper, Little-Murty-Sweeney-Karel's TSP algorithm, Lawler and Wood's branch-and-bound survey, and Hart-Nilsson-Raphael's admissible best-first framework; official Wiley records for Nemhauser-Wolsey and Wolsey's second edition; ACM metadata for Goldberg's floating-point survey; and official CS2023 Algorithmic Foundations scope. Historical results, durable optimization theory, modern solver synthesis, numeric foundations, and original production guidance remain distinguished."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+        "status": "passed",
+        "method": "manual_review",
+        "evidence": [
+          "Checked feasible-set, node-completion, local/global optimum, incumbent upper bound, node lower bound, frontier, gap, matching, and scheduling notation for consistent minimization orientation.",
+          "Checked every inline and display expression for balanced GitHub-supported delimiters, set inclusions, nested minima, inequality chains, roman descriptive subscripts, infinity conventions, ceiling, fractions, and byte/work arithmetic.",
+          "Checked maximization reversals, primary versus secondary ties, feasible versus relaxation values, and local node versus global frontier certificates."
+        ],
+        "notes": "Upper and lower refer consistently to objective numbers, never tree position or subjective solution quality."
+    },
+    "numerical_recomputation": {
+        "status": "passed",
+        "method": "numerical_recomputation",
+        "evidence": [
+          "Recomputed the executable's size-five heuristic and returned covers, distinct lexicographic optimum, 11 nodes/bounds, six prunes, zero improvements, feasibility, and objective correspondence.",
+          "Compared branch-and-bound cover objective with independent subset enumeration for every 1,024 graph on five vertices and checked matching bounds below exact descendant optima for 32,768 node states.",
+          "Checked exact fractional-relaxation upper bounds against 0/1 subset optima for 45,927 knapsack instances.",
+          "Checked maximum-load, average-load, and largest-job scheduling lower bounds below exhaustive completion optima for 38,912 partial states, with feasible list schedules above them.",
+          "Recomputed the synthetic frontier gap, rounding counterexample, weak/strong bound totals 600,000 and 112,500, and speedup 16/3."
+        ],
+        "notes": "Every displayed numeric claim was recomputed; bounded families establish correspondence rather than arbitrary-instance performance."
+    },
+    "symbolic_recomputation": {
+        "status": "passed",
+        "method": "symbolic_recomputation",
+        "evidence": [
+          "Re-derived the minimization prune from feasible U, L(p)<=z*(p), and f(x)>=z*(p), with equality scoped to strictly better objectives.",
+          "Re-derived relaxation direction from C(p) subset R(p) for both minimization and maximization.",
+          "Re-derived the global lower certificate min(U,min over frontier bounds) and absolute gap under complete frontier coverage.",
+          "Re-derived matching-size vertex-cover bounds and three identical-machine makespan lower-bound terms.",
+          "Re-derived optimality from branch coverage, sound fathoming, valid conservative arithmetic, finite fair processing, and a feasible remaining incumbent."
+        ],
+        "notes": "Primal feasibility, node-bound validity, frontier coverage, and final gap closure are reviewed as distinct proof obligations."
+    },
+    "boundary_and_adversarial_cases": {
+        "status": "passed",
+        "method": "boundary_analysis",
+        "evidence": [
+          "Checked empty feasible sets, no incumbent, empty frontier, solved root, infeasible nodes, zero gap, equal bounds, multiple optima, and secondary/all-witness contracts.",
+          "Checked weak/nonmaximum matchings, overlapping branches, poor feasible incumbents, invalid warm starts, changed model revisions, and dominance with different future resources.",
+          "Checked fixed-width overflow, infinities, NaN, upward lower-bound rounding, unit/scaling mismatch, exact/rational alternatives, and conservative fallback.",
+          "Checked depth-first and best-bound memory extremes, stale weak/strong priorities, starvation, timeouts, gap denominators, and bound cost exceeding saved work.",
+          "Checked parallel stale-high and false-low incumbents, duplicate/lost/leased nodes, worker failure, local versus global queue exhaustion, and incomplete certificate status."
+        ],
+        "notes": "Learned predictions are restricted to ordering or bounded mechanism selection unless a separate universal conservative envelope is proved."
+    },
+    "invariant_checking": {
+        "status": "passed",
+        "method": "invariant_analysis",
+        "evidence": [
+          "Traced objective, node semantics, coverage, incumbent typing, bound direction/arithmetic, equality, fathom reason, order, heuristics, state, certificate, interruption, concurrency, cost, and validation through the sixteen-step worksheet.",
+          "Checked lower-bound validity below every selected-vertex state for all five-vertex graphs and again at every visited node of the bounded solver.",
+          "Checked fractional upper-bound direction and scheduling lower/optimum/feasible sandwiches on 84,839 combined bounded optimization instances/states.",
+          "Checked sample branch coverage, matching disjointness, incumbent feasibility, equality prune behavior, and final objective against lexicographic brute force.",
+          "Checked exact arithmetic for frontier, workload, rounding, and speedup examples."
+        ],
+        "notes": "Finite invariant checks support implementation and bound families; universal validity depends on the separately reviewed matching, relaxation, and load arguments."
+    },
+    "proof_review": {
+        "status": "passed",
+        "method": "proof_review",
+        "evidence": [
+          "Reviewed the full minimization inequality chain from each descendant objective through node optimum and lower bound to the incumbent.",
+          "Reviewed equality pruning separately for one stable optimum, lexicographic optimum, and all-optima enumeration.",
+          "Reviewed feasible-set relaxation inclusion, combinatorial matching injection, and workload lower-bound arguments.",
+          "Reviewed anytime certificate coverage when the incumbent may already hold the optimum and when the frontier is empty.",
+          "Reviewed distributed optimality requirements for validated atomic incumbents, durable node ownership, conservative live bounds, recovery, and global termination."
+        ],
+        "notes": "No heuristic objective, learned estimate, stale stronger number, or locally empty queue is accepted as a bound or completion proof."
+    },
+    "proof_sketch_labeling": {
+        "status": "passed",
+        "method": "label_audit",
+        "evidence": [
+          "Distinguished primal heuristics and feasible incumbents from relaxation, dual, and combinatorial bounds.",
+          "Distinguished bound validity, tightness, evaluation cost, empirical pruning power, and worst-case complexity.",
+          "Labeled one-optimum equality pruning as intentionally unable to preserve lexicographic or all-optima output.",
+          "Separated exact optimality from certified nonzero-gap interruption and from unbounded heuristic stopping.",
+          "Separated adaptive node/bound ordering predictions from mathematically admissible prune certificates."
+        ],
+        "notes": "Historical algorithms, mathematical guarantees, finite exhaustive checks, and production recommendations retain explicit evidence labels."
+    },
+    "empirical_evidence_labeling": {
+        "status": "passed",
+        "method": "empirical_reproduction",
+        "evidence": [
+          "artifacts/snippets/ALGE-026/report.json records isolated CPython 3.14.4 execution, zero exit status, empty stderr, and exact expected/actual output.",
+          "The executable establishes one finite feasible incumbent, matching-bound tree, equality-prune trace, objective-oracle match, and lexicographic difference.",
+          "A separate bounded run records 1,024 cover graphs, 32,768 cover bound states, 45,927 fractional-knapsack bounds, and 38,912 scheduling bound states.",
+          "Production guidance requires incumbent and global-bound timelines, fathom reasons, bound cost/improvement, frontier ownership, numeric fallbacks, witness replay, failure injection, and identical stop conditions."
+        ],
+        "notes": "Local execution does not establish arbitrary relaxation validity, numerical library certification, distributed termination, workload speed, or security isolation."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed the progression from minimization orientation through branching coverage, primal/bound separation, prune proof, equality, relaxations, combinatorial bounds, cost, incumbents, node order, anytime gaps, numeric conservatism, dominance, branching, parallel ownership, learned ordering, node representation, and validation."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed typed feasible incumbents and bounds, checked arithmetic and units, conservative rounding, validated warm starts, layered bounds, deterministic queues, stale-entry handling, interruption certificates, worker leases/recovery, tenant budgets, structural telemetry, independent replay, canaries, and rollback. Internal practitioner-oriented review only."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Verified first-principles inequality orientation, a reusable sixteen-step worksheet, constructive unsafe-bound and equality counterexamples, full proof derivations, one passing executable, exactly ten distinct worked examples, and five exercises progressing from certificate tracing through proof and defect diagnosis to quantitative bound choice and unfamiliar scheduling transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

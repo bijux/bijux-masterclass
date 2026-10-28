@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-012",
+  "chapter_digest": "a6a3bd99bdd95308c038572487857f6281fac3838cb0d01c6915e5b968de3dc6",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 6,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked Pearson records for the GoF book, Larman, Effective Java, Refactoring, and Shalloway-Trott, plus Fowler's primary dependency-injection article. The GoF source supports the canonical participant/collaboration distinction; Effective Java is used only as contrast for static factory methods."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked creator/product subtype notation, dynamic-dispatch equation, workflow composition, Creator-reachable input domain, pre/postcondition implication, effect containment, ownership equality, and call-multiplicity qualification."
+      ],
+      "notes": "The relations are stated as behavioral review obligations and not as claims that ordinary nominal typing proves them."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed both concrete creator paths and independently confirmed the typed record renders as the exact compact JSON and sorted lines outputs."
+      ],
+      "notes": "The finite run contains one factory call and one product call per creator path; no quantitative performance claim is made."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Expanded T(c_i,x)=U(m(c_i,x),x) for JsonReportJob and LinesReportJob and verified the inherited workflow is identical while dynamic m_i changes.",
+        "Checked that product postconditions, allowed effects, and ownership mode are required uniformly for every concrete creator reachable by T."
+      ],
+      "notes": "If creator subtypes replace U or products require different ownership, the stated Factory Method boundary no longer suffices."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed base-constructor dispatch, missing derived state, incompatible product errors/effects/ownership, repeated versus retained products, unsafe defaults, parameter-switch growth, creator selection, parallel-hierarchy proliferation, concrete type checks, cleanup failure, and hierarchy-to-callable migration.",
+        "Reviewed spacecraft decoder cases for malformed, truncated, oversized, corrupted, version-confused, resource-exhausting, slow, concurrent, restarting, and faulting inputs."
+      ],
+      "notes": "The executable example is explicitly bounded and makes no arbitrary serialization or flight-safety claim."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked stable Creator workflow, Product-only use, fully valid returns, initialized override state, compatible ownership/failure/effects, narrow extension, no workflow duplication, explicit creator selection, and removal when subtype ownership disappears."
+      ],
+      "notes": "Each example keeps product choice aligned with a meaningful creator specialization or recommends a simpler alternative."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the two concrete dynamic-dispatch traces line by line: inherited run invokes the selected override once and invokes the returned Product contract once. Confirmed non-generalization to all effects and inputs."
+      ],
+      "notes": "No universal subtype-correctness, initialization-safety, timing, or serialization proof is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited Factory Method, static factory, simple factory, Creator, Product, override, hook, dispatch, substitution, proof, contract, and conclusion language."
+      ],
+      "notes": "The canonical GoF collaboration remains distinct from general creation methods and language-specific alternatives."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Reproduced exact executable output and checked that proposed contract, fault, fuzz, timing, formal, hardware, compatibility, and human reviews are framed as future evidence."
+      ],
+      "notes": "No external practitioner, safety, mission, or flight review is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter derives Factory Method from stable workflow plus creator-subtype-owned product selection, distinguishes adjacent creation mechanisms, specifies substitution beyond types, covers abstract/default/parameterized variants, and provides refactoring toward and away."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Report jobs, document frameworks, money creation, platform dialogs, product effects, failure policy, functional alternatives, CSV, and spacecraft decoding expose realistic implementation, framework, lifecycle, and safety obligations."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet provides exact roles and invariants; the executable example makes dynamic dispatch visible; ten examples test terminology and applicability; five exercises progress from role analysis through extension, refactoring, family design, and high-stakes transfer with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-016",
+  "chapter_digest": "1d55d0f4a1cf226174be6fd50efc529be39f75c05030a3d2e15e20f6768fafff",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked the GoF catalog record, C++ Core Guidelines I.2/I.3/I.22, JLS 12.4.2 and 17.4.5, Fowler's dependency-injection article, and the bibliographic records for the Seemann/van Deursen and Kleppmann books. Claims distinguish process-local construction from distributed coordination and do not attribute universal safety to Singleton."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Scoped instance set I_S",
+        "exact and keyed cardinality equations",
+        "happens-before relation",
+        "explicit dependency graph D"
+      ],
+      "notes": "Scope, instance, caller, time, resolver, graph, and happens-before symbols are introduced before use; equality and upper-bound claims are kept distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "artifacts/snippets/SEPAT-016/report.json",
+        "shared-within-graph=True",
+        "isolated-between-graphs=True",
+        "events=processed:7,reported:ready"
+      ],
+      "notes": "The chapter makes no quantitative performance claim; the executable identity and event-count observations were recomputed."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "one root-created sink has two incoming consumer edges",
+        "two root invocations allocate nonidentical sinks",
+        "completed construction must happen-before published reads",
+        "local identity does not entail distributed uniqueness"
+      ],
+      "notes": "The finite graph establishes only the example's per-graph cardinality and identity statements. It deliberately does not establish runtime-wide or cluster-wide uniqueness."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "process, class-loader, container, plugin, host, cluster, tenant, and keyed scopes",
+        "recursive and failed initialization",
+        "unsafe lazy initialization and partial publication",
+        "test reset, reconfiguration, and shutdown",
+        "Service Locator coupling",
+        "partitioned or paused cluster leader and stale effects",
+        "railway command-authority hazard case"
+      ],
+      "notes": "The review covers empty/duplicate construction assumptions, concurrent first use, restart, reload, failure, stale ownership, and high-stakes fail-safe boundaries."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "scope and rationale are explicit",
+        "publication follows complete initialization",
+        "dependencies remain visible",
+        "mutable state requires synchronization",
+        "lifecycle is owned",
+        "tests use isolated graphs",
+        "cardinality, lifetime, access, and immutability remain separate",
+        "distributed ownership requires coordination and fencing"
+      ],
+      "notes": "No example relies on a resettable global. Distributed exercises require effect-side rejection of stale terms rather than treating lease acquisition alone as sufficient."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "one AuditSink allocation per make_application invocation",
+        "Processor and Reporter receive the same reference",
+        "separate invocations allocate separate references"
+      ],
+      "notes": "This is a direct finite argument about the executable example, not a universal proof about language runtimes, concurrency, or distributed systems."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "chapter states what the example proves",
+        "memory-model and distributed claims are conditional on named mechanisms",
+        "railway answer requires independent formal and operational evidence"
+      ],
+      "notes": "No proof sketch is presented as a theorem. Scope limitations are stated adjacent to identity and safety claims."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "exact Python output retained in the snippet report",
+        "concurrency and distributed tests are prescribed rather than claimed as run",
+        "railway certification and human review are explicitly not claimed"
+      ],
+      "notes": "The run demonstrates deterministic object identity and event sharing only. Performance, language-memory-model universality, cluster safety, and railway safety remain outside that evidence."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter separates the GoF pattern's cardinality and access responsibilities, relates them to scope and lifecycle, and carries the distinction consistently through alternatives and migration guidance."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance covers composition roots, safe publication, observability, shutdown, test isolation, service-locator migration, resource ownership, leases, fencing, and rollout concerns."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review builds from a compact model to mechanisms, counterexamples, ten varied worked examples, cross-program links, and five exercises with matching reasoned answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

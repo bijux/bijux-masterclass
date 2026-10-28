@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-020",
+  "chapter_digest": "6782b29b9c855880ac551015129cd78adc3ba9739cb7bcdc566ec96fb1fdfb7a",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed PostgreSQL 18 SELECT, table-expression, comparison, and aggregate documentation; SQLite SELECT and null-handling documentation; and MySQL 8.4 SELECT and GROUP BY handling documentation. All eight official destinations returned HTTP 200. Join, DISTINCT, null, aggregate, grouping, ordering, limit, and functional-dependency claims are scoped by dialect and version."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked bag multiplicity for selection, inner/left join, projection, DISTINCT, grouping, and measure definitions.",
+        "Checked that row occurrence, projected value, entity identity, stored null, null extension, grain, window order, and final order remain distinct."
+      ],
+      "notes": "Logical bag equations are explicitly separated from type/collation rules and physical execution."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed NOT IN truth against blacklist (2,NULL) as U,F,U,U for customers 1 through 4.",
+        "Recomputed NOT EXISTS eligibility as customers 1,3,4 and joined rows as two matches plus two null extensions.",
+        "Recomputed summaries as customer 1 paid/non-null counts 2/1 and total 100; customers 3/4 counts zero and presented total zero.",
+        "Recomputed deterministic latest identities, grand total 100, and equality to independently filtered source sum."
+      ],
+      "notes": "The fixture's zero presentation is explicitly a modeled additive policy, not a universal SQL aggregate result."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived filter multiplicity from T/F/U acceptance and join pair multiplicity from product of source occurrences.",
+        "Re-derived one null-extended occurrence for each unmatched preserved left occurrence.",
+        "Re-derived projection as summed preimages and DISTINCT as positive-multiplicity normalization.",
+        "Re-derived EXISTS invariance under duplicated qualifying right rows and nullable NOT IN poisoning."
+      ],
+      "notes": "Query rewrites are conditioned on stated key, null, multiplicity, type, volatility, and snapshot premises."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty/singleton inputs, duplicate full values with distinct IDs, duplicate relationship edges, and one/many/no join matches.",
+        "Reviewed null keys/payloads, nullable anti-membership, stored versus extended nulls, empty/all-null groups, and grouping-set provenance.",
+        "Reviewed equal sort keys, scalar zero/one/many rows, window frames, mixed set precedence, and source-arm type/unit mismatch.",
+        "Reviewed parameter skew/null, constraints, collation/time zones, snapshots, modifications, security, plans, memory/spill, cancellation, and upgrades."
+      ],
+      "notes": "Authority-sensitive outputs require source, as-of, units, identity, and named review evidence beyond query execution."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Validated eligible output excludes only blacklist customer 2 despite a null candidate.",
+        "Validated joined multiplicity equals paid matches for customer 1 plus one preserved occurrence for each unmatched eligible customer.",
+        "Validated paid-order count, nonnull amount count, presented sums, and deterministic latest order separately.",
+        "The verifier matched exact seven-line stdout, empty stderr, and zero exit status."
+      ],
+      "notes": "The finite model does not certify database query processing, constraints, plans, or concurrency."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed each customer against both blacklist candidates through ordinary nullable equality.",
+        "Reviewed each eligible customer against every paid order and the unmatched left-join rule.",
+        "Reviewed each group measure from exact paid occurrences and nonnull amount inputs.",
+        "Reviewed source-route and grouped-route grand totals as independent finite derivations."
+      ],
+      "notes": "No proof of arbitrary optimizer rewrites, universal dialect behavior, or production resource bounds is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated bags from sets, duplicates from identity, false from unknown, stored null from null extension, and occurrence count from match/non-null/distinct count.",
+        "Separated DISTINCT symptom removal from key-based deduplication, group order from final order, and deterministic choice from authoritative choice.",
+        "Separated semantic equivalence from plan similarity and statement determinism from cross-statement snapshot reproducibility."
+      ],
+      "notes": "Correct, complete, unique, equivalent, deterministic, reconciled, secure, and efficient claims require their named assumptions and evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library finite SQL-correctness pipeline executed successfully through the repository verifier.",
+        "All eight final official reference destinations returned HTTP 200 on 2026-08-30.",
+        "Front matter, exact section order, local links, ten examples, five exercises, five answers, and snippet expectations passed draft validation."
+      ],
+      "notes": "No live SQL query, constraint, type/collation/time-zone case, execution plan, index, memory/spill, security, snapshot, concurrency, modification, or performance workload was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently treats a SQL statement as typed bag transformations with contextual T/F/U, declared grain, identity, ordering, and independent evidence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed contracts, constraints, filters, joins, fanout, anti-membership, aggregation, subqueries, CTEs, sets, windows, types, equivalence, modifications, parameterization, oracles, reconciliation, plans, production evidence, and upgrades."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, integrated nullable/fanout fixture, ten distinct examples, and five proof/production exercises consolidate the complete undergraduate SQL block."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter and model do not certify any live SQL dialect result, schema/constraint premise, type/collation/time-zone rule, optimizer rewrite, execution plan, index, resource bound, security policy, snapshot/concurrency behavior, modification, rendered report, performance result, upgrade compatibility, or production fitness."
+}

@@ -5,7 +5,7 @@ level: 2
 module_number: 94
 title: Compressed Suffix Arrays
 status: complete
-last_verified: 2026-08-30
+last_verified: 2026-09-04
 ---
 
 # Compressed Suffix Arrays
@@ -28,7 +28,7 @@ $$
 LF(i)=ISA[(SA[i]-1)\bmod n].
 $$
 
-(Psi) advances one text position and (LF) moves backward; they are inverses. The Burrows–Wheeler transform is $BWT[i]=T[(SA[i]-1)\bmod n]$. Compressed suffix arrays (CSA) are a family of representations using compressible structure in (Psi), BWT, alphabets, and sampled (SA/ISA), rather than storing every (SA) value in $lceil\log_2n\rceil$ bits.
+(Psi) advances one text position and (LF) moves backward; they are inverses. The Burrows–Wheeler transform is $BWT[i]=T[(SA[i]-1)\bmod n]$. Compressed suffix arrays (CSA) are a family of representations using compressible structure in (Psi), BWT, alphabets, and sampled (SA/ISA), rather than storing every (SA) value in $\lceil\log_2n\rceil$ bits.
 
 ### Central model, mechanism, or theorem
 
@@ -65,7 +65,7 @@ How should a CSA define its text model, permutation functions, compressed repres
 
 ## Why This Matters
 
-A plain suffix array stores (n) integers, usually $Theta(n\log n)$ bits, in addition to text. It supports binary-search pattern intervals and is cache-friendly, but its memory can dominate large corpora. A compressed full-text index exploits the suffix permutation's relationship to the text, potentially replacing both raw SA and text while supporting search and extraction.
+A plain suffix array stores (n) integers, usually $\Theta(n\log n)$ bits, in addition to text. It supports binary-search pattern intervals and is cache-friendly, but its memory can dominate large corpora. A compressed full-text index exploits the suffix permutation's relationship to the text, potentially replacing both raw SA and text while supporting search and extraction.
 
 The difficulty is compositional. An index can count correctly but locate incorrectly because samples mismatch; it can locate but decode symbols under a stale alphabet; it can serialize a valid BWT with a corrupt rank directory. Exact identities and a plain oracle are therefore first-class production evidence.
 
@@ -97,7 +97,7 @@ After this chapter, you should be able to:
 
 ### Suffix array and inverse
 
-For each $p\in[0,n$), suffix (T[p..n)) participates exactly once. Sorting these suffixes yields permutation (SA); assigning ranks yields inverse (ISA). Pattern (P) matches a contiguous SA interval because all strings with prefix (P) are contiguous lexicographically. Two boundary searches find lower/upper suffixes; locating reads SA values in the interval.
+For each $p\in[0,n)$, suffix (T[p..n)) participates exactly once. Sorting these suffixes yields permutation (SA); assigning ranks yields inverse (ISA). Pattern (P) matches a contiguous SA interval because all strings with prefix (P) are contiguous lexicographically. Two boundary searches find lower/upper suffixes; locating reads SA values in the interval.
 
 The unique sentinel makes every suffix distinct, defines a single smallest suffix, and makes rotations/BWT invertible. For byte indexes reserve a byte not present or remap alphabet to an integer domain. For multiple documents, use distinct logical terminators or a collection construction that prevents matches crossing boundaries and maps global positions back to documents.
 
@@ -230,7 +230,7 @@ The model's even-rank samples are fixture evidence only. Its bounded loop detect
 
 - (T) is the normalized symbol sequence ending in one unique smallest sentinel; (n=|T|).
 - (SA[i]) is the starting text position of the suffix with lexicographic rank (i); (ISA) is its inverse.
-- $Psi(i)=ISA[(SA[i]+1)\bmod n]$ advances one text position in suffix-rank space.
+- $\Psi(i)=ISA[(SA[i]+1)\bmod n]$ advances one text position in suffix-rank space.
 - $LF(i)=ISA[(SA[i]-1)\bmod n]$ retreats one text position and is inverse to (Psi).
 - $BWT[i]=T[(SA[i]-1)\bmod n]$ is the preceding symbol for suffix-array row (i).
 - (C[c]) counts indexed symbols strictly smaller than (c); (rank_c(BWT,i)) counts (c) in (BWT[0..i)).
@@ -244,7 +244,7 @@ The model's even-rank samples are fixture evidence only. Its bounded loop detect
 
 ### Permutation identities
 
-Because SA is a permutation, ISA exists and (ISA[SA[i]]=i). Substituting definitions gives $LF(Psi(i))=ISA[((SA[i]+1)-1)\bmod n]=i$; the symmetric substitution proves (Psi(LF(i))=i). Exhaustive validation checks every row at build time, not merely a few successful queries.
+Because SA is a permutation, ISA exists and (ISA[SA[i]]=i). Substituting definitions gives $LF(\Psi(i))=ISA[((SA[i]+1)-1)\bmod n]=i$; the symmetric substitution proves (Psi(LF(i))=i). Exhaustive validation checks every row at build time, not merely a few successful queries.
 
 ### Sample-based reconstruction
 
@@ -389,7 +389,7 @@ Each (Psi) step increments the represented position modulo (n). Thus if (Psi^d(i
 
 ### Answer 3
 
-Alphabet order is `$ < a < b < n`, so counts before each symbol are (C[$]=0), (C[a]=1), (C[b]=4), and (C[n]=5). Define (rank_c(BWT,i)) over positions ([0,i)). Start ([0,7)). Consuming final `a` yields ([1,4)); consuming `n` yields ([5,7)); consuming leading `a` yields ([2,4)). The count is 2. Locating those rows gives positions 3 and 1, sorted as ([1,3]). Every endpoint follows the same half-open convention.
+Alphabet order is `$ < a < b < n`, so counts before each symbol are `C[$] = 0`, `C[a] = 1`, `C[b] = 4`, and `C[n] = 5`. Define (rank_c(BWT,i)) over positions ([0,i)). Start ([0,7)). Consuming final `a` yields ([1,4)); consuming `n` yields ([5,7)); consuming leading `a` yields ([2,4)). The count is 2. Locating those rows gives positions 3 and 1, sorted as ([1,3]). Every endpoint follows the same half-open convention.
 
 ### Answer 4
 

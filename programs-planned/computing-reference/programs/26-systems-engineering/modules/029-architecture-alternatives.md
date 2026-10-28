@@ -5,7 +5,7 @@ level: 1
 module_number: 29
 title: Architecture Alternatives
 status: complete
-last_verified: 2026-08-31
+last_verified: 2026-09-04
 ---
 
 # Architecture Alternatives
@@ -378,7 +378,7 @@ Review a trade study that rates safety, reliability, availability, downtime, cos
 
 ### Exercise 4
 
-A prototype costs $0.4 million. Without it, Alternative A is chosen and has expected utility 72. With perfect information, the team would choose A in 60% of states with utility 78 and B in 40% with utility 84. Compute EVPI in utility points, then explain why this does not establish that the prototype should be funded.
+A prototype costs \$0.4 million. Without it, Alternative A is chosen and has expected utility 72. With perfect information, the team would choose A in 60% of states with utility 78 and B in 40% with utility 84. Compute EVPI in utility points, then explain why this does not establish that the prototype should be funded.
 
 ### Exercise 5
 
@@ -436,7 +436,7 @@ $$
 EVPI=80.4-72=8.4\text{ utility points}.
 $$
 
-This is an upper bound for perfect information, not the value of the proposed prototype. Funding requires the prototype’s likelihood of producing each observation, how those observations change the decision, posterior outcomes, implementation consequences, cost converted into the same value framework, schedule delay, opportunity cost, residual uncertainty, and model validity. A $0.4 million cost cannot be compared directly with 8.4 utility points without a valid multiattribute/value model and decision authority.
+This is an upper bound for perfect information, not the value of the proposed prototype. Funding requires the prototype’s likelihood of producing each observation, how those observations change the decision, posterior outcomes, implementation consequences, cost converted into the same value framework, schedule delay, opportunity cost, residual uncertainty, and model validity. A \$0.4 million cost cannot be compared directly with 8.4 utility points without a valid multiattribute/value model and decision authority.
 
 ### Answer 5
 

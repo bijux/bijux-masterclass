@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-043",
+  "chapter_digest": "ee08566438cba31d357b20c0d3217fd4f1e6993d6b08d2e85da0e1bfe30dd902",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed current PostgreSQL 18 explicit-locking and pg_locks documentation; MySQL 8.4 InnoDB lock/locking-read documentation; current SQL Server 17 locking/versioning guidance; the original Gray et al. multiple-granularity paper; Graefe's B-tree locking survey; IBM's ARIES/IM record; the Cahill SSI paper; and the Bernstein-Hadzilacos-Goodman text archive. All ten cited destinations were retrieved successfully and retained locally after correcting Graefe's DOI to 10.1145/1806907.1806908. Product behavior is explicitly version/current-documentation scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked resource hierarchy, parent, canonical modes, compatibility, held/waiting requests, conversion join, escalation, footprint, convoy, and starvation definitions.",
+        "Checked the complete canonical IS/IX/S/SIX/X matrix for mode meanings and symmetry.",
+        "Checked logical lock, physical latch, MVCC version, predicate dependency, key range, and advisory lock distinctions.",
+        "Checked product-specific PostgreSQL, InnoDB, and SQL Server mode names are never treated as aliases of the teaching lattice."
+      ],
+      "notes": "Compatibility is explicitly only one part of a protocol; duration, hierarchy, fairness, conversion, and deadlock policy remain separate."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Independently reconstructed all five compatibility rows from a separate symmetric representation.",
+        "Independently verified IS permits (IS,IX,S,SIX), IX permits (IS,IX), S permits (IS,S), SIX permits IS, and X permits none.",
+        "Independently evaluated T3 table S against T1 IS plus T2 IX as blocked.",
+        "Independently evaluated T4 row-A X against T1 row-A S as blocked and printed independent_invariants=True."
+      ],
+      "notes": "The independent calculation did not import or execute the chapter implementation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived each compatibility row from whether the broad node claim can coexist with announced descendant reads/writes.",
+        "Re-derived hierarchy safety: every descendant writer's ancestor IX conflicts with an ancestor S/X request.",
+        "Re-derived fine concurrency: ancestor IX/IX coexist while distinct leaf X resources do not conflict.",
+        "Re-derived escalation safety as acquire sufficient covering ancestor mode before releasing descendants."
+      ],
+      "notes": "The hierarchy proof assumes canonical shared resource identities and universal ancestor-protocol compliance."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed same/different owner, same/different row, missing ancestors, invalid early ancestor release, S-to-X conversion, two upgraders, queue fairness, timeout, NOWAIT, SKIP LOCKED, and cancellation.",
+        "Reviewed empty/range predicates, endpoints, duplicates, NULL/collation/operator class, access-path changes, record/gap/next-key/insert-intention, spatial predicates, and partition crossing.",
+        "Reviewed tiny/huge scans, skew/hot keys, row/page/table/partition choice, lock memory, failed/successful escalation, mixed S/X descendants, disabling escalation, and safe batching.",
+        "Reviewed advisory-key collision/encoding, session/transaction scope, pool reuse, DDL/schema modes, connection loss, deadlock victim, recovery, observation races, blocker chains, and latches."
+      ],
+      "notes": "Every recommendation preserves the invariant and atomic boundary before considering lock count or blocking reduction."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "The repository verifier matched exact ten-line stdout, empty stderr, and zero exit status.",
+        "The model checks canonical matrix output, compatible table intentions, blocked coarse reader, blocked same-row writer, and exact wait queue.",
+        "Manual review checked canonical resource identity, ancestor intention, all-holder compatibility, conversion/escalation no-gap, predicate coverage, duration, and wait outcome requirements.",
+        "Draft validation accepted exact front matter, section order, ten examples, five exercises/answers, local links, citations, and executable evidence before stopping only for review evidence."
+      ],
+      "notes": "The model trusts hierarchy callers and omits same-owner conversion, duration, fairness, deadlock, concurrency, predicate ranges, product modes, recovery, and performance."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed intention-advertisement safety and every compatibility premise line by line.",
+        "Reviewed disjoint leaf concurrency and same-leaf exclusion reasoning.",
+        "Reviewed escalation overlap/coverage and mixed-mode strength requirements.",
+        "Reviewed all exercise answers for matrix derivation, hierarchy repair, escalation diagnosis, invariant protection, and cross-engine evidence."
+      ],
+      "notes": "No proof of vendor lock-manager correctness, fairness, deadlock freedom, lock-plan completeness, predicate coverage implementation, or production performance is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable matrix is explicitly a canonical teaching model rather than a product implementation.",
+        "The hierarchy and escalation arguments state compliance, identity, containment, and coverage assumptions.",
+        "Predicate lock is separated into blocking range protection versus nonblocking SSI dependency tracking.",
+        "Audited locks, protects, exclusive, compatible, safe, exact, guarantees, current, complete, and optimal language for scope."
+      ],
+      "notes": "Operational examples do not infer durable lock behavior from hints or isolated instantaneous monitoring snapshots."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library compatibility/wait model executed successfully through the repository verifier.",
+        "A separate compatibility representation independently reproduced matrix rows and both waits.",
+        "All ten cited destinations were successfully retrieved and retained locally.",
+        "Production conclusions require engine/version, transaction/query/plan, resource/mode, wait graph, duration, lock count/memory, escalation, abort/retry, latch, invariant, and latency evidence."
+      ],
+      "notes": "No live lock manager, transaction, conversion, range lock, escalation, advisory lock, cancellation, deadlock, recovery, DMV/pg_locks snapshot, or benchmark was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter derives multiple-granularity safety from intention modes while separating modes, hierarchy, resource identity, duration, conversion, escalation, predicates, and physical latches."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed current PostgreSQL/MySQL/SQL Server semantics, granularity tradeoffs, escalation, conversions, ranges, wait policies, advisory locks, pooling, observability, deterministic tests, and capacity risks."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, executable matrix/trace, ten distinct examples, and five exercises progress from compatibility through hierarchy proofs, escalation diagnosis, invariant-specific designs, and cross-engine verification."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter does not certify a vendor lock lattice, lock manager, plan/resource mapping, predicate/range coverage, escalation/conversion policy, advisory protocol, wait/deadlock behavior, observability result, benchmark, or production configuration."
+}

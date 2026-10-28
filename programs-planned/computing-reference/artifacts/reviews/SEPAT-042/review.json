@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-042",
+  "chapter_digest": "e9c0198dbaad56aa15b3614d5db3f771f42c428bca1af96f42a7f1d6fe9ac821",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "The pattern lineage, behavioral-subtyping constraints, fail-safe-default principle, current Java Optional and Rust Option semantics, contract foundations, and OWASP error-handling guidance were checked. The chapter distinguishes sourced principles from its own scoped design synthesis."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked Run(x,c)=(Core(x),c.observe(e_x)) with c and N scoped to collaborator interface C.",
+        "Checked the identity-law and precondition/postcondition notation against the prose contract.",
+        "Checked recorded, suppressed, and failed as distinct outcomes rather than truthy aliases."
+      ],
+      "notes": "Notation is locally defined and deliberately limited to one optional auxiliary collaborator."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed strip/uppercase of alpha and beta as ALPHA and BETA.",
+        "Recomputed event sizes as 5 and 4 and the real sink event count as 1.",
+        "Verified exact stdout: real=ALPHA status=recorded events=1 and null=BETA status=suppressed."
+      ],
+      "notes": "The repository snippet verifier reproduced the two-line expectation with Python 3."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived that both telemetry implementations accept the same event shape and return a member of the declared outcome set.",
+        "Derived that replacing telemetry leaves Core(x) unchanged while changing only the auxiliary observation outcome.",
+        "Checked that NullTelemetry cannot satisfy a stronger durable-audit postcondition and the chapter states that limit."
+      ],
+      "notes": "The argument establishes scoped substitution, not universal equivalence or effect delivery."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed absent, unknown, not-applicable, intentionally disabled, malformed, denied, and failed states separately.",
+        "Reviewed required configuration, service outage, unknown serialized subtype, SQL/JSON null mapping, mutable singleton state, and Null-object chains.",
+        "Reviewed authorization, audit, persistence, alarms, interlocks, concurrency, bounded metrics, and rolling-version compatibility."
+      ],
+      "notes": "High-consequence cases explicitly reject silent no-op substitution and require independent assurance."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced valid optionality and startup failure through the required-database example.",
+        "Traced honest outcomes and failure separation through disabled telemetry versus timeout.",
+        "Traced fail-closed behavior through DenyAll, and immutability/versioning through singleton and decoder examples."
+      ],
+      "notes": "Each critical invariant is exercised by exposition, a worked example, an exercise answer, or the executable example."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Checked the finite execution trace from input normalization through event construction and sink outcome.",
+        "Checked substitution assumptions: optional auxiliary role, shared input/output contract, honest suppression, and unchanged core postcondition.",
+        "Checked the counterexample that a durable audit promise invalidates the Null subtype."
+      ],
+      "notes": "The chapter makes no theorem of universal Null Object correctness and labels finite evidence and high-stakes limits."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Reviewed uses of prove, establish, guarantee, safe, correct, and substitute.",
+        "Confirmed the answer calls the result one finite serialized optional auxiliary contract.",
+        "Confirmed safety and regulatory fitness are explicitly not inferred from substitution or no-exception tests."
+      ],
+      "notes": "Formal-looking notation is presented as a scoped model, not as an externally reviewed universal proof."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Executed the annotated Python example with captured interpreter version, command, stdout, stderr, and exit code.",
+        "Checked the chapter distinguishes this example from future contract, concurrency, outage, compatibility, and high-stakes tests.",
+        "Checked that no external academic, practitioner, safety, or regulatory review is claimed."
+      ],
+      "notes": "Execution proves the stated deterministic trace only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Null Object is distinguished from Special Case, Option, Result, sentinel, default value, and test double; optionality, failure, and fail-safe behavior remain separate."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "The module covers construction, configuration, lifecycle, sharing, serialization, boundary mapping, health, metrics, testing, migration, outages, and high-consequence misuse."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives align with exposition, ten non-duplicative examples, five exercises, and five matching answers; the compact example is executable and its limits are retrieved in Answer 1."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

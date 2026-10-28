@@ -5,7 +5,7 @@ level: 1
 module_number: 4
 title: Time, Space, and Allocation Cost
 status: complete
-last_verified: 2026-08-29
+last_verified: 2026-09-04
 ---
 
 # Time, Space, and Allocation Cost
@@ -43,7 +43,7 @@ $$
 L_{peak}(\sigma)=\max_t L(t).
 $$
 
-An amortized bound assigns charges (hat c_i) or potential $Phi_i\ge0$ so that every prefix satisfies
+An amortized bound assigns charges (hat c_i) or potential $\Phi_i\ge0$ so that every prefix satisfies
 
 $$
 \sum_{i=1}^{j}c_i\le\sum_{i=1}^{j}hat c_i
@@ -262,7 +262,7 @@ An amortized charge sequence is valid if every prefix dominates actual cost. Pot
 
 **Accounting proof.** Assign credits to operations or objects; establish nonnegative balance after every prefix; show all actual work is paid. Credits are analytical, not runtime currency.
 
-**Potential proof.** Choose $Phi(state)\ge0$, calculate actual plus potential change in every operation case, and telescope. Show starting/ending potential terms rather than omitting them.
+**Potential proof.** Choose $\Phi(state)\ge0$, calculate actual plus potential change in every operation case, and telescope. Show starting/ending potential terms rather than omitting them.
 
 **Space accounting.** Draw the ownership graph, count each allocation once, separate shallow payload/metadata from referents, and model maximum simultaneously live states during updates.
 

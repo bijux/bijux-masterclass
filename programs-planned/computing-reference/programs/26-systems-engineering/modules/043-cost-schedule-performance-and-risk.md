@@ -5,7 +5,7 @@ level: 1
 module_number: 43
 title: Cost, Schedule, Performance, and Risk
 status: complete
-last_verified: 2026-08-31
+last_verified: 2026-09-04
 ---
 
 # Cost, Schedule, Performance, and Risk
@@ -171,13 +171,13 @@ Positive/negative variances require causal investigation. A common cost extrapol
 **Forecast jointly.** Generate coherent cost/date/performance outcomes from the linked network, resource/cost behavior, performance model, discrete risks, and uncertainty. For thresholds (C^*,T^*,P^*) define:
 
 $$
-P_C=Pr(C_f\le C^*),\quad P_T=Pr(T_f\le T^*),\quad P_P=Pr(P_f\ge P^*),
+P_C=\Pr(C_f\le C^*),\quad P_T=\Pr(T_f\le T^*),\quad P_P=\Pr(P_f\ge P^*),
 $$
 
 and
 
 $$
-P_J=Pr(C_f\le C^*,T_f\le T^*,P_f\ge P^*).
+P_J=\Pr(C_f\le C^*,T_f\le T^*,P_f\ge P^*).
 $$
 
 Generally (P_J) is not the minimum, product, or average of marginals without special dependence assumptions. A P50 cost and P50 date selected from separate curves do not constitute 50-percent joint confidence.
@@ -279,7 +279,7 @@ For a lower-is-better TPM with limit (L), define margin $M=L-\hat x$ under a dec
 For scenarios $s\in S$ with coherent joint probability (p_s):
 
 $$
-E[C_f]=\sum_sp_sC_s,\quad Pr(C_f\le C^*,T_f\le T^*,P_f\ge P^*)
+E[C_f]=\sum_sp_sC_s,\quad \Pr(C_f\le C^*,T_f\le T^*,P_f\ge P^*)
 =\sum_sp_sI_s,
 $$
 

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-014",
+  "chapter_digest": "78589c566eaecacf07ade23a64b929097ebf5ee205c208c0dde0a4866eecfc8e",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed PostgreSQL 18 subquery expressions, scalar subqueries, WITH queries, and CTE materialization documentation; SQLite WITH-clause documentation; and MySQL 8.4 CTE, subquery, and derived-table optimization documentation. All eight official destinations returned HTTP 200. Dialect-specific recursion, modification, folding, materialization, and optimization claims are explicitly scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked the correlated relation Q(o), bag B_o, scalar-subquery arity and cardinality, EXISTS predicates, IN disjunction, ANY/ALL quantifiers, and CTE relation naming.",
+        "Checked that logical correlation, evaluation scope, three-valued predicates, and physical execution are represented separately."
+      ],
+      "notes": "SQL null and cardinality semantics are not replaced by host-language truthiness or indexing conventions."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed correlated order counts for customers 1, 2, and 3 as 2, 1, and 0.",
+        "Recomputed EXISTS membership as customers 1 and 2 and NOT EXISTS membership as customer 3.",
+        "Recomputed blacklist IN results as unknown, true, unknown and NOT IN results as unknown, false, unknown.",
+        "Recomputed scalar cases as 10 for customer 2, null for customer 3, and a cardinality error for customer 1; recomputed CTE totals as 50 and 10."
+      ],
+      "notes": "The bounded fixture uses exact integers and an explicit unknown value."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived scalar-subquery outcomes for zero, one, and many rows, including the distinction between a null-valued row and no row.",
+        "Re-derived IN and NOT IN from three-valued equality and negation, including a null candidate.",
+        "Re-derived ANY/ALL quantification, including false and true identities for empty candidate sets.",
+        "Re-derived EXISTS and NOT EXISTS as semijoin and antijoin tests that preserve outer-row multiplicity rather than multiplying rows."
+      ],
+      "notes": "CTE folding and materialization are treated as physical alternatives under dialect-specific rules, not logical equivalences with universal cost effects."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty, one-row, null-valued, duplicate, and many-row subquery results; nullable left operands and candidate sets; and composite correlation keys.",
+        "Reviewed name shadowing, tenant and authorization correlation, volatile expressions, side effects, one-use and multi-use CTEs, forced folding/materialization, and temporary-storage pressure.",
+        "Reviewed modifying CTE visibility, statement snapshots, deadlines, cancellation, optimizer changes, and database upgrades.",
+        "Reviewed NOT IN null poisoning, accidental cardinality errors, hidden fanout, and correlated work under skew."
+      ],
+      "notes": "Recursive CTE mechanics are deliberately deferred to DBE-017 and are not implied by this chapter."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Validated that each correlated result is computed from orders whose customer_id equals the current outer customer id.",
+        "Validated that EXISTS and NOT EXISTS emit each qualifying outer customer exactly once and that CTE aggregation emits one total per represented customer.",
+        "Validated that scalar evaluation rejects more than one row instead of selecting an arbitrary value.",
+        "The verifier matched exact nine-line stdout, empty stderr, and zero exit status."
+      ],
+      "notes": "The model is a semantic oracle for its finite fixture, not a SQL engine or optimizer."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed every customer against all fixture orders to justify the correlated counts and existential classifications.",
+        "Reviewed each blacklist comparison to justify true, false, and unknown IN/NOT IN outcomes.",
+        "Reviewed zero-, one-, and two-row scalar branches against the stated cardinality contract.",
+        "Reviewed the CTE totals by partitioning order amounts by customer and summing 20+30 and 10."
+      ],
+      "notes": "No proof of a database optimizer transformation, materialization decision, or cost bound is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Separated no row from one null-valued row, logical correlation from physical nested loops, and existence tests from multiplicity-changing joins.",
+        "Separated NOT EXISTS from nullable NOT IN, CTE naming from guaranteed materialization, and a statement-scoped CTE from temporary or materialized database objects.",
+        "Separated inner ordering from final result ordering and portable semantics from PostgreSQL, SQLite, and MySQL behavior."
+      ],
+      "notes": "Claims about evaluation frequency, volatility, reuse, or performance require the named dialect, version, plan, and workload evidence."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library finite subquery and CTE semantic model executed successfully through the repository verifier.",
+        "All eight final official reference destinations returned HTTP 200 on 2026-08-30.",
+        "Front matter, exact section order, local links, ten examples, five exercises, five answers, and snippet expectations passed draft validation."
+      ],
+      "notes": "No live SQL statement, execution plan, CTE materialization, volatile function, temporary spill, modifying CTE, concurrency interaction, or performance workload was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently derives subquery choice from result shape, cardinality, correlation, three-valued logic, scope, reuse, and physical evidence."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed scalar and row cardinality, EXISTS/NOT EXISTS, nullable membership, derived tables, CTE ownership, parameterization, tenant safety, volatility, materialization, plans, resource limits, cancellation, modifying statements, and upgrade evidence."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, finite customer/order/blacklist fixture, ten distinct worked examples, and five derivation and design exercises progress from result shape to production diagnosis."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter and model do not certify any live SQL dialect behavior, cardinality estimate, execution plan, correlation rewrite, CTE folding or materialization decision, volatile or modifying statement behavior, temporary-storage use, concurrency interaction, performance result, upgrade compatibility, or production fitness."
+}

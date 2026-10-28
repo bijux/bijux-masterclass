@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-065",
+  "chapter_digest": "1c38a0c27fd965c19750b309b1b6aa3fb6465e6d79c5ab28320f4cbc9fa6e353",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked the Cambridge Williamson-Shmoys local-search chapter, primary Johnson-Papadimitriou-Yannakakis publisher/DBLP record, primary Arya et al. SIAM/Duke record, primary Lin-Kernighan INFORMS/Princeton record, Princeton Aarts-Lenstra catalog, Springer Korte-Vygen record, and Hoos-Stuetzle bibliographic record. No current best-heuristic or benchmark claim is made."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": ["Checked feasible-state, neighborhood, objective, delta, cut, incident-weight, total-weight, locality-gap, strict-progress, and approximation notation; checked balanced GitHub math delimiters."],
+      "notes": "Maximization and minimization locality-gap directions and positive-denominator qualifications are distinguished."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": ["Recomputed triangle, four-cycle, trapped graph, integer-move bound, candidate coverage, concurrent conflict, restart selection, floating-resolution, timeout, and weighted-triangle exercise traces.", "Enumerated 33,867 graph/start pairs across all simple unweighted graphs through five vertices and every initial partition; every trajectory terminated strictly, every terminal state exhausted all one-flips, and every cut satisfied both half-total-weight and half-optimum bounds."],
+      "notes": "Empty and edgeless graphs and symmetric complementary partitions were included."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": ["Re-derived finite-state strict termination and separated it from polynomial iteration complexity.", "Re-derived one-flip Max-Cut's incident crossing-versus-uncut inequalities, double count, half-total bound, and factor-two optimum comparison."],
+      "notes": "The proof explicitly consumes nonnegative edge weights and complete exact one-flip local optimality."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": ["Checked empty states, edgeless and disconnected graphs, negative and zero weights, symmetric encodings, plateaus, equal moves, strict and tolerant acceptance, poor local optima, and larger neighborhoods.", "Checked stale deltas, underflow/cancellation, sampled neighborhoods, candidate pruning, infeasible intermediates, restart selection, tuning leakage, cancellation, deadlines, parallel move conflicts, and asynchronous execution."],
+      "notes": "Metaheuristic extensions are not allowed to inherit the strict base search's theorem silently."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": ["Checked feasible-state preservation, exact strict improvement, no repeated state, atomic state/cache commit, deterministic best-improvement ties, complete terminal sweep, and objective recomputation.", "Checked neighborhood-version binding, deadline status, seed and initializer provenance, full trace retention, and separation of proof from empirical evaluation."],
+      "notes": "The executable local search never consults the exact maximum-cut oracle used for comparison."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": ["Reviewed every premise and double-counting step in the one-flip Max-Cut theorem and its tight four-cycle witness.", "Reviewed locality-gap definitions, neighborhood containment claims, termination bounds, approximate terminal slack, reverse implications, and experimental non-generalization."],
+      "notes": "Local optimality, global optimality, maximality, approximation, and incumbent status remain distinct."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": ["Audited local, global, exact, feasible, strict, sampled, restricted, heuristic, factor, locality gap, plateau, restart, anytime, and terminal language.", "Separated the proved Max-Cut result, cited k-median/TSP/PLS literature, finite exhaustive checks, benchmark guidance, and production traces."],
+      "notes": "A larger or restricted neighborhood receives only claims established for that exact move system."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/ALGE-065/report.json", "The CPython 3.14.4 snippet exited zero with exact triangle, trapped graph, and factor-tight four-cycle outputs on macOS 13.7.8 x86_64.", "Independent exhaustive testing covered 33,867 graph/start cases through five vertices."],
+      "notes": "Finite enumeration validates the tested implementation domain but does not replace the universal local-optimum factor proof or establish production performance."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed state-machine specification, feasibility, termination, Max-Cut analysis, locality gaps, neighborhood strength, plateaus, restarts, anytime semantics, parallelism, and proof-aware experimentation."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed delta caches, full recomputation, numeric acceptance, stable ties, candidate indexes, cancellation, incumbent publication, seed/restart evidence, parallel snapshot reduction, and conflict validation."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter derives a complete local-search guarantee and tight witness, distinguishes theoretical and empirical evidence, includes ten distinct algorithmic and operational examples, and ends with five progressive exercises and complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external academic, optimization, routing, scheduling, numerical, concurrency, statistical, performance, or operational review is claimed. Results remain conditional on the declared feasible space, objective, neighborhood, acceptance, tie order, completion scope, arithmetic, initialization, budget, and workload evidence."
+}

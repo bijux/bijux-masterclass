@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-094",
+  "chapter_digest": "7db9cb7085abdc3139f9dc146a87fae75844e33f6e653e0d1b5259d911360d78",
+  "review_date": "2026-08-29",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-29",
+    "notes": "Checked Fowler's foundational Event Sourcing description, Young's CQRS documents, current Microsoft architecture guidance, and durable primary/foundational sources on immutable facts, aggregates and event envelopes. Current product-neutral claims are scoped and no vendor behavior is generalized."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked event-stream, fold, decision, append, snapshot and projection notation.",
+        "Checked stream revision, global position, time and identity coordinates remain distinct."
+      ],
+      "notes": "All functions and preconditions used in the reasoning are defined in the chapter."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed 100 - 30 + 5 = 75 at revision 3.",
+        "Recomputed winning debit 50 leaves 25, so the re-decided debit 40 is rejected and the stream ends at revision 4."
+      ],
+      "notes": "The arithmetic trace is deterministic and agrees with executable evidence."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified fold from initial state and snapshot-at-k formulations.",
+        "Verified atomic expected-revision append allows at most one writer to occupy the next stream revision.",
+        "Verified the loser must reload and re-decide for invariant safety."
+      ],
+      "notes": "The result applies only to stream-local invariants when every writer uses conditional append."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed duplicate command, stale writer, multi-event append, cross-stream invariant, giant stream and missing expected-revision cases.",
+        "Reviewed current-time/network replay, snapshot corruption, unsupported historical schema, dishonest upcast, projection side effects, retention loss and sensitive-history cases."
+      ],
+      "notes": "Offline collaborative merge, privacy law and cross-region consensus are explicitly outside Event Sourcing's intrinsic guarantees."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced semantic events, unique revisions, exact decision revision, deterministic application, historical readability, disposable snapshots, effect-free projection replay and authority protection.",
+        "Confirmed command deduplication and optimistic concurrency are separate mechanisms."
+      ],
+      "notes": "Every authority claim names the event stream or separately governed integration contract."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed per-stream concurrency argument under atomic compare-and-append and deterministic replay assumptions.",
+        "Checked counterexamples for blind retry, cross-stream capacity, mutable history, environment-dependent apply and effectful rebuild."
+      ],
+      "notes": "No proof of cross-stream atomicity, liveness, fairness, legal compliance or deployed durability is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited use of authoritative, immutable, deterministic, complete, correct and exactly-once-adjacent language.",
+        "Confirmed model, conditional argument, implementation duties and empirical trace are separated."
+      ],
+      "notes": "Snapshots, projections, brokers and integration events are never mislabeled as aggregate authority."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/SEPAT-094/report.json",
+        "Reproduced fold, debit decision, accepted first append, stale expected-revision conflict and rejected re-decision under Python 3.",
+        "Confirmed persistence concurrency, durability, serialization, privacy, publication and recovery are excluded from the run."
+      ],
+      "notes": "Execution proves the pure model and exact output only."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter distinguishes command, accepted domain fact, private stream authority, integration event, projection and snapshot while deriving decision and replay mechanics from first principles."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Guidance addresses stream boundaries, conditional append, dedupe, schema history/upcasting, correction, privacy, snapshots, isolated rebuild, backup/restore, capacity and observability."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "Objectives map to ten distinct worked cases and five exercises progressing from taxonomy and concurrency tracing through diagnosis, architecture comparison and collaborative-system transfer."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

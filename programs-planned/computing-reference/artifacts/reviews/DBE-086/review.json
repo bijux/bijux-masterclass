@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-086",
+  "chapter_digest": "5899c34721ba10f509e7e6541b7a0ee9a662dbc4edf205efd9190ca87cd5cbf4",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked current Google Spanner split, range, key-hotspot, schema, locality, and movement documentation; current CockroachDB range, replica, leaseholder, locality, and replication architecture documentation; and primary consistent-hashing, Dynamo, Bigtable, Spanner, Schism, and Calvin papers."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Defined keyspace, partition function/epoch, half-open interval, replica set, leader placement, virtual partition, hard/soft constraints, authority cut, hot shard, and hot key before use."
+      ],
+      "notes": "Partitioning, replication, placement, routing, authority, and movement are kept distinct."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed interval routing at 0/99/100/999 and 599/600/700, upper child width 400, distinct-zone counts 3 versus 1, 600 MiB/(55-40 MiB/s)=40 seconds, and boundary mappings in Exercise 2."
+      ],
+      "notes": "Interval endpoints use explicit half-open integer semantics in the finite model."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Reviewed total/disjoint interval cover, split union preservation, snapshot-plus-delta move implication, per-failure-domain placement condition, and counterexample from uniform key counts to uniform request load."
+      ],
+      "notes": "Consistent hashing is not treated as a guarantee of bounded workload or safe state movement."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed lower/upper keys, gaps/overlaps, monotonic edge inserts, one hot key, shard-count change, stale router epochs, duplicate/gapped deltas, source/destination failure at every cut, one-zone loss, global-constraint conflicts, residency, full disks, and failure during rebalancing."
+      ],
+      "notes": "Once destination accepts authoritative writes, pointer reversal is rejected as rollback."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked exactly-one key ownership, versioned routing, legal replica placement, split/merge coverage, verified snapshot/delta cutover, local/global constraint scope, movement headroom, deterministic hot-key routing, and failure repair capacity; the finite fixture reproduced structural decisions."
+      ],
+      "notes": "Three process replicas are not accepted as three independent failure domains."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed half-open interval adjacency proof, split algebra, online move premises, placement survival predicate, and workload-skew counterexample."
+      ],
+      "notes": "Movement correctness remains conditional on complete ordered idempotent delta and one enforced authority cut."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited sharded, partitioned, replicated, placed, routed, split, merged, moved, rebalanced, hot, colocated, authoritative, fenced, globally unique, caught up, and verified terminology."
+      ],
+      "notes": "Current vendor mechanisms are presented as examples rather than universal partitioning semantics."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/DBE-086/report.json",
+        "CPython 3.14.4 reproduced the finite interval coverage/routing, split-boundary, movement-width, and zone-diversity fixture on macOS 13.7.8 x86_64."
+      ],
+      "notes": "The fixture does not implement a database, directory, replication, consensus, migration, failure, residency system, or workload optimizer."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed range/hash/directory strategies, workload and key design, local/global indexes and constraints, replica placement, split/merge/move, dual-write hazards, rebalancing, hotspots, cross-shard operations, metadata/streams, and validation."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed online move cuts, routing cache epochs, owner fencing, quorum-preserving replica changes, bandwidth/log/disk headroom, rollback, source retention/deletion, failure-domain/residency constraints, noisy tenants, and fault injection."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter derives shard coverage and movement invariants from key ownership, supplies a passing finite model, ten distinct examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external database-vendor, distributed-systems, storage/network provider, security/compliance, operations, or production review is claimed. Conclusions remain conditional on key encoding/order, workload distribution, history and metadata epochs, snapshot/delta completeness, resource-enforced ownership, replication membership, failure-domain independence, constraints/index semantics, residency, capacity, implementation, configuration, and future version drift."
+}

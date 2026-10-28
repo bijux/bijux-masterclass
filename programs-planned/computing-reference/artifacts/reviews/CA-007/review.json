@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module_id": "CA-007",
+  "chapter_digest": "86138c7cbefd908c0326f366972d8d75bfbc8fca3152058e1182da6f7a26f26f",
+  "review_date": "2026-09-04",
+  "source_review": {
+    "status": "passed", "checked_references": 9, "current_claims": "passed", "retrieval_date": "2026-09-04",
+    "notes": "Checked current official RISC-V, Intel and Arm architecture sources; the System V generic ABI and DWARF standard; Unicode 17.0; IETF specifications for CBOR and UTF-8; and the current IEEE 754 record. All nine authoritative URLs returned HTTP 200. ISA and ABI rules, wire-format requirements, text and floating encodings, simplified decoding and engineering recommendations remain separately scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed", "method": "manual_review",
+      "evidence": ["Checked byte-position, width, base-address, little-endian and big-endian positional decoding notation.", "Verified signedness, bit significance, byte address order, alignment and object layout are defined separately."],
+      "notes": "Notation distinguishes abstract values, bit fields, increasing-address byte sequences, native object representations and portable serialization."
+    },
+    "numerical_recomputation": {
+      "status": "passed", "method": "numerical_recomputation",
+      "evidence": ["Recomputed 01 02 03 04 as little-endian 0x04030201 and big-endian 0x01020304.", "Round-tripped both values to the original bytes and decoded ff as unsigned 255 and signed eight-bit -1."],
+      "notes": "The deterministic Python snippet reproduced all seven expected byte, value and round-trip outputs."
+    },
+    "symbolic_recomputation": {
+      "status": "passed", "method": "symbolic_recomputation",
+      "evidence": ["Re-derived little- and big-endian values as positional sums with byte weights 256^i in opposite address mappings.", "Checked subtraction-form bounds validation avoids fixed-width offset-plus-length wrap under the stated unsigned preconditions."],
+      "notes": "The derivations assume fixed-width bytes and declared field boundaries; they do not determine an ABI, device or protocol automatically."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed", "method": "boundary_analysis",
+      "evidence": ["Reviewed non-power widths, unaligned fields, padding, bit-fields, signed extension, narrowing, split immediates, partial stores and mixed-endian records.", "Reviewed DMA addresses, MMIO side effects, offset overflow, unknown tags, noncanonical encodings, malformed UTF-8, pointer serialization, wrong ABI dumps and shared inverse test bugs."],
+      "notes": "Scalar, memory, ABI, instruction, device, wire, file, text, parser and diagnostic boundaries receive distinct treatment."
+    },
+    "invariant_checking": {
+      "status": "passed", "method": "invariant_analysis",
+      "evidence": ["Traced abstract meaning through fixed field bits, address-ordered bytes, access rules, boundary conversion and portable serialization.", "Verified canonical input, parser arithmetic, version tags, device ownership/order, golden vectors and build-aware diagnostics."],
+      "notes": "The invariant set prevents native layout, host order or plausible decoded values from standing in for an explicit interchange contract."
+    },
+    "proof_review": {
+      "status": "passed", "method": "proof_review",
+      "evidence": ["Reviewed fifteen meaning, field, byte, access, extension, layout, boundary, serialization, version, parser, canonical, device, evidence, diagnostic and change obligations.", "Constructed counterexamples for value-as-endian, endian-as-bit-reversal, packed-as-portable, hardware-unaligned-as-language-safe and round-trip-as-format-proof claims."],
+      "notes": "The chapter supplies representation and validation obligations, not formal verification of an ISA, ABI, compiler, protocol parser, device or forensic interpretation."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed", "method": "label_audit",
+      "evidence": ["Audited uses of value, representation, native, portable, canonical, aligned, atomic, signed, valid and decoded.", "Confirmed numerical interpretation, ABI behavior, protocol rules, language constraints, hardware access and test evidence remain separate."],
+      "notes": "The executable conversions are explicitly limited examples rather than proof of target layout, instruction behavior or interoperability."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed", "method": "empirical_reproduction",
+      "evidence": ["artifacts/snippets/CA-007/report.json records source, expected and actual output, stderr, exit status, Python toolchain and environment for byte decoding.", "Reviewed required golden, property, differential, opposite-endian, malformed-input, compiler, ABI, bus, device, dump and reviewer evidence."],
+      "notes": "The passing toy establishes two scalar decodes, two round trips and two byte interpretations only; it provides no evidence for native structs, hardware lanes, parser safety or ABI conformance."
+    }
+  },
+  "conceptual_review": {"status": "passed", "notes": "Reviewed data representation as layered mapping among abstract values, fixed bit fields, addressed bytes, ABI objects, serialized records and interpretation context."},
+  "practitioner_review": {"status": "passed", "notes": "Reviewed implementable concerns including endian decode, extension, narrowing, alignment, padding, bit-fields, instruction immediates, MMIO, DMA, network/file schemas, canonicalization, bounds checks, text, floats, pointers and dumps. Internal practitioner-oriented review only."},
+  "pedagogical_review": {"status": "passed", "notes": "Verified progression from values and byte order through ABIs, instructions and devices to portable formats, secure parsing and debugging, followed by fifteen obligations, fifteen trade-offs, twenty-six misconceptions, ten examples and five complete exercises."},
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external computer-architecture academic, ISA or ABI maintainer, compiler engineer, device or protocol designer, Unicode specialist, parser-security reviewer, forensic analyst, independent-verification or certification review is claimed."
+}

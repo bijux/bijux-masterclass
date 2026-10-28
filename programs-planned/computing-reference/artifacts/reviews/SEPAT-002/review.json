@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-002",
+  "chapter_digest": "f773f71a34178d1ab469c46b870dece454824c18c0b69e30de76289a539a0a13",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked idiom scope and language specificity against Buschmann et al.; framework/library distinction and inversion of control against Fowler plus Johnson-Foote; pattern/framework treatment and edition metadata against Pearson's Gamma et al. record; and Parnas bibliographic metadata against the ACM DOI record. The executable example makes no product-version claim."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked the six-axis descriptive profile, nonexclusive category predicates, embodiment set, inequality between framework and embodied pattern, and schematic library/framework call relations."
+      ],
+      "notes": "All profile components and call-relation symbols are defined at first use and are explicitly descriptive rather than a formal classifier."
+    },
+    "numerical_recomputation": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter asserts no numerical result; the executable evidence is a deterministic call trace, not a numerical model."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Checked that category predicates are intentionally nonexclusive, that an executable framework can embody multiple patterns without identity, and that application-to-library versus framework-to-extension arrows match the narrated control traces."
+      ],
+      "notes": "Mixed systems can contain both call directions; no exclusive framework/library partition is claimed."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed language changes that invalidate idioms, interrupted recipes, callbacks inside otherwise application-controlled libraries, framework lifecycle ownership, one exported object versus Singleton, product-specific scaffolds, and hybrid dependency-injection terminology."
+      ],
+      "notes": "Classification follows the primary claim and interaction; overlapping labels are allowed when their scopes are explicit."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked that code reuse is separated from judgment reuse, principles underdetermine patterns, idioms remain technology-bounded, recipes require recovery assumptions, frameworks own documented lifecycle, and embodiments remain distinct from patterns."
+      ],
+      "notes": "Each category is paired with its appropriate evidence obligations."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No theorem or proof is presented; displayed relations are taxonomic and schematic models whose limits are stated."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited uses of pattern, idiom, principle, recipe, framework, library, mechanism, instance, embodiment, model, and conclusion for consistent scope."
+      ],
+      "notes": "The executable class is described as a small control-flow model, not a production framework or pattern proof."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Ran the annotated Python example and reproduced the exact library return, framework before/extension/after order, and final result; checked that this evidence supports only call direction."
+      ],
+      "notes": "No external adoption, performance, compatibility, or production-quality evidence is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter provides durable, nonexclusive distinctions by primary claim, scope, executability, control, variability, and rationale, while preserving graded boundaries and hybrid artifacts."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Resource management, deployment runbooks, web frameworks, constructor injection, retry policy, project scaffolds, transaction annotations, scheduled jobs, and resilience documentation reflect realistic classification and ownership decisions."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The chapter builds on SEPAT-001, derives each category, verifies control flow in executable form, includes ten distinct classification cases, and advances exercises from retrieval through control tracing, diagnosis, comparison, and artifact decomposition with complete model answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}

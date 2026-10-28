@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "module_id": "ALGE-091",
+  "chapter_digest": "7abf3d935cd8bc1bc24c1cfa5071ecce83b9b70d855c2b59300f1c72b05253a2",
+  "review_date": "2026-09-05",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 8,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-05",
+    "notes": "Checked current official SPEC CPU 2017 run rules and TPC specification index, plus primary or publisher records for GAP, algorithm engineering, rigorous benchmarking, benchmark sensitivity, and benchmark misuse. SPEC CPU 2017 is identified by suite name rather than claimed to be the newest SPEC CPU suite."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Defined population size, sample size, target weight, stratum mean, mixture mean, feature vector, algorithm outcome, and quantile before technical use.",
+        "Distinguished target-frequency weights from experimental sample allocation and count weighting from other possible consequence weights."
+      ],
+      "notes": "All weighting claims state the population and unit to which they apply."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Recomputed the 70/25/5 mixture as 18.0 ms and the equal-count mean as 36.67 ms.",
+        "Recomputed Exercise 2 as an 18.67 ms raw mean and 7.0 ms target-weighted mean; checked three independent endpoint-selection cases and four weighting assertions."
+      ],
+      "notes": "The executable and prose use the same 18.0 ms weighted result."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Derived the mixture identity from the law of total expectation over disjoint strata.",
+        "Checked that equal sample counts affect estimator precision but do not imply equal target weights."
+      ],
+      "notes": "The chapter does not claim an unbiased estimate without an appropriate frame and inclusion design."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed empty, singleton, all-equal, threshold-adjacent, memory-exceeding, giant-key, disconnected, skewed, timeout, and corrupt-input cases.",
+        "Reviewed biased frames, missing failed requests, correlated split leakage, destroyed prefixes, absent graph communities, and workload drift."
+      ],
+      "notes": "Boundary and adversarial panels remain separate from frequency claims."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked immutable identity/provenance, frozen selection, declared weights, dependency-unit split disjointness, symmetric exclusions, and versioned updates.",
+        "The endpoint reference selected exactly the lexicographic first and last record per non-singleton family and the sole record for a singleton family."
+      ],
+      "notes": "Changing suite membership or rules requires a new version and symmetric reruns."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the partition and conditional-expectation premises behind the weighted-estimate derivation.",
+        "Reviewed selection- and split-integrity arguments, including the equivalence-class premise for correlated or derived units."
+      ],
+      "notes": "Causal, independence, and representativeness guarantees are not inferred from deterministic construction alone."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited representative, estimate, coverage, calibration, stress, adversarial, synthetic, authentic, and reproducible language.",
+        "Separated population claims, mechanism evidence, boundary tests, standard-suite comparability, and local decisions."
+      ],
+      "notes": "No workload is described as intrinsically representative."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "artifacts/snippets/ALGE-091/report.json",
+        "The CPython 3.14.4 snippet produced the exact selected records, family counts, and 18.0 weighted mean on macOS 13.7.8 x86_64.",
+        "Independent checks covered singleton, repeated-size, reordered-family, and weighted-arithmetic cases."
+      ],
+      "notes": "Execution proves only reference selection and arithmetic in the recorded environment, not population validity or statistical precision."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "Reviewed decision and population definition, frames, units, behavior features, probability and purposive selection, correlations, traces, generators, scaling, split discipline, exclusions, and benchmark governance."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed immutable manifests, seeds, content identity, provenance, privacy transformations, feature validation, timeouts, resource limits, oracles, drift checks, and symmetric reruns."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The Level-II chapter derives workload construction from decision scope, supplies one reproducible reference implementation, ten distinct worked examples, and five progressive exercises with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal source, mathematical, snippet, conceptual, practitioner, and pedagogical review only; no external academic, statistical, privacy, legal, operational, or production review is claimed. Conclusions remain conditional on the declared decision, population, frame, unit, features, correlations, horizon, selection and split rules, weights, transformations, exclusions, oracles, drift, toolchain, and measurement environment."
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "module_id": "DBE-039",
+  "chapter_digest": "7ea385a0d5116f7c0bf5ab3d9f7da08b23b1e9a3a622b1109aedd8659de0ee4f",
+  "review_date": "2026-08-30",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 10,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-30",
+    "notes": "Reviewed current PostgreSQL 18 index access method, HOT, vacuum, and REINDEX documentation; MySQL 8.4 change-buffer and SQLite VACUUM documentation; the original LSM paper; the PVLDB compaction survey; Graefe bibliographic/publisher metadata; and IBM's ARIES/IM publication record. Nine cited destinations were retained locally after successful retrieval. The Graefe DOI and metadata resolved, but the publisher landing page rejected automated retrieval with HTTP 403. Product behavior is explicitly version/current-documentation scoped."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked the non-overlapping logical, data, index, log, maintenance, temporary, host, and media byte definitions.",
+        "Checked host, device, end-to-end, and fleet boundary distinctions and positive-denominator requirements.",
+        "Checked logical index-entry multiset, snapshot candidate/result, reclamation horizon, and maintenance-debt notation.",
+        "Checked that HOT, bloat, fragmentation, reusable space, rebuild, buffered change, and compaction terms retain engine-specific scope."
+      ],
+      "notes": "The chapter never presents a write-amplification number without a named numerator, denominator, layer, interval, and compatibility premise."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Independently summed logical/data/index/log/maintenance bytes as (140,200,128,328,160).",
+        "Recomputed host bytes as 816 and host write amplification as 5.828571428571428.",
+        "Recomputed device write amplification as 979/816=1.1997549019607843 and end-to-end amplification as 979/140=6.992857142857143.",
+        "Independently verified host_WA times device_WA equals end_WA within 1e-12."
+      ],
+      "notes": "The independent calculation used direct scalar arithmetic and did not import or execute the chapter implementation."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Re-derived H=D+I+G+M+T and WA_host=H/L from the declared ledger categories.",
+        "Re-derived (H/L)(P/H)=P/L by cancellation only for identical nonzero H and compatible attribution windows.",
+        "Re-derived index logical exactness as required entries for every visible row plus authoritative filtering of obsolete candidates.",
+        "Re-derived cleanup safety from absence of permitted snapshot/recovery/replica need and compaction safety from map equivalence plus atomic generation publication."
+      ],
+      "notes": "Composition is explicitly rejected for mismatched compression, replication, device, counter-reset, or time scopes."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero logical bytes for an individual maintenance event, aggregate positive denominators, counter reset/wrap, short windows, delayed cleanup, compression, and multi-volume/fleet scope.",
+        "Reviewed sequential/random/skewed keys, variable entries, dense/sparse pages, cascading splits, predicate transitions, expression/INCLUDE changes, uniqueness, and redundant-looking indexes.",
+        "Reviewed long/abandoned/prepared transactions, recovery and replica horizons, dead/reusable/returned space, wraparound safety, lag, and file-growth exhaustion.",
+        "Reviewed crash/cancel/disk-full/corruption during vacuum, flush, compaction, and online rebuild; duplicate/reordered replay; old readers; replica catch-up; checkpoint overlap; and device garbage collection."
+      ],
+      "notes": "No cleanup or rebuild action is authorized merely by age, allocated file size, or a resettable usage counter."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "The repository verifier matched exact eleven-line stdout, empty stderr, and zero exit status.",
+        "The ledger checks category totals, layered ratios, three-decimal presentation, and exact algebraic composition tolerance.",
+        "Manual review checked entry completeness, no false returned rows after visibility/recheck, horizon-safe reclamation, durable deferred state, atomic publication, and bounded debt obligations.",
+        "Draft validation accepted front matter, section order, ten distinct examples, five exercises/answers, local links, citations, and snippet execution before stopping only for review evidence."
+      ],
+      "notes": "The finite model omits actual pages, WAL, MVCC, compression, filesystem/device counters, replicas, crashes, concurrency, and performance."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the layered-WA cancellation argument and every compatibility assumption line by line.",
+        "Reviewed logical-entry exactness versus permitted obsolete physical candidates and authoritative visibility filtering.",
+        "Reviewed reclamation horizon safety and compaction map-equivalence/publication/recovery reasoning.",
+        "Reviewed all exercise answers for entry fan-out, HOT scope, byte accounting, diagnosis, online rebuild generations, steady-state experimentation, and rollback."
+      ],
+      "notes": "No proof of a vendor implementation, universal fill factor, compaction optimality, workload stability, corruption repair, or production fitness is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The algebraic identity is separated from empirical byte measurement and conditioned on matched boundaries.",
+        "Cleanup and compaction arguments state snapshot, recovery, generation, and publication assumptions.",
+        "The executable ledger is explicitly invented and bounded rather than labeled a benchmark or engine promise.",
+        "Audited free, bloat, online, HOT, exact, safe, durable, bounded, stable, current, and optimal language for scope."
+      ],
+      "notes": "The chapter treats buffering, HOT, vacuum, rebuild, and compaction as mechanisms with conditions and debts, not universal guarantees."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "The standard-library lifecycle byte ledger executed successfully through the repository verifier.",
+        "A separate scalar computation independently reproduced every total and all three amplification ratios.",
+        "Nine cited destinations were successfully retrieved and retained; the Graefe DOI metadata resolved while automated publisher retrieval returned HTTP 403.",
+        "Operational recommendations require steady-state splits, WAL, debt, horizon, cache/I/O, replica, media, recovery, and percentile-latency measurements."
+      ],
+      "notes": "No live DBMS, index page, HOT update, vacuum, REINDEX, change-buffer merge, LSM compaction, filesystem, SSD, replica, crash recovery, or benchmark was executed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter unifies index-entry fan-out, page mutation, version retention, deferred maintenance, logging, lower-layer rewriting, and portfolio decisions without collapsing their distinct boundaries."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Reviewed index dependencies, fill/free-space policy, horizon ownership, maintenance budgets, steady-state debt, rebuild headroom, atomic generation swaps, replicas, recovery, observability, canaries, and rollback."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet, transparent byte ledger, ten distinct cases, and five progressive exercises move from entry effects and algebra through horizon diagnosis, rebuild correctness, and production experimentation."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal authoring, primary/official-source, mathematical, bounded executable-model, conceptual, practitioner, and pedagogical evidence only; no external academic or practitioner review is claimed. The chapter does not certify a database engine's index maintenance, HOT eligibility, vacuum/rebuild/compaction path, filesystem or device amplification, replication topology, benchmark, or production policy."
+}

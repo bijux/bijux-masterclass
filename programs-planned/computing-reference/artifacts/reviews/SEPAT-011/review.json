@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "module_id": "SEPAT-011",
+  "chapter_digest": "c65d919a5d0e8263ca505982351100842d83d5f0b118c137a87468528d8b6df4",
+  "review_date": "2026-08-28",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 7,
+    "current_claims": "passed",
+    "retrieval_date": "2026-08-28",
+    "notes": "Checked Pearson records for Design Patterns, Effective Java, and Domain-Driven Design; Fowler's primary dependency-injection article; the maintained C++ Core Guidelines and cited ownership/resource rules; and bibliographic records for Martin and Seemann-van Deursen. Confirmed that simple factory is presented as common terminology rather than a GoF pattern name."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked creation function domain/codomain, supported-key and valid-configuration subsets, Result success/error forms, product-invariant predicate, failure resource set, exactly-once release statement, cache-key implication, and quantifier scopes."
+      ],
+      "notes": "Creation failure is modeled explicitly; environmental failure remains possible for supported keys."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed both supported formatter cases and the unsupported-key case; independently confirmed sorted line keys yield id=7|state=ready and fixed typed JSON rendering yields the stated compact string."
+      ],
+      "notes": "No performance, capacity, or general serialization number is claimed."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Verified success implies a fully usable product under the declared contract, unsupported keys map to explicit error, failure prohibits escaped owned resources, and equal cache keys require semantic compatibility rather than merely equal identity."
+      ],
+      "notes": "The cache implication is correctly labeled an obligation and does not prove key completeness."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed unknown, empty, malformed, and wrong-type keys; invalid configuration; partial acquisition; timeout/cancellation; double release; secret leakage; mutable cached products; incomplete cache keys; pool leases; concurrency; registry collisions; untrusted plugins; and one-product contraction.",
+        "Reviewed clinical plugin cases for forged/revoked artifacts, ambiguous match, mid-treatment registry change, crash, timeout, resource exhaustion, rollback, and unsafe dynamic loading."
+      ],
+      "notes": "The executable formatter is explicitly bounded to one typed record shape and cannot establish general JSON or delimiter safety."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Checked full initialization, exhaustive documented selection, explicit errors, no partial leaks, ownership/lifecycle visibility, configuration-use separation, safe diagnostics, concrete dependency placement, narrow injected creation power, and removal when policy disappears."
+      ],
+      "notes": "The factory does not permit client concrete-type checks or product callbacks into a global selector."
+    },
+    "proof_review": {
+      "status": "passed",
+      "method": "proof_review",
+      "evidence": [
+        "Reviewed the finite selector case split: json and lines each produce a fresh usable formatter, while xml reaches the single bounded error path. Checked the chapter's explicit non-generalization statement."
+      ],
+      "notes": "No universal serializer, cleanup implementation, concurrency, or security proof is claimed."
+    },
+    "proof_sketch_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "Audited constructor, creation function, simple factory, static factory method, Factory Method, registry, product invariant, ownership, proof, verify, and conclusion terms."
+      ],
+      "notes": "Terminology distinguishes language idioms and the non-GoF simple-factory label from the GoF Factory Method collaboration."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "empirical_reproduction",
+      "evidence": [
+        "Reproduced exact executable output and checked that proposed fault, contract, leak, concurrency, plugin, and clinical reviews are future requirements rather than claimed completed evidence."
+      ],
+      "notes": "No external practitioner, security, safety, or clinical review is claimed."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter distinguishes direct construction, named constructors, functions, closed simple factories, factory objects, registries, containers, builders, Prototype, static factories, and GoF Factory Method while unifying them through selection, validity, error, ownership, and lifecycle contracts."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "Formatter, money, environment configuration, dependency injection, plugins, async clients, pools, caching, cryptographic providers, global-container migration, cloud clients, CSV, and hospital device cases expose realistic implementation and operating obligations."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The review sheet gives precise terminology and contract invariants; the safe executable example covers success and rejection with explicit limitations; ten examples span creation choices and lifecycle; five exercises progress from contract specification through extension, async resources, migration, and high-stakes plugins with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}
