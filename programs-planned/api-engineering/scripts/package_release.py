@@ -16,6 +16,8 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+# Release proofs must not mutate the tree with interpreter cache files.
+os.environ.setdefault("PYTHONDONTWRITEBYTECODE", "1")
 COURSES = [
     "01-openapi-contract-engineering",
     "02-contract-driven-api-service-engineering",
@@ -23,6 +25,10 @@ COURSES = [
     "04-api-reliability-and-observability-engineering",
     "05-api-performance-capacity-and-traffic-engineering",
     "06-event-driven-api-engineering",
+    "07-grpc-and-protobuf-engineering",
+    "08-distributed-api-architecture-and-microservices-engineering",
+    "09-graphql-schema-and-runtime-engineering",
+    "10-api-platform-governance-and-developer-experience-engineering",
 ]
 FIXED_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 
@@ -132,7 +138,7 @@ def inspect_archive(path: Path, prefix: str, expected_members: int) -> dict[str,
 
 def extraction_proof(archive_path: Path, prefix: str) -> dict[str, Any]:
     normalized = prefix.strip("/")
-    with tempfile.TemporaryDirectory(prefix="api-engineering-six-course-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="api-engineering-ten-course-") as temporary:
         target = Path(temporary)
         with zipfile.ZipFile(archive_path) as archive:
             for info in archive.infolist():

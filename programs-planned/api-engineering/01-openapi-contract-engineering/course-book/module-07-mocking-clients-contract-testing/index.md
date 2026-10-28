@@ -1,12 +1,14 @@
 # Module 07 — Mocks, Clients, and Contract Testing
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How do mocks, generated clients, examples, property tests, and stateful tests provide different evidence?
 
 ## Where this module fits
 
-Build a proof ladder from parsing and linting through mocks, clients, property-based tests, and stateful workflows. You arrive from Module 06 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **Security in the Public Contract**.
+Module 06 produced **Map every operation to both providers and compare generated observations with the canonical contract**. This module extends that result by asking: **How do mocks, generated clients, examples, property tests, and stateful tests provide different evidence?**
+
+The new capstone increment is **Build the consumer and contract-test ladder against the mock and both real providers**. It becomes the prerequisite for **Security in the Public Contract**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Build a proof ladder from parsing and linting through mocks, clients, property-b
 - Use generated and property-based tests to explore boundaries.
 - Record tool capability limits instead of hiding them.
 
-## Capstone result
+## Capstone increment
 
 Build the consumer and contract-test ladder against the mock and both real providers.
-
-Mock, generated-client, consumer, negative, and stateful checks exercise the same contract.
 
 ## Core model
 
@@ -371,11 +371,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The Linting, Mocking, Clients, and Contract Testing checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “How do we turn the contract into a development and verification tool rather than a static document?” is now executable in the capstone: Mock, generated-client, consumer, negative, and stateful checks exercise the same contract.
+You are ready to leave this module when you can **Distinguish syntax, semantic linting, conformance, and consumer tests, Develop consumers against a mock without mistaking examples for complete behavior, and Generate and review clients in Python and TypeScript** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Run generated property tests with bounded cases and deterministic reporting; classify every failure** and requiring the following oracle: **custom rules have passing/failing fixtures; mock requests are validated; both generated clients build or import; consumer workflow runs against real providers.**
+
+The cumulative platform now includes **Build the consumer and contract-test ladder against the mock and both real providers**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 08, [Security in the Public Contract](../module-08-security-authentication-authorization/index.md), asks: *How does the contract state who may call an operation and what failures clients can observe without pretending that documentation enforces policy?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Security in the Public Contract](../module-08-security-authentication-authorization/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

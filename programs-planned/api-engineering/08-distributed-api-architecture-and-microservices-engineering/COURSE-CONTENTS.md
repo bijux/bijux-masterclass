@@ -20,7 +20,7 @@ Notification Delivery is extracted first. Artifact Delivery is extracted second.
 
 ## Reader-first course book
 
-The course book contains **59 navigated pages** and approximately **36,700 words**. Orientation is followed by ten full modules. Every numbered module has one stable five-file shape:
+The course book contains **61 navigated pages** and approximately **49,974 words**. Orientation is followed by ten full modules. Every numbered module has one stable five-file shape:
 
 ```text
 index.md

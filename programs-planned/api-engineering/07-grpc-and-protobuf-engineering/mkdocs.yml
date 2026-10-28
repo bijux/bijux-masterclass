@@ -1,105 +1,95 @@
-site_name: "API Engineering 07 \u2014 gRPC and Protobuf Engineering"
-site_description: Reader-first course on typed RPC, Protobuf evolution, streaming,
-  security, lifecycle, and release engineering.
-docs_dir: .
+site_name: gRPC and Protobuf Engineering
+site_description: Course 7 of the API Engineering program
+docs_dir: course-book
 site_dir: site
-theme:
-  name: mkdocs
+use_directory_urls: false
 strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - navigation.indexes
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
 nav:
-- Home: course-book/index.md
-- Start here: course-book/start-here.md
-- Study plan: course-book/study-plan.md
-- Capstone: course-book/capstone.md
-- Standards: course-book/standards.md
-- Language strategy: course-book/language-strategy.md
-- Evidence model: course-book/evidence-model.md
-- Glossary: course-book/glossary.md
-- Orientation: course-book/module-00-orientation/index.md
-- 1. RPC Boundaries, Service Ownership, and Interaction Choice:
-  - Chapter: course-book/module-01-rpc-boundaries-and-service-ownership/index.md
-  - Exercises: course-book/module-01-rpc-boundaries-and-service-ownership/exercises.md
-  - Worked answers: course-book/module-01-rpc-boundaries-and-service-ownership/exercise-answers.md
-  - Lab: course-book/module-01-rpc-boundaries-and-service-ownership/lab.md
-  - Checkpoint: course-book/module-01-rpc-boundaries-and-service-ownership/checkpoint.md
-- 2. Protobuf Modeling, Presence, and Semantic Types:
-  - Chapter: course-book/module-02-protobuf-modeling-presence-and-semantic-types/index.md
-  - Exercises: course-book/module-02-protobuf-modeling-presence-and-semantic-types/exercises.md
-  - Worked answers: course-book/module-02-protobuf-modeling-presence-and-semantic-types/exercise-answers.md
-  - Lab: course-book/module-02-protobuf-modeling-presence-and-semantic-types/lab.md
-  - Checkpoint: course-book/module-02-protobuf-modeling-presence-and-semantic-types/checkpoint.md
-- 3. Wire Format, Unknown Fields, and Compatibility Discipline:
-  - Chapter: course-book/module-03-wire-format-unknown-fields-and-compatibility/index.md
-  - Exercises: course-book/module-03-wire-format-unknown-fields-and-compatibility/exercises.md
-  - Worked answers: course-book/module-03-wire-format-unknown-fields-and-compatibility/exercise-answers.md
-  - Lab: course-book/module-03-wire-format-unknown-fields-and-compatibility/lab.md
-  - Checkpoint: course-book/module-03-wire-format-unknown-fields-and-compatibility/checkpoint.md
-- 4. Unary RPCs, Metadata, Status, and Rich Errors:
-  - Chapter: course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/index.md
-  - Exercises: course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/exercises.md
-  - Worked answers: course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/exercise-answers.md
-  - Lab: course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/lab.md
-  - Checkpoint: course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/checkpoint.md
-- 5. Deadlines, Cancellation, Retries, and Idempotent Calls:
-  - Chapter: course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/index.md
-  - Exercises: course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/exercises.md
-  - Worked answers: course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/exercise-answers.md
-  - Lab: course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/lab.md
-  - Checkpoint: course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/checkpoint.md
-- 6. Streaming RPCs, Flow Control, and Backpressure:
-  - Chapter: course-book/module-06-streaming-rpcs-flow-control-and-backpressure/index.md
-  - Exercises: course-book/module-06-streaming-rpcs-flow-control-and-backpressure/exercises.md
-  - Worked answers: course-book/module-06-streaming-rpcs-flow-control-and-backpressure/exercise-answers.md
-  - Lab: course-book/module-06-streaming-rpcs-flow-control-and-backpressure/lab.md
-  - Checkpoint: course-book/module-06-streaming-rpcs-flow-control-and-backpressure/checkpoint.md
-- 7. Identity, Authorization, mTLS, and Tenant Isolation:
-  - Chapter: course-book/module-07-identity-authorization-mtls-and-tenant-isolation/index.md
-  - Exercises: course-book/module-07-identity-authorization-mtls-and-tenant-isolation/exercises.md
-  - Worked answers: course-book/module-07-identity-authorization-mtls-and-tenant-isolation/exercise-answers.md
-  - Lab: course-book/module-07-identity-authorization-mtls-and-tenant-isolation/lab.md
-  - Checkpoint: course-book/module-07-identity-authorization-mtls-and-tenant-isolation/checkpoint.md
-- 8. Channels, Health, Discovery, Load Balancing, and Lifecycle:
-  - Chapter: course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/index.md
-  - Exercises: course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/exercises.md
-  - Worked answers: course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/exercise-answers.md
-  - Lab: course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/lab.md
-  - Checkpoint: course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/checkpoint.md
-- 9. Generation, Testing, Reflection, and Schema Governance:
-  - Chapter: course-book/module-09-generation-testing-reflection-and-schema-governance/index.md
-  - Exercises: course-book/module-09-generation-testing-reflection-and-schema-governance/exercises.md
-  - Worked answers: course-book/module-09-generation-testing-reflection-and-schema-governance/exercise-answers.md
-  - Lab: course-book/module-09-generation-testing-reflection-and-schema-governance/lab.md
-  - Checkpoint: course-book/module-09-generation-testing-reflection-and-schema-governance/checkpoint.md
-- '10. HTTP, Events, and gRPC in One Architecture: Release and Final Defense':
-  - Chapter: course-book/module-10-http-events-and-grpc-release-and-final-defense/index.md
-  - Exercises: course-book/module-10-http-events-and-grpc-release-and-final-defense/exercises.md
-  - Worked answers: course-book/module-10-http-events-and-grpc-release-and-final-defense/exercise-answers.md
-  - Lab: course-book/module-10-http-events-and-grpc-release-and-final-defense/lab.md
-  - Checkpoint: course-book/module-10-http-events-and-grpc-release-and-final-defense/checkpoint.md
-exclude_docs: 'capstone/**
-
-  assessment/**
-
-  instructor/**
-
-  scripts/**
-
-  tests/**
-
-  reports/**
-
-  README.md
-
-  COURSE-CONTENTS.md
-
-  PREDECESSOR-HANDOFF.md
-
-  NEXT-COURSE-HANDOFF.md
-
-  PRODUCTION-CLAIMS.md
-
-  CHANGELOG.md
-
-  FINAL-VERIFICATION.md
-
-  '
+- Course Introduction: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Standards: standards.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Glossary: glossary.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — RPC Boundaries, Service Ownership, and Interaction Choice:
+  - Chapter: module-01-rpc-boundaries-and-service-ownership/index.md
+  - Exercises: module-01-rpc-boundaries-and-service-ownership/exercises.md
+  - Worked Answers: module-01-rpc-boundaries-and-service-ownership/exercise-answers.md
+  - Lab: module-01-rpc-boundaries-and-service-ownership/lab.md
+  - Checkpoint: module-01-rpc-boundaries-and-service-ownership/checkpoint.md
+- Module 02 — Protobuf Modeling, Presence, and Semantic Types:
+  - Chapter: module-02-protobuf-modeling-presence-and-semantic-types/index.md
+  - Exercises: module-02-protobuf-modeling-presence-and-semantic-types/exercises.md
+  - Worked Answers: module-02-protobuf-modeling-presence-and-semantic-types/exercise-answers.md
+  - Lab: module-02-protobuf-modeling-presence-and-semantic-types/lab.md
+  - Checkpoint: module-02-protobuf-modeling-presence-and-semantic-types/checkpoint.md
+- Module 03 — Wire Format, Unknown Fields, and Compatibility Discipline:
+  - Chapter: module-03-wire-format-unknown-fields-and-compatibility/index.md
+  - Exercises: module-03-wire-format-unknown-fields-and-compatibility/exercises.md
+  - Worked Answers: module-03-wire-format-unknown-fields-and-compatibility/exercise-answers.md
+  - Lab: module-03-wire-format-unknown-fields-and-compatibility/lab.md
+  - Checkpoint: module-03-wire-format-unknown-fields-and-compatibility/checkpoint.md
+- Module 04 — Unary RPCs, Metadata, Status, and Rich Errors:
+  - Chapter: module-04-unary-rpcs-metadata-status-and-rich-errors/index.md
+  - Exercises: module-04-unary-rpcs-metadata-status-and-rich-errors/exercises.md
+  - Worked Answers: module-04-unary-rpcs-metadata-status-and-rich-errors/exercise-answers.md
+  - Lab: module-04-unary-rpcs-metadata-status-and-rich-errors/lab.md
+  - Checkpoint: module-04-unary-rpcs-metadata-status-and-rich-errors/checkpoint.md
+- Module 05 — Deadlines, Cancellation, Retries, and Idempotent Calls:
+  - Chapter: module-05-deadlines-cancellation-retries-and-idempotent-calls/index.md
+  - Exercises: module-05-deadlines-cancellation-retries-and-idempotent-calls/exercises.md
+  - Worked Answers: module-05-deadlines-cancellation-retries-and-idempotent-calls/exercise-answers.md
+  - Lab: module-05-deadlines-cancellation-retries-and-idempotent-calls/lab.md
+  - Checkpoint: module-05-deadlines-cancellation-retries-and-idempotent-calls/checkpoint.md
+- Module 06 — Streaming RPCs, Flow Control, and Backpressure:
+  - Chapter: module-06-streaming-rpcs-flow-control-and-backpressure/index.md
+  - Exercises: module-06-streaming-rpcs-flow-control-and-backpressure/exercises.md
+  - Worked Answers: module-06-streaming-rpcs-flow-control-and-backpressure/exercise-answers.md
+  - Lab: module-06-streaming-rpcs-flow-control-and-backpressure/lab.md
+  - Checkpoint: module-06-streaming-rpcs-flow-control-and-backpressure/checkpoint.md
+- Module 07 — Identity, Authorization, mTLS, and Tenant Isolation:
+  - Chapter: module-07-identity-authorization-mtls-and-tenant-isolation/index.md
+  - Exercises: module-07-identity-authorization-mtls-and-tenant-isolation/exercises.md
+  - Worked Answers: module-07-identity-authorization-mtls-and-tenant-isolation/exercise-answers.md
+  - Lab: module-07-identity-authorization-mtls-and-tenant-isolation/lab.md
+  - Checkpoint: module-07-identity-authorization-mtls-and-tenant-isolation/checkpoint.md
+- Module 08 — Channels, Health, Discovery, Load Balancing, and Lifecycle:
+  - Chapter: module-08-channels-health-discovery-load-balancing-and-lifecycle/index.md
+  - Exercises: module-08-channels-health-discovery-load-balancing-and-lifecycle/exercises.md
+  - Worked Answers: module-08-channels-health-discovery-load-balancing-and-lifecycle/exercise-answers.md
+  - Lab: module-08-channels-health-discovery-load-balancing-and-lifecycle/lab.md
+  - Checkpoint: module-08-channels-health-discovery-load-balancing-and-lifecycle/checkpoint.md
+- Module 09 — Generation, Testing, Reflection, and Schema Governance:
+  - Chapter: module-09-generation-testing-reflection-and-schema-governance/index.md
+  - Exercises: module-09-generation-testing-reflection-and-schema-governance/exercises.md
+  - Worked Answers: module-09-generation-testing-reflection-and-schema-governance/exercise-answers.md
+  - Lab: module-09-generation-testing-reflection-and-schema-governance/lab.md
+  - Checkpoint: module-09-generation-testing-reflection-and-schema-governance/checkpoint.md
+- 'Module 10 — HTTP, Events, and gRPC in One Architecture: Release and Final Defense':
+  - Chapter: module-10-http-events-and-grpc-release-and-final-defense/index.md
+  - Exercises: module-10-http-events-and-grpc-release-and-final-defense/exercises.md
+  - Worked Answers: module-10-http-events-and-grpc-release-and-final-defense/exercise-answers.md
+  - Lab: module-10-http-events-and-grpc-release-and-final-defense/lab.md
+  - Checkpoint: module-10-http-events-and-grpc-release-and-final-defense/checkpoint.md

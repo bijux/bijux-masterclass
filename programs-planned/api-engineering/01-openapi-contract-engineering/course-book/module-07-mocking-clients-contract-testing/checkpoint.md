@@ -2,7 +2,7 @@
 
 ## Required result
 
-Mock, generated-client, consumer, negative, and stateful checks exercise the same contract.
+Build the consumer and contract-test ladder against the mock and both real providers.
 
 ## Demonstrate
 
@@ -24,11 +24,21 @@ make -C capstone schemathesis
 make -C capstone confirm
 ```
 
+## Evidence to retain
+
+- baseline transcript proving the previous checkpoint before **Mocks, Clients, and Contract Testing** changes
+- the exact source, fixture, contract, migration, or configuration diff that implements **Mocks, Clients, and Contract Testing**
+- focused result for: Distinguish syntax, semantic linting, conformance, and consumer tests.
+- public, durable, security, or operational observation showing: Mock, generated-client, consumer, negative, and stateful checks exercise the same contract.
+- minimized planted-defect failure and repaired regression
+- primary/comparison-track note for **Mocks, Clients, and Contract Testing**
+- a limitation statement naming every live dependency required to support the strongest **Mocks, Clients, and Contract Testing** claim but not exercised
+
 ## Defend the design
 
 1. Answer the central question: **How do we turn the contract into a development and verification tool rather than a static document?**
 2. Demonstrate this capstone result: Mock, generated-client, consumer, negative, and stateful checks exercise the same contract.
-3. Show the planted defect, the first failing oracle, and the retained regression.
+3. Show the **Mocks, Clients, and Contract Testing** defect, the first failing oracle, and the exact regression retained after repair.
 4. State exactly which database, network, process, telemetry backend, or operated exercise was not run in the current environment.
 
 ## Continue only when

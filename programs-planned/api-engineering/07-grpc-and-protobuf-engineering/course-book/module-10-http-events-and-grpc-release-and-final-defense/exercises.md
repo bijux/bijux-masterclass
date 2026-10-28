@@ -1,6 +1,6 @@
-# Exercises — HTTP, Events, and gRPC in One Architecture: Release and Final Defense
+# Exercises — Module 10: HTTP, Events, and gRPC in One Architecture: Release and Final Defense
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **HTTP, Events, and gRPC in One Architecture: Release and Final Defense**, every response must settle this question: **How do we introduce an internal RPC control plane without breaking the public HTTP contract, durable event history, database authority, security profile, or rollback path?** Conclude each problem with a release decision: what may proceed, what must be rejected, and what remains unproven by the available environment.
 
 ## 1. Assign one responsibility each to public HTTP, durable events, local calls, and gRPC.
 

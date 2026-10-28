@@ -1,26 +1,24 @@
-# Schema Evolution, Federation, Governance, and Final Defense
+# Module 10 — Schema Evolution, Federation, Governance, and Final Defense
 
-**Module 10 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How does the graph evolve without breaking clients, erasing service ownership, or becoming an ungoverned platform?
+> **Central question:** How does the graph evolve without breaking clients, erasing service ownership, or becoming an ungoverned platform?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 10 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 09 produced **Deliver resumable run updates with gap and duplicate handling**. This final module consolidates the course by asking: **How does the graph evolve without breaking clients, erasing service ownership, or becoming an ungoverned platform?**
+
+The capstone must now deliver **Approve Graph API 1.0, reject breaking candidates, and publish Course 10 handoff** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **Analysis Graph API 1.0, GraphQL September 2025 schema, persisted operation registry, resolver ownership, demand policy, resumable subscriptions, compatibility gates, and platform-publication metadata.**
 
 ## Learning outcomes
 
-- classify schema evolution by client direction
+- Classify schema evolution by client direction.
+- Govern field ownership.
+- Evaluate federation without cargo culting.
+- Run an operation-aware release gate.
+- Publish a sanitized platform handoff.
 
-- govern field ownership
-
-- evaluate federation without cargo culting
-
-- run an operation-aware release gate
-
-- publish a sanitized platform handoff
-
-## Capstone result
+## Capstone increment
 
 Approve Graph API 1.0, reject breaking candidates, and publish Course 10 handoff.
 
@@ -191,3 +189,13 @@ Both tracks classify changes identically and apply the same release gate. Extern
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-10-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **classify schema evolution by client direction, govern field ownership, and evaluate federation without cargo culting** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject source failure and retry cases** and requiring the following oracle: **invalidates a supported operation;; narrows accepted input unexpectedly;; increases null-bubbling blast radius without migration evidence;; creates unbounded demand or fan-out;.**
+
+The cumulative platform now includes **Approve Graph API 1.0, reject breaking candidates, and publish Course 10 handoff**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 10 may treat only the manifested handoff as settled.

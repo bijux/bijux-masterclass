@@ -1,6 +1,6 @@
-# Exercises — SDKs, CLIs, Artifacts, SBOMs, and Provenance
+# Exercises — Module 08: SDKs, CLIs, Artifacts, SBOMs, and Provenance
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **SDKs, CLIs, Artifacts, SBOMs, and Provenance**, every response must settle this question: **How can developer artifacts remain convenient, idiomatic, reproducible, and traceable to the contracts that produced them?** Use the cumulative platform, not an invented toy system. Preserve inherited guarantees and make every new assumption explicit and falsifiable.
 
 ## 1. Why is generated code not automatically a good SDK?
 

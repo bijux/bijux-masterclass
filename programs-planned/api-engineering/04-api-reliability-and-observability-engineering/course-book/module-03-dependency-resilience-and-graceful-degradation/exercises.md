@@ -1,5 +1,7 @@
 # Exercises — Module 03: Dependency Resilience and Graceful Degradation
 
+Work through all twelve problems before opening the answers. In **Dependency Resilience and Graceful Degradation**, every response must settle this question: **How should circuits, bulkheads, and degradation be scoped so they contain rather than hide dependency failure?** Do not stop at terminology. Show how the decision changes a request, durable state, consumer, operator action, or release result, and state how that consequence is tested.
+
 ## 1. When should a circuit breaker not be used?
 
 ## 2. Why is a bulkhead different from rate limiting?

@@ -1,26 +1,27 @@
-# Distributed Workflows, Sagas, Compensation, and Process Managers
+# Module 05 — Distributed Workflows, Sagas, Compensation, and Process Managers
 
-**Module 05 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How do we preserve business intent when one workflow crosses services that cannot share a transaction?
+> **Central question:** How do we preserve business intent when one workflow crosses services that cannot share a transaction?
 
-## Place in the program
+## Where this module fits
 
-Course 7 introduced typed internal RPC but deliberately refused to equate a remote method with an independently owned service. Course 8 now uses ownership, data, failure, release, and operational evidence to decide which capabilities deserve distribution.
+Module 04 produced **Publish an acyclic synchronous dependency graph, one edge-owned deadline budget, bounded fan-out rules, and a gateway composition path that degrades truthfully**. This module extends that result by asking: **How do we preserve business intent when one workflow crosses services that cannot share a transaction?**
+
+The new capstone increment is **Implement the artifact-publication and run-completion saga with durable step identity, semantic locks, compensation, timeout handling, and operator-visible reconciliation**. It becomes the prerequisite for **Service Identity, Authorization, and Trust Propagation**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- distinguish local ACID transactions from distributed workflow guarantees
-- choose orchestration or choreography from ownership and visibility needs
-- design idempotent saga steps and stable command identities
-- write compensations that restore business meaning rather than pretend to erase history
-- handle timeout, duplicate, reordering, and crash recovery in process managers
-- identify workflows that should be redesigned instead of wrapped in a saga
+- Distinguish local ACID transactions from distributed workflow guarantees.
+- Choose orchestration or choreography from ownership and visibility needs.
+- Design idempotent saga steps and stable command identities.
+- Write compensations that restore business meaning rather than pretend to erase history.
+- Handle timeout, duplicate, reordering, and crash recovery in process managers.
+- Identify workflows that should be redesigned instead of wrapped in a saga.
 
-## Capstone result
+## Capstone increment
 
 Implement the artifact-publication and run-completion saga with durable step identity, semantic locks, compensation, timeout handling, and operator-visible reconciliation.
-
 
 ## There is no cross-service rollback button
 
@@ -147,6 +148,7 @@ Both reference tracks implement the same state transitions and duplicate handlin
 ## Evidence required before Module 6
 
 Demonstrate happy path, duplicate storage, timeout-after-commit reconciliation, stale-attempt compensation, and idempotent completion. Explain why Notification Delivery is outside the saga’s success condition.
+
 ## A saga is durable decision state, not a sequence diagram
 
 A sequence diagram shows the happy path. A process manager must survive every interruption between steps. Its durable record needs enough information to decide what to do after restart:
@@ -325,3 +327,13 @@ Manual review is not an excuse for missing design. It is a controlled response t
 Analysis Control owns the process manager because it owns the final run decision and current attempt. Artifact Service owns artifact effects and compensation execution. Notification is outside the completion saga because its outcome does not change run truth.
 
 This design keeps the process manager from becoming a universal workflow engine. A process manager should own one business outcome, not every interaction in the organization.
+
+## Module synthesis
+
+You are ready to leave this module when you can **distinguish local ACID transactions from distributed workflow guarantees, choose orchestration or choreography from ownership and visibility needs, and design idempotent saga steps and stable command identities** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject timeout after artifact commit and prove retry returns the existing artifact** and requiring the following oracle: **Happy and duplicate schedules complete once; stale attempts cannot complete; compensation is idempotent; no ambiguous effect remains unexplained.**
+
+The cumulative platform now includes **Implement the artifact-publication and run-completion saga with durable step identity, semantic locks, compensation, timeout handling, and operator-visible reconciliation**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Service Identity, Authorization, and Trust Propagation](../module-06-service-identity-authorization-and-trust-propagation/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

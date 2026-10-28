@@ -1,6 +1,6 @@
-# Exercises — Module 01 — Event Thinking, Ownership, and Message Taxonomy
+# Exercises — Module 01: Event Thinking, Ownership, and Message Taxonomy
 
-Answer from semantics and durable ownership, not from broker features.
+Work through all twelve problems before opening the answers. In **Event Thinking, Ownership, and Message Taxonomy**, every response must settle this question: **Which interactions are commands, immutable facts, queries, notifications, or private domain events, and who owns each public fact?** A complete response identifies the contract owner, predicts one observable failure, and names the evidence that decides the case; a definition by itself is incomplete.
 
 ## 1. Classify the run-submission flow
 

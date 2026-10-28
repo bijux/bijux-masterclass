@@ -1,23 +1,25 @@
-# Channels, Health, Discovery, Load Balancing, and Lifecycle
+# Module 08 — Channels, Health, Discovery, Load Balancing, and Lifecycle
 
-**Module 08 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How do clients and servers manage long-lived channels, instance health, name resolution, load balancing, startup, draining, and shutdown without hiding failure or losing active work?
+> **Central question:** How do clients and servers manage long-lived channels, instance health, name resolution, load balancing, startup, draining, and shutdown without hiding failure or losing active work?
 
-## Place in the program
+## Where this module fits
 
-After security, the RPC system can establish trusted calls. It still needs an operational lifecycle. gRPC channels maintain connectivity state, subchannels, backoff, and reusable transport; servers expose health and may drain while streams are active. This module connects Course 4 reliability practices to gRPC-specific behavior and prevents simplistic “the port is open” operational claims.
+Module 07 produced **Implement RPC security profile 1.0 with method policy, workload and user identity binding, tenant-isolation vectors, mTLS-ready configuration, and secure worker-stream authorization**. This module extends that result by asking: **How do clients and servers manage long-lived channels, instance health, name resolution, load balancing, startup, draining, and shutdown without hiding failure or losing active work?**
+
+The new capstone increment is **Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration**. It becomes the prerequisite for **Generation, Testing, Reflection, and Schema Governance**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- treat channels as long-lived managed resources rather than create-per-call sockets
-- separate process liveness, service readiness, and standard gRPC health status
-- reason about name resolution, endpoint changes, load-balancing policy, and connection backoff
-- configure keepalive, idle behavior, maximum connection age, and wait-for-ready safely
-- drain unary and streaming RPCs during graceful shutdown
-- expose reflection and diagnostics according to environment and authorization policy
+- Treat channels as long-lived managed resources rather than create-per-call sockets.
+- Separate process liveness, service readiness, and standard gRPC health status.
+- Reason about name resolution, endpoint changes, load-balancing policy, and connection backoff.
+- Configure keepalive, idle behavior, maximum connection age, and wait-for-ready safely.
+- Drain unary and streaming RPCs during graceful shutdown.
+- Expose reflection and diagnostics according to environment and authorization policy.
 
-## Capstone result
+## Capstone increment
 
 Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration.
 
@@ -125,3 +127,13 @@ Read `capstone/operations/service-config.json`, `lifecycle-policy.yaml`, and `ca
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Generation, Testing, Reflection, and Schema Governance**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **treat channels as long-lived managed resources rather than create-per-call sockets, separate process liveness, service readiness, and standard gRPC health status, and reason about name resolution, endpoint changes, load-balancing policy, and connection backoff** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration** and requiring the following oracle: **New work stops entering a draining instance, admitted work either finishes or terminates within the declared bound, clients reconnect with bounded backoff, durable state remains correct across instances, and health/reflection exposure matches policy.**
+
+The cumulative platform now includes **Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Generation, Testing, Reflection, and Schema Governance](../module-09-generation-testing-reflection-and-schema-governance/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

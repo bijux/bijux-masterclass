@@ -1,6 +1,6 @@
 # Exercises — Module 08: Abuse Resistance and Resource Budgets
 
-For questions 1–10, give a direct decision, governing invariant, smallest counterexample, decisive proof, and evidence limitation.
+Work through all twelve problems before opening the answers. In **Abuse Resistance and Resource Budgets**, every response must settle this question: **How can the service resist brute force and resource exhaustion without turning traffic control into false authorization?** Use the cumulative platform, not an invented toy system. Preserve inherited guarantees and make every new assumption explicit and falsifiable.
 
 ## 1. Why is request count an incomplete cost metric?
 

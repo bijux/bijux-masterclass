@@ -1,12 +1,14 @@
 # Module 06 — Durable Workers and Recovery
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** What makes a 202 Accepted operation honest after the API process or worker dies?
 
 ## Where this module fits
 
-Build a PostgreSQL-backed job protocol with claims, leases, generations, heartbeats, cancellation, and recovery. You arrive from Module 05 with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result is the baseline for **Streaming and Artifact Integrity**.
+Module 05 produced **Implement owner-bound, filter-bound, high-water keyset traversal and evidence-backed query plans**. This module extends that result by asking: **What makes a 202 Accepted operation honest after the API process or worker dies?**
+
+The new capstone increment is **Add durable jobs, leases, heartbeats, fencing, cancellation, duplicate-safe effects, and abandoned-work recovery**. It becomes the prerequisite for **Streaming and Artifact Integrity**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Build a PostgreSQL-backed job protocol with claims, leases, generations, heartbe
 - Recover abandoned jobs safely.
 - Make duplicate execution converge on one durable outcome.
 
-## Capstone result
+## Capstone increment
 
 Add durable jobs, leases, heartbeats, fencing, cancellation, duplicate-safe effects, and abandoned-work recovery.
-
-Analysis work survives restart, abandoned leases are recovered, and stale workers cannot overwrite newer results.
 
 ## Core model
 
@@ -32,10 +32,10 @@ Accepted work must exist durably before the response, be claimable by one active
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Durable Workers and Recovery** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Add durable jobs, leases, heartbeats, fencing, cancellation, duplicate-safe effects, and abandoned-work recovery
 
 
 ### 1. Durable acceptance
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Durable Workers and Recovery**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: Define queued, leased, succeeded, failed, and retry states for job rows separately from public run states.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Durable Workers and Recovery**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: What makes a 202 Accepted operation honest after the API process or worker dies?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -250,8 +251,7 @@ async def complete_job(self, claim: ClaimedJob, result: Result) -> bool:
     )
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Durable Workers and Recovery** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -568,7 +568,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Durable Workers and Recovery** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Add durable jobs, leases, heartbeats, fencing, cancellation, duplicate-safe effects, and abandoned-work recovery The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -593,7 +593,8 @@ These are the smallest useful entry points for **Durable Workers and Recovery**.
 
 ### Python — `capstone/tracks/python-fastapi/src/analysis_service/worker.py`
 
-```python
+```text
+# Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 READ_CHUNK_SIZE = 64 * 1024
 
 
@@ -663,7 +664,8 @@ class Worker:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/worker.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
   webhookSignature,
 } from "./webhooks.js";
 
@@ -735,8 +737,10 @@ Compare the two tracks by this invariant: **a lease generation prevents an expir
 
 ## Module synthesis
 
-The module answer to “What internal machinery makes `202 Accepted` honest after API or worker processes die?” is now executable in the capstone: Analysis work survives restart, abandoned leases are recovered, and stale workers cannot overwrite newer results.
+You are ready to leave this module when you can **Separate durable acceptance from execution, Claim work without holding a long transaction, and Fence stale workers with lease generation** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a terminal update by run ID only; prove a stale worker overwrites, repair with generation fencing, and retain the process test** and requiring the following oracle: **After a worker is killed, no terminal effect occurs before lease expiry; a new generation completes once, and the stale generation cannot overwrite it.**
+
+The cumulative platform now includes **Add durable jobs, leases, heartbeats, fencing, cancellation, duplicate-safe effects, and abandoned-work recovery**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 07, [Streaming and Artifact Integrity](../module-07-streaming-artifact-integrity/index.md), asks: *How do large request and response bodies move through the service without unbounded memory or corrupt publication?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Streaming and Artifact Integrity](../module-07-streaming-artifact-integrity/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

@@ -1,23 +1,25 @@
-# Unary RPCs, Metadata, Status, and Rich Errors
+# Module 04 — Unary RPCs, Metadata, Status, and Rich Errors
 
-**Module 04 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How should a unary RPC expose success and failure so that generated clients receive stable application meaning rather than transport accidents or leaked internals?
+> **Central question:** How should a unary RPC expose success and failure so that generated clients receive stable application meaning rather than transport accidents or leaked internals?
 
-## Place in the program
+## Where this module fits
 
-The first three modules established a justified boundary, precise messages, and compatibility discipline. This module makes the simplest remote interaction honest. Unary RPC is not “call a function over the network.” It has metadata, one request message, one response message, a final status, and potentially structured error details. Those pieces must map cleanly to the application without turning transport conventions into business state.
+Module 03 produced **Publish Analysis RPC compatibility policy 1.0, golden wire fixtures, and a release report that accepts one additive candidate while rejecting unsafe tag, enum, and method-shape changes**. This module extends that result by asking: **How should a unary RPC expose success and failure so that generated clients receive stable application meaning rather than transport accidents or leaked internals?**
+
+The new capstone increment is **Implement `CreateRun`, `GetRun`, and `CancelRun` with shared status vectors, safe metadata policy, and equivalent Python and TypeScript client behavior**. It becomes the prerequisite for **Deadlines, Cancellation, Retries, and Idempotent Calls**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- implement thin unary server adapters around application use cases
-- separate transport metadata from business request fields
-- map application outcomes to stable gRPC status codes
-- design safe structured error details without leaking internal state
-- compose interceptors for authentication, authorization, tracing, and policy without hiding business logic
-- translate internal gRPC outcomes back to the existing public HTTP Problem Details contract
+- Implement thin unary server adapters around application use cases.
+- Separate transport metadata from business request fields.
+- Map application outcomes to stable gRPC status codes.
+- Design safe structured error details without leaking internal state.
+- Compose interceptors for authentication, authorization, tracing, and policy without hiding business logic.
+- Translate internal gRPC outcomes back to the existing public HTTP Problem Details contract.
 
-## Capstone result
+## Capstone increment
 
 Implement `CreateRun`, `GetRun`, and `CancelRun` with shared status vectors, safe metadata policy, and equivalent Python and TypeScript client behavior.
 
@@ -121,3 +123,13 @@ Study `capstone/rpc-case/status-policy.yaml`, `capstone/shared/vectors/status.js
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Deadlines, Cancellation, Retries, and Idempotent Calls**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **implement thin unary server adapters around application use cases, separate transport metadata from business request fields, and map application outcomes to stable gRPC status codes** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject a duplicate singleton authorization header and confirm edge rejection** and requiring the following oracle: **Expected application outcomes map to one safe, documented status and details profile. Post-commit response loss never creates a second run when the bound request identifier is reused. Transport cancellation does not falsely imply rollback, and public HTTP behavior remains conformant.**
+
+The cumulative platform now includes **Implement `CreateRun`, `GetRun`, and `CancelRun` with shared status vectors, safe metadata policy, and equivalent Python and TypeScript client behavior**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Deadlines, Cancellation, Retries, and Idempotent Calls](../module-05-deadlines-cancellation-retries-and-idempotent-calls/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

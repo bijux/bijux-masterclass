@@ -1,22 +1,24 @@
-# Governance as Code, Evidence, Scorecards, and Exceptions
+# Module 04 — Governance as Code, Evidence, Scorecards, and Exceptions
 
-**Module 04 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** How can governance scale without becoming either a rubber stamp or a centralized release bottleneck?
+> **Central question:** How can governance scale without becoming either a rubber stamp or a centralized release bottleneck?
 
-## Place in the program
+## Where this module fits
 
-Module 03 created trustworthy release subjects. Module 04 decides which subjects may advance and how evidence, judgment, and temporary risk acceptance are represented.
+Module 03 produced **Register the four inherited interface releases by digest and publication evidence**. This module extends that result by asking: **How can governance scale without becoming either a rubber stamp or a centralized release bottleneck?**
+
+The new capstone increment is **Publish the policy pack, evidence ledger, exception register, and release scorecards**. It becomes the prerequisite for **Lifecycle, Compatibility, Deprecation, and Retirement**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- design deterministic policy rules around authoritative evidence
-- preserve pass, review, and fail semantics
-- build evidence-backed scorecards without vanity averages
-- model temporary exceptions and compensating controls
-- federate policy ownership across platform and domain teams
+- Design deterministic policy rules around authoritative evidence.
+- Preserve pass, review, and fail semantics.
+- Build evidence-backed scorecards without vanity averages.
+- Model temporary exceptions and compensating controls.
+- Federate policy ownership across platform and domain teams.
 
-## Capstone result
+## Capstone increment
 
 Publish the policy pack, evidence ledger, exception register, and release scorecards.
 
@@ -57,7 +59,6 @@ Analysis RPC API lacks a browser console example. `DOC-002` would normally be ma
 ## Implementation review
 
 The policy core evaluates findings in severity order. The first blocker failure determines rejection. Exception validation is separate and requires scope and expiry. The scorecard projects evidence by dimension and preserves blocker identity.
-
 
 ## Policy architecture
 
@@ -156,7 +157,6 @@ Measure governance itself:
 If review latency grows while risk does not change, improve delegation,
 automation, or rule clarity. Governance is an operable service, not a timeless
 set of commandments.
-
 
 ## Example rule evaluation
 
@@ -320,3 +320,13 @@ function policyDecision(findings: Finding[]): string {
 The next step is not to assign weights. It is to attach each finding to a
 subject, rule, fresh evidence record, remediation, and—where allowed—an expiring
 exception.
+
+## Module synthesis
+
+You are ready to leave this module when you can **design deterministic policy rules around authoritative evidence, preserve pass, review, and fail semantics, and build evidence-backed scorecards without vanity averages** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **The first passes, the second requires review, the security failure rejects, and the expiry-free exception is invalid.**
+
+The cumulative platform now includes **Publish the policy pack, evidence ledger, exception register, and release scorecards**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Lifecycle, Compatibility, Deprecation, and Retirement](../module-05-lifecycle-deprecation-and-retirement/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

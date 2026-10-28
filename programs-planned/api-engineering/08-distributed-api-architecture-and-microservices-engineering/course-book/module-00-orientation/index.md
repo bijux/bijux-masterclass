@@ -1,112 +1,59 @@
-# Orientation — freeze the predecessor and define the extraction laboratory
+# Orientation — Distributed API Architecture and Microservices Engineering
 
-Course 8 begins by proving that Course 7’s handoff is unchanged. The handoff contains RPC contracts, migration history, ownership records, interaction decisions, release evidence, shared vectors, and the service-boundary dossier. Do not redesign from memory.
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-## Orientation outcome
+> **Orientation question:** Is the incoming boundary exact, and can you explain why Course 8 owns the next engineering responsibility?
 
-By the end of orientation you can trace one run through every current contract and identify which decisions are still local. You have selected a primary language track, executed the dependency-light proof, and recorded which claims require a live database or deployment environment.
+## Why this orientation exists
 
-## Step 1 — verify the handoff
+Course 8 starts from accumulated guarantees rather than an empty repository. Orientation prevents a stale handoff, an unavailable tool, or an accidental version change from contaminating the ten teaching days. The goal is not setup for its own sake; it is to make the first claim of **Distributed API Architecture and Microservices Engineering** honest.
 
-Run:
+## Incoming boundary
 
-```bash
-make predecessor-proof
-```
+The Course 7 platform with governed HTTP, event, and RPC interfaces and migration history through 015.
 
-The handoff manifest must verify exactly. A changed predecessor invalidates later comparison evidence.
+Verify that boundary before editing. Compare the predecessor bytes or entry evidence, inspect the version ledger, and identify which artifacts are historical inputs. A hard implementation problem in Course 8 must be solved at the current layer, not by rewriting an earlier contract or proof.
 
-Read:
+## Course responsibility
 
-```text
-capstone/predecessor/handoff/service-boundary-dossier.yaml
-capstone/predecessor/handoff/rpc-case/interaction-decisions.yaml
-capstone/predecessor/handoff/rpc-case/service-ownership.yaml
-capstone/predecessor/handoff/contracts/compatibility-policy.yaml
-```
+Use ownership and failure evidence to approve, reject, extract, operate, and reverse service boundaries without creating a distributed monolith.
 
-## Step 2 — trace the existing platform
+The governing question is:
 
-Trace one successful analysis through:
+> When does a remote service boundary create more value than the coordination, latency, consistency, security, release, and operational costs it introduces?
 
-```text
-public HTTP request
-→ local application command
-→ database transaction
-→ durable event publication
-→ worker gRPC interaction
-→ artifact publication
-→ run completion
-→ notification delivery
-```
+The current version state is:
 
-Mark:
+> HTTP API 1.2, Events API 1.0, and RPC API 1.0 preserved; distributed architecture profile 1.0 introduced; owner-local migration histories begin.
 
-- each authoritative writer;
-- each transaction boundary;
-- each stable effect identity;
-- each synchronous deadline;
-- each event or RPC contract;
-- each security decision;
-- each recovery mechanism.
+## Reader route
 
-The current platform is a modular service with external dependencies and worker processes. Do not call every process a microservice.
+Use the course book in this order:
 
-## Step 3 — distinguish five boundaries
+1. [Course introduction](../index.md) for the complete module arc;
+2. [Capstone](../capstone.md) for the cumulative Analysis Runs Platform state;
+3. [Standards](../standards.md) for normative and course-profile boundaries;
+4. [Evidence model](../evidence-model.md) for authoritative versus diagnostic proof;
+5. [Language strategy](../language-strategy.md) before opening implementation code.
+6. Re-read the list through this course’s lens: **Distribute ownership deliberately**.
 
-Explain the difference between:
+The chapter teaches the model. Exercises force transfer. Worked answers expose reasoning. The lab attacks one mechanism. The checkpoint decides whether the result is strong enough to carry into the next module.
 
-### Process boundary
+## Implementation route
 
-Separate operating-system process. It may still belong to one service and one release.
+The course strategy is **one primary implementation track plus one comparative reference track**. Record the selected route and the reason it supports your learning goal. Do not switch runtimes in the middle of a failed mechanism; first determine whether the model, the implementation, or the environment is wrong.
 
-### Deployment boundary
+## Evidence boundary
 
-Can be rolled out separately. This does not prove data, change, or ownership independence.
+List the proof routes available on your machine and classify them as deterministic, local process, live persistence/network, documentation, or independent-tool evidence. The first stronger environment-backed claim is **multi-process service topology with version skew**. Until that route actually runs, use narrower wording and record it as `not-executed`.
 
-### Service boundary
+## Readiness test
 
-Owns a coherent capability, interfaces, operations, and—when applicable—authoritative data.
+You are ready for [Distribution Economics, Boundary Evidence, and Architecture Fitness Functions](../module-01-distribution-economics-and-boundary-evidence/index.md) when you can explain, without repository jargon:
 
-### Data-ownership boundary
-
-Exactly one authority writes a fact and governs its migration, retention, and recovery.
-
-### Team boundary
-
-One accountable group can approve changes, operate the capability, and respond to incidents.
-
-These boundaries sometimes align. Assuming they always align creates distributed monoliths.
-
-## Step 4 — choose a primary track
-
-```bash
-make python-proof
-make typescript-proof
-```
-
-Select one track for implementation work. Record the other as comparative evidence.
-
-## Step 5 — run the baseline
-
-```bash
-make boundary-proof
-make capstone-tour
-make core-proof
-```
-
-The tour should complete a run, store one artifact effect, complete the saga, create one notification effect, and report clean reconciliation.
-
-## Readiness diagnostic
-
-You are ready for Module 1 when you can answer:
-
-1. Why does a remote method not automatically imply a service?
-2. Which current facts must remain in one Analysis Control transaction?
-3. Why can Notification fail without changing run completion truth?
-4. What makes Artifact a plausible but conditional extraction?
-5. Why is Worker Plane a separate deployment but not a data owner?
-6. Which Course 7 proof would be invalidated by a shared database?
-7. Which parts of the baseline are environment-backed rather than dependency-light?
-
-Record any weak answer before continuing.
+1. what the predecessor already settled;
+2. what Course 8 is allowed to change;
+3. which versions and profiles are independent axes;
+4. which implementation route you selected;
+5. which evidence classes are available;
+6. what the outgoing handoff must prove: Distributed Architecture Profile 1.0, explicit service and data ownership, versioned projections, saga and trust policies, independent release choreography, extraction evidence, and a GraphQL boundary brief.

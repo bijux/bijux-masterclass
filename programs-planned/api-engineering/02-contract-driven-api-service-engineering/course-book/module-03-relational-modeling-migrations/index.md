@@ -1,12 +1,14 @@
 # Module 03 — Relational Modeling and Migrations
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** How should relational structure and migrations reinforce rather than merely store application invariants?
 
 ## Where this module fits
 
-Design tables, keys, constraints, indexes, repositories, pools, and forward migrations from the domain rules. You arrive from Module 02 with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result is the baseline for **Transactions, Concurrency, ETags, and Idempotency**.
+Module 02 produced **Implement project, dataset, run, cancellation, and artifact rules as testable domain behavior**. This module extends that result by asking: **How should relational structure and migrations reinforce rather than merely store application invariants?**
+
+The new capstone increment is **Persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations**. It becomes the prerequisite for **Transactions, Concurrency, ETags, and Idempotency**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Design tables, keys, constraints, indexes, repositories, pools, and forward migr
 - Own migrations explicitly and apply them from an empty database.
 - Map rows to domain objects without leaking persistence shape.
 
-## Capstone result
+## Capstone increment
 
 Persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations.
-
-Projects, datasets, runs, jobs, artifacts, idempotency records, and subscriptions survive restart.
 
 ## Core model
 
@@ -32,10 +32,10 @@ The relational model is a second line of defense and a durable coordination surf
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Relational Modeling and Migrations** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations
 
 
 ### 1. Relational identity
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Relational Modeling and Migrations**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: Derive tables from durable facts, not from route names.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Relational Modeling and Migrations**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: How should relational structure and migrations reinforce rather than merely store application invariants?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -245,8 +246,7 @@ async def create_project(self, owner_id: str, project_id: str, name: str) -> Pro
     return map_project(row)
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Relational Modeling and Migrations** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -552,7 +552,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Relational Modeling and Migrations** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -577,7 +577,8 @@ These are the smallest useful entry points for **Relational Modeling and Migrati
 
 ### Python — `capstone/tracks/python-fastapi/src/analysis_service/migrations.py`
 
-```python
+```text
+# Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 LOCK_ID = 734_246_110
 
 
@@ -637,7 +638,8 @@ def apply_migrations(
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/migrations.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 import pg from "pg";
 
 const { Client } = pg;
@@ -699,8 +701,10 @@ Compare the two tracks by this invariant: **ordered migration names, one migrati
 
 ## Module synthesis
 
-The module answer to “How does PostgreSQL reinforce the service invariants instead of acting as an unstructured persistence dictionary?” is now executable in the capstone: Projects, datasets, runs, jobs, artifacts, idempotency records, and subscriptions survive restart.
+You are ready to leave this module when you can **Map relationships and ownership to keys and constraints, Use nullability and checks to exclude invalid states, and Choose indexes from actual query patterns** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a removed ownership component in one foreign key, reproduce cross-owner insertion, restore the constraint with a new local migration, and preserve the test** and requiring the following oracle: **The database—not a mock—must reject an impossible owner/reference/state relation with the named constraint and SQLSTATE.**
+
+The cumulative platform now includes **Persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 04, [Transactions, Concurrency, ETags, and Idempotency](../module-04-transactions-concurrency-idempotency/index.md), asks: *How do public guarantees survive simultaneous requests, retries, lost responses, and process restart?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Transactions, Concurrency, ETags, and Idempotency](../module-04-transactions-concurrency-idempotency/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

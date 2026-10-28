@@ -1,22 +1,24 @@
-# Lifecycle, Compatibility, Deprecation, and Retirement
+# Module 05 — Lifecycle, Compatibility, Deprecation, and Retirement
 
-**Module 05 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** How can an API evolve and eventually disappear without transferring hidden cost to consumers?
+> **Central question:** How can an API evolve and eventually disappear without transferring hidden cost to consumers?
 
-## Place in the program
+## Where this module fits
 
-Module 04 established release decisions. Module 05 governs an API across time, including the most neglected part of the lifecycle: safe removal.
+Module 04 produced **Publish the policy pack, evidence ledger, exception register, and release scorecards**. This module extends that result by asking: **How can an API evolve and eventually disappear without transferring hidden cost to consumers?**
+
+The new capstone increment is **Publish the lifecycle policy, consumer inventory, deprecation impact report, and retirement decision**. It becomes the prerequisite for **Golden Paths, Templates, and Self-Service Provisioning**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- model lifecycle as evidence-gated transitions
-- build a multi-source consumer inventory
-- design migration and notice workflows
-- block unsafe retirement
-- preserve historical contract truth
+- Model lifecycle as evidence-gated transitions.
+- Build a multi-source consumer inventory.
+- Design migration and notice workflows.
+- Block unsafe retirement.
+- Preserve historical contract truth.
 
-## Capstone result
+## Capstone increment
 
 Publish the lifecycle policy, consumer inventory, deprecation impact report, and retirement decision.
 
@@ -57,7 +59,6 @@ The lifecycle engine evaluates Analysis HTTP 1.1. Required retirement documents 
 ## Implementation review
 
 `evaluate_transition` checks allowed edges and required evidence. `deprecation_impact` calculates affected and blocking consumers from the inventory. These functions are intentionally separate: lifecycle policy defines what is required, while consumer data supplies current impact.
-
 
 ## Lifecycle records as products
 
@@ -152,7 +153,6 @@ APIs stuck indefinitely in experimental or deprecated states create platform
 debt. Review them periodically. An experiment with production critical consumers
 is mislabeled. A deprecated version with no migration effort is abandoned, not
 governed. The platform should surface state age and require owner action.
-
 
 ## Interface-specific retirement concerns
 
@@ -320,3 +320,13 @@ function retire(evidence: Set<string>, blockingConsumers: number): RetirementDec
 
 In the capstone, the legacy CLI keeps the decision blocked. Removing it from the
 inventory is not remediation; completing or explicitly waiving its migration is.
+
+## Module synthesis
+
+You are ready to leave this module when you can **model lifecycle as evidence-gated transitions, build a multi-source consumer inventory, and design migration and notice workflows** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Finally, remove the consumer record instead of completing migration and compare the evidence quality** and requiring the following oracle: **Current retirement is blocked. Verified migration can make it eligible. Deleting the consumer record is not evidence of migration and must be detected as an inventory-integrity problem.**
+
+The cumulative platform now includes **Publish the lifecycle policy, consumer inventory, deprecation impact report, and retirement decision**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Golden Paths, Templates, and Self-Service Provisioning](../module-06-golden-paths-and-self-service/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

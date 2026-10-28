@@ -1,503 +1,796 @@
 site_name: API Engineering
-site_description: Six-course learner-first API engineering program
+site_description: Ten-course reader-first API engineering program
 docs_dir: .
 site_dir: site
 use_directory_urls: false
-exclude_docs: |
-  README.md
-  VERIFICATION.md
-  01-openapi-contract-engineering/*.md
-  01-openapi-contract-engineering/assessment/**
-  01-openapi-contract-engineering/capstone/**
-  01-openapi-contract-engineering/instructor/**
-  01-openapi-contract-engineering/reports/**
-  01-openapi-contract-engineering/scripts/**
-  01-openapi-contract-engineering/tests/**
-  02-contract-driven-api-service-engineering/*.md
-  02-contract-driven-api-service-engineering/assessment/**
-  02-contract-driven-api-service-engineering/capstone/**
-  02-contract-driven-api-service-engineering/instructor/**
-  02-contract-driven-api-service-engineering/predecessor/**
-  02-contract-driven-api-service-engineering/reports/**
-  02-contract-driven-api-service-engineering/scripts/**
-  02-contract-driven-api-service-engineering/tests/**
-  03-api-security-engineering/*.md
-  03-api-security-engineering/assessment/**
-  03-api-security-engineering/capstone/**
-  03-api-security-engineering/instructor/**
-  03-api-security-engineering/reports/**
-  03-api-security-engineering/scripts/**
-  03-api-security-engineering/tests/**
-  04-api-reliability-and-observability-engineering/*.md
-  04-api-reliability-and-observability-engineering/assessment/**
-  04-api-reliability-and-observability-engineering/capstone/**
-  04-api-reliability-and-observability-engineering/instructor/**
-  04-api-reliability-and-observability-engineering/reports/**
-  04-api-reliability-and-observability-engineering/scripts/**
-  04-api-reliability-and-observability-engineering/tests/**
-  05-api-performance-capacity-and-traffic-engineering/*.md
-  05-api-performance-capacity-and-traffic-engineering/assessment/**
-  05-api-performance-capacity-and-traffic-engineering/capstone/**
-  05-api-performance-capacity-and-traffic-engineering/instructor/**
-  05-api-performance-capacity-and-traffic-engineering/reports/**
-  05-api-performance-capacity-and-traffic-engineering/scripts/**
-  05-api-performance-capacity-and-traffic-engineering/tests/**
-  06-event-driven-api-engineering/*.md
-  06-event-driven-api-engineering/assessment/**
-  06-event-driven-api-engineering/capstone/**
-  06-event-driven-api-engineering/instructor/**
-  06-event-driven-api-engineering/reports/**
-  06-event-driven-api-engineering/scripts/**
-  06-event-driven-api-engineering/tests/**
+strict: true
 theme:
   name: material
   features:
   - navigation.sections
+  - navigation.top
   - navigation.indexes
   - content.code.copy
 markdown_extensions:
 - admonition
 - attr_list
+- def_list
 - tables
 - toc
 - pymdownx.highlight:
     anchor_linenums: true
 - pymdownx.superfences
+exclude_docs: 'README.md
+
+  VERIFICATION.md
+
+  release/**
+
+  scripts/**
+
+  MANIFEST.*
+
+  program.json
+
+  [0-9][0-9]-*/*.md
+
+  [0-9][0-9]-*/assessment/**
+
+  [0-9][0-9]-*/capstone/**
+
+  [0-9][0-9]-*/instructor/**
+
+  [0-9][0-9]-*/predecessor/**
+
+  [0-9][0-9]-*/reports/**
+
+  [0-9][0-9]-*/scripts/**
+
+  [0-9][0-9]-*/tests/**
+
+  [0-9][0-9]-*/release/**'
 nav:
-- Program:
-  - Introduction: program-book/index.md
-  - Start here: program-book/start-here.md
-  - Six-course journey: program-book/six-course-journey.md
+- Program Book:
+  - Program Introduction: program-book/index.md
+  - Start Here: program-book/start-here.md
+  - Ten-Course Journey: program-book/ten-course-journey.md
+  - Course and Module Map: program-book/course-map.md
   - Analysis Runs Platform: program-book/analysis-runs-platform.md
-  - Version and handoff ledger: program-book/version-and-handoff-ledger.md
-  - Language and code strategy: program-book/language-and-code-strategy.md
-  - Evidence model: program-book/evidence-model.md
-  - Study and assessment: program-book/study-and-assessment.md
-  - Final program defense: program-book/final-program-defense.md
-  - Glossary: program-book/glossary.md
+  - Capstone Evolution: program-book/capstone-evolution.md
+  - Version and Handoff Ledger: program-book/version-and-handoff-ledger.md
+  - Language and Code Strategy: program-book/language-and-code-strategy.md
+  - Evidence Model: program-book/evidence-model.md
+  - Study and Assessment: program-book/study-and-assessment.md
+  - Standards Map: program-book/standards-map.md
+  - Final Program Defense: program-book/final-program-defense.md
+  - Program Glossary: program-book/glossary.md
 - Course 1 — OpenAPI Contract Engineering:
-  - Course introduction: 01-openapi-contract-engineering/course-book/index.md
-  - Start here: 01-openapi-contract-engineering/course-book/start-here.md
-  - Study plan: 01-openapi-contract-engineering/course-book/study-plan.md
+  - Course Introduction: 01-openapi-contract-engineering/course-book/index.md
+  - Start Here: 01-openapi-contract-engineering/course-book/start-here.md
+  - Study Plan: 01-openapi-contract-engineering/course-book/study-plan.md
   - Capstone: 01-openapi-contract-engineering/course-book/capstone.md
-  - Standards and evidence: 01-openapi-contract-engineering/course-book/standards.md
+  - Standards: 01-openapi-contract-engineering/course-book/standards.md
+  - Evidence Model: 01-openapi-contract-engineering/course-book/evidence-model.md
+  - Language Strategy: 01-openapi-contract-engineering/course-book/language-strategy.md
   - Glossary: 01-openapi-contract-engineering/course-book/glossary.md
   - Orientation:
-    - Orientation chapter: 01-openapi-contract-engineering/course-book/module-00-orientation/index.md
-    - Orientation lab: 01-openapi-contract-engineering/course-book/module-00-orientation/lab.md
-    - Orientation checkpoint: 01-openapi-contract-engineering/course-book/module-00-orientation/checkpoint.md
+    - Chapter: 01-openapi-contract-engineering/course-book/module-00-orientation/index.md
+    - Lab: 01-openapi-contract-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 01-openapi-contract-engineering/course-book/module-00-orientation/checkpoint.md
   - Module 01 — HTTP and OpenAPI Foundations:
     - Chapter: 01-openapi-contract-engineering/course-book/module-01-http-openapi-foundations/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-01-http-openapi-foundations/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-01-http-openapi-foundations/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-01-http-openapi-foundations/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-01-http-openapi-foundations/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-01-http-openapi-foundations/checkpoint.md
   - Module 02 — Operations, Parameters, and Messages:
     - Chapter: 01-openapi-contract-engineering/course-book/module-02-operations-parameters-messages/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-02-operations-parameters-messages/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-02-operations-parameters-messages/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-02-operations-parameters-messages/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-02-operations-parameters-messages/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-02-operations-parameters-messages/checkpoint.md
   - Module 03 — JSON Schema Contract Modeling:
     - Chapter: 01-openapi-contract-engineering/course-book/module-03-json-schema-contract-modeling/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-03-json-schema-contract-modeling/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-03-json-schema-contract-modeling/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-03-json-schema-contract-modeling/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-03-json-schema-contract-modeling/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-03-json-schema-contract-modeling/checkpoint.md
   - Module 04 — References and Multi-Document Architecture:
     - Chapter: 01-openapi-contract-engineering/course-book/module-04-references-multi-document-architecture/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-04-references-multi-document-architecture/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-04-references-multi-document-architecture/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-04-references-multi-document-architecture/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-04-references-multi-document-architecture/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-04-references-multi-document-architecture/checkpoint.md
   - Module 05 — Production HTTP API Design:
     - Chapter: 01-openapi-contract-engineering/course-book/module-05-production-http-api-design/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-05-production-http-api-design/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-05-production-http-api-design/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-05-production-http-api-design/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-05-production-http-api-design/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-05-production-http-api-design/checkpoint.md
   - Module 06 — Contract-First and Code-First Runtimes:
     - Chapter: 01-openapi-contract-engineering/course-book/module-06-contract-first-code-first-runtime/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-06-contract-first-code-first-runtime/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-06-contract-first-code-first-runtime/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-06-contract-first-code-first-runtime/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-06-contract-first-code-first-runtime/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-06-contract-first-code-first-runtime/checkpoint.md
   - Module 07 — Mocks, Clients, and Contract Testing:
     - Chapter: 01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-07-mocking-clients-contract-testing/checkpoint.md
   - Module 08 — Security in the Public Contract:
     - Chapter: 01-openapi-contract-engineering/course-book/module-08-security-authentication-authorization/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-08-security-authentication-authorization/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-08-security-authentication-authorization/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-08-security-authentication-authorization/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-08-security-authentication-authorization/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-08-security-authentication-authorization/checkpoint.md
   - Module 09 — Evolution, Compatibility, and Audience Views:
     - Chapter: 01-openapi-contract-engineering/course-book/module-09-evolution-compatibility-overlays-ci/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-09-evolution-compatibility-overlays-ci/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-09-evolution-compatibility-overlays-ci/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-09-evolution-compatibility-overlays-ci/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-09-evolution-compatibility-overlays-ci/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-09-evolution-compatibility-overlays-ci/checkpoint.md
   - Module 10 — OpenAPI 3.2, Streaming, Webhooks, and Workflows:
     - Chapter: 01-openapi-contract-engineering/course-book/module-10-openapi-32-workflows-advanced/index.md
     - Exercises: 01-openapi-contract-engineering/course-book/module-10-openapi-32-workflows-advanced/exercises.md
-    - Reference answers: 01-openapi-contract-engineering/course-book/module-10-openapi-32-workflows-advanced/exercise-answers.md
+    - Worked Answers: 01-openapi-contract-engineering/course-book/module-10-openapi-32-workflows-advanced/exercise-answers.md
     - Lab: 01-openapi-contract-engineering/course-book/module-10-openapi-32-workflows-advanced/lab.md
     - Checkpoint: 01-openapi-contract-engineering/course-book/module-10-openapi-32-workflows-advanced/checkpoint.md
 - Course 2 — Contract-Driven API Service Engineering:
-  - Course introduction: 02-contract-driven-api-service-engineering/course-book/index.md
-  - Start here: 02-contract-driven-api-service-engineering/course-book/start-here.md
-  - Study plan: 02-contract-driven-api-service-engineering/course-book/study-plan.md
+  - Course Introduction: 02-contract-driven-api-service-engineering/course-book/index.md
+  - Start Here: 02-contract-driven-api-service-engineering/course-book/start-here.md
+  - Study Plan: 02-contract-driven-api-service-engineering/course-book/study-plan.md
   - Capstone: 02-contract-driven-api-service-engineering/course-book/capstone.md
-  - Standards and evidence: 02-contract-driven-api-service-engineering/course-book/standards.md
+  - Standards: 02-contract-driven-api-service-engineering/course-book/standards.md
+  - Evidence Model: 02-contract-driven-api-service-engineering/course-book/evidence-model.md
+  - Language Strategy: 02-contract-driven-api-service-engineering/course-book/language-strategy.md
   - Glossary: 02-contract-driven-api-service-engineering/course-book/glossary.md
   - Orientation:
-    - Orientation chapter: 02-contract-driven-api-service-engineering/course-book/module-00-orientation/index.md
-    - Orientation lab: 02-contract-driven-api-service-engineering/course-book/module-00-orientation/lab.md
-    - Orientation checkpoint: 02-contract-driven-api-service-engineering/course-book/module-00-orientation/checkpoint.md
+    - Chapter: 02-contract-driven-api-service-engineering/course-book/module-00-orientation/index.md
+    - Lab: 02-contract-driven-api-service-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-00-orientation/checkpoint.md
   - Module 01 — Application Use Cases and Boundaries:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-01-application-use-cases/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-01-application-use-cases/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-01-application-use-cases/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-01-application-use-cases/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-01-application-use-cases/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-01-application-use-cases/checkpoint.md
   - Module 02 — Domain State and Invariants:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-02-domain-state-invariants/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-02-domain-state-invariants/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-02-domain-state-invariants/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-02-domain-state-invariants/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-02-domain-state-invariants/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-02-domain-state-invariants/checkpoint.md
   - Module 03 — Relational Modeling and Migrations:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-03-relational-modeling-migrations/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-03-relational-modeling-migrations/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-03-relational-modeling-migrations/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-03-relational-modeling-migrations/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-03-relational-modeling-migrations/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-03-relational-modeling-migrations/checkpoint.md
   - Module 04 — Transactions, Concurrency, ETags, and Idempotency:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-04-transactions-concurrency-idempotency/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-04-transactions-concurrency-idempotency/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-04-transactions-concurrency-idempotency/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-04-transactions-concurrency-idempotency/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-04-transactions-concurrency-idempotency/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-04-transactions-concurrency-idempotency/checkpoint.md
   - Module 05 — Queries, Stable Pagination, and Authorized Access:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-05-query-pagination-authorization/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-05-query-pagination-authorization/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-05-query-pagination-authorization/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-05-query-pagination-authorization/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-05-query-pagination-authorization/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-05-query-pagination-authorization/checkpoint.md
   - Module 06 — Durable Workers and Recovery:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-06-durable-workers-recovery/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-06-durable-workers-recovery/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-06-durable-workers-recovery/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-06-durable-workers-recovery/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-06-durable-workers-recovery/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-06-durable-workers-recovery/checkpoint.md
   - Module 07 — Streaming and Artifact Integrity:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-07-streaming-artifact-integrity/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-07-streaming-artifact-integrity/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-07-streaming-artifact-integrity/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-07-streaming-artifact-integrity/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-07-streaming-artifact-integrity/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-07-streaming-artifact-integrity/checkpoint.md
   - Module 08 — Transactional Outbox and Webhook Delivery:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-08-webhooks-transactional-outbox/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-08-webhooks-transactional-outbox/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-08-webhooks-transactional-outbox/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-08-webhooks-transactional-outbox/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-08-webhooks-transactional-outbox/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-08-webhooks-transactional-outbox/checkpoint.md
   - Module 09 — Failure-Oriented Verification:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-09-failure-proof-architecture/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-09-failure-proof-architecture/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-09-failure-proof-architecture/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-09-failure-proof-architecture/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-09-failure-proof-architecture/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-09-failure-proof-architecture/checkpoint.md
   - Module 10 — Lifecycle and Compatible Release:
     - Chapter: 02-contract-driven-api-service-engineering/course-book/module-10-lifecycle-compatible-release/index.md
     - Exercises: 02-contract-driven-api-service-engineering/course-book/module-10-lifecycle-compatible-release/exercises.md
-    - Reference answers: 02-contract-driven-api-service-engineering/course-book/module-10-lifecycle-compatible-release/exercise-answers.md
+    - Worked Answers: 02-contract-driven-api-service-engineering/course-book/module-10-lifecycle-compatible-release/exercise-answers.md
     - Lab: 02-contract-driven-api-service-engineering/course-book/module-10-lifecycle-compatible-release/lab.md
     - Checkpoint: 02-contract-driven-api-service-engineering/course-book/module-10-lifecycle-compatible-release/checkpoint.md
 - Course 3 — API Security Engineering:
-  - Course introduction: 03-api-security-engineering/course-book/index.md
-  - Start here: 03-api-security-engineering/course-book/start-here.md
-  - Study plan: 03-api-security-engineering/course-book/study-plan.md
+  - Course Introduction: 03-api-security-engineering/course-book/index.md
+  - Start Here: 03-api-security-engineering/course-book/start-here.md
+  - Study Plan: 03-api-security-engineering/course-book/study-plan.md
   - Capstone: 03-api-security-engineering/course-book/capstone.md
-  - Standards and evidence: 03-api-security-engineering/course-book/standards.md
+  - Standards: 03-api-security-engineering/course-book/standards.md
+  - Evidence Model: 03-api-security-engineering/course-book/evidence-model.md
+  - Language Strategy: 03-api-security-engineering/course-book/language-strategy.md
   - Glossary: 03-api-security-engineering/course-book/glossary.md
   - Orientation:
-    - Orientation chapter: 03-api-security-engineering/course-book/module-00-orientation/index.md
-    - Orientation lab: 03-api-security-engineering/course-book/module-00-orientation/lab.md
-    - Orientation checkpoint: 03-api-security-engineering/course-book/module-00-orientation/checkpoint.md
+    - Chapter: 03-api-security-engineering/course-book/module-00-orientation/index.md
+    - Lab: 03-api-security-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 03-api-security-engineering/course-book/module-00-orientation/checkpoint.md
   - Module 01 — Threat Modeling and Security Requirements:
     - Chapter: 03-api-security-engineering/course-book/module-01-threat-modeling/index.md
     - Exercises: 03-api-security-engineering/course-book/module-01-threat-modeling/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-01-threat-modeling/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-01-threat-modeling/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-01-threat-modeling/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-01-threat-modeling/checkpoint.md
   - Module 02 — HTTP Edge and Canonicalization:
     - Chapter: 03-api-security-engineering/course-book/module-02-http-edge-and-canonicalization/index.md
     - Exercises: 03-api-security-engineering/course-book/module-02-http-edge-and-canonicalization/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-02-http-edge-and-canonicalization/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-02-http-edge-and-canonicalization/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-02-http-edge-and-canonicalization/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-02-http-edge-and-canonicalization/checkpoint.md
   - Module 03 — Authentication and Token Validation:
     - Chapter: 03-api-security-engineering/course-book/module-03-authentication-and-token-validation/index.md
     - Exercises: 03-api-security-engineering/course-book/module-03-authentication-and-token-validation/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-03-authentication-and-token-validation/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-03-authentication-and-token-validation/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-03-authentication-and-token-validation/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-03-authentication-and-token-validation/checkpoint.md
   - Module 04 — Authorization and Policy Enforcement:
     - Chapter: 03-api-security-engineering/course-book/module-04-authorization-and-policy-enforcement/index.md
     - Exercises: 03-api-security-engineering/course-book/module-04-authorization-and-policy-enforcement/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-04-authorization-and-policy-enforcement/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-04-authorization-and-policy-enforcement/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-04-authorization-and-policy-enforcement/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-04-authorization-and-policy-enforcement/checkpoint.md
   - Module 05 — Hostile Input and File Handling:
     - Chapter: 03-api-security-engineering/course-book/module-05-hostile-input-and-file-handling/index.md
     - Exercises: 03-api-security-engineering/course-book/module-05-hostile-input-and-file-handling/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-05-hostile-input-and-file-handling/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-05-hostile-input-and-file-handling/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-05-hostile-input-and-file-handling/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-05-hostile-input-and-file-handling/checkpoint.md
   - Module 06 — Outbound HTTP, SSRF, and Webhook Integrity:
     - Chapter: 03-api-security-engineering/course-book/module-06-outbound-http-ssrf-and-webhooks/index.md
     - Exercises: 03-api-security-engineering/course-book/module-06-outbound-http-ssrf-and-webhooks/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-06-outbound-http-ssrf-and-webhooks/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-06-outbound-http-ssrf-and-webhooks/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-06-outbound-http-ssrf-and-webhooks/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-06-outbound-http-ssrf-and-webhooks/checkpoint.md
   - Module 07 — Secrets, Cryptography, and Sensitive Data:
     - Chapter: 03-api-security-engineering/course-book/module-07-secrets-cryptography-and-sensitive-data/index.md
     - Exercises: 03-api-security-engineering/course-book/module-07-secrets-cryptography-and-sensitive-data/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-07-secrets-cryptography-and-sensitive-data/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-07-secrets-cryptography-and-sensitive-data/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-07-secrets-cryptography-and-sensitive-data/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-07-secrets-cryptography-and-sensitive-data/checkpoint.md
   - Module 08 — Abuse Resistance and Resource Budgets:
     - Chapter: 03-api-security-engineering/course-book/module-08-abuse-resistance-and-resource-budgets/index.md
     - Exercises: 03-api-security-engineering/course-book/module-08-abuse-resistance-and-resource-budgets/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-08-abuse-resistance-and-resource-budgets/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-08-abuse-resistance-and-resource-budgets/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-08-abuse-resistance-and-resource-budgets/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-08-abuse-resistance-and-resource-budgets/checkpoint.md
   - Module 09 — Adversarial Verification and Supply-Chain Assurance:
     - Chapter: 03-api-security-engineering/course-book/module-09-adversarial-verification-and-supply-chain/index.md
     - Exercises: 03-api-security-engineering/course-book/module-09-adversarial-verification-and-supply-chain/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-09-adversarial-verification-and-supply-chain/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-09-adversarial-verification-and-supply-chain/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-09-adversarial-verification-and-supply-chain/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-09-adversarial-verification-and-supply-chain/checkpoint.md
   - Module 10 — Security Operations and Incident Response:
     - Chapter: 03-api-security-engineering/course-book/module-10-security-operations-and-incident-response/index.md
     - Exercises: 03-api-security-engineering/course-book/module-10-security-operations-and-incident-response/exercises.md
-    - Reference answers: 03-api-security-engineering/course-book/module-10-security-operations-and-incident-response/exercise-answers.md
+    - Worked Answers: 03-api-security-engineering/course-book/module-10-security-operations-and-incident-response/exercise-answers.md
     - Lab: 03-api-security-engineering/course-book/module-10-security-operations-and-incident-response/lab.md
     - Checkpoint: 03-api-security-engineering/course-book/module-10-security-operations-and-incident-response/checkpoint.md
 - Course 4 — API Reliability and Observability Engineering:
-  - Course introduction: 04-api-reliability-and-observability-engineering/course-book/index.md
-  - Start here: 04-api-reliability-and-observability-engineering/course-book/start-here.md
-  - Study plan: 04-api-reliability-and-observability-engineering/course-book/study-plan.md
+  - Course Introduction: 04-api-reliability-and-observability-engineering/course-book/index.md
+  - Start Here: 04-api-reliability-and-observability-engineering/course-book/start-here.md
+  - Study Plan: 04-api-reliability-and-observability-engineering/course-book/study-plan.md
   - Capstone: 04-api-reliability-and-observability-engineering/course-book/capstone.md
-  - Standards and evidence: 04-api-reliability-and-observability-engineering/course-book/standards.md
+  - Standards: 04-api-reliability-and-observability-engineering/course-book/standards.md
+  - Evidence Model: 04-api-reliability-and-observability-engineering/course-book/evidence-model.md
+  - Language Strategy: 04-api-reliability-and-observability-engineering/course-book/language-strategy.md
   - Glossary: 04-api-reliability-and-observability-engineering/course-book/glossary.md
   - Orientation:
-    - Orientation chapter: 04-api-reliability-and-observability-engineering/course-book/module-00-orientation/index.md
-    - Orientation lab: 04-api-reliability-and-observability-engineering/course-book/module-00-orientation/lab.md
-    - Orientation checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-00-orientation/checkpoint.md
+    - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-00-orientation/index.md
+    - Lab: 04-api-reliability-and-observability-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-00-orientation/checkpoint.md
   - Module 01 — Reliability Model and Critical Journeys:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-01-reliability-model-and-critical-journeys/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-01-reliability-model-and-critical-journeys/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-01-reliability-model-and-critical-journeys/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-01-reliability-model-and-critical-journeys/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-01-reliability-model-and-critical-journeys/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-01-reliability-model-and-critical-journeys/checkpoint.md
   - Module 02 — Deadlines, Cancellation, and Retry Budgets:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md
   - Module 03 — Dependency Resilience and Graceful Degradation:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-03-dependency-resilience-and-graceful-degradation/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-03-dependency-resilience-and-graceful-degradation/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-03-dependency-resilience-and-graceful-degradation/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-03-dependency-resilience-and-graceful-degradation/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-03-dependency-resilience-and-graceful-degradation/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-03-dependency-resilience-and-graceful-degradation/checkpoint.md
   - Module 04 — Lifecycle, Health, Shutdown, and Recovery:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/checkpoint.md
   - Module 05 — Telemetry Architecture and Structured Events:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-05-telemetry-architecture-and-structured-operational-events/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-05-telemetry-architecture-and-structured-operational-events/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-05-telemetry-architecture-and-structured-operational-events/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-05-telemetry-architecture-and-structured-operational-events/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-05-telemetry-architecture-and-structured-operational-events/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-05-telemetry-architecture-and-structured-operational-events/checkpoint.md
   - Module 06 — Metrics and Service-Level Indicators:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-06-metrics-and-service-level-indicators/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-06-metrics-and-service-level-indicators/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-06-metrics-and-service-level-indicators/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-06-metrics-and-service-level-indicators/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-06-metrics-and-service-level-indicators/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-06-metrics-and-service-level-indicators/checkpoint.md
   - Module 07 — Distributed Tracing Across Asynchronous Work:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/checkpoint.md
   - Module 08 — SLOs, Error Budgets, Dashboards, and Alerts:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-08-slos-error-budgets-dashboards-and-alerts/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-08-slos-error-budgets-dashboards-and-alerts/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-08-slos-error-budgets-dashboards-and-alerts/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-08-slos-error-budgets-dashboards-and-alerts/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-08-slos-error-budgets-dashboards-and-alerts/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-08-slos-error-budgets-dashboards-and-alerts/checkpoint.md
   - Module 09 — Fault Injection, Troubleshooting, and Game Days:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-09-fault-injection-troubleshooting-and-game-days/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-09-fault-injection-troubleshooting-and-game-days/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-09-fault-injection-troubleshooting-and-game-days/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-09-fault-injection-troubleshooting-and-game-days/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-09-fault-injection-troubleshooting-and-game-days/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-09-fault-injection-troubleshooting-and-game-days/checkpoint.md
   - Module 10 — Incident Command, Reconciliation, and Readiness:
     - Chapter: 04-api-reliability-and-observability-engineering/course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/index.md
     - Exercises: 04-api-reliability-and-observability-engineering/course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/exercises.md
-    - Reference answers: 04-api-reliability-and-observability-engineering/course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/exercise-answers.md
+    - Worked Answers: 04-api-reliability-and-observability-engineering/course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/exercise-answers.md
     - Lab: 04-api-reliability-and-observability-engineering/course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/lab.md
     - Checkpoint: 04-api-reliability-and-observability-engineering/course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/checkpoint.md
 - Course 5 — API Performance, Capacity, and Traffic Engineering:
-  - Course introduction: 05-api-performance-capacity-and-traffic-engineering/course-book/index.md
-  - Start here: 05-api-performance-capacity-and-traffic-engineering/course-book/start-here.md
-  - Study plan: 05-api-performance-capacity-and-traffic-engineering/course-book/study-plan.md
+  - Course Introduction: 05-api-performance-capacity-and-traffic-engineering/course-book/index.md
+  - Start Here: 05-api-performance-capacity-and-traffic-engineering/course-book/start-here.md
+  - Study Plan: 05-api-performance-capacity-and-traffic-engineering/course-book/study-plan.md
   - Capstone: 05-api-performance-capacity-and-traffic-engineering/course-book/capstone.md
-  - Standards and evidence: 05-api-performance-capacity-and-traffic-engineering/course-book/standards.md
+  - Standards: 05-api-performance-capacity-and-traffic-engineering/course-book/standards.md
+  - Evidence Model: 05-api-performance-capacity-and-traffic-engineering/course-book/evidence-model.md
+  - Language Strategy: 05-api-performance-capacity-and-traffic-engineering/course-book/language-strategy.md
   - Glossary: 05-api-performance-capacity-and-traffic-engineering/course-book/glossary.md
   - Orientation:
-    - Orientation chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-00-orientation/index.md
-    - Orientation lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-00-orientation/lab.md
-    - Orientation checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-00-orientation/checkpoint.md
+    - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-00-orientation/index.md
+    - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-00-orientation/checkpoint.md
   - Module 01 — Measurement Contract and Critical Workloads:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-01-measurement-contract-and-critical-workloads/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-01-measurement-contract-and-critical-workloads/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-01-measurement-contract-and-critical-workloads/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-01-measurement-contract-and-critical-workloads/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-01-measurement-contract-and-critical-workloads/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-01-measurement-contract-and-critical-workloads/checkpoint.md
   - Module 02 — Benchmark Design and Statistical Interpretation:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-02-benchmark-design-and-statistical-interpretation/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-02-benchmark-design-and-statistical-interpretation/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-02-benchmark-design-and-statistical-interpretation/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-02-benchmark-design-and-statistical-interpretation/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-02-benchmark-design-and-statistical-interpretation/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-02-benchmark-design-and-statistical-interpretation/checkpoint.md
   - Module 03 — HTTP Efficiency and Representation Cost:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-03-http-efficiency-and-representation-cost/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-03-http-efficiency-and-representation-cost/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-03-http-efficiency-and-representation-cost/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-03-http-efficiency-and-representation-cost/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-03-http-efficiency-and-representation-cost/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-03-http-efficiency-and-representation-cost/checkpoint.md
   - Module 04 — PostgreSQL Query and Persistence Performance:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-04-postgresql-query-and-persistence-performance/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-04-postgresql-query-and-persistence-performance/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-04-postgresql-query-and-persistence-performance/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-04-postgresql-query-and-persistence-performance/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-04-postgresql-query-and-persistence-performance/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-04-postgresql-query-and-persistence-performance/checkpoint.md
   - Module 05 — Runtime Profiling and Allocation Control:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-05-runtime-profiling-and-allocation-control/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-05-runtime-profiling-and-allocation-control/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-05-runtime-profiling-and-allocation-control/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-05-runtime-profiling-and-allocation-control/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-05-runtime-profiling-and-allocation-control/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-05-runtime-profiling-and-allocation-control/checkpoint.md
   - Module 06 — Queueing, Concurrency, and Backpressure:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-06-queueing-concurrency-and-backpressure/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-06-queueing-concurrency-and-backpressure/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-06-queueing-concurrency-and-backpressure/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-06-queueing-concurrency-and-backpressure/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-06-queueing-concurrency-and-backpressure/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-06-queueing-concurrency-and-backpressure/checkpoint.md
   - Module 07 — Caching, Freshness, and Invalidation:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-07-caching-freshness-and-invalidation/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-07-caching-freshness-and-invalidation/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-07-caching-freshness-and-invalidation/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-07-caching-freshness-and-invalidation/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-07-caching-freshness-and-invalidation/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-07-caching-freshness-and-invalidation/checkpoint.md
   - Module 08 — Traffic Shaping, Quotas, and Load Shedding:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-08-traffic-shaping-quotas-and-load-shedding/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-08-traffic-shaping-quotas-and-load-shedding/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-08-traffic-shaping-quotas-and-load-shedding/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-08-traffic-shaping-quotas-and-load-shedding/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-08-traffic-shaping-quotas-and-load-shedding/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-08-traffic-shaping-quotas-and-load-shedding/checkpoint.md
   - Module 09 — Capacity Modeling and Scaling Decisions:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-09-capacity-modeling-and-scaling-decisions/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-09-capacity-modeling-and-scaling-decisions/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-09-capacity-modeling-and-scaling-decisions/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-09-capacity-modeling-and-scaling-decisions/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-09-capacity-modeling-and-scaling-decisions/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-09-capacity-modeling-and-scaling-decisions/checkpoint.md
   - Module 10 — Performance Regression and Release Engineering:
     - Chapter: 05-api-performance-capacity-and-traffic-engineering/course-book/module-10-performance-regression-and-release-engineering/index.md
     - Exercises: 05-api-performance-capacity-and-traffic-engineering/course-book/module-10-performance-regression-and-release-engineering/exercises.md
-    - Reference answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-10-performance-regression-and-release-engineering/exercise-answers.md
+    - Worked Answers: 05-api-performance-capacity-and-traffic-engineering/course-book/module-10-performance-regression-and-release-engineering/exercise-answers.md
     - Lab: 05-api-performance-capacity-and-traffic-engineering/course-book/module-10-performance-regression-and-release-engineering/lab.md
     - Checkpoint: 05-api-performance-capacity-and-traffic-engineering/course-book/module-10-performance-regression-and-release-engineering/checkpoint.md
 - Course 6 — Event-Driven API Engineering:
-  - Course introduction: 06-event-driven-api-engineering/course-book/index.md
-  - Start here: 06-event-driven-api-engineering/course-book/start-here.md
-  - Study plan: 06-event-driven-api-engineering/course-book/study-plan.md
+  - Course Introduction: 06-event-driven-api-engineering/course-book/index.md
+  - Start Here: 06-event-driven-api-engineering/course-book/start-here.md
+  - Study Plan: 06-event-driven-api-engineering/course-book/study-plan.md
   - Capstone: 06-event-driven-api-engineering/course-book/capstone.md
-  - Standards and evidence: 06-event-driven-api-engineering/course-book/standards.md
+  - Standards: 06-event-driven-api-engineering/course-book/standards.md
+  - Evidence Model: 06-event-driven-api-engineering/course-book/evidence-model.md
+  - Language Strategy: 06-event-driven-api-engineering/course-book/language-strategy.md
   - Glossary: 06-event-driven-api-engineering/course-book/glossary.md
   - Orientation:
-    - Orientation chapter: 06-event-driven-api-engineering/course-book/module-00-orientation/index.md
-    - Orientation lab: 06-event-driven-api-engineering/course-book/module-00-orientation/lab.md
-    - Orientation checkpoint: 06-event-driven-api-engineering/course-book/module-00-orientation/checkpoint.md
+    - Chapter: 06-event-driven-api-engineering/course-book/module-00-orientation/index.md
+    - Lab: 06-event-driven-api-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 06-event-driven-api-engineering/course-book/module-00-orientation/checkpoint.md
   - Module 01 — Event Thinking, Ownership, and Message Taxonomy:
     - Chapter: 06-event-driven-api-engineering/course-book/module-01-event-thinking-and-ownership/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-01-event-thinking-and-ownership/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-01-event-thinking-and-ownership/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-01-event-thinking-and-ownership/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-01-event-thinking-and-ownership/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-01-event-thinking-and-ownership/checkpoint.md
   - Module 02 — AsyncAPI, CloudEvents, and Contract Architecture:
     - Chapter: 06-event-driven-api-engineering/course-book/module-02-asyncapi-and-contract-architecture/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-02-asyncapi-and-contract-architecture/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-02-asyncapi-and-contract-architecture/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-02-asyncapi-and-contract-architecture/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-02-asyncapi-and-contract-architecture/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-02-asyncapi-and-contract-architecture/checkpoint.md
   - Module 03 — Delivery Semantics, Ordering, Partitioning, and Acknowledgement:
     - Chapter: 06-event-driven-api-engineering/course-book/module-03-delivery-ordering-and-acknowledgement/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-03-delivery-ordering-and-acknowledgement/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-03-delivery-ordering-and-acknowledgement/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-03-delivery-ordering-and-acknowledgement/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-03-delivery-ordering-and-acknowledgement/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-03-delivery-ordering-and-acknowledgement/checkpoint.md
   - Module 04 — Transactional Publication, Inbox Deduplication, and Exactly-Once Effects:
     - Chapter: 06-event-driven-api-engineering/course-book/module-04-transactional-publication-and-idempotent-effects/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-04-transactional-publication-and-idempotent-effects/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-04-transactional-publication-and-idempotent-effects/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-04-transactional-publication-and-idempotent-effects/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-04-transactional-publication-and-idempotent-effects/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-04-transactional-publication-and-idempotent-effects/checkpoint.md
   - Module 05 — Schema Evolution, Compatibility, Replay, and Historical Truth:
     - Chapter: 06-event-driven-api-engineering/course-book/module-05-evolution-replay-and-historical-truth/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-05-evolution-replay-and-historical-truth/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-05-evolution-replay-and-historical-truth/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-05-evolution-replay-and-historical-truth/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-05-evolution-replay-and-historical-truth/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-05-evolution-replay-and-historical-truth/checkpoint.md
   - Module 06 — Consumer Architecture and Asynchronous Workflows:
     - Chapter: 06-event-driven-api-engineering/course-book/module-06-consumer-architecture-and-workflows/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-06-consumer-architecture-and-workflows/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-06-consumer-architecture-and-workflows/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-06-consumer-architecture-and-workflows/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-06-consumer-architecture-and-workflows/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-06-consumer-architecture-and-workflows/checkpoint.md
   - Module 07 — Event-Time Stream Processing, Windows, Watermarks, and Corrections:
     - Chapter: 06-event-driven-api-engineering/course-book/module-07-event-time-stream-processing/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-07-event-time-stream-processing/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-07-event-time-stream-processing/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-07-event-time-stream-processing/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-07-event-time-stream-processing/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-07-event-time-stream-processing/checkpoint.md
   - Module 08 — Event Security, Multi-Tenancy, Privacy, and Trust:
     - Chapter: 06-event-driven-api-engineering/course-book/module-08-event-security-and-multitenancy/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-08-event-security-and-multitenancy/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-08-event-security-and-multitenancy/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-08-event-security-and-multitenancy/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-08-event-security-and-multitenancy/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-08-event-security-and-multitenancy/checkpoint.md
   - Module 09 — Event Reliability, Backpressure, Dead Letters, and Recovery:
     - Chapter: 06-event-driven-api-engineering/course-book/module-09-event-reliability-and-recovery/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-09-event-reliability-and-recovery/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-09-event-reliability-and-recovery/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-09-event-reliability-and-recovery/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-09-event-reliability-and-recovery/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-09-event-reliability-and-recovery/checkpoint.md
   - Module 10 — Event Platform Governance, Release, and Final Defense:
     - Chapter: 06-event-driven-api-engineering/course-book/module-10-governance-release-and-final-defense/index.md
     - Exercises: 06-event-driven-api-engineering/course-book/module-10-governance-release-and-final-defense/exercises.md
-    - Reference answers: 06-event-driven-api-engineering/course-book/module-10-governance-release-and-final-defense/exercise-answers.md
+    - Worked Answers: 06-event-driven-api-engineering/course-book/module-10-governance-release-and-final-defense/exercise-answers.md
     - Lab: 06-event-driven-api-engineering/course-book/module-10-governance-release-and-final-defense/lab.md
     - Checkpoint: 06-event-driven-api-engineering/course-book/module-10-governance-release-and-final-defense/checkpoint.md
+- Course 7 — gRPC and Protobuf Engineering:
+  - Course Introduction: 07-grpc-and-protobuf-engineering/course-book/index.md
+  - Start Here: 07-grpc-and-protobuf-engineering/course-book/start-here.md
+  - Study Plan: 07-grpc-and-protobuf-engineering/course-book/study-plan.md
+  - Capstone: 07-grpc-and-protobuf-engineering/course-book/capstone.md
+  - Standards: 07-grpc-and-protobuf-engineering/course-book/standards.md
+  - Evidence Model: 07-grpc-and-protobuf-engineering/course-book/evidence-model.md
+  - Language Strategy: 07-grpc-and-protobuf-engineering/course-book/language-strategy.md
+  - Glossary: 07-grpc-and-protobuf-engineering/course-book/glossary.md
+  - Orientation:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-00-orientation/index.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-00-orientation/checkpoint.md
+  - Module 01 — RPC Boundaries, Service Ownership, and Interaction Choice:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-01-rpc-boundaries-and-service-ownership/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-01-rpc-boundaries-and-service-ownership/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-01-rpc-boundaries-and-service-ownership/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-01-rpc-boundaries-and-service-ownership/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-01-rpc-boundaries-and-service-ownership/checkpoint.md
+  - Module 02 — Protobuf Modeling, Presence, and Semantic Types:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-02-protobuf-modeling-presence-and-semantic-types/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-02-protobuf-modeling-presence-and-semantic-types/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-02-protobuf-modeling-presence-and-semantic-types/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-02-protobuf-modeling-presence-and-semantic-types/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-02-protobuf-modeling-presence-and-semantic-types/checkpoint.md
+  - Module 03 — Wire Format, Unknown Fields, and Compatibility Discipline:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-03-wire-format-unknown-fields-and-compatibility/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-03-wire-format-unknown-fields-and-compatibility/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-03-wire-format-unknown-fields-and-compatibility/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-03-wire-format-unknown-fields-and-compatibility/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-03-wire-format-unknown-fields-and-compatibility/checkpoint.md
+  - Module 04 — Unary RPCs, Metadata, Status, and Rich Errors:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-04-unary-rpcs-metadata-status-and-rich-errors/checkpoint.md
+  - Module 05 — Deadlines, Cancellation, Retries, and Idempotent Calls:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-05-deadlines-cancellation-retries-and-idempotent-calls/checkpoint.md
+  - Module 06 — Streaming RPCs, Flow Control, and Backpressure:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-06-streaming-rpcs-flow-control-and-backpressure/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-06-streaming-rpcs-flow-control-and-backpressure/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-06-streaming-rpcs-flow-control-and-backpressure/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-06-streaming-rpcs-flow-control-and-backpressure/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-06-streaming-rpcs-flow-control-and-backpressure/checkpoint.md
+  - Module 07 — Identity, Authorization, mTLS, and Tenant Isolation:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-07-identity-authorization-mtls-and-tenant-isolation/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-07-identity-authorization-mtls-and-tenant-isolation/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-07-identity-authorization-mtls-and-tenant-isolation/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-07-identity-authorization-mtls-and-tenant-isolation/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-07-identity-authorization-mtls-and-tenant-isolation/checkpoint.md
+  - Module 08 — Channels, Health, Discovery, Load Balancing, and Lifecycle:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-08-channels-health-discovery-load-balancing-and-lifecycle/checkpoint.md
+  - Module 09 — Generation, Testing, Reflection, and Schema Governance:
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-09-generation-testing-reflection-and-schema-governance/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-09-generation-testing-reflection-and-schema-governance/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-09-generation-testing-reflection-and-schema-governance/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-09-generation-testing-reflection-and-schema-governance/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-09-generation-testing-reflection-and-schema-governance/checkpoint.md
+  - 'Module 10 — HTTP, Events, and gRPC in One Architecture: Release and Final Defense':
+    - Chapter: 07-grpc-and-protobuf-engineering/course-book/module-10-http-events-and-grpc-release-and-final-defense/index.md
+    - Exercises: 07-grpc-and-protobuf-engineering/course-book/module-10-http-events-and-grpc-release-and-final-defense/exercises.md
+    - Worked Answers: 07-grpc-and-protobuf-engineering/course-book/module-10-http-events-and-grpc-release-and-final-defense/exercise-answers.md
+    - Lab: 07-grpc-and-protobuf-engineering/course-book/module-10-http-events-and-grpc-release-and-final-defense/lab.md
+    - Checkpoint: 07-grpc-and-protobuf-engineering/course-book/module-10-http-events-and-grpc-release-and-final-defense/checkpoint.md
+- Course 8 — Distributed API Architecture and Microservices Engineering:
+  - Course Introduction: 08-distributed-api-architecture-and-microservices-engineering/course-book/index.md
+  - Start Here: 08-distributed-api-architecture-and-microservices-engineering/course-book/start-here.md
+  - Study Plan: 08-distributed-api-architecture-and-microservices-engineering/course-book/study-plan.md
+  - Capstone: 08-distributed-api-architecture-and-microservices-engineering/course-book/capstone.md
+  - Standards: 08-distributed-api-architecture-and-microservices-engineering/course-book/standards.md
+  - Evidence Model: 08-distributed-api-architecture-and-microservices-engineering/course-book/evidence-model.md
+  - Language Strategy: 08-distributed-api-architecture-and-microservices-engineering/course-book/language-strategy.md
+  - Glossary: 08-distributed-api-architecture-and-microservices-engineering/course-book/glossary.md
+  - Orientation:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-00-orientation/index.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-00-orientation/checkpoint.md
+  - Module 01 — Distribution Economics, Boundary Evidence, and Architecture Fitness Functions:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-01-distribution-economics-and-boundary-evidence/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-01-distribution-economics-and-boundary-evidence/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-01-distribution-economics-and-boundary-evidence/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-01-distribution-economics-and-boundary-evidence/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-01-distribution-economics-and-boundary-evidence/checkpoint.md
+  - Module 02 — Service Boundaries, Bounded Contexts, and Contract Ownership:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-02-service-boundaries-and-contract-ownership/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-02-service-boundaries-and-contract-ownership/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-02-service-boundaries-and-contract-ownership/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-02-service-boundaries-and-contract-ownership/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-02-service-boundaries-and-contract-ownership/checkpoint.md
+  - Module 03 — Data Ownership, Replication, and Cross-Service Query Design:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-03-data-ownership-replication-and-cross-service-queries/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-03-data-ownership-replication-and-cross-service-queries/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-03-data-ownership-replication-and-cross-service-queries/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-03-data-ownership-replication-and-cross-service-queries/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-03-data-ownership-replication-and-cross-service-queries/checkpoint.md
+  - Module 04 — Synchronous Collaboration, API Composition, and Dependency Budgets:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-04-synchronous-collaboration-and-dependency-budgets/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-04-synchronous-collaboration-and-dependency-budgets/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-04-synchronous-collaboration-and-dependency-budgets/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-04-synchronous-collaboration-and-dependency-budgets/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-04-synchronous-collaboration-and-dependency-budgets/checkpoint.md
+  - Module 05 — Distributed Workflows, Sagas, Compensation, and Process Managers:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-05-distributed-workflows-sagas-and-compensation/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-05-distributed-workflows-sagas-and-compensation/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-05-distributed-workflows-sagas-and-compensation/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-05-distributed-workflows-sagas-and-compensation/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-05-distributed-workflows-sagas-and-compensation/checkpoint.md
+  - Module 06 — Service Identity, Authorization, and Trust Propagation:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-06-service-identity-authorization-and-trust-propagation/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-06-service-identity-authorization-and-trust-propagation/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-06-service-identity-authorization-and-trust-propagation/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-06-service-identity-authorization-and-trust-propagation/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-06-service-identity-authorization-and-trust-propagation/checkpoint.md
+  - Module 07 — Discovery, Routing, Gateways, and Traffic Topology:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-07-discovery-routing-gateways-and-traffic-topology/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-07-discovery-routing-gateways-and-traffic-topology/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-07-discovery-routing-gateways-and-traffic-topology/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-07-discovery-routing-gateways-and-traffic-topology/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-07-discovery-routing-gateways-and-traffic-topology/checkpoint.md
+  - Module 08 — Deployment Independence, Version Skew, and Release Choreography:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-08-deployment-independence-version-skew-and-release-choreography/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-08-deployment-independence-version-skew-and-release-choreography/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-08-deployment-independence-version-skew-and-release-choreography/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-08-deployment-independence-version-skew-and-release-choreography/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-08-deployment-independence-version-skew-and-release-choreography/checkpoint.md
+  - Module 09 — Distributed Verification, Fault Injection, and Operability:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-09-distributed-verification-fault-injection-and-operability/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-09-distributed-verification-fault-injection-and-operability/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-09-distributed-verification-fault-injection-and-operability/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-09-distributed-verification-fault-injection-and-operability/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-09-distributed-verification-fault-injection-and-operability/checkpoint.md
+  - Module 10 — Incremental Extraction, Strangler Migration, and Final Architecture Defense:
+    - Chapter: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-10-incremental-extraction-migration-and-final-defense/index.md
+    - Exercises: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-10-incremental-extraction-migration-and-final-defense/exercises.md
+    - Worked Answers: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-10-incremental-extraction-migration-and-final-defense/exercise-answers.md
+    - Lab: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-10-incremental-extraction-migration-and-final-defense/lab.md
+    - Checkpoint: 08-distributed-api-architecture-and-microservices-engineering/course-book/module-10-incremental-extraction-migration-and-final-defense/checkpoint.md
+- Course 9 — GraphQL Schema and Runtime Engineering:
+  - Course Introduction: 09-graphql-schema-and-runtime-engineering/course-book/index.md
+  - Start Here: 09-graphql-schema-and-runtime-engineering/course-book/start-here.md
+  - Study Plan: 09-graphql-schema-and-runtime-engineering/course-book/study-plan.md
+  - Capstone: 09-graphql-schema-and-runtime-engineering/course-book/capstone.md
+  - Standards: 09-graphql-schema-and-runtime-engineering/course-book/standards.md
+  - Evidence Model: 09-graphql-schema-and-runtime-engineering/course-book/evidence-model.md
+  - Language Strategy: 09-graphql-schema-and-runtime-engineering/course-book/language-strategy.md
+  - Glossary: 09-graphql-schema-and-runtime-engineering/course-book/glossary.md
+  - Orientation:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-00-orientation/index.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-00-orientation/checkpoint.md
+  - Module 01 — Graph Interface Placement and the Operation Lifecycle:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-01-graph-interface-placement-and-operation-lifecycle/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-01-graph-interface-placement-and-operation-lifecycle/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-01-graph-interface-placement-and-operation-lifecycle/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-01-graph-interface-placement-and-operation-lifecycle/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-01-graph-interface-placement-and-operation-lifecycle/checkpoint.md
+  - Module 02 — Type System, Nullability, and Semantic Modeling:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-02-type-system-nullability-and-semantic-modeling/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-02-type-system-nullability-and-semantic-modeling/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-02-type-system-nullability-and-semantic-modeling/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-02-type-system-nullability-and-semantic-modeling/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-02-type-system-nullability-and-semantic-modeling/checkpoint.md
+  - Module 03 — Resolver Architecture, Batching, and Source Ownership:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-03-resolver-architecture-batching-and-source-ownership/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-03-resolver-architecture-batching-and-source-ownership/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-03-resolver-architecture-batching-and-source-ownership/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-03-resolver-architecture-batching-and-source-ownership/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-03-resolver-architecture-batching-and-source-ownership/checkpoint.md
+  - Module 04 — Queries, Identifiers, Connections, and Pagination:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-04-queries-identifiers-connections-and-pagination/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-04-queries-identifiers-connections-and-pagination/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-04-queries-identifiers-connections-and-pagination/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-04-queries-identifiers-connections-and-pagination/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-04-queries-identifiers-connections-and-pagination/checkpoint.md
+  - Module 05 — Mutations, Idempotency, Concurrency, and Domain Results:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-05-mutations-idempotency-concurrency-and-domain-results/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-05-mutations-idempotency-concurrency-and-domain-results/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-05-mutations-idempotency-concurrency-and-domain-results/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-05-mutations-idempotency-concurrency-and-domain-results/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-05-mutations-idempotency-concurrency-and-domain-results/checkpoint.md
+  - Module 06 — Authorization, Tenancy, and Schema Exposure:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-06-authorization-tenancy-and-schema-exposure/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-06-authorization-tenancy-and-schema-exposure/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-06-authorization-tenancy-and-schema-exposure/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-06-authorization-tenancy-and-schema-exposure/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-06-authorization-tenancy-and-schema-exposure/checkpoint.md
+  - Module 07 — Demand Control, Persisted Operations, and Caching:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-07-demand-control-persisted-operations-and-caching/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-07-demand-control-persisted-operations-and-caching/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-07-demand-control-persisted-operations-and-caching/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-07-demand-control-persisted-operations-and-caching/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-07-demand-control-persisted-operations-and-caching/checkpoint.md
+  - Module 08 — Errors, Partial Data, Consistency, and Observability:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-08-errors-partial-data-consistency-and-observability/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-08-errors-partial-data-consistency-and-observability/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-08-errors-partial-data-consistency-and-observability/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-08-errors-partial-data-consistency-and-observability/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-08-errors-partial-data-consistency-and-observability/checkpoint.md
+  - Module 09 — Subscriptions, Resume, and Incremental Delivery:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-09-subscriptions-resume-and-incremental-delivery/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-09-subscriptions-resume-and-incremental-delivery/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-09-subscriptions-resume-and-incremental-delivery/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-09-subscriptions-resume-and-incremental-delivery/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-09-subscriptions-resume-and-incremental-delivery/checkpoint.md
+  - Module 10 — Schema Evolution, Federation, Governance, and Final Defense:
+    - Chapter: 09-graphql-schema-and-runtime-engineering/course-book/module-10-schema-evolution-federation-governance-and-final-defense/index.md
+    - Exercises: 09-graphql-schema-and-runtime-engineering/course-book/module-10-schema-evolution-federation-governance-and-final-defense/exercises.md
+    - Worked Answers: 09-graphql-schema-and-runtime-engineering/course-book/module-10-schema-evolution-federation-governance-and-final-defense/exercise-answers.md
+    - Lab: 09-graphql-schema-and-runtime-engineering/course-book/module-10-schema-evolution-federation-governance-and-final-defense/lab.md
+    - Checkpoint: 09-graphql-schema-and-runtime-engineering/course-book/module-10-schema-evolution-federation-governance-and-final-defense/checkpoint.md
+- Course 10 — API Platform, Governance, and Developer Experience Engineering:
+  - Course Introduction: 10-api-platform-governance-and-developer-experience-engineering/course-book/index.md
+  - Start Here: 10-api-platform-governance-and-developer-experience-engineering/course-book/start-here.md
+  - Study Plan: 10-api-platform-governance-and-developer-experience-engineering/course-book/study-plan.md
+  - Capstone: 10-api-platform-governance-and-developer-experience-engineering/course-book/capstone.md
+  - Standards: 10-api-platform-governance-and-developer-experience-engineering/course-book/standards.md
+  - Evidence Model: 10-api-platform-governance-and-developer-experience-engineering/course-book/evidence-model.md
+  - Language Strategy: 10-api-platform-governance-and-developer-experience-engineering/course-book/language-strategy.md
+  - Glossary: 10-api-platform-governance-and-developer-experience-engineering/course-book/glossary.md
+  - Orientation:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-00-orientation/index.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-00-orientation/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-00-orientation/checkpoint.md
+  - Module 01 — Platform Product Model and Operating Boundaries:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-01-platform-product-model/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-01-platform-product-model/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-01-platform-product-model/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-01-platform-product-model/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-01-platform-product-model/checkpoint.md
+  - Module 02 — Catalog, Ownership Graph, and Metadata Authority:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-02-catalog-ownership-and-topology/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-02-catalog-ownership-and-topology/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-02-catalog-ownership-and-topology/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-02-catalog-ownership-and-topology/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-02-catalog-ownership-and-topology/checkpoint.md
+  - Module 03 — Contract Registry and Multi-Protocol Publication:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-03-contract-registry-and-publication/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-03-contract-registry-and-publication/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-03-contract-registry-and-publication/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-03-contract-registry-and-publication/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-03-contract-registry-and-publication/checkpoint.md
+  - Module 04 — Governance as Code, Evidence, Scorecards, and Exceptions:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-04-governance-as-code/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-04-governance-as-code/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-04-governance-as-code/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-04-governance-as-code/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-04-governance-as-code/checkpoint.md
+  - Module 05 — Lifecycle, Compatibility, Deprecation, and Retirement:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-05-lifecycle-deprecation-and-retirement/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-05-lifecycle-deprecation-and-retirement/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-05-lifecycle-deprecation-and-retirement/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-05-lifecycle-deprecation-and-retirement/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-05-lifecycle-deprecation-and-retirement/checkpoint.md
+  - Module 06 — Golden Paths, Templates, and Self-Service Provisioning:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-06-golden-paths-and-self-service/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-06-golden-paths-and-self-service/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-06-golden-paths-and-self-service/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-06-golden-paths-and-self-service/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-06-golden-paths-and-self-service/checkpoint.md
+  - Module 07 — Documentation, Discovery, Sandboxes, and Consumer Onboarding:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-07-documentation-discovery-and-sandbox/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-07-documentation-discovery-and-sandbox/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-07-documentation-discovery-and-sandbox/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-07-documentation-discovery-and-sandbox/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-07-documentation-discovery-and-sandbox/checkpoint.md
+  - Module 08 — SDKs, CLIs, Artifacts, SBOMs, and Provenance:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-08-sdks-artifacts-and-supply-chain/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-08-sdks-artifacts-and-supply-chain/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-08-sdks-artifacts-and-supply-chain/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-08-sdks-artifacts-and-supply-chain/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-08-sdks-artifacts-and-supply-chain/checkpoint.md
+  - Module 09 — Runtime Control Plane, Usage Intelligence, and Support Operations:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-09-runtime-analytics-and-support/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-09-runtime-analytics-and-support/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-09-runtime-analytics-and-support/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-09-runtime-analytics-and-support/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-09-runtime-analytics-and-support/checkpoint.md
+  - Module 10 — Federated Governance, Platform Operations, and Final Defense:
+    - Chapter: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-10-federated-governance-and-final-defense/index.md
+    - Exercises: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-10-federated-governance-and-final-defense/exercises.md
+    - Worked Answers: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-10-federated-governance-and-final-defense/exercise-answers.md
+    - Lab: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-10-federated-governance-and-final-defense/lab.md
+    - Checkpoint: 10-api-platform-governance-and-developer-experience-engineering/course-book/module-10-federated-governance-and-final-defense/checkpoint.md

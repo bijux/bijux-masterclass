@@ -1,53 +1,29 @@
 # Module 08 — Event Security, Multi-Tenancy, Privacy, and Trust
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** How are producers authenticated, consumers authorized, tenants isolated, payloads minimized, and event bytes protected?
 
 ## Where this module fits
 
-Course 3 secured HTTP requests, tokens, authorization, uploads, webhooks, secrets, and abuse boundaries.
-Event systems introduce different trust surfaces. A producer can inject false facts into many consumers.
-Broad wildcard subscriptions can cross tenants. Retained payloads can preserve sensitive data long after the
-source database deletes it. A stolen broker credential may publish valid-looking messages. A signed message
-may be replayed even when its signature remains correct.
+Module 07 produced **Implement windowed analysis metrics, watermark progression, late-event correction revisions, and quarantine**. This module extends that result by asking: **How are producers authenticated, consumers authorized, tenants isolated, payloads minimized, and event bytes protected?**
 
-Transport encryption and broker authentication are necessary but not sufficient. TLS protects a connection;
-it does not prove that one producer is authorized to claim `AnalysisRunCompleted` for a specific tenant.
-Broker ACLs constrain subjects; they do not validate CloudEvents source, event type, payload classification,
-or business ownership. End-to-end message signatures can protect bytes across relays, but signatures do not
-make the asserted fact true.
-
-This module applies least privilege at producer, channel, event-type, tenant, consumer, and data levels.
-It also separates legitimate at-least-once redelivery from hostile replay: repeated event identity may be
-normal and should be idempotent, while a signed message injected outside its authorized route, freshness
-window, retention context, or producer grant is rejected.
-
-## Capstone result
-
-Add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules.
-
-Enforce event profile 1.0 security policy across producer grants, consumer subscriptions, tenant-scoped
-partitioning, payload classification, exact-byte signatures, key rotation, replay defense, and safe audit
-evidence.
-
-```text
-capstone/security/producer-grants.yaml
-capstone/event-case/channel-policy.yaml
-capstone/tracks/*/src/event-engineering/security.*
-capstone/shared/vectors/security.json
-```
+The new capstone increment is **Add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules**. It becomes the prerequisite for **Event Reliability, Backpressure, Dead Letters, and Recovery**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- authenticate producers and consumers independently of message content
-- authorize publication by producer, source, channel, event type, and tenant
-- authorize subscriptions by consumer effect and data classification
-- preserve tenant isolation in subjects, envelopes, partition keys, storage, and projections
-- minimize sensitive information in long-lived event payloads
-- sign and verify exact canonical bytes with key identity and freshness policy
-- distinguish duplicate delivery from hostile message injection or replay
-- design key rotation and revocation without making retained history unverifiable
+- Authenticate producers and consumers independently of message content.
+- Authorize publication by producer, source, channel, event type, and tenant.
+- Authorize subscriptions by consumer effect and data classification.
+- Preserve tenant isolation in subjects, envelopes, partition keys, storage, and projections.
+- Minimize sensitive information in long-lived event payloads.
+- Sign and verify exact canonical bytes with key identity and freshness policy.
+- Distinguish duplicate delivery from hostile message injection or replay.
+- Design key rotation and revocation without making retained history unverifiable.
+
+## Capstone increment
+
+Add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules.
 
 ## Core event model
 
@@ -263,10 +239,10 @@ uses replay authorization and event dedupe rather than pretending the original s
 
 ## Module synthesis
 
-Add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules. The central distinction is this: how are producers authenticated, consumers authorized, tenants isolated, payloads minimized, and event bytes protected? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **authenticate producers and consumers independently of message content, authorize publication by producer, source, channel, event type, and tenant, and authorize subscriptions by consumer effect and data classification** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a noncanonical serializer and require cross-language signature failure** and requiring the following oracle: **Only the valid authorized event, legitimate duplicate, and approved historical replay reach handlers. Forged, cross-tenant, sensitive, altered, unknown-key, stale-ingress, and unauthorized-subscription cases are rejected with safe evidence. Both languages agree on signature bytes. Rotation has no rejection gap.**
+
+The cumulative platform now includes **Add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Security rejects hostile messages, but legitimate systems still face broker outages, consumer crashes,
-lag, poison events, partition imbalance, and recovery storms. Module 09 engineers bounded failure behavior,
-dead-letter evidence, backpressure, reconciliation, and runbooks for the event system itself.
+Continue to [Event Reliability, Backpressure, Dead Letters, and Recovery](../module-09-event-reliability-and-recovery/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

@@ -1,39 +1,31 @@
 # Module 07 — Caching, Freshness, and Invalidation
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** Which data is safe to cache, for whom, for how long, and who owns invalidation after mutation or failure?
 
 ## Where this module fits
 
+Module 06 produced **Implement bounded admission, per-operation limits, queue accounting, permit release, and recovery after pressure**. This module extends that result by asking: **Which data is safe to cache, for whom, for how long, and who owns invalidation after mutation or failure?**
 
-Caching is often introduced as a product name rather than a consistency decision. “Add Redis” does not answer what value is cached, who may reuse it, when it expires, what invalidates it, or what happens when the cache is unavailable.
-
-This module begins with reuse semantics. You will classify immutable, versioned, mutable, authorization-sensitive, and negative results. You will design a key that includes every field affecting the selected value and policy. You will choose freshness and invalidation from the tolerated stale state, not from a desired hit rate.
-
-The capstone deliberately uses an in-process bounded cache for deterministic learning and provides an adapter boundary for an external cache. The goal is to master correctness before distribution. Course 6 and later architecture work can introduce a shared system without changing the cache contract.
-
-
-## Capstone result
-
-Build authorization-aware keys, TTL/capacity policy, source-version invalidation, single-flight fills, and failure semantics.
-
-Implement the authorization-safe cache catalogue, bounded TTL/LRU store, version-aware keys, negative-cache policy, and single-flight stampede control for selected metadata paths.
+The new capstone increment is **Build authorization-aware keys, TTL/capacity policy, source-version invalidation, single-flight fills, and failure semantics**. It becomes the prerequisite for **Traffic Shaping, Quotas, and Load Shedding**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Distinguish HTTP, process-local, shared application, database, and client caches.
+- Classify values by mutability and authorization sensitivity.
+- Define complete cache keys and value envelopes.
+- Choose freshness and stale behavior explicitly.
+- Implement invalidation from durable change rather than best-effort route code.
+- Prevent cross-tenant and cross-policy reuse.
+- Bound entries, bytes, and concurrent fills.
+- Control cache stampedes and failure amplification.
+- Measure hit, miss, fill, stale, eviction, and origin cost.
+- Reject caches that improve latency while worsening correctness or tail load.
 
-- distinguish HTTP, process-local, shared application, database, and client caches
-- classify values by mutability and authorization sensitivity
-- define complete cache keys and value envelopes
-- choose freshness and stale behavior explicitly
-- implement invalidation from durable change rather than best-effort route code
-- prevent cross-tenant and cross-policy reuse
-- bound entries, bytes, and concurrent fills
-- control cache stampedes and failure amplification
-- measure hit, miss, fill, stale, eviction, and origin cost
-- reject caches that improve latency while worsening correctness or tail load
+## Capstone increment
+
+Build authorization-aware keys, TTL/capacity policy, source-version invalidation, single-flight fills, and failure semantics.
 
 ## Core performance model
 
@@ -190,7 +182,6 @@ An application cache can fail open to origin, fail closed, or serve stale depend
 
 A distributed cache outage can create an origin stampede. Circuit and admission policies from Course 4 and Module 6 apply. The cache is an optimization, not a new source of business truth.
 
-
 ## Course requirements
 
 | Rule | Required behavior | Failure if omitted | Decisive evidence |
@@ -338,10 +329,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-Caching is controlled reuse under a consistency and security policy. Module 7 makes keys, freshness, invalidation, stampede behavior, capacity, and failure explicit before measuring any hit-rate benefit.
+You are ready to leave this module when you can **distinguish HTTP, process-local, shared application, database, and client caches, classify values by mutability and authorization sensitivity, and define complete cache keys and value envelopes** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject origin timeout and ensure it is not cached as not-found** and requiring the following oracle: **cross-tenant value is never reused; 100 concurrent misses produce one bounded origin fill per key; failed fill leaves no poisoned entry; post-commit version change makes old entry unreachable.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Build authorization-aware keys, TTL/capacity policy, source-version invalidation, single-flight fills, and failure semantics**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **Traffic Shaping, Quotas, and Load Shedding**, asks: How should quotas, priorities, cost budgets, and load shedding preserve fairness and truthful 429/503 outcomes? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [Traffic Shaping, Quotas, and Load Shedding](../module-08-traffic-shaping-quotas-and-load-shedding/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

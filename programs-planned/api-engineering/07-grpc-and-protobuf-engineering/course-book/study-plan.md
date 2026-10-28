@@ -1,116 +1,47 @@
-# Study plan
+# Two-Week Study Plan — gRPC and Protobuf Engineering
 
-The course is designed for ten dense teaching days plus orientation.
+## Rhythm
 
-| Period | Work |
-|---|---|
-| 08:30–09:00 | retrieval review and predecessor invariant check |
-| 09:00–11:00 | chapter reading and worked wire or protocol analysis |
-| 11:15–12:30 | Python implementation reading |
-| 13:30–14:45 | TypeScript comparative reading |
-| 15:00–17:30 | capstone lab |
-| 18:30–19:30 | exercises before answers |
-| 19:30–20:30 | evidence review and checkpoint |
+Course 7 uses ten teaching days over two weeks. Orientation freezes the incoming boundary before Day 1; each day moves from the engineer typed internal invocation and streaming model to transfer problems, a controlled experiment, and an evidence defense. The middle weekend is for repairing failed checkpoints, not adding features.
 
-Do not use the schedule to rush. A module is complete only when its evidence is intelligible. A green command whose oracle you cannot explain is not mastery.
+| Day | Module | Required result |
+|---:|---|---|
+| 1 | [RPC Boundaries, Service Ownership, and Interaction Choice](module-01-rpc-boundaries-and-service-ownership/index.md) | Publish an interaction decision record, service-ownership map, and minimal Analysis RPC surface without splitting the platform prematurely. |
+| 2 | [Protobuf Modeling, Presence, and Semantic Types](module-02-protobuf-modeling-presence-and-semantic-types/index.md) | Complete the Analysis RPC 1.0 message model, publish cross-language presence and integer vectors, and document every field whose absence changes behavior. |
+| 3 | [Wire Format, Unknown Fields, and Compatibility Discipline](module-03-wire-format-unknown-fields-and-compatibility/index.md) | Publish Analysis RPC compatibility policy 1.0, golden wire fixtures, and a release report that accepts one additive candidate while rejecting unsafe tag, enum, and method-shape changes. |
+| 4 | [Unary RPCs, Metadata, Status, and Rich Errors](module-04-unary-rpcs-metadata-status-and-rich-errors/index.md) | Implement `CreateRun`, `GetRun`, and `CancelRun` with shared status vectors, safe metadata policy, and equivalent Python and TypeScript client behavior. |
+| 5 | [Deadlines, Cancellation, Retries, and Idempotent Calls](module-05-deadlines-cancellation-retries-and-idempotent-calls/index.md) | Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery. |
+| 6 | [Streaming RPCs, Flow Control, and Backpressure](module-06-streaming-rpcs-flow-control-and-backpressure/index.md) | Implement `WatchRun`, `UploadDataset`, `DownloadArtifact`, and the worker `Work` stream with shared schedule vectors, bounded buffers, resumable observation, and stale-attempt fencing. |
+| 7 | [Identity, Authorization, mTLS, and Tenant Isolation](module-07-identity-authorization-mtls-and-tenant-isolation/index.md) | Implement RPC security profile 1.0 with method policy, workload and user identity binding, tenant-isolation vectors, mTLS-ready configuration, and secure worker-stream authorization. |
+| 8 | [Channels, Health, Discovery, Load Balancing, and Lifecycle](module-08-channels-health-discovery-load-balancing-and-lifecycle/index.md) | Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration. |
+| 9 | [Generation, Testing, Reflection, and Schema Governance](module-09-generation-testing-reflection-and-schema-governance/index.md) | Publish a reproducible generation pipeline, checked descriptor inventory, generated-client build matrix, runtime catalogue comparison, and Course 7 RPC release gate. |
+| 10 | [HTTP, Events, and gRPC in One Architecture: Release and Final Defense](module-10-http-events-and-grpc-release-and-final-defense/index.md) | Release Analysis RPC API 1.0 behind the unchanged public HTTP API and Event API, execute the final defense, and publish a sanitized service-boundary dossier rather than prematurely splitting the system. |
 
-## Primary-track choice
-
-Choose Python when you want the complete live reference in this package, including an actual gRPC server and client. Choose TypeScript when your main goal is the Node service ecosystem; the dependency-light core is complete, while the full network adapter requires the pinned npm packages. In either case, read the other track’s boundary decisions and run the shared vectors.
-
-## Assessment
-
-- module checkpoints: 30%;
-- exercises and design reviews: 20%;
-- capstone mechanisms: 30%;
-- final release and defense: 20%.
-
-A numeric score cannot compensate for a failed compatibility, security, deadline, stream-bound, or authority gate.
-
-
-## Self-learning protocol
-
-This course is dense because each module combines contract semantics, runtime behavior, failure analysis, and evidence. Use a three-pass method rather than reading once from top to bottom.
-
-### Pass 1 — build the mental model
-
-Read the main chapter without opening code. Draw the interaction or state machine from memory. Write the authoritative state and the uncertain remote observation for every failure example. At this stage, do not memorize API calls. The goal is to explain why the mechanism exists.
-
-### Pass 2 — trace one implementation
-
-Choose Python or TypeScript as the primary track. Follow one request from generated message or semantic adapter through authentication, status mapping, application state, and response. For streams, write the legal frame sequence and every queue or byte boundary. Add comments only where the code cannot be understood from names and structure.
-
-### Pass 3 — falsify the claim
-
-Run the lab and try to break the mechanism. Predict the wrong outcome before injecting the fault. Inspect authoritative state rather than accepting the client exception as the oracle. Preserve the required evidence and state what it proves and does not prove.
-
-## Daily completion questions
-
-At the end of every module, answer:
-
-1. What new promise does this module add?
-2. Which predecessor promise constrains it?
-3. What is the authoritative state after failure?
-4. Which ambiguity remains at the caller?
-5. Which identifier allows reconciliation?
-6. Which resource is bounded?
-7. Which compatibility dimension matters?
-8. Which security decision occurs at the durable boundary?
-9. Which proof would catch a tempting defect?
-10. Which claim still requires an environment-backed route?
-
-If you cannot answer these without searching across the repository, reread the chapter and implementation reading before the checkpoint.
-
-## Suggested two-week rhythm
-
-### Week one
-
-- Day 1: boundary and ownership;
-- Day 2: Protobuf semantic model;
-- Day 3: wire and compatibility;
-- Day 4: unary outcomes;
-- Day 5: deadlines and retries.
-
-Use the weekend for one integration review: explain how a public HTTP CreateRun request becomes an internal unary call and how response loss is reconciled.
-
-### Week two
-
-- Day 6: streaming and backpressure;
-- Day 7: security;
-- Day 8: channel and server lifecycle;
-- Day 9: generation and governance;
-- Day 10: cross-protocol release and final defense.
-
-Do not add Course 8 microservices during this course. The final dossier is evidence for a later decision, not permission to split immediately.
-
-## Learning journal format
-
-For each module keep one page:
+## Suggested day
 
 ```text
-Governing question:
-Decision rule:
-Authoritative state:
-Primary failure:
-Incorrect tempting solution:
-Evidence produced:
-Evidence limitation:
-Python/TypeScript difference:
-Open question:
+08:30  retrieval practice and checkpoint repair
+09:00  chapter reading and diagram reconstruction
+11:00  worked examples and standards review
+13:00  primary-track implementation reading
+15:00  exercises before answers
+17:00  controlled lab
+19:30  evidence package and checkpoint defense
 ```
 
-This journal makes the final defense substantially easier. It also exposes shallow understanding early: a blank “authoritative state” or “evidence limitation” usually means the learner has followed commands without owning the engineering argument.
+The two-week schedule is subordinate to evidence. If the engineer typed internal invocation and streaming argument becomes unclear, stop at the last green checkpoint, reduce the counterexample, and resume only after the owning mechanism is understood.
 
-## Pair or review practice
+## Weekend synthesis
 
-When studying with another learner, assign one person as provider reviewer and one as consumer reviewer. The provider reviewer defends schema and service behavior. The consumer reviewer challenges source compatibility, deadline value, retries, unknown fields, and status semantics. Switch roles for the streaming lab.
+At the Week 1 boundary, reconstruct how Modules 1–5 change the platform while preserving this incoming state: The Course 6 HTTP API 1.2 and Analysis Events API 1.0 handoff with profiles and migrations through 012. Rerun those checkpoints and postpone every feature that does not serve the Course 7 responsibility.
 
-For solo study, perform the consumer review one day later without reading the provider notes. Delayed retrieval is more effective than immediately rereading the answer.
+## Recovery route
 
-## When to use external tooling
+When a checkpoint fails:
 
-Use `protoc`, Buf, grpcurl, live TLS, PostgreSQL, and the full TypeScript network stack after the dependency-light mechanism is understood. External tools should strengthen an existing claim, not replace reasoning. Record versions, commands, output, and environment. If the tool is absent, complete the local proof and retain the route as not executed.
-
-## Definition of mastery
-
-Mastery is not the ability to write a `.proto` file from memory. It is the ability to review a proposed remote boundary, model its wire semantics, predict ambiguous failure, constrain time and resources, protect identity and state, evolve consumers safely, operate the channel and server lifecycle, and introduce or remove the RPC path without changing the public or event promises.
+1. isolate the first broken invariant;
+2. restore the predecessor baseline if necessary;
+3. reduce the failing case;
+4. repair the owning mechanism;
+5. retain the case as a regression;
+6. update your explanation before continuing.

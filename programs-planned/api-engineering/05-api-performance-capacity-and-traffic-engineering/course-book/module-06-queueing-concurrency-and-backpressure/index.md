@@ -1,39 +1,31 @@
 # Module 06 — Queueing, Concurrency, and Backpressure
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** How do arrival rate, service time, queue depth, concurrency, fairness, and backpressure determine overload behavior?
 
 ## Where this module fits
 
+Module 05 produced **Profile named phases, detect blocking work, bound profiling overhead, and prove mechanism-level improvements**. This module extends that result by asking: **How do arrival rate, service time, queue depth, concurrency, fairness, and backpressure determine overload behavior?**
 
-Performance collapse is often a queueing problem rather than a slow-function problem. When work arrives faster than a limiting stage can complete it, the difference accumulates as waiting, memory, open connections, database sessions, job rows, or retry pressure. Latency grows before throughput visibly falls.
-
-This module gives the learner a practical queueing model. Little’s Law connects average work in the system, throughput, and average time. Utilization explains why operating near theoretical maximum produces unstable waiting. Bounded admission and backpressure turn unbounded delay into explicit, observable decisions.
-
-The capstone has several queues: HTTP admission, database pool waiters, durable analysis jobs, active artifact streams, webhook deliveries, and client-side retry attempts. They must not be tuned independently. Increasing one concurrency limit can merely move overload to PostgreSQL, storage, or an external receiver.
-
-
-## Capstone result
-
-Implement bounded admission, per-operation limits, queue accounting, permit release, and recovery after pressure.
-
-Implement bounded concurrency, queue capacity, admission deadlines, fair permits, and backpressure evidence for run submission, worker execution, artifact streaming, and webhook delivery.
+The new capstone increment is **Implement bounded admission, per-operation limits, queue accounting, permit release, and recovery after pressure**. It becomes the prerequisite for **Caching, Freshness, and Invalidation**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Identify every implicit and explicit queue in a request journey.
+- Apply Little’s Law with compatible populations and intervals.
+- Distinguish service time, waiting time, response time, and service demand.
+- Explain why tail latency rises rapidly near saturation.
+- Size concurrency from a limiting resource rather than CPU count folklore.
+- Bound queue length and waiting time.
+- Propagate cancellation without undoing committed work.
+- Design backpressure across API, worker, storage, and outbound stages.
+- Preserve fairness and avoid starvation.
+- Separate admission rejection from internal failure.
 
-- identify every implicit and explicit queue in a request journey
-- apply Little’s Law with compatible populations and intervals
-- distinguish service time, waiting time, response time, and service demand
-- explain why tail latency rises rapidly near saturation
-- size concurrency from a limiting resource rather than CPU count folklore
-- bound queue length and waiting time
-- propagate cancellation without undoing committed work
-- design backpressure across API, worker, storage, and outbound stages
-- preserve fairness and avoid starvation
-- separate admission rejection from internal failure
+## Capstone increment
+
+Implement bounded admission, per-operation limits, queue accounting, permit release, and recovery after pressure.
 
 ## Core performance model
 
@@ -161,7 +153,6 @@ Overload is not an internal 500. The service should reject before partial effect
 Accepted `202` work counts against durable queue capacity. It is dishonest to accept unlimited jobs and later miss every freshness objective. Admission ties API behavior to worker capacity and capacity planning.
 
 Course 3 abuse controls and Course 4 reliability alerts remain active. Performance controls refine their numerical budgets and fairness behavior.
-
 
 ## Course requirements
 
@@ -300,10 +291,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-Queueing turns excess demand into waiting. Module 6 makes every queue explicit, bounds waiting and active work, preserves durable cancellation semantics, and connects concurrency to the actual limiting resource.
+You are ready to leave this module when you can **identify every implicit and explicit queue in a request journey, apply Little’s Law with compatible populations and intervals, and distinguish service time, waiting time, response time, and service demand** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Disconnect clients before and after durable commitment** and requiring the following oracle: **unbounded baseline shows growing waiting or memory; bounded candidate limits queue and wait; admitted work meets a better completion/freshness profile; rejections are documented and counted.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Implement bounded admission, per-operation limits, queue accounting, permit release, and recovery after pressure**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **Caching, Freshness, and Invalidation**, asks: Which data is safe to cache, for whom, for how long, and who owns invalidation after mutation or failure? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [Caching, Freshness, and Invalidation](../module-07-caching-freshness-and-invalidation/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

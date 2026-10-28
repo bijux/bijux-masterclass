@@ -1,26 +1,27 @@
-# Deployment Independence, Version Skew, and Release Choreography
+# Module 08 — Deployment Independence, Version Skew, and Release Choreography
 
-**Module 08 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How can services release independently while old and new clients, events, schemas, and database migrations coexist safely?
+> **Central question:** How can services release independently while old and new clients, events, schemas, and database migrations coexist safely?
 
-## Place in the program
+## Where this module fits
 
-The platform now has explicit service and data ownership, bounded synchronous collaboration, and one durable cross-service workflow. This module adds the next necessary property without weakening the previous guarantees.
+Module 07 produced **Implement service registration, health-aware routing, gateway edge policy, bounded traffic shifting, and an optional Kubernetes topology with explicit ownership of each routing decision**. This module extends that result by asking: **How can services release independently while old and new clients, events, schemas, and database migrations coexist safely?**
+
+The new capstone increment is **Publish and execute a mixed-version release matrix for Analysis Control, Artifact, Notification, Gateway, and Worker Plane with expand-and-contract changes and rollback evidence**. It becomes the prerequisite for **Distributed Verification, Fault Injection, and Operability**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- distinguish independent deployment from independent change and ownership
-- model provider and consumer compatibility across HTTP, events, and gRPC
-- design expand, migrate, observe, and contract release sequences
-- support bounded version skew without permanent multi-version complexity
-- use shadow and canary evidence before route cutover
-- define rollback boundaries when data or messages have already changed
+- Distinguish independent deployment from independent change and ownership.
+- Model provider and consumer compatibility across HTTP, events, and gRPC.
+- Design expand, migrate, observe, and contract release sequences.
+- Support bounded version skew without permanent multi-version complexity.
+- Use shadow and canary evidence before route cutover.
+- Define rollback boundaries when data or messages have already changed.
 
-## Capstone result
+## Capstone increment
 
 Publish and execute a mixed-version release matrix for Analysis Control, Artifact, Notification, Gateway, and Worker Plane with expand-and-contract changes and rollback evidence.
-
 
 ## Independent deployment is a tested property
 
@@ -108,6 +109,7 @@ The shared `VersionPolicy` classifies the supported matrix. It deliberately reje
 ## Evidence required before Module 9
 
 Produce the old/new matrix, expand-and-contract sequence, shadow report, rollback route, and evidence that each service’s database can migrate without another service writing it.
+
 ## Build a compatibility matrix, not a version slogan
 
 Semantic version labels are useful communication, but release safety depends on concrete producer-consumer combinations.
@@ -277,3 +279,13 @@ Each service release should identify:
 - residual risk owner.
 
 The platform release report aggregates these facts without becoming the authority for each service’s internals.
+
+## Module synthesis
+
+You are ready to leave this module when you can **distinguish independent deployment from independent change and ownership, model provider and consumer compatibility across HTTP, events, and gRPC, and design expand, migrate, observe, and contract release sequences** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove the old writer and contract only after the coexistence window passes** and requiring the following oracle: **Every supported pair preserves existing outcomes; unsupported major skew is rejected; rollback reads all committed data; no other service writes Artifact schema.**
+
+The cumulative platform now includes **Publish and execute a mixed-version release matrix for Analysis Control, Artifact, Notification, Gateway, and Worker Plane with expand-and-contract changes and rollback evidence**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Distributed Verification, Fault Injection, and Operability](../module-09-distributed-verification-fault-injection-and-operability/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

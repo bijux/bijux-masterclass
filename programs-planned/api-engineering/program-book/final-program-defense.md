@@ -1,32 +1,37 @@
 # Final Program Defense
 
-The final defense is not a repository tour. It is an end-to-end explanation of one platform outcome across all six responsibilities.
+## Purpose
 
-## Required scenario
+The final defense is not a slide presentation. It is a sequence of claims and evidence showing that the same Analysis Runs Platform remains coherent across ten layers.
 
-Use one analysis run from authenticated submission through artifact publication and one asynchronous consumer effect. Demonstrate or explain:
+## Required demonstrations
 
-1. the legal HTTP request and response contract;
-2. schema validation and public error semantics;
-3. the application use case and domain transition;
-4. the transaction, idempotency record, version check, job, artifact, and outbox facts;
-5. authentication, authorization, tenant isolation, and hostile-input boundaries;
-6. deadlines, retry ownership, lifecycle, telemetry, SLI, SLO, alert, and runbook;
-7. workload identity, query/runtime evidence, admission, traffic policy, and capacity limit;
-8. event ownership, canonical envelope, publication, delivery attempt, inbox/effect transaction, acknowledgement, replay, and release compatibility.
+1. Trace one public HTTP operation from OpenAPI contract to durable state and client behavior.
+2. Demonstrate idempotent replay, stale conditional update rejection, and worker recovery.
+3. Reject a hostile identity, cross-tenant access, unsafe upload, and forbidden outbound destination.
+4. Diagnose a failed critical journey from structured events, metrics, and traces without treating telemetry as business truth.
+5. Compare a baseline and candidate workload and reject a faster-but-wrong release.
+6. Publish and consume an event with duplicate delivery, inbox deduplication, and bounded replay.
+7. Execute unary and streaming RPC behavior with deadline, cancellation, flow-control, and compatibility evidence.
+8. Defend one service extraction and reject one distributed-monolith candidate.
+9. Execute a persisted GraphQL operation with batching, authorization, demand control, and truthful partial data.
+10. Publish the portfolio through the catalog, registry, lifecycle, documentation, sandbox, SDK, runtime, and support workflows.
 
-## Questions the learner must answer
+## Non-compensable failures
 
-- Which artifact is authoritative at each stage?
-- Which failures are retried, rejected, concealed, degraded, reconciled, or dead-lettered?
-- Where can duplicate work occur, and why do duplicate effects not occur?
-- Which identifiers connect HTTP, durable state, telemetry, workload evidence, and events without making them interchangeable?
-- Which public versions and profiles are in force?
-- Which proof is deterministic, which requires live dependencies, and which claim remains unexecuted in the current environment?
-- What is the first bottleneck under the declared workload?
-- Which interaction remains synchronous, and why?
-- Which proposed microservice split would you reject at this point?
+The program cannot pass while any of these remain:
 
-## Passing standard
+- an earlier handoff was rewritten;
+- public behavior differs across supported providers without a declared release;
+- a tenant can observe or mutate another tenant’s resource;
+- accepted work can disappear silently;
+- a benchmark omits missing outcomes or compares unlike environments;
+- a consumer effect can duplicate without detection;
+- a service boundary has multiple writers for one business fact;
+- graph demand is unbounded or authorization occurs after protected I/O;
+- governance accepts missing blocker evidence through an average score;
+- the evidence report claims an environment-dependent proof that was not run.
 
-The defense passes when the learner can move from user-visible promise to authoritative state and back without hand-waving. Tool names may support the explanation, but they cannot replace the engineering model. Every claim must have an owner, a failure, an oracle, and an honest evidence boundary.
+## Graduation artifact
+
+The final dossier contains the version ledger, contracts, ownership map, release decisions, residual risks, consumer migration state, runtime reconciliation, support model, and exact evidence boundary.

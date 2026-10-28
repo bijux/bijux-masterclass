@@ -1,31 +1,29 @@
-# Language strategy
+# Language Strategy — GraphQL Schema and Runtime Engineering
 
-GraphQL semantics are language-neutral; implementations are not. The program therefore separates **behavioral parity** from **syntactic mirroring**.
+## Strategy
 
-## TypeScript track
-
-The TypeScript reference uses strict types for global identifiers, parsed operations, budgets, loaders, compatibility decisions, and the graph gateway. An optional GraphQL Yoga adapter shows how these policies attach to a complete GraphQL.js-based server. The dependency-light core compiles without registry access and is tested with Node's built-in test runner.
-
-## Python track
-
-The Python reference uses dataclasses, explicit exceptions, request-scoped loaders, a persisted-operation registry, and service clients. An optional Strawberry/FastAPI adapter demonstrates complete-framework integration. The dependency-light core uses the standard library so the course can prove its engineering mechanisms in constrained environments.
+Choose one primary track for the complete build and lab repairs. Use the second as an idiomatic comparison and shared-vector parity reference. The course deliberately avoids making learners type the same architecture twice.
 
 ## What must match
 
-Both tracks must agree on:
+- public messages and documented statuses;
+- named state, security, reliability, performance, event, RPC, architecture, graph, or governance decisions owned by this course;
+- canonical bytes when signatures, digests, wire compatibility, or cross-language identity depends on them;
+- accepted, rejected, and review-required release classifications;
+- shared negative vectors and evidence boundaries.
+- the Course 9 outcome: Analysis Graph API 1.0, GraphQL September 2025 schema, persisted operation registry, resolver ownership, demand policy, resumable subscriptions, compatibility gates, and platform-publication metadata.
 
-- global identifier and cursor decoding;
-- operation identity;
-- query-budget outcomes;
-- authorization decisions;
-- batch key collapse and request-scope isolation;
-- mutation replay and conflict behavior;
-- subscription gap and duplicate behavior;
-- compatibility classification;
-- externally visible data and error semantics.
+## What may differ
 
-They do not need identical class names, folder structures, async primitives, or middleware APIs.
+resolver APIs, loader libraries, schema tooling, and async subscription models differ; compare field ownership, admitted demand, exact errors, and source calls.
 
-## Recommended workflow
+## Reading implementation examples
 
-Implement the primary track. Before moving on, read the equivalent mechanism in the comparative track and answer: “Which guarantee is the same, and which implementation choice is idiomatic to this language?” This develops transferable engineering judgment rather than framework memorization.
+For each example:
+
+1. name the invariant before reading code;
+2. identify the owner and state boundary;
+3. find the negative test;
+4. find cleanup and failure behavior;
+5. compare the second track only after you can explain the first;
+6. never infer a protocol rule from one framework default.

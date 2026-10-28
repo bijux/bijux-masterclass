@@ -1,125 +1,83 @@
 # Glossary — API Reliability and Observability Engineering
 
-Use this glossary alongside `program-book/glossary.md`. Program terms keep one meaning across all six courses; the entries below add course-specific distinctions.
+These terms have precise meanings in Course 4. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
-Terms are defined as used in this program. When an Internet or OpenAPI specification gives a narrower normative meaning, the chapter and standards page name it.
+## critical journey
 
-## Critical journey
+An end-to-end user or operator outcome whose correctness and availability are important enough to govern reliability decisions.
 
-A user-meaningful sequence with explicit entry, eligible population, good and bad outcomes, and a durable oracle.
+## failure mode
 
-## Failure mode
+A specific way a component or interaction can fail, including its cause, observable symptoms, affected journey, and recovery path.
 
-A specific way a component or dependency can violate a journey, including detection and containment expectations.
+## deadline
 
-## Deadline
+An absolute time after which the caller no longer requires a result; child operations must derive budgets from it.
 
-An absolute monotonic time by which work must finish, propagated rather than reset at each layer.
+## timeout
 
-## Timeout
+A local waiting limit for one operation or phase; it must not be confused with the caller’s end-to-end deadline.
 
-A local waiting bound; several independent timeouts can exceed one caller deadline.
+## cancellation
 
-## Cancellation
+A signal that work is no longer needed and should stop or reach a safe boundary without corrupting durable state.
 
-A signal that work is no longer required; committed durable effects still need reconciliation.
+## retry budget
 
-## Retry budget
+A bound on additional attempts, time, and load permitted after failure so retries cannot amplify an outage indefinitely.
 
-The bounded number and time of attempts permitted within one operation budget.
+## circuit breaker
 
-## Backoff
+A dependency-local state machine that temporarily rejects calls after qualifying failures and uses bounded probes to test recovery.
 
-Delay between retry attempts, usually increasing and randomized with jitter.
+## bulkhead
 
-## Circuit breaker
+An isolation limit preventing one dependency, tenant, operation, or workload from consuming all shared concurrency or capacity.
 
-A dependency-local state machine that stops repeated calls after classified failures and permits bounded recovery probes.
+## liveness
 
-## Bulkhead
+Evidence that a process is running sufficiently to be restarted only when it is genuinely stuck, not merely unable to serve traffic.
 
-A concurrency or resource partition that prevents one workload or dependency from consuming all capacity.
+## readiness
 
-## Graceful degradation
+Evidence that an instance is currently safe to receive the traffic assigned to it.
 
-A truthful reduced behavior that preserves accepted work and does not claim success for uncertain effects.
+## draining
 
-## Liveness
+A lifecycle state in which new work is refused while admitted work is allowed a bounded opportunity to finish or transfer safely.
 
-Whether the process should be restarted; it should not depend on every downstream dependency being healthy.
+## telemetry
 
-## Readiness
+Structured events, metrics, traces, and logs emitted to support diagnosis and operational decisions; telemetry is evidence, not business truth.
 
-Whether the instance is currently safe to admit the class of work represented by the probe.
+## metric cardinality
 
-## Draining
+The number of distinct label combinations a metric can produce; unbounded dimensions can make the monitoring system itself fail.
 
-A lifecycle state that rejects new ownership while completing, releasing, or persisting already-owned work.
+## trace link
 
-## Telemetry
-
-Operational events, metrics, and traces emitted for diagnosis; it is not the durable business record.
-
-## Structured event
-
-A versioned event name with bounded, typed, redacted attributes and explicit severity or outcome.
-
-## Metric label
-
-A bounded dimension used to partition a metric series; unbounded identifiers cause cardinality and privacy defects.
-
-## Counter
-
-A monotonically increasing measurement of accumulated events, interpreted with reset-aware queries.
-
-## Gauge
-
-A sampled current value such as queue depth or permits in use, with explicit ownership and collection semantics.
-
-## Histogram
-
-A distribution of observations across configured boundaries, used for latency and size analysis.
+A causal association between spans when asynchronous work cannot be represented accurately as one direct parent-child chain.
 
 ## SLI
 
-A service-level indicator: a precise measurement of service behavior over an eligible event population.
+A precisely defined measurement of service behavior over an eligible population, such as successful completion within a latency threshold.
 
 ## SLO
 
-A service-level objective: a target for an SLI over a stated rolling window.
+A target for an SLI over a stated window, population, and measurement source.
 
-## Error budget
+## error budget
 
-The amount of bad eligible behavior permitted by an SLO before its objective is exhausted.
+The amount of allowed bad SLI outcome implied by an SLO before the objective is exhausted.
 
-## Burn rate
+## burn rate
 
-The rate at which an error budget is being consumed relative to the rate allowed by the objective.
+The speed at which an error budget is being consumed relative to the rate that would exactly exhaust it over the objective window.
 
-## Trace context
+## game day
 
-Identifiers and flags propagated between components to correlate one distributed execution.
+A controlled operational exercise with a bounded fault, explicit abort conditions, expected observations, cleanup, and retained evidence.
 
-## Span link
+## reconciliation
 
-A trace relationship used when asynchronous work is causally related but not a direct synchronous child.
-
-## Cardinality
-
-The number of distinct metric series or attribute values; unbounded cardinality can make telemetry unusable.
-
-## Fault injection
-
-A controlled, bounded introduction of a failure to test a stated hypothesis and oracle.
-
-## Game day
-
-A rehearsed operational exercise with roles, abort conditions, cleanup, and retained evidence.
-
-## Reconciliation
-
-Read-only comparison of durable facts to identify missing, duplicate, orphaned, or inconsistent effects.
-
-## Repair key
-
-A stable identifier making an approved repair action reviewable and idempotent.
+A process that compares durable intent with observable effects and proposes stable, reviewable repair actions rather than guessing from telemetry.

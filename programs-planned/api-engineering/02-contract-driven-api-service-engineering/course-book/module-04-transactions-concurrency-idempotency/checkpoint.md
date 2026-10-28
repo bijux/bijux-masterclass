@@ -2,7 +2,7 @@
 
 ## Required result
 
-One hundred concurrent identical submissions create one run; stale ETags fail atomically; replay survives restart.
+Implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback.
 
 ## Demonstrate
 
@@ -22,13 +22,23 @@ make module-proof MODULE=04 TRACK=typescript
 make core-proof
 ```
 
+## Evidence to retain
+
+- baseline transcript proving the previous checkpoint before **Transactions, Concurrency, ETags, and Idempotency** changes
+- the exact source, fixture, contract, migration, or configuration diff that implements **Transactions, Concurrency, ETags, and Idempotency**
+- focused result for: Draw the transaction boundary for each use case.
+- public, durable, security, or operational observation showing: One hundred concurrent identical submissions create one run; stale ETags fail atomically; replay survives restart.
+- minimized planted-defect failure and repaired regression
+- primary/comparison-track note for **transactional idempotency and conditional mutation**
+- a limitation statement naming every live dependency required to support the strongest **Transactions, Concurrency, ETags, and Idempotency** claim but not exercised
+
 ## Defend the design
 
 1. Answer the central question: **How do public guarantees survive simultaneous requests, retries, lost responses, and process restart?**
 2. Demonstrate this capstone result: One hundred concurrent identical submissions create one run; stale ETags fail atomically; replay survives restart.
-3. Show the planted defect, the first failing oracle, and the retained regression.
+3. Show the **Transactions, Concurrency, ETags, and Idempotency** defect, the first failing oracle, and the exact regression retained after repair.
 4. Explain why this invariant is shared across languages: one key and fingerprint produce one durable outcome, while a stale version fails atomically.
-5. State exactly which database, network, process, telemetry backend, or operated exercise was not run in the current environment.
+5. State which environment-backed **Transactions, Concurrency, ETags, and Idempotency** route was not run and how that limits the claim.
 
 ## Continue only when
 

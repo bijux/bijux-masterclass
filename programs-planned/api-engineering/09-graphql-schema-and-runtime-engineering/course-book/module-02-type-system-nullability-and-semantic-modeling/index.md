@@ -1,26 +1,24 @@
-# Type System, Nullability, and Semantic Modeling
+# Module 02 — Type System, Nullability, and Semantic Modeling
 
-**Module 02 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How does the schema make useful promises without promising values the runtime cannot sustain?
+> **Central question:** How does the schema make useful promises without promising values the runtime cannot sustain?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 02 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 01 produced **Publish the graph boundary and operation-lifecycle trace**. This module extends that result by asking: **How does the schema make useful promises without promising values the runtime cannot sustain?**
+
+The new capstone increment is **Release Analysis Graph API 1.0 type and nullability policies**. It becomes the prerequisite for **Resolver Architecture, Batching, and Source Ownership**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- design types around client concepts
+- Design types around client concepts.
+- Choose nullability from failure guarantees.
+- Model lists, interfaces, unions, enums, scalars, and inputs.
+- Apply OneOf input semantics.
+- Detect schema promises the runtime cannot keep.
 
-- choose nullability from failure guarantees
-
-- model lists, interfaces, unions, enums, scalars, and inputs
-
-- apply OneOf input semantics
-
-- detect schema promises the runtime cannot keep
-
-## Capstone result
+## Capstone increment
 
 Release Analysis Graph API 1.0 type and nullability policies.
 
@@ -158,3 +156,13 @@ Python dataclasses and TypeScript interfaces model the semantic types used by te
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-02-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **design types around client concepts, choose nullability from failure guarantees, and model lists, interfaces, unions, enums, scalars, and inputs** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject Artifact Service unavailability and repeat** and requiring the following oracle: **released remote field failure preserves the AnalysisRun object;; scratch non-null field increases the bubbling blast radius;; null list items obey item nullability;; invalid resolver output is an execution/completion error;.**
+
+The cumulative platform now includes **Release Analysis Graph API 1.0 type and nullability policies**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Resolver Architecture, Batching, and Source Ownership](../module-03-resolver-architecture-batching-and-source-ownership/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

@@ -1,37 +1,45 @@
 # API Reliability and Observability Engineering
 
-**Course 4 of 6 — Operate and recover the promise**
+**Course 4 of 10 — Observe, diagnose, contain, and recover the promise**
 
-> **Central question:** How do operators know whether the user promise is still true, and how do they recover it without making the incident worse?
+## Course promise
 
-## Course responsibility
+Make failures observable and recoverable through explicit budgets, lifecycle states, telemetry meaning, service-level objectives, fault experiments, and reconciliation.
 
-Detect, diagnose, contain, reconcile, and recover when processes, dependencies, networks, or operators fail. The course inherits earlier guarantees rather than restating them as new work. Its purpose is to add one mature engineering responsibility to the same Analysis Runs Platform.
+> **Governing question:** How do operators know whether the user promise is still true, and how do they recover it without making the incident worse?
 
-## Incoming and outgoing boundaries
+## Place in the program
 
 **Incoming boundary:** The Course 3 API 1.2 service protected by Security Profile 1.0 and migrations 001–007.
 
-**Outgoing boundary:** Reliability Profile 1.0, migration 008, critical journeys, deadlines, resilience policies, lifecycle controls, telemetry contracts, SLOs, alerts, runbooks, game-day evidence, and reconciliation plans.
+**Outgoing boundary:** Reliability Profile 1.0, migration 008, critical journeys, deadline and resilience policies, lifecycle controls, telemetry contracts, SLOs, alerts, runbooks, game-day evidence, and reconciliation plans.
 
-## What you will be able to do
+Course 4 treats its incoming handoff as historical evidence, not editable scaffolding. It may add only the observe, diagnose, contain, and recover the promise mechanisms governed here; any public or durable change requires an explicit compatibility and release decision.
 
-After completing the course, you can:
+## What you will add
 
-- create the reliability case, critical-journey populations, failure modes, ownership, residual risk, and negative claims.
-- implement monotonic deadlines, child budgets, safe retry classification, backoff, Retry-After handling, and cancellation.
-- add dependency-local state machines, bounded probes, concurrency isolation, and truthful degraded responses.
-- implement lifecycle states, liveness/readiness separation, graceful draining, lease handling, and startup reconciliation.
-- create the telemetry vocabulary, correlation rules, bounded sinks, exporter failure behavior, and privacy policy.
-- implement bounded metric dimensions, units, good/bad/eligible/excluded populations, and aggregation semantics.
-- implement validated context, synchronous parent-child spans, asynchronous links, attempts, queue time, and privacy-safe attributes.
-- publish five journey SLOs, multiwindow alerts, owner-linked runbooks, and release policy.
-- design bounded faults, control populations, abort conditions, cleanup contracts, and proof-sensitive planted defects.
-- run incident roles, read-only reconciliation, stable repair plans, verification, retrospective, and observable release gates.
+- critical-journey reliability models;
+- deadlines, cancellation, retries, circuits, and bulkheads;
+- health, draining, shutdown, startup recovery, and reconciliation;
+- structured events, metrics, traces, SLOs, alerts, and runbooks;
+- fault injection, game days, incident command, and repair evidence;
 
-## Ten-module learning path
+## Course-level learning outcomes
 
-| Day | Module | Governing question | Capstone result |
+- Define critical journeys and eligible event populations.
+- Distinguish absolute deadlines from per-call timeouts.
+- Classify dependency failures and ownership.
+- Separate startup, liveness, and readiness.
+- Separate logs, metrics, traces, and audit records by purpose.
+- Choose metric instruments from the measured quantity.
+- Parse and validate W3C trace context.
+- Choose objectives from critical journeys.
+- Predict the failure and first oracle before injection.
+- Assign incident command, operations, communication, and recording roles.
+
+## Module map
+
+| Day | Chapter | Governing question | Capstone increment |
 |---:|---|---|---|
 | 1 | [Reliability Model and Critical Journeys](module-01-reliability-model-and-critical-journeys/index.md) | Which user journeys matter, what makes them good or bad, and which durable facts establish the outcome? | Create the reliability case, critical-journey populations, failure modes, ownership, residual risk, and negative claims. |
 | 2 | [Deadlines, Cancellation, and Retry Budgets](module-02-deadlines-timeouts-cancellation-and-retry-budgets/index.md) | How is one absolute time budget propagated through retries, dependencies, and cancellation without multiplying work? | Implement monotonic deadlines, child budgets, safe retry classification, backoff, Retry-After handling, and cancellation. |
@@ -44,21 +52,21 @@ After completing the course, you can:
 | 9 | [Fault Injection, Troubleshooting, and Game Days](module-09-fault-injection-troubleshooting-and-game-days/index.md) | How can fault injection and game days produce falsifiable evidence without creating uncontrolled damage? | Design bounded faults, control populations, abort conditions, cleanup contracts, and proof-sensitive planted defects. |
 | 10 | [Incident Command, Reconciliation, and Readiness](module-10-incident-command-state-reconciliation-and-operational-readiness/index.md) | How do responders command an incident, reconcile durable state, repair safely, and decide whether a release is operationally ready? | Run incident roles, read-only reconciliation, stable repair plans, verification, retrospective, and observable release gates. |
 
+## Deliberate boundaries
 
-## How the book is organized
+This course does not claim or teach the following as part of its completion:
 
-Each numbered module has five learner-facing files:
+- claiming telemetry is authoritative business state;
+- full capacity engineering;
+- vendor-specific observability operations;
+- multi-region disaster recovery;
 
-1. `index.md` — the complete explanation, worked designs, implementation reading, failure analysis, and transition;
-2. `exercises.md` — twelve transfer questions;
-3. `exercise-answers.md` — matching reasoned reference answers;
-4. `lab.md` — one controlled failure, pressure, or release experiment;
-5. `checkpoint.md` — the evidence required before progression.
+Those boundaries prevent the course from becoming a survey of adjacent tools and make its completion claims defensible.
 
-The course book is authoritative. Capstone source, fixtures, reports, and proof scripts make the material executable; they do not replace the explanation.
+## How to study
 
-## Completion standard
+Begin with [Start here](start-here.md). In Course 4, read each chapter around the question **How do operators know whether the user promise is still true, and how do they recover it without making the incident worse?**; then use the exercises, controlled lab, and checkpoint to turn the explanation into evidence. [Language strategy](language-strategy.md) and [Evidence model](evidence-model.md) define how implementation and proof support—not replace—the course book.
 
-You complete the course only when every module checkpoint, the capstone proof, and the final defense pass. A strong result states not only what worked but which claim was established, which evidence class supports it, and what remains unexecuted.
+## Completion
 
-Continue with [Start here](start-here.md).
+Complete all ten checkpoints, the capstone release or defense, and the outgoing handoff. A green command without a defensible claim and evidence boundary is not sufficient.

@@ -1,38 +1,30 @@
 # Module 05 — Runtime Profiling and Allocation Control
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** Which Python or Node.js runtime phase consumes wall time, CPU, allocations, event-loop capacity, or serialization effort?
 
 ## Where this module fits
 
+Module 04 produced **Capture before/after plans, add evidence-backed indexes, size database connections, and preserve owner-aware query semantics**. This module extends that result by asking: **Which Python or Node.js runtime phase consumes wall time, CPU, allocations, event-loop capacity, or serialization effort?**
 
-A trace can tell you that serialization took 40 ms. It cannot tell you which function, object conversion, copy, or allocator behavior caused the cost. Runtime profiling narrows the explanation from a service stage to code and resource demand.
-
-This module separates elapsed wall time, CPU time, allocation growth, resident memory, and event-loop responsiveness. The distinction matters. A function waiting for a database can have high wall time and low CPU. A tight JSON transformation can consume CPU and delay every other coroutine. A memory leak, a temporary allocation peak, and a healthy cache all increase memory for different reasons.
-
-The course avoids language contests. Python and Node.js have different execution and profiling mechanics, but the engineering question is the same: under a fixed workload, which code path consumes which bounded resource, and does the proposed change improve the critical journey without changing output?
-
-
-## Capstone result
-
-Profile named phases, detect blocking work, bound profiling overhead, and prove mechanism-level improvements.
-
-Add repeatable Python and Node profiling scenarios for list serialization, artifact checksum/stream preparation, and event-loop blocking; implement three evidence-backed runtime improvements.
+The new capstone increment is **Profile named phases, detect blocking work, bound profiling overhead, and prove mechanism-level improvements**. It becomes the prerequisite for **Queueing, Concurrency, and Backpressure**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Separate wall-clock, process CPU, and allocation measurements.
+- Choose sampling, deterministic, or tracing profilers for the question.
+- Read call counts, cumulative time, self time, and caller relationships.
+- Use `tracemalloc` snapshots to locate Python allocation growth.
+- Measure Node event-loop delay and utilization.
+- Identify synchronous blocking inside asynchronous request paths.
+- Measure serialization and validation cost without bypassing them.
+- Avoid micro-optimizations that increase copying or memory.
+- Compare runtime-specific improvements through the shared workload envelope.
 
-- separate wall-clock, process CPU, and allocation measurements
-- choose sampling, deterministic, or tracing profilers for the question
-- read call counts, cumulative time, self time, and caller relationships
-- use `tracemalloc` snapshots to locate Python allocation growth
-- measure Node event-loop delay and utilization
-- identify synchronous blocking inside asynchronous request paths
-- measure serialization and validation cost without bypassing them
-- avoid micro-optimizations that increase copying or memory
-- compare runtime-specific improvements through the shared workload envelope
+## Capstone increment
+
+Profile named phases, detect blocking work, bound profiling overhead, and prove mechanism-level improvements.
 
 ## Core performance model
 
@@ -134,7 +126,6 @@ measure → identify limiting resource → change → remeasure
 Do not keep optimizing the old function after it falls below the decision threshold. The capacity model in Module 9 records bottleneck migration.
 
 A local runtime improvement can also increase offered pressure on downstream dependencies. Higher API throughput may saturate the database sooner. Run the critical mixed workload after a micro-level fix.
-
 
 ## Course requirements
 
@@ -274,10 +265,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-Runtime profiling turns a trace-stage suspicion into code-level evidence. The goal is not to eliminate every allocation or maximize one microbenchmark; it is to reduce the resource demand that limits a critical workload while preserving public behavior.
+You are ready to leave this module when you can **separate wall-clock, process CPU, and allocation measurements, choose sampling, deterministic, or tracing profilers for the question, and read call counts, cumulative time, self time, and caller relationships** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject a synchronous blocking operation into the async request path** and requiring the following oracle: **profile points to the claimed code or wait boundary; unrelated request delay exposes event-loop blocking; public response semantics remain equivalent; allocation and CPU reports state their scope.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Profile named phases, detect blocking work, bound profiling overhead, and prove mechanism-level improvements**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **Queueing, Concurrency, and Backpressure**, asks: How do arrival rate, service time, queue depth, concurrency, fairness, and backpressure determine overload behavior? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [Queueing, Concurrency, and Backpressure](../module-06-queueing-concurrency-and-backpressure/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

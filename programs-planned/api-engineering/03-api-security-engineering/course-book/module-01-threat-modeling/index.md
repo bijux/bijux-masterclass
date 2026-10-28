@@ -1,12 +1,14 @@
 # Module 01 — Threat Modeling and Security Requirements
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** Which assets, actors, trust boundaries, abuse cases, and assumptions define the real security problem?
 
 ## Where this module fits
 
-Build one living security case for the Analysis Runs service rather than a checklist of unrelated vulnerabilities. You arrive from the course orientation with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **HTTP Edge and Canonicalization**.
+Course 3 begins from this incoming boundary: **The Course 2 API 1.2 durable-service handoff and migrations 001–005.**
+
+This module establishes the course’s first new responsibility by asking: **Which assets, actors, trust boundaries, abuse cases, and assumptions define the real security problem?** Its capstone increment is **Create a security case that traces threats to requirements, control owners, tests, and residual risk**. That result is required before **HTTP Edge and Canonicalization** can be studied honestly.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Build one living security case for the Analysis Runs service rather than a check
 - Rank risk with explicit assumptions.
 - Trace every control to a threat, requirement, owner, and test.
 
-## Capstone result
+## Capstone increment
 
 Create a security case that traces threats to requirements, control owners, tests, and residual risk.
-
-The capstone gains a machine-readable threat catalog, security requirements, operation policies, and residual-risk record.
 
 ## Core security model
 
@@ -138,7 +138,6 @@ A validation failure includes a bearer token or webhook secret in exception text
 
 Many individually valid analysis submissions consume worker and storage capacity for other tenants.
 
-
 ## Python implementation
 
 Use dataclasses or frozen Pydantic models for assets, threats, requirements, and proof links. The checker must reject duplicate IDs, unknown references, requirements without proof, and accepted threats without disposition. Keep the model independent from FastAPI.
@@ -167,7 +166,6 @@ For each pattern, explain why it can look reasonable, construct the smallest cou
 
 
 ### 6. Deleting residual-risk text after a unit test passes.
-
 
 ## What you add to the capstone
 
@@ -249,8 +247,10 @@ Compare the two tracks by this invariant: **every accepted threat names an asset
 
 ## Module synthesis
 
-The module answer to “What must be protected, from whom, across which boundaries, and how will we know the protection works?” is now executable in the capstone: The capstone gains a machine-readable threat catalog, security requirements, operation policies, and residual-risk record.
+You are ready to leave this module when you can **Identify assets, actors, entry points, and trust boundaries, Write concrete abuse cases and security invariants, and Use STRIDE as a prompt rather than a substitute for analysis** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control and prove the predicted oracle fails** and requiring the following oracle: **Identify assets, actors, entry points, and trust boundaries; Write concrete abuse cases and security invariants; Use STRIDE as a prompt rather than a substitute for analysis; Rank risk with explicit assumptions.**
+
+The cumulative platform now includes **Create a security case that traces threats to requirements, control owners, tests, and residual risk**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 02, [HTTP Edge and Canonicalization](../module-02-http-edge-and-canonicalization/index.md), asks: *Which bytes and proxy assertions does the application actually trust before framework parsing begins?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [HTTP Edge and Canonicalization](../module-02-http-edge-and-canonicalization/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

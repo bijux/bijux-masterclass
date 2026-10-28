@@ -1,23 +1,25 @@
-# Wire Format, Unknown Fields, and Compatibility Discipline
+# Module 03 — Wire Format, Unknown Fields, and Compatibility Discipline
 
-**Module 03 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How can an RPC contract evolve without corrupting old data, breaking generated clients, or creating behavior that is wire-readable but operationally unsafe?
+> **Central question:** How can an RPC contract evolve without corrupting old data, breaking generated clients, or creating behavior that is wire-readable but operationally unsafe?
 
-## Place in the program
+## Where this module fits
 
-Module 02 established precise message meaning. This module makes that meaning durable over time. Protobuf compatibility is not a single green check: binary wire compatibility, source compatibility, ProtoJSON compatibility, and behavioral compatibility can disagree. The learner now treats field numbers, packages, method shapes, unknown fields, and release evidence as governed assets.
+Module 02 produced **Complete the Analysis RPC 1.0 message model, publish cross-language presence and integer vectors, and document every field whose absence changes behavior**. This module extends that result by asking: **How can an RPC contract evolve without corrupting old data, breaking generated clients, or creating behavior that is wire-readable but operationally unsafe?**
+
+The new capstone increment is **Publish Analysis RPC compatibility policy 1.0, golden wire fixtures, and a release report that accepts one additive candidate while rejecting unsafe tag, enum, and method-shape changes**. It becomes the prerequisite for **Unary RPCs, Metadata, Status, and Rich Errors**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- explain how field numbers and wire types determine binary compatibility
-- reserve removed field numbers and names and reject reuse
-- classify changes across wire, source, JSON, and behavioral dimensions
-- reason about unknown-field preservation and loss in proxies, stores, and language runtimes
-- evaluate enum, oneof, map, service, method, and streaming-shape changes
-- combine local semantic checks, golden bytes, generated-client builds, and Buf compatibility evidence
+- Explain how field numbers and wire types determine binary compatibility.
+- Reserve removed field numbers and names and reject reuse.
+- Classify changes across wire, source, JSON, and behavioral dimensions.
+- Reason about unknown-field preservation and loss in proxies, stores, and language runtimes.
+- Evaluate enum, oneof, map, service, method, and streaming-shape changes.
+- Combine local semantic checks, golden bytes, generated-client builds, and Buf compatibility evidence.
 
-## Capstone result
+## Capstone increment
 
 Publish Analysis RPC compatibility policy 1.0, golden wire fixtures, and a release report that accepts one additive candidate while rejecting unsafe tag, enum, and method-shape changes.
 
@@ -123,3 +125,13 @@ Read `capstone/contracts/compatibility-policy.yaml`, the golden fixtures under `
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Unary RPCs, Metadata, Status, and Rich Errors**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **explain how field numbers and wire types determine binary compatibility, reserve removed field numbers and names and reject reuse, and classify changes across wire, source, JSON, and behavioral dimensions** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Renumber an enum value and observe golden semantic failure** and requiring the following oracle: **The additive candidate is accepted only with consumer evidence. Tag reuse, enum renumbering, and method-shape mutation are rejected. Reports identify compatibility dimension and affected consumers rather than returning one undifferentiated boolean.**
+
+The cumulative platform now includes **Publish Analysis RPC compatibility policy 1.0, golden wire fixtures, and a release report that accepts one additive candidate while rejecting unsafe tag, enum, and method-shape changes**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Unary RPCs, Metadata, Status, and Rich Errors](../module-04-unary-rpcs-metadata-status-and-rich-errors/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

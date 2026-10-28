@@ -1,21 +1,8 @@
-# Module 07 checkpoint — Caching, Freshness, and Invalidation
+# Checkpoint — Module 07: Caching, Freshness, and Invalidation
 
 ## Required result
 
-- [ ] cache vectors pass in both tracks
-- [ ] all cached values have complete keys
-- [ ] freshness and forbidden stale states are documented
-- [ ] single-flight cancellation/error tests pass
-- [ ] origin fallback is admission-controlled
-- [ ] critical workload improves without security regression
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. What exact question does your hottest key answer?
-2. Why does versioning preserve correctness after invalidation failure?
-3. What happens to the origin during a cache outage?
+Build authorization-aware keys, TTL/capacity policy, source-version invalidation, single-flight fills, and failure semantics.
 
 ## Demonstrate
 
@@ -29,6 +16,32 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=07 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-07/
+├── cache-catalog.yaml
+├── unsafe-key.json
+├── safe-key.json
+├── stampede-before.json
+├── stampede-after.json
+├── invalidation-crash.json
+├── failure-policy.json
+└── decision.md
+```
+
+Report both hit-path latency and origin load. State which consistency guarantees come from versioned keys and which cleanup depends on invalidation.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. What exact question does your hottest key answer?
+2. Why does versioning preserve correctness after invalidation failure?
+3. What happens to the origin during a cache outage?
 
 ## Continue only when
 

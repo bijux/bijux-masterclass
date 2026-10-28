@@ -1,21 +1,8 @@
-# Module 05 checkpoint — Runtime Profiling and Allocation Control
+# Checkpoint — Module 05: Runtime Profiling and Allocation Control
 
 ## Required result
 
-- [ ] runtime vectors pass in both tracks
-- [ ] unprofiled and profiled evidence are distinct
-- [ ] three code/resource hypotheses are evaluated
-- [ ] event-loop responsiveness is measured
-- [ ] allocation scope and limitations are documented
-- [ ] accepted changes preserve public output
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. Which code path owns the limiting CPU demand?
-2. How do you know the operation blocked unrelated work?
-3. Where did the bottleneck move after the change?
+Profile named phases, detect blocking work, bound profiling overhead, and prove mechanism-level improvements.
 
 ## Demonstrate
 
@@ -29,6 +16,31 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=05 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-05/
+├── hypotheses.md
+├── unprofiled-baseline.json
+├── cpu-profile/
+├── allocation-or-event-loop.json
+├── blocking-experiment.json
+├── candidate.json
+└── decision.md
+```
+
+For each accepted change, include the profiler observation, code change, focused result, mixed-workload result, and trade-off. Do not submit only screenshots.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. Which code path owns the limiting CPU demand?
+2. How do you know the operation blocked unrelated work?
+3. Where did the bottleneck move after the change?
 
 ## Continue only when
 

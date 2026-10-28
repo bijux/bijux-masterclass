@@ -1,49 +1,51 @@
-# Start here
+# Start Here — API Platform, Governance, and Developer Experience Engineering
 
-## Prerequisite competence
+## Why this course exists now
 
-Complete Courses 1–9 or demonstrate equivalent ability. You should be able to
-explain why the HTTP contract, event contract, RPC contract, GraphQL schema, and
-service data each have different authorities. You should also understand
-compatibility, security evidence, service objectives, performance evidence,
-consumer contracts, and distributed ownership.
+Course 10 begins only after this boundary is trusted: The Course 9 handoff containing HTTP, event, RPC, distributed-service, and GraphQL contracts with explicit ownership and release evidence. Its new responsibility is **operate apis as an organizational platform**, and every exercise must preserve the inherited behavior while making that responsibility explicit.
 
-Run:
+## Prerequisite gate
+
+Before editing the capstone:
+
+1. verify the incoming handoff;
+2. read the version and profile state in [Capstone](capstone.md);
+3. confirm which live infrastructure is available;
+4. select the implementation strategy in [Language strategy](language-strategy.md);
+5. create a learning journal for hypotheses, failed predictions, and retained evidence.
+
+For **API Platform, Governance, and Developer Experience Engineering**, the journal’s first page should answer: *How can an organization make trustworthy API work easier to discover, create, publish, consume, evolve, support, and retire without centralizing domain ownership?*
+
+If the predecessor proof fails, stop. A successor built on an untrusted boundary cannot make a stronger claim.
+
+## Module learning loop
+
+For every numbered module:
+
+1. read the chapter from its governing question through its synthesis;
+2. redraw the protocol, state machine, data flow, or ownership boundary;
+3. answer all twelve exercises before opening the answers;
+4. inspect only the implementation paths named by the chapter or lab;
+5. predict the lab’s first failing oracle;
+6. run the baseline, introduce the controlled fault, and retain raw evidence;
+7. repair the owning mechanism in the primary track;
+8. compare the same invariant in the second track;
+9. complete the checkpoint before moving on.
+
+## Course evidence
+
+The principal evidence for this course is described in [Evidence model](evidence-model.md). The current version state is: All earlier interface and engineering profiles preserved; Analysis API Platform 1.0 and platform-catalog metadata migrations 001–004 introduced.
+
+## Getting unstuck
+
+When Course 10 evidence disagrees, classify the fault as platform scope, catalog authority, registry integrity, policy evidence, lifecycle, template output, documentation journey, artifact provenance, runtime drift, or decision rights, then use the cheapest authoritative oracle. Unavailable infrastructure narrows the result to what was actually observed.
+
+## First commands
 
 ```bash
 make doctor
-make predecessor-proof
-make orientation-proof
+make predecessor-proof  # when this course has a predecessor
+make core-proof
 ```
 
-## The learner contract
-
-The course book is authoritative. Read the chapter before browsing implementation
-files. Attempt the exercises before reading answers. In the lab, preserve the
-predecessor contracts and use generated reports only as evidence—not as a
-substitute for explaining the decision.
-
-Choose one primary implementation track:
-
-- **Python** is a strong choice for data, scientific, and governance automation.
-- **TypeScript** is a strong choice for developer portals and platform product
-  ecosystems.
-
-The other track remains a complete semantic reference. Shared vectors define the
-externally relevant parity boundary.
-
-## Completion standard
-
-You complete the course only when you can show that:
-
-- every published API and component has an accountable owner;
-- every released contract is immutable and verifiable by digest;
-- policy distinguishes automatic failure, human review, and valid exception;
-- deprecation and retirement decisions use actual consumer evidence;
-- the golden path creates a useful starting point without hiding ownership;
-- docs and sandboxes lead a new consumer to a first successful call safely;
-- SDK artifacts can be traced to the released contract and build evidence;
-- runtime configuration reflects approved releases without owning business
-  authorization;
-- platform metrics measure consumer outcomes rather than vanity activity;
-- governance remains federated: platform teams enable, domain teams own.
+Then complete [Orientation](module-00-orientation/index.md).

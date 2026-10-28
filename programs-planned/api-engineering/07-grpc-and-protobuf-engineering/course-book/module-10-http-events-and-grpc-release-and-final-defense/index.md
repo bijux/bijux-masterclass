@@ -1,23 +1,25 @@
-# HTTP, Events, and gRPC in One Architecture: Release and Final Defense
+# Module 10 — HTTP, Events, and gRPC in One Architecture: Release and Final Defense
 
-**Module 10 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How do we introduce an internal RPC control plane without breaking the public HTTP contract, durable event history, database authority, security profile, or rollback path?
+> **Central question:** How do we introduce an internal RPC control plane without breaking the public HTTP contract, durable event history, database authority, security profile, or rollback path?
 
-## Place in the program
+## Where this module fits
 
-The previous modules made individual RPC mechanisms correct. The final module makes the architecture correct. Course 7 is not successful because a server and client exchange Protobuf messages. It succeeds only when HTTP, events, local application logic, and gRPC have explicit non-overlapping responsibilities; migration is observable and reversible; and the outgoing boundary gives Course 8 evidence for deciding whether any component should become an independent service.
+Module 09 produced **Publish a reproducible generation pipeline, checked descriptor inventory, generated-client build matrix, runtime catalogue comparison, and Course 7 RPC release gate**. This final module consolidates the course by asking: **How do we introduce an internal RPC control plane without breaking the public HTTP contract, durable event history, database authority, security profile, or rollback path?**
+
+The capstone must now deliver **Release Analysis RPC API 1.0 behind the unchanged public HTTP API and Event API, execute the final defense, and publish a sanitized service-boundary dossier rather than prematurely splitting the system** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **Analysis RPC API 1.0, gRPC Profile 1.0, proto3 executable baseline, Edition 2024 frontier, migrations 013–015, streaming protocols, method policy, and compatibility evidence.**
 
 ## Learning outcomes
 
-- assign distinct public, asynchronous, local, and RPC responsibilities in one architecture
-- migrate an internal call path with shadow, compare, bounded cutover, and rollback
-- preserve database authority, transactional event publication, and public HTTP conformance
-- design an RPC release gate spanning schema, generated code, runtime, security, reliability, and performance
-- reject distributed-monolith boundaries even when the RPC implementation is efficient
-- produce a service-boundary dossier for Course 8 based on measured ownership and failure evidence
+- Assign distinct public, asynchronous, local, and RPC responsibilities in one architecture.
+- Migrate an internal call path with shadow, compare, bounded cutover, and rollback.
+- Preserve database authority, transactional event publication, and public HTTP conformance.
+- Design an RPC release gate spanning schema, generated code, runtime, security, reliability, and performance.
+- Reject distributed-monolith boundaries even when the RPC implementation is efficient.
+- Produce a service-boundary dossier for Course 8 based on measured ownership and failure evidence.
 
-## Capstone result
+## Capstone increment
 
 Release Analysis RPC API 1.0 behind the unchanged public HTTP API and Event API, execute the final defense, and publish a sanitized service-boundary dossier rather than prematurely splitting the system.
 
@@ -135,3 +137,13 @@ Read `capstone/final-defense/`, `capstone/releases/rpc-1.0/`, `capstone/rpc-case
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Course 8 — Distributed API Architecture and Microservices Engineering**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **assign distinct public, asynchronous, local, and RPC responsibilities in one architecture, migrate an internal call path with shadow, compare, bounded cutover, and rollback, and preserve database authority, transactional event publication, and public HTTP conformance** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject post-commit response loss, stale worker completion, slow WatchRun consumer, and server drain** and requiring the following oracle: **The public HTTP and Event APIs remain semantically unchanged; durable state is authoritative; retries and rollback do not duplicate effects; stale attempts fail; streams remain bounded; all release gates report their evidence boundary; and the dossier rejects unjustified decomposition.**
+
+The cumulative platform now includes **Release Analysis RPC API 1.0 behind the unchanged public HTTP API and Event API, execute the final defense, and publish a sanitized service-boundary dossier rather than prematurely splitting the system**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 8 may treat only the manifested handoff as settled.

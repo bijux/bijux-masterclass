@@ -1,12 +1,14 @@
 # Module 01 — HTTP and OpenAPI Foundations
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How do raw HTTP exchanges become a public contract without confusing documentation with runtime behavior?
 
 ## Where this module fits
 
-Build the health and project operations from raw requests and responses, then express the same behavior in OpenAPI. You arrive from the course orientation with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **Operations, Parameters, and Messages**.
+Course 1 begins from this incoming boundary: **Basic programming ability, command-line familiarity, and no assumed OpenAPI experience.**
+
+This module establishes the course’s first new responsibility by asking: **How do raw HTTP exchanges become a public contract without confusing documentation with runtime behavior?** Its capstone increment is **Establish health and project operations as raw messages, OpenAPI operations, and equivalent provider behavior**. That result is required before **Operations, Parameters, and Messages** can be studied honestly.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Build the health and project operations from raw requests and responses, then ex
 - Write a minimal valid OpenAPI description.
 - Prove that the two reference providers expose the same public behavior.
 
-## Capstone result
+## Capstone increment
 
 Establish health and project operations as raw messages, OpenAPI operations, and equivalent provider behavior.
-
-The Analysis Runs API gains `/health`, project creation, project listing, and project retrieval.
 
 ## Core model
 
@@ -363,11 +363,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The HTTP and OpenAPI Foundations checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “How do raw HTTP exchanges become a public contract without confusing documentation with runtime behavior?” is now executable in the capstone: The Analysis Runs API gains `/health`, project creation, project listing, and project retrieval.
+You are ready to leave this module when you can **Read requests and responses as protocol messages, Separate API behavior, OpenAPI description, implementation, and documentation rendering, and Choose methods and status codes from HTTP semantics** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Temporarily change one provider to return 200 for project creation** and requiring the following oracle: **four introductory operations have unique stable IDs; project creation is 201 with Location and JSON; the path parameter is explicitly required; health is explicitly anonymous.**
+
+The cumulative platform now includes **Establish health and project operations as raw messages, OpenAPI operations, and equivalent provider behavior**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 02, [Operations, Parameters, and Messages](../module-02-operations-parameters-messages/index.md), asks: *How do we specify every input and output precisely enough that independent clients serialize the same exchange?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Operations, Parameters, and Messages](../module-02-operations-parameters-messages/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

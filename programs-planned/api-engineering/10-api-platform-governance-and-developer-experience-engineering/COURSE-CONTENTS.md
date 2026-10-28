@@ -4,7 +4,7 @@ Course 10 is the reader-first culmination of the API Engineering program. The co
 
 ## Reader product
 
-- 59 navigated course-book pages and 32,788 words;
+- 61 navigated course-book pages and 50,281 words;
 - orientation plus ten complete modules;
 - 120 transfer exercises with 120 matching worked answers;
 - ten controlled laboratories and ten evidence checkpoints;

@@ -1,5 +1,7 @@
 # Exercises — Module 05: Telemetry Architecture and Structured Events
 
+Work through all twelve problems before opening the answers. In **Telemetry Architecture and Structured Events**, every response must settle this question: **Which operational events are useful, bounded, redacted, versioned, and clearly separated from business truth?** A useful solution connects semantics to mechanism: who owns the decision, what can go wrong, and which retained artifact proves the claimed outcome.
+
 ## 1. Why are logs, metrics, and traces not interchangeable?
 
 ## 2. What should happen when an incoming traceparent is invalid?

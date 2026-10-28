@@ -1,71 +1,59 @@
 # Orientation — API Performance, Capacity, and Traffic Engineering
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
-> **Orientation question:** What must be known, frozen, runnable, and honestly reported before the first teaching module begins?
+> **Orientation question:** Is the incoming boundary exact, and can you explain why Course 5 owns the next engineering responsibility?
 
-## Purpose
+## Why this orientation exists
 
-Orientation protects learning time. Day 1 should begin with the course responsibility, not with an unknown shell, a broken package manager, an unverified predecessor, or a language track chosen by accident. You will locate the authoritative course book, verify the incoming boundary, select an implementation route, and prove that the local repository can detect at least one controlled failure.
+Course 5 starts from accumulated guarantees rather than an empty repository. Orientation prevents a stale handoff, an unavailable tool, or an accidental version change from contaminating the ten teaching days. The goal is not setup for its own sake; it is to make the first claim of **API Performance, Capacity, and Traffic Engineering** honest.
 
 ## Incoming boundary
 
 The Course 4 observable and recoverable API 1.2 service with Security and Reliability Profiles 1.0 and migrations 001–008.
 
-Do not edit predecessor or handoff files. If their integrity proof fails, repair the extraction or obtain a correct predecessor package; do not regenerate history from the current implementation.
+Verify that boundary before editing. Compare the predecessor bytes or entry evidence, inspect the version ledger, and identify which artifacts are historical inputs. A hard implementation problem in Course 5 must be solved at the current layer, not by rewriting an earlier contract or proof.
 
-## Learning outcomes
+## Course responsibility
 
-By the end of orientation, you can:
+Measure, model, and control latency, throughput, resource use, fairness, and overload behavior with comparable evidence.
 
-- state this course's responsibility and its non-responsibilities;
-- distinguish the Analysis Runs Platform from its HTTP API and later event API;
-- identify the public API, specification, profile, service-release, and migration version axes;
-- choose the primary and comparison language tracks deliberately;
-- locate the chapter, implementation, fixture, lab, checkpoint, and proof paths;
-- run dependency-light diagnostics and report unavailable live dependencies honestly;
-- make one narrow proof fail, explain why, repair it, and retain the regression.
-- produce `measurement-boundary.md` explaining the authority and evidence unique to this course.
+The governing question is:
 
-## Repository map
+> Where do time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening correctness?
 
-```text
-course-book/     authoritative learner material
-capstone/        continuing Analysis Runs Platform and evidence
-scripts/         bounded proof and packaging routes
-tests/           regressions and planted-defect sensitivity
-reports/         machine-readable executed evidence
-```
+The current version state is:
 
-The root README is a map. It is not a substitute for the course-book sequence.
+> API 1.2, Security Profile 1.0, and Reliability Profile 1.0 preserved; Performance Profile 1.0 introduced; migrations 001–009.
 
-## Course-specific boundary
+## Reader route
 
-Course 5 inherits explicit SLO populations and operational evidence. Orientation prevents benchmark theatre: a number is meaningless without workload identity, environment identity, complete outcomes, and a correctness oracle. A faster candidate is invalid when it weakens authorization, durability, idempotency, telemetry, or error semantics. Local-process evidence can explain a mechanism but cannot by itself establish production capacity.
+Use the course book in this order:
 
-## Language decision
+1. [Course introduction](../index.md) for the complete module arc;
+2. [Capstone](../capstone.md) for the cumulative Analysis Runs Platform state;
+3. [Standards](../standards.md) for normative and course-profile boundaries;
+4. [Evidence model](../evidence-model.md) for authoritative versus diagnostic proof;
+5. [Language strategy](../language-strategy.md) before opening implementation code.
+6. Re-read the list through this course’s lens: **Sustain the promise under pressure**.
 
-Choose one primary implementation track. Compare measurement identity, arithmetic, and externally visible traffic decisions across both languages. Record the choice and the reason. The comparison track exists to test whether the invariant is architectural, not to double the typing workload.
+The chapter teaches the model. Exercises force transfer. Worked answers expose reasoning. The lab attacks one mechanism. The checkpoint decides whether the result is strong enough to carry into the next module.
 
-## First proof
+## Implementation route
 
-```bash
-make doctor
-make predecessor-proof
-make core-proof
-```
+The course strategy is **one primary implementation track plus one comparative reference track**. Record the selected route and the reason it supports your learning goal. Do not switch runtimes in the middle of a failed mechanism; first determine whether the model, the implementation, or the environment is wrong.
 
-Read every skipped or not-executed result. A missing live database, broker, network topology, renderer, or external CLI is an evidence boundary, not a successful experiment.
+## Evidence boundary
 
-## Readiness self-check
+List the proof routes available on your machine and classify them as deterministic, local process, live persistence/network, documentation, or independent-tool evidence. The first stronger environment-backed claim is **representative load with resource telemetry**. Until that route actually runs, use narrower wording and record it as `not-executed`.
 
-Before continuing, explain in your own words:
+## Readiness test
 
-1. what this course adds to the platform;
-2. what the predecessor has already settled;
-3. which file is authoritative for the learner;
-4. which state or contract artifact is authoritative for the system;
-5. which proof can run locally and which requires live infrastructure;
-6. how your primary and comparison tracks will be used.
+You are ready for [Measurement Contract and Critical Workloads](../module-01-measurement-contract-and-critical-workloads/index.md) when you can explain, without repository jargon:
 
-Continue only when those answers are concrete and the orientation lab can be reproduced from a clean working tree.
+1. what the predecessor already settled;
+2. what Course 5 is allowed to change;
+3. which versions and profiles are independent axes;
+4. which implementation route you selected;
+5. which evidence classes are available;
+6. what the outgoing handoff must prove: Performance Profile 1.0, migration 009, workload identities, benchmark evidence, HTTP and query optimizations, concurrency and cache policy, traffic controls, capacity models, and performance release gates.

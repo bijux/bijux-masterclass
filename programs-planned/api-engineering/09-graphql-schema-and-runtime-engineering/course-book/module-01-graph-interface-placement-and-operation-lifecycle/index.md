@@ -1,26 +1,24 @@
-# Graph Interface Placement and the Operation Lifecycle
+# Module 01 — Graph Interface Placement and the Operation Lifecycle
 
-**Module 01 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** Where does GraphQL belong, and what happens between receiving a document and returning a response?
+> **Central question:** Where does GraphQL belong, and what happens between receiving a document and returning a response?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 01 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Course 9 begins from this incoming boundary: **The Course 8 distributed architecture handoff with explicit service, data, contract, and trust boundaries.**
+
+This module establishes the course’s first new responsibility by asking: **Where does GraphQL belong, and what happens between receiving a document and returning a response?** Its capstone increment is **Publish the graph boundary and operation-lifecycle trace**. That result is required before **Type System, Nullability, and Semantic Modeling** can be studied honestly.
 
 ## Learning outcomes
 
-- place GraphQL without changing service authority
+- Place GraphQL without changing service authority.
+- Trace parse, validate, admit, execute, complete, and serialize phases.
+- Classify failures by phase.
+- Apply the course HTTP profile.
+- Review a field as an architecture edge.
 
-- trace parse, validate, admit, execute, complete, and serialize phases
-
-- classify failures by phase
-
-- apply the course HTTP profile
-
-- review a field as an architecture edge
-
-## Capstone result
+## Capstone increment
 
 Publish the graph boundary and operation-lifecycle trace.
 
@@ -163,3 +161,13 @@ Python and TypeScript both expose the operation phases as explicit functions. Th
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-01-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **place GraphQL without changing service authority, trace parse, validate, admit, execute, complete, and serialize phases, and classify failures by phase** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove generated dist, cache, and report files before starting** and requiring the following oracle: **| Case | Last reached phase | Business calls | Required outcome | |---|---|---:|---| | valid persisted query | serialization | bounded expected calls | complete or declared partial GraphQL response | | unsupported media | HTTP framing | 0 | HTTP-profile error | | unknown digest | document acquisition | 0 | stable persisted-operation error | | malformed document | parsing | 0 | GraphQL request error | | over-budget document | admission | 0 | stable admission rejection | | mutation via GET | transport policy | 0 | method rejection |**
+
+The cumulative platform now includes **Publish the graph boundary and operation-lifecycle trace**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Type System, Nullability, and Semantic Modeling](../module-02-type-system-nullability-and-semantic-modeling/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

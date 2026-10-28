@@ -1,23 +1,25 @@
-# Identity, Authorization, mTLS, and Tenant Isolation
+# Module 07 — Identity, Authorization, mTLS, and Tenant Isolation
 
-**Module 07 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How do internal RPC peers establish workload and delegated user identity, enforce method and resource policy, and protect long-lived streams without treating a private network as trust?
+> **Central question:** How do internal RPC peers establish workload and delegated user identity, enforce method and resource policy, and protect long-lived streams without treating a private network as trust?
 
-## Place in the program
+## Where this module fits
 
-Course 3 established the public security model. Course 7 applies it to internal RPC without creating a weaker parallel security plane. Generated stubs, cluster networking, TLS, and service accounts do not answer who the end user is, which tenant owns the resource, or whether a long-lived stream remains authorized. The learner combines transport identity, delegated identity, application policy, and durable ownership.
+Module 06 produced **Implement `WatchRun`, `UploadDataset`, `DownloadArtifact`, and the worker `Work` stream with shared schedule vectors, bounded buffers, resumable observation, and stale-attempt fencing**. This module extends that result by asking: **How do internal RPC peers establish workload and delegated user identity, enforce method and resource policy, and protect long-lived streams without treating a private network as trust?**
+
+The new capstone increment is **Implement RPC security profile 1.0 with method policy, workload and user identity binding, tenant-isolation vectors, mTLS-ready configuration, and secure worker-stream authorization**. It becomes the prerequisite for **Channels, Health, Discovery, Load Balancing, and Lifecycle**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- distinguish server TLS, mutual TLS workload identity, bearer identity, and delegated end-user context
-- authenticate callers without trusting arbitrary metadata or network location
-- enforce method, tenant, resource, field, and attempt-level authorization
-- bind worker sessions and completions to workload identity and lease generation
-- protect credentials and authorization context on long-lived streams
-- produce cross-language security vectors without leaking secrets in status, metadata, logs, reflection, or traces
+- Distinguish server TLS, mutual TLS workload identity, bearer identity, and delegated end-user context.
+- Authenticate callers without trusting arbitrary metadata or network location.
+- Enforce method, tenant, resource, field, and attempt-level authorization.
+- Bind worker sessions and completions to workload identity and lease generation.
+- Protect credentials and authorization context on long-lived streams.
+- Produce cross-language security vectors without leaking secrets in status, metadata, logs, reflection, or traces.
 
-## Capstone result
+## Capstone increment
 
 Implement RPC security profile 1.0 with method policy, workload and user identity binding, tenant-isolation vectors, mTLS-ready configuration, and secure worker-stream authorization.
 
@@ -125,3 +127,13 @@ Read `capstone/security/method-policy.yaml`, `capstone/shared/vectors/security.j
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Channels, Health, Discovery, Load Balancing, and Lifecycle**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **distinguish server TLS, mutual TLS workload identity, bearer identity, and delegated end-user context, authenticate callers without trusting arbitrary metadata or network location, and enforce method, tenant, resource, field, and attempt-level authorization** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Expire and revoke credentials during WatchRun and Work sessions** and requiring the following oracle: **Only explicitly allowed workload/delegation/method/resource combinations reach application effects. Cross-tenant and stale-attempt calls reveal no protected data. Long-lived streams obey freshness policy, and no report or status leaks credentials.**
+
+The cumulative platform now includes **Implement RPC security profile 1.0 with method policy, workload and user identity binding, tenant-isolation vectors, mTLS-ready configuration, and secure worker-stream authorization**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Channels, Health, Discovery, Load Balancing, and Lifecycle](../module-08-channels-health-discovery-load-balancing-and-lifecycle/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

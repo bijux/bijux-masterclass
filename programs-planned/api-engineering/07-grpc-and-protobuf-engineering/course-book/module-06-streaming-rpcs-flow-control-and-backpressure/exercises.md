@@ -1,6 +1,6 @@
-# Exercises — Streaming RPCs, Flow Control, and Backpressure
+# Exercises — Module 06: Streaming RPCs, Flow Control, and Backpressure
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **Streaming RPCs, Flow Control, and Backpressure**, every response must settle this question: **How do we design long-lived and bulk-transfer RPCs so that slow peers, reconnects, oversized messages, and stale attempts cannot exhaust memory or corrupt state?** Answer as though another team must implement and operate the design. Ambiguous ownership, unbounded behavior, and evidence-free claims are defects.
 
 ## 1. Choose the RPC shape for GetRun, WatchRun, UploadDataset, and Work.
 

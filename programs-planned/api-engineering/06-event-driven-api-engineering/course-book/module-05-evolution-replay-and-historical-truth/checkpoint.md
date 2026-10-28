@@ -1,6 +1,8 @@
-# Checkpoint — Schema Evolution, Compatibility, Replay, and Historical Truth
+# Checkpoint — Module 05: Schema Evolution, Compatibility, Replay, and Historical Truth
 
-Do not progress because the chapter has been read. Progress when the following evidence can be reproduced from a clean working tree.
+## Required result
+
+Classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay.
 
 ## Demonstrate
 
@@ -8,14 +10,6 @@ Do not progress because the chapter has been read. Progress when the following e
 - Give an example of semantically breaking but structurally compatible change.
 - Distinguish upcasting from rewriting history.
 - Describe a safe projection rebuild and live catch-up.
-
-## Required result
-
-- `work/module-05/compatibility-report.json`
-- `work/module-05/semantic-review.md`
-- `work/module-05/replay-plan.yaml`
-- `work/module-05/replay-results.json`
-- `work/module-05/residual-risk.md`
 
 ## Commands
 
@@ -25,6 +19,16 @@ make replay-proof
 make release-proof
 make module-proof MODULE=05 TRACK=$TRACK
 ```
+
+## Evidence to retain
+
+- `work/module-05/compatibility-report.json`
+- `work/module-05/semantic-review.md`
+- `work/module-05/replay-plan.yaml`
+- dry-run and apply reports
+- v1/v2 projection comparison
+- side-effect denial evidence
+- output from `make evolution-proof` and `make replay-proof`
 
 ## Defend the design
 
@@ -40,4 +44,4 @@ make module-proof MODULE=05 TRACK=$TRACK
 - Semantic changes rely only on JSON Schema comparison.
 - Effect versions share or delete deduplication evidence.
 
-The checkpoint is complete only when all commands pass, all artifacts are reviewable, and each oral-defense question can be answered without appealing to a broker feature as magic.
+The **Schema Evolution, Compatibility, Replay, and Historical Truth** checkpoint is complete only when the commands pass, the retained artifacts explain the event-system state, and you can defend the result without treating broker delivery, ordering, or replay as magic.

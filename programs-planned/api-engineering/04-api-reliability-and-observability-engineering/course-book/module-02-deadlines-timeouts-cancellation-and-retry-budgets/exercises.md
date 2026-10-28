@@ -1,5 +1,7 @@
 # Exercises — Module 02: Deadlines, Cancellation, and Retry Budgets
 
+Work through all twelve problems before opening the answers. In **Deadlines, Cancellation, and Retry Budgets**, every response must settle this question: **How is one absolute time budget propagated through retries, dependencies, and cancellation without multiplying work?** Treat each problem as a design review: state the rule, construct the smallest counterexample, and select an oracle capable of rejecting your own answer.
+
 ## 1. Why is a deadline stronger than a timeout?
 
 ## 2. May a child deadline equal the parent?

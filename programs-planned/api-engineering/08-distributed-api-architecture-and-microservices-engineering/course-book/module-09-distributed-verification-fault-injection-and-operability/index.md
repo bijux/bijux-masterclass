@@ -1,26 +1,27 @@
-# Distributed Verification, Fault Injection, and Operability
+# Module 09 — Distributed Verification, Fault Injection, and Operability
 
-**Module 09 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How do we prove system behavior when individual services pass their tests but network partitions, version skew, and cross-service timing still create failures?
+> **Central question:** How do we prove system behavior when individual services pass their tests but network partitions, version skew, and cross-service timing still create failures?
 
-## Place in the program
+## Where this module fits
 
-The platform now has explicit service and data ownership, bounded synchronous collaboration, and one durable cross-service workflow. This module adds the next necessary property without weakening the previous guarantees.
+Module 08 produced **Publish and execute a mixed-version release matrix for Analysis Control, Artifact, Notification, Gateway, and Worker Plane with expand-and-contract changes and rollback evidence**. This module extends that result by asking: **How do we prove system behavior when individual services pass their tests but network partitions, version skew, and cross-service timing still create failures?**
+
+The new capstone increment is **Build a distributed proof ladder spanning contract, component, topology, fault, reconciliation, and operator evidence, then use it to reject ten planted architecture defects**. It becomes the prerequisite for **Incremental Extraction, Strangler Migration, and Final Architecture Defense**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- separate service unit tests, contract tests, topology tests, and end-to-end outcome proofs
-- test failure timing before invocation, after commit, during delivery, and during recovery
-- use traces and durable state together rather than treating telemetry as authority
-- design bounded fault injection with abort and cleanup conditions
-- verify dependency graphs, ownership, and version matrices mechanically
-- diagnose distributed incidents from one critical journey without requiring omniscient logs
+- Separate service unit tests, contract tests, topology tests, and end-to-end outcome proofs.
+- Test failure timing before invocation, after commit, during delivery, and during recovery.
+- Use traces and durable state together rather than treating telemetry as authority.
+- Design bounded fault injection with abort and cleanup conditions.
+- Verify dependency graphs, ownership, and version matrices mechanically.
+- Diagnose distributed incidents from one critical journey without requiring omniscient logs.
 
-## Capstone result
+## Capstone increment
 
 Build a distributed proof ladder spanning contract, component, topology, fault, reconciliation, and operator evidence, then use it to reject ten planted architecture defects.
-
 
 ## Local correctness does not compose automatically
 
@@ -151,6 +152,7 @@ Both tracks run shared semantic vectors and independent unit tests. The course t
 ## Evidence required before Module 10
 
 All ten defects must be rejected. Produce at least one after-commit ambiguity test, one version-skew topology test, one reconciliation report, and one bounded fault plan with cleanup.
+
 ## A distributed proof matrix
 
 Unit tests remain necessary, but they cover only local logic. Course 8 organizes evidence by claim:
@@ -335,3 +337,13 @@ The answer cannot be obtained from one service log. Course 4’s observability s
 If a proposed service split requires an unmanageable proof matrix, that is architecture evidence. Complexity in testing, release, and reconciliation is not an external inconvenience; it is part of the boundary’s cost.
 
 The best correction may be to simplify the workflow or merge a boundary, not to add another test framework.
+
+## Module synthesis
+
+You are ready to leave this module when you can **separate service unit tests, contract tests, topology tests, and end-to-end outcome proofs, test failure timing before invocation, after commit, during delivery, and during recovery, and use traces and durable state together rather than treating telemetry as authority** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject after-commit response loss in artifact storage and reconcile by stable effect identity** and requiring the following oracle: **All legitimate schedules converge or produce explicit manual findings; every planted defect fails the intended gate; cleanup restores the baseline.**
+
+The cumulative platform now includes **Build a distributed proof ladder spanning contract, component, topology, fault, reconciliation, and operator evidence, then use it to reject ten planted architecture defects**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Incremental Extraction, Strangler Migration, and Final Architecture Defense](../module-10-incremental-extraction-migration-and-final-defense/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

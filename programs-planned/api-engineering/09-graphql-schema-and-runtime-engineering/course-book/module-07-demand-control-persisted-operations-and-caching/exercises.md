@@ -1,6 +1,6 @@
-# Exercises — Demand Control, Persisted Operations, and Caching
+# Exercises — Module 07: Demand Control, Persisted Operations, and Caching
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Demand Control, Persisted Operations, and Caching**, every response must settle this question: **How can a client-shaped query language remain bounded under adversarial and accidental demand?** Each solution must survive delay, duplication, version skew, hostile input, or partial failure where relevant; happy-path intuition alone earns no credit.
 
 ## 1. Why does depth limiting alone fail?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. How should new operations enter production?
-

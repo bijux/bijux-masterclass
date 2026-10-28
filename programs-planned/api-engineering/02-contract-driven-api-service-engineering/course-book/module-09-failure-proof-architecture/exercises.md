@@ -1,5 +1,7 @@
 # Exercises — Module 09: Failure-Oriented Verification
 
+Work through all twelve problems before opening the answers. In **Failure-Oriented Verification**, every response must settle this question: **How do tests prove transactions, concurrency, restart, storage, and delivery guarantees rather than only happy paths?** The strongest answer distinguishes specification, implementation, and operational evidence, then demonstrates where a plausible shortcut would fail.
+
 ## 1. Which layer proves that `evolve()` rejects terminal transitions?
 
 ## 2. Which layer proves `createAnalysisRun` rolls back all rows?

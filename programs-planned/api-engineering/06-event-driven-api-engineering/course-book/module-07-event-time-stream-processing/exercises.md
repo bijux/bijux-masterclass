@@ -1,6 +1,6 @@
-# Exercises — Module 07 — Event-Time Stream Processing, Windows, Watermarks, and Corrections
+# Exercises — Module 07: Event-Time Stream Processing, Windows, Watermarks, and Corrections
 
-Use explicit timestamps and window identities. Every answer must address replay and late data.
+Work through all twelve problems before opening the answers. In **Event-Time Stream Processing, Windows, Watermarks, and Corrections**, every response must settle this question: **How do event time, processing time, windows, watermarks, lateness, and corrections affect derived results?** Each solution must survive delay, duplication, version skew, hostile input, or partial failure where relevant; happy-path intuition alone earns no credit.
 
 ## 1. Name four clocks
 

@@ -1,37 +1,45 @@
 # API Security Engineering
 
-**Course 3 of 6 — Defend the promise**
+**Course 3 of 10 — Defend the promise**
 
-> **Central question:** How does the service remain trustworthy under hostile behavior without hiding behind middleware or scanner output?
+## Course promise
 
-## Course responsibility
+Derive, implement, and adversarially verify security properties around the durable service without replacing engineering judgment with middleware or scanner output.
 
-Preserve the API and durable-service guarantees when callers, credentials, inputs, destinations, and dependencies are not trusted by default. The course inherits earlier guarantees rather than restating them as new work. Its purpose is to add one mature engineering responsibility to the same Analysis Runs Platform.
+> **Governing question:** How does the API remain trustworthy when callers, credentials, inputs, destinations, dependencies, and networks cannot be trusted by default?
 
-## Incoming and outgoing boundaries
+## Place in the program
 
 **Incoming boundary:** The Course 2 API 1.2 durable-service handoff and migrations 001–005.
 
-**Outgoing boundary:** Security Profile 1.0, migrations 006–007, threat-to-requirement traceability, identity and authorization policy, hostile-input vectors, secure webhook rules, abuse controls, and incident evidence.
+**Outgoing boundary:** Security Profile 1.0, migrations 006–007, a threat-to-requirement security case, identity and authorization policy, hostile-input vectors, SSRF and webhook protections, abuse controls, and incident evidence.
 
-## What you will be able to do
+Course 3 treats its incoming handoff as historical evidence, not editable scaffolding. It may add only the defend the promise mechanisms governed here; any public or durable change requires an explicit compatibility and release decision.
 
-After completing the course, you can:
+## What you will add
 
-- create a security case that traces threats to requirements, control owners, tests, and residual risk.
-- establish host, forwarding, media-type, strict-JSON, body-size, and canonicalization rules before model validation.
-- implement issuer, audience, algorithm, key, lifetime, revocation, subject, tenant, and scope validation.
-- build explicit authorization decisions for collections, individual resources, fields, support access, and administration.
-- harden input parsing, Unicode, traversal, MIME, streaming upload, checksum, query, and error behavior.
-- implement destination policy, address classification, peer verification, exact-byte signatures, freshness, rotation, and replay defense.
-- add secret-provider boundaries, non-rendering values, redaction, pseudonymization, rotation, and privacy-bounded audit records.
-- introduce principal/tenant/operation/cost budgets, concurrency permits, quotas, and bounded degradation.
-- build hostile vectors, negative policy tests, planted vulnerabilities, dependency evidence, SBOM/provenance routes, and scanner disposition.
-- run a controlled credential and cross-tenant incident with timelines, revocation, rotation, release, and threat-model revision.
+- threat modeling and security requirements;
+- strict request and credential validation;
+- tenant-, scope-, role-, and ownership-aware authorization;
+- hostile input, file, outbound request, and webhook controls;
+- secrets, audit, abuse, supply-chain, and incident-response evidence;
 
-## Ten-module learning path
+## Course-level learning outcomes
 
-| Day | Module | Governing question | Capstone result |
+- Identify assets, actors, entry points, and trust boundaries.
+- Define direct-client and trusted-proxy behavior.
+- Accept exactly one credential mechanism.
+- Separate authentication from authorization.
+- Distinguish schema validation from semantic security validation.
+- Reject forbidden schemes, ports, credentials, fragments, and address ranges.
+- Distinguish hashing, HMAC, encryption, and password hashing.
+- Choose rate-limit dimensions from abuse paths.
+- Trace tests to threats and requirements.
+- Design actionable security events and audit records.
+
+## Module map
+
+| Day | Chapter | Governing question | Capstone increment |
 |---:|---|---|---|
 | 1 | [Threat Modeling and Security Requirements](module-01-threat-modeling/index.md) | Which assets, actors, trust boundaries, abuse cases, and assumptions define the real security problem? | Create a security case that traces threats to requirements, control owners, tests, and residual risk. |
 | 2 | [HTTP Edge and Canonicalization](module-02-http-edge-and-canonicalization/index.md) | Which raw HTTP message should the application trust after proxies, parsers, duplicate fields, and size limits intervene? | Establish host, forwarding, media-type, strict-JSON, body-size, and canonicalization rules before model validation. |
@@ -44,21 +52,21 @@ After completing the course, you can:
 | 9 | [Adversarial Verification and Supply-Chain Assurance](module-09-adversarial-verification-and-supply-chain/index.md) | How do adversarial tests and supply-chain evidence show that controls fail closed and that the proof is sensitive? | Build hostile vectors, negative policy tests, planted vulnerabilities, dependency evidence, SBOM/provenance routes, and scanner disposition. |
 | 10 | [Security Operations and Incident Response](module-10-security-operations-and-incident-response/index.md) | How is a suspected compromise detected, contained, investigated, rotated, patched, and converted into improved requirements? | Run a controlled credential and cross-tenant incident with timelines, revocation, rotation, release, and threat-model revision. |
 
+## Deliberate boundaries
 
-## How the book is organized
+This course does not claim or teach the following as part of its completion:
 
-Each numbered module has five learner-facing files:
+- building a production authorization server;
+- generic penetration-testing instruction;
+- compliance certification;
+- operated key-management infrastructure;
 
-1. `index.md` — the complete explanation, worked designs, implementation reading, failure analysis, and transition;
-2. `exercises.md` — twelve transfer questions;
-3. `exercise-answers.md` — matching reasoned reference answers;
-4. `lab.md` — one controlled failure, pressure, or release experiment;
-5. `checkpoint.md` — the evidence required before progression.
+Those boundaries prevent the course from becoming a survey of adjacent tools and make its completion claims defensible.
 
-The course book is authoritative. Capstone source, fixtures, reports, and proof scripts make the material executable; they do not replace the explanation.
+## How to study
 
-## Completion standard
+Begin with [Start here](start-here.md). In Course 3, read each chapter around the question **How does the API remain trustworthy when callers, credentials, inputs, destinations, dependencies, and networks cannot be trusted by default?**; then use the exercises, controlled lab, and checkpoint to turn the explanation into evidence. [Language strategy](language-strategy.md) and [Evidence model](evidence-model.md) define how implementation and proof support—not replace—the course book.
 
-You complete the course only when every module checkpoint, the capstone proof, and the final defense pass. A strong result states not only what worked but which claim was established, which evidence class supports it, and what remains unexecuted.
+## Completion
 
-Continue with [Start here](start-here.md).
+Complete all ten checkpoints, the capstone release or defense, and the outgoing handoff. A green command without a defensible claim and evidence boundary is not sufficient.

@@ -10,8 +10,8 @@
     {
       "mode": "0644",
       "path": "README.md",
-      "sha256": "1172de5a6be612d9182c762262db3ebda0fd68d7f882fcd471a1896cc0edb415",
-      "size": 2758
+      "sha256": "362d6f7315d60c3a6a6642fbc51c53fea9d42b297492d1ab272918dcd1e78f32",
+      "size": 1142
     },
     {
       "mode": "0644",
@@ -2884,362 +2884,374 @@
     {
       "mode": "0644",
       "path": "course-book/capstone.md",
-      "sha256": "851d64c0a22c9cf0694db8edc8083d620e20621745e4b88aef15babc6e9647e1",
-      "size": 3195
+      "sha256": "c0490d7486aa1823acc82b6d63e300a72873b28a0133f517f40ad0bb3caa6aa4",
+      "size": 3768
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/evidence-model.md",
+      "sha256": "3af1beac00231ad823db05e4707fed69a5452fa9d1ab08d1c647fed274c6db63",
+      "size": 1659
     },
     {
       "mode": "0644",
       "path": "course-book/glossary.md",
-      "sha256": "6aa9f766db42b793b745ea53a38c978622583b6d7358b580f5d64cbb0a3dde97",
-      "size": 3849
+      "sha256": "ec84d8272427d132249f91df1608d8dd663934a6372a126b181c867a3a8912e1",
+      "size": 3010
     },
     {
       "mode": "0644",
       "path": "course-book/index.md",
-      "sha256": "75b4cd83a330cb0a652fa1df0d1d8de150af56d06a88ac6c56beaeb9d56ecfa9",
-      "size": 6796
+      "sha256": "cca9eaaae19eab85d0a13f1ed82ce3dec5feec4dba8c1ebc530ee03615a6eeb8",
+      "size": 6736
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/language-strategy.md",
+      "sha256": "394fe27590a1c72426d9179ce17aa48d15a749f97bb3acef9124aa38a144fab0",
+      "size": 1465
     },
     {
       "mode": "0644",
       "path": "course-book/module-00-orientation/checkpoint.md",
-      "sha256": "82757941539193dec6b4836b6b4d56419c000a3f518d8ec1d1b59cc453477076",
-      "size": 1210
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-00-orientation/index.md",
-      "sha256": "dcf65698928618a961dd482453ca86677cd31f8ba903614756d1210808d2e89f",
-      "size": 3672
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-00-orientation/lab.md",
-      "sha256": "2ed0bd83bd779a4f72277c8fc6868950e7661edf8fa83244dffc7d98e9282b22",
-      "size": 2409
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-01-reliability-model-and-critical-journeys/checkpoint.md",
-      "sha256": "5ee76531d2122864a40ebc1af3cbca4c1ff2a76f17f4012664f988dce537190e",
-      "size": 1664
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-01-reliability-model-and-critical-journeys/exercise-answers.md",
-      "sha256": "a4c9a035ae7d0f2d1a8b604f011a3fbfa1b0a909bc6a0b1ef1e402cbdd9d576c",
-      "size": 3521
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-01-reliability-model-and-critical-journeys/exercises.md",
-      "sha256": "35b3099408edc9424a51123d26abfb13286a210b3f6a0e87e4a7e5cce3769972",
-      "size": 1653
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-01-reliability-model-and-critical-journeys/index.md",
-      "sha256": "eb61f0abcc373dad68a1f9476f33e58b3b204ef0704822cbe8cd1971e501cea6",
-      "size": 21590
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-01-reliability-model-and-critical-journeys/lab.md",
-      "sha256": "a431e5a3f62107ca1e0a01997b6da1e28a05bed48dc2a2cdd0ce77b6696c6f1d",
-      "size": 2537
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md",
-      "sha256": "28080b976728bd3658e2159f712694bf3e6acbb5ac7d225385947899bb8eb1ba",
-      "size": 1757
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercise-answers.md",
-      "sha256": "186b5602c9e9f0409c5b8591f3f6cb46023026431c46a95c396dc5cbdbdc349b",
-      "size": 3103
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercises.md",
-      "sha256": "98d2ccb8a711071aa073e34c9bf7283f225d104b15ad43d17a6c7b74d1d3c643",
-      "size": 1577
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/index.md",
-      "sha256": "f4226717bc75daa1e7d874c0395c184bf34e8ed7f4c6d837653f4230fcb9aeb1",
-      "size": 21144
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/lab.md",
-      "sha256": "f92546630b9f53eb6399057c9136bf34212a1db347d1755ccf83509570cde39a",
-      "size": 2558
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-03-dependency-resilience-and-graceful-degradation/checkpoint.md",
-      "sha256": "17ed593852bd63de8850e9589a77011102d3431576384306cc961f16562bc444",
+      "sha256": "f2799c2d848188a7913222a65c7d5c19e1d17628b161edcfcd2f501be94d8b6c",
       "size": 1695
     },
     {
       "mode": "0644",
+      "path": "course-book/module-00-orientation/index.md",
+      "sha256": "86b06492700cd349efaa3b05dc76be6dd88f06bab510001fb77c15610cbebf90",
+      "size": 3700
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-00-orientation/lab.md",
+      "sha256": "2f190c13767b16d5907aa681b4a548eaa1c22c688553f9b5bbd1947ca0209729",
+      "size": 3275
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-reliability-model-and-critical-journeys/checkpoint.md",
+      "sha256": "564e67fb5af16affc07aba103b44483d16e746acb853d96a09c6e07232ab3d30",
+      "size": 2544
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-reliability-model-and-critical-journeys/exercise-answers.md",
+      "sha256": "1cf7b22e3333ee316482ab231ecd0e818177544c69363f7fcc2d2277b3e69299",
+      "size": 8660
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-reliability-model-and-critical-journeys/exercises.md",
+      "sha256": "7adc51c7d5569690432662bee19316e24bcd3664fa4c88b4ec49f9eb2ba51627",
+      "size": 2081
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-reliability-model-and-critical-journeys/index.md",
+      "sha256": "be2428ad344c0588ebfb06de1a314e120f122cff26d20acb9ad0d9b1932445b6",
+      "size": 22454
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-reliability-model-and-critical-journeys/lab.md",
+      "sha256": "e052f6136643f965c1f65f91218d50980011914e5af7aace9dc7590ff09b7fe5",
+      "size": 5769
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md",
+      "sha256": "a5b2aa76f00ef4ef5f50cddf5c1cc285d2daec32307d3cf67fd7d1aff77b168b",
+      "size": 2641
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercise-answers.md",
+      "sha256": "9611e4a154c971d5331f52edf4f02ad9f49340b31dca30ee65d12643571db2d8",
+      "size": 8118
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercises.md",
+      "sha256": "ff448e934c709a01232f7d4c18b5eda846a715eab837179d66ab00849b076317",
+      "size": 2006
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/index.md",
+      "sha256": "bc0d9f84ce24c46a0af48d1f0ad21857b26a765c3908bca1db4a787a19a52e35",
+      "size": 21934
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-deadlines-timeouts-cancellation-and-retry-budgets/lab.md",
+      "sha256": "4ea5ffc083d53e2737fb49cf974eccff710f8d75eec59b78dd82b35cb39f6dc8",
+      "size": 5696
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-dependency-resilience-and-graceful-degradation/checkpoint.md",
+      "sha256": "4827c0506e79abe14c558b560c45c57fe1f8fa0f5b84d9f8b3a951727d412b55",
+      "size": 2573
+    },
+    {
+      "mode": "0644",
       "path": "course-book/module-03-dependency-resilience-and-graceful-degradation/exercise-answers.md",
-      "sha256": "bef74ccd2145c7435a22609c3983260b7179432b9509641ab87bc701a92b0f71",
-      "size": 3096
+      "sha256": "d94e9d1053757eb4ddeb979a06f64d3c76330d2b4c4ff6b4c2da79be4aec43e8",
+      "size": 8572
     },
     {
       "mode": "0644",
       "path": "course-book/module-03-dependency-resilience-and-graceful-degradation/exercises.md",
-      "sha256": "e57f5e4ddcc360cdfee6ddacce09970ff0b20f14073d2a3901a4b4760f2702cd",
-      "size": 1576
+      "sha256": "77fdb07dc381b434093ad1c4e69fbf4e2ab60647d9af7eeec9ed22a9e9a4337f",
+      "size": 2022
     },
     {
       "mode": "0644",
       "path": "course-book/module-03-dependency-resilience-and-graceful-degradation/index.md",
-      "sha256": "c07653b1113f170e8e573f418dfc88ba4c7594d5163a5b695774edb4f2a87861",
-      "size": 22496
+      "sha256": "732278a27e6bc8e725acf22de60165cf3cb7cb38878d952b77eedccafb17a1a5",
+      "size": 23533
     },
     {
       "mode": "0644",
       "path": "course-book/module-03-dependency-resilience-and-graceful-degradation/lab.md",
-      "sha256": "5784418ce196ee994ec9572f68129b9f2d576bdbaf01a537c8e53378ca32437b",
-      "size": 2586
+      "sha256": "ae3010723e1868dc74e0e16ab19f0e6f2ace7e65d8cbfc3c2367e353e9ec5684",
+      "size": 5856
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/checkpoint.md",
-      "sha256": "4d264d2cb70d570085925795e441bb49c0e296e29cbd9d133b2b284862439108",
-      "size": 1692
+      "sha256": "aa566f7325958ce12a97f742e54942d5b3b13f67155d670062f195e6afcb27bc",
+      "size": 2559
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/exercise-answers.md",
-      "sha256": "8f231692490e7fc545215170d2262c8cecff363bc0dc01df24aa9bb7eab336ab",
-      "size": 3424
+      "sha256": "b1cad054e5d5c74b8b2698fd12d9a3a0e7530274d6a0f2a2655b47176c06726b",
+      "size": 8552
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/exercises.md",
-      "sha256": "74583baa74f0cbdf72840ccd3ae61de291f8b8876a311f7150be09d7a17c2419",
-      "size": 1664
+      "sha256": "64f236b6a2817efe6871c5bb05705d1481f8c210bbbc8667d194576a0cd20af2",
+      "size": 2095
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/index.md",
-      "sha256": "8ada368e6977bb07560716e21742aceea92fb04c864e2305b1421f757ffd23a9",
-      "size": 23577
+      "sha256": "93c04a195627ff0dad4b816e9e78eaa8c215bde41f5011f6084d87185576b55d",
+      "size": 24515
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-lifecycle-health-graceful-shutdown-and-recovery/lab.md",
-      "sha256": "ac77a58465e8870c5c8183b3ab92c9e35f9e2f1d6437159f1fca61aae9215553",
-      "size": 2915
+      "sha256": "c7406e5387d2a103c0faf4878a7b4ebb20e97f78dd53f9073c0b9dddd77dcab2",
+      "size": 6357
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-telemetry-architecture-and-structured-operational-events/checkpoint.md",
-      "sha256": "376861b21f0c87b149a9eeb48b27bb871e9338e332f96c3eecc365fe2e4870a2",
-      "size": 1633
+      "sha256": "7353d9d794d987b4fc8807f85a41013f292d8811d3618faccd6a9dd82550f40d",
+      "size": 2525
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-telemetry-architecture-and-structured-operational-events/exercise-answers.md",
-      "sha256": "8014d0fe3f13bbdecb8343ba2593d2b2a22bfbbb3b0de69fc64c9a9376d9c2fa",
-      "size": 3286
+      "sha256": "43b36355bfabe8276e3b3cb1d1603aaae6255808ef3b210a94d79b82e1124a92",
+      "size": 8168
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-telemetry-architecture-and-structured-operational-events/exercises.md",
-      "sha256": "76d306161dd1f8080ab05d80d76d13a35707d94175224a68de7f008572d3b8e1",
-      "size": 1584
+      "sha256": "939dbb134198d03a632f2d3eb0008467f1a3784691876db21096a1f85c2dfe77",
+      "size": 2004
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-telemetry-architecture-and-structured-operational-events/index.md",
-      "sha256": "ca1da9d53117752de48204889c37c3bba6c1e5349b259235e70545acfbc9f3ca",
-      "size": 24270
+      "sha256": "44130d365d2276b8d89c1b059568e543c4849f7d5d21d27cabfe55cf40710306",
+      "size": 25295
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-telemetry-architecture-and-structured-operational-events/lab.md",
-      "sha256": "4b615e624d929f2fc75a27b12592ad8fffa1a2225fe17cd28f185d4008e75dda",
-      "size": 2864
+      "sha256": "6501b373e1c4e8be7d55870655b0e2dd0bbbfb40cf2a8f53112b5a1045d3140f",
+      "size": 6360
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-metrics-and-service-level-indicators/checkpoint.md",
-      "sha256": "e47bd7149ed5afe68288f83045535ca240b29476a445524887cc278b00e12488",
-      "size": 1688
+      "sha256": "5a6df1c33d6d28cbdfbfaf39f599236ec550989ee282be1ef9d55b6ba527219c",
+      "size": 2528
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-metrics-and-service-level-indicators/exercise-answers.md",
-      "sha256": "fc3e31f6aa79d4aef597adc5b55ddfac2e78bf9fdea05b68330d3cb79725feeb",
-      "size": 2916
+      "sha256": "3cc6d9e8f50eede0aa04a89b2b6de49c1bc535b18dd2e1d5b7d4698f5b4a255b",
+      "size": 7981
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-metrics-and-service-level-indicators/exercises.md",
-      "sha256": "7251a0ec56910ffc0a3c810f6c783e83a667d693d5b7adadaa9df60a28aa89f4",
-      "size": 1500
+      "sha256": "7b4c75ee06c87262f946e041f8f3b7355bdd1d6e1975e5431606dc111f390a17",
+      "size": 1916
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-metrics-and-service-level-indicators/index.md",
-      "sha256": "0080e32cad77fb8899072cae86f7332572211b9cb4966d06259e0e69f155ddd2",
-      "size": 23096
+      "sha256": "758b61647a27ad8cbba26ec66f1d892f12032d19d37166a5ac3781f25e9c9d13",
+      "size": 24041
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-metrics-and-service-level-indicators/lab.md",
-      "sha256": "6e613623b311bf2b610d1aa934214b0bddafd71c87879e95d13bfa6c316d611f",
-      "size": 2716
+      "sha256": "ba2f741d9134d8ad4ff8557fb711e8224f0cf82fa723339995eb25e6408f573a",
+      "size": 6038
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/checkpoint.md",
-      "sha256": "f71e74445129a9c318324ba702718f1be1a73d23300eb95fd6cf82cddf0553f5",
-      "size": 1758
+      "sha256": "d5aa23e3c5e906e76c2fd4daa6fdb8feea9cde0b346638d1409062f8de1769d6",
+      "size": 2654
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/exercise-answers.md",
-      "sha256": "e66e3c63da0e578af8be73d087a6e29dadf048e36c0c44868cce6f2be63c834d",
-      "size": 3468
+      "sha256": "3a3f57ed0a41adf61b8cab1097f7b60250ccc654707d249d713e7e22a68d5618",
+      "size": 8213
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/exercises.md",
-      "sha256": "79cace1479f663dd08a3a796cdef2e98a29451fdaa7a47681ed4cd87f4b02201",
-      "size": 1614
+      "sha256": "308c2d9dd4102478c3f6cec4ef89e28efd7b6bf9aeb78ae99ec73b7167e46dad",
+      "size": 2048
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/index.md",
-      "sha256": "0b9228db19c57ffffe20df8f26dfbb03744f3e497f52b218324084b6967a31b2",
-      "size": 23052
+      "sha256": "29a1c2c5e5d78ceb5304aabeca0a84741bd8f18812d986935a27420bfebb8434",
+      "size": 23868
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-distributed-tracing-across-http-workers-storage-and-webhooks/lab.md",
-      "sha256": "b45d5043db5ff37c7a52ec56fd7e81a86252fb9647b7e2b0b54f3d10fd0bf659",
-      "size": 2894
+      "sha256": "d34808c56a582977d7cab6ac6db9b1cbafb2f6c1efa4527bcf168fcd81b3708d",
+      "size": 6478
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-slos-error-budgets-dashboards-and-alerts/checkpoint.md",
-      "sha256": "a504e77ea01c85ad55a5aeeb9077640f3016d62c52aa6cc17abc5d6e18209a60",
-      "size": 1615
+      "sha256": "4b00a8793eae2d88251a31400f959180dc0389c19270cd9b278ac1a66fa745e7",
+      "size": 2455
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-slos-error-budgets-dashboards-and-alerts/exercise-answers.md",
-      "sha256": "2c7244aeaed0676108671bfebf7f3af0d069bd68e942216b15ba54afc63e9191",
-      "size": 3231
+      "sha256": "12bbc794e3cd22161855acb05516fe045fee10c8226fb41e1e37fc3deec4d1cb",
+      "size": 8169
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-slos-error-budgets-dashboards-and-alerts/exercises.md",
-      "sha256": "d888f8541858b0f0f72c80b3a9f73b3c4b815162a9636a39dbf08590afc77b04",
-      "size": 1501
+      "sha256": "45e4b924c518bed49d178740eef1c39c9b3f6c5dc46df2b9d5c5576ab0786374",
+      "size": 1910
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-slos-error-budgets-dashboards-and-alerts/index.md",
-      "sha256": "c21c23595d8df981b67e53ff8d95a1b029ce6d48c0e155d59f5c08197cf3d404",
-      "size": 22275
+      "sha256": "c7d4c2a4d7f5b2071046d12b322cf98d2ff028cd0f92b16421089b7a0115f2c3",
+      "size": 23055
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-slos-error-budgets-dashboards-and-alerts/lab.md",
-      "sha256": "b6e5a7183f89153b571c517bcabf28bbf8ab2e3b205da5f3fa5c24fd3108ec8c",
-      "size": 2813
+      "sha256": "65f95df79b2f23d7be224feb9b51d0c0a13ef74285d6c72a2cbd9e6a415ae121",
+      "size": 6149
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-fault-injection-troubleshooting-and-game-days/checkpoint.md",
-      "sha256": "097b533905d271e51cb4993f199e5ed8796488b2964ed82bc640a72f98ae9525",
-      "size": 1785
+      "sha256": "565fcaefe3279089460ee0a4d60f7a83bcdaee9d62c3c47f8d31c63dac7b2fd4",
+      "size": 2698
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-fault-injection-troubleshooting-and-game-days/exercise-answers.md",
-      "sha256": "4e4f1576522e8e2f3ae78c40faf04e47c3473fdd421b5765e465d0d33eebd037",
-      "size": 3241
+      "sha256": "943fbc0548b65e4258a6be341639d41c28c8a5232a7e76fca4faa6886cc9f46c",
+      "size": 8874
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-fault-injection-troubleshooting-and-game-days/exercises.md",
-      "sha256": "717d1e051f727b77237d8caf4d03d1bb7b15ee77a2ffc61d97a000e670c06ac1",
-      "size": 1624
+      "sha256": "e9d174beb8e97e4a7f934e3d3819bc846b4d6b2666f077eb5b669bfedbf01573",
+      "size": 2042
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-fault-injection-troubleshooting-and-game-days/index.md",
-      "sha256": "8efc203f0bb5e3d4135a6e19f7e342788a3ae5563e6b694dd1787266a8af578d",
-      "size": 22862
+      "sha256": "f8ea9f8e3242092d66b690bbe1cc252baf166d74573a8babf00c90fe31dff991",
+      "size": 23650
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-fault-injection-troubleshooting-and-game-days/lab.md",
-      "sha256": "63a3af78a89551f18e968242779d618095f1cf9ca74854447d0e2f1e9454ad70",
-      "size": 3012
+      "sha256": "50fcf006d68acd10fe812339330077bf7c4dfccda73a1acf072b816307c66d8d",
+      "size": 6484
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/checkpoint.md",
-      "sha256": "8d41553da25d604238c9037880cb5c68d25424f412c063110f4d59bdfebc20a2",
-      "size": 1822
+      "sha256": "5263a9059c9e1a72d2e4436d7916af4c2b6023d1b24dae97aff4071877891796",
+      "size": 2767
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/exercise-answers.md",
-      "sha256": "1c7e01679e043af4962cb367051bb3954cc05f2fd5d7bf55f08de31c5bc0abb6",
-      "size": 3360
+      "sha256": "b79ffb766f6b5eb1a2df67e0f9fcda8f21ef8ed03473f182637bc6057fe2c509",
+      "size": 8728
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/exercises.md",
-      "sha256": "135d2e3959bf426a0332dafa97993dae1e9417c19cabafa4630803952517ea11",
-      "size": 1656
+      "sha256": "e4e48dc2e5c08e023f80dedc7cf2a7138479e09196e244d4c3bed23a485642a7",
+      "size": 2096
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/index.md",
-      "sha256": "b86c86fceb6b912d5a7aff2940f48495643bb8094e271e03a8e7618b2655ea0d",
-      "size": 23564
+      "sha256": "be9fcda0fb06908c39fd7bb1c92edfaeda2d60156396bfff2666b499cd1a7d6c",
+      "size": 24638
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-incident-command-state-reconciliation-and-operational-readiness/lab.md",
-      "sha256": "79ce516311f7d601237d6c481d0a17b8ddc8469125a060ddf22420ef18c08300",
-      "size": 3271
+      "sha256": "ee80582dd3e1e9c8cdf8bcb9a38a7907c3b17888dd728be72d25bf38c8ddd54c",
+      "size": 6916
     },
     {
       "mode": "0644",
       "path": "course-book/standards.md",
-      "sha256": "6ddd09ccda6f196b1a94572c76f720d8a5c97d599eeec613c0bb352a22678f99",
-      "size": 2150
+      "sha256": "006809f87eca258700d3f81bfbb25f40bb72d1d686a9cd65d9e5d76adc431d1d",
+      "size": 1923
     },
     {
       "mode": "0644",
       "path": "course-book/start-here.md",
-      "sha256": "bb61fac8e364f02d0779314bafdfdcb89d1cffd5b2358e8cdf18df65839e3ffb",
-      "size": 2005
+      "sha256": "467834ce9f2e8d84f016a9b4dc403bdddc453c03052e95fa6bde98de90c89e93",
+      "size": 2498
     },
     {
       "mode": "0644",
       "path": "course-book/study-plan.md",
-      "sha256": "a445e62247c6ec76935ffa23aea7912455a4683806e2f8b5ca286018080082a7",
-      "size": 4938
+      "sha256": "f6a4f12e0c89034c72785179146ebb9b21be012479222d6c52e9354617c1c61f",
+      "size": 4061
     },
     {
       "mode": "0644",
       "path": "course.json",
-      "sha256": "6f8576c36e11fcaf57ffaf5437573728f9a0bbb2b33fef0defaa91fa56359b6c",
-      "size": 1545
+      "sha256": "9e389ec73b71284fbd3f26db867a55dfe6e046880053f65c118f7daca9b627ed",
+      "size": 9542
     },
     {
       "mode": "0644",
@@ -3250,8 +3262,8 @@
     {
       "mode": "0644",
       "path": "mkdocs.yml",
-      "sha256": "d5db8d005ae456e8e499571837354461f39eb7b2a5eb0eb2c9861f799f3d9f8d",
-      "size": 5555
+      "sha256": "38d397d95fbe555981e4723b2ac84cab294fc1f3867fb510911ca6a2b25ed7bd",
+      "size": 5776
     },
     {
       "mode": "0644",
@@ -3262,8 +3274,8 @@
     {
       "mode": "0755",
       "path": "scripts/course_tool.py",
-      "sha256": "c30fb00510a101c1ae62302e19c3e849034502d390c772a8e6fe6cdefb576c7e",
-      "size": 54580
+      "sha256": "b60d596821bbf0ab3ff09fba2a670495a6399efa61fc759549f2ceb55c683579",
+      "size": 54586
     },
     {
       "mode": "0755",

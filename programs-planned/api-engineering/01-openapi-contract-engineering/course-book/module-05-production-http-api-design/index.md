@@ -1,12 +1,14 @@
 # Module 05 — Production HTTP API Design
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How should an HTTP API express asynchronous work, retries, conflicts, conditional updates, and machine-readable failures?
 
 ## Where this module fits
 
-Design the analysis-run workflow using HTTP semantics that clients can recover and reason about. You arrive from Module 04 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **Contract-First and Code-First Runtimes**.
+Module 04 produced **Split the contract into owned documents, resolve every reference offline, and produce deterministic bundles**. This module extends that result by asking: **How should an HTTP API express asynchronous work, retries, conflicts, conditional updates, and machine-readable failures?**
+
+The new capstone increment is **Add the analysis-run workflow, idempotency key, status resource, ETags, cancellation, and Problem Details**. It becomes the prerequisite for **Contract-First and Code-First Runtimes**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Design the analysis-run workflow using HTTP semantics that clients can recover a
 - Design stable pagination and lifecycle-aware errors.
 - Use RFC 9457 Problem Details as a public error vocabulary.
 
-## Capstone result
+## Capstone increment
 
 Add the analysis-run workflow, idempotency key, status resource, ETags, cancellation, and Problem Details.
-
-The API can submit, monitor, cancel, and retrieve analysis runs and artifacts with explicit lifecycle semantics.
 
 ## Core model
 
@@ -363,11 +363,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The Production HTTP API Design checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “How should an API express asynchronous work, retries, conflicts, pagination, and conditional mutation honestly?” is now executable in the capstone: The API can submit, monitor, cancel, and retrieve analysis runs and artifacts with explicit lifecycle semantics.
+You are ready to leave this module when you can **Use `202 Accepted` with a status resource, Define idempotency-key behavior precisely, and Use ETags and preconditions for optimistic concurrency** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a race-prone check-then-create implementation or remove the fingerprint check; prove a focused test fails, then repair it** and requiring the following oracle: **202 identifies status monitoring; same key/body creates one logical run; changed body under key is rejected; missing/stale/current If-Match branches are distinct.**
+
+The cumulative platform now includes **Add the analysis-run workflow, idempotency key, status resource, ETags, cancellation, and Problem Details**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 06, [Contract-First and Code-First Runtimes](../module-06-contract-first-code-first-runtime/index.md), asks: *How do we implement one contract in two frameworks without letting framework defaults become accidental public behavior?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Contract-First and Code-First Runtimes](../module-06-contract-first-code-first-runtime/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

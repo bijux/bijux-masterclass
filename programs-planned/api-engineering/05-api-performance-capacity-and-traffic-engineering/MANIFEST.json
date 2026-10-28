@@ -11,8 +11,8 @@
     {
       "mode": "0644",
       "path": "README.md",
-      "sha256": "2ba9dc4d12b03f12b116131f7cbfb8dac27452a13eb393c84c3c4314732632f4",
-      "size": 2759
+      "sha256": "1d3d91174f3b61c6297bd630cd30cb420367f3e17b3520b67e52533d6409fa58",
+      "size": 1129
     },
     {
       "mode": "0644",
@@ -1187,362 +1187,374 @@
     {
       "mode": "0644",
       "path": "course-book/capstone.md",
-      "sha256": "7493e9d0677345111fc00f177673b0e2b5c67e3191281e4bdac166e559e5d52e",
-      "size": 3288
+      "sha256": "14478e83b84acdc24cc256ea45afb92bb46540271c6f70431fc9ff35f25a9e76",
+      "size": 3804
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/evidence-model.md",
+      "sha256": "b685786b90f3991fc59969faa82119d49cdf5cc125c26193081062d56d426dff",
+      "size": 1623
     },
     {
       "mode": "0644",
       "path": "course-book/glossary.md",
-      "sha256": "9c080b324e31f10c543a284679a1c0191e0c5a65eebfea345e4a0226a08910f5",
-      "size": 2680
+      "sha256": "a451321a610dd60de737698847c8893066391962b393f3d844904f8aea518738",
+      "size": 3010
     },
     {
       "mode": "0644",
       "path": "course-book/index.md",
-      "sha256": "4fdcf744d171cf7d5fdfb4561bc5673572071c4c97a801a6bbfbf9c82f98f4b6",
-      "size": 6921
+      "sha256": "f2caa3c53a3f5d512dadbdd6ab3d8047488051e543e50d4ebeefaed3c94fccc7",
+      "size": 6929
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/language-strategy.md",
+      "sha256": "a5b6fe49b0fd519127bba0d40cedfa04072e9ddcd1602438a539f53e651de36e",
+      "size": 1490
     },
     {
       "mode": "0644",
       "path": "course-book/module-00-orientation/checkpoint.md",
-      "sha256": "3e5bd9793df275e9f1c3cdeed65f1bad75442fe4fd79010a976515a29785411c",
-      "size": 1215
+      "sha256": "f364e841dc0138e6662edbbd94a1e5abc19d2672e95d0722fedfd7684c8f7ed6",
+      "size": 1730
     },
     {
       "mode": "0644",
       "path": "course-book/module-00-orientation/index.md",
-      "sha256": "c004e9ef80cd14e55fc88d5af52559ada82280f28f13812ee24ed0e7ccd3c89d",
-      "size": 3694
+      "sha256": "6c87e2bd374bb112d758fe16640ad06d0141dbdc164d4c905d27d805c69b1d55",
+      "size": 3719
     },
     {
       "mode": "0644",
       "path": "course-book/module-00-orientation/lab.md",
-      "sha256": "e0384ce4db44b352cfb6f394abe75b7af89640c2308c1cf18d59ed6ffa411d5b",
-      "size": 2414
+      "sha256": "b7542a19aab6d52e63c74c0ea33ba808059deeef7882c7357aa7accc1d3ca5ec",
+      "size": 3278
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-measurement-contract-and-critical-workloads/checkpoint.md",
-      "sha256": "1d701e89b5ed140e32ba4f44bb214fc1972b4396e7b9ac0b27033125dfa8bccd",
-      "size": 1687
+      "sha256": "3657b28b793437b408e18c4c0132ac618a185d8e92ae5232902ce9e8fccbe198",
+      "size": 1899
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-measurement-contract-and-critical-workloads/exercise-answers.md",
-      "sha256": "5134a0f0d3000048c6d51a5881a8f84b9abd2826db3d77882af3003d5eaf777c",
-      "size": 5111
+      "sha256": "fb8206d3590c4fdeb77b8ca92f1ead59cbd18bc8104019ab16851241eab4bd5e",
+      "size": 9022
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-measurement-contract-and-critical-workloads/exercises.md",
-      "sha256": "5363ae91a8494d19b0489e2c2ea1e14bf0f36dec854cb03a0652b732f3965a58",
-      "size": 2343
+      "sha256": "22e62eee83f87e878b2f30fb29c50b13b3149dfb7177ca291c33cd7fd7f35968",
+      "size": 1629
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-measurement-contract-and-critical-workloads/index.md",
-      "sha256": "ee74a9d2c1a675861e2b162a50c1d5ed3b09dcf8d91b6d6d2a2971f78d98b55e",
-      "size": 16257
+      "sha256": "e40f6612c605fb2b779e88fc0cb0cfbdda0ec760f990dcfe83ea1f034ac373d9",
+      "size": 16444
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-measurement-contract-and-critical-workloads/lab.md",
-      "sha256": "477e4b65dfee74f663128231fb727475f27be582e9f893acc0999575fe55bef4",
-      "size": 2956
+      "sha256": "94f13534b3b0c8975f019c344c8a3293a44863e6612cede417661b9375ee6d68",
+      "size": 5884
     },
     {
       "mode": "0644",
       "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/checkpoint.md",
-      "sha256": "38579f3513ae3fb8d28e8c349e4986bdc96e960c8d6f17c426ff0fd58568e6a1",
-      "size": 1719
+      "sha256": "633324730a50a13536068375e586edc76778bb84b7450a327c667bffa948b2c4",
+      "size": 1932
     },
     {
       "mode": "0644",
       "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/exercise-answers.md",
-      "sha256": "b0000ddc3a1685672481a059ed9c1ddd38ec40ec749f336d839f34338ae200d0",
-      "size": 3980
+      "sha256": "d1c8ae0d8835c074db458f561fb2dcbae028d8a0b41fe869e11c6b9537691838",
+      "size": 8002
     },
     {
       "mode": "0644",
       "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/exercises.md",
-      "sha256": "e1b93fed8e8b7b2cbc788b1d81f1e6326f2269c8aaa0e5117e5036cad364fd88",
-      "size": 2427
+      "sha256": "ac6acecc37c8e151643d7a6a0a9083179bef598cf5eae71944edf71e35a88aa8",
+      "size": 1714
     },
     {
       "mode": "0644",
       "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/index.md",
-      "sha256": "98162afbbd7ba4566b3232329400e00b6d8ddfed1bf55f55ef1183442a74b880",
-      "size": 14760
+      "sha256": "1669527bccdaf44ce0e4434a0ee1109afad0e263dc4568ffad1f540e28be8966",
+      "size": 14917
     },
     {
       "mode": "0644",
       "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/lab.md",
-      "sha256": "9ce38228dc6bcf68f993d277bb2b2d16e6ed609e91d95f7e1ab7565e69d8452b",
-      "size": 2805
+      "sha256": "dd8a61388a671e339a749616fa866a96d35f0b5012b4c2284c9f9d7afce6d26d",
+      "size": 5472
     },
     {
       "mode": "0644",
       "path": "course-book/module-03-http-efficiency-and-representation-cost/checkpoint.md",
-      "sha256": "67f8e3e7ab63dde893e8ab9ef72192a878d325177b9ff6c26e7162c49922168c",
-      "size": 1555
+      "sha256": "4758953f96da3d34193fe0dd3e2cf10111c02125dab2f73526b7271a722074d4",
+      "size": 1800
     },
     {
       "mode": "0644",
       "path": "course-book/module-03-http-efficiency-and-representation-cost/exercise-answers.md",
-      "sha256": "272a29d654078747fbd0dac656c0a4ef3474d3b6dcce026ac0ea0579f3c9d2dd",
-      "size": 3632
+      "sha256": "985a38e96e102f68ac599774c091f97160bc57b37cc387301d8d771bcf90ae51",
+      "size": 8293
     },
     {
       "mode": "0644",
       "path": "course-book/module-03-http-efficiency-and-representation-cost/exercises.md",
-      "sha256": "de318ea242305155c6faecf966b8424dd8731993759e6446ac0f47537b7249d6",
-      "size": 2297
+      "sha256": "a8f7f54c4dc9c7ee1f9dceb39ee3e386b1a02c38de91a40d172e5ebd1bae23bc",
+      "size": 1593
     },
     {
       "mode": "0644",
       "path": "course-book/module-03-http-efficiency-and-representation-cost/index.md",
-      "sha256": "11da37db9880b154fb0c3b445a6917f552f70b9964d255be1e887d00f00fc928",
-      "size": 15456
+      "sha256": "f0ffed9494d1292f69612eed660c13803da63e1038e1d945fdbf79744473eae0",
+      "size": 15552
     },
     {
       "mode": "0644",
       "path": "course-book/module-03-http-efficiency-and-representation-cost/lab.md",
-      "sha256": "f9fd3f3b43557245dc6a7ae56f208d7cef4bff11d8cb78283422c554c39cccba",
-      "size": 2867
+      "sha256": "c902e935dfa198532e89b59602b300cc0e560a40aaf6ceafe74a290bdc50a768",
+      "size": 5493
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-postgresql-query-and-persistence-performance/checkpoint.md",
-      "sha256": "2471e1190eeb1bb153c86ed47eee1dd89019c504b53f9f8df1c10cd4623efc4a",
-      "size": 1647
+      "sha256": "4fab5ae5d0b465f6992b341ebde8151351d8147a0f50ef6f876223b35bd2b961",
+      "size": 1959
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-postgresql-query-and-persistence-performance/exercise-answers.md",
-      "sha256": "4da2d74c7535c3d155b66b2e0baed198d6189b433680e62a547170b23c512058",
-      "size": 3620
+      "sha256": "de12c8e67f5d1cc4cd83ecf6121d0c0ba77e637206c32267edd5a86b958c9d0b",
+      "size": 7663
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-postgresql-query-and-persistence-performance/exercises.md",
-      "sha256": "cbcff310686713761209ff2bc0add2e3ba7d7f003c1188e251029bc2c1e56bbe",
-      "size": 2251
+      "sha256": "3295f74c85f464fdf10d84e6c1af04825f1cb64f263cf559b3109a57e1d1e405",
+      "size": 1527
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-postgresql-query-and-persistence-performance/index.md",
-      "sha256": "a1975f2d74d4d89522495b5dd1dd7b91355b4750cb87511e592c1368d1003156",
-      "size": 16170
+      "sha256": "2f992e28a72892558a9d0ba799f1b4a9b616fbfbce4d79354b5c655a537524cf",
+      "size": 16277
     },
     {
       "mode": "0644",
       "path": "course-book/module-04-postgresql-query-and-persistence-performance/lab.md",
-      "sha256": "651e3cd2d1a9b86c1e09ab9969a685c1922c20d440a5f962b3d4e13a48ba9a33",
-      "size": 3084
+      "sha256": "8e9ccad2ca4897d21288034c719156df8ac56e86ffd2b28afa53ab3de0749f44",
+      "size": 5773
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-runtime-profiling-and-allocation-control/checkpoint.md",
-      "sha256": "b387d1ac41da8c5201559453d473ca3fbd4dd2ea980e171246e60d690877e447",
-      "size": 1615
+      "sha256": "309ee8fb722895c9f3f860b823f5b283e2ea5c34e3d2add8e3cf2eef6cb4ded8",
+      "size": 1862
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-runtime-profiling-and-allocation-control/exercise-answers.md",
-      "sha256": "a116b15a82d8777665b1a03634e888362b918cdd93e150c304f8b7338c6f8201",
-      "size": 3553
+      "sha256": "1606602152fbc1e3ce1d0eeedda499ce95ad1f9dac2da2440f0671d0ae785794",
+      "size": 8021
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-runtime-profiling-and-allocation-control/exercises.md",
-      "sha256": "6d9006d8ea0ac016d206020cd2ad990b03f24c21a456250ae740f28416c1ce07",
-      "size": 2238
+      "sha256": "2a3ef92869030913ddbc34e9a307a0b2e904e81cf7a353cc60e9fd693443464a",
+      "size": 1501
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-runtime-profiling-and-allocation-control/index.md",
-      "sha256": "39d1d70a6eddb05590458ec3c58b707fe5eef0f389b1f0d8b4cf323fe737ec98",
-      "size": 15698
+      "sha256": "ea9fbff24bd4808538e5d7a93a181a2b5e989005214aca67b45134ec7c5ce4b9",
+      "size": 15777
     },
     {
       "mode": "0644",
       "path": "course-book/module-05-runtime-profiling-and-allocation-control/lab.md",
-      "sha256": "76a829c78de81db64b40fbc92af84cf374989fade3ed0403d11a39fd4b6a0c55",
-      "size": 2869
+      "sha256": "ea1f563e6a3c3d991ed2f8faaadcbbe9224a095e83b46b19724a47a522c4831f",
+      "size": 5483
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-queueing-concurrency-and-backpressure/checkpoint.md",
-      "sha256": "1672cb9d4e4c3d77a53d2209cbcab5980c2fc946c144baccdebb5b6e419a5a38",
-      "size": 1595
+      "sha256": "2e2c7ecf89f4a33009e0ca6fde4907bd3613e6627b2d80c09c043766e2d5bac2",
+      "size": 1826
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-queueing-concurrency-and-backpressure/exercise-answers.md",
-      "sha256": "c79066df6e1df82c02d8e8acb444a9e5cb2805b2020197de3e71b2c737a15949",
-      "size": 3353
+      "sha256": "488b72709191cef6acd78ea19f5a495692b1665c6db84656d66abad151ad8275",
+      "size": 7675
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-queueing-concurrency-and-backpressure/exercises.md",
-      "sha256": "465c124c9291ed611e6ef9c77f37a6b5935d74941386a9181cc50aad0c10c43d",
-      "size": 2360
+      "sha256": "d55cfc582fc1b04d5bc994a3243635ae2a2119e2d0cbcf49c3c5c5a992c79d5d",
+      "size": 1616
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-queueing-concurrency-and-backpressure/index.md",
-      "sha256": "7b5c185a1afcc9ae98f4aa8b675929fefceb2afaf878d8fb7b76b816eec9fba3",
-      "size": 15357
+      "sha256": "3429eb591c94ccca1cbe539a0c8fd23bf4af4e9973c1345864573ade9376aa20",
+      "size": 15452
     },
     {
       "mode": "0644",
       "path": "course-book/module-06-queueing-concurrency-and-backpressure/lab.md",
-      "sha256": "2086816826f15dc8bd2c733c9da0e5df09d1438bd93b38b17eab8514ca56e5f9",
-      "size": 2721
+      "sha256": "f12c109e10b67a9ce83d81cd259379f7bb5745d07659879dbebc40154809404e",
+      "size": 5291
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-caching-freshness-and-invalidation/checkpoint.md",
-      "sha256": "0457f4322b963e391552556f10d0b80ada74d5985cd122aa09c7ae1bdc0efd3c",
-      "size": 1644
+      "sha256": "9bef9ddd245c4e38773c30f41969387f037f3366edbfe5fec340cc997b9da427",
+      "size": 1910
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-caching-freshness-and-invalidation/exercise-answers.md",
-      "sha256": "247d05764fe786308ad603f08aa2e37131e213596777a519e9ae3c2e585ca0d7",
-      "size": 3354
+      "sha256": "83462d41f8f6635efad94de9a75d77358c91050528af5e56568ba932f8f3f4ad",
+      "size": 8002
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-caching-freshness-and-invalidation/exercises.md",
-      "sha256": "3d504a8c6ad221c6dccfac9ce362f489726a2361d7402630b43793393d8b9abf",
-      "size": 2179
+      "sha256": "dbd01164fb46a39c061a446fec7881920f51766332e380223efb405f254b2447",
+      "size": 1428
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-caching-freshness-and-invalidation/index.md",
-      "sha256": "cd9a98cbf15fabfb7f332fc30910695db3d4074025007bd2dfb8541b743fb69a",
-      "size": 15445
+      "sha256": "e3724e954c8ee15b105c6b35e334e6d4e0c60b29ea59d32c988a799118b29de8",
+      "size": 15653
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-caching-freshness-and-invalidation/lab.md",
-      "sha256": "0885059e3c0ff9c906468e09ac004b7a530e98f252ba8f8072e2a5a8eb426471",
-      "size": 2840
+      "sha256": "a7b6627a095951a661ce0e20e69ee4bcfc5a72ccf97c6e5416d0a3310a9c440e",
+      "size": 5664
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/checkpoint.md",
-      "sha256": "8193a7f8d2b2516c52084bf9daf867c76c71c087e9521be698675ba7e961d259",
-      "size": 1609
+      "sha256": "2bc3f31ce8a0eb0e214e4bf530116271d576a651e17ad88d00331e6e3dafd352",
+      "size": 1884
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/exercise-answers.md",
-      "sha256": "5c69a67d1cdcbff83486072d70f5ede7577cec11aff3be6b5d93a47fe37e0a00",
-      "size": 3313
+      "sha256": "dafbd44c1d19de17486a00e1d34d1103169d41f0e59df70f274e8c5747fc4359",
+      "size": 8040
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/exercises.md",
-      "sha256": "d0dfb8f5f134a3f62ed14cec3a965dea943fe706be230fbfb0ebd8ab2b1c614d",
-      "size": 2116
+      "sha256": "0fe82e1e8d3d070557f406f17db64631675e9768f0dbb798cbbf63b349162475",
+      "size": 1365
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/index.md",
-      "sha256": "0ef4a5aa21003b19e3af6da801c667a0bd14c98e8e5578272c51d29c45969edf",
-      "size": 15313
+      "sha256": "213769c2069863dd2bce6e9b5ff8e9c7dc959608251da273008a4a646a41e80c",
+      "size": 15459
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/lab.md",
-      "sha256": "cd2d787e74940c40de71e175eecd32596032f6dfcd42c907b2ea5b459842504d",
-      "size": 2845
+      "sha256": "5088340938fe8dad87d19f616e4114542d781dd3c36cbc840d3d9789b13725f6",
+      "size": 5441
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/checkpoint.md",
-      "sha256": "acec5777de838cbe494acb66670ac5dfdf75004d1357dc10bdad15db6504e1d3",
-      "size": 1626
+      "sha256": "98b2ca908db465c69a37c5baeaedea227e847cd4b827846b2444ee4d87745fdd",
+      "size": 1909
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/exercise-answers.md",
-      "sha256": "b155581e133b99b3c8a81cadd66160cc6f95c9bc51d5f1165c57355bb0d01813",
-      "size": 3110
+      "sha256": "c000738da9fb6d26288ca62cc7246c9940a2bfe86c9d7f3a896eff49d0907ff0",
+      "size": 7568
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/exercises.md",
-      "sha256": "e8dc50b328f294f93bca0f5358dab36fa69162367e24d84b636ad6dd83838fc5",
-      "size": 2161
+      "sha256": "7393c097e34c437b293b68296df6b39d253196f55f708317841fe702669ddf15",
+      "size": 1441
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/index.md",
-      "sha256": "e9c3a64ddf79907231a987e8a23c7f17829dbe4d7d42fe1a86f5dfdfec18ea4d",
-      "size": 15966
+      "sha256": "54901cc828aff33cf1cd74b30e29878f30394c48366188d12f778391dae25de8",
+      "size": 15929
     },
     {
       "mode": "0644",
       "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/lab.md",
-      "sha256": "81ba5e51f3460f1971cddbcd050f405cd2340bc3a92eeb9a4dd04769da7f7760",
-      "size": 3053
+      "sha256": "f10d550e8fb3eec2030a2a2f18d273347aab96c0e5c606d5e28e431558e1c73a",
+      "size": 5612
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-performance-regression-and-release-engineering/checkpoint.md",
-      "sha256": "7de2fdb1b71c19521f4e886039a6dbb0b8e3b61c0461facd8a1d70115ad4e3d2",
-      "size": 1695
+      "sha256": "1a495c12eebbeeb8e43a96109049c521b50071d9a3308eb8e242adb76e2627f8",
+      "size": 2039
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-performance-regression-and-release-engineering/exercise-answers.md",
-      "sha256": "2ab1ad1d5dc545599750784387880fd891f501f1a04c017fb8aa8db6f9d96956",
-      "size": 3614
+      "sha256": "9798532888b30be563addd06ed014562b0bf82e8b649b2655b7d40d8a799c0e6",
+      "size": 9337
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-performance-regression-and-release-engineering/exercises.md",
-      "sha256": "50ebd4b467ccc86560ff02335db2e6404cdf0b468d50f032bf792596b49632af",
-      "size": 2161
+      "sha256": "0dcccd0918dc5e162fd73e7d865d30cc8848bac174de14ed3241a551e65c9a31",
+      "size": 1403
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-performance-regression-and-release-engineering/index.md",
-      "sha256": "abcde4d022c92402f6c500e467b25df843e0907b5e909aaabba8e97c69979862",
-      "size": 16066
+      "sha256": "35f45451f84ad9623f855b9381e0362b3452ad4fe9fb6e4a052c85ea192cc91c",
+      "size": 16218
     },
     {
       "mode": "0644",
       "path": "course-book/module-10-performance-regression-and-release-engineering/lab.md",
-      "sha256": "f80bdcd536ca7347282e02867e7d3726990b0170e8aff3275efa9e84ff1ee239",
-      "size": 3177
+      "sha256": "f308dfe55f0741242b3b674b83a6c66d885066abff96f181bfb5bace8c949ff6",
+      "size": 6009
     },
     {
       "mode": "0644",
       "path": "course-book/standards.md",
-      "sha256": "a775376ee08b73af6a23351c44adbf761cfc86d0012b25db8052a0da286a6bcb",
-      "size": 2172
+      "sha256": "3f7fffce729967d9575034e3252418ddd955cb7c523fe27d34f461550efbdf50",
+      "size": 1985
     },
     {
       "mode": "0644",
       "path": "course-book/start-here.md",
-      "sha256": "abcd62bf5453732f222f1afcca7a3ef20c6fc95ab1f2e3e10d6d0f39fc4129cd",
-      "size": 2092
+      "sha256": "4be20de566fead0017d48af73f7f65329a21815927747884d0635b4c4327df4a",
+      "size": 2591
     },
     {
       "mode": "0644",
       "path": "course-book/study-plan.md",
-      "sha256": "80d1bc979c2319dfac3a1db258804f093b3c5a38c7ef5e4b1ca371e0db6ba34e",
-      "size": 4964
+      "sha256": "8c416670df4e6e96d89edc7505e72f2e4a5eb3c4c7f2d9d07778ca838649d2b2",
+      "size": 4012
     },
     {
       "mode": "0644",
       "path": "course.json",
-      "sha256": "972dc26aaea4e00260f4e06a118d30358e2aaa8ade482e8944df891cc009f02f",
-      "size": 1650
+      "sha256": "1b4942b91b30f4a85df47cf587d3f7d4ce91596d8b7e0488ed957a7f9a37671e",
+      "size": 13119
     },
     {
       "mode": "0644",
@@ -1565,8 +1577,8 @@
     {
       "mode": "0644",
       "path": "mkdocs.yml",
-      "sha256": "b8d8d62ecd7dc43627316e467b644cacda3d95d5919a32fbf841e50b44e29205",
-      "size": 5183
+      "sha256": "86c590f8f94cbd0207f943020bb499022ae0554dfb33eb3e112d7fac8f701003",
+      "size": 5407
     },
     {
       "mode": "0644",
@@ -1583,8 +1595,8 @@
     {
       "mode": "0755",
       "path": "scripts/course_tool.py",
-      "sha256": "8ef909da2b2d9bdfe083b86fe0431d77664929837b8e51e3c7a92b4981907b78",
-      "size": 25421
+      "sha256": "f7afa54958b2fbaeffe09bbe8d81218abb0da8a60fdff2d5e67337e28b24106d",
+      "size": 25424
     },
     {
       "mode": "0644",

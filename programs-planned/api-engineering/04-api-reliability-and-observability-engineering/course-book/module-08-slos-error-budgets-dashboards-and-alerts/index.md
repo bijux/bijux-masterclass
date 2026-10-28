@@ -1,12 +1,14 @@
 # Module 08 — SLOs, Error Budgets, Dashboards, and Alerts
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** How do versioned SLOs, exact error budgets, burn rates, dashboards, alerts, and runbooks drive decisions?
 
 ## Where this module fits
 
-Define rolling objectives, calculate budget consumption, and alert on sustained burn with runbook context. You arrive from Module 07 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **Fault Injection, Troubleshooting, and Game Days**.
+Module 07 produced **Implement validated context, synchronous parent-child spans, asynchronous links, attempts, queue time, and privacy-safe attributes**. This module extends that result by asking: **How do versioned SLOs, exact error budgets, burn rates, dashboards, alerts, and runbooks drive decisions?**
+
+The new capstone increment is **Publish five journey SLOs, multiwindow alerts, owner-linked runbooks, and release policy**. It becomes the prerequisite for **Fault Injection, Troubleshooting, and Game Days**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Define rolling objectives, calculate budget consumption, and alert on sustained 
 - Design dashboards from outcomes to causes.
 - Handle insufficient data and planned exclusions explicitly.
 
-## Capstone result
+## Capstone increment
 
 Publish five journey SLOs, multiwindow alerts, owner-linked runbooks, and release policy.
-
-Five versioned SLOs, burn alerts, dashboards, and runbooks govern the Analysis Runs service.
 
 ## Core reliability model
 
@@ -96,7 +96,6 @@ Apply **Objective, Error budget, Rolling window** to this module’s capstone in
 Synthetic windows prove budget and alert calculations; objective suitability, paging policy, and operator response require service ownership and historical evidence.
 
 ## Worked failures
-
 
 ### Case 1 — Raw error-rate page
 
@@ -187,7 +186,7 @@ result = evaluate_burn_rate_alert(
 assert result.firing is True
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **SLOs, Error Budgets, Dashboards, and Alerts** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Raw error-rate page
 
@@ -234,7 +233,7 @@ const decision = evaluateBurnRateAlert(
 if (!decision.firing) throw new Error("expected fast burn");
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **SLOs, Error Budgets, Dashboards, and Alerts** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Raw error-rate page
 
@@ -418,8 +417,10 @@ Compare the two tracks by this invariant: **objectives operate on exact eligible
 
 ## Module synthesis
 
-The module answer to “How do operational signals become explicit objectives and actionable decisions rather than decorative dashboards?” is now executable in the capstone: Five versioned SLOs, burn alerts, dashboards, and runbooks govern the Analysis Runs service.
+You are ready to leave this module when you can **Choose objectives from critical journeys, Calculate compliance and remaining error budget, and Use multiwindow burn-rate alerts** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject a brief spike that fails the fast window but not the slow window** and requiring the following oracle: **Short transient alone does not page under the paired rule; Sustained burn pages with journey, severity, SLO, and runbook; No data is not green; Budget math uses exact eligible and bad counts.**
+
+The cumulative platform now includes **Publish five journey SLOs, multiwindow alerts, owner-linked runbooks, and release policy**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 09, [Fault Injection, Troubleshooting, and Game Days](../module-09-fault-injection-troubleshooting-and-game-days/index.md), asks: *Can the system and its operators detect a controlled failure, find the durable cause, mitigate it, and return to a verified steady state?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Fault Injection, Troubleshooting, and Game Days](../module-09-fault-injection-troubleshooting-and-game-days/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

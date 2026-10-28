@@ -1,44 +1,51 @@
-# Start here
+# Start Here — GraphQL Schema and Runtime Engineering
 
-## What you must already know
+## Why this course exists now
 
-You should have completed the first eight API Engineering courses or possess equivalent competence in HTTP contracts, durable services, security, reliability, performance, events, RPC, and service boundaries. This course does not reteach those subjects. It applies them to a graph runtime.
+Course 9 begins only after this boundary is trusted: The Course 8 distributed architecture handoff with explicit service, data, contract, and trust boundaries. Its new responsibility is **compose governed client-shaped capabilities**, and every exercise must preserve the inherited behavior while making that responsibility explicit.
 
-You should be able to explain:
+## Prerequisite gate
 
-- which service owns project, run, artifact, and notification facts;
-- why a gateway owns composition but not business state;
-- how idempotency and expected-version checks survive retries;
-- why partial dependency failure must be visible;
-- how event sequence and replay support resumable observation;
-- how a request budget is divided across remote calls.
+Before editing the capstone:
 
-Run:
+1. verify the incoming handoff;
+2. read the version and profile state in [Capstone](capstone.md);
+3. confirm which live infrastructure is available;
+4. select the implementation strategy in [Language strategy](language-strategy.md);
+5. create a learning journal for hypotheses, failed predictions, and retained evidence.
+
+For **GraphQL Schema and Runtime Engineering**, the journal’s first page should answer: *How can clients select graph-shaped data and operations without moving business ownership, authorization, cost, or consistency into an uncontrolled gateway?*
+
+If the predecessor proof fails, stop. A successor built on an untrusted boundary cannot make a stronger claim.
+
+## Module learning loop
+
+For every numbered module:
+
+1. read the chapter from its governing question through its synthesis;
+2. redraw the protocol, state machine, data flow, or ownership boundary;
+3. answer all twelve exercises before opening the answers;
+4. inspect only the implementation paths named by the chapter or lab;
+5. predict the lab’s first failing oracle;
+6. run the baseline, introduce the controlled fault, and retain raw evidence;
+7. repair the owning mechanism in the primary track;
+8. compare the same invariant in the second track;
+9. complete the checkpoint before moving on.
+
+## Course evidence
+
+The principal evidence for this course is described in [Evidence model](evidence-model.md). The current version state is: HTTP, Event, and RPC APIs preserved; Analysis Graph API 1.0 introduced; GraphQL September 2025; graph metadata migrations 001–004.
+
+## Getting unstuck
+
+When Course 9 evidence disagrees, classify the fault as schema semantics, source ownership, batching, pagination, mutation delegation, authorization, demand admission, partial data, subscription state, or release compatibility, then use the cheapest authoritative oracle. Unavailable infrastructure narrows the result to what was actually observed.
+
+## First commands
 
 ```bash
 make doctor
-make predecessor-proof
-make orientation-proof
+make predecessor-proof  # when this course has a predecessor
+make core-proof
 ```
 
-## The learner contract
-
-The course book is authoritative. Code, fixtures, laboratories, and reports support the book. Do not begin by browsing source files at random. Read each module chapter, answer its exercises without the answer key, run the lab, and satisfy the checkpoint.
-
-For Courses 2–9, choose one primary implementation track. Implement and debug that track deeply. Use the second track to compare semantics and run shared-vector parity. Course 9 recommends TypeScript as the primary track when your goal is GraphQL ecosystem work, because GraphQL.js is the reference implementation and much of the production tooling is TypeScript-first. Python remains a complete comparative track and is often the better primary choice for scientific and data platforms.
-
-## What completion means
-
-Completion is not “the schema renders in an IDE.” You must prove:
-
-- every field has an authority and policy;
-- active operations validate against the released schema;
-- list cardinality and query cost are bounded;
-- repeated nested fields batch rather than create N+1 calls;
-- tenant and field authorization cannot be bypassed through traversal;
-- mutations preserve source-service idempotency and concurrency;
-- partial failure follows declared nullability and error-path rules;
-- subscriptions resume without silent gaps;
-- a schema release preserves active consumers or is rejected.
-
-The final defense is a live explanation of those guarantees using the capstone evidence.
+Then complete [Orientation](module-00-orientation/index.md).

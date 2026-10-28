@@ -1,6 +1,6 @@
-# Exercises — Deadlines, Cancellation, Retries, and Idempotent Calls
+# Exercises — Module 05: Deadlines, Cancellation, Retries, and Idempotent Calls
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **Deadlines, Cancellation, Retries, and Idempotent Calls**, every response must settle this question: **How can callers bound remote work and recover from transient failure without multiplying timeouts or duplicating durable effects?** A useful solution connects semantics to mechanism: who owns the decision, what can go wrong, and which retained artifact proves the claimed outcome.
 
 ## 1. Why are three sequential five-second RPC timeouts not equivalent to one five-second user budget?
 

@@ -1,6 +1,6 @@
-# Exercises — Platform Product Model and Operating Boundaries
+# Exercises — Module 01: Platform Product Model and Operating Boundaries
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Platform Product Model and Operating Boundaries**, every response must settle this question: **Which recurring problems should an API platform own, and which decisions must stay with domain teams?** A complete response identifies the contract owner, predicts one observable failure, and names the evidence that decides the case; a definition by itself is incomplete.
 
 ## 1. Why is “install a developer portal” not a platform strategy?
 

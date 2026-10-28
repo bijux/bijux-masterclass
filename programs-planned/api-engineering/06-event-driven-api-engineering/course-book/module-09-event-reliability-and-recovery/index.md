@@ -1,50 +1,29 @@
 # Module 09 — Event Reliability, Backpressure, Dead Letters, and Recovery
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** How do lag, backpressure, retry, poison messages, dead-letter custody, broker failure, and replay storms affect recovery?
 
 ## Where this module fits
 
-Event-driven architecture does not remove failure from the request path; it stores failure for later. This is
-useful only when the stored work remains bounded, observable, and recoverable. Otherwise queues become
-places where obligations disappear from user-visible latency while accumulating as lag and operational debt.
+Module 08 produced **Add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules**. This module extends that result by asking: **How do lag, backpressure, retry, poison messages, dead-letter custody, broker failure, and replay storms affect recovery?**
 
-Course 4 established deadlines, retries, circuit breakers, telemetry, SLOs, fault injection, and incident
-response. Course 5 established workload models, queueing, admission, quotas, and capacity. This module applies
-those disciplines to channels, partitions, relays, consumers, replay, and dead letters.
-
-A dead-letter stream is not a trash bin and not proof of recovery. It is durable evidence that automated
-handling stopped under a declared policy. Every dead letter needs an owner, safe failure classification,
-source identity, repair path, retention, and replay guard. Similarly, lag is not one dashboard number. Count,
-age, partition distribution, arrival rate, service rate, and drain capacity together describe whether the
-system can recover.
-
-## Capstone result
-
-Implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks.
-
-Operate the Analysis Events pipeline under controlled failure. Add bounded consumer retry, dead-letter
-records, lag health, replay admission, producer backpressure, recovery runbooks, and reconciliation.
-
-```text
-capstone/tracks/*/src/event-engineering/reliability.*
-capstone/operations/dead-letter-runbook.md
-capstone/operations/lag-runbook.md
-capstone/operations/replay-runbook.md
-capstone/shared/vectors/reliability.json
-```
+The new capstone increment is **Implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks**. It becomes the prerequisite for **Event Platform Governance, Release, and Final Defense**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- classify broker, relay, consumer, dependency, schema, security, and capacity failures
-- apply retry only to transient failures under one budget
-- bound producer and consumer pressure with admission and backpressure
-- diagnose lag using count, age, partition distribution, and drain rate
-- design dead-letter records and repair workflows as controlled operational state
-- recover from consumer crashes and broker interruption without corrupting effects
-- prevent replay storms from overwhelming live traffic
-- reconcile broker progress, inboxes, projections, outboxes, and source truth after incidents
+- Classify broker, relay, consumer, dependency, schema, security, and capacity failures.
+- Apply retry only to transient failures under one budget.
+- Bound producer and consumer pressure with admission and backpressure.
+- Diagnose lag using count, age, partition distribution, and drain rate.
+- Design dead-letter records and repair workflows as controlled operational state.
+- Recover from consumer crashes and broker interruption without corrupting effects.
+- Prevent replay storms from overwhelming live traffic.
+- Reconcile broker progress, inboxes, projections, outboxes, and source truth after incidents.
+
+## Capstone increment
+
+Implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks.
 
 ## Core event model
 
@@ -264,10 +243,10 @@ notification intent counts satisfy their oracles.
 
 ## Module synthesis
 
-Implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks. The central distinction is this: how do lag, backpressure, retry, poison messages, dead-letter custody, broker failure, and replay storms affect recovery? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **classify broker, relay, consumer, dependency, schema, security, and capacity failures, apply retry only to transient failures under one budget, and bound producer and consumer pressure with admission and backpressure** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a retry-all defect and show dependency calls exceed the budget** and requiring the following oracle: **The system does not exceed declared outbox, retry, or replay budgets; permanent failure does not retry forever; critical live events retain priority; backlog drain is measurable; dead letter has an owner and repair record; reconciliation proves one effect per event/effect identity. The retry-all mutant fails.**
+
+The cumulative platform now includes **Implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The final module turns all previous mechanisms into a governed event API release. Module 10 establishes
-catalogue ownership, lifecycle, retention, consumer evidence, compatibility and replay gates, operational
-readiness, final defense, and a sanitized handoff to the next course.
+Continue to [Event Platform Governance, Release, and Final Defense](../module-10-governance-release-and-final-defense/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

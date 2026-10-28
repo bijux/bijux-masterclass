@@ -1,47 +1,31 @@
-# Course 7 — gRPC and Protobuf Engineering
+# gRPC and Protobuf Engineering
 
-This is the seventh course in the Bijux Masterclass API Engineering program.
+**Course 7 of 10 — Engineer typed internal invocation and streaming**
 
-It continues the same Analysis Runs Platform built through contracts, durable service implementation, security, reliability, performance, and event-driven integration. Course 7 adds a typed internal RPC control plane without replacing the public HTTP API or the durable Event API.
+Design and verify Protobuf schemas and gRPC interactions without pretending that generated stubs turn remote calls into local functions.
 
-## Governing responsibility
+> How should typed internal capabilities be modeled and operated when remote calls can fail ambiguously, stream for long periods, and evolve across language boundaries?
 
-> Engineer strongly typed unary and streaming RPC boundaries with safe wire evolution, deadlines, cancellation, retries, security, lifecycle, and release evidence.
+## Begin here
 
-## Start
+1. [Course book](course-book/index.md)
+2. [Start here](course-book/start-here.md)
+3. [Study plan](course-book/study-plan.md)
+4. [Capstone](course-book/capstone.md)
+5. [Orientation](course-book/module-00-orientation/index.md)
+
+The course book is the authoritative learner product. The implementation, tests, fixtures, reports, and release records support its claims.
+
+## Version boundary
+
+HTTP API 1.2 and Events API 1.0 preserved; RPC API 1.0 introduced; proto3 baseline; Edition 2024 frontier; migrations 001–015.
+
+## Commands
 
 ```bash
-make help
 make doctor
-make predecessor-proof
 make core-proof
-make capstone-tour
+make manifest-proof
 ```
 
-Then read [`course-book/start-here.md`](course-book/start-here.md).
-
-## Learner product
-
-The authoritative product is `course-book/`: 59 navigated pages, ten complete modules, 120 exercises with matching worked answers, ten failure-oriented labs, and ten evidence checkpoints.
-
-The capstone, Python and TypeScript tracks, proto contracts, vectors, migrations, and proof scripts support that book. They do not replace it.
-
-## Course boundary
-
-The course preserves:
-
-- Public HTTP API 1.2 and OpenAPI 3.1.2
-- Analysis Events API 1.0 and AsyncAPI 3.1.0
-- Security, reliability, and performance profiles 1.0
-- migrations 001–012
-
-It adds:
-
-- Analysis RPC API 1.0
-- proto3 executable baseline
-- Protobuf Editions 2024 design frontier
-- gRPC Service Profile 1.0
-- migrations 013–015
-- a service-boundary dossier for Course 8
-
-The course does **not** assume that adding gRPC justifies microservices.
+Live infrastructure routes are separate from dependency-light proofs and must be reported as not executed when their environment is absent.

@@ -1,52 +1,28 @@
 # Module 01 — Event Thinking, Ownership, and Message Taxonomy
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** Which interactions are commands, immutable facts, queries, notifications, or private domain events, and who owns each public fact?
 
 ## Where this module fits
 
-The first five courses built a disciplined request/response system. That system already contains workers,
-an outbox, webhook delivery, retry budgets, authorization, and performance controls. Course 6 does not
-declare those mechanisms obsolete and replace them with a broker. It asks a narrower architectural
-question: which facts must become independently consumable contracts?
+Course 6 begins from this incoming boundary: **The Course 5 API 1.2 service with Security, Reliability, and Performance Profiles 1.0 and migrations 001–009.**
 
-Event-driven design fails when teams start from a product name—Kafka, NATS, RabbitMQ—or from a vague wish
-to “decouple services.” A message boundary does not remove coupling. It moves coupling into event meaning,
-delivery assumptions, ownership, schemas, partitioning, retention, and recovery procedures. If those
-obligations are implicit, the system is less understandable than the synchronous design it replaced.
-
-This module establishes the language used by the entire course. Commands express requested intent. Events
-record accepted facts. Queries ask for current information. Notifications inform a recipient but may not
-represent durable domain truth. Domain events can remain inside one application boundary; integration
-events are deliberately published for independent consumers. The distinctions are practical because each
-category implies different ownership, naming, retry, authorization, and compatibility rules.
-
-## Capstone result
-
-Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary.
-
-Produce the Analysis Events 1.0 message taxonomy and event catalogue. Decide which parts of the Analysis
-Runs workflow remain HTTP, which become commands, which facts become integration events, and which internal
-state changes remain private. The result is captured in:
-
-```text
-capstone/event-case/message-taxonomy.yaml
-capstone/contracts/event-catalog.yaml
-capstone/event-case/consumer-catalog.yaml
-```
-
-No broker is required in this module. The design must be defensible before transport is selected.
+This module establishes the course’s first new responsibility by asking: **Which interactions are commands, immutable facts, queries, notifications, or private domain events, and who owns each public fact?** Its capstone increment is **Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary**. That result is required before **AsyncAPI, CloudEvents, and Contract Architecture** can be studied honestly.
 
 ## Learning outcomes
 
-- separate commands, events, queries, notifications, domain events, and integration events
-- name events as immutable facts rather than implementation instructions
-- assign one authoritative producer to every event type
-- decide whether an asynchronous boundary creates useful temporal or ownership separation
-- design event granularity without leaking database rows or private implementation models
-- use subject, correlation, causation, and process identity for distinct purposes
-- reject event-driven designs that merely replace an ordinary function call with a queue
+- Separate commands, events, queries, notifications, domain events, and integration events.
+- Name events as immutable facts rather than implementation instructions.
+- Assign one authoritative producer to every event type.
+- Decide whether an asynchronous boundary creates useful temporal or ownership separation.
+- Design event granularity without leaking database rows or private implementation models.
+- Use subject, correlation, causation, and process identity for distinct purposes.
+- Reject event-driven designs that merely replace an ordinary function call with a queue.
+
+## Capstone increment
+
+Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary.
 
 ## Core event model
 
@@ -341,10 +317,10 @@ facts without becoming part of the original HTTP transaction.
 
 ## Module synthesis
 
-Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary. The central distinction is this: which interactions are commands, immutable facts, queries, notifications, or private domain events, and who owns each public fact? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **separate commands, events, queries, notifications, domain events, and integration events, name events as immutable facts rather than implementation instructions, and assign one authoritative producer to every event type** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant two deliberately bad candidates: one imperative “event” and one row-change message** and requiring the following oracle: **The final catalogue contains only facts with one owner and at least one defensible independent consumer. Commands have one logical handler and remain distinguishable from facts. No public payload contains a database row, ORM object, lease token, stack trace, access token, or raw dataset content. The proposed partition key matches the smallest domain requiring order.**
+
+The cumulative platform now includes **Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Once the message catalogue has stable meaning, the next question is how to express that meaning as a
-machine-readable asynchronous API. Module 02 turns the taxonomy into an AsyncAPI contract, a CloudEvents
-envelope profile, JSON Schemas, examples, operations, channels, and validation evidence.
+Continue to [AsyncAPI, CloudEvents, and Contract Architecture](../module-02-asyncapi-and-contract-architecture/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

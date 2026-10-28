@@ -1,125 +1,83 @@
 # Glossary — OpenAPI Contract Engineering
 
-Use this glossary alongside `program-book/glossary.md`. Program terms keep one meaning across all six courses; the entries below add course-specific distinctions.
-
-Terms are defined as used in this program. When an Internet or OpenAPI specification gives a narrower normative meaning, the chapter and standards page name it.
+These terms have precise meanings in Course 1. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
 ## API contract
 
-The reviewed set of client-observable operations, inputs, outputs, errors, security requirements, and compatibility commitments.
+A machine-readable and human-reviewable statement of the requests a provider accepts, the responses it may return, and the meanings consumers may rely on.
 
-## OpenAPI Description
+## operation
 
-A document or connected document set conforming to the OpenAPI Specification and describing an HTTP API.
+One method-and-path interaction in an HTTP API, with its parameters, request bodies, responses, security requirements, and stable identity.
 
-## OpenAPI version
+## resource
 
-The specification version used to interpret the description, such as 3.1.2 or 3.2.0; it is not the public API version.
+A conceptual entity or collection addressed through the API; it is not the same thing as a database row or framework model.
 
-## Public API version
+## representation
 
-The release identity of the client-facing contract, such as API 1.1, governed by compatibility policy.
+A concrete serialized view of a resource or result, selected through a media type and shaped by a schema.
 
-## Path Item Object
+## media type
 
-The OpenAPI object associated with one path template and containing operations or shared parameters.
+An identifier such as `application/json` that states the format and interpretation of a message body.
 
-## Operation Object
+## parameter serialization
 
-The OpenAPI object describing one HTTP operation, including parameters, request body, responses, security, callbacks, and metadata.
+The rules that turn path, query, header, or cookie values into HTTP text and reconstruct typed values from that text.
+
+## Schema Object
+
+OpenAPI’s schema vocabulary for describing valid instances; in OpenAPI 3.1 and later it is aligned with JSON Schema dialect semantics.
+
+## instance
+
+The concrete JSON value, parameter value, or message being evaluated against a schema.
 
 ## operationId
 
-A globally unique, consumer-facing operation identity often used by generators; renaming it can break clients.
+A stable, unique identifier for an API operation used by tools, generated clients, links, workflows, and implementation maps.
 
-## Parameter
+## reference resolution
 
-Input carried in a path, query string, header, or cookie and described with explicit serialization rules.
+The process of locating the target of a `$ref` using the correct base URI and document context.
 
-## Request body
+## bundle
 
-Content sent as the HTTP message body, described by requiredness, media type, schema, and examples.
+A deterministic OpenAPI artifact in which externally split description fragments have been collected into a publishable document while preserving reference meaning.
 
-## Representation
+## mock
 
-A media-type-specific expression of a resource or outcome carried in an HTTP message.
+A contract-driven substitute that returns described examples or generated values without proving that a real provider behaves the same way.
 
-## JSON Schema dialect
+## conformance
 
-The vocabulary and semantics used to interpret schema keywords; modern OpenAPI uses JSON Schema 2020-12-aligned behavior.
+Evidence that a provider or consumer behaves according to the contract for the interactions actually tested.
 
-## Constraint
+## compatibility
 
-A schema rule limiting accepted instances, such as requiredness, length, range, pattern, or object closure.
+The effect of a contract change on existing producers and consumers, evaluated in the correct request or response direction.
 
-## Composition
+## breaking change
 
-Logical schema combination through keywords such as allOf, anyOf, oneOf, and not; it is not object-oriented inheritance.
-
-## Discriminator
-
-Metadata helping select among schema alternatives; alternatives must still be logically valid and distinguishable.
-
-## Reference
-
-A URI-based pointer to another object or schema; resolution uses the containing document and base URI rules.
-
-## Bundle
-
-A deterministic derived description that resolves external document structure into a portable artifact without becoming editable source.
-
-## Dereference
-
-Replacement of references with target content; it can expand recursion and is not always appropriate for tools.
-
-## Problem Details
-
-The RFC 9457 media type and object shape for machine-readable HTTP error information.
-
-## Idempotency key
-
-A client-supplied identifier binding a retryable unsafe request to one logical outcome under a defined fingerprint and retention policy.
-
-## ETag
-
-An HTTP entity tag representing a selected representation version and used with conditional requests.
-
-## Precondition
-
-A condition such as If-Match that must hold before a mutation is applied.
-
-## Conformance
-
-Agreement between observed provider behavior and the canonical contract; document validity alone does not establish it.
-
-## Mock
-
-A contract-driven simulated provider useful for early consumer work but not proof of complete runtime behavior.
-
-## Generated client
-
-Consumer code derived from the contract; generation success does not prove runtime compatibility or correct ergonomics.
-
-## Compatibility
-
-Whether a proposed change preserves existing consumer assumptions, evaluated differently for requests and responses.
+A change that can cause a previously conforming consumer or provider to fail, reject data, misinterpret data, or lose a relied-upon behavior.
 
 ## Overlay
 
-A separate ordered transformation document used to derive an audience-specific OpenAPI view without copying canonical source.
+A separate OpenAPI Overlay document that applies ordered changes to a base description without copying and manually forking the whole contract.
 
-## Arazzo workflow
+## Arazzo
 
-A machine-readable description of operation sequences and data dependencies required to achieve an API outcome.
+A specification for describing multi-step API workflows, including dependencies and values passed from one operation to another.
 
-## Callback
+## callback
 
-An outbound operation described within another operation and parameterized by runtime expressions.
+An outbound request whose destination is supplied or derived during an initiating API operation.
 
-## Webhook
+## webhook
 
-An API-initiated event operation described independently of a specific inbound operation.
+An event-oriented inbound operation advertised by the API independently of one particular initiating request.
 
-## Streaming representation
+## provider
 
-A response whose items arrive sequentially, such as server-sent events or JSON Lines, with framing and lifecycle semantics.
+The running system that receives API requests and is responsible for satisfying the published contract.

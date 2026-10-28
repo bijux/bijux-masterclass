@@ -1,12 +1,14 @@
 # Module 05 — Telemetry Architecture and Structured Events
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** Which operational events are useful, bounded, redacted, versioned, and clearly separated from business truth?
 
 ## Where this module fits
 
-Define versioned operational events, context propagation, redaction, bounded exporters, and failure behavior. You arrive from Module 04 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **Metrics and Service-Level Indicators**.
+Module 04 produced **Implement lifecycle states, liveness/readiness separation, graceful draining, lease handling, and startup reconciliation**. This module extends that result by asking: **Which operational events are useful, bounded, redacted, versioned, and clearly separated from business truth?**
+
+The new capstone increment is **Create the telemetry vocabulary, correlation rules, bounded sinks, exporter failure behavior, and privacy policy**. It becomes the prerequisite for **Metrics and Service-Level Indicators**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Define versioned operational events, context propagation, redaction, bounded exp
 - Bound queues and drop behavior.
 - Treat telemetry as evidence about execution, not the authority on durable state.
 
-## Capstone result
+## Capstone increment
 
 Create the telemetry vocabulary, correlation rules, bounded sinks, exporter failure behavior, and privacy policy.
-
-API, worker, storage, and webhook paths emit consistent, privacy-safe operational events.
 
 ## Core reliability model
 
@@ -96,7 +96,6 @@ Apply **Signal purpose, Telemetry schema, Trace context** to this module’s cap
 Bounded in-memory sinks prove redaction and drop policy; collector queues, exporter backpressure, and backend retention require the live telemetry topology.
 
 ## Worked failures
-
 
 ### Case 1 — Secret enters batch buffer
 
@@ -187,7 +186,7 @@ logger.emit("analysis.request.completed", attributes={"authorization": "Bearer s
 assert sink.events[0].to_dict()["attributes"]["authorization"] == "[REDACTED]"
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Telemetry Architecture and Structured Events** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Secret enters batch buffer
 
@@ -238,7 +237,7 @@ logger.emit("analysis.request.completed", {
 if (sink.events[0]?.attributes.authorization !== "[REDACTED]") throw new Error("leak");
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Telemetry Architecture and Structured Events** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Secret enters batch buffer
 
@@ -401,7 +400,8 @@ class TelemetryEvent:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/reliability/telemetry.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 export const SENSITIVE_KEYS = new Set([
   "authorization", "api_key", "apikey", "password", "secret", "token",
   "access_token", "refresh_token", "webhooksecret", "webhook_secret",
@@ -473,8 +473,10 @@ Compare the two tracks by this invariant: **events use versioned names and bound
 
 ## Module synthesis
 
-The module answer to “What should the system record so an operator can reconstruct behavior without leaking secrets or blocking the request path?” is now executable in the capstone: API, worker, storage, and webhook paths emit consistent, privacy-safe operational events.
+You are ready to leave this module when you can **Separate logs, metrics, traces, and audit records by purpose, Use stable event names and fields, and Propagate correlation and trace context safely** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Telemetry Architecture and Structured Events in a temporary branch** and requiring the following oracle: **No raw secret appears in any buffered or exported event; Invalid context cannot control trace identity; Queue memory remains bounded; Collector outage does not change durable API outcome.**
+
+The cumulative platform now includes **Create the telemetry vocabulary, correlation rules, bounded sinks, exporter failure behavior, and privacy policy**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 06, [Metrics and Service-Level Indicators](../module-06-metrics-and-service-level-indicators/index.md), asks: *Which numeric observations describe user outcomes without exploding cardinality or hiding the tail?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Metrics and Service-Level Indicators](../module-06-metrics-and-service-level-indicators/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

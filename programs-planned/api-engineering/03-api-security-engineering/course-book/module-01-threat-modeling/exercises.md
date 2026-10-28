@@ -1,5 +1,7 @@
 # Exercises — Module 01: Threat Modeling and Security Requirements
 
+Work through all twelve problems before opening the answers. In **Threat Modeling and Security Requirements**, every response must settle this question: **Which assets, actors, trust boundaries, abuse cases, and assumptions define the real security problem?** A complete response identifies the contract owner, predicts one observable failure, and names the evidence that decides the case; a definition by itself is incomplete.
+
 ## 1. Rewrite “attackers may steal data” as a concrete threat.
 
 ## 2. Distinguish an asset from a security property.

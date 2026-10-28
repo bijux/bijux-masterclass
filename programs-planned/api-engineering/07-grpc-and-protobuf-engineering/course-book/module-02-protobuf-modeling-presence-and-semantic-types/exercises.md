@@ -1,6 +1,6 @@
-# Exercises — Protobuf Modeling, Presence, and Semantic Types
+# Exercises — Module 02: Protobuf Modeling, Presence, and Semantic Types
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **Protobuf Modeling, Presence, and Semantic Types**, every response must settle this question: **How do we encode domain meaning in Protobuf without allowing language defaults, JSON conventions, or storage models to erase important distinctions?** Treat each problem as a design review: state the rule, construct the smallest counterexample, and select an oracle capable of rejecting your own answer.
 
 ## 1. Why should `CreateRunRequest` not mirror the analysis_runs table?
 

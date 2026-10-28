@@ -1,71 +1,83 @@
 # Program Glossary
 
-**Acknowledgement** — a consumer-group decision that one delivery attempt has been handled according to policy; it is not proof that every downstream consequence succeeded.
+These terms keep one meaning across all ten courses. Course glossaries add local distinctions without redefining the program vocabulary.
 
-**Admission control** — a bounded decision about whether work may enter a constrained resource or queue.
+## API promise
 
-**Analysis Runs API** — the public synchronous HTTP interface of the Analysis Runs Platform.
+The externally observable behavior and compatibility commitments a provider makes to consumers.
 
-**Analysis Events API** — the public asynchronous interface introduced in Course 6.
+## authoritative state
 
-**Authoritative state** — durable state owned by the component responsible for a fact or decision.
+The state whose owner is allowed to decide a business fact; telemetry and replicas are not automatically authoritative.
 
-**Backpressure** — propagation of downstream capacity limits so upstream work does not grow without bound.
+## boundary
 
-**Canonicalization** — converting a value into one unambiguous representation for identity, comparison, or signing.
+A place where ownership, trust, deployment, consistency, or compatibility rules change.
 
-**Capstone** — the continuing Analysis Runs Platform used to make the curriculum executable.
+## capstone
 
-**Compatibility** — whether existing request writers, response readers, consumers, and deployed versions can continue to behave correctly after a change.
+The cumulative Analysis Runs Platform used to connect every course to one evolving system.
 
-**Contract** — the externally visible messages, semantics, errors, security decisions, compatibility commitments, and workflows on which another party may rely.
+## compatibility
 
-**Correlation ID** — an identifier grouping a broader journey; it is not automatically an event ID, causation ID, trace ID, or partition key.
+The ability of old and new producers, consumers, schemas, or runtimes to coexist under an explicit direction and policy.
 
-**Course policy** — a deliberate invariant stricter or more specific than a normative standard, adopted so the capstone remains interoperable and mechanically reviewable.
+## contract
 
-**Critical journey** — a user or system outcome whose success population, failure modes, and service objective are explicitly defined.
+A machine-readable or otherwise testable agreement about messages, operations, or behavior.
 
-**Dead letter** — a delivery placed under explicit custody after normal retry policy cannot produce an acceptable effect.
+## course profile
 
-**Dependency-light proof** — evidence that runs without optional live infrastructure; it must not be presented as live-dependency evidence.
+A deliberately narrower set of rules used by this program when a specification permits several legal choices.
 
-**Durable oracle** — a database, storage, or other authoritative fact that establishes whether a committed outcome occurred.
+## evidence
 
-**Effect version** — identity used to distinguish a consumer’s versioned business effect from a delivery attempt or source event.
+An observation tied to a named claim, environment, version, and proof scope.
 
-**Evidence class** — the declared strength and environment of a proof: deterministic, local-process, live-dependency, representative, or operated.
+## handoff
 
-**Handoff** — immutable, sanitized artifacts from one course that define the next course’s starting boundary.
+An immutable set of artifacts passed from one course to the next so later work cannot rewrite earlier history.
 
-**Idempotency** — a guarantee that repeated requests or deliveries with the same identity do not create unintended additional logical effects.
+## invariant
 
-**Integration event** — a stable, owned fact published for independently evolving consumers; not a serialized private aggregate or imperative command.
+A condition that must remain true across all legal executions owned by a mechanism.
 
-**Invariant** — a condition that must remain true across legal state changes and failure paths.
+## oracle
 
-**Lease** — time-bounded ownership of work that allows recovery after a worker disappears.
+The observation that decides whether a particular claim holds.
 
-**Open workload** — demand scheduled independently of response completion; useful for exposing queue growth under overload.
+## owner
 
-**Profile** — versioned cross-artifact engineering policy, such as Security, Reliability, Performance, or Event Profile 1.0.
+The team, service, or mechanism accountable for a decision, state transition, contract, or incident.
 
-**Public API version** — the semantic interface version consumers depend on, independent of specification, service-release, or migration versions.
+## primary track
 
-**Replay** — controlled reprocessing of retained events or evidence, usually scoped, dry-run capable, and separated from external side effects.
+The implementation language in which a learner completes the deepest build from Course 2 onward.
 
-**Residual risk** — a named risk that remains after controls and proofs, with assumptions and ownership made explicit.
+## comparison track
 
-**Service release** — one deployable implementation version; it may change without changing the public API.
+The second language implementation used to test whether the same engineering guarantee survives an idiomatic design.
 
-**SLI** — a precisely defined measurement of a service outcome population.
+## profile version
 
-**SLO** — a versioned objective over an SLI, including window, target, exclusions, and ownership.
+The version of an engineering policy such as Security Profile 1.0; it is distinct from API and specification versions.
 
-**Source of truth** — the boundary authorized to declare a fact; projections and telemetry may observe it but do not compete with it.
+## public API version
 
-**Transactional outbox** — publication intent committed in the same transaction as the authoritative state change, then delivered asynchronously.
+The consumer-facing version of an interface, distinct from OpenAPI, AsyncAPI, Protobuf edition, service release, and database migration.
 
-**Trace link** — a relationship used when asynchronous work does not have valid synchronous parent-child timing.
+## release gate
 
-**Workload identity** — a canonical fingerprint of demand model, operation mix, payload/data distribution, duration, and other semantic benchmark inputs.
+A non-compensable decision that accepts, rejects, or requires review of a candidate based on declared evidence.
+
+## residual risk
+
+A known risk that remains after controls and must have an owner and an explicit acceptance or remediation path.
+
+## service release
+
+A version of an executable implementation, which may implement one or more compatible public API versions.
+
+## specification version
+
+The version of a standard such as OpenAPI 3.2.0 or AsyncAPI 3.1.0; it is not the API product version.

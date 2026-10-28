@@ -1,6 +1,6 @@
 # Exercises — Module 07: Secrets, Cryptography, and Sensitive Data
 
-For questions 1–10, give a direct decision, governing invariant, smallest counterexample, decisive proof, and evidence limitation.
+Work through all twelve problems before opening the answers. In **Secrets, Cryptography, and Sensitive Data**, every response must settle this question: **How should secrets, cryptographic keys, sensitive fields, logs, retention, and audit evidence be handled?** Each solution must survive delay, duplication, version skew, hostile input, or partial failure where relevant; happy-path intuition alone earns no credit.
 
 ## 1. Why is an environment variable not a complete secret-management design?
 

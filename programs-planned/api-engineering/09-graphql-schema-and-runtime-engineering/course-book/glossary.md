@@ -1,35 +1,83 @@
-# Glossary
+# Glossary — GraphQL Schema and Runtime Engineering
 
-**Active operation** — a checked client document still used by a supported client release.
+These terms have precise meanings in Course 9. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
-**Batch loader** — a request-scoped mechanism that collapses repeated keys and performs one batched source call.
+## schema
 
-**Connection** — a course pagination profile containing edges and page information around an ordered list.
+The GraphQL type system and root operation definitions that describe selectable fields, inputs, results, and relationships.
 
-**Execution error** — an error raised while resolving or completing a valid operation; it may produce partial data.
+## object type
 
-**Field coordinate** — a stable reference such as `AnalysisRun.artifacts`.
+A named GraphQL type whose fields can be selected when the runtime value has that object type.
 
-**Field source** — the service or composition function that supplies a field without changing fact ownership.
+## interface
 
-**Global identifier** — an opaque graph identifier carrying type and local identity; it is not authorization.
+An abstract type declaring fields shared by implementing object types and resolved to a concrete runtime type.
 
-**Graph gateway** — the component that admits and executes graph operations over service-owned capabilities.
+## union
 
-**Null bubbling** — propagation caused when a field declared non-null completes with null.
+An abstract result that may be one of several object types without requiring common fields beyond `__typename`.
 
-**N+1** — repeated source calls caused by resolving a nested field independently for each parent object.
+## nullability
 
-**Persisted operation** — a pre-registered GraphQL document identified by a stable digest.
+The type-level statement of whether a field may return null and how null propagates through non-null parents.
 
-**Request error** — parse, validation, variable, or operation-selection failure that prevents execution.
+## resolver
 
-**Resolver** — application code that obtains a field value from its source authority or performs explicit composition.
+Runtime logic that obtains or computes one field while preserving source ownership, policy, batching, and error semantics.
 
-**Schema coordinate** — a type-system location used by ownership, policy, telemetry, and compatibility checks.
+## field source
 
-**Service fan-out** — the number and shape of downstream service calls caused by one graph operation.
+The authoritative service or computation responsible for the fact exposed by a GraphQL field.
 
-**Source stream** — the event stream used to produce subscription response events.
+## batch loader
 
-**Trusted document** — a persisted operation admitted from a governed client catalogue; unlike APQ, it can restrict arbitrary documents.
+A request-scoped mechanism that combines multiple field keys into bounded source calls and caches only within the safe request context.
+
+## global ID
+
+An opaque, type-aware identifier used by the graph to route node lookup without exposing or authorizing by raw database keys.
+
+## connection
+
+A pagination model containing edges, nodes, and page information over a stable ordered traversal.
+
+## edge
+
+A connection entry that pairs one node with its traversal cursor and optional relationship metadata.
+
+## cursor
+
+An opaque, integrity-protected continuation token bound to tenant, audience, field, filters, ordering, high-water position, and expiry.
+
+## mutation
+
+A root operation that requests a state-changing command while preserving the source service’s validation, idempotency, and concurrency rules.
+
+## client mutation ID
+
+A caller-supplied correlation value echoed in a mutation result; it is not automatically an idempotency key.
+
+## persisted operation
+
+A reviewed GraphQL document admitted by exact identity rather than accepting arbitrary production query text.
+
+## demand cost
+
+A pre-execution estimate of structural work, list cardinality, source fan-out, or other bounded resource demand.
+
+## partial data
+
+A response containing valid fields alongside field-specific errors when the schema’s nullability permits unaffected data to survive.
+
+## error path
+
+The ordered response field and list-index path identifying exactly where a GraphQL execution error occurred.
+
+## subscription
+
+A long-lived operation producing multiple result events, with transport, resume, gap, buffering, and authorization policies.
+
+## federation
+
+A composition approach in which multiple subgraphs publish owned portions of a graph under explicit entity, field, and release rules.

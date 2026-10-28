@@ -1,5 +1,7 @@
 # Exercises — Module 09: Fault Injection, Troubleshooting, and Game Days
 
+Work through all twelve problems before opening the answers. In **Fault Injection, Troubleshooting, and Game Days**, every response must settle this question: **How can fault injection and game days produce falsifiable evidence without creating uncontrolled damage?** The strongest answer distinguishes specification, implementation, and operational evidence, then demonstrates where a plausible shortcut would fail.
+
 ## 1. What makes a fault experiment scientific enough for this course?
 
 ## 2. Why test latency separately from failure?

@@ -1,12 +1,14 @@
 # Module 09 — Adversarial Verification and Supply-Chain Assurance
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** How do adversarial tests and supply-chain evidence show that controls fail closed and that the proof is sensitive?
 
 ## Where this module fits
 
-Combine negative tests, property-based input, fuzz boundaries, planted vulnerabilities, dependency evidence, and build integrity. You arrive from Module 08 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **Security Operations and Incident Response**.
+Module 08 produced **Introduce principal/tenant/operation/cost budgets, concurrency permits, quotas, and bounded degradation**. This module extends that result by asking: **How do adversarial tests and supply-chain evidence show that controls fail closed and that the proof is sensitive?**
+
+The new capstone increment is **Build hostile vectors, negative policy tests, planted vulnerabilities, dependency evidence, SBOM/provenance routes, and scanner disposition**. It becomes the prerequisite for **Security Operations and Incident Response**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Combine negative tests, property-based input, fuzz boundaries, planted vulnerabi
 - Pin direct and transitive dependencies and produce an SBOM.
 - Interpret scanner output instead of treating tools as authorities.
 
-## Capstone result
+## Capstone increment
 
 Build hostile vectors, negative policy tests, planted vulnerabilities, dependency evidence, SBOM/provenance routes, and scanner disposition.
-
-Ten planted vulnerabilities are detected, repaired, and retained as regressions; supply-chain evidence becomes reproducible.
 
 ## Core security model
 
@@ -89,32 +89,32 @@ Run only against course fixtures. The goal is to understand control boundaries, 
 
 A fuzzer produces inputs but the test treats every non-crash response as acceptable, missing authorization bypasses.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Adversarial Verification and Supply-Chain Assurance** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 2 — Assertion weakening
 
 A planted defect is “fixed” by accepting both deny and allow responses.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Adversarial Verification and Supply-Chain Assurance** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 3 — Fixture-only coverage
 
 All tests use one issuer, key, tenant, and path shape; boundary variants remain untested.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Adversarial Verification and Supply-Chain Assurance** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 4 — Unpinned transitive update
 
 A clean install resolves different security-critical code than the reviewed build.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Adversarial Verification and Supply-Chain Assurance** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 5 — Secret in test artifact
 
 Reports, snapshots, or failing assertions archive fixture-private material into release outputs.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Adversarial Verification and Supply-Chain Assurance** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 6 — Scanner substitution
 
 A green dependency scan is presented as proof of authorization, SSRF, or token validation.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Adversarial Verification and Supply-Chain Assurance** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 
 ### Prioritization
 
@@ -140,27 +140,27 @@ Use Node test for local vectors and Vitest/fast-check in the full profile. Compi
 
 ### 1. Calling a test adversarial because the input has a suspicious name but no harmful property.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Adversarial Verification and Supply-Chain Assurance** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 2. Keeping planted defects only in prose, so proof sensitivity is never executed.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Adversarial Verification and Supply-Chain Assurance** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 3. Allowing network installs during a reproducibility proof.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Adversarial Verification and Supply-Chain Assurance** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 4. Failing the build on every scanner alert without triage or exploitability context.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Adversarial Verification and Supply-Chain Assurance** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 5. Ignoring vulnerabilities in development/build tools that affect released artifacts.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Adversarial Verification and Supply-Chain Assurance** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 6. Publishing private keys, tokens, or peppers in test evidence and SBOM attachments.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Adversarial Verification and Supply-Chain Assurance** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ## What you add to the capstone
 
@@ -229,8 +229,10 @@ Compare the two tracks by this invariant: **negative vectors, mutants, locks, SB
 
 ## Module synthesis
 
-The module answer to “How do we know a security check detects a missing control rather than merely confirming the control is present?” is now executable in the capstone: Ten planted vulnerabilities are detected, repaired, and retained as regressions; supply-chain evidence becomes reproducible.
+You are ready to leave this module when you can **Trace tests to threats and requirements, Remove or mutate controls and confirm the proof fails, and Use shared hostile vectors across languages** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Implement and test: Remove or mutate controls and confirm the proof fails** and requiring the following oracle: **shared adversarial vectors; planted-defect sensitivity; deterministic reports; core/full proof separation.**
+
+The cumulative platform now includes **Build hostile vectors, negative policy tests, planted vulnerabilities, dependency evidence, SBOM/provenance routes, and scanner disposition**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 10, [Security Operations and Incident Response](../module-10-security-operations-and-incident-response/index.md), asks: *When a credential, key, or dependency is compromised, how do we contain the event without destroying evidence or breaking the API?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Security Operations and Incident Response](../module-10-security-operations-and-incident-response/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

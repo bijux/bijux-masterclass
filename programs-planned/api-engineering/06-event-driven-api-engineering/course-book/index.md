@@ -1,37 +1,45 @@
 # Event-Driven API Engineering
 
-**Course 6 of 6 — Extend the promise across asynchronous time**
+**Course 6 of 10 — Extend the promise across asynchronous time**
 
-> **Central question:** How can independent producers and consumers share durable facts without confusing intent, delivery attempts, processing effects, and historical truth?
+## Course promise
 
-## Course responsibility
+Design, evolve, secure, operate, and verify asynchronous message contracts under delay, duplication, reordering, replay, and consumer failure.
 
-Design, evolve, secure, operate, and verify asynchronous contracts when delivery may be delayed, duplicated, reordered within declared limits, or replayed. The course inherits earlier guarantees rather than restating them as new work. Its purpose is to add one mature engineering responsibility to the same Analysis Runs Platform.
+> **Governing question:** How can independent producers and consumers share durable facts without confusing intent, delivery attempts, processing effects, and historical truth?
 
-## Incoming and outgoing boundaries
+## Place in the program
 
 **Incoming boundary:** The Course 5 API 1.2 service with Security, Reliability, and Performance Profiles 1.0 and migrations 001–009.
 
-**Outgoing boundary:** Analysis Events API 1.0, Event Profile 1.0, AsyncAPI 3.1.0 contract, CloudEvents 1.0 envelope profile, migrations 010–012, replay and dead-letter policy, and governed consumer declarations.
+**Outgoing boundary:** Analysis Events API 1.0, Event Profile 1.0, AsyncAPI 3.1.0 contract, CloudEvents 1.0 profile, migrations 010–012, replay and dead-letter policy, and governed consumer declarations.
 
-## What you will be able to do
+Course 6 treats its incoming handoff as historical evidence, not editable scaffolding. It may add only the extend the promise across asynchronous time mechanisms governed here; any public or durable change requires an explicit compatibility and release decision.
 
-After completing the course, you can:
+## What you will add
 
-- create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary.
-- publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles.
-- implement deterministic delivery attempts, partition order, group independence, acknowledgement expiry, negative acknowledgement, and redelivery.
-- implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects.
-- classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay.
-- build notification, analytics, audit, and orchestration consumers with stable derived-command identities and explicit state.
-- implement windowed analysis metrics, watermark progression, late-event correction revisions, and quarantine.
-- add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules.
-- implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks.
-- publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff.
+- event taxonomy and ownership;
+- AsyncAPI and CloudEvents contract architecture;
+- delivery, ordering, partition, acknowledgement, outbox, and inbox semantics;
+- schema evolution, replay, workflows, and event-time processing;
+- event security, reliability, dead-letter custody, and governance;
 
-## Ten-module learning path
+## Course-level learning outcomes
 
-| Day | Module | Governing question | Capstone result |
+- Separate commands, events, queries, notifications, domain events, and integration events.
+- Navigate the AsyncAPI 3.1 document model: servers, channels, operations, messages, components, and bindings.
+- Distinguish storage, publication, delivery, processing, effect, and acknowledgement.
+- Explain the producer dual-write problem and why ordinary exception handling cannot close it.
+- Evaluate event-schema changes from producer, current-consumer, and historical-record perspectives.
+- Treat a consumer as a versioned application rather than a handler function.
+- Distinguish event time, ingestion time, processing time, and observation time.
+- Authenticate producers and consumers independently of message content.
+- Classify broker, relay, consumer, dependency, schema, security, and capacity failures.
+- Treat the event catalogue as an owned product rather than a topic inventory.
+
+## Module map
+
+| Day | Chapter | Governing question | Capstone increment |
 |---:|---|---|---|
 | 1 | [Event Thinking, Ownership, and Message Taxonomy](module-01-event-thinking-and-ownership/index.md) | Which interactions are commands, immutable facts, queries, notifications, or private domain events, and who owns each public fact? | Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary. |
 | 2 | [AsyncAPI, CloudEvents, and Contract Architecture](module-02-asyncapi-and-contract-architecture/index.md) | How do AsyncAPI, CloudEvents, schemas, channels, operations, bindings, and examples form one governed event contract? | Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles. |
@@ -44,21 +52,21 @@ After completing the course, you can:
 | 9 | [Event Reliability, Backpressure, Dead Letters, and Recovery](module-09-event-reliability-and-recovery/index.md) | How do lag, backpressure, retry, poison messages, dead-letter custody, broker failure, and replay storms affect recovery? | Implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks. |
 | 10 | [Event Platform Governance, Release, and Final Defense](module-10-governance-release-and-final-defense/index.md) | How are event ownership, compatibility, retention, replay, consumers, evidence, and release decisions governed as a platform capability? | Publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff. |
 
+## Deliberate boundaries
 
-## How the book is organized
+This course does not claim or teach the following as part of its completion:
 
-Each numbered module has five learner-facing files:
+- teaching a broker before message semantics;
+- claiming exactly-once delivery;
+- event sourcing every domain;
+- microservice decomposition;
 
-1. `index.md` — the complete explanation, worked designs, implementation reading, failure analysis, and transition;
-2. `exercises.md` — twelve transfer questions;
-3. `exercise-answers.md` — matching reasoned reference answers;
-4. `lab.md` — one controlled failure, pressure, or release experiment;
-5. `checkpoint.md` — the evidence required before progression.
+Those boundaries prevent the course from becoming a survey of adjacent tools and make its completion claims defensible.
 
-The course book is authoritative. Capstone source, fixtures, reports, and proof scripts make the material executable; they do not replace the explanation.
+## How to study
 
-## Completion standard
+Begin with [Start here](start-here.md). In Course 6, read each chapter around the question **How can independent producers and consumers share durable facts without confusing intent, delivery attempts, processing effects, and historical truth?**; then use the exercises, controlled lab, and checkpoint to turn the explanation into evidence. [Language strategy](language-strategy.md) and [Evidence model](evidence-model.md) define how implementation and proof support—not replace—the course book.
 
-You complete the course only when every module checkpoint, the capstone proof, and the final defense pass. A strong result states not only what worked but which claim was established, which evidence class supports it, and what remains unexecuted.
+## Completion
 
-Continue with [Start here](start-here.md).
+Complete all ten checkpoints, the capstone release or defense, and the outgoing handoff. A green command without a defensible claim and evidence boundary is not sufficient.

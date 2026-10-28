@@ -1,12 +1,14 @@
 # Module 02 — Domain State and Invariants
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** Which state transitions and invariants must remain true regardless of framework or database?
 
 ## Where this module fits
 
-Make project, dataset, run, cancellation, and artifact rules explicit before persistence obscures them. You arrive from Module 01 with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result is the baseline for **Relational Modeling and Migrations**.
+Module 01 produced **Create transport, application, and adapter boundaries for the fixed operation ledger**. This module extends that result by asking: **Which state transitions and invariants must remain true regardless of framework or database?**
+
+The new capstone increment is **Implement project, dataset, run, cancellation, and artifact rules as testable domain behavior**. It becomes the prerequisite for **Relational Modeling and Migrations**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Make project, dataset, run, cancellation, and artifact rules explicit before per
 - Control time and identifiers in tests.
 - Prove invariants with pure state-transition tests.
 
-## Capstone result
+## Capstone increment
 
 Implement project, dataset, run, cancellation, and artifact rules as testable domain behavior.
-
-The Analysis Runs state machine rejects impossible transitions before any database write.
 
 ## Core model
 
@@ -32,10 +32,10 @@ A state machine is not a status string plus scattered conditionals. Legal transi
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Domain State and Invariants** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Implement project, dataset, run, cancellation, and artifact rules as testable domain behavior
 
 
 ### 1. Invariant ownership
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Domain State and Invariants**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: Write the full run transition table including self-transitions that are explicitly rejected.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Domain State and Invariants**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: Which state transitions and invariants must remain true regardless of framework or database?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -248,8 +249,7 @@ def evolve(snapshot: RunSnapshot, command: RunCommand) -> Transition:
             raise InvalidTransition(snapshot.state, command.kind)
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Domain State and Invariants** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -550,7 +550,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Domain State and Invariants** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Implement project, dataset, run, cancellation, and artifact rules as testable domain behavior The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -645,7 +645,8 @@ def _validate_canonical_value(value: Any) -> None:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/domain.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 } from "./core/domain.js";
 import { canonicalJson } from "./core/domain.js";
 
@@ -701,8 +702,10 @@ Compare the two tracks by this invariant: **both tracks reject illegal run trans
 
 ## Module synthesis
 
-The module answer to “Which rules must remain true regardless of framework, database, worker, or deployment?” is now executable in the capstone: The Analysis Runs state machine rejects impossible transitions before any database write.
+You are ready to leave this module when you can **Model legal and illegal state transitions, Distinguish entities, values, commands, and outcomes pragmatically, and Keep domain failures stable and transport-neutral** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a direct status assignment in the worker path, prove the matrix does not protect callers that bypass policy, then repair and add a source/behavior regression** and requiring the following oracle: **Every state/command pair has one explicit expected outcome; adding a new state or command must make the exhaustive proof fail until classified.**
+
+The cumulative platform now includes **Implement project, dataset, run, cancellation, and artifact rules as testable domain behavior**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 03, [Relational Modeling and Migrations](../module-03-relational-modeling-migrations/index.md), asks: *How does PostgreSQL reinforce the service invariants instead of acting as an unstructured persistence dictionary?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Relational Modeling and Migrations](../module-03-relational-modeling-migrations/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

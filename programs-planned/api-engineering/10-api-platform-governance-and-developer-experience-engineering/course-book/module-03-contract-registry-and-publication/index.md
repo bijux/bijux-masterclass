@@ -1,22 +1,24 @@
-# Contract Registry and Multi-Protocol Publication
+# Module 03 — Contract Registry and Multi-Protocol Publication
 
-**Module 03 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** What makes an API contract a trustworthy published release across HTTP, events, RPC, and GraphQL?
+> **Central question:** What makes an API contract a trustworthy published release across HTTP, events, RPC, and GraphQL?
 
-## Place in the program
+## Where this module fits
 
-Module 02 established what exists and who owns it. Module 03 publishes the exact machine-readable promises that consumers and tooling must trust.
+Module 02 produced **Publish the Analysis Platform catalog and ownership graph**. This module extends that result by asking: **What makes an API contract a trustworthy published release across HTTP, events, RPC, and GraphQL?**
+
+The new capstone increment is **Register the four inherited interface releases by digest and publication evidence**. It becomes the prerequisite for **Governance as Code, Evidence, Scorecards, and Exceptions**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- distinguish drafts, releases, channels, and promotions
-- bind releases to exact bytes and owners
-- preserve protocol-native contracts
-- attach protocol-appropriate compatibility evidence
-- reject mutable release identities
+- Distinguish drafts, releases, channels, and promotions.
+- Bind releases to exact bytes and owners.
+- Preserve protocol-native contracts.
+- Attach protocol-appropriate compatibility evidence.
+- Reject mutable release identities.
 
-## Capstone result
+## Capstone increment
 
 Register the four inherited interface releases by digest and publication evidence.
 
@@ -59,7 +61,6 @@ The Python and TypeScript registries expose `publish`. They calculate a digest, 
 ## Standards anchors
 
 OpenAPI carries an HTTP contract through the lifecycle; AsyncAPI 3.1 describes message-driven interfaces; Buf documents protocol-aware Protobuf breaking checks. The platform uses their native artifacts rather than a lossy replacement. Consult [OpenAPI](https://www.openapis.org/what-is-openapi), [AsyncAPI 3.1](https://www.asyncapi.com/docs/reference/specification/latest), and [Buf breaking changes](https://buf.build/docs/breaking/).
-
 
 ## The release record
 
@@ -164,7 +165,6 @@ Ask:
 
 If any answer is unclear, the registry is a file store, not yet a trustworthy
 publication system.
-
 
 ## Publication transaction
 
@@ -328,3 +328,13 @@ The TypeScript excerpt accepts a precomputed digest to keep the snippet
 runtime-neutral; the complete track computes SHA-256. In either language, the
 compatibility report and owner are also required before the real record is
 created.
+
+## Module synthesis
+
+You are ready to leave this module when you can **distinguish drafts, releases, channels, and promotions, bind releases to exact bytes and owners, and preserve protocol-native contracts** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Then attempt: identical replay, changed bytes under the same version, a new version without compatibility evidence, and an experimental promotion that rebuilds rather than reuses bytes** and requiring the following oracle: **Identical replay is idempotent. Changed bytes under an existing version fail. A new version without evidence fails. Promotion references the existing digest.**
+
+The cumulative platform now includes **Register the four inherited interface releases by digest and publication evidence**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Governance as Code, Evidence, Scorecards, and Exceptions](../module-04-governance-as-code/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

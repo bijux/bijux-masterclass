@@ -1,39 +1,31 @@
 # Module 04 — PostgreSQL Query and Persistence Performance
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** Which query plan, index, lock, pool, or pagination behavior is the first persistence bottleneck for a declared workload?
 
 ## Where this module fits
 
+Module 03 produced **Optimize artifact and metadata delivery while preserving authorization, ETags, ranges, and bounded memory**. This module extends that result by asking: **Which query plan, index, lock, pool, or pagination behavior is the first persistence bottleneck for a declared workload?**
 
-The database is often blamed because it is visible in traces, but a slow query is not a diagnosis. The cause may be poor selectivity, missing statistics, a mismatched index order, excessive round trips, lock waiting, connection-pool queueing, serialization, or simply a data set too small to reveal the real plan.
-
-This module teaches plan reading as hypothesis testing. You begin with the exact SQL and parameter distribution from a critical workload. You inspect estimated and actual rows, node timing, buffer activity, sorts, loops, and index conditions. You then make one change and measure both the target read and its write, storage, and maintenance cost.
-
-The capstone focuses on the owner-authorized, status-filtered, cursor-paginated analysis-run listing. It is deliberately realistic: authorization predicates are mandatory, ordering must be stable, and the high-water cursor semantics from Course 2 cannot be removed. The fastest incorrect query is rejected.
-
-
-## Capstone result
-
-Capture before/after plans, add evidence-backed indexes, size database connections, and preserve owner-aware query semantics.
-
-Add migration 009 with evidence-backed indexes, plan fixtures, query-plan comparison, and a live PostgreSQL proof route for run listing and job claiming.
+The new capstone increment is **Capture before/after plans, add evidence-backed indexes, size database connections, and preserve owner-aware query semantics**. It becomes the prerequisite for **Runtime Profiling and Allocation Control**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Separate client wait, pool wait, lock wait, planning, execution, and transfer.
+- Read PostgreSQL text and JSON plans from the root downward.
+- Compare estimated and actual row counts.
+- Interpret sequential scans, index scans, bitmap scans, sorts, joins, and loops.
+- Design composite index column order from equality, range, and ordering predicates.
+- Preserve authorization and stable keyset pagination.
+- Measure read gain alongside write amplification and index size.
+- Size connection pools against database capacity rather than request concurrency.
+- Use `pg_stat_statements` as aggregate evidence without losing workload identity.
+- Write a reversible migration and a plan-regression gate.
 
-- separate client wait, pool wait, lock wait, planning, execution, and transfer
-- read PostgreSQL text and JSON plans from the root downward
-- compare estimated and actual row counts
-- interpret sequential scans, index scans, bitmap scans, sorts, joins, and loops
-- design composite index column order from equality, range, and ordering predicates
-- preserve authorization and stable keyset pagination
-- measure read gain alongside write amplification and index size
-- size connection pools against database capacity rather than request concurrency
-- use `pg_stat_statements` as aggregate evidence without losing workload identity
-- write a reversible migration and a plan-regression gate
+## Capstone increment
+
+Capture before/after plans, add evidence-backed indexes, size database connections, and preserve owner-aware query semantics.
 
 ## Core performance model
 
@@ -182,7 +174,6 @@ It does not replace workload-level evidence. Normalization may combine parameter
 
 The capstone live proof captures plans and selected aggregate statistics before and after migration 009.
 
-
 ## Course requirements
 
 | Rule | Required behavior | Failure if omitted | Decisive evidence |
@@ -322,10 +313,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-Database performance is a query-and-data problem, not an index-collection exercise. Module 4 connects exact semantics, representative plans, pool behavior, read/write trade-offs, and operational migration evidence.
+You are ready to leave this module when you can **separate client wait, pool wait, lock wait, planning, execution, and transfer, read PostgreSQL text and JSON plans from the root downward, and compare estimated and actual row counts** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **owner and high-water predicates remain present; page contents match the baseline semantics; wrong-owner access remains invisible/rejected; read plan and buffer behavior improve for the target distribution.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Capture before/after plans, add evidence-backed indexes, size database connections, and preserve owner-aware query semantics**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **Runtime Profiling and Allocation Control**, asks: Which Python or Node.js runtime phase consumes wall time, CPU, allocations, event-loop capacity, or serialization effort? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [Runtime Profiling and Allocation Control](../module-05-runtime-profiling-and-allocation-control/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

@@ -1,22 +1,8 @@
-# Module 01 checkpoint — Measurement Contract and Critical Workloads
+# Checkpoint — Module 01: Measurement Contract and Critical Workloads
 
 ## Required result
 
-- [ ] performance profile 1.0 validates
-- [ ] six workload definitions validate and have stable hashes
-- [ ] environment fingerprint contains runtime, resource, process, and data-scale fields
-- [ ] outcome populations reconcile
-- [ ] three baselines are retained
-- [ ] one incomparable and one incorrect candidate are rejected
-- [ ] Course 4 profiles remain byte-identical
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. Why can a closed workload hide overload?
-2. Which field makes your most recent two runs comparable?
-3. What correctness oracle would reject the easiest benchmark shortcut?
+Freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines.
 
 ## Demonstrate
 
@@ -30,6 +16,32 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=01 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-01/
+├── performance-case.yaml
+├── baseline-1.json
+├── baseline-2.json
+├── baseline-3.json
+├── candidate-a.json
+├── candidate-b.json
+├── candidate-c.json
+└── decision.md
+```
+
+`decision.md` must state the exact comparison order: identity, correctness, coverage, then performance. Include one limitation that requires a live dependency or representative environment.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. Why can a closed workload hide overload?
+2. Which field makes your most recent two runs comparable?
+3. What correctness oracle would reject the easiest benchmark shortcut?
 
 ## Continue only when
 

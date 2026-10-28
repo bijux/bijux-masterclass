@@ -1,25 +1,33 @@
 {
-  "id": "api-engineering-07",
-  "slug": "grpc-and-protobuf-engineering",
-  "title": "gRPC and Protobuf Engineering",
+  "schemaVersion": 2,
   "program": "api-engineering",
-  "sequence": 7,
-  "version": "1.0.0",
-  "public_api": "1.2",
-  "event_api": "1.0",
-  "rpc_api": "1.0",
-  "proto_baseline": "proto3",
-  "protobuf_frontier": "Edition 2024",
-  "grpc_profile": "1.0",
-  "migration_head": "015",
+  "number": 7,
+  "id": "grpc-and-protobuf-engineering",
+  "directory": "07-grpc-and-protobuf-engineering",
+  "title": "gRPC and Protobuf Engineering",
+  "stage": "Engineer typed internal invocation and streaming",
+  "centralQuestion": "How should typed internal capabilities be modeled and operated when remote calls can fail ambiguously, stream for long periods, and evolve across language boundaries?",
+  "responsibility": "Design and verify Protobuf schemas and gRPC interactions without pretending that generated stubs turn remote calls into local functions.",
+  "duration": {
+    "calendarWeeks": 2,
+    "teachingDays": 10,
+    "orientationCounted": false
+  },
+  "incomingBoundary": "The Course 6 HTTP API 1.2 and Analysis Events API 1.0 handoff with profiles and migrations through 012.",
+  "outgoingBoundary": "Analysis RPC API 1.0, gRPC Profile 1.0, proto3 executable baseline, Edition 2024 frontier, migrations 013–015, streaming protocols, method policy, and compatibility evidence.",
+  "versionState": "HTTP API 1.2 and Events API 1.0 preserved; RPC API 1.0 introduced; proto3 baseline; Edition 2024 frontier; migrations 001–015.",
+  "predecessor": "06-event-driven-api-engineering",
+  "successor": "08-distributed-api-architecture-and-microservices-engineering",
+  "primaryProduct": "course-book",
+  "languageStrategy": "one primary implementation track plus one comparative reference track",
   "modules": [
     {
-      "n": "01",
-      "slug": "rpc-boundaries-and-service-ownership",
+      "number": 1,
+      "directory": "module-01-rpc-boundaries-and-service-ownership",
       "title": "RPC Boundaries, Service Ownership, and Interaction Choice",
-      "question": "Which interactions deserve a typed RPC boundary, and which should remain HTTP requests, durable events, or local function calls?",
-      "result": "Publish an interaction decision record, service-ownership map, and minimal Analysis RPC surface without splitting the platform prematurely.",
-      "outcomes": [
+      "centralQuestion": "Which interactions deserve a typed RPC boundary, and which should remain HTTP requests, durable events, or local function calls?",
+      "capstoneIncrement": "Publish an interaction decision record, service-ownership map, and minimal Analysis RPC surface without splitting the platform prematurely.",
+      "learningOutcomes": [
         "distinguish local calls, public HTTP operations, durable events, and internal RPCs by ownership, coupling, latency, and failure semantics",
         "recognize when gRPC improves a boundary and when it merely makes a distributed monolith more efficient",
         "design RPC services around stable capabilities rather than database tables or existing classes",
@@ -29,12 +37,12 @@
       ]
     },
     {
-      "n": "02",
-      "slug": "protobuf-modeling-presence-and-semantic-types",
+      "number": 2,
+      "directory": "module-02-protobuf-modeling-presence-and-semantic-types",
       "title": "Protobuf Modeling, Presence, and Semantic Types",
-      "question": "How do we encode domain meaning in Protobuf without allowing language defaults, JSON conventions, or storage models to erase important distinctions?",
-      "result": "Complete the Analysis RPC 1.0 message model, publish cross-language presence and integer vectors, and document every field whose absence changes behavior.",
-      "outcomes": [
+      "centralQuestion": "How do we encode domain meaning in Protobuf without allowing language defaults, JSON conventions, or storage models to erase important distinctions?",
+      "capstoneIncrement": "Complete the Analysis RPC 1.0 message model, publish cross-language presence and integer vectors, and document every field whose absence changes behavior.",
+      "learningOutcomes": [
         "design request and response messages around application decisions rather than persistence records",
         "distinguish absent, present-with-default, empty, unknown, and inapplicable values",
         "use enum zero values, `optional`, `oneof`, repeated fields, maps, and semantic wrappers deliberately",
@@ -44,12 +52,12 @@
       ]
     },
     {
-      "n": "03",
-      "slug": "wire-format-unknown-fields-and-compatibility",
+      "number": 3,
+      "directory": "module-03-wire-format-unknown-fields-and-compatibility",
       "title": "Wire Format, Unknown Fields, and Compatibility Discipline",
-      "question": "How can an RPC contract evolve without corrupting old data, breaking generated clients, or creating behavior that is wire-readable but operationally unsafe?",
-      "result": "Publish Analysis RPC compatibility policy 1.0, golden wire fixtures, and a release report that accepts one additive candidate while rejecting unsafe tag, enum, and method-shape changes.",
-      "outcomes": [
+      "centralQuestion": "How can an RPC contract evolve without corrupting old data, breaking generated clients, or creating behavior that is wire-readable but operationally unsafe?",
+      "capstoneIncrement": "Publish Analysis RPC compatibility policy 1.0, golden wire fixtures, and a release report that accepts one additive candidate while rejecting unsafe tag, enum, and method-shape changes.",
+      "learningOutcomes": [
         "explain how field numbers and wire types determine binary compatibility",
         "reserve removed field numbers and names and reject reuse",
         "classify changes across wire, source, JSON, and behavioral dimensions",
@@ -59,12 +67,12 @@
       ]
     },
     {
-      "n": "04",
-      "slug": "unary-rpcs-metadata-status-and-rich-errors",
+      "number": 4,
+      "directory": "module-04-unary-rpcs-metadata-status-and-rich-errors",
       "title": "Unary RPCs, Metadata, Status, and Rich Errors",
-      "question": "How should a unary RPC expose success and failure so that generated clients receive stable application meaning rather than transport accidents or leaked internals?",
-      "result": "Implement `CreateRun`, `GetRun`, and `CancelRun` with shared status vectors, safe metadata policy, and equivalent Python and TypeScript client behavior.",
-      "outcomes": [
+      "centralQuestion": "How should a unary RPC expose success and failure so that generated clients receive stable application meaning rather than transport accidents or leaked internals?",
+      "capstoneIncrement": "Implement `CreateRun`, `GetRun`, and `CancelRun` with shared status vectors, safe metadata policy, and equivalent Python and TypeScript client behavior.",
+      "learningOutcomes": [
         "implement thin unary server adapters around application use cases",
         "separate transport metadata from business request fields",
         "map application outcomes to stable gRPC status codes",
@@ -74,12 +82,12 @@
       ]
     },
     {
-      "n": "05",
-      "slug": "deadlines-cancellation-retries-and-idempotent-calls",
+      "number": 5,
+      "directory": "module-05-deadlines-cancellation-retries-and-idempotent-calls",
       "title": "Deadlines, Cancellation, Retries, and Idempotent Calls",
-      "question": "How can callers bound remote work and recover from transient failure without multiplying timeouts or duplicating durable effects?",
-      "result": "Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery.",
-      "outcomes": [
+      "centralQuestion": "How can callers bound remote work and recover from transient failure without multiplying timeouts or duplicating durable effects?",
+      "capstoneIncrement": "Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery.",
+      "learningOutcomes": [
         "derive child RPC budgets from one absolute edge deadline",
         "separate caller cancellation from application rollback",
         "classify transparent and configured retries without assuming all transient statuses are safe",
@@ -89,12 +97,12 @@
       ]
     },
     {
-      "n": "06",
-      "slug": "streaming-rpcs-flow-control-and-backpressure",
+      "number": 6,
+      "directory": "module-06-streaming-rpcs-flow-control-and-backpressure",
       "title": "Streaming RPCs, Flow Control, and Backpressure",
-      "question": "How do we design long-lived and bulk-transfer RPCs so that slow peers, reconnects, oversized messages, and stale attempts cannot exhaust memory or corrupt state?",
-      "result": "Implement `WatchRun`, `UploadDataset`, `DownloadArtifact`, and the worker `Work` stream with shared schedule vectors, bounded buffers, resumable observation, and stale-attempt fencing.",
-      "outcomes": [
+      "centralQuestion": "How do we design long-lived and bulk-transfer RPCs so that slow peers, reconnects, oversized messages, and stale attempts cannot exhaust memory or corrupt state?",
+      "capstoneIncrement": "Implement `WatchRun`, `UploadDataset`, `DownloadArtifact`, and the worker `Work` stream with shared schedule vectors, bounded buffers, resumable observation, and stale-attempt fencing.",
+      "learningOutcomes": [
         "choose unary, server-streaming, client-streaming, or bidirectional RPC from interaction semantics",
         "design protocol frames and state machines rather than treating a stream as an unbounded message list",
         "combine HTTP/2 flow control with bounded application queues and backpressure",
@@ -104,12 +112,12 @@
       ]
     },
     {
-      "n": "07",
-      "slug": "identity-authorization-mtls-and-tenant-isolation",
+      "number": 7,
+      "directory": "module-07-identity-authorization-mtls-and-tenant-isolation",
       "title": "Identity, Authorization, mTLS, and Tenant Isolation",
-      "question": "How do internal RPC peers establish workload and delegated user identity, enforce method and resource policy, and protect long-lived streams without treating a private network as trust?",
-      "result": "Implement RPC security profile 1.0 with method policy, workload and user identity binding, tenant-isolation vectors, mTLS-ready configuration, and secure worker-stream authorization.",
-      "outcomes": [
+      "centralQuestion": "How do internal RPC peers establish workload and delegated user identity, enforce method and resource policy, and protect long-lived streams without treating a private network as trust?",
+      "capstoneIncrement": "Implement RPC security profile 1.0 with method policy, workload and user identity binding, tenant-isolation vectors, mTLS-ready configuration, and secure worker-stream authorization.",
+      "learningOutcomes": [
         "distinguish server TLS, mutual TLS workload identity, bearer identity, and delegated end-user context",
         "authenticate callers without trusting arbitrary metadata or network location",
         "enforce method, tenant, resource, field, and attempt-level authorization",
@@ -119,12 +127,12 @@
       ]
     },
     {
-      "n": "08",
-      "slug": "channels-health-discovery-load-balancing-and-lifecycle",
+      "number": 8,
+      "directory": "module-08-channels-health-discovery-load-balancing-and-lifecycle",
       "title": "Channels, Health, Discovery, Load Balancing, and Lifecycle",
-      "question": "How do clients and servers manage long-lived channels, instance health, name resolution, load balancing, startup, draining, and shutdown without hiding failure or losing active work?",
-      "result": "Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration.",
-      "outcomes": [
+      "centralQuestion": "How do clients and servers manage long-lived channels, instance health, name resolution, load balancing, startup, draining, and shutdown without hiding failure or losing active work?",
+      "capstoneIncrement": "Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration.",
+      "learningOutcomes": [
         "treat channels as long-lived managed resources rather than create-per-call sockets",
         "separate process liveness, service readiness, and standard gRPC health status",
         "reason about name resolution, endpoint changes, load-balancing policy, and connection backoff",
@@ -134,12 +142,12 @@
       ]
     },
     {
-      "n": "09",
-      "slug": "generation-testing-reflection-and-schema-governance",
+      "number": 9,
+      "directory": "module-09-generation-testing-reflection-and-schema-governance",
       "title": "Generation, Testing, Reflection, and Schema Governance",
-      "question": "How do we make proto source, generated code, runtime services, tests, descriptors, reflection, and release policy agree without treating code generation as proof?",
-      "result": "Publish a reproducible generation pipeline, checked descriptor inventory, generated-client build matrix, runtime catalogue comparison, and Course 7 RPC release gate.",
-      "outcomes": [
+      "centralQuestion": "How do we make proto source, generated code, runtime services, tests, descriptors, reflection, and release policy agree without treating code generation as proof?",
+      "capstoneIncrement": "Publish a reproducible generation pipeline, checked descriptor inventory, generated-client build matrix, runtime catalogue comparison, and Course 7 RPC release gate.",
+      "learningOutcomes": [
         "define authoritative proto source and reproducible generation inputs",
         "use `protoc` and Buf as complementary generation, lint, and compatibility tools",
         "build and inspect descriptor sets and runtime reflection inventories",
@@ -149,12 +157,12 @@
       ]
     },
     {
-      "n": "10",
-      "slug": "http-events-and-grpc-release-and-final-defense",
+      "number": 10,
+      "directory": "module-10-http-events-and-grpc-release-and-final-defense",
       "title": "HTTP, Events, and gRPC in One Architecture: Release and Final Defense",
-      "question": "How do we introduce an internal RPC control plane without breaking the public HTTP contract, durable event history, database authority, security profile, or rollback path?",
-      "result": "Release Analysis RPC API 1.0 behind the unchanged public HTTP API and Event API, execute the final defense, and publish a sanitized service-boundary dossier rather than prematurely splitting the system.",
-      "outcomes": [
+      "centralQuestion": "How do we introduce an internal RPC control plane without breaking the public HTTP contract, durable event history, database authority, security profile, or rollback path?",
+      "capstoneIncrement": "Release Analysis RPC API 1.0 behind the unchanged public HTTP API and Event API, execute the final defense, and publish a sanitized service-boundary dossier rather than prematurely splitting the system.",
+      "learningOutcomes": [
         "assign distinct public, asynchronous, local, and RPC responsibilities in one architecture",
         "migrate an internal call path with shadow, compare, bounded cutover, and rollback",
         "preserve database authority, transactional event publication, and public HTTP conformance",

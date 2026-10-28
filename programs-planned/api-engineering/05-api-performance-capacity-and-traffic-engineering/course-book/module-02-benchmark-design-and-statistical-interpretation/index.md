@@ -1,37 +1,29 @@
 # Module 02 — Benchmark Design and Statistical Interpretation
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** How do open and closed demand, warmup, sample size, missing outcomes, variation, and statistical uncertainty change benchmark meaning?
 
 ## Where this module fits
 
+Module 01 produced **Freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines**. This module extends that result by asking: **How do open and closed demand, warmup, sample size, missing outcomes, variation, and statistical uncertainty change benchmark meaning?**
 
-A benchmark is a measurement system. It has clocks, queues, sampling rules, client limits, and failure modes. Treating it as a command that prints requests per second is equivalent to treating a database as a CSV file: it ignores the mechanism that determines the result.
-
-This module separates workload generation from measurement. You will build open and closed schedules, record intended start times, detect coordinated omission, define warmup and steady-state windows, and retain enough raw evidence to recompute summaries. Statistical sophistication is used only where it clarifies decisions. The course does not decorate small, biased samples with impressive confidence intervals.
-
-The central principle is repeatability with honest uncertainty. A benchmark should produce the same conclusion under repeated controlled runs, not necessarily the same last decimal. When noise overlaps the proposed gain, the correct decision is “insufficient evidence,” not “ship the faster average.”
-
-
-## Capstone result
-
-Build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons.
-
-Complete the benchmark harness, deterministic statistics library, run-series comparison, and k6/Locust workload examples.
+The new capstone increment is **Build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons**. It becomes the prerequisite for **HTTP Efficiency and Representation Cost**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Distinguish load generation, timing, outcome collection, and analysis.
+- Design open and closed schedules and explain their different questions.
+- Detect coordinated omission using intended start times.
+- Choose warmup and measurement windows from observed behavior.
+- Calculate nearest-rank quantiles and explain alternative algorithms.
+- Separate run-to-run variability from within-run latency distribution.
+- Use bootstrap intervals over independent run summaries cautiously.
+- Declare regression thresholds before seeing candidate results.
 
-- distinguish load generation, timing, outcome collection, and analysis
-- design open and closed schedules and explain their different questions
-- detect coordinated omission using intended start times
-- choose warmup and measurement windows from observed behavior
-- calculate nearest-rank quantiles and explain alternative algorithms
-- separate run-to-run variability from within-run latency distribution
-- use bootstrap intervals over independent run summaries cautiously
-- declare regression thresholds before seeing candidate results
+## Capstone increment
+
+Build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons.
 
 ## Core performance model
 
@@ -122,7 +114,6 @@ Use both absolute and relative thresholds to avoid unstable behavior near zero.
 A summarized report should be derivable from retained events or histograms. Store tool version, command, scenario, random seed, environment, time windows, and dropped work. If raw request data contains sensitive identifiers, pseudonymize or aggregate it before retention.
 
 A benchmark that cannot be rerun is a demonstration, not a regression gate. The capstone harness emits a stable envelope format independent of k6, Locust, Python, or Node. Tool adapters map their output into that format.
-
 
 ## Course requirements
 
@@ -266,10 +257,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-A benchmark is a controlled measurement system. Module 2 makes scheduling, omission, warmup, outcomes, algorithms, and run-to-run uncertainty visible so that a release decision is based on evidence rather than a tool’s headline number.
+You are ready to leave this module when you can **distinguish load generation, timing, outcome collection, and analysis, design open and closed schedules and explain their different questions, and detect coordinated omission using intended start times** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Compare offered, started, completed, delayed, and dropped populations** and requiring the following oracle: **the open schedule exposes arrivals during the pause; scheduled-to-start delay is retained; closed and open results are not compared as equivalent workloads; summary replay matches packaged calculations.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **HTTP Efficiency and Representation Cost**, asks: Where do HTTP connections, representations, compression, conditional requests, range delivery, and streaming consume time and bytes? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [HTTP Efficiency and Representation Cost](../module-03-http-efficiency-and-representation-cost/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

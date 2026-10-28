@@ -1,12 +1,14 @@
 # Module 01 — Reliability Model and Critical Journeys
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** Which user journeys matter, what makes them good or bad, and which durable facts establish the outcome?
 
 ## Where this module fits
 
-Build a reliability case around six end-to-end Analysis Runs journeys rather than component uptime. You arrive from the course orientation with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **Deadlines, Cancellation, and Retry Budgets**.
+Course 4 begins from this incoming boundary: **The Course 3 API 1.2 service protected by Security Profile 1.0 and migrations 001–007.**
+
+This module establishes the course’s first new responsibility by asking: **Which user journeys matter, what makes them good or bad, and which durable facts establish the outcome?** Its capstone increment is **Create the reliability case, critical-journey populations, failure modes, ownership, residual risk, and negative claims**. That result is required before **Deadlines, Cancellation, and Retry Budgets** can be studied honestly.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Build a reliability case around six end-to-end Analysis Runs journeys rather tha
 - Catalog failure modes and residual risks.
 - Trace reliability requirements to tests, runbooks, and owners.
 
-## Capstone result
+## Capstone increment
 
 Create the reliability case, critical-journey populations, failure modes, ownership, residual risk, and negative claims.
-
-The service gains a reliability case for create, submit, start, complete, retrieve, and notify journeys.
 
 ## Core reliability model
 
@@ -91,7 +91,6 @@ Apply **Critical journey, Good, bad, eligible, excluded, Reliability invariant**
 The local corpus proves internal consistency of the reliability case; it cannot choose business criticality or objective targets for an actual organization.
 
 ## Worked failures
-
 
 ### Case 1 — Healthy API, stalled work
 
@@ -176,7 +175,7 @@ window = SLOWindow(good=995, total=1_000)
 assert burn_rate(slo, window) == 1.0
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Reliability Model and Critical Journeys** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Healthy API, stalled work
 
@@ -219,7 +218,7 @@ const rate = burnRate(slo, { good: 995, total: 1_000 });
 if (rate !== 1) throw new Error("unexpected burn rate");
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Reliability Model and Critical Journeys** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Healthy API, stalled work
 
@@ -368,8 +367,10 @@ Compare the two tracks by this invariant: **eligible, good, bad, and excluded po
 
 ## Module synthesis
 
-The module answer to “Which user outcomes matter, what can prevent them, and which observation decides whether they succeeded?” is now executable in the capstone: The service gains a reliability case for create, submit, start, complete, retrieve, and notify journeys.
+You are ready to leave this module when you can **Define critical journeys and eligible event populations, Separate prevention, mitigation, repair, and verification, and Choose public or durable correctness oracles before telemetry** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a component-only availability claim that ignores stalled jobs** and requiring the following oracle: **Every active REL requirement has a source and proof; Stalled jobs fail run-start freshness while API health remains green; Provider-owned 5xx and timeout outcomes cannot be excluded; Durable state decides terminal correctness.**
+
+The cumulative platform now includes **Create the reliability case, critical-journey populations, failure modes, ownership, residual risk, and negative claims**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 02, [Deadlines, Cancellation, and Retry Budgets](../module-02-deadlines-timeouts-cancellation-and-retry-budgets/index.md), asks: *How does one request carry a finite time budget through dependencies without multiplying work or reporting success too late?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Deadlines, Cancellation, and Retry Budgets](../module-02-deadlines-timeouts-cancellation-and-retry-budgets/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

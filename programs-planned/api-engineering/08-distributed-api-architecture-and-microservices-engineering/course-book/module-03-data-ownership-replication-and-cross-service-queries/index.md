@@ -1,26 +1,27 @@
-# Data Ownership, Replication, and Cross-Service Query Design
+# Module 03 — Data Ownership, Replication, and Cross-Service Query Design
 
-**Module 03 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How can each service own its writes while the system still answers cross-capability questions without shared tables or hidden distributed transactions?
+> **Central question:** How can each service own its writes while the system still answers cross-capability questions without shared tables or hidden distributed transactions?
 
-## Place in the program
+## Where this module fits
 
-Course 7 introduced typed internal RPC but deliberately refused to equate a remote method with an independently owned service. Course 8 now uses ownership, data, failure, release, and operational evidence to decide which capabilities deserve distribution.
+Module 02 produced **Publish the service catalogue, bounded-context map, contract ownership map, and explicit list of capabilities that remain inside Analysis Control**. This module extends that result by asking: **How can each service own its writes while the system still answers cross-capability questions without shared tables or hidden distributed transactions?**
+
+The new capstone increment is **Split authoritative data ownership, build versioned projections for cross-service reads, define staleness budgets, and prove reconciliation for missing, duplicate, and out-of-order updates**. It becomes the prerequisite for **Synchronous Collaboration, API Composition, and Dependency Budgets**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- enforce one authoritative writer for each business fact
-- distinguish owned data, replicated views, caches, and derived analytics
-- design event-fed projections with version and gap handling
-- choose API composition, local read models, or asynchronous reports from latency and consistency needs
-- state staleness and monotonicity guarantees in contracts and user experience
-- reconcile orphaned, missing, and divergent records without bypassing service ownership
+- Enforce one authoritative writer for each business fact.
+- Distinguish owned data, replicated views, caches, and derived analytics.
+- Design event-fed projections with version and gap handling.
+- Choose API composition, local read models, or asynchronous reports from latency and consistency needs.
+- State staleness and monotonicity guarantees in contracts and user experience.
+- Reconcile orphaned, missing, and divergent records without bypassing service ownership.
 
-## Capstone result
+## Capstone increment
 
 Split authoritative data ownership, build versioned projections for cross-service reads, define staleness budgets, and prove reconciliation for missing, duplicate, and out-of-order updates.
-
 
 ## Database per service means authority per service
 
@@ -157,6 +158,7 @@ Both tracks implement a versioned projection with identical classifications. Typ
 ## Evidence required before Module 4
 
 You need a single-writer data map, independent migration heads, one projection with gap handling, a stated staleness policy, and reconciliation that finds all planted missing and orphaned effects.
+
 ## Authority, copies, and derived state
 
 Every stored value in a distributed system should be classified as one of four categories:
@@ -348,3 +350,13 @@ A coordinator can provide atomic commit across participants in some environments
 Course 8 first asks whether the invariant should remain within one service. Analysis Control keeps run, idempotency, lease, and event outbox together for this reason. Cross-service workflows use durable state, idempotent effects, and compensation when true independent ownership exists.
 
 The lesson is not “never use distributed transactions.” It is “do not use them to rescue a boundary that split one invariant.”
+
+## Module synthesis
+
+You are ready to leave this module when you can **enforce one authoritative writer for each business fact, distinguish owned data, replicated views, caches, and derived analytics, and design event-fed projections with version and gap handling** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Implement a versioned Notification run projection and inject duplicate, stale, and gap schedules** and requiring the following oracle: **No service writes another service fact; projections detect gaps; staleness is declared; all planted divergent states produce exact findings.**
+
+The cumulative platform now includes **Split authoritative data ownership, build versioned projections for cross-service reads, define staleness budgets, and prove reconciliation for missing, duplicate, and out-of-order updates**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Synchronous Collaboration, API Composition, and Dependency Budgets](../module-04-synchronous-collaboration-and-dependency-budgets/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

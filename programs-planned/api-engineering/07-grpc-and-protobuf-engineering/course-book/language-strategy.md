@@ -1,17 +1,29 @@
-# Python and TypeScript strategy
+# Language Strategy — gRPC and Protobuf Engineering
 
-Course 7 keeps one contract and two idiomatic implementations.
+## Strategy
 
-## Python track
+Choose one primary track for the complete build and lab repairs. Use the second as an idiomatic comparison and shared-vector parity reference. The course deliberately avoids making learners type the same architecture twice.
 
-The Python track includes checked-in descriptor-backed generated-equivalent modules, a real gRPC server and client, interceptors, application adapters, stream handlers, and network tests. It is the complete live reference available in the build environment.
+## What must match
 
-## TypeScript track
+- public messages and documented statuses;
+- named state, security, reliability, performance, event, RPC, architecture, graph, or governance decisions owned by this course;
+- canonical bytes when signatures, digests, wire compatibility, or cross-language identity depends on them;
+- accepted, rejected, and review-required release classifications;
+- shared negative vectors and evidence boundaries.
+- the Course 7 outcome: Analysis RPC API 1.0, gRPC Profile 1.0, proto3 executable baseline, Edition 2024 frontier, migrations 013–015, streaming protocols, method policy, and compatibility evidence.
 
-The TypeScript track includes complete contract models, wire helpers, deadline and retry policy, status mapping, bounded stream primitives, authorization policy, service catalogue, and in-process conformance tests. An optional `@grpc/grpc-js` adapter and proto-loader integration are included for a provisioned environment.
+## What may differ
 
-## What parity means
+generated APIs, async iterators, 64-bit representations, interceptors, and channel libraries differ; compare wire bytes, metadata, status, deadlines, and stream state.
 
-Parity means agreement on method paths; message field numbers, types, presence, oneof, and enum semantics; golden bytes where declared; metadata policy; status mapping; deadline, retry, and idempotency behavior; frame order and flow control; security decisions; health transitions; and release outcomes.
+## Reading implementation examples
 
-It does not mean matching class names, async primitives, or folder layouts.
+For each example:
+
+1. name the invariant before reading code;
+2. identify the owner and state boundary;
+3. find the negative test;
+4. find cleanup and failure behavior;
+5. compare the second track only after you can explain the first;
+6. never infer a protocol rule from one framework default.

@@ -1,36 +1,28 @@
 # Module 01 — Measurement Contract and Critical Workloads
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** What exactly is being measured, under which workload and environment identity, and which correctness oracle still applies?
 
 ## Where this module fits
 
+Course 5 begins from this incoming boundary: **The Course 4 observable and recoverable API 1.2 service with Security and Reliability Profiles 1.0 and migrations 001–008.**
 
-Performance work fails early when “the API is slow” is accepted as a problem statement. An API has many journeys, each with different payloads, dependencies, and value. A project metadata read, a streaming upload, an idempotent run submission, and a webhook backlog drain cannot share one meaningful latency target.
-
-Course 4 already defined critical user journeys and reliability populations. This module extends those assets into a performance measurement contract. It does not replace an SLO. An SLO describes the level of service expected over time; a benchmark describes behavior under a specified experiment. The two inform one another, but neither can impersonate the other.
-
-The central discipline is identity. A result belongs to a workload, data set, environment, build, and correctness oracle. If any identity-bearing field changes, the experiment is a new experiment. This is how the course prevents a common form of accidental dishonesty: changing the workload until the result looks good while retaining the original label.
-
-
-## Capstone result
-
-Freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines.
-
-Create performance profile 1.0, the six-workload catalogue, environment fingerprint schema, and correctness-first benchmark envelope.
+This module establishes the course’s first new responsibility by asking: **What exactly is being measured, under which workload and environment identity, and which correctness oracle still applies?** Its capstone increment is **Freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines**. That result is required before **Benchmark Design and Statistical Interpretation** can be studied honestly.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Distinguish performance requirements from reliability objectives and capacity claims.
+- Derive critical workloads from inherited user journeys instead of endpoint popularity.
+- Choose an open, closed, or mixed load model deliberately.
+- Define offered, admitted, completed, rejected, and failed populations.
+- Hash identity-bearing workload and environment fields deterministically.
+- Write correctness oracles that survive optimization.
+- Reject an incomparable baseline before calculating improvement.
 
-- distinguish performance requirements from reliability objectives and capacity claims
-- derive critical workloads from inherited user journeys instead of endpoint popularity
-- choose an open, closed, or mixed load model deliberately
-- define offered, admitted, completed, rejected, and failed populations
-- hash identity-bearing workload and environment fields deterministically
-- write correctness oracles that survive optimization
-- reject an incomparable baseline before calculating improvement
+## Capstone increment
+
+Freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines.
 
 ## Core performance model
 
@@ -118,7 +110,6 @@ A baseline is not the first number produced. It is an accepted, reproducible env
 Repeat the baseline. If two runs in the same controlled environment differ beyond a predeclared noise band, do not optimize yet. First investigate environment noise, data-state drift, thermal throttling, background work, or benchmark errors.
 
 The capstone baseline is dependency-light and therefore Class B evidence. It is useful for regression and mechanism learning, not for claiming production capacity.
-
 
 ## Course requirements
 
@@ -269,10 +260,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-A performance result is trustworthy only when its workload, environment, correctness, and outcome populations are explicit. Module 1 turns inherited journeys into executable measurement contracts and prevents later optimization from redefining success.
+You are ready to leave this module when you can **distinguish performance requirements from reliability objectives and capacity claims, derive critical workloads from inherited user journeys instead of endpoint popularity, and choose an open, closed, or mixed load model deliberately** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Build the six-workload catalogue, run three baseline envelopes, and prove that the comparison layer rejects workload drift and correctness failure** and requiring the following oracle: **three baseline envelopes have the same identity-bearing fields; offered, started, completed, and failed counts reconcile; candidate A is rejected for workload-hash mismatch; candidate B is rejected for correctness failure.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **Benchmark Design and Statistical Interpretation**, asks: How do open and closed demand, warmup, sample size, missing outcomes, variation, and statistical uncertainty change benchmark meaning? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [Benchmark Design and Statistical Interpretation](../module-02-benchmark-design-and-statistical-interpretation/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

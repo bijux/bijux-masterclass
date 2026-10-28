@@ -1,6 +1,6 @@
-# Exercises — Module 06 — Consumer Architecture and Asynchronous Workflows
+# Exercises — Module 06: Consumer Architecture and Asynchronous Workflows
 
-Design consumers as owned applications. Every workflow answer must identify state, transaction, and authoritative input.
+Work through all twelve problems before opening the answers. In **Consumer Architecture and Asynchronous Workflows**, every response must settle this question: **How do idempotent consumers, projections, and process managers coordinate asynchronous workflows without hidden synchronous coupling?** Answer as though another team must implement and operate the design. Ambiguous ownership, unbounded behavior, and evidence-free claims are defects.
 
 ## 1. Classify four consumers
 

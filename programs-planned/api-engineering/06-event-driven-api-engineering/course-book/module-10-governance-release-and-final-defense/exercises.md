@@ -1,6 +1,6 @@
-# Exercises — Module 10 — Event Platform Governance, Release, and Final Defense
+# Exercises — Module 10: Event Platform Governance, Release, and Final Defense
 
-Treat governance as executable ownership and evidence. Every answer should identify who approves and what proves the decision.
+Work through all twelve problems before opening the answers. In **Event Platform Governance, Release, and Final Defense**, every response must settle this question: **How are event ownership, compatibility, retention, replay, consumers, evidence, and release decisions governed as a platform capability?** Conclude each problem with a release decision: what may proceed, what must be rejected, and what remains unproven by the available environment.
 
 ## 1. Complete a catalogue entry
 

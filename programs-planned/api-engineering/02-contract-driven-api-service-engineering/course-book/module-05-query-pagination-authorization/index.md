@@ -1,12 +1,14 @@
 # Module 05 — Queries, Stable Pagination, and Authorized Access
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** How do filters, stable cursors, and authorization-aware queries remain correct while data changes?
 
 ## Where this module fits
 
-Implement owner-aware queries and server-bound cursors using a stable total order and traversal high-water mark. You arrive from Module 04 with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result is the baseline for **Durable Workers and Recovery**.
+Module 04 produced **Implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback**. This module extends that result by asking: **How do filters, stable cursors, and authorization-aware queries remain correct while data changes?**
+
+The new capstone increment is **Implement owner-bound, filter-bound, high-water keyset traversal and evidence-backed query plans**. It becomes the prerequisite for **Durable Workers and Recovery**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Implement owner-aware queries and server-bound cursors using a stable total orde
 - Conceal foreign-resource existence where policy requires it.
 - Read query plans and index use.
 
-## Capstone result
+## Capstone increment
 
 Implement owner-bound, filter-bound, high-water keyset traversal and evidence-backed query plans.
-
-Project, dataset, and run listings are stable, owner-bound, and resistant to cursor tampering.
 
 ## Core model
 
@@ -32,10 +32,10 @@ A query contract includes authorization, ordering, filter semantics, cursor bind
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Queries, Stable Pagination, and Authorized Access** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Implement owner-bound, filter-bound, high-water keyset traversal and evidence-backed query plans
 
 
 ### 1. Result-set identity
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Queries, Stable Pagination, and Authorized Access**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: Define normalized filters and supported sorts for each list operation.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Queries, Stable Pagination, and Authorized Access**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: How do filters, stable cursors, and authorization-aware queries remain correct while data changes?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -246,8 +247,7 @@ def normalize_run_query(*, status: str | None, limit: int | None) -> dict[str, o
 # `position <= first_page_high_water`.
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Queries, Stable Pagination, and Authorized Access** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -567,7 +567,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Queries, Stable Pagination, and Authorized Access** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Implement owner-bound, filter-bound, high-water keyset traversal and evidence-backed query plans The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -652,7 +652,8 @@ class PostgresRepository:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/repository.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
   WebhookSubscriptionCreate,
 } from "./types.js";
 
@@ -714,8 +715,10 @@ Compare the two tracks by this invariant: **cursor state is bound to principal, 
 
 ## Module synthesis
 
-The module answer to “How do list and retrieval operations remain stable, efficient, and non-leaking while data changes?” is now executable in the capstone: Project, dataset, and run listings are stable, owner-bound, and resistant to cursor tampering.
+You are ready to leave this module when you can **Bind queries to principal, operation, filters, and order, Use opaque server-side cursor handles, and Prevent duplicates and omissions during a traversal** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant an offset cursor and preserve the smallest duplicate/omission reproducer before repair** and requiring the following oracle: **A cursor issued for one principal/filter cannot be used by another, and rows inserted beyond the captured high-water mark do not enter the traversal.**
+
+The cumulative platform now includes **Implement owner-bound, filter-bound, high-water keyset traversal and evidence-backed query plans**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 06, [Durable Workers and Recovery](../module-06-durable-workers-recovery/index.md), asks: *What internal machinery makes `202 Accepted` honest after API or worker processes die?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Durable Workers and Recovery](../module-06-durable-workers-recovery/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

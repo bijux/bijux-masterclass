@@ -1,5 +1,7 @@
 # Exercises — Module 03: Relational Modeling and Migrations
 
+Work through all twelve problems before opening the answers. In **Relational Modeling and Migrations**, every response must settle this question: **How should relational structure and migrations reinforce rather than merely store application invariants?** Do not stop at terminology. Show how the decision changes a request, durable state, consumer, operator action, or release result, and state how that consequence is tested.
+
 ## 1. Why should public IDs and internal ordering positions be separate?
 
 ## 2. What invariant does a composite `(project_id, owner_id)` foreign key add?

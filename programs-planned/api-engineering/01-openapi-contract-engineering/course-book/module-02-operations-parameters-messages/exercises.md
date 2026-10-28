@@ -1,5 +1,7 @@
 # Exercises — Module 02: Operations, Parameters, and Messages
 
+Work through all twelve problems before opening the answers. In **Operations, Parameters, and Messages**, every response must settle this question: **How are parameters, request bodies, media types, status codes, and headers modeled without ambiguity?** Treat each problem as a design review: state the rule, construct the smallest counterexample, and select an oracle capable of rejecting your own answer.
+
 ## 1. Place each value: project identifier, page limit, idempotency key, project patch, session token.
 
 ## 2. Write the wire form for a form/explode query array named `tag` with values `a` and `b`.

@@ -1,6 +1,6 @@
-# Exercises — Module 08 — Event Security, Multi-Tenancy, Privacy, and Trust
+# Exercises — Module 08: Event Security, Multi-Tenancy, Privacy, and Trust
 
-Use least privilege and durable trust evidence. Do not answer “TLS” as a complete event-security design.
+Work through all twelve problems before opening the answers. In **Event Security, Multi-Tenancy, Privacy, and Trust**, every response must settle this question: **How are producers authenticated, consumers authorized, tenants isolated, payloads minimized, and event bytes protected?** Use the cumulative platform, not an invented toy system. Preserve inherited guarantees and make every new assumption explicit and falsifiable.
 
 ## 1. Bind a producer
 

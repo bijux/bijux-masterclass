@@ -1,6 +1,6 @@
-# Exercises — Authorization, Tenancy, and Schema Exposure
+# Exercises — Module 06: Authorization, Tenancy, and Schema Exposure
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Authorization, Tenancy, and Schema Exposure**, every response must settle this question: **How can clients select flexible fields without gaining flexible authority?** Answer as though another team must implement and operate the design. Ambiguous ownership, unbounded behavior, and evidence-free claims are defects.
 
 ## 1. Why is successful parent resolution insufficient for child authorization?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. What evidence proves no unauthorized source call occurred?
-

@@ -1,22 +1,36 @@
-# Checkpoint — Deadlines, Cancellation, Retries, and Idempotent Calls
+# Checkpoint — Module 05: Deadlines, Cancellation, Retries, and Idempotent Calls
 
-Do not continue until every item is satisfied.
+## Required result
 
-## Required evidence
+Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery.
+
+## Demonstrate
+
+- [ ] Derive child rpc budgets from one absolute edge deadline.
+- [ ] Separate caller cancellation from application rollback.
+- [ ] Classify transparent and configured retries without assuming all transient statuses are safe.
+- [ ] Bind mutation retries to durable idempotency records and semantic fingerprints.
+- [ ] Apply bounded backoff, jitter, attempt limits, and retry throttling.
+- [ ] Reconcile ambiguous outcomes when a deadline or connection fails after commit.
+
+## Commands
+
+```bash
+make core-proof
+```
+
+## Evidence to retain
 
 - [ ] `capstone/shared/vectors/deadlines.json` exists, is reproducible, and you can explain its oracle.
 - [ ] `capstone/shared/vectors/retries.json` exists, is reproducible, and you can explain its oracle.
 - [ ] `reports/module-05-deadline-proof.json` exists, is reproducible, and you can explain its oracle.
 
-## Required explanation
+## Defend the design
 
-- [ ] Answer the governing question: **How can callers bound remote work and recover from transient failure without multiplying timeouts or duplicating durable effects?**
-- [ ] Identify one tempting but incorrect implementation and the failure it causes.
-- [ ] State which property is not established by the dependency-light proof.
-- [ ] Compare Python and TypeScript boundary behavior without demanding identical internals.
+1. Answer the central question in one paragraph: How can callers bound remote work and recover from transient failure without multiplying timeouts or duplicating durable effects?
+2. Name the authoritative owner and smallest counterexample.
+3. State what the available evidence does not prove.
 
-## Non-compensable gate
+## Continue only when
 
-Every retryable mutation must be durably idempotent, every call must be bounded by one absolute deadline, and every ambiguous outcome must have an authoritative reconciliation path.
-
-Record the result in your learning journal before proceeding.
+Continue only after you can demonstrate the **Deadlines, Cancellation, Retries, and Idempotent Calls** increment, preserve the controlled counterexample as a regression, keep inherited checkpoints green, and explain which stronger claim remains outside the evidence you collected.

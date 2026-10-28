@@ -78,7 +78,7 @@ def orientation_proof() -> None:
 def structure_proof() -> None:
     book = ROOT / "course-book"
     pages = sorted(book.rglob("*.md"))
-    assert len(pages) == 59, f"expected 59 course-book pages, found {len(pages)}"
+    assert len(pages) == 61, f"expected 61 course-book pages, found {len(pages)}"
     module_dirs = sorted(p for p in book.glob("module-[0-9][0-9]-*") if p.is_dir())
     assert len(module_dirs) == 11, f"expected orientation plus 10 modules, found {len(module_dirs)}"
     required = {"index.md", "exercises.md", "exercise-answers.md", "lab.md", "checkpoint.md"}
@@ -97,13 +97,18 @@ def structure_proof() -> None:
         exercise_total += len(ex_head)
         answer_total += len(ans_head)
         lab = (d / "lab.md").read_text()
-        for h in ["## Setup", "## Controlled actions", "## Correctness oracle",
-                  "## Required evidence", "## Cleanup", "## Completion gate"]:
+        for h in ["## Objective", "## Why this lab matters", "## Setup conditions",
+                  "## Hypothesis", "## Controlled action and investigation",
+                  "## Operational oracle", "## Required evidence",
+                  "## Interpretation and defense", "## Cleanup and reset",
+                  "## Completion gate"]:
             assert h in lab, f"missing {h} in {d.name}/lab.md"
         checkpoint = (d / "checkpoint.md").read_text()
-        assert "## Non-compensable gate" in checkpoint
+        for h in ["## Required result", "## Demonstrate", "## Commands",
+                  "## Evidence to retain", "## Defend the design", "## Continue only when"]:
+            assert h in checkpoint, f"missing {h} in {d.name}/checkpoint.md"
     assert exercise_total == answer_total == 120
-    print("PASS course structure — 59 pages, 120 exercises and answers")
+    print("PASS course structure — 61 pages, 120 exercises and answers")
 
 def contract_proof() -> None:
     descriptor = read_json(CAP / "contracts/descriptors/analysis-v1.json")

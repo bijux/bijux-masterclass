@@ -1,5 +1,7 @@
 # Exercises — Module 06: Durable Workers and Recovery
 
+Work through all twelve problems before opening the answers. In **Durable Workers and Recovery**, every response must settle this question: **What makes a 202 Accepted operation honest after the API process or worker dies?** Answer as though another team must implement and operate the design. Ambiguous ownership, unbounded behavior, and evidence-free claims are defects.
+
 ## 1. Why is 202 dishonest for an in-memory task?
 
 ## 2. What guarantee does `SKIP LOCKED` provide and not provide?

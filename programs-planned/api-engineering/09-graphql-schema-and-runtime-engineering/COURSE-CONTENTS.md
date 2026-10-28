@@ -1,7 +1,7 @@
 # Complete course contents
 
 Course 9 is a complete, cumulative self-learning course rather than a schema
-syntax survey. The primary product is a 59-page course book containing
+syntax survey. The primary product is a 61-page course book containing
 orientation, ten full chapters, 120 transfer exercises, 120 corresponding
 worked answers, ten laboratories, and ten non-compensable checkpoints.
 

@@ -1,45 +1,51 @@
 # Start Here — OpenAPI Contract Engineering
 
-## Prerequisites
+## Why this course exists now
 
-Basic programming and command-line ability.
+Course 1 begins only after this boundary is trusted: Basic programming ability, command-line familiarity, and no assumed OpenAPI experience. Its new responsibility is **specify the public promise**, and every exercise must preserve the inherited behavior while making that responsibility explicit.
 
-**Incoming boundary:** Basic programming ability and no assumed OpenAPI experience.
+## Prerequisite gate
 
-Run the predecessor or orientation proof before changing implementation files. A failed predecessor gate means the current course has no trustworthy starting point.
+Before editing the capstone:
 
-## Choose your implementation route
+1. verify the incoming handoff;
+2. read the version and profile state in [Capstone](capstone.md);
+3. confirm which live infrastructure is available;
+4. select the implementation strategy in [Language strategy](language-strategy.md);
+5. create a learning journal for hypotheses, failed predictions, and retained evidence.
 
-Both Python/FastAPI and TypeScript/Fastify are used symmetrically to prove that the contract is language-neutral.
+For **OpenAPI Contract Engineering**, the journal’s first page should answer: *What exactly does the API promise, and how can providers and consumers verify that promise?*
 
-Record the choice in your learning journal. You may switch only after completing a module checkpoint, because simultaneous partial implementations usually reduce depth.
+If the predecessor proof fails, stop. A successor built on an untrusted boundary cannot make a stronger claim.
 
-## The module learning loop
+## Module learning loop
 
-For each module:
+For every numbered module:
 
-1. read the main chapter from its central question to its next-step bridge;
-2. restate the mechanism and its owner without framework vocabulary;
-3. answer all twelve exercises before opening the answer file;
-4. inspect the complete contract source, reference target, provider route, and consumer scenario named by the chapter;
+1. read the chapter from its governing question through its synthesis;
+2. redraw the protocol, state machine, data flow, or ownership boundary;
+3. answer all twelve exercises before opening the answers;
+4. inspect only the implementation paths named by the chapter or lab;
 5. predict the lab’s first failing oracle;
-6. plant or trigger the controlled defect;
-7. repair the owning mechanism and retain a regression;
-8. complete the checkpoint and state the evidence boundary.
+6. run the baseline, introduce the controlled fault, and retain raw evidence;
+7. repair the owning mechanism in the primary track;
+8. compare the same invariant in the second track;
+9. complete the checkpoint before moving on.
 
-## Evidence for this course
+## Course evidence
 
-Contract parsing, reference resolution, schema fixtures, provider-neutral HTTP observations, consumer execution, and compatibility analysis.
+The principal evidence for this course is described in [Evidence model](evidence-model.md). The current version state is: Public API 1.1; OpenAPI 3.1.2 executable baseline; OpenAPI 3.2.0 standards frontier; no durable database yet.
 
 ## Getting unstuck
 
-Classify the disagreement before editing: mental model, contract/profile, implementation, fixture, proof, or environment. Start with the smallest decisive oracle. If a live dependency is unavailable, complete the deterministic and local-process routes and record the live claim as not executed.
+When Course 1 evidence disagrees, classify the fault as HTTP semantics, OpenAPI structure, schema meaning, provider behavior, consumer expectation, or tool support, then use the cheapest authoritative oracle. Unavailable infrastructure narrows the result to what was actually observed.
 
 ## First commands
 
 ```bash
 make doctor
+make predecessor-proof  # when this course has a predecessor
 make core-proof
 ```
 
-Then complete [orientation](module-00-orientation/index.md).
+Then complete [Orientation](module-00-orientation/index.md).

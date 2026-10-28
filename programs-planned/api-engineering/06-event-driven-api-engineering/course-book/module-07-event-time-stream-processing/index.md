@@ -1,52 +1,29 @@
 # Module 07 — Event-Time Stream Processing, Windows, Watermarks, and Corrections
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** How do event time, processing time, windows, watermarks, lateness, and corrections affect derived results?
 
 ## Where this module fits
 
-Event-driven systems often lead from individual consumers to continuous aggregates: completion rate,
-failure rate, processing duration, artifact volume, tenant usage, and lag. The difficult part is not summing
-numbers. It is defining time.
+Module 06 produced **Build notification, analytics, audit, and orchestration consumers with stable derived-command identities and explicit state**. This module extends that result by asking: **How do event time, processing time, windows, watermarks, lateness, and corrections affect derived results?**
 
-Processing time is when a consumer sees a record. Event time is when the business fact occurred. Ingestion
-time is when the broker accepted it. These clocks diverge during outages, replay, network delay, and clock
-skew. A five-minute completion window computed by processing time can place yesterday’s replayed events in
-today’s metrics. A window computed by event time needs a policy for late arrivals and for deciding when a
-result is sufficiently complete.
-
-This module builds a small deterministic stream processor rather than hiding behind a framework. It supports
-tumbling event-time windows, deduplication by event ID, a configurable watermark, allowed lateness,
-revisions, and explicit late-event records. The model makes the semantics visible before an optional stream
-platform supplies scale and checkpointing.
-
-## Capstone result
-
-Implement windowed analysis metrics, watermark progression, late-event correction revisions, and quarantine.
-
-Build the Analysis Metrics stream projection for completed and failed runs. It produces versioned
-event-time window results containing completion count, failure count, total duration, and revision. Late
-but accepted events update a window and increment revision; too-late events are recorded for correction or
-investigation.
-
-```text
-capstone/stream-processing/window-policy.yaml
-capstone/tracks/python-fastapi/src/event_engineering/stream.py
-capstone/tracks/typescript-fastify/src/event-engineering/stream.ts
-capstone/shared/vectors/stream-time.json
-```
+The new capstone increment is **Implement windowed analysis metrics, watermark progression, late-event correction revisions, and quarantine**. It becomes the prerequisite for **Event Security, Multi-Tenancy, Privacy, and Trust**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- distinguish event time, ingestion time, processing time, and observation time
-- choose tumbling, sliding, or session windows from the business question
-- define a watermark as a completeness heuristic rather than a fact that no earlier event exists
-- handle allowed lateness with revisioned outputs
-- record beyond-lateness events instead of silently discarding them
-- deduplicate event-time aggregates by stable event identity
-- make window state and checkpoints replayable and versioned
-- explain the difference between operational metrics and business stream projections
+- Distinguish event time, ingestion time, processing time, and observation time.
+- Choose tumbling, sliding, or session windows from the business question.
+- Define a watermark as a completeness heuristic rather than a fact that no earlier event exists.
+- Handle allowed lateness with revisioned outputs.
+- Record beyond-lateness events instead of silently discarding them.
+- Deduplicate event-time aggregates by stable event identity.
+- Make window state and checkpoints replayable and versioned.
+- Explain the difference between operational metrics and business stream projections.
+
+## Capstone increment
+
+Implement windowed analysis metrics, watermark progression, late-event correction revisions, and quarantine.
 
 ## Core event model
 
@@ -254,10 +231,10 @@ depends on event facts and versioned policy, not wall clock.
 
 ## Module synthesis
 
-Implement windowed analysis metrics, watermark progression, late-event correction revisions, and quarantine. The central distinction is this: how do event time, processing time, windows, watermarks, lateness, and corrections affect derived results? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **distinguish event time, ingestion time, processing time, and observation time, choose tumbling, sliding, or session windows from the business question, and define a watermark as a completeness heuristic rather than a fact that no earlier event exists** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a processing-time implementation and show that replay moves historical events into the wrong window** and requiring the following oracle: **Both correct runs converge on the same final windows and revisions. The accepted late event changes exactly one window, the duplicate changes none, and the too-late event enters a durable late record. Planted processing-time and no-dedupe implementations fail their expected oracles.**
+
+The cumulative platform now includes **Implement windowed analysis metrics, watermark progression, late-event correction revisions, and quarantine**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Stream processing adds state, long retention, and powerful replay. Those features widen the trust boundary.
-Module 08 secures producers, consumers, channels, tenants, schemas, signatures, sensitive payloads, replay,
-and operator actions without confusing legitimate redelivery with a malicious replay attack.
+Continue to [Event Security, Multi-Tenancy, Privacy, and Trust](../module-08-event-security-and-multitenancy/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

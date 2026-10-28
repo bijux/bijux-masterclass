@@ -1,37 +1,83 @@
-# Glossary
+# Glossary — gRPC and Protobuf Engineering
 
-**Application outcome** — the domain result independent of transport representation.
+These terms have precise meanings in Course 7. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
-**Backpressure** — a mechanism by which downstream capacity bounds upstream production.
+## RPC
 
-**Call credentials** — per-call authentication material, distinct from channel credentials.
+A remote invocation with request/response semantics whose network, deadline, retry, and compatibility behavior must remain explicit.
 
-**Channel** — a client-side gRPC subsystem that manages resolution, connections, balancing, and call routing.
+## service definition
 
-**Deadline** — the absolute point after which a result no longer has value.
+The Protobuf declaration of named RPC methods, their input/output message types, and streaming shapes.
 
-**Descriptor set** — a language-neutral compiled representation of Protobuf files, messages, enums, services, and options.
+## message
 
-**Field presence** — whether a field was explicitly supplied, distinct from the value observed after applying defaults.
+A Protobuf record with numbered fields and wire-level evolution rules; it is not a language-specific class.
 
-**Half-close** — one side of a stream finishes sending while still receiving.
+## field number
 
-**Idempotency** — repeated execution of the same intended mutation produces one logical effect and stable result.
+The stable numeric wire tag identifying a Protobuf field; once published, it must not be reused for a different meaning.
 
-**Metadata** — transport headers associated with a gRPC call; not a replacement for business message fields.
+## presence
 
-**Method path** — a fully qualified gRPC route such as `/bijux.analysis.v1.AnalysisControlService/GetRun`.
+Whether the wire and generated API can distinguish “not provided” from a field’s default value.
 
-**mTLS** — TLS where both channel peers authenticate with certificates.
+## unknown field
 
-**ProtoJSON** — the standardized JSON mapping for Protobuf messages, with compatibility concerns distinct from the binary wire format.
+A wire field not recognized by the current schema version; preserving it can be essential for compatible forwarding.
 
-**Reflection** — a gRPC service that exposes descriptors of a running server to authorized tools.
+## oneof
 
-**Retry throttling** — suppression of retries when recent failure indicates that retries would amplify the incident.
+A Protobuf construct expressing that at most one member of a group is selected, with presence represented by the selected case.
 
-**Service config** — client-side configuration for policies such as balancing, health checks, and retries.
+## binary compatibility
 
-**Unknown field** — a serialized field not recognized by the current schema but potentially preserved by binary runtimes.
+Whether old and new implementations can exchange Protobuf wire bytes without misparsing or losing required meaning.
 
-**Wire compatibility** — the ability of old and new schemas to parse binary data without unsafe reinterpretation.
+## source compatibility
+
+Whether generated language APIs continue compiling; it is different from wire compatibility.
+
+## JSON mapping
+
+The standardized textual representation for Protobuf messages, with its own names, number encodings, and compatibility risks.
+
+## metadata
+
+Per-call key-value context used for credentials, tracing, idempotency, and routing; it is separate from the typed message body.
+
+## status code
+
+The canonical gRPC outcome category carried in trailers, distinct from transport success and rich error details.
+
+## rich error
+
+A structured error status containing typed details that clients can interpret without parsing human text.
+
+## deadline
+
+The absolute time by which the caller no longer needs the RPC result and which should propagate through downstream work.
+
+## cancellation
+
+The termination signal associated with a no-longer-needed call or stream; handlers must release work and preserve valid durable state.
+
+## retry policy
+
+The bounded rules deciding whether and when a failed RPC attempt may be repeated without duplicating unsafe effects.
+
+## streaming RPC
+
+An RPC in which the client, server, or both send multiple messages over one call lifetime.
+
+## flow control
+
+HTTP/2 and application-level mechanisms that bound how much data a sender can have outstanding relative to receiver capacity.
+
+## channel
+
+A long-lived client-side abstraction managing connections, name resolution, balancing, and RPC creation.
+
+## reflection
+
+A runtime service exposing descriptors for inspection and tooling; it does not replace governed source schemas or release evidence.

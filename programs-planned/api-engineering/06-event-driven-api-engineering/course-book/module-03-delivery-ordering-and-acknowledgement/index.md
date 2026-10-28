@@ -1,54 +1,29 @@
 # Module 03 — Delivery Semantics, Ordering, Partitioning, and Acknowledgement
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** What do acknowledgement, redelivery, ordering, partitioning, lag, and consumer groups actually guarantee?
 
 ## Where this module fits
 
-A contract can state which messages exist, but it does not make delivery reliable. The moment a producer and
-consumer are separated by a broker, several independent states exist: the producer’s durable state, the
-broker’s accepted record, the consumer’s in-flight delivery, the consumer’s durable effect, and the
-acknowledgement position. Failure can occur between any two of them.
+Module 02 produced **Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles**. This module extends that result by asking: **What do acknowledgement, redelivery, ordering, partitioning, lag, and consumer groups actually guarantee?**
 
-Marketing phrases such as “exactly once,” “ordered queue,” or “durable messaging” are dangerous unless the
-scope is explicit. A broker may store one record once and still deliver it several times. It may preserve
-order within one partition while interleaving records across partitions. An acknowledgement may be lost
-after a consumer committed its effect. A consumer group can share work without providing global sequence.
-
-This module uses a deterministic broker before a live broker so every failure window can be reproduced.
-The model is deliberately small: channels contain partitioned append-only records; groups maintain next
-offsets; one record per partition may be in flight; acknowledgement advances; negative acknowledgement
-delays redelivery; acknowledgement expiry redelivers; termination skips a poison record under explicit
-policy. The purpose is semantic clarity, not a toy replacement for NATS.
-
-## Capstone result
-
-Implement deterministic delivery attempts, partition order, group independence, acknowledgement expiry, negative acknowledgement, and redelivery.
-
-Implement and prove the Analysis Events delivery profile using:
-
-```text
-capstone/tracks/python-fastapi/src/event_engineering/broker.py
-capstone/tracks/typescript-fastify/src/event-engineering/broker.ts
-capstone/event-case/channel-policy.yaml
-capstone/shared/vectors/delivery.json
-capstone/broker/nats/
-```
-
-The deterministic profile establishes per-partition ordering, explicit acknowledgement, bounded redelivery,
-and group-local progress. An optional NATS JetStream route maps the same semantics to a live transport.
+The new capstone increment is **Implement deterministic delivery attempts, partition order, group independence, acknowledgement expiry, negative acknowledgement, and redelivery**. It becomes the prerequisite for **Transactional Publication, Inbox Deduplication, and Exactly-Once Effects**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- distinguish storage, publication, delivery, processing, effect, and acknowledgement
-- state at-most-once and at-least-once semantics without hiding loss or duplication
-- explain why broker-level exactly-once does not automatically create exactly-once business effects
-- choose a partition key from the smallest domain requiring order
-- reason about per-partition ordering and cross-partition interleaving
-- model consumer groups, offsets, in-flight records, acknowledgement deadlines, and redelivery
-- bound retry and distinguish negative acknowledgement from terminal rejection
-- measure lag as both record count and age rather than one misleading number
+- Distinguish storage, publication, delivery, processing, effect, and acknowledgement.
+- State at-most-once and at-least-once semantics without hiding loss or duplication.
+- Explain why broker-level exactly-once does not automatically create exactly-once business effects.
+- Choose a partition key from the smallest domain requiring order.
+- Reason about per-partition ordering and cross-partition interleaving.
+- Model consumer groups, offsets, in-flight records, acknowledgement deadlines, and redelivery.
+- Bound retry and distinguish negative acknowledgement from terminal rejection.
+- Measure lag as both record count and age rather than one misleading number.
+
+## Capstone increment
+
+Implement deterministic delivery attempts, partition order, group independence, acknowledgement expiry, negative acknowledgement, and redelivery.
 
 ## Core event model
 
@@ -285,11 +260,10 @@ remain behind offset 41. This is the deliberate ordering domain.
 
 ## Module synthesis
 
-Implement deterministic delivery attempts, partition order, group independence, acknowledgement expiry, negative acknowledgement, and redelivery. The central distinction is this: what do acknowledgement, redelivery, ordering, partitioning, lag, and consumer groups actually guarantee? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **distinguish storage, publication, delivery, processing, effect, and acknowledgement, state at-most-once and at-least-once semantics without hiding loss or duplication, and explain why broker-level exactly-once does not automatically create exactly-once business effects** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Attempt to settle an already-settled token and require a failure** and requiring the following oracle: **Per-partition offsets are monotonic, the same run never overtakes its unacknowledged predecessor, other partitions can progress, group positions remain independent, ack expiry redelivers the same record, and token reuse is rejected. The poison event reaches the terminal path only after the configured attempts.**
+
+The cumulative platform now includes **Implement deterministic delivery attempts, partition order, group independence, acknowledgement expiry, negative acknowledgement, and redelivery**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-At-least-once delivery deliberately creates the crash-after-effect duplicate. Module 04 addresses that
-failure window with transactional publication on the producer side and transactional inbox/effect
-processing on the consumer side. The goal is not exactly-once delivery; it is one committed business
-effect despite repeated delivery.
+Continue to [Transactional Publication, Inbox Deduplication, and Exactly-Once Effects](../module-04-transactional-publication-and-idempotent-effects/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

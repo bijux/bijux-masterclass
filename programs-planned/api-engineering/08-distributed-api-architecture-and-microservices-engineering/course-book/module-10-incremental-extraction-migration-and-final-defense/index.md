@@ -1,26 +1,27 @@
-# Incremental Extraction, Strangler Migration, and Final Architecture Defense
+# Module 10 — Incremental Extraction, Strangler Migration, and Final Architecture Defense
 
-**Module 10 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How do we extract services incrementally, preserve every existing contract, and retain a safe path to stop, roll back, or merge a service back into the platform?
+> **Central question:** How do we extract services incrementally, preserve every existing contract, and retain a safe path to stop, roll back, or merge a service back into the platform?
 
-## Place in the program
+## Where this module fits
 
-The platform now has explicit service and data ownership, bounded synchronous collaboration, and one durable cross-service workflow. This module adds the next necessary property without weakening the previous guarantees.
+Module 09 produced **Build a distributed proof ladder spanning contract, component, topology, fault, reconciliation, and operator evidence, then use it to reject ten planted architecture defects**. This final module consolidates the course by asking: **How do we extract services incrementally, preserve every existing contract, and retain a safe path to stop, roll back, or merge a service back into the platform?**
+
+The capstone must now deliver **Extract Notification Delivery and Artifact Delivery through shadow, compare, backfill, cutover, and decommission phases; retain Analysis Control; and publish the Course 9 graph-access handoff** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **Distributed Architecture Profile 1.0, explicit service and data ownership, versioned projections, saga and trust policies, independent release choreography, extraction evidence, and a GraphQL boundary brief.**
 
 ## Learning outcomes
 
-- sequence extraction from low-coupling evidence rather than organizational pressure
-- use strangler routing, shadow comparison, and read/write cutover safely
-- migrate data without uncontrolled dual writes
-- define decommission, rollback, and merge-back criteria
-- defend the final architecture against shared-database and distributed-monolith critiques
-- publish a sanitized service and query boundary for GraphQL without bypassing service ownership
+- Sequence extraction from low-coupling evidence rather than organizational pressure.
+- Use strangler routing, shadow comparison, and read/write cutover safely.
+- Migrate data without uncontrolled dual writes.
+- Define decommission, rollback, and merge-back criteria.
+- Defend the final architecture against shared-database and distributed-monolith critiques.
+- Publish a sanitized service and query boundary for GraphQL without bypassing service ownership.
 
-## Capstone result
+## Capstone increment
 
 Extract Notification Delivery and Artifact Delivery through shadow, compare, backfill, cutover, and decommission phases; retain Analysis Control; and publish the Course 9 graph-access handoff.
-
 
 ## Extraction is a migration, not a rewrite
 
@@ -139,6 +140,7 @@ You complete Course 8 only when:
 - rollback and merge-back exist;
 - reconciliation is empty after the final workflow;
 - the outgoing Course 9 handoff verifies exactly.
+
 ## The strangler pattern is controlled ownership transfer
 
 A strangler migration is often drawn as a router gradually directing traffic to a new system. Routing is only the visible part. A complete extraction transfers:
@@ -345,3 +347,13 @@ That is the professional skill this course is designed to establish.
 Both reference tracks implement the same extraction phases, stable route selection, shadow comparison, rollback guard, and reconciliation outcomes. Python makes phase transitions and comparison records explicit through enums and dataclasses. TypeScript uses discriminated string states and strict return types. The final defense compares the architecture and externally visible behavior, not identical internal class layouts.
 
 In the primary track, add one failed transition and one rollback case. In the comparative track, review whether static types alone could prevent an unsafe dual writer or side-effecting shadow. They cannot; runtime ownership and proof remain necessary.
+
+## Module synthesis
+
+You are ready to leave this module when you can **sequence extraction from low-coupling evidence rather than organizational pressure, use strangler routing, shadow comparison, and read/write cutover safely, and migrate data without uncontrolled dual writes** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject candidate divergence and execute rollback before final cutover** and requiring the following oracle: **Public HTTP, event, and RPC contracts remain valid; extracted services own their data; Analysis Control remains cohesive; rollback works; final reconciliation is empty.**
+
+The cumulative platform now includes **Extract Notification Delivery and Artifact Delivery through shadow, compare, backfill, cutover, and decommission phases; retain Analysis Control; and publish the Course 9 graph-access handoff**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 9 may treat only the manifested handoff as settled.

@@ -1,91 +1,29 @@
-# Python and TypeScript strategy
+# Language Strategy — Distributed API Architecture and Microservices Engineering
 
-Course 8 teaches distributed invariants, not framework imitation.
+## Strategy
 
-## Choose one primary track
+Choose one primary track for the complete build and lab repairs. Use the second as an idiomatic comparison and shared-vector parity reference. The course deliberately avoids making learners type the same architecture twice.
 
-Implement and modify either:
+## What must match
 
-```text
-capstone/tracks/python-distributed
-```
+- public messages and documented statuses;
+- named state, security, reliability, performance, event, RPC, architecture, graph, or governance decisions owned by this course;
+- canonical bytes when signatures, digests, wire compatibility, or cross-language identity depends on them;
+- accepted, rejected, and review-required release classifications;
+- shared negative vectors and evidence boundaries.
+- the Course 8 outcome: Distributed Architecture Profile 1.0, explicit service and data ownership, versioned projections, saga and trust policies, independent release choreography, extraction evidence, and a GraphQL boundary brief.
 
-or:
+## What may differ
 
-```text
-capstone/tracks/typescript-distributed
-```
+service frameworks, process supervision, client pools, and deployment descriptors differ; compare ownership, dependency edges, failure behavior, and release independence.
 
-Use the other track for comparative review and shared-vector parity.
+## Reading implementation examples
 
-## Python reference
+For each example:
 
-The Python track emphasizes:
-
-- dataclasses for explicit architecture records;
-- enums for state machines;
-- deterministic clocks and in-memory transports;
-- visible exceptions and transaction-like decisions;
-- tests that narrate failure schedules;
-- straightforward inspection of owner state.
-
-It is useful for tracing one saga and reconciliation decision step by step.
-
-## TypeScript reference
-
-The TypeScript track emphasizes:
-
-- discriminated unions and exact state values;
-- `ReadonlySet` and immutable declarations for ownership;
-- safe representation of identifiers and versions;
-- explicit runtime validation despite static types;
-- promise and cancellation boundaries;
-- strict compilation across cross-service models.
-
-It is useful for seeing how structural compatibility can still admit semantically invalid data when runtime checks are missing.
-
-## Required parity
-
-Both tracks must agree on:
-
-- approved, conditional, retained, and rejected boundaries;
-- service catalogue and owner classification;
-- one-writer data ownership;
-- monotonic projection behavior;
-- dependency graph cycle and depth rejection;
-- saga states, effect identity, and compensation;
-- capability claims and validation outcomes;
-- route phase behavior;
-- version-skew classification;
-- extraction transitions;
-- reconciliation findings;
-- final externally visible outcomes.
-
-They need not agree on:
-
-- package layout;
-- class or interface names;
-- exception hierarchy;
-- dependency-injection style;
-- asynchronous primitives;
-- testing library syntax.
-
-## Translation exercise
-
-For each module, translate one mechanism—not the whole codebase—into the comparative language. Good candidates are:
-
-- boundary decision function;
-- graph cycle detector;
-- monotonic projection apply function;
-- capability verifier;
-- saga transition;
-- stable canary router;
-- reconciliation finding generator.
-
-Then compare which invariant is enforced statically, dynamically, or only by tests.
-
-## Framework boundary
-
-The executable core is intentionally framework-light. Optional adapters and topology examples show where FastAPI, Fastify, gRPC, HTTP clients, databases, and Kubernetes enter. The architecture should remain understandable without a framework runtime.
-
-A framework route or client call is never the source of business ownership. It adapts a contract to an application decision.
+1. name the invariant before reading code;
+2. identify the owner and state boundary;
+3. find the negative test;
+4. find cleanup and failure behavior;
+5. compare the second track only after you can explain the first;
+6. never infer a protocol rule from one framework default.

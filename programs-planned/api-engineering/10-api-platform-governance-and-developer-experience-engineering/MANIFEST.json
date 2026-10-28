@@ -1,5 +1,5 @@
 {
-  "file_count": 345,
+  "file_count": 347,
   "files": [
     {
       "path": ".gitignore",
@@ -13,12 +13,12 @@
     },
     {
       "path": "COURSE-CONTENTS.md",
-      "sha256": "9022bd51121e7333088bc422d95296693a30ffe7aef618a3140d5414e0a23a09",
+      "sha256": "eff4e225de060f3deab061ff720ae13fb360041aad3cba95e9d3edb3a768b4fa",
       "size": 1705
     },
     {
       "path": "FINAL-VERIFICATION.md",
-      "sha256": "a0f34852fb3e873c114ef91c3573999f338ce7fc1189a1d2ffd1f93a25027d66",
+      "sha256": "c518726528302650346a9880d07cd083ada133b6df55f690103b6a2b6f8d9cac",
       "size": 3246
     },
     {
@@ -43,8 +43,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "3cb6c5feaa16d1d2096752a5bafecd8980acb0e8a184d03ecd5ccb4fed511267",
-      "size": 3207
+      "sha256": "d8d3f3fafefceeaf7527b626c9318eed030af454ce3b2bd34cf5a075e05ca74c",
+      "size": 1234
     },
     {
       "path": "assessment/final-defense.md",
@@ -1322,304 +1322,314 @@
       "size": 347
     },
     {
-      "path": "course-book/capstone-map.md",
-      "sha256": "208ca4610e25976a4299f47584e8fc3d19197d4ae5c1286cc1f296471269d30e",
-      "size": 2226
+      "path": "course-book/capstone.md",
+      "sha256": "b34d0115c66b01f115998f0cb46558b68261898c08b07a27109187d499d76646",
+      "size": 3852
     },
     {
-      "path": "course-book/course-guide.md",
-      "sha256": "a4d59950cfca15827790cce1ba2af8278568d2c4b17a13dc18b761eb5c211d48",
-      "size": 1855
+      "path": "course-book/evidence-model.md",
+      "sha256": "3aee138b120a35c0a13b30482c1ed2203bafcc991df9dfc116a57546d4821a66",
+      "size": 1730
+    },
+    {
+      "path": "course-book/glossary.md",
+      "sha256": "f2659a6f335060f8b3d5eff71dffa201491ecc65b3e1d9c42f445d23ade83481",
+      "size": 3342
     },
     {
       "path": "course-book/index.md",
-      "sha256": "77f160ce30caf2bfe51c95d090b971a3b426949c2f79920f34721154b3caf9dc",
-      "size": 1734
+      "sha256": "d741ba476feb00b1719269b5959fcd6e06ed84127c353ee83c77377a3d5114b8",
+      "size": 6732
+    },
+    {
+      "path": "course-book/language-strategy.md",
+      "sha256": "c69f24848eb7dbb436f14b6af3fad0e6908fdd92f1ebe9549d2731c84c595a0c",
+      "size": 1525
     },
     {
       "path": "course-book/module-00-orientation/checkpoint.md",
-      "sha256": "4d5611c333f7fed405e4d6d6600a1ce3eff7bf660a60fd84aa206e7155a83838",
-      "size": 366
-    },
-    {
-      "path": "course-book/module-00-orientation/exercise-answers.md",
-      "sha256": "b14d67243c7ac1946ec501578a7f625ff9d4c115df2bc0e4983a44adc955b812",
-      "size": 1733
-    },
-    {
-      "path": "course-book/module-00-orientation/exercises.md",
-      "sha256": "1bb0eafa3913cb7bea4f2ace7c227a1bc05c527e61ad70226932023908c4fb89",
-      "size": 506
+      "sha256": "d89f0ab9ee70862afd919cea4542fe803305c45a64fe9c751961d09292075686",
+      "size": 1760
     },
     {
       "path": "course-book/module-00-orientation/index.md",
-      "sha256": "653aba73346da8b2d80a5eba5af4b4427a4a5411d8b8e7c5de8315c8ca318ca4",
-      "size": 10693
+      "sha256": "f973f524e7fa779fdf963de44b446c1159c2555626124b2f68edd3ff898108a3",
+      "size": 3888
     },
     {
       "path": "course-book/module-00-orientation/lab.md",
-      "sha256": "775217a31a5577a28ebc3fcba80a79c3b5cccb1d04a09251f81f8cbf44e70d72",
-      "size": 870
+      "sha256": "0f26eec37fda924a2d03ca7ecd364e49d618c8049466fa70ce4e4c3173e9b701",
+      "size": 3350
     },
     {
       "path": "course-book/module-01-platform-product-model/checkpoint.md",
-      "sha256": "47e7f37d2ee75509e54ffe143766bf56c9db3ae87da396d0091b1d689893e622",
-      "size": 353
+      "sha256": "ca2736d076f376dfb0127bb133af911ef5d8cfd2b01191516537d8198d6c3277",
+      "size": 1305
     },
     {
       "path": "course-book/module-01-platform-product-model/exercise-answers.md",
-      "sha256": "ab2e870581cdbff776ce196a93bf2795da29cbd6b3ffb3790940c6977cc05d1b",
-      "size": 3319
+      "sha256": "61c147d95e3cacb41aa1ec5c920023f60292ab7f67e336d0e29069d70ce49b32",
+      "size": 9168
     },
     {
       "path": "course-book/module-01-platform-product-model/exercises.md",
-      "sha256": "ae0bba5cb3c3f39fcc2d83ec7091a8db912e36df1e486f0041fa16974ab0cb53",
-      "size": 911
+      "sha256": "4985989942799b126dae40039882fb7166fe663adc03790c66f13a57f3430e05",
+      "size": 1232
     },
     {
       "path": "course-book/module-01-platform-product-model/index.md",
-      "sha256": "69de9064917e01379de8a2441edab3c825b9cee47a13e9893ec04223238c72e5",
-      "size": 17310
+      "sha256": "7c87336d5805dcbe63d7aa40fa1b74aaf1a4e7e62e48c952de71c04cb514f493",
+      "size": 19059
     },
     {
       "path": "course-book/module-01-platform-product-model/lab.md",
-      "sha256": "6736642618ef6a606bf4c9dc4b567dd8331bfe71ccc9d7a6b819e9a1ab8c023f",
-      "size": 1141
+      "sha256": "7b19a114028eb2a033e370c7a49048bbcd91e151edc8a1df933d9e76b72b1652",
+      "size": 4207
     },
     {
       "path": "course-book/module-02-catalog-ownership-and-topology/checkpoint.md",
-      "sha256": "7d4a3bf0f2ba5ccffa34ace1d2019880cfd1d1dd668a66f2c7407b056e2cb147",
-      "size": 319
+      "sha256": "c46c90cc3fa66ecb127bad9ea9b19f863146732946cdee4b010e2687b4085a19",
+      "size": 1270
     },
     {
       "path": "course-book/module-02-catalog-ownership-and-topology/exercise-answers.md",
-      "sha256": "423481cb5ad21b234a91b7e748561d95f28a408b4d5e191284f74ea8cbf0ed97",
-      "size": 3083
+      "sha256": "c238ae997a7791ff35157c9cd947f4440979e1e2f5bb48097480607d03161271",
+      "size": 8193
     },
     {
       "path": "course-book/module-02-catalog-ownership-and-topology/exercises.md",
-      "sha256": "77635c53b46ddc3bbd1cda564af99e7e56b688e0904a732ac2d089e7bfc0e5a6",
-      "size": 775
+      "sha256": "728fc0fa353bf44927a945779ddd534e75d5472c483203c13e924f8e9486a059",
+      "size": 1066
     },
     {
       "path": "course-book/module-02-catalog-ownership-and-topology/index.md",
-      "sha256": "e3c622f81f9255970c729cc306e425595f1ee5431446a4b59ac0759f867e9c59",
-      "size": 17069
+      "sha256": "4072de2ea790258ab43fea400896f141744b3ba6cbacb81b59bec7096647e0b3",
+      "size": 18689
     },
     {
       "path": "course-book/module-02-catalog-ownership-and-topology/lab.md",
-      "sha256": "13e447cb652c7684c1903c9e80f58694f4882fbfe617c2f5617aa4fd69e87e9f",
-      "size": 988
+      "sha256": "7727e5127b97c9d94f8b1084dc3b309df305a6848c9a88eb347bb715cf1f7fe7",
+      "size": 4047
     },
     {
       "path": "course-book/module-03-contract-registry-and-publication/checkpoint.md",
-      "sha256": "95a464fe96a103ed2c5ac182774bae0659403edd8eaa54db65276d0e64c2b98c",
-      "size": 332
+      "sha256": "fdad8e8c9264a7fc171101fb420a79960137eda079ea3861a6776af8881e6d75",
+      "size": 1237
     },
     {
       "path": "course-book/module-03-contract-registry-and-publication/exercise-answers.md",
-      "sha256": "070d8478994444c45d372d1c34e8f7f6b6d2d8e00f6957680813c6f14d3d1a2f",
-      "size": 2811
+      "sha256": "85625d46e9e3bd4f2aa7347421a3c8468a0423f053808855b6ce98ca49e0d0e8",
+      "size": 8216
     },
     {
       "path": "course-book/module-03-contract-registry-and-publication/exercises.md",
-      "sha256": "08bd3e09321205e7f7059f7eb27dfc4da12416714955c7af388d8e578132e971",
-      "size": 872
+      "sha256": "e34ea6b13a410126a55d2751b9357ccf915c18fd3d3258b75f1e2af45604074f",
+      "size": 1194
     },
     {
       "path": "course-book/module-03-contract-registry-and-publication/index.md",
-      "sha256": "8435f37cb39605a28f151e43ae96422d549e27d00bdb0e631c5c9ef4d24a227a",
-      "size": 16149
+      "sha256": "753ec7d9cce527793360741be71d7df6c1409a4c5a1cae296e284a45e737c046",
+      "size": 17884
     },
     {
       "path": "course-book/module-03-contract-registry-and-publication/lab.md",
-      "sha256": "9500e6380066cdb9e1ad45a14f7d8b8f7750fb41123f6b840a6e659fcfdb8387",
-      "size": 929
+      "sha256": "2686417c1a9bc890df64ff670d87f1a0be1d80848d854d24323b62215ba31c31",
+      "size": 4416
     },
     {
       "path": "course-book/module-04-governance-as-code/checkpoint.md",
-      "sha256": "97366744ca32f0ed8756ded99384029dff442ce5ca8e9f05d10aa4773e849028",
-      "size": 330
+      "sha256": "64f0b16e85f67faabbdedac87eaa6d5a5266eaa8b9b341dd2c113ed18b8147bf",
+      "size": 1322
     },
     {
       "path": "course-book/module-04-governance-as-code/exercise-answers.md",
-      "sha256": "3900e52fb84ec80af075331ad272a57fdbaf04d13011527100f9e048afc90293",
-      "size": 2767
+      "sha256": "4b9ff64c2b6e057baf9aa58a7e7e7ee14eb2583063ad9d8f0caa4487f6a0ec7b",
+      "size": 7867
     },
     {
       "path": "course-book/module-04-governance-as-code/exercises.md",
-      "sha256": "3a3b7ff75ed1cd04775c8dfd3488e83d62afbb3d434991122e024edaf8f0a763",
-      "size": 799
+      "sha256": "1df44908ae15e02d82bca802788507549d169e8cacbeb88e410928f4cf85f0d1",
+      "size": 1119
     },
     {
       "path": "course-book/module-04-governance-as-code/index.md",
-      "sha256": "d3ed51a48d0fc7d0697559a6b4d66cc935f4a32a94b36399ab11a77dfc11742a",
-      "size": 15033
+      "sha256": "2a8a36eabb5fe55841b100290abf6160b0bb987fbb5f4b6fb8606f21bfb1a0fe",
+      "size": 16646
     },
     {
       "path": "course-book/module-04-governance-as-code/lab.md",
-      "sha256": "b7f68f194cf5b8720a58ae1d5bbd4898d8c302185629aa19697de425808ac3d2",
-      "size": 867
+      "sha256": "a6ff8ea387455b6312db115c49283d2c60de5af2e8936b5bb13930c8fe6ce97a",
+      "size": 3964
     },
     {
       "path": "course-book/module-05-lifecycle-deprecation-and-retirement/checkpoint.md",
-      "sha256": "baed10e8c830e1e2319e21fe2f828a698ea9a1a350686bace71b1efdb11caa15",
-      "size": 347
+      "sha256": "b12ec1a3613e10aec737e1f9bcc3a1c7a3f30bb8afa526954c2f1d6030967278",
+      "size": 1241
     },
     {
       "path": "course-book/module-05-lifecycle-deprecation-and-retirement/exercise-answers.md",
-      "sha256": "b428c024d4fc3b695456262f2264badf5672b1a1c8282329c2d7a9cea3a439f2",
-      "size": 2672
+      "sha256": "b1513f94b2e506163d6768d7f22e227f017643811d6c6fcd0e4e07d3f1b6f108",
+      "size": 8210
     },
     {
       "path": "course-book/module-05-lifecycle-deprecation-and-retirement/exercises.md",
-      "sha256": "457cc2dc4bca08e926cefac1d678d397d1baad83386d05d073510cdc658868b7",
-      "size": 768
+      "sha256": "6b179b0291ea06f0f0cbab29e9390f3dd4ce5c1e1cfd17cc8bc80c25c369e5be",
+      "size": 1068
     },
     {
       "path": "course-book/module-05-lifecycle-deprecation-and-retirement/index.md",
-      "sha256": "a61124ea957e2a2331ca90764e16ef07f3618bbc2b26a329686aa38b727781df",
-      "size": 14752
+      "sha256": "52508d45408ac16350b6aaac09b507c4dee7e457ef298cd86638264ae8cb5d87",
+      "size": 16494
     },
     {
       "path": "course-book/module-05-lifecycle-deprecation-and-retirement/lab.md",
-      "sha256": "eee2fbdb69f1a4815ae037c344ecebdc838cfeed6018186d86c0b47cb657bd63",
-      "size": 977
+      "sha256": "2eb8f276a7f6c8bb0e95a532e9c3051e30162b1864cd341d676b66cc1f791665",
+      "size": 4245
     },
     {
       "path": "course-book/module-06-golden-paths-and-self-service/checkpoint.md",
-      "sha256": "43888b0414a4b1acfbbae029c561f9b8b7497861700e22a3e3cdee63c4d43182",
-      "size": 397
+      "sha256": "2c83afc5a871d69e1d87306c4f0853749a2be1714063deff1f81b038d1333b08",
+      "size": 1297
     },
     {
       "path": "course-book/module-06-golden-paths-and-self-service/exercise-answers.md",
-      "sha256": "ef7cbdfa4e352c3fb10c925cbfd6663cb462edc840788613766cc7b052258267",
-      "size": 2901
+      "sha256": "0abcec63d40197bfb4867c8605cca1dc3fd3ab09d663fd3c6e783b00861d3c36",
+      "size": 7801
     },
     {
       "path": "course-book/module-06-golden-paths-and-self-service/exercises.md",
-      "sha256": "687718da34368e7cc3ba26e20718bc9f18ce3ca81af8d15b849d4af3cffc5137",
-      "size": 835
+      "sha256": "837bec1563afb725293615fe390d5286f7df309abfb0fd251b7ef58fb3ecff80",
+      "size": 1169
     },
     {
       "path": "course-book/module-06-golden-paths-and-self-service/index.md",
-      "sha256": "624859be14c0d5a7a47eb16e6a8d3981138d7cbb7883f245077dd3122c1863ce",
-      "size": 14831
+      "sha256": "44716a19b1b9098e67905388faeaa2639e5e2b05a0568d115725cfca55f10bf5",
+      "size": 16540
     },
     {
       "path": "course-book/module-06-golden-paths-and-self-service/lab.md",
-      "sha256": "a0fa7e21a8e223298ff57a6e2c2238980d5500fbc068f77736b1a1ea1d207425",
-      "size": 1037
+      "sha256": "1285c5ec2f26f7c48ff7c4a675b8700a8be05a0de83b5b46b5d4317d57745da3",
+      "size": 4245
     },
     {
       "path": "course-book/module-07-documentation-discovery-and-sandbox/checkpoint.md",
-      "sha256": "9716e6e8a38b08b089f26b26c7244f86ed0bb064654189783f2374a4690e68d4",
-      "size": 367
+      "sha256": "1047e06ee0480282b2417ef707f4a393af508e3a8df456a15604969eaaae71f0",
+      "size": 1352
     },
     {
       "path": "course-book/module-07-documentation-discovery-and-sandbox/exercise-answers.md",
-      "sha256": "0b2fb3ba55816a2fa1d871b16465a1e33a3d54d45afd18e5a68bd8c24db25924",
-      "size": 2718
+      "sha256": "7fa9bb80be61225675f2ddbd1dc4270417a71993611f2a8a769f30bb5f15b19a",
+      "size": 7997
     },
     {
       "path": "course-book/module-07-documentation-discovery-and-sandbox/exercises.md",
-      "sha256": "2791094361be47aec8fa1ab747963d41afb86d0b84e27c1c82292850f8a661ab",
-      "size": 787
+      "sha256": "76a07892329158563aed498141efe188918f300250ab3af04adb3db060be35f2",
+      "size": 1141
     },
     {
       "path": "course-book/module-07-documentation-discovery-and-sandbox/index.md",
-      "sha256": "ab50055d5d8e1ddb50a25e739d3ad6c2e2e5199661d918c4571c2774260394f6",
-      "size": 15270
+      "sha256": "e56d96e21bf078d6ab95c3f8cb9e0d92dbd45d36a1d9064d0bf7c53b7d557878",
+      "size": 16942
     },
     {
       "path": "course-book/module-07-documentation-discovery-and-sandbox/lab.md",
-      "sha256": "8e16945e14fd9e48863ee65194867f7508a8021e54303cf786db334e37557c36",
-      "size": 1098
+      "sha256": "8dba4c6a0efe6706f1b22bfc46a67231ca0449e69a327fb816eb1ff094e6ad4a",
+      "size": 4288
     },
     {
       "path": "course-book/module-08-sdks-artifacts-and-supply-chain/checkpoint.md",
-      "sha256": "3d1d5cf90fc5722d348d1aee6dfbc68e36aa45da62c3a976fc3c0651b9f64b40",
-      "size": 373
+      "sha256": "9f8774909ab903b765440761d16fa76fdc86264dd69cd3724a51ee8f3df3e127",
+      "size": 1352
     },
     {
       "path": "course-book/module-08-sdks-artifacts-and-supply-chain/exercise-answers.md",
-      "sha256": "3610b2dcfd591479474588ba92cd6a7ead10cf14c313bb9c7c415b4ddfea3f7c",
-      "size": 2870
+      "sha256": "6e603df0c8ea5f7e14f0a15d48dbfc3dc42809976b69dd45f5abe3c2236e69b9",
+      "size": 7833
     },
     {
       "path": "course-book/module-08-sdks-artifacts-and-supply-chain/exercises.md",
-      "sha256": "ad59082665b77757af1e87901f1c56ca3fb914e2d121f8ce36e5fb72693398f2",
-      "size": 775
+      "sha256": "4edd0a3fa7fbab60d4282f1b0d9e803342b65790790ed54a2e52473e0d284df4",
+      "size": 1089
     },
     {
       "path": "course-book/module-08-sdks-artifacts-and-supply-chain/index.md",
-      "sha256": "d7b60964a48577f03ca29829e8686beddc97dc483cb77cf18c15d076b17b7646",
-      "size": 14007
+      "sha256": "eab226820b83f839ade407077ff909da50498626b1ca5d13b77db471ba951b3a",
+      "size": 15872
     },
     {
       "path": "course-book/module-08-sdks-artifacts-and-supply-chain/lab.md",
-      "sha256": "02d84f31e3c02e3f124eb22518f06f42df606a0970b6eb00b92efb2a355fd941",
-      "size": 1096
+      "sha256": "18734deb2abb0e75c16a6a9541e13ed0b65a35364c2864e24f79cb38354f249f",
+      "size": 4433
     },
     {
       "path": "course-book/module-09-runtime-analytics-and-support/checkpoint.md",
-      "sha256": "e882b4e3ca243d49746aa5c533131ee994c142d0f733d27d739cce8d24feca02",
-      "size": 368
+      "sha256": "570468f0e5ac7aa32906e4a4d53f9fe101355388231638f640ee41f5cec7264d",
+      "size": 1395
     },
     {
       "path": "course-book/module-09-runtime-analytics-and-support/exercise-answers.md",
-      "sha256": "175267251c7af010c7f8b7b8b38982f79f8c1cbd3a1fbf8b8706a737ce9041cf",
-      "size": 2847
+      "sha256": "807231fea9b1e83c8849e8e415c9aeb6cc05aa56d002cf606ccf069ecddcc16d",
+      "size": 8176
     },
     {
       "path": "course-book/module-09-runtime-analytics-and-support/exercises.md",
-      "sha256": "d7112b80ae418611e124359e3ac7b16488e69a46320a48390248f111547e6bc7",
-      "size": 814
+      "sha256": "5c9f56c9ad6064d748a5b9719663663cc6739ec3ee0bf37b3500ae624dc9d5b5",
+      "size": 1182
     },
     {
       "path": "course-book/module-09-runtime-analytics-and-support/index.md",
-      "sha256": "f3366ae45984e7286383a05bdcbbfb3ec191301f6fba30fa783db317e62dbe1b",
-      "size": 16080
+      "sha256": "e9c00765a9344c84001365048cb0bca83ea3fe2e45074c2ccaa8b12181d8fe5c",
+      "size": 17910
     },
     {
       "path": "course-book/module-09-runtime-analytics-and-support/lab.md",
-      "sha256": "ef0945d28de400840f0c9cd8f08b4d0f07d2a5460bc90ef6f6925404cb0d2f4d",
-      "size": 1052
+      "sha256": "28ce2785840ac1d567ea4af1251205552dd5767380be4e6a403f05fc6369e666",
+      "size": 4433
     },
     {
       "path": "course-book/module-10-federated-governance-and-final-defense/checkpoint.md",
-      "sha256": "6d290be39e5450d0829c64bae0b0de80fbeafb26dd0689e016cecb88721febbf",
-      "size": 626
+      "sha256": "a25a2fb8f10edf8a823b408893e2100ee7445b29fbad4732ee120d71d429243b",
+      "size": 1386
     },
     {
       "path": "course-book/module-10-federated-governance-and-final-defense/exercise-answers.md",
-      "sha256": "bb9ec612002eb61eed9aaae35deb9afdb25a38c4d4939ab4daaf5370bc47d26d",
-      "size": 3052
+      "sha256": "d3325e3c175f931a8fe6a9ea7aab353af11fba8cdc7b83f99113f10ad9ad6a8d",
+      "size": 8666
     },
     {
       "path": "course-book/module-10-federated-governance-and-final-defense/exercises.md",
-      "sha256": "22bee8ee30f52e8f1953ed59bf96a270f4db9f7412a40b267a92d0c2b6206794",
-      "size": 845
+      "sha256": "aaf69258e544cda05d706251668a314292af64984d05a283403e84f82702a94a",
+      "size": 1187
     },
     {
       "path": "course-book/module-10-federated-governance-and-final-defense/index.md",
-      "sha256": "f28e7a4bf2475e50adfc44eddc5becf61c92610a7ceba2b80ee6e11628bfccf0",
-      "size": 19829
+      "sha256": "14efd6258f38dd45d325bb1171ef56b9fcdf293bebad161318e2837a33c49298",
+      "size": 21742
     },
     {
       "path": "course-book/module-10-federated-governance-and-final-defense/lab.md",
-      "sha256": "ef4019d20881ea0939a6eaa98b2f574edce92fced03053937d7502b997cb2ab2",
-      "size": 1400
+      "sha256": "60de8908d6acb8538eeaa9991f535ff5333db08151b53646f1d22a452babcf0e",
+      "size": 4918
+    },
+    {
+      "path": "course-book/standards.md",
+      "sha256": "ae8ab52ccd40119a1dc6940815f71dbeb0dd7ea52137eb02169449370f7667f5",
+      "size": 2116
     },
     {
       "path": "course-book/start-here.md",
-      "sha256": "92ca4edab50973004ba156c79f80073bf1d58cb2539721d10dc77885a4ad74df",
-      "size": 1932
+      "sha256": "bdb9358d84e73c9e90905d6fd46db8b163d9f71ec3c750e6f48fcf5aae8d926b",
+      "size": 2694
+    },
+    {
+      "path": "course-book/study-plan.md",
+      "sha256": "423214a9fe17eb7bc3931e0b709fdad9af1ad653c1227035e0acf9d87d2f23dc",
+      "size": 3782
     },
     {
       "path": "course.json",
-      "sha256": "770515bbdd7e80eeae28c32eefbdb339bef6b601f552471619abad8b3833d2b4",
-      "size": 940
+      "sha256": "20b08779ff33e094e82a48c4dd6ccfdeb04dd7c728ce776f16163d2d32256e4d",
+      "size": 9288
     },
     {
       "path": "instructor/teaching-notes.md",
@@ -1628,8 +1638,8 @@
     },
     {
       "path": "mkdocs.yml",
-      "sha256": "212fcfec7b3b17fe7ed5e80b084a2e21d15d409786e814499d0696858925a8b7",
-      "size": 4836
+      "sha256": "e979cc78ee8cc4d0eb34ee347f6f22c4926b37ca31746897ac41d00dc00b654d",
+      "size": 5000
     },
     {
       "path": "reports/README.md",
@@ -1688,7 +1698,7 @@
     },
     {
       "path": "reports/release-verification.json",
-      "sha256": "c991e544cae3d127a323c28ef8bc8478279ded55263ddc7dc07a1c191598a808",
+      "sha256": "6f292881e46715dfa335801677d863ad6d245dffb136f85fb0e72dd7d616dbd7",
       "size": 2520
     },
     {
@@ -1708,8 +1718,8 @@
     },
     {
       "path": "scripts/course_tool.py",
-      "sha256": "0816ff125541ab04c6eff8067e29511569cc1f263dbc99d821142f158f6ccd71",
-      "size": 29688
+      "sha256": "b86e603903f8d1011a3def5d79f3d4960f5cc226cc97c6aa3c43d9263f5feba2",
+      "size": 31213
     },
     {
       "path": "scripts/package_release.py",
@@ -1718,7 +1728,7 @@
     },
     {
       "path": "scripts/write_release_metadata.py",
-      "sha256": "b7d64c91903c459ad810768f03c1d163a65126abc308cd8610d7557cf6018528",
+      "sha256": "7dce6ccffc8b3075403cafd3fd33c82159babf7ffbb42d177be98f28e6ccbd20",
       "size": 9938
     },
     {

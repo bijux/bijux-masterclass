@@ -1,6 +1,6 @@
-# Exercises — Schema Evolution, Federation, Governance, and Final Defense
+# Exercises — Module 10: Schema Evolution, Federation, Governance, and Final Defense
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Schema Evolution, Federation, Governance, and Final Defense**, every response must settle this question: **How does the graph evolve without breaking clients, erasing service ownership, or becoming an ungoverned platform?** Conclude each problem with a release decision: what may proceed, what must be rejected, and what remains unproven by the available environment.
 
 ## 1. Why is schema diff alone insufficient?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. How does Course 9 prepare Course 10?
-

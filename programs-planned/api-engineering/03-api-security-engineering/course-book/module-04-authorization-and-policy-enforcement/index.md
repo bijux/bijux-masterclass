@@ -1,12 +1,14 @@
 # Module 04 — Authorization and Policy Enforcement
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** How are scopes, roles, ownership, tenant membership, relationships, assurance, and freshness combined under default deny?
 
 ## Where this module fits
 
-Implement default-deny policies that combine scope, role, tenant, ownership, relationship, assurance, and freshness. You arrive from Module 03 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **Hostile Input and File Handling**.
+Module 03 produced **Implement issuer, audience, algorithm, key, lifetime, revocation, subject, tenant, and scope validation**. This module extends that result by asking: **How are scopes, roles, ownership, tenant membership, relationships, assurance, and freshness combined under default deny?**
+
+The new capstone increment is **Build explicit authorization decisions for collections, individual resources, fields, support access, and administration**. It becomes the prerequisite for **Hostile Input and File Handling**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Implement default-deny policies that combine scope, role, tenant, ownership, rel
 - Apply field-level input and output policy.
 - Prevent existence leaks and stale authorization decisions.
 
-## Capstone result
+## Capstone increment
 
 Build explicit authorization decisions for collections, individual resources, fields, support access, and administration.
-
-Every operation has a policy; correct scope without ownership and ownership without permission both fail.
 
 ## Core security model
 
@@ -122,7 +122,6 @@ A previously valid support session remains accepted after expiry or revocation.
 
 A file or database mutation occurs before resource ownership is checked.
 
-
 ## Python implementation
 
 Represent `Principal`, `Action`, `ResourceFacts`, and `Decision` as immutable types. Policies return structured denial reasons for audit but adapters translate them to the frozen public problem behavior. Repository methods accept tenant/principal constraints rather than loading globally then filtering in Python.
@@ -151,7 +150,6 @@ For each pattern, explain why it can look reasonable, construct the smallest cou
 
 
 ### 6. Letting an unknown operation default to a low-privilege policy.
-
 
 ## What you add to the capstone
 
@@ -261,8 +259,10 @@ Compare the two tracks by this invariant: **scope, role, tenant, relationship, a
 
 ## Module synthesis
 
-The module answer to “After identity is known, which exact action on which exact resource is allowed, and where is that decision enforced?” is now executable in the capstone: Every operation has a policy; correct scope without ownership and ownership without permission both fail.
+You are ready to leave this module when you can **Separate authentication from authorization, Model operation policy explicitly, and Constrain collection queries before loading data** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control and prove the predicted oracle fails** and requiring the following oracle: **Separate authentication from authorization; Model operation policy explicitly; Constrain collection queries before loading data; Apply field-level input and output policy.**
+
+The cumulative platform now includes **Build explicit authorization decisions for collections, individual resources, fields, support access, and administration**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 05, [Hostile Input and File Handling](../module-05-hostile-input-and-file-handling/index.md), asks: *How do valid-looking values become injection, traversal, confusion, or resource-exhaustion attacks after parsing?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Hostile Input and File Handling](../module-05-hostile-input-and-file-handling/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

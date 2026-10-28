@@ -2,7 +2,7 @@
 
 ## Required result
 
-The contract becomes a modular source tree with deterministic baseline and frontier bundles.
+Split the contract into owned documents, resolve every reference offline, and produce deterministic bundles.
 
 ## Demonstrate
 
@@ -23,11 +23,21 @@ make -C capstone examples
 make -C capstone core-proof
 ```
 
+## Evidence to retain
+
+- baseline transcript proving the previous checkpoint before **References and Multi-Document Architecture** changes
+- the exact source, fixture, contract, migration, or configuration diff that implements **References and Multi-Document Architecture**
+- focused result for: Resolve relative references from the correct document base.
+- public, durable, security, or operational observation showing: The contract becomes a modular source tree with deterministic baseline and frontier bundles.
+- minimized planted-defect failure and repaired regression
+- primary/comparison-track note for **References and Multi-Document Architecture**
+- a limitation statement naming every live dependency required to support the strongest **References and Multi-Document Architecture** claim but not exercised
+
 ## Defend the design
 
 1. Answer the central question: **How do we split a growing contract without changing its meaning or creating a maze of fragile references?**
 2. Demonstrate this capstone result: The contract becomes a modular source tree with deterministic baseline and frontier bundles.
-3. Show the planted defect, the first failing oracle, and the retained regression.
+3. Show the **References and Multi-Document Architecture** defect, the first failing oracle, and the exact regression retained after repair.
 4. State exactly which database, network, process, telemetry backend, or operated exercise was not run in the current environment.
 
 ## Continue only when

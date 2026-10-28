@@ -1,5 +1,7 @@
 # Exercises — Module 05: Production HTTP API Design
 
+Work through all twelve problems before opening the answers. In **Production HTTP API Design**, every response must settle this question: **How should an HTTP API express asynchronous work, retries, conflicts, conditional updates, and machine-readable failures?** A useful solution connects semantics to mechanism: who owns the decision, what can go wrong, and which retained artifact proves the claimed outcome.
+
 ## 1. Why is 202 different from 201?
 
 ## 2. Specify idempotency behavior for same key/same body and same key/different body.

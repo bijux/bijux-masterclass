@@ -1,96 +1,59 @@
-# Orientation — Lock the distributed boundary
+# Orientation — GraphQL Schema and Runtime Engineering
 
-Course 9 starts from the exact Course 8 handoff. The graph layer may compose capabilities, but it may not erase the ownership, security, consistency, and failure boundaries already established. Orientation is therefore a proof exercise rather than an installation checklist.
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-## Outcomes
+> **Orientation question:** Is the incoming boundary exact, and can you explain why Course 9 owns the next engineering responsibility?
 
-By the end of orientation you can:
+## Why this orientation exists
 
-- verify the predecessor handoff byte-for-byte;
-- name the owner of project, run, artifact, delivery, worker, and gateway facts;
-- distinguish a graph field from a service boundary;
-- identify which capabilities belong in GraphQL and which remain HTTP, event, or gRPC interfaces;
-- select one primary implementation track and use the other for semantic comparison;
-- classify dependency-light, framework-backed, and environment-backed evidence.
+Course 9 starts from accumulated guarantees rather than an empty repository. Orientation prevents a stale handoff, an unavailable tool, or an accidental version change from contaminating the ten teaching days. The goal is not setup for its own sake; it is to make the first claim of **GraphQL Schema and Runtime Engineering** honest.
 
-## Step 1 — Verify the handoff
+## Incoming boundary
 
-Run:
+The Course 8 distributed architecture handoff with explicit service, data, contract, and trust boundaries.
 
-```bash
-make doctor
-make predecessor-proof
-```
+Verify that boundary before editing. Compare the predecessor bytes or entry evidence, inspect the version ledger, and identify which artifacts are historical inputs. A hard implementation problem in Course 9 must be solved at the current layer, not by rewriting an earlier contract or proof.
 
-Inspect `capstone/predecessor/handoff/`. Its manifest is the authority. Do not repair a mismatch by editing the predecessor copy; replace it from the Course 8 release and rerun the proof.
+## Course responsibility
 
-The boundary documents establish:
+Design a governed GraphQL schema and runtime that composes service-owned capabilities with bounded execution and truthful partial results.
 
-- Analysis Control owns projects, datasets, runs, idempotency, and legal state transitions;
-- Artifact Service owns artifact metadata and content delivery;
-- Notification Service owns delivery attempts and summaries;
-- the Worker Plane executes leased computation but does not own run truth;
-- the Gateway owns edge routing and composition but no business state.
+The governing question is:
 
-## Step 2 — Write the field-source map
+> How can clients select graph-shaped data and operations without moving business ownership, authorization, cost, or consistency into an uncontrolled gateway?
 
-For each proposed root, complete this table before opening the SDL:
+The current version state is:
 
-| Root | Client task | Source authority | Consistency | Failure behavior |
-|---|---|---|---|---|
-| `project` | inspect one project and its related work | Analysis Control | authoritative | nullable root plus execution error |
-| `analysisRun` | inspect one run | Analysis Control | authoritative | nullable root plus execution error |
-| `artifact` | inspect artifact metadata | Artifact Service | authoritative | nullable root plus execution error |
-| `deliverySummary` | inspect notification progress | Notification Service | projection with age | explicit staleness and nullable failure |
-| `search` | discover supported objects | governed composition/projection | declared per result | bounded partial behavior |
+> HTTP, Event, and RPC APIs preserved; Analysis Graph API 1.0 introduced; GraphQL September 2025; graph metadata migrations 001–004.
 
-Then name one forbidden implementation for each root. “Direct SQL join across private service databases” is forbidden even when it appears faster in a local benchmark.
+## Reader route
 
-## Step 3 — Decide interface placement
+Use the course book in this order:
 
-Classify each capability:
+1. [Course introduction](../index.md) for the complete module arc;
+2. [Capstone](../capstone.md) for the cumulative Analysis Runs Platform state;
+3. [Standards](../standards.md) for normative and course-profile boundaries;
+4. [Evidence model](../evidence-model.md) for authoritative versus diagnostic proof;
+5. [Language strategy](../language-strategy.md) before opening implementation code.
+6. Re-read the list through this course’s lens: **Compose governed client-shaped capabilities**.
 
-- typed client composition → GraphQL candidate;
-- large byte transfer and conditional/range semantics → HTTP;
-- durable state-change notification and replay → AsyncAPI/CloudEvents;
-- internal typed invocation or streaming control → gRPC;
-- business state ownership → source service, never the graph gateway.
+The chapter teaches the model. Exercises force transfer. Worked answers expose reasoning. The lab attacks one mechanism. The checkpoint decides whether the result is strong enough to carry into the next module.
 
-`Artifact.downloadUrl` belongs in the graph; artifact bytes do not. `analysisRunUpdated` can be exposed as a GraphQL subscription, but its durable source remains Analysis Events API 1.0.
+## Implementation route
 
-## Step 4 — Select a language track
+The course strategy is **one primary implementation track plus one comparative reference track**. Record the selected route and the reason it supports your learning goal. Do not switch runtimes in the middle of a failed mechanism; first determine whether the model, the implementation, or the environment is wrong.
 
-Choose TypeScript when your primary goal is GraphQL.js ecosystem engineering and Python when your primary goal is scientific/data platform integration. Both semantic cores are complete. You implement and debug one track deeply and use shared vectors to review the other. You are not required to mirror framework syntax.
+## Evidence boundary
 
-Record the choice in your learning log with one reason and one risk. A language choice is not evidence that the graph behavior is correct.
+List the proof routes available on your machine and classify them as deterministic, local process, live persistence/network, documentation, or independent-tool evidence. The first stronger environment-backed claim is **a standards-complete GraphQL runtime and live source services**. Until that route actually runs, use narrower wording and record it as `not-executed`.
 
-## Step 5 — Run the initial tours
+## Readiness test
 
-```bash
-make capstone-tour
-make network-lab-proof
-```
+You are ready for [Graph Interface Placement and the Operation Lifecycle](../module-01-graph-interface-placement-and-operation-lifecycle/index.md) when you can explain, without repository jargon:
 
-The dependency-light tour proves operation identity, admission, batching, mutation replay, partial data, subscription sequence handling, and release classification. The loopback network lab proves that composition crosses real process boundaries and that one source failure becomes explicit partial data.
-
-These routes do not prove complete GraphQL standards conformance, production capacity, or operated multi-region behavior. The evidence ledger distinguishes:
-
-- **dependency-light** — deterministic semantic mechanisms;
-- **framework-backed** — complete GraphQL parser/executor adapters when dependencies are installed;
-- **environment-backed** — external services, TLS, telemetry, and representative load.
-
-## Orientation checkpoint
-
-You may begin Module 1 only when you can explain, without reading notes:
-
-1. why a graph edge is not permission to join databases;
-2. why a resolver may compose facts but may not own them;
-3. why artifact bytes remain outside GraphQL;
-4. why a subscription is not the durable event source;
-5. which evidence class each available proof route provides.
-
-Run:
-
-```bash
-make orientation-proof
-```
+1. what the predecessor already settled;
+2. what Course 9 is allowed to change;
+3. which versions and profiles are independent axes;
+4. which implementation route you selected;
+5. which evidence classes are available;
+6. what the outgoing handoff must prove: Analysis Graph API 1.0, GraphQL September 2025 schema, persisted operation registry, resolver ownership, demand policy, resumable subscriptions, compatibility gates, and platform-publication metadata.

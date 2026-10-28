@@ -1,6 +1,8 @@
-# Checkpoint — Event Platform Governance, Release, and Final Defense
+# Checkpoint — Module 10: Event Platform Governance, Release, and Final Defense
 
-Do not progress because the chapter has been read. Progress when the following evidence can be reproduced from a clean working tree.
+## Required result
+
+Publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff.
 
 ## Demonstrate
 
@@ -8,14 +10,6 @@ Do not progress because the chapter has been read. Progress when the following e
 - Describe producer and consumer release gates.
 - Define deprecation/retirement in the presence of retained history.
 - Trace one event and one failure across the complete architecture.
-
-## Required result
-
-- `work/module-10/release-dossier/decision.json`
-- `work/module-10/release-dossier/trace.md`
-- `work/module-10/planted-defect-matrix.json`
-- `work/module-10/tabletop-report.md`
-- `work/module-10/handoff-proof.json`
 
 ## Commands
 
@@ -26,6 +20,17 @@ make handoff-proof
 make core-proof
 make manifest-proof
 ```
+
+## Evidence to retain
+
+- `work/module-10/release-dossier/decision.json`
+- `work/module-10/release-dossier/trace.md`
+- final catalogue and consumer inventory
+- candidate comparison reports
+- planted-defect matrix
+- tabletop timeline and reconciliation
+- handoff manifest and secret-scan result
+- output from `make core-proof` and `make manifest-proof`
 
 ## Defend the design
 
@@ -41,4 +46,4 @@ make manifest-proof
 - A partition/retention change lacks migration evidence.
 - The handoff contains secrets, private incident data, or manifest drift.
 
-The checkpoint is complete only when all commands pass, all artifacts are reviewable, and each oral-defense question can be answered without appealing to a broker feature as magic.
+The **Event Platform Governance, Release, and Final Defense** checkpoint is complete only when the commands pass, the retained artifacts explain the event-system state, and you can defend the result without treating broker delivery, ordering, or replay as magic.

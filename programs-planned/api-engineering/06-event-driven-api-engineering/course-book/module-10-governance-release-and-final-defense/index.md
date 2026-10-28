@@ -1,50 +1,29 @@
 # Module 10 — Event Platform Governance, Release, and Final Defense
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** How are event ownership, compatibility, retention, replay, consumers, evidence, and release decisions governed as a platform capability?
 
 ## Where this module fits
 
-An event-driven system can work technically and still fail organizationally. Producers publish unregistered
-facts, consumers subscribe through wildcards, deprecated types never retire, schemas drift from examples,
-replay procedures exist only in one engineer’s memory, and no one can say who may approve a breaking
-change. The broker becomes a shared database without schema or ownership discipline.
+Module 09 produced **Implement failure classification, bounded retry, dead-letter records, lag health, replay controls, and operational runbooks**. This final module consolidates the course by asking: **How are event ownership, compatibility, retention, replay, consumers, evidence, and release decisions governed as a platform capability?**
 
-Governance is not a committee that reviews every line of code. It is a set of machine-readable ownership,
-lifecycle, and evidence rules that make safe paths easy and unsafe changes visible. The event catalogue is
-the core product: it connects type, owner, channel, schema, partition, classification, retention, replay,
-consumers, deprecation, and operational contacts. AsyncAPI describes the interface; the catalogue describes
-how the organization owns it.
-
-The final course release combines every prior proof. A candidate can be structurally valid and still be
-rejected because it breaks retained history, lacks producer authorization, permits unsafe replay, creates an
-unowned dead-letter path, changes partitioning in place, or cannot meet lag/capacity objectives. The final
-defense requires the learner to trace one fact from source transaction through publication, delivery,
-effects, replay, security, and recovery.
-
-## Capstone result
-
-Publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff.
-
-Produce Analysis Events 1.0 as a release-ready asynchronous API and a sanitized handoff for Course 7.
-Complete the event catalogue, consumer catalogue, compatibility/replay/security/reliability policies,
-migrations 010–012, accepted and rejected release fixtures, runbooks, proof report, and final architecture
-defense.
-
-The handoff contains public contracts and profiles, not broker credentials, private payloads, local
-incidents, or generated runtime state.
+The capstone must now deliver **Publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **Analysis Events API 1.0, Event Profile 1.0, AsyncAPI 3.1.0 contract, CloudEvents 1.0 profile, migrations 010–012, replay and dead-letter policy, and governed consumer declarations.**
 
 ## Learning outcomes
 
-- treat the event catalogue as an owned product rather than a topic inventory
-- define lifecycle stages for draft, active, deprecated, last-published, and retired event versions
-- gate producer releases on contract, compatibility, catalogue, security, replay, and operational evidence
-- gate consumer releases on accepted versions, idempotency, lag, dead-letter, replay, and rollback evidence
-- version partitioning, retention, and schema meaning as public operational commitments
-- design deprecation and retirement around retained records and consumer migration
-- produce a minimal sanitized handoff for the next course
-- defend the complete asynchronous workflow under named failure windows
+- Treat the event catalogue as an owned product rather than a topic inventory.
+- Define lifecycle stages for draft, active, deprecated, last-published, and retired event versions.
+- Gate producer releases on contract, compatibility, catalogue, security, replay, and operational evidence.
+- Gate consumer releases on accepted versions, idempotency, lag, dead-letter, replay, and rollback evidence.
+- Version partitioning, retention, and schema meaning as public operational commitments.
+- Design deprecation and retirement around retained records and consumer migration.
+- Produce a minimal sanitized handoff for the next course.
+- Defend the complete asynchronous workflow under named failure windows.
+
+## Capstone increment
+
+Publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff.
 
 ## Core event model
 
@@ -270,10 +249,10 @@ no credentials or incident payloads.
 
 ## Module synthesis
 
-Publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff. The central distinction is this: how are event ownership, compatibility, retention, replay, consumers, evidence, and release decisions governed as a platform capability? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **treat the event catalogue as an owned product rather than a topic inventory, define lifecycle stages for draft, active, deprecated, last-published, and retired event versions, and gate producer releases on contract, compatibility, catalogue, security, replay, and operational evidence** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Perform one final trace of AnalysisRunCompleted through producer, broker, analytics, notification intent, replay, and reconciliation** and requiring the following oracle: **Only the additive candidate is accepted. Breaking and replay-unsafe candidates fail for exact reasons. Every public message and consumer is catalogued. The completion trace preserves one fact and one effect per effect version under duplicate windows. The tabletop has containment, recovery, reconciliation, and residual risk. The handoff is complete, deterministic, and sanitized.**
+
+The cumulative platform now includes **Publish the catalogue, consumer declarations, accepted/rejected release candidates, final defense, and Course 7 handoff**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Completion of Course 6 means the learner can design and operate asynchronous contracts without needing
-microservices as a prerequisite. The next course can introduce typed RPC and streaming boundaries while
-preserving the HTTP, event, security, reliability, and performance profiles established here.
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 7 may treat only the manifested handoff as settled.

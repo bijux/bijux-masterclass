@@ -1,6 +1,6 @@
-# Exercises — Lifecycle, Compatibility, Deprecation, and Retirement
+# Exercises — Module 05: Lifecycle, Compatibility, Deprecation, and Retirement
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Lifecycle, Compatibility, Deprecation, and Retirement**, every response must settle this question: **How can an API evolve and eventually disappear without transferring hidden cost to consumers?** A useful solution connects semantics to mechanism: who owns the decision, what can go wrong, and which retained artifact proves the claimed outcome.
 
 ## 1. Why is deprecation not a documentation annotation?
 

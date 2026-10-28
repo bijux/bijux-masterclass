@@ -1,26 +1,27 @@
-# Service Identity, Authorization, and Trust Propagation
+# Module 06 — Service Identity, Authorization, and Trust Propagation
 
-**Module 06 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How do services authenticate workloads, preserve end-user intent, and avoid confused-deputy failures without trusting caller-supplied identity headers?
+> **Central question:** How do services authenticate workloads, preserve end-user intent, and avoid confused-deputy failures without trusting caller-supplied identity headers?
 
-## Place in the program
+## Where this module fits
 
-The platform now has explicit service and data ownership, bounded synchronous collaboration, and one durable cross-service workflow. This module adds the next necessary property without weakening the previous guarantees.
+Module 05 produced **Implement the artifact-publication and run-completion saga with durable step identity, semantic locks, compensation, timeout handling, and operator-visible reconciliation**. This module extends that result by asking: **How do services authenticate workloads, preserve end-user intent, and avoid confused-deputy failures without trusting caller-supplied identity headers?**
+
+The new capstone increment is **Introduce workload identities, audience-bound service credentials, delegated user context, short-lived artifact capabilities, and explicit authorization at every trust boundary**. It becomes the prerequisite for **Discovery, Routing, Gateways, and Traffic Topology**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- separate workload identity, end-user identity, tenant context, and delegated authority
-- design service-to-service authentication without treating network location as trust
-- prevent confused-deputy and privilege-amplification failures
-- mint and verify narrow, short-lived capability tokens for artifact transfer
-- propagate only bounded non-sensitive context across services
-- define network policy as defense in depth rather than application authorization
+- Separate workload identity, end-user identity, tenant context, and delegated authority.
+- Design service-to-service authentication without treating network location as trust.
+- Prevent confused-deputy and privilege-amplification failures.
+- Mint and verify narrow, short-lived capability tokens for artifact transfer.
+- Propagate only bounded non-sensitive context across services.
+- Define network policy as defense in depth rather than application authorization.
 
-## Capstone result
+## Capstone increment
 
 Introduce workload identities, audience-bound service credentials, delegated user context, short-lived artifact capabilities, and explicit authorization at every trust boundary.
-
 
 ## Four identities cross a service boundary
 
@@ -138,6 +139,7 @@ The reference tracks use the same canonical capability claims and HMAC verificat
 ## Evidence required before Module 7
 
 Prove wrong audience, wrong tenant, expiry, tampering, excessive size, and checksum mismatch are rejected. Show that no service treats `X-User-Id`, `X-Tenant-Id`, private networking, or trace baggage as authority.
+
 ## Four identities must remain distinct
 
 A distributed request can carry several identities:
@@ -309,3 +311,13 @@ The lab does not pass because a happy-path token verifies. Required negative evi
 - trace or baggage value presented as authority.
 
 A boundary that cannot reject these cases is not ready for independent deployment.
+
+## Module synthesis
+
+You are ready to leave this module when you can **separate workload identity, end-user identity, tenant context, and delegated authority, design service-to-service authentication without treating network location as trust, and prevent confused-deputy and privilege-amplification failures** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove any authorization dependency on caller-supplied identity headers** and requiring the following oracle: **Only the intended workload and tenant can perform the bounded action; network location and unsigned headers never establish authority.**
+
+The cumulative platform now includes **Introduce workload identities, audience-bound service credentials, delegated user context, short-lived artifact capabilities, and explicit authorization at every trust boundary**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Discovery, Routing, Gateways, and Traffic Topology](../module-07-discovery-routing-gateways-and-traffic-topology/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

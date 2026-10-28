@@ -1,43 +1,26 @@
 # OpenAPI Contract Engineering
 
-**Course 1 of 6 — Specify the promise**
+**Course 1 of 10 — Specify the public promise**
 
-Define and verify the public HTTP contract.
+Define a precise, reviewable, executable HTTP API contract without confusing a description, a framework, and a running provider.
 
 > What exactly does the API promise, and how can providers and consumers verify that promise?
 
-## Begin with the course book
+## Begin here
 
-1. Read [Course introduction](course-book/index.md).
-2. Complete [Start here](course-book/start-here.md) and [orientation](course-book/module-00-orientation/index.md).
-3. Follow the ten modules in order.
-4. Use the capstone and implementation tracks only through the reading routes named in each chapter.
-5. Preserve checkpoint evidence before progressing.
+1. [Course book](course-book/index.md)
+2. [Start here](course-book/start-here.md)
+3. [Study plan](course-book/study-plan.md)
+4. [Capstone](course-book/capstone.md)
+5. [Orientation](course-book/module-00-orientation/index.md)
 
-## Modules
+The course book is the authoritative learner product. The implementation, tests, fixtures, reports, and release records support its claims.
 
-01. [HTTP and OpenAPI Foundations](course-book/module-01-http-openapi-foundations/index.md)
-02. [Operations, Parameters, and Messages](course-book/module-02-operations-parameters-messages/index.md)
-03. [JSON Schema Contract Modeling](course-book/module-03-json-schema-contract-modeling/index.md)
-04. [References and Multi-Document Architecture](course-book/module-04-references-multi-document-architecture/index.md)
-05. [Production HTTP API Design](course-book/module-05-production-http-api-design/index.md)
-06. [Contract-First and Code-First Runtimes](course-book/module-06-contract-first-code-first-runtime/index.md)
-07. [Mocks, Clients, and Contract Testing](course-book/module-07-mocking-clients-contract-testing/index.md)
-08. [Security in the Public Contract](course-book/module-08-security-authentication-authorization/index.md)
-09. [Evolution, Compatibility, and Audience Views](course-book/module-09-evolution-compatibility-overlays-ci/index.md)
-10. [OpenAPI 3.2, Streaming, Webhooks, and Workflows](course-book/module-10-openapi-32-workflows-advanced/index.md)
+## Version boundary
 
-## Program boundary
+Public API 1.1; OpenAPI 3.1.2 executable baseline; OpenAPI 3.2.0 standards frontier; no durable database yet.
 
-**Incoming:** Basic programming ability and no assumed OpenAPI experience.
-
-**Outgoing:** A frozen API 1.1 contract, operation ledger, schema fixtures, security decisions, workflows, and provider-neutral behavioral scenarios.
-
-## Implementation strategy
-
-Both Python/FastAPI and TypeScript/Fastify are used symmetrically to prove that the contract is language-neutral.
-
-## Verification
+## Commands
 
 ```bash
 make doctor
@@ -45,4 +28,4 @@ make core-proof
 make manifest-proof
 ```
 
-Environment-dependent routes are reported separately. Missing infrastructure is never represented as a passing live proof.
+Live infrastructure routes are separate from dependency-light proofs and must be reported as not executed when their environment is absent.

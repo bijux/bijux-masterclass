@@ -1,26 +1,24 @@
-# Errors, Partial Data, Consistency, and Observability
+# Module 08 — Errors, Partial Data, Consistency, and Observability
 
-**Module 08 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How does the graph tell the truth when some fields succeed, some fail, and some are stale?
+> **Central question:** How does the graph tell the truth when some fields succeed, some fail, and some are stale?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 08 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 07 produced **Admit only bounded trusted operations and record cost evidence**. This module extends that result by asking: **How does the graph tell the truth when some fields succeed, some fail, and some are stale?**
+
+The new capstone increment is **Return truthful partial data with path-specific errors and traces**. It becomes the prerequisite for **Subscriptions, Resume, and Incremental Delivery**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- separate request and execution errors
+- Separate request and execution errors.
+- Use error paths and stable codes.
+- Predict null bubbling.
+- Disclose staleness and partiality.
+- Trace graph execution without cardinality explosions.
 
-- use error paths and stable codes
-
-- predict null bubbling
-
-- disclose staleness and partiality
-
-- trace graph execution without cardinality explosions
-
-## Capstone result
+## Capstone increment
 
 Return truthful partial data with path-specific errors and traces.
 
@@ -172,3 +170,13 @@ Both tracks represent partial results as data plus structured errors. The option
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-08-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **separate request and execution errors, use error paths and stable codes, and predict null bubbling** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject a null non-null ID or invalid scalar from a resolver** and requiring the following oracle: **authoritative emptiness is distinct from unavailable unknown state;; each independent failure has the correct response path;; null bubbling exactly follows the released type declarations;; unaffected sibling data survives when permitted;.**
+
+The cumulative platform now includes **Return truthful partial data with path-specific errors and traces**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Subscriptions, Resume, and Incremental Delivery](../module-09-subscriptions-resume-and-incremental-delivery/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

@@ -1,26 +1,24 @@
-# Queries, Identifiers, Connections, and Pagination
+# Module 04 — Queries, Identifiers, Connections, and Pagination
 
-**Module 04 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How can clients navigate lists and relationships without unstable pages, leaked internals, or unbounded work?
+> **Central question:** How can clients navigate lists and relationships without unstable pages, leaked internals, or unbounded work?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 04 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 03 produced **Replace N+1 nested calls with request-scoped batching**. This module extends that result by asking: **How can clients navigate lists and relationships without unstable pages, leaked internals, or unbounded work?**
+
+The new capstone increment is **Implement global IDs and stable, bound connections**. It becomes the prerequisite for **Mutations, Idempotency, Concurrency, and Domain Results**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- design meaningful roots
+- Design meaningful roots.
+- Encode and validate global identifiers.
+- Implement stable connection pagination.
+- Bind cursors to tenant and filters.
+- Bound polymorphic search.
 
-- encode and validate global identifiers
-
-- implement stable connection pagination
-
-- bind cursors to tenant and filters
-
-- bound polymorphic search
-
-## Capstone result
+## Capstone increment
 
 Implement global IDs and stable, bound connections.
 
@@ -170,3 +168,13 @@ Both tracks use base64url global IDs and HMAC-authenticated cursor envelopes. Ty
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-04-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **design meaningful roots, encode and validate global identifiers, and implement stable connection pagination** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **The declared profile must prevent duplicates and must exclude rows above the traversal high-water until a new traversal** and requiring the following oracle: **the original traversal is stable under insertions above its high-water;; a fresh traversal observes the new top row;; cursor binding rejects every population or query mismatch;; tampering and expiry are rejected;.**
+
+The cumulative platform now includes **Implement global IDs and stable, bound connections**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Mutations, Idempotency, Concurrency, and Domain Results](../module-05-mutations-idempotency-concurrency-and-domain-results/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

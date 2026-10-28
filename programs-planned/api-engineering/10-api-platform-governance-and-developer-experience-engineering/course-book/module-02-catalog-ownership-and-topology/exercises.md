@@ -1,6 +1,6 @@
-# Exercises — Catalog, Ownership Graph, and Metadata Authority
+# Exercises — Module 02: Catalog, Ownership Graph, and Metadata Authority
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Catalog, Ownership Graph, and Metadata Authority**, every response must settle this question: **How can a central catalog be useful without pretending to own every fact it displays?** Treat each problem as a design review: state the rule, construct the smallest counterexample, and select an oracle capable of rejecting your own answer.
 
 ## 1. What makes catalog metadata authoritative?
 

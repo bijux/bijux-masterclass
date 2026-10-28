@@ -1,16 +1,38 @@
-# Evidence model
+# Evidence Model — GraphQL Schema and Runtime Engineering
 
-GraphQL systems fail when one proof layer is mistaken for another. This course uses eight evidence layers.
+## Course-specific proof ladder
 
-1. **Schema evidence** — SDL and catalogue prove what capabilities are declared.
-2. **Operation evidence** — checked documents prove what active clients request.
-3. **Admission evidence** — validation, trusted-document, and cost reports prove whether an operation may execute.
-4. **Authorization evidence** — field and tenant tests prove who may observe or mutate each capability.
-5. **Execution evidence** — resolver, batch, timeout, and partial-response tests prove runtime behavior.
-6. **Source-authority evidence** — service call logs and ownership maps prove the graph did not bypass owners.
-7. **Transport evidence** — HTTP and subscription tests prove framing, status, cancellation, and resume behavior.
-8. **Release evidence** — schema diff and old-operation execution prove compatible evolution.
+| Level | Evidence | Minimum record |
+|---:|---|---|
+| 1 | schema and persisted-operation validation | A named claim, version, environment, oracle, and retained artifact |
+| 2 | resolver call logs and demand decisions | A named claim, version, environment, oracle, and retained artifact |
+| 3 | exact partial-data and subscription traces | A named claim, version, environment, oracle, and retained artifact |
+| 4 | active-client compatibility evidence | A named claim, version, environment, oracle, and retained artifact |
 
-A passing schema linter cannot prove absence of N+1 calls. A passing resolver unit test cannot prove an active mobile operation still validates. A successful query cannot prove another tenant cannot traverse the same field. Each claim must name its decisive evidence layer.
+## Authority versus diagnosis
 
-The dependency-light analyzer is intentionally bounded. It parses the operation forms used in the course and evaluates the course cost profile. Independent GraphQL implementations remain required for standards conformance.
+For GraphQL claims, the schema and operation registry define admitted shapes while source services remain authoritative for fields and commands; resolver output cannot overrule source policy.
+
+## Negative evidence
+
+Every Course 9 lab contains a defect specific to compose governed client-shaped capabilities. Predict the first failing oracle, retain the raw counterexample, and keep it after repair; a proof that accepts that defect cannot support the checkpoint claim.
+
+## Evidence package
+
+Each checkpoint should retain:
+
+```text
+claim and owner
+input, workload, or candidate identity
+software and contract versions
+environment identity
+command or procedure
+raw result
+interpreted decision
+known exclusions
+cleanup state
+```
+
+## Unavailable infrastructure
+
+When a standards-complete GraphQL runtime, real source services, subscriptions, and independent schema validation is unavailable, run the deterministic evidence that still applies and record the stronger route as `not-executed`. The wording of the claim must shrink with the environment.

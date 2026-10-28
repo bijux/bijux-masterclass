@@ -1,57 +1,28 @@
 # Language and Code Strategy
 
-## Why the program uses Python and TypeScript
+## Why the program uses two languages
 
-The program is about API engineering rather than one framework. Python/FastAPI and TypeScript/Fastify provide two mature but different ecosystems in which to test whether an invariant is truly architectural or merely an implementation habit.
+Python and TypeScript expose different implementation pressures while sharing the same external contracts. Python makes data and control-flow reasoning explicit and offers a mature scientific and service ecosystem. TypeScript exposes JavaScript number, event-loop, structural typing, and runtime-validation boundaries. Studying both prevents framework-specific behavior from masquerading as an API rule.
 
-## Course 1: symmetric tracks
+## Course 1: symmetric providers
 
-In the contract course, both providers are first-class because the learner must see that methods, parameters, schemas, status codes, security requirements, examples, and compatibility belong to the public boundary. A contract that only one framework can express is suspect. Shared black-box scenarios are more important than matching controller syntax.
+Both providers are first-class because the lesson is that OpenAPI belongs above either framework. The same operation ledger, examples, scenarios, and clients must work across both.
 
-## Courses 2–6: primary and comparative tracks
+## Courses 2–10: primary and comparison tracks
 
-Choose one primary track for the full implementation and laboratory work. Use the second track for focused comparative review. A good comparison names:
+Choose one primary track for deep labs and repairs. Use the second to inspect one idiomatic implementation and run shared vectors. Do not duplicate every line merely to create visual symmetry.
 
-1. the shared externally observable or durable invariant;
-2. the Python mechanism that enforces it;
-3. the TypeScript mechanism that enforces it;
-4. one deliberate ecosystem difference;
-5. one source-shape difference that must not become a parity requirement;
-6. the shared vector or black-box proof that decides equivalence.
+Parity means:
 
-## What should remain the same
+- the same public messages and statuses;
+- the same state-machine and security decisions;
+- the same idempotent and concurrency outcomes;
+- the same canonical bytes where interoperability depends on bytes;
+- the same release classification;
+- the same bounded evidence.
 
-The tracks must agree on:
+Parity does not mean identical classes, packages, exceptions, async primitives, database drivers, middleware hooks, or folder structures.
 
-- public HTTP and event behavior;
-- canonical identities and bytes where cross-language equality is required;
-- transaction and idempotency outcomes;
-- authorization decisions;
-- bounded-resource and failure classifications;
-- metric and SLI populations;
-- release decisions;
-- replay and consumer-effect semantics.
+## Reading code educationally
 
-## What may differ
-
-They may use different:
-
-- dependency-injection styles;
-- model and validation libraries;
-- asynchronous primitives;
-- transaction APIs;
-- file organization;
-- error classes;
-- test frameworks;
-- profiling tools;
-- middleware and plugin hooks.
-
-Forcing identical structure usually produces unidiomatic code and hides the real invariant.
-
-## How to read examples
-
-Every non-trivial example should answer four questions: where does it live, which guarantee does it enforce, which failure does it prevent, and which proof would fail if it were removed? Short excerpts are explanatory views of complete source files; they are not alternate implementations to copy blindly.
-
-## When to translate code
-
-Translate only after you can state the invariant without language vocabulary. If the only explanation is “this decorator does it” or “this Promise fixes it,” the concept is not yet understood. The comparison track is a test of abstraction quality, not extra typing work.
+Before opening an implementation, state the invariant and expected failure. Then inspect the narrow owner of that invariant, its negative test, and its cleanup path. Code without an identified owner and oracle is an example fragment, not evidence.

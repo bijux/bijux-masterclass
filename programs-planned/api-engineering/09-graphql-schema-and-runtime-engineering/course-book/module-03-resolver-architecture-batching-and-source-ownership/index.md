@@ -1,26 +1,24 @@
-# Resolver Architecture, Batching, and Source Ownership
+# Module 03 — Resolver Architecture, Batching, and Source Ownership
 
-**Module 03 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How can nested graph execution remain faithful to service ownership without producing N+1 calls?
+> **Central question:** How can nested graph execution remain faithful to service ownership without producing N+1 calls?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 03 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 02 produced **Release Analysis Graph API 1.0 type and nullability policies**. This module extends that result by asking: **How can nested graph execution remain faithful to service ownership without producing N+1 calls?**
+
+The new capstone increment is **Replace N+1 nested calls with request-scoped batching**. It becomes the prerequisite for **Queries, Identifiers, Connections, and Pagination**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- map every field to one source
+- Map every field to one source.
+- Construct request-scoped context.
+- Explain and measure N+1.
+- Implement batch loaders.
+- Divide deadlines and observe fan-out.
 
-- construct request-scoped context
-
-- explain and measure N+1
-
-- implement batch loaders
-
-- divide deadlines and observe fan-out
-
-## Capstone result
+## Capstone increment
 
 Replace N+1 nested calls with request-scoped batching.
 
@@ -196,3 +194,13 @@ Both tracks implement a request-scoped `BatchLoader`. Python uses explicit load 
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-03-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **map every field to one source, construct request-scoped context, and explain and measure N+1** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Use a dataset containing at least twenty runs, duplicate run references, and two tenants with overlapping local identifiers** and requiring the following oracle: **| Property | Required result | |---|---| | growth | source call count does not grow linearly with parent count | | duplicates | one source key per unique request-scoped identity | | association | values return to the correct keys despite source ordering | | tenancy | no cross-tenant or cross-request cache reuse | | authorization | denied keys do not enter an unauthorized source call | | cancellation | no unresolved loader future or runaway dispatch | | bounds | batch size never exceeds policy |**
+
+The cumulative platform now includes **Replace N+1 nested calls with request-scoped batching**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Queries, Identifiers, Connections, and Pagination](../module-04-queries-identifiers-connections-and-pagination/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

@@ -1,12 +1,14 @@
 # Module 03 — Dependency Resilience and Graceful Degradation
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** How should circuits, bulkheads, and degradation be scoped so they contain rather than hide dependency failure?
 
 ## Where this module fits
 
-Apply dependency-specific concurrency limits, circuits, probes, and truthful fallback only where semantics permit. You arrive from Module 02 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **Lifecycle, Health, Shutdown, and Recovery**.
+Module 02 produced **Implement monotonic deadlines, child budgets, safe retry classification, backoff, Retry-After handling, and cancellation**. This module extends that result by asking: **How should circuits, bulkheads, and degradation be scoped so they contain rather than hide dependency failure?**
+
+The new capstone increment is **Add dependency-local state machines, bounded probes, concurrency isolation, and truthful degraded responses**. It becomes the prerequisite for **Lifecycle, Health, Shutdown, and Recovery**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Apply dependency-specific concurrency limits, circuits, probes, and truthful fal
 - Avoid fallbacks that fabricate correctness.
 - Keep telemetry failure from becoming business failure.
 
-## Capstone result
+## Capstone increment
 
 Add dependency-local state machines, bounded probes, concurrency isolation, and truthful degraded responses.
-
-PostgreSQL, artifact storage, webhook delivery, and telemetry export each receive a justified resilience policy.
 
 ## Core reliability model
 
@@ -91,7 +91,6 @@ Apply **Dependency contract, Circuit breaker, Bulkhead** to this module’s caps
 State-machine tests prove classification and isolation logic; real dependency recovery and shared-resource contention require an integration environment.
 
 ## Worked failures
-
 
 ### Case 1 — Telemetry collector outage
 
@@ -184,7 +183,7 @@ else:
     raise AssertionError("open circuit admitted a call")
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Dependency Resilience and Graceful Degradation** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Telemetry collector outage
 
@@ -229,7 +228,7 @@ breaker.allow(clock); breaker.failure(clock);
 if (breaker.state !== "open") throw new Error("circuit did not open");
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Dependency Resilience and Graceful Degradation** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Telemetry collector outage
 
@@ -320,7 +319,8 @@ These are the smallest useful entry points for **Dependency Resilience and Grace
 
 ### Python — `capstone/tracks/python-fastapi/src/api_reliability/circuit.py`
 
-```python
+```text
+# Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 from .clock import Clock
 
 
@@ -390,7 +390,8 @@ class CircuitBreaker:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/reliability/circuit.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 import type { Clock } from "./clock.js";
 
 export type CircuitState = "closed" | "open" | "half-open";
@@ -462,8 +463,10 @@ Compare the two tracks by this invariant: **circuits, bulkheads, retry policy, a
 
 ## Module synthesis
 
-The module answer to “When a dependency slows or fails, which work should stop, continue, queue, or degrade—and what must the API say?” is now executable in the capstone: PostgreSQL, artifact storage, webhook delivery, and telemetry export each receive a justified resilience policy.
+You are ready to leave this module when you can **Classify dependency failures and ownership, Use bulkheads to bound local resource consumption, and Design circuit state and half-open probe ownership** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject artifact failure and plant false-success fallback** and requiring the following oracle: **API reads remain available during webhook saturation; Collector outage causes drop evidence, not response failure; No completed run lacks artifact evidence; Half-open concurrency stays bounded.**
+
+The cumulative platform now includes **Add dependency-local state machines, bounded probes, concurrency isolation, and truthful degraded responses**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 04, [Lifecycle, Health, Shutdown, and Recovery](../module-04-lifecycle-health-graceful-shutdown-and-recovery/index.md), asks: *How does a process start, accept work, drain, stop, and recover without lying to orchestrators or losing durable work?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Lifecycle, Health, Shutdown, and Recovery](../module-04-lifecycle-health-graceful-shutdown-and-recovery/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

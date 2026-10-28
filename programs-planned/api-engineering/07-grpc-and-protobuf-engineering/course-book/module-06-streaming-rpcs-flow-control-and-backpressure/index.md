@@ -1,23 +1,25 @@
-# Streaming RPCs, Flow Control, and Backpressure
+# Module 06 — Streaming RPCs, Flow Control, and Backpressure
 
-**Module 06 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How do we design long-lived and bulk-transfer RPCs so that slow peers, reconnects, oversized messages, and stale attempts cannot exhaust memory or corrupt state?
+> **Central question:** How do we design long-lived and bulk-transfer RPCs so that slow peers, reconnects, oversized messages, and stale attempts cannot exhaust memory or corrupt state?
 
-## Place in the program
+## Where this module fits
 
-Unary calls established outcome, time, and retry semantics. Streaming adds a protocol that unfolds over many messages and often outlives one request path. The learner must now govern framing, sequence, resumption, flow control, cancellation, memory, and durable authority. HTTP/2 provides transport flow control, but the application still owns every queue and semantic limit.
+Module 05 produced **Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery**. This module extends that result by asking: **How do we design long-lived and bulk-transfer RPCs so that slow peers, reconnects, oversized messages, and stale attempts cannot exhaust memory or corrupt state?**
+
+The new capstone increment is **Implement `WatchRun`, `UploadDataset`, `DownloadArtifact`, and the worker `Work` stream with shared schedule vectors, bounded buffers, resumable observation, and stale-attempt fencing**. It becomes the prerequisite for **Identity, Authorization, mTLS, and Tenant Isolation**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- choose unary, server-streaming, client-streaming, or bidirectional RPC from interaction semantics
-- design protocol frames and state machines rather than treating a stream as an unbounded message list
-- combine HTTP/2 flow control with bounded application queues and backpressure
-- implement resumable ordered observation without claiming a durable event log
-- stream large uploads and downloads with exact size, checksum, and cancellation guarantees
-- keep durable worker leases authoritative when bidirectional sessions disconnect or reconnect
+- Choose unary, server-streaming, client-streaming, or bidirectional RPC from interaction semantics.
+- Design protocol frames and state machines rather than treating a stream as an unbounded message list.
+- Combine HTTP/2 flow control with bounded application queues and backpressure.
+- Implement resumable ordered observation without claiming a durable event log.
+- Stream large uploads and downloads with exact size, checksum, and cancellation guarantees.
+- Keep durable worker leases authoritative when bidirectional sessions disconnect or reconnect.
 
-## Capstone result
+## Capstone increment
 
 Implement `WatchRun`, `UploadDataset`, `DownloadArtifact`, and the worker `Work` stream with shared schedule vectors, bounded buffers, resumable observation, and stale-attempt fencing.
 
@@ -123,3 +125,13 @@ Read the streaming methods in `analysis.proto`, `capstone/rpc-case/streaming-pol
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Identity, Authorization, mTLS, and Tenant Isolation**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **choose unary, server-streaming, client-streaming, or bidirectional RPC from interaction semantics, design protocol frames and state machines rather than treating a stream as an unbounded message list, and combine HTTP/2 flow control with bounded application queues and backpressure** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Reconnect WatchRun from a valid, duplicate, and expired sequence** and requiring the following oracle: **All queues and content paths remain within declared bounds. Invalid framing fails before durable publication. Partial transfers are not exposed. Resume behavior is explicit, duplicate observations are harmless, and stale worker results cannot commit.**
+
+The cumulative platform now includes **Implement `WatchRun`, `UploadDataset`, `DownloadArtifact`, and the worker `Work` stream with shared schedule vectors, bounded buffers, resumable observation, and stale-attempt fencing**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Identity, Authorization, mTLS, and Tenant Isolation](../module-07-identity-authorization-mtls-and-tenant-isolation/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

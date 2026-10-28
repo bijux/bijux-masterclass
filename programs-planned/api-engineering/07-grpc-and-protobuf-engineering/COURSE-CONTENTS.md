@@ -3,14 +3,14 @@
 ## Reader-facing course book
 
 - 8 program/course guide pages
-- 1 orientation page
+- 3 orientation pages
 - 10 numbered modules
 - 5 pages per numbered module
 - 120 exercises
 - 120 matching worked answers
 - 10 labs
 - 10 checkpoints
-- 59 total navigated pages
+- 61 total navigated pages
 
 ## Modules
 

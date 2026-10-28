@@ -18,7 +18,7 @@ Successor handoff: Course 9 GraphQL Schema and Runtime Engineering
 The following checks executed from the course source tree and are included in `make core-proof`:
 
 - exact verification of the 46-file Course 7 handoff;
-- 59-page course-book structure;
+- 61-page course-book structure;
 - 120 exercises and 120 identically headed worked answers;
 - ten complete labs and ten evidence checkpoints;
 - boundary scorecard and architecture fitness functions;

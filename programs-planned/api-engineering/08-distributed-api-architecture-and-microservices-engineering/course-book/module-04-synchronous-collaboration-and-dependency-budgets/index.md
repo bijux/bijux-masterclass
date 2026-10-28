@@ -1,26 +1,27 @@
-# Synchronous Collaboration, API Composition, and Dependency Budgets
+# Module 04 — Synchronous Collaboration, API Composition, and Dependency Budgets
 
-**Module 04 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How do we keep synchronous service collaboration bounded so that fan-out, retries, and version skew do not make the public request path fragile?
+> **Central question:** How do we keep synchronous service collaboration bounded so that fan-out, retries, and version skew do not make the public request path fragile?
 
-## Place in the program
+## Where this module fits
 
-Course 7 introduced typed internal RPC but deliberately refused to equate a remote method with an independently owned service. Course 8 now uses ownership, data, failure, release, and operational evidence to decide which capabilities deserve distribution.
+Module 03 produced **Split authoritative data ownership, build versioned projections for cross-service reads, define staleness budgets, and prove reconciliation for missing, duplicate, and out-of-order updates**. This module extends that result by asking: **How do we keep synchronous service collaboration bounded so that fan-out, retries, and version skew do not make the public request path fragile?**
+
+The new capstone increment is **Publish an acyclic synchronous dependency graph, one edge-owned deadline budget, bounded fan-out rules, and a gateway composition path that degrades truthfully**. It becomes the prerequisite for **Distributed Workflows, Sagas, Compensation, and Process Managers**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- model the complete synchronous dependency graph and detect cycles
-- calculate compounded latency and availability across serial and parallel calls
-- propagate one absolute deadline instead of multiplying independent timeouts
-- place retries, hedging, and circuit behavior at one accountable layer
-- design API composition without chatty per-row remote calls
-- separate unavailable, stale, partial, and authoritative responses explicitly
+- Model the complete synchronous dependency graph and detect cycles.
+- Calculate compounded latency and availability across serial and parallel calls.
+- Propagate one absolute deadline instead of multiplying independent timeouts.
+- Place retries, hedging, and circuit behavior at one accountable layer.
+- Design API composition without chatty per-row remote calls.
+- Separate unavailable, stale, partial, and authoritative responses explicitly.
 
-## Capstone result
+## Capstone increment
 
 Publish an acyclic synchronous dependency graph, one edge-owned deadline budget, bounded fan-out rules, and a gateway composition path that degrades truthfully.
-
 
 ## Every synchronous edge consumes the public promise
 
@@ -140,6 +141,7 @@ The reference `DependencyGraph` detects cycles and calculates public depth. Both
 ## Evidence required before Module 5
 
 Produce an acyclic graph, public depth no greater than two, one absolute budget worksheet, one retry owner per edge, and a composition response that distinguishes partial from authoritative data.
+
 ## Latency and availability budgets belong to the caller
 
 A caller knows the remaining objective for its operation. A callee knows only the budget it receives. Therefore the original caller establishes one absolute deadline and each layer derives a smaller child budget.
@@ -291,3 +293,13 @@ For each synchronous edge in the capstone, ask what would happen if it were remo
 The forbidden reverse edges are as important as the allowed ones. Notification never blocks completion, Artifact does not call Control for each upload, and delivery retries do not require Control availability.
 
 An architecture review should celebrate a removed edge at least as much as an added service.
+
+## Module synthesis
+
+You are ready to leave this module when you can **model the complete synchronous dependency graph and detect cycles, calculate compounded latency and availability across serial and parallel calls, and propagate one absolute deadline instead of multiplying independent timeouts** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **The graph is acyclic, public depth is at most two, every edge has one deadline/retry owner, and dependency failure never becomes false business data.**
+
+The cumulative platform now includes **Publish an acyclic synchronous dependency graph, one edge-owned deadline budget, bounded fan-out rules, and a gateway composition path that degrades truthfully**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Distributed Workflows, Sagas, Compensation, and Process Managers](../module-05-distributed-workflows-sagas-and-compensation/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

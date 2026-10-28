@@ -1,6 +1,8 @@
-# Checkpoint — Transactional Publication, Inbox Deduplication, and Exactly-Once Effects
+# Checkpoint — Module 04: Transactional Publication, Inbox Deduplication, and Exactly-Once Effects
 
-Do not progress because the chapter has been read. Progress when the following evidence can be reproduced from a clean working tree.
+## Required result
+
+Implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects.
 
 ## Demonstrate
 
@@ -9,14 +11,6 @@ Do not progress because the chapter has been read. Progress when the following e
 - Define effect-scoped inbox identity.
 - State a bounded exactly-once effect claim and its exclusions.
 
-## Required result
-
-- `work/module-04/producer-timeline.json`
-- `work/module-04/consumer-timeline.json`
-- `work/module-04/effect-proof.json`
-- `work/module-04/external-side-effect-design.md`
-- `work/module-04/residual-risk.md`
-
 ## Commands
 
 ```bash
@@ -24,6 +18,16 @@ make outbox-inbox-proof
 make migration-proof
 make module-proof MODULE=04 TRACK=$TRACK
 ```
+
+## Evidence to retain
+
+- `work/module-04/producer-timeline.json`
+- `work/module-04/consumer-timeline.json`
+- event-body digests for both broker records
+- inbox and projection snapshots
+- one external-side-effect boundary design
+- output from `make outbox-inbox-proof`
+- optional PostgreSQL evidence marked executed or not executed
 
 ## Defend the design
 
@@ -39,4 +43,4 @@ make module-proof MODULE=04 TRACK=$TRACK
 - Deduplication uses delivery token or transport offset.
 - An external side effect lacks an idempotency/outbox boundary.
 
-The checkpoint is complete only when all commands pass, all artifacts are reviewable, and each oral-defense question can be answered without appealing to a broker feature as magic.
+The **Transactional Publication, Inbox Deduplication, and Exactly-Once Effects** checkpoint is complete only when the commands pass, the retained artifacts explain the event-system state, and you can defend the result without treating broker delivery, ordering, or replay as magic.

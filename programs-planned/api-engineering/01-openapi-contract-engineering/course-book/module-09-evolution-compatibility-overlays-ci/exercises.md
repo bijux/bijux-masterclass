@@ -1,5 +1,7 @@
 # Exercises — Module 09: Evolution, Compatibility, and Audience Views
 
+Work through all twelve problems before opening the answers. In **Evolution, Compatibility, and Audience Views**, every response must settle this question: **How can a published API evolve without silently breaking request writers or response readers?** The strongest answer distinguishes specification, implementation, and operational evidence, then demonstrates where a plausible shortcut would fail.
+
 ## 1. Why can adding a response enum value be breaking?
 
 ## 2. Is removing a maximum from a request string compatible?

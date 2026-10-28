@@ -1,21 +1,8 @@
-# Module 02 checkpoint — Benchmark Design and Statistical Interpretation
+# Checkpoint — Module 02: Benchmark Design and Statistical Interpretation
 
 ## Required result
 
-- [ ] statistics vectors pass in Python and TypeScript
-- [ ] open scheduler retains intended and actual starts
-- [ ] dropped work participates in the decision
-- [ ] summary can be recomputed from retained evidence
-- [ ] at least three baseline and candidate runs exist
-- [ ] decision states practical and statistical uncertainty
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. How did the closed model hide demand during the pause?
-2. Why is one run with one million requests still one environment realization?
-3. What would cause the load generator to become the bottleneck?
+Build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons.
 
 ## Demonstrate
 
@@ -29,6 +16,31 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=02 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-02/
+├── thresholds.yaml
+├── closed-events.jsonl
+├── open-events.jsonl
+├── closed-summary.json
+├── open-summary.json
+├── run-series.json
+└── decision.md
+```
+
+Include a diagram or table showing how many arrivals were scheduled during the pause and how each model represented them. State client schedule coverage.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. How did the closed model hide demand during the pause?
+2. Why is one run with one million requests still one environment realization?
+3. What would cause the load generator to become the bottleneck?
 
 ## Continue only when
 

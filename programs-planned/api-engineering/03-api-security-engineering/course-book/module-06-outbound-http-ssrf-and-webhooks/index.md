@@ -1,12 +1,14 @@
 # Module 06 — Outbound HTTP, SSRF, and Webhook Integrity
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** How can outbound HTTP and webhook delivery avoid SSRF, rebinding, redirect abuse, tampering, and replay?
 
 ## Where this module fits
 
-Validate destinations through parse, resolution, peer connection, redirect, signing, freshness, and replay boundaries. You arrive from Module 05 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **Secrets, Cryptography, and Sensitive Data**.
+Module 05 produced **Harden input parsing, Unicode, traversal, MIME, streaming upload, checksum, query, and error behavior**. This module extends that result by asking: **How can outbound HTTP and webhook delivery avoid SSRF, rebinding, redirect abuse, tampering, and replay?**
+
+The new capstone increment is **Implement destination policy, address classification, peer verification, exact-byte signatures, freshness, rotation, and replay defense**. It becomes the prerequisite for **Secrets, Cryptography, and Sensitive Data**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Validate destinations through parse, resolution, peer connection, redirect, sign
 - Sign exact webhook bytes with key identity and timestamp.
 - Reject stale and replayed deliveries.
 
-## Capstone result
+## Capstone increment
 
 Implement destination policy, address classification, peer verification, exact-byte signatures, freshness, rotation, and replay defense.
-
-Webhook registration and delivery resist SSRF, body alteration, stale messages, and duplicate replay.
 
 ## Core security model
 
@@ -87,32 +87,32 @@ Run only against course fixtures. The goal is to understand control boundaries, 
 
 A syntactically valid HTTPS hostname resolves to `127.0.0.1`, RFC1918 space, or a cloud metadata address.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Outbound HTTP, SSRF, and Webhook Integrity** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 2 — DNS rebinding
 
 Validation resolves a public address; the HTTP client resolves again after the answer changes to a forbidden peer.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Outbound HTTP, SSRF, and Webhook Integrity** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 3 — Redirect pivot
 
 An allowed public URL responds with a redirect to a private or credential-bearing destination.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Outbound HTTP, SSRF, and Webhook Integrity** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 4 — Alternative IP text
 
 Integer, octal-like, IPv4-mapped IPv6, zone identifiers, or unusual normalization bypasses string checks.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Outbound HTTP, SSRF, and Webhook Integrity** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 5 — Webhook body reserialization
 
 The sender signs canonical JSON but transmits differently spaced or ordered bytes, so receiver and sender authenticate different messages.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Outbound HTTP, SSRF, and Webhook Integrity** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 6 — Webhook replay
 
 A valid old completion event is submitted repeatedly to trigger duplicate downstream effects.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Outbound HTTP, SSRF, and Webhook Integrity** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 
 ### Prioritization
 
@@ -138,27 +138,27 @@ Use WHATWG `URL` for parsing, `dns.promises.lookup({all:true, verbatim:true})` b
 
 ### 1. Allowlisting hosts by suffix without DNS/address policy.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Outbound HTTP, SSRF, and Webhook Integrity** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 2. Checking a URL at registration but not again at each delivery.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Outbound HTTP, SSRF, and Webhook Integrity** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 3. Following redirects automatically without revalidation.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Outbound HTTP, SSRF, and Webhook Integrity** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 4. Resolving once for policy and letting the client resolve again.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Outbound HTTP, SSRF, and Webhook Integrity** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 5. Signing parsed JSON or a framework-reconstructed body.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Outbound HTTP, SSRF, and Webhook Integrity** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 6. Keeping replay IDs only in process memory.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Outbound HTTP, SSRF, and Webhook Integrity** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ## What you add to the capstone
 
@@ -285,8 +285,10 @@ Compare the two tracks by this invariant: **the service validates URL policy, ev
 
 ## Module synthesis
 
-The module answer to “How does the service call a user-chosen destination without becoming a network pivot or accepting forged delivery?” is now executable in the capstone: Webhook registration and delivery resist SSRF, body alteration, stale messages, and duplicate replay.
+You are ready to leave this module when you can **Reject forbidden schemes, ports, credentials, fragments, and address ranges, Evaluate every resolved address and the connected peer, and Revalidate redirects and DNS changes** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Outbound HTTP, SSRF, and Webhook Integrity in a temporary branch** and requiring the following oracle: **parsed destination policy; all-address classification; mixed-answer rejection; connect-time peer model.**
+
+The cumulative platform now includes **Implement destination policy, address classification, peer verification, exact-byte signatures, freshness, rotation, and replay defense**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 07, [Secrets, Cryptography, and Sensitive Data](../module-07-secrets-cryptography-and-sensitive-data/index.md), asks: *How do we use cryptographic mechanisms without exposing keys, inventing protocols, or leaking sensitive data through diagnostics?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Secrets, Cryptography, and Sensitive Data](../module-07-secrets-cryptography-and-sensitive-data/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

@@ -1,12 +1,33 @@
-# Checkpoint 05 — Mutations, Idempotency, Concurrency, and Domain Results
+# Checkpoint — Module 05: Mutations, Idempotency, Concurrency, and Domain Results
 
-Do not continue until every condition is supported by executable or inspected evidence.
+## Required result
 
-- [ ] Every mutation delegates the authoritative command to its owning service and stores no gateway business state.
-- [ ] Idempotency keys and request fingerprints survive retries at the source-service boundary.
-- [ ] Reusing a key with different input returns a typed conflict rather than another effect.
-- [ ] Expected-version checks reject stale cancellation without changing run state.
-- [ ] Mutation success and problem union members remain machine-distinguishable and preserve clientMutationId.
-- [ ] Lab 05 proves one logical effect under replay, conflict on changed input, and no hidden graph-only deduplication table.
+Expose idempotent create/start/cancel mutations over owning services.
 
-**Gate:** run `make module-05-proof`. A green command without the lab report and the listed evidence does not count.
+## Demonstrate
+
+- [ ] Distinguish mutation serialization from transactionality.
+- [ ] Design input and payload types.
+- [ ] Preserve source idempotency.
+- [ ] Delegate optimistic concurrency.
+- [ ] Model domain results separately from execution errors.
+
+## Commands
+
+```bash
+make core-proof
+```
+
+## Evidence to retain
+
+Create `reports/module-05-mutations.json` with hashed command key, semantic input digest, source-call outcome, run identity, replay flag, version transitions, result union member, and gateway persistence inspection. Do not store the raw key.
+
+## Defend the design
+
+1. Answer the central question in one paragraph: How do graph mutations preserve the durable command guarantees of the owning service?
+2. Name the authoritative owner and smallest counterexample.
+3. State what the available evidence does not prove.
+
+## Continue only when
+
+Continue only after you can demonstrate the **Mutations, Idempotency, Concurrency, and Domain Results** increment, preserve the controlled counterexample as a regression, keep inherited checkpoints green, and explain which stronger claim remains outside the evidence you collected.

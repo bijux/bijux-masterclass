@@ -1,6 +1,8 @@
-# Checkpoint — Event Thinking, Ownership, and Message Taxonomy
+# Checkpoint — Module 01: Event Thinking, Ownership, and Message Taxonomy
 
-Do not progress because the chapter has been read. Progress when the following evidence can be reproduced from a clean working tree.
+## Required result
+
+Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary.
 
 ## Demonstrate
 
@@ -8,14 +10,6 @@ Do not progress because the chapter has been read. Progress when the following e
 - Distinguish a rejected command from a malformed delivery of an already-recorded event.
 - Name the owner and durable oracle for every Analysis Events 1.0 type.
 - Explain why the partition key is not automatically the correlation ID.
-
-## Required result
-
-- `work/module-01/interaction-map.md`
-- `work/module-01/publication-decisions.yaml`
-- `work/module-01/rejected-candidates.md`
-- `work/module-01/evidence.json`
-- `work/module-01/residual-risk.md`
 
 ## Commands
 
@@ -25,6 +19,15 @@ make event-case-proof
 make vector-proof
 make module-proof MODULE=01 TRACK=$TRACK
 ```
+
+## Evidence to retain
+
+- `work/module-01/interaction-map.md`
+- `work/module-01/publication-decisions.yaml`
+- `work/module-01/rejected-candidates.md`
+- a diff for `message-taxonomy.yaml` and `event-catalog.yaml`
+- output from `make module-proof MODULE=01 TRACK=$TRACK`
+- one paragraph explaining which important interaction remains synchronous
 
 ## Defend the design
 
@@ -40,4 +43,4 @@ make module-proof MODULE=01 TRACK=$TRACK
 - A public payload exposes storage or security internals.
 - The learner cannot identify a durable record that proves an event.
 
-The checkpoint is complete only when all commands pass, all artifacts are reviewable, and each oral-defense question can be answered without appealing to a broker feature as magic.
+The **Event Thinking, Ownership, and Message Taxonomy** checkpoint is complete only when the commands pass, the retained artifacts explain the event-system state, and you can defend the result without treating broker delivery, ordering, or replay as magic.

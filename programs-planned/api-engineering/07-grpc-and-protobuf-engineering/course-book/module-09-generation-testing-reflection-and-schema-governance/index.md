@@ -1,23 +1,25 @@
-# Generation, Testing, Reflection, and Schema Governance
+# Module 09 — Generation, Testing, Reflection, and Schema Governance
 
-**Module 09 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How do we make proto source, generated code, runtime services, tests, descriptors, reflection, and release policy agree without treating code generation as proof?
+> **Central question:** How do we make proto source, generated code, runtime services, tests, descriptors, reflection, and release policy agree without treating code generation as proof?
 
-## Place in the program
+## Where this module fits
 
-The runtime now has correct calls, streams, security, and lifecycle. This module turns those mechanisms into a reproducible engineering system. The `.proto` source is authoritative, generated code is a derived artifact, descriptor sets are portable evidence, and runtime reflection is an observation. Tests must cover pure semantics, transport integration, generated-client compatibility, and live inventory without confusing one layer for another.
+Module 08 produced **Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration**. This module extends that result by asking: **How do we make proto source, generated code, runtime services, tests, descriptors, reflection, and release policy agree without treating code generation as proof?**
+
+The new capstone increment is **Publish a reproducible generation pipeline, checked descriptor inventory, generated-client build matrix, runtime catalogue comparison, and Course 7 RPC release gate**. It becomes the prerequisite for **HTTP, Events, and gRPC in One Architecture: Release and Final Defense**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- define authoritative proto source and reproducible generation inputs
-- use `protoc` and Buf as complementary generation, lint, and compatibility tools
-- build and inspect descriptor sets and runtime reflection inventories
-- separate semantic unit tests, in-process protocol tests, network conformance, and generated-client tests
-- detect generated-code drift and unsupported tool capabilities
-- govern services, methods, owners, consumers, versions, and deprecation through an RPC catalogue
+- Define authoritative proto source and reproducible generation inputs.
+- Use `protoc` and Buf as complementary generation, lint, and compatibility tools.
+- Build and inspect descriptor sets and runtime reflection inventories.
+- Separate semantic unit tests, in-process protocol tests, network conformance, and generated-client tests.
+- Detect generated-code drift and unsupported tool capabilities.
+- Govern services, methods, owners, consumers, versions, and deprecation through an RPC catalogue.
 
-## Capstone result
+## Capstone increment
 
 Publish a reproducible generation pipeline, checked descriptor inventory, generated-client build matrix, runtime catalogue comparison, and Course 7 RPC release gate.
 
@@ -125,3 +127,13 @@ Read `buf.yaml`, `buf.gen.yaml`, `capstone/contracts/descriptors/analysis-v1.jso
 ## Transition
 
 After preserving the checkpoint evidence, continue to **HTTP, Events, and gRPC in One Architecture: Release and Final Defense**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **define authoritative proto source and reproducible generation inputs, use `protoc` and Buf as complementary generation, lint, and compatibility tools, and build and inspect descriptor sets and runtime reflection inventories** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject generated-code drift and an uncatalogued method, then confirm assigned proofs fail** and requiring the following oracle: **Generation is deterministic for the supported profile; descriptor, source, catalogue, generated clients, and runtime inventory agree; planted drift and uncatalogued exposure are detected; missing external tools remain explicitly unexecuted.**
+
+The cumulative platform now includes **Publish a reproducible generation pipeline, checked descriptor inventory, generated-client build matrix, runtime catalogue comparison, and Course 7 RPC release gate**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [HTTP, Events, and gRPC in One Architecture: Release and Final Defense](../module-10-http-events-and-grpc-release-and-final-defense/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

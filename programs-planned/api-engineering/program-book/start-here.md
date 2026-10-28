@@ -2,64 +2,44 @@
 
 ## Who this program is for
 
-You should be comfortable reading small programs, running command-line tools, and following tests. You do not need prior OpenAPI, PostgreSQL, OAuth, observability, performance, or messaging expertise. Course 1 begins at the HTTP and contract boundary; later courses assume the earlier outcomes or require an equivalent predecessor proof.
+You should be able to read small Python or TypeScript programs, use a terminal, and follow a test failure. You do not need prior OpenAPI, PostgreSQL, OAuth, observability, performance, messaging, gRPC, microservices, GraphQL, or platform-engineering experience. Course 1 builds the initial protocol model; later courses require the preceding handoff or equivalent evidence.
 
-## Do not begin by browsing the repository
+## Begin with the book, not the repository tree
 
-Begin with the course book. Repository exploration before a mental model often turns learning into filename archaeology. For each course:
+Repository browsing before a mental model turns study into filename archaeology. For each course:
 
-1. read its `course-book/index.md`;
-2. complete orientation and verify the predecessor boundary;
-3. read the module chapter without opening the answer file;
-4. answer the twelve exercises in your own words;
-5. inspect the focused implementation paths named by the chapter;
-6. perform the lab in one primary language track;
-7. compare the shared invariant in the second track;
-8. complete the checkpoint and preserve the evidence.
+1. read the course introduction and capstone guide;
+2. complete orientation and verify the incoming handoff;
+3. read one module chapter without opening its answers;
+4. answer all twelve exercises in your own words;
+5. inspect the narrow implementation paths named by the chapter;
+6. predict the lab oracle before executing the lab;
+7. complete the experiment in one primary track;
+8. compare the same invariant in the second track;
+9. preserve the checkpoint evidence before moving forward.
 
 ## Choose a language strategy
 
-Course 1 uses Python and TypeScript symmetrically because its purpose is to prove contract independence. From Course 2 onward, choose one primary implementation track. Complete the deep build there. Use the comparison track to answer a narrower question: does the same public or engineering invariant survive an idiomatic implementation in another ecosystem?
+Course 1 uses Python/FastAPI and TypeScript/Fastify symmetrically because contract independence is the lesson. From Course 2 onward, choose one primary track for the deep implementation. Use the second as a comparison and parity reference.
 
-Do not force identical folder structures, exception classes, asynchronous primitives, database libraries, or framework hooks. Parity applies to externally observable behavior and named guarantees.
+Do not force identical internal architecture. Python and TypeScript have different runtime, typing, concurrency, and ecosystem idioms. Parity applies to the public outcome and named engineering invariant—not to class names or folder shapes.
 
-## Use the evidence ladder
+## Use the smallest decisive oracle
 
-Ask what kind of claim you are making before choosing a test:
+Before editing, classify the disagreement:
 
-- document parsing and schema fixtures establish description properties;
-- black-box HTTP observations establish provider conformance;
-- pure domain tests establish deterministic rules;
-- database and storage evidence establish committed outcomes;
-- adversarial policy decisions establish security controls;
-- telemetry supports diagnosis but does not replace durable truth;
-- live process and network experiments establish lifecycle and failure behavior;
-- comparable workload runs support performance decisions;
-- broker delivery and consumer-state evidence establish asynchronous effects.
+- mental model;
+- contract or course profile;
+- implementation;
+- fixture or test;
+- environment comparability;
+- proof strength.
 
-The cheapest valid oracle should fail first. Escalate only when the lower layer passes.
+A parser settles syntax, not runtime conformance. A unit test settles a local rule, not process recovery. Telemetry supports diagnosis, not authoritative business truth. A laptop benchmark supports mechanism evidence, not production capacity. Escalate only when a cheaper valid oracle passes.
 
-## Work without blind copying
+## Study rhythm
 
-Before executing a command, predict its outcome. Before planting a defect, predict the first proof gate that should fail. Before accepting a repair, name the permanent regression. When a result surprises you, classify the disagreement before editing:
-
-- the mental model may be wrong;
-- the contract may be wrong;
-- the implementation may drift;
-- the fixture or test may encode the wrong claim;
-- the environment may be incomparable;
-- the proof may be too weak for the claim.
-
-## A practical study rhythm
-
-Each course is designed as ten dense weekdays over two calendar weeks. A typical day contains four cycles rather than one uninterrupted session:
-
-- concept and protocol reading;
-- worked design and implementation reading;
-- exercise attempt and answer review;
-- lab, evidence capture, and checkpoint defense.
-
-Take breaks before reasoning quality collapses. The middle weekend is for repair and synthesis, not hidden new curriculum. If one checkpoint fails, do not stack later material on top of it. Use the recovery route in [Study and assessment](study-and-assessment.md).
+Each course is ten dense teaching days over two calendar weeks. Use four cycles each day: model, transfer, experiment, defense. The middle weekend is for repair and synthesis, not hidden new curriculum. If a checkpoint fails, repair it before stacking later modules on top.
 
 ## First commands
 
@@ -67,7 +47,8 @@ From `programs/api-engineering`:
 
 ```bash
 make doctor
-make release-proof
+make structure
+make handoff-proof
 ```
 
-Then enter Course 1 and follow its orientation. A green program proof confirms repository structure and dependency-light claims; it does not substitute for the live laboratories described in later courses.
+A green dependency-light proof establishes only the checks it executed. Live infrastructure routes are separate.

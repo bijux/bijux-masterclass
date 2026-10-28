@@ -1,15 +1,165 @@
 {
-  "duration_days": 10,
-  "graph_api_version": "1.0",
-  "graphql_over_http_profile": "course-profile-1.0-based-on-stage-2-draft",
-  "graphql_specification": "September 2025",
-  "id": "09-graphql-schema-and-runtime-engineering",
-  "orientation_module": true,
-  "predecessor": "08-distributed-api-architecture-and-microservices-engineering",
-  "primary_language_strategy": "one-primary-track-one-comparative-reference",
+  "schemaVersion": 2,
   "program": "api-engineering",
-  "sequence": 9,
-  "successor": "10-api-platform-governance-and-developer-experience-engineering",
+  "number": 9,
+  "id": "graphql-schema-and-runtime-engineering",
+  "directory": "09-graphql-schema-and-runtime-engineering",
   "title": "GraphQL Schema and Runtime Engineering",
-  "version": "1.0.0"
+  "stage": "Compose governed client-shaped capabilities",
+  "centralQuestion": "How can clients select graph-shaped data and operations without moving business ownership, authorization, cost, or consistency into an uncontrolled gateway?",
+  "responsibility": "Design a governed GraphQL schema and runtime that composes service-owned capabilities with bounded execution and truthful partial results.",
+  "duration": {
+    "calendarWeeks": 2,
+    "teachingDays": 10,
+    "orientationCounted": false
+  },
+  "incomingBoundary": "The Course 8 distributed architecture handoff with explicit service, data, contract, and trust boundaries.",
+  "outgoingBoundary": "Analysis Graph API 1.0, GraphQL September 2025 schema, persisted operation registry, resolver ownership, demand policy, resumable subscriptions, compatibility gates, and platform-publication metadata.",
+  "versionState": "HTTP, Event, and RPC APIs preserved; Analysis Graph API 1.0 introduced; GraphQL September 2025; graph metadata migrations 001–004.",
+  "predecessor": "08-distributed-api-architecture-and-microservices-engineering",
+  "successor": "10-api-platform-governance-and-developer-experience-engineering",
+  "primaryProduct": "course-book",
+  "languageStrategy": "one primary implementation track plus one comparative reference track",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-graph-interface-placement-and-operation-lifecycle",
+      "title": "Graph Interface Placement and the Operation Lifecycle",
+      "centralQuestion": "Where does GraphQL belong, and what happens between receiving a document and returning a response?",
+      "capstoneIncrement": "Publish the graph boundary and operation-lifecycle trace.",
+      "learningOutcomes": [
+        "place GraphQL without changing service authority",
+        "trace parse, validate, admit, execute, complete, and serialize phases",
+        "classify failures by phase",
+        "apply the course HTTP profile",
+        "review a field as an architecture edge"
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-type-system-nullability-and-semantic-modeling",
+      "title": "Type System, Nullability, and Semantic Modeling",
+      "centralQuestion": "How does the schema make useful promises without promising values the runtime cannot sustain?",
+      "capstoneIncrement": "Release Analysis Graph API 1.0 type and nullability policies.",
+      "learningOutcomes": [
+        "design types around client concepts",
+        "choose nullability from failure guarantees",
+        "model lists, interfaces, unions, enums, scalars, and inputs",
+        "apply OneOf input semantics",
+        "detect schema promises the runtime cannot keep"
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-resolver-architecture-batching-and-source-ownership",
+      "title": "Resolver Architecture, Batching, and Source Ownership",
+      "centralQuestion": "How can nested graph execution remain faithful to service ownership without producing N+1 calls?",
+      "capstoneIncrement": "Replace N+1 nested calls with request-scoped batching.",
+      "learningOutcomes": [
+        "map every field to one source",
+        "construct request-scoped context",
+        "explain and measure N+1",
+        "implement batch loaders",
+        "divide deadlines and observe fan-out"
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-queries-identifiers-connections-and-pagination",
+      "title": "Queries, Identifiers, Connections, and Pagination",
+      "centralQuestion": "How can clients navigate lists and relationships without unstable pages, leaked internals, or unbounded work?",
+      "capstoneIncrement": "Implement global IDs and stable, bound connections.",
+      "learningOutcomes": [
+        "design meaningful roots",
+        "encode and validate global identifiers",
+        "implement stable connection pagination",
+        "bind cursors to tenant and filters",
+        "bound polymorphic search"
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-mutations-idempotency-concurrency-and-domain-results",
+      "title": "Mutations, Idempotency, Concurrency, and Domain Results",
+      "centralQuestion": "How do graph mutations preserve the durable command guarantees of the owning service?",
+      "capstoneIncrement": "Expose idempotent create/start/cancel mutations over owning services.",
+      "learningOutcomes": [
+        "distinguish mutation serialization from transactionality",
+        "design input and payload types",
+        "preserve source idempotency",
+        "delegate optimistic concurrency",
+        "model domain results separately from execution errors"
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-authorization-tenancy-and-schema-exposure",
+      "title": "Authorization, Tenancy, and Schema Exposure",
+      "centralQuestion": "How can clients select flexible fields without gaining flexible authority?",
+      "capstoneIncrement": "Prove field, tenant, collection, and sensitive-output authorization.",
+      "learningOutcomes": [
+        "enforce field and tenant authorization",
+        "filter collections at the source",
+        "protect sensitive output fields",
+        "delegate state-dependent policy",
+        "choose an introspection and trusted-document policy"
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-demand-control-persisted-operations-and-caching",
+      "title": "Demand Control, Persisted Operations, and Caching",
+      "centralQuestion": "How can a client-shaped query language remain bounded under adversarial and accidental demand?",
+      "capstoneIncrement": "Admit only bounded trusted operations and record cost evidence.",
+      "learningOutcomes": [
+        "separate validity from affordability",
+        "analyze aliases, fragments, and lists",
+        "operate a trusted-document registry",
+        "design authorization-aware caching",
+        "reject overload truthfully"
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-errors-partial-data-consistency-and-observability",
+      "title": "Errors, Partial Data, Consistency, and Observability",
+      "centralQuestion": "How does the graph tell the truth when some fields succeed, some fail, and some are stale?",
+      "capstoneIncrement": "Return truthful partial data with path-specific errors and traces.",
+      "learningOutcomes": [
+        "separate request and execution errors",
+        "use error paths and stable codes",
+        "predict null bubbling",
+        "disclose staleness and partiality",
+        "trace graph execution without cardinality explosions"
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-subscriptions-resume-and-incremental-delivery",
+      "title": "Subscriptions, Resume, and Incremental Delivery",
+      "centralQuestion": "How can real-time graph results remain authorized, bounded, and recoverable across disconnects?",
+      "capstoneIncrement": "Deliver resumable run updates with gap and duplicate handling.",
+      "learningOutcomes": [
+        "map durable events to subscription responses",
+        "resume by sequence",
+        "re-evaluate long-lived authorization",
+        "bound subscriber buffers",
+        "classify incremental-delivery features honestly"
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-schema-evolution-federation-governance-and-final-defense",
+      "title": "Schema Evolution, Federation, Governance, and Final Defense",
+      "centralQuestion": "How does the graph evolve without breaking clients, erasing service ownership, or becoming an ungoverned platform?",
+      "capstoneIncrement": "Approve Graph API 1.0, reject breaking candidates, and publish Course 10 handoff.",
+      "learningOutcomes": [
+        "classify schema evolution by client direction",
+        "govern field ownership",
+        "evaluate federation without cargo culting",
+        "run an operation-aware release gate",
+        "publish a sanitized platform handoff"
+      ]
+    }
+  ]
 }

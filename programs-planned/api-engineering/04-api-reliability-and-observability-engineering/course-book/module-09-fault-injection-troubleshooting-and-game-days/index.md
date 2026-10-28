@@ -1,12 +1,14 @@
 # Module 09 — Fault Injection, Troubleshooting, and Game Days
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** How can fault injection and game days produce falsifiable evidence without creating uncontrolled damage?
 
 ## Where this module fits
 
-Build bounded fault profiles and an evidence-first investigation method with abort and cleanup contracts. You arrive from Module 08 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **Incident Command, Reconciliation, and Readiness**.
+Module 08 produced **Publish five journey SLOs, multiwindow alerts, owner-linked runbooks, and release policy**. This module extends that result by asking: **How can fault injection and game days produce falsifiable evidence without creating uncontrolled damage?**
+
+The new capstone increment is **Design bounded faults, control populations, abort conditions, cleanup contracts, and proof-sensitive planted defects**. It becomes the prerequisite for **Incident Command, Reconciliation, and Readiness**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Build bounded fault profiles and an evidence-first investigation method with abo
 - Prove alerts and runbooks are sensitive to planted defects.
 - Verify cleanup mechanically.
 
-## Capstone result
+## Capstone increment
 
 Design bounded faults, control populations, abort conditions, cleanup contracts, and proof-sensitive planted defects.
-
-A stalled-worker game day burns run-start freshness while API availability remains healthy, then recovers without duplicate completion.
 
 ## Core reliability model
 
@@ -96,7 +96,6 @@ Apply **Steady-state hypothesis, Fault model, Blast radius** to this module’s 
 The local fault injector proves experiment controls; production blast radius, change approval, and emergency stop authority remain organizational responsibilities.
 
 ## Worked failures
-
 
 ### Case 1 — Database 500 instead of latency
 
@@ -185,7 +184,7 @@ plan = FaultPlan(
 plan.validate()
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Fault Injection, Troubleshooting, and Game Days** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Database 500 instead of latency
 
@@ -232,7 +231,7 @@ const plan = new FaultPlan({
 plan.validate();
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Fault Injection, Troubleshooting, and Game Days** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Database 500 instead of latency
 
@@ -437,8 +436,10 @@ Compare the two tracks by this invariant: **faults have hypotheses, blast-radius
 
 ## Module synthesis
 
-The module answer to “Can the system and its operators detect a controlled failure, find the durable cause, mitigate it, and return to a verified steady state?” is now executable in the capstone: A stalled-worker game day burns run-start freshness while API availability remains healthy, then recovers without duplicate completion.
+You are ready to leave this module when you can **Predict the failure and first oracle before injection, Control blast radius and synthetic tenants, and Diagnose from user journey to durable state to telemetry** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant one missing alert or misleading dashboard panel and demonstrate detection** and requiring the following oracle: **API availability may remain healthy while run-start freshness fails; Durable accepted jobs remain present and recoverable; Telemetry loss reduces diagnosis quality but not correctness; Mitigation stops budget burn without duplicate completion.**
+
+The cumulative platform now includes **Design bounded faults, control populations, abort conditions, cleanup contracts, and proof-sensitive planted defects**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 10, [Incident Command, Reconciliation, and Readiness](../module-10-incident-command-state-reconciliation-and-operational-readiness/index.md), asks: *During a real incident, how do people coordinate, determine durable truth, repair safely, and decide that the service is ready again?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Incident Command, Reconciliation, and Readiness](../module-10-incident-command-state-reconciliation-and-operational-readiness/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

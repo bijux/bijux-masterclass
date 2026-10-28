@@ -104,7 +104,7 @@ def doctor():
     print("python", sys.version.split()[0]); print("PyYAML", yaml.__version__)
     for tool in ["node","tsc","pytest","mkdocs","docker","psql","backstage-cli","openapi-generator","asyncapi","buf"]:
         print(f"{tool}: {shutil.which(tool) or 'not-available'}")
-    print("course", read_json(ROOT/"course.json")["version"])
+    print("course", read_json(ROOT/"course.json")["versionState"])
 
 
 def predecessor_proof():
@@ -133,12 +133,28 @@ def structure_proof():
     assert (ROOT/"README.md").is_file() and (ROOT/"Makefile").is_file()
     modules = sorted(p for p in BOOK.iterdir() if p.is_dir() and p.name.startswith("module-"))
     assert len(modules) == 11
+    orientation = [p for p in modules if p.name.startswith("module-00")]
     numbered = [p for p in modules if not p.name.startswith("module-00")]
-    assert len(numbered) == 10
-    for module in modules:
-        for name in ["index.md","exercises.md","exercise-answers.md","lab.md","checkpoint.md"]:
-            assert (module/name).is_file(), f"missing {module.name}/{name}"
-    pages = list(BOOK.rglob("*.md")); assert len(pages) == 59, len(pages)
+    assert len(orientation) == 1 and len(numbered) == 10
+    assert {p.name for p in orientation[0].glob("*.md")} == {"index.md", "lab.md", "checkpoint.md"}
+    required = {"index.md", "exercises.md", "exercise-answers.md", "lab.md", "checkpoint.md"}
+    for module in numbered:
+        assert {p.name for p in module.glob("*.md")} == required, f"module shape mismatch {module.name}"
+        ex = re.findall(r"^## (\d+)\. (.+)$", (module/"exercises.md").read_text(), re.M)
+        ans = re.findall(r"^## (\d+)\. (.+)$", (module/"exercise-answers.md").read_text(), re.M)
+        assert ex == ans and len(ex) == 12
+        lab = (module/"lab.md").read_text()
+        for heading in ["## Objective", "## Why this lab matters", "## Setup conditions",
+                        "## Hypothesis", "## Controlled action and investigation",
+                        "## Operational oracle", "## Required evidence",
+                        "## Interpretation and defense", "## Cleanup and reset",
+                        "## Completion gate"]:
+            assert heading in lab, f"missing {heading} in {module.name}/lab.md"
+        checkpoint = (module/"checkpoint.md").read_text()
+        for heading in ["## Required result", "## Demonstrate", "## Commands",
+                        "## Evidence to retain", "## Defend the design", "## Continue only when"]:
+            assert heading in checkpoint, f"missing {heading} in {module.name}/checkpoint.md"
+    pages = list(BOOK.rglob("*.md")); assert len(pages) == 61, len(pages)
     cfg = read_yaml(ROOT/"mkdocs.yml")
     nav = {str((BOOK/p).resolve()) for p in _nav_paths(cfg["nav"]) if p.endswith(".md")}
     expected = {str(p.resolve()) for p in pages}
@@ -149,8 +165,8 @@ def structure_proof():
 def orientation_proof():
     predecessor_proof(); structure_proof()
     version = read_json(ROOT/"course.json")
-    assert version["course_number"] == 10
-    assert version["slug"] == "api-platform-governance-and-developer-experience-engineering"
+    assert version["number"] == 10
+    assert version["id"] == "api-platform-governance-and-developer-experience-engineering"
     print("PASS orientation")
 
 
@@ -423,7 +439,7 @@ def markdown_link_proof():
 
 def education_proof():
     pages=list(BOOK.rglob("*.md")); words=sum(len(p.read_text().split()) for p in pages)
-    assert len(pages)==59 and words>=26000
+    assert len(pages)==61 and words>=26000
     modules=sorted(p for p in BOOK.iterdir() if p.is_dir() and p.name.startswith("module-") and not p.name.startswith("module-00"))
     exercise_count=answer_count=0
     paragraphs=[]
@@ -433,7 +449,11 @@ def education_proof():
         assert ex==ans==[str(i) for i in range(1,13)]
         exercise_count+=len(ex); answer_count+=len(ans)
         lab=(module/"lab.md").read_text(); checkpoint=(module/"checkpoint.md").read_text()
-        for heading in ["## Setup","## Controlled action","## Oracle","## Required evidence","## Cleanup","## Completion gate"]: assert heading in lab
+        for heading in ["## Objective", "## Why this lab matters", "## Setup conditions",
+                        "## Hypothesis", "## Controlled action and investigation",
+                        "## Operational oracle", "## Required evidence",
+                        "## Interpretation and defense", "## Cleanup and reset",
+                        "## Completion gate"]: assert heading in lab
         assert len(re.findall(r"^- ",checkpoint,re.M))>=5
         chapter=(module/"index.md").read_text(); assert len(chapter.split())>=1350
         for block in re.split(r"\n\s*\n",chapter):

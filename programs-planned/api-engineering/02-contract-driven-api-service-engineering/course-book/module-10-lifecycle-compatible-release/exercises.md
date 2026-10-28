@@ -1,5 +1,7 @@
 # Exercises — Module 10: Lifecycle and Compatible Release
 
+Work through all twelve problems before opening the answers. In **Lifecycle and Compatible Release**, every response must settle this question: **How can old and new service versions coexist through a database change and still preserve the public contract?** Conclude each problem with a release decision: what may proceed, what must be rejected, and what remains unproven by the available environment.
+
 ## 1. Differentiate liveness and readiness for the API.
 
 ## 2. What should worker readiness check?

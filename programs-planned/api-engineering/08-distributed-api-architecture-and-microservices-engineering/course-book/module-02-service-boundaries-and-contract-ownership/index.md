@@ -1,26 +1,27 @@
-# Service Boundaries, Bounded Contexts, and Contract Ownership
+# Module 02 — Service Boundaries, Bounded Contexts, and Contract Ownership
 
-**Module 02 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How do we draw service boundaries around cohesive decisions and language without turning tables, classes, or teams into accidental services?
+> **Central question:** How do we draw service boundaries around cohesive decisions and language without turning tables, classes, or teams into accidental services?
 
-## Place in the program
+## Where this module fits
 
-Course 7 introduced typed internal RPC but deliberately refused to equate a remote method with an independently owned service. Course 8 now uses ownership, data, failure, release, and operational evidence to decide which capabilities deserve distribution.
+Module 01 produced **Publish a measured boundary scorecard that approves Notification Delivery for first extraction, approves Artifact Delivery conditionally, keeps Analysis Control cohesive, and rejects table-shaped services**. This module extends that result by asking: **How do we draw service boundaries around cohesive decisions and language without turning tables, classes, or teams into accidental services?**
+
+The new capstone increment is **Publish the service catalogue, bounded-context map, contract ownership map, and explicit list of capabilities that remain inside Analysis Control**. It becomes the prerequisite for **Data Ownership, Replication, and Cross-Service Query Design**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- identify capabilities, invariants, and ubiquitous language that belong together
-- separate business-service ownership from gateway, worker, and platform components
-- assign one accountable owner to every public HTTP operation, event, RPC, and data set
-- reject shared libraries that secretly preserve cross-service domain coupling
-- design anti-corruption mappings between service-specific models
-- recognize distributed-monolith boundaries before implementation begins
+- Identify capabilities, invariants, and ubiquitous language that belong together.
+- Separate business-service ownership from gateway, worker, and platform components.
+- Assign one accountable owner to every public HTTP operation, event, RPC, and data set.
+- Reject shared libraries that secretly preserve cross-service domain coupling.
+- Design anti-corruption mappings between service-specific models.
+- Recognize distributed-monolith boundaries before implementation begins.
 
-## Capstone result
+## Capstone increment
 
 Publish the service catalogue, bounded-context map, contract ownership map, and explicit list of capabilities that remain inside Analysis Control.
-
 
 ## A service owns decisions, not nouns
 
@@ -150,6 +151,7 @@ Both tracks implement `ServiceCatalog` and require one writer per fact. The Type
 ## Evidence required before Module 3
 
 The catalogue must classify every component, assign one accountable owner, declare canonical data, and reject table-shaped services. You must be able to explain why Worker Plane is a deployment boundary but not a business-state boundary.
+
 ## A context map for the Analysis Runs Platform
 
 A bounded context is a boundary within which terms, rules, and models have one coherent meaning. It is not automatically a process boundary. Course 8 uses contexts to clarify ownership before deciding deployment.
@@ -346,3 +348,13 @@ Creation paths are easy to design. Deletion exposes ownership ambiguity:
 - Which service proves erasure?
 
 The course requires each authoritative fact to have lifecycle ownership, not only creation ownership. Reconciliation and retention policies later depend on this decision.
+
+## Module synthesis
+
+You are ready to leave this module when you can **identify capabilities, invariants, and ubiquitous language that belong together, separate business-service ownership from gateway, worker, and platform components, and assign one accountable owner to every public HTTP operation, event, RPC, and data set** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Find and remove shared domain policies that would couple services** and requiring the following oracle: **Every business fact has one canonical writer, every interface has one owner, and no table-shaped service or shared domain policy survives.**
+
+The cumulative platform now includes **Publish the service catalogue, bounded-context map, contract ownership map, and explicit list of capabilities that remain inside Analysis Control**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Data Ownership, Replication, and Cross-Service Query Design](../module-03-data-ownership-replication-and-cross-service-queries/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

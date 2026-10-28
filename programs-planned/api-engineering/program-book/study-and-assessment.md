@@ -1,54 +1,35 @@
 # Study and Assessment
 
+## Daily loop
+
+Use four deliberate phases:
+
+1. **Model** — read the chapter and redraw the protocol, state machine, data flow, or ownership boundary.
+2. **Transfer** — answer the twelve exercises before reading the worked answers.
+3. **Experiment** — perform the lab, including the controlled failure or unsafe candidate.
+4. **Defense** — complete the checkpoint and explain both the established claim and the evidence boundary.
+
 ## Two-week course rhythm
 
-Each course contains orientation plus ten weekday modules. Orientation is required but not counted as a teaching module. The middle weekend introduces no new subject; use it to repair failed checkpoints, consolidate notes, and rerun predecessor and course proofs.
+Each course contains ten teaching days. The middle weekend is for repair and synthesis. It is not a hidden eleventh module. A learner who cannot explain a checkpoint should not continue merely because a command returned zero.
 
-A productive day has four phases:
+## Assessment
 
-1. **Understand** — read the chapter and rewrite the central model in your own words.
-2. **Transfer** — answer the exercises without the reference answers.
-3. **Build and break** — perform the lab, including the named failure or pressure condition.
-4. **Defend** — complete the checkpoint, retain evidence, and explain the result without reading the chapter.
+Each course is assessed through:
 
-## Assessment model
+- module checkpoints;
+- capstone evidence;
+- a final defense;
+- non-compensable gates for correctness, security, evidence honesty, and predecessor preservation.
 
-A course score can summarize performance, but certain gates are non-compensable. You cannot offset a broken contract with polished prose, an authorization leak with high test coverage, or a failed correctness oracle with lower latency.
+A high aggregate score cannot compensate for cross-tenant access, lost durable work, false success, unbounded demand, broken compatibility, or an unowned public contract.
 
-Recommended weighting:
+## Recovery when stuck
 
-- module exercises and retrieval: 20%;
-- ten laboratories: 30%;
-- capstone increments and implementation review: 25%;
-- final proof and defense: 25%.
-
-Completion requires every module checkpoint and the final course defense.
-
-## Recovery when a checkpoint fails
-
-Do not immediately reread the entire chapter. Use this sequence:
-
-1. restate the failed claim in one sentence;
-2. identify its owner and evidence layer;
-3. minimize the counterexample;
-4. compare the result with the reference answer or implementation;
-5. repair the mental model before repairing code;
-6. rerun the narrow oracle;
-7. rerun the module proof;
-8. explain why the previous approach appeared plausible.
-
-If the problem is environmental, record the exact missing dependency and complete all lower evidence classes. Do not mark the live route as passed.
-
-## Notes worth keeping
-
-Keep a decision journal rather than a transcript. For each module record:
-
-- the central question;
-- three governing invariants;
-- one seductive wrong design;
-- one decisive counterexample;
-- one Python/TypeScript comparison;
-- one proof limitation;
-- the capstone state before and after the module.
-
-These notes become the most useful preparation for the final program defense.
+1. Restate the expected invariant without framework vocabulary.
+2. Find the smallest counterexample.
+3. Identify the owner of the decision or state.
+4. Run the cheapest decisive oracle.
+5. Inspect raw input and output before derived telemetry.
+6. Repair one boundary at a time.
+7. retain the counterexample as a regression.

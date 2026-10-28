@@ -1,5 +1,7 @@
 # Exercises — Module 02: HTTP Edge and Canonicalization
 
+Work through all twelve problems before opening the answers. In **HTTP Edge and Canonicalization**, every response must settle this question: **Which raw HTTP message should the application trust after proxies, parsers, duplicate fields, and size limits intervene?** Treat each problem as a design review: state the rule, construct the smallest counterexample, and select an oracle capable of rejecting your own answer.
+
 ## 1. Why must edge policy execute before JWT validation?
 
 ## 2. When may `X-Forwarded-Proto` be trusted?

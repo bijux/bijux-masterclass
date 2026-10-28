@@ -1,23 +1,25 @@
-# Deadlines, Cancellation, Retries, and Idempotent Calls
+# Module 05 — Deadlines, Cancellation, Retries, and Idempotent Calls
 
-**Module 05 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How can callers bound remote work and recover from transient failure without multiplying timeouts or duplicating durable effects?
+> **Central question:** How can callers bound remote work and recover from transient failure without multiplying timeouts or duplicating durable effects?
 
-## Place in the program
+## Where this module fits
 
-Module 04 defined stable unary outcomes. This module controls time and repetition. Remote calls fail ambiguously: a deadline can expire after commit, cancellation can arrive too late, and a retry can repeat an effect. The learner now treats one absolute deadline, propagated cancellation, retry classification, persistent idempotency, and reconciliation as one design problem.
+Module 04 produced **Implement `CreateRun`, `GetRun`, and `CancelRun` with shared status vectors, safe metadata policy, and equivalent Python and TypeScript client behavior**. This module extends that result by asking: **How can callers bound remote work and recover from transient failure without multiplying timeouts or duplicating durable effects?**
+
+The new capstone increment is **Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery**. It becomes the prerequisite for **Streaming RPCs, Flow Control, and Backpressure**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- derive child RPC budgets from one absolute edge deadline
-- separate caller cancellation from application rollback
-- classify transparent and configured retries without assuming all transient statuses are safe
-- bind mutation retries to durable idempotency records and semantic fingerprints
-- apply bounded backoff, jitter, attempt limits, and retry throttling
-- reconcile ambiguous outcomes when a deadline or connection fails after commit
+- Derive child RPC budgets from one absolute edge deadline.
+- Separate caller cancellation from application rollback.
+- Classify transparent and configured retries without assuming all transient statuses are safe.
+- Bind mutation retries to durable idempotency records and semantic fingerprints.
+- Apply bounded backoff, jitter, attempt limits, and retry throttling.
+- Reconcile ambiguous outcomes when a deadline or connection fails after commit.
 
-## Capstone result
+## Capstone increment
 
 Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery.
 
@@ -123,3 +125,13 @@ Read `capstone/rpc-case/deadline-retry-policy.yaml`, `capstone/shared/vectors/de
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Streaming RPCs, Flow Control, and Backpressure**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **derive child RPC budgets from one absolute edge deadline, separate caller cancellation from application rollback, and classify transparent and configured retries without assuming all transient statuses are safe** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject failures before handler entry, before commit, after commit, and during response delivery** and requiring the following oracle: **No attempt starts after the absolute deadline, no safe retry exceeds the budget, mutation retries converge on one durable effect, changed input is rejected, and cancellation/status observations never substitute for the durable oracle.**
+
+The cumulative platform now includes **Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Streaming RPCs, Flow Control, and Backpressure](../module-06-streaming-rpcs-flow-control-and-backpressure/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

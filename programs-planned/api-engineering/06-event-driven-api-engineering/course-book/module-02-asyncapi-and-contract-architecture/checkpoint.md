@@ -1,6 +1,8 @@
-# Checkpoint — AsyncAPI, CloudEvents, and Contract Architecture
+# Checkpoint — Module 02: AsyncAPI, CloudEvents, and Contract Architecture
 
-Do not progress because the chapter has been read. Progress when the following evidence can be reproduced from a clean working tree.
+## Required result
+
+Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles.
 
 ## Demonstrate
 
@@ -8,14 +10,6 @@ Do not progress because the chapter has been read. Progress when the following e
 - Distinguish logical channel, physical address, message name, and CloudEvents type.
 - Describe the three layers: envelope, payload schema, and business invariant.
 - State which parts of CloudEvents are standard and which are course-profile extensions.
-
-## Required result
-
-- `work/module-02/contract-review.md`
-- `work/module-02/reference-map.json`
-- `work/module-02/example-results.json`
-- `work/module-02/evidence.json`
-- `work/module-02/residual-risk.md`
 
 ## Commands
 
@@ -25,6 +19,16 @@ make contract-proof
 make event-case-proof
 make module-proof MODULE=02 TRACK=$TRACK
 ```
+
+## Evidence to retain
+
+- `work/module-02/contract-review.md`
+- `work/module-02/reference-map.json`
+- `work/module-02/example-results.json`
+- failure outputs for reversed direction, bad example, and missing reference
+- repaired contract diff
+- `make contract-proof` output
+- optional independent-validator output marked executed or not executed
 
 ## Defend the design
 
@@ -40,4 +44,4 @@ make module-proof MODULE=02 TRACK=$TRACK
 - Any operation direction is ambiguous or reversed.
 - The learner overstates custom-validator conformance.
 
-The checkpoint is complete only when all commands pass, all artifacts are reviewable, and each oral-defense question can be answered without appealing to a broker feature as magic.
+The **AsyncAPI, CloudEvents, and Contract Architecture** checkpoint is complete only when the commands pass, the retained artifacts explain the event-system state, and you can defend the result without treating broker delivery, ordering, or replay as magic.

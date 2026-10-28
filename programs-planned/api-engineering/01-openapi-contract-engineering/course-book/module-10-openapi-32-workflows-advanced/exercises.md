@@ -1,5 +1,7 @@
 # Exercises — Module 10: OpenAPI 3.2, Streaming, Webhooks, and Workflows
 
+Work through all twelve problems before opening the answers. In **OpenAPI 3.2, Streaming, Webhooks, and Workflows**, every response must settle this question: **How do current OpenAPI features express streaming, webhooks, links, query methods, and multi-step workflows?** Conclude each problem with a release decision: what may proceed, what must be rejected, and what remains unproven by the available environment.
+
 ## 1. Why keep 3.1.2 and 3.2.0 artifacts?
 
 ## 2. What must “supports 3.2” specify?

@@ -1,5 +1,7 @@
 # Exercises — Module 10: Incident Command, Reconciliation, and Readiness
 
+Work through all twelve problems before opening the answers. In **Incident Command, Reconciliation, and Readiness**, every response must settle this question: **How do responders command an incident, reconcile durable state, repair safely, and decide whether a release is operationally ready?** Conclude each problem with a release decision: what may proceed, what must be rejected, and what remains unproven by the available environment.
+
 ## 1. What is the incident lead responsible for?
 
 ## 2. What is the difference between an observation and an inference?

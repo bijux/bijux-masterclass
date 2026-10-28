@@ -1,125 +1,83 @@
 # Glossary — Contract-Driven API Service Engineering
 
-Use this glossary alongside `program-book/glossary.md`. Program terms keep one meaning across all six courses; the entries below add course-specific distinctions.
+These terms have precise meanings in Course 2. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
-Terms are defined as used in this program. When an Internet or OpenAPI specification gives a narrower normative meaning, the chapter and standards page name it.
+## use case
 
-## Use case
+An application-level action that coordinates domain rules and ports to achieve one user-visible outcome without depending on an HTTP framework.
 
-An application-level behavior that coordinates domain rules and ports for one business outcome without depending on HTTP or a database driver.
+## domain invariant
 
-## Port
+A rule that must remain true for valid business state regardless of transport, persistence technology, or process layout.
 
-An interface owned by the application or domain that describes a required capability.
+## transaction boundary
 
-## Adapter
+The exact set of durable changes that must commit or roll back as one atomic unit.
 
-A framework, database, storage, or network implementation of a port.
+## migration
 
-## Composition root
+A versioned, ordered change to durable storage that can be applied predictably and reviewed as part of a release.
 
-The single place where concrete adapters, configuration, and application services are assembled.
+## constraint
 
-## Domain invariant
+A database-enforced rule—such as uniqueness, referential integrity, or a check condition—that prevents invalid durable state.
 
-A rule that must remain true regardless of transport, persistence, process, or language.
+## optimistic concurrency
 
-## State machine
+A strategy that allows concurrent reads but rejects a write when the durable version has changed since the client observed it.
 
-An explicit set of states and legal transitions with defined guards and effects.
+## entity tag
 
-## Repository
+An HTTP validator representing a selected version of a resource representation, commonly used with `If-Match` or `If-None-Match`.
 
-An application-facing persistence abstraction whose methods align with transactional use cases rather than tables alone.
+## idempotency record
 
-## Migration
+Durable state binding an idempotency key to a request fingerprint and the logical result that may be replayed.
 
-An ordered, owned change to database structure or durable data, recorded exactly once.
+## request fingerprint
 
-## Constraint
+A canonical digest of all request fields whose change would make reuse of an idempotency key unsafe.
 
-A database rule—such as uniqueness, foreign key, check, or nullability—that rejects invalid durable state.
+## cursor
 
-## Transaction boundary
+An opaque continuation handle bound to a query, principal, ordering position, and expiry rather than a client-editable page number.
 
-The set of reads and writes that must commit or roll back atomically for one application decision.
+## high-water mark
 
-## Isolation
+The maximum eligible ordering position captured when traversal starts, preventing later inserts from contaminating the same traversal.
 
-The database behavior controlling how concurrent transactions observe and conflict with one another.
+## lease
 
-## Optimistic concurrency
+A time-bounded claim granting a worker temporary authority to process a durable job.
 
-A conditional update that succeeds only when the version read by the caller remains current.
+## fencing token
 
-## Persistent idempotency
+A monotonically advancing generation attached to a lease so stale workers cannot overwrite effects produced by newer owners.
 
-Durable binding of operation, principal, key, request fingerprint, and stored response so retries survive restart.
+## worker recovery
 
-## Request fingerprint
+The process of detecting abandoned work, deciding whether it may be retried, and restoring a valid durable job state without duplicating effects.
 
-A deterministic digest of the operation and canonical request identity used to detect conflicting idempotency-key reuse.
+## artifact integrity
 
-## Cursor
+Evidence that stored and returned artifact bytes are complete, unmodified, correctly owned, and identified by the expected digest.
 
-An opaque or server-managed continuation position bound to one ordered query traversal.
+## content address
 
-## High-water position
+A storage key derived from content bytes, usually a cryptographic digest, so identical content has the same identity.
 
-The maximum eligible ordering position captured when a traversal begins, preventing later inserts from entering that traversal.
+## transactional outbox
 
-## Lease
+Rows committed in the same transaction as business state so outbound publication cannot be lost through a dual write.
 
-Time-bounded ownership of a durable job that another worker may recover after expiry.
+## delivery attempt
 
-## Fencing token
+One concrete try to deliver an outbox event, carrying its own timing, failure, and retry evidence while preserving the event identity.
 
-A monotonically changing ownership generation used to reject effects from stale workers.
+## reconciliation
 
-## At-least-once execution
+A read-oriented comparison between intended durable facts and observed effects that identifies missing, duplicate, stale, or orphaned work.
 
-A delivery or work model in which an item may be attempted more than once, requiring idempotent effects.
+## compatible release
 
-## Staging
-
-Writing content to a non-public temporary location before validation and atomic publication.
-
-## Content-addressed storage
-
-Storage in which the key derives from the content digest, allowing integrity checks and idempotent publication.
-
-## Transactional outbox
-
-A durable event record committed in the same transaction as the domain state it announces.
-
-## Inbox deduplication
-
-Receiver-side durable tracking that prevents repeated delivery identifiers from applying an effect twice.
-
-## Expand/backfill/enforce
-
-A compatible migration sequence that first adds permissive structure, populates data, and only then tightens constraints.
-
-## Coexistence window
-
-The deployment period during which old and new service versions must both operate against an expanded schema.
-
-## Durable oracle
-
-A database or storage observation authoritative enough to decide whether a behavior survived failure.
-
-## Modular monolith
-
-One deployable application with explicit internal boundaries; it is not a synonym for unstructured code.
-
-## Public model
-
-A request or response shape governed by the API contract and kept separate from persistence rows.
-
-## Rollback limit
-
-A point after which application or schema rollback is unsafe without a forward repair.
-
-## Proof sensitivity
-
-The demonstrated ability of a verification route to fail when the mechanism it claims to test is deliberately broken.
+A release whose contract, code, and schema can coexist safely with supported previous clients and, during rollout, previous service versions.

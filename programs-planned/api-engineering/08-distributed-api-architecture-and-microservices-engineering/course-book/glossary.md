@@ -1,59 +1,83 @@
-# Glossary
+# Glossary — Distributed API Architecture and Microservices Engineering
 
-**Anti-corruption layer** — mapping that protects one service’s model from another service’s language and representation.
+These terms have precise meanings in Course 8. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
-**Authoritative fact** — business state whose meaning and writes are controlled by exactly one service.
+## modular monolith
 
-**Bounded context** — boundary within which terms, rules, and models have one coherent meaning. It may remain an internal module.
+One deployable system with explicit internal ownership and dependency boundaries, often the safest baseline before remote extraction.
 
-**Bulkhead** — limit that isolates resource exhaustion between workloads or dependencies.
+## service boundary
 
-**Capability token** — narrow, audience-bound authority to perform a specific action on a specific resource for a short period.
+A remote ownership boundary with its own contract, data authority, deployment, failure behavior, security identity, and operational responsibility.
 
-**Choreography** — workflow coordination through independently consumed events without one central process manager.
+## bounded context
 
-**Compensation** — a new forward business action that addresses a previously completed step; not historical erasure.
+A domain boundary within which terms and rules have one coherent meaning; it is evidence for, not automatic proof of, a microservice boundary.
 
-**Context map** — description of contexts and the translation or dependency relationships between them.
+## authoritative writer
 
-**Data ownership** — exclusive authority to write the canonical form of a business fact and govern its lifecycle.
+The single capability permitted to decide and persist a particular business fact.
 
-**Dependency budget** — portion of a caller’s absolute deadline and attempt budget allocated to one downstream interaction.
+## projection
 
-**Distributed monolith** — separately deployed components that remain change-, data-, release-, and failure-coupled.
+A derived read model built from owner-published facts and governed by staleness, gap, replay, and reconciliation rules.
 
-**Effect identity** — stable identifier for one intended business effect across retries and duplicate delivery.
+## staleness budget
 
-**Fencing token** — monotonic generation used by an owner to reject stale actors after lease or leadership changes.
+The maximum acceptable age or version lag for derived data before the caller must wait, fail, or use another path.
 
-**Fitness function** — executable or reviewable rule that protects an architecture property over time.
+## API composition
 
-**Gateway** — edge component responsible for protocol termination, routing, and bounded composition; not a default business authority.
+Combining results from service-owned APIs without taking ownership of their facts or directly joining their private databases.
 
-**High-water mark** — captured upper boundary that stabilizes traversal or migration population.
+## dependency depth
 
-**Orchestration** — workflow coordination by an explicit process manager that tracks steps, timeouts, and outcomes.
+The longest synchronous call chain required for a request, which affects latency, availability, and failure amplification.
 
-**Process manager** — durable application component that owns progress toward one cross-service business outcome.
+## saga
 
-**Projection** — local derived view built from another service’s authoritative contract.
+A durable multi-step workflow across owners in which each local transaction commits independently and failures require forward recovery or compensation.
 
-**Reconciliation** — deterministic comparison of durable states to find missing, duplicate, orphaned, or inconsistent effects.
+## compensation
 
-**Saga** — durable sequence of owner-local transactions and compensating actions for a cross-service business workflow.
+A semantic action that counteracts an earlier committed effect; it is not a database rollback across services.
 
-**Semantic lock** — business representation of reserved intent or current authority, such as a lease generation, rather than a long database lock.
+## process manager
 
-**Service** — independently owned capability with explicit interfaces, data or a declared non-data role, release responsibility, and operations.
+A durable coordinator that observes workflow events, records progress, and issues idempotent commands without becoming owner of domain facts.
 
-**Service instance** — one running copy of a service implementation.
+## workload identity
 
-**Shadow traffic** — candidate execution whose result is compared but is not authoritative and must suppress real side effects.
+The cryptographically established identity of a service instance or workload used for service-to-service authentication and policy.
 
-**Strangler migration** — incremental transfer through shadowing, comparison, one-writer cutover, rollback, and decommission.
+## delegated capability
 
-**Temporal coupling** — requirement that two components be available at the same time for progress.
+A narrowly scoped, time-bounded authority allowing one service to perform a specific action on behalf of a caller or workflow.
 
-**Version skew** — period during which callers and providers run different supported versions.
+## service discovery
 
-**Workload identity** — authenticated identity of a deployed service or process, distinct from end-user authority.
+The mechanism mapping a logical service identity to healthy network endpoints.
+
+## version skew
+
+The period during deployment when callers, providers, schemas, and projections run different supported versions.
+
+## shadow traffic
+
+A copy of real or representative calls sent to a candidate path for comparison without making it authoritative.
+
+## canary
+
+A bounded fraction of authoritative traffic routed to a candidate release with explicit promotion and rollback criteria.
+
+## strangler migration
+
+Incremental replacement in which selected capabilities move behind controlled routing while the legacy path remains available.
+
+## distributed monolith
+
+Multiple deployables that remain tightly coupled through shared data, synchronous release ordering, cycles, or hidden workflow ownership.
+
+## merge-back
+
+A deliberate reversal that returns an unjustified service boundary to a simpler ownership and deployment model.

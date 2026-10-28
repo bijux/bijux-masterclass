@@ -1,5 +1,7 @@
 # Exercises — Module 01: HTTP and OpenAPI Foundations
 
+Work through all twelve problems before opening the answers. In **HTTP and OpenAPI Foundations**, every response must settle this question: **How do raw HTTP exchanges become a public contract without confusing documentation with runtime behavior?** A complete response identifies the contract owner, predicts one observable failure, and names the evidence that decides the case; a definition by itself is incomplete.
+
 ## 1. Write the complete raw request and response for creating a project named `Atlas`. Include the minimum fields that establish the contract.
 
 ## 2. Classify each method as safe and/or idempotent: GET, POST, PUT, DELETE.

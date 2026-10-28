@@ -1,26 +1,24 @@
-# Mutations, Idempotency, Concurrency, and Domain Results
+# Module 05 — Mutations, Idempotency, Concurrency, and Domain Results
 
-**Module 05 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How do graph mutations preserve the durable command guarantees of the owning service?
+> **Central question:** How do graph mutations preserve the durable command guarantees of the owning service?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 05 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 04 produced **Implement global IDs and stable, bound connections**. This module extends that result by asking: **How do graph mutations preserve the durable command guarantees of the owning service?**
+
+The new capstone increment is **Expose idempotent create/start/cancel mutations over owning services**. It becomes the prerequisite for **Authorization, Tenancy, and Schema Exposure**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- distinguish mutation serialization from transactionality
+- Distinguish mutation serialization from transactionality.
+- Design input and payload types.
+- Preserve source idempotency.
+- Delegate optimistic concurrency.
+- Model domain results separately from execution errors.
 
-- design input and payload types
-
-- preserve source idempotency
-
-- delegate optimistic concurrency
-
-- model domain results separately from execution errors
-
-## Capstone result
+## Capstone increment
 
 Expose idempotent create/start/cancel mutations over owning services.
 
@@ -193,3 +191,13 @@ Both gateways pass stable idempotency and expected-version values to Analysis Co
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-05-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **distinguish mutation serialization from transactionality, design input and payload types, and preserve source idempotency** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Allow Analysis Control to commit, but discard the graph response before the client observes it** and requiring the following oracle: **one key and one semantic input create one logical run;; lost response does not lose committed authority;; exact retry returns the original outcome;; changed input under a key conflicts;.**
+
+The cumulative platform now includes **Expose idempotent create/start/cancel mutations over owning services**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Authorization, Tenancy, and Schema Exposure](../module-06-authorization-tenancy-and-schema-exposure/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

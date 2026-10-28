@@ -1,6 +1,6 @@
-# Exercises — Resolver Architecture, Batching, and Source Ownership
+# Exercises — Module 03: Resolver Architecture, Batching, and Source Ownership
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Resolver Architecture, Batching, and Source Ownership**, every response must settle this question: **How can nested graph execution remain faithful to service ownership without producing N+1 calls?** Do not stop at terminology. Show how the decision changes a request, durable state, consumer, operator action, or release result, and state how that consequence is tested.
 
 ## 1. Why does N+1 appear naturally in field execution?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. When can a gateway compute a field without a source call?
-

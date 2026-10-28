@@ -1,12 +1,14 @@
 # Module 06 — Metrics and Service-Level Indicators
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** How are counters, gauges, histograms, and SLI populations defined so the math means what operators think it means?
 
 ## Where this module fits
 
-Implement bounded counters, gauges, histograms, and precise SLI populations. You arrive from Module 05 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **Distributed Tracing Across Asynchronous Work**.
+Module 05 produced **Create the telemetry vocabulary, correlation rules, bounded sinks, exporter failure behavior, and privacy policy**. This module extends that result by asking: **How are counters, gauges, histograms, and SLI populations defined so the math means what operators think it means?**
+
+The new capstone increment is **Implement bounded metric dimensions, units, good/bad/eligible/excluded populations, and aggregation semantics**. It becomes the prerequisite for **Distributed Tracing Across Asynchronous Work**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Implement bounded counters, gauges, histograms, and precise SLI populations. You
 - Define good, bad, eligible, and excluded events.
 - Use durable timestamps for asynchronous journey indicators.
 
-## Capstone result
+## Capstone increment
 
 Implement bounded metric dimensions, units, good/bad/eligible/excluded populations, and aggregation semantics.
-
-The capstone exports bounded metrics and SLIs for availability, run start, completion, artifact access, and webhook delivery.
 
 ## Core reliability model
 
@@ -96,7 +96,6 @@ Apply **Metric instrument, Event population, Label dimension** to this module’
 Synthetic events prove population math and cardinality guards; production traffic shape and appropriate histogram boundaries require measured workload evidence.
 
 ## Worked failures
-
 
 ### Case 1 — Run IDs as labels
 
@@ -189,7 +188,7 @@ histogram.observe(0.2, labels={"operation": "getAnalysisRun"})
 assert histogram.values[("getAnalysisRun",)].buckets == [0, 1, 1, 1]
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Metrics and Service-Level Indicators** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Run IDs as labels
 
@@ -236,7 +235,7 @@ const histogram = registry.histogram({
 histogram.observe(0.2, { operation: "getAnalysisRun" });
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Metrics and Service-Level Indicators** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Run IDs as labels
 
@@ -399,7 +398,8 @@ class Counter:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/reliability/metrics.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 export class MetricError extends Error {}
 
 export interface MetricDescriptor {
@@ -471,8 +471,10 @@ Compare the two tracks by this invariant: **instrument type, labels, eligibility
 
 ## Module synthesis
 
-The module answer to “Which numeric observations describe user outcomes without exploding cardinality or hiding the tail?” is now executable in the capstone: The capstone exports bounded metrics and SLIs for availability, run start, completion, artifact access, and webhook delivery.
+You are ready to leave this module when you can **Choose metric instruments from the measured quantity, Control label dimensions and series count, and Measure latency distributions rather than averages** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Metrics and Service-Level Indicators in a temporary branch** and requiring the following oracle: **Instrument type matches event semantics; Series count remains within declared maximum; Provider-owned failures remain in the denominator; Latency tail is visible in histogram buckets.**
+
+The cumulative platform now includes **Implement bounded metric dimensions, units, good/bad/eligible/excluded populations, and aggregation semantics**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 07, [Distributed Tracing Across Asynchronous Work](../module-07-distributed-tracing-across-http-workers-storage-and-webhooks/index.md), asks: *How do we reconstruct one outcome across HTTP, database, worker, storage, and webhook boundaries without inventing false parentage?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Distributed Tracing Across Asynchronous Work](../module-07-distributed-tracing-across-http-workers-storage-and-webhooks/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

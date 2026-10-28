@@ -1,53 +1,29 @@
 # Module 05 — Schema Evolution, Compatibility, Replay, and Historical Truth
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** How do event schemas evolve while retained historical events remain immutable and replay remains intelligible?
 
 ## Where this module fits
 
-Synchronous APIs can often retire old representations after clients migrate. Event systems retain facts for
-days, months, or years, and consumers may process them long after publication. A schema change therefore has
-two audiences: future producers and historical records. A change that looks additive in today’s source code
-can still break an old consumer, invalidate a replay, or reinterpret past truth.
+Module 04 produced **Implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects**. This module extends that result by asking: **How do event schemas evolve while retained historical events remain immutable and replay remains intelligible?**
 
-Compatibility is directional. Producers write messages and consumers read them. Making a field required
-rejects old records. Removing a field can break consumers. Narrowing an enum can invalidate retained
-history. Adding an enum value may be structurally additive but still break an exhaustive switch. Renaming a
-field without an upcaster is a new contract, not a refactor.
-
-Replay introduces another risk: a consumer built for current events may call external services, use current
-time, or overwrite live state when given historical data. A safe replay is planned, bounded, observable,
-side-effect controlled, versioned, and reversible. This module treats retained events as immutable public
-data, not as disposable queue items.
-
-## Capstone result
-
-Classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay.
-
-Define event compatibility policy, accepted and rejected schema releases, an upcaster chain, and a bounded
-replay workflow. Rebuild an analytics projection from retained events while preventing notifications and
-other external side effects.
-
-```text
-capstone/event-case/compatibility-policy.yaml
-capstone/releases/
-capstone/replay/replay-policy.yaml
-capstone/replay/example-plan.yaml
-capstone/tracks/*/src/event-engineering/evolution.*
-capstone/tracks/*/src/event-engineering/replay.*
-```
+The new capstone increment is **Classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay**. It becomes the prerequisite for **Consumer Architecture and Asynchronous Workflows**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- evaluate event-schema changes from producer, current-consumer, and historical-record perspectives
-- distinguish structural compatibility from semantic compatibility
-- choose between additive evolution, new major event type, and upcasting
-- keep immutable historical events separate from corrected projections
-- design deterministic upcaster chains with explicit source and target versions
-- plan replay with event bounds, consumer/effect version, checkpoints, and side-effect policy
-- build new projections alongside old ones and verify before cutover
-- gate releases on contract validity, compatibility, catalogue completeness, and replay safety
+- Evaluate event-schema changes from producer, current-consumer, and historical-record perspectives.
+- Distinguish structural compatibility from semantic compatibility.
+- Choose between additive evolution, new major event type, and upcasting.
+- Keep immutable historical events separate from corrected projections.
+- Design deterministic upcaster chains with explicit source and target versions.
+- Plan replay with event bounds, consumer/effect version, checkpoints, and side-effect policy.
+- Build new projections alongside old ones and verify before cutover.
+- Gate releases on contract validity, compatibility, catalogue completeness, and replay safety.
+
+## Capstone increment
+
+Classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay.
 
 ## Core event model
 
@@ -272,10 +248,10 @@ available for rollback.
 
 ## Module synthesis
 
-Classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay. The central distinction is this: how do event schemas evolve while retained historical events remain immutable and replay remains intelligible? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **evaluate event-schema changes from producer, current-consumer, and historical-record perspectives, distinguish structural compatibility from semantic compatibility, and choose between additive evolution, new major event type, and upcasting** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject one current-time dependency and one notification side effect; confirm the replay proof rejects them** and requiring the following oracle: **The additive candidate preserves old records; breaking and replay-unsafe candidates are rejected with exact reasons. Upcasting is deterministic. Dry run creates no durable effect. Apply mode updates only the v2 target, processes each event once, applies correction policy, and emits no external side effects.**
+
+The cumulative platform now includes **Classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Safe evolution lets consumers live for years, but it does not tell us how to structure those consumers or
-coordinate multi-step asynchronous outcomes. Module 06 designs consumer applications, process managers,
-projections, commands, compensations, timeouts, and the boundary between orchestration and choreography.
+Continue to [Consumer Architecture and Asynchronous Workflows](../module-06-consumer-architecture-and-workflows/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

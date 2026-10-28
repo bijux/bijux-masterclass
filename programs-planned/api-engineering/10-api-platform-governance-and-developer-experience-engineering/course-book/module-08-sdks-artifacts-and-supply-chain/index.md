@@ -1,22 +1,24 @@
-# SDKs, CLIs, Artifacts, SBOMs, and Provenance
+# Module 08 — SDKs, CLIs, Artifacts, SBOMs, and Provenance
 
-**Module 08 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** How can developer artifacts remain convenient, idiomatic, reproducible, and traceable to the contracts that produced them?
+> **Central question:** How can developer artifacts remain convenient, idiomatic, reproducible, and traceable to the contracts that produced them?
 
-## Place in the program
+## Where this module fits
 
-Module 07 helped consumers succeed manually. Module 08 turns released contracts into distributable developer artifacts while preserving identity and supply-chain evidence.
+Module 07 produced **Publish the task-oriented portal source, search index, sandbox profile, and first-success evidence**. This module extends that result by asking: **How can developer artifacts remain convenient, idiomatic, reproducible, and traceable to the contracts that produced them?**
+
+The new capstone increment is **Publish Python and TypeScript client artifacts with contract identity, SBOM, and bounded provenance evidence**. It becomes the prerequisite for **Runtime Control Plane, Usage Intelligence, and Support Operations**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- design SDKs as supported products rather than raw generated code
-- link packages to exact contract releases
-- distinguish SBOM, provenance, checksum, and signature evidence
-- govern package versioning and retention
-- reject untraceable or misleading publication claims
+- Design SDKs as supported products rather than raw generated code.
+- Link packages to exact contract releases.
+- Distinguish SBOM, provenance, checksum, and signature evidence.
+- Govern package versioning and retention.
+- Reject untraceable or misleading publication claims.
 
-## Capstone result
+## Capstone increment
 
 Publish Python and TypeScript client artifacts with contract identity, SBOM, and bounded provenance evidence.
 
@@ -57,7 +59,6 @@ The supply-chain core verifies artifact paths and digests, SBOM profile, and pro
 ## Standards anchors
 
 CycloneDX lists version 1.7 as its current specification. SLSA 1.2 is the current approved SLSA specification and separates source and build tracks. Read [CycloneDX specification overview](https://cyclonedx.org/specification/overview/) and [SLSA 1.2](https://slsa.dev/spec/v1.2/).
-
 
 ## Generation pipeline
 
@@ -159,7 +160,6 @@ Document how consumers verify package source, digest, provenance, supported API,
 and signature. Publication-side evidence without a consumer verification path is
 incomplete. Automated package clients can enforce provenance expectations at
 install or deployment time in a mature environment.
-
 
 ## SDK ergonomics review
 
@@ -302,3 +302,13 @@ function publicationDecision(
 The real verifier also recomputes every artifact digest and checks the declared
 CycloneDX and SLSA profile identifiers. It still states that locally authored
 metadata is not equivalent to a trusted external attestation.
+
+## Module synthesis
+
+You are ready to leave this module when you can **design SDKs as supported products rather than raw generated code, link packages to exact contract releases, and distinguish SBOM, provenance, checksum, and signature evidence** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Then change one SDK byte, remove the contract digest, remove provenance, and alter the builder identifier** and requiring the following oracle: **Digest changes, missing evidence, and altered provenance subjects reject local publication. An untrusted builder identity remains environment-backed rather than being falsely accepted by file shape alone.**
+
+The cumulative platform now includes **Publish Python and TypeScript client artifacts with contract identity, SBOM, and bounded provenance evidence**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Runtime Control Plane, Usage Intelligence, and Support Operations](../module-09-runtime-analytics-and-support/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

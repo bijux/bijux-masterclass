@@ -1,22 +1,24 @@
-# Catalog, Ownership Graph, and Metadata Authority
+# Module 02 — Catalog, Ownership Graph, and Metadata Authority
 
-**Module 02 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** How can a central catalog be useful without pretending to own every fact it displays?
+> **Central question:** How can a central catalog be useful without pretending to own every fact it displays?
 
-## Place in the program
+## Where this module fits
 
-Module 01 established what the platform owns. Module 02 creates the authoritative inventory needed to make those boundaries discoverable and enforceable.
+Module 01 produced **Publish the platform product charter, user journeys, ownership boundary, and initial outcome model**. This module extends that result by asking: **How can a central catalog be useful without pretending to own every fact it displays?**
+
+The new capstone increment is **Publish the Analysis Platform catalog and ownership graph**. It becomes the prerequisite for **Contract Registry and Multi-Protocol Publication**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- model components, APIs, resources, systems, domains, and groups
-- assign canonical identity and accountable ownership
-- separate authoritative, derived, and observed metadata
-- validate relations and detect orphans
-- use the graph for impact and support analysis
+- Model components, APIs, resources, systems, domains, and groups.
+- Assign canonical identity and accountable ownership.
+- Separate authoritative, derived, and observed metadata.
+- Validate relations and detect orphans.
+- Use the graph for impact and support analysis.
 
-## Capstone result
+## Capstone increment
 
 Publish the Analysis Platform catalog and ownership graph.
 
@@ -61,7 +63,6 @@ Suppose Analysis Events API 1.0 changes. The catalog graph identifies Analysis C
 ## Standards anchors
 
 Backstage’s [descriptor format](https://backstage.io/docs/features/software-catalog/descriptor-format/) defines the shape of catalog entities, while its [catalog graph](https://backstage.io/docs/features/software-catalog/creating-the-catalog-graph/) illustrates ownership, inventory, lifecycle, dependency mapping, and API exposure. Use those concepts as a model, not as permission to hide authoritative sources.
-
 
 ## Entity ingestion and processing
 
@@ -175,7 +176,6 @@ security classifications. Apply audience views and least privilege. Public,
 partner, and internal catalogs may share identity but expose different details.
 Do not embed credentials or sensitive operational data in descriptors. The
 platform itself needs audit records for ownership and lifecycle changes.
-
 
 ## Worked catalog walkthrough
 
@@ -339,3 +339,13 @@ function entityRef(kind: string, namespace: string, name: string): string {
 After identity validation, catalog proof can require known owners, systems,
 providers, consumers, and dependency targets. Do not “helpfully” rewrite names
 inside relations; reject noncanonical input so the owner fixes the source.
+
+## Module synthesis
+
+You are ready to leave this module when you can **model components, APIs, resources, systems, domains, and groups, assign canonical identity and accountable ownership, and separate authoritative, derived, and observed metadata** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **The first four defects fail catalog validation. The runtime-only component is reported as an unregistered observation, not silently adopted as an authoritative entity.**
+
+The cumulative platform now includes **Publish the Analysis Platform catalog and ownership graph**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Contract Registry and Multi-Protocol Publication](../module-03-contract-registry-and-publication/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

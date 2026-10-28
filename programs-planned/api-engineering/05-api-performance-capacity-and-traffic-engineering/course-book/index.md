@@ -1,37 +1,45 @@
 # API Performance, Capacity, and Traffic Engineering
 
-**Course 5 of 6 — Sustain the promise under pressure**
+**Course 5 of 10 — Sustain the promise under pressure**
 
-> **Central question:** Where does time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening its promise?
+## Course promise
 
-## Course responsibility
+Measure, model, and control latency, throughput, resource use, fairness, and overload behavior with comparable evidence.
 
-Preserve correctness, latency, throughput, fairness, and bounded resource use as demand and data volume grow. The course inherits earlier guarantees rather than restating them as new work. Its purpose is to add one mature engineering responsibility to the same Analysis Runs Platform.
+> **Governing question:** Where do time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening correctness?
 
-## Incoming and outgoing boundaries
+## Place in the program
 
 **Incoming boundary:** The Course 4 observable and recoverable API 1.2 service with Security and Reliability Profiles 1.0 and migrations 001–008.
 
 **Outgoing boundary:** Performance Profile 1.0, migration 009, workload identities, benchmark evidence, HTTP and query optimizations, concurrency and cache policy, traffic controls, capacity models, and performance release gates.
 
-## What you will be able to do
+Course 5 treats its incoming handoff as historical evidence, not editable scaffolding. It may add only the sustain the promise under pressure mechanisms governed here; any public or durable change requires an explicit compatibility and release decision.
 
-After completing the course, you can:
+## What you will add
 
-- freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines.
-- build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons.
-- optimize artifact and metadata delivery while preserving authorization, ETags, ranges, and bounded memory.
-- capture before/after plans, add evidence-backed indexes, size database connections, and preserve owner-aware query semantics.
-- profile named phases, detect blocking work, bound profiling overhead, and prove mechanism-level improvements.
-- implement bounded admission, per-operation limits, queue accounting, permit release, and recovery after pressure.
-- build authorization-aware keys, TTL/capacity policy, source-version invalidation, single-flight fills, and failure semantics.
-- implement multi-dimensional fixed-point budgets, tenant isolation, staged shedding, and rollback of partial reservations.
-- model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions.
-- build correctness-first regression gates, environment comparability, accepted/rejected/inconclusive candidates, and a performance dossier.
+- measurement contracts and representative workload models;
+- valid benchmark design and statistical interpretation;
+- HTTP, database, and runtime profiling;
+- queueing, backpressure, caching, quotas, and load shedding;
+- capacity, cost, and regression release decisions;
 
-## Ten-module learning path
+## Course-level learning outcomes
 
-| Day | Module | Governing question | Capstone result |
+- Distinguish performance requirements from reliability objectives and capacity claims.
+- Distinguish load generation, timing, outcome collection, and analysis.
+- Separate resource state, selected representation, and transferred message.
+- Separate client wait, pool wait, lock wait, planning, execution, and transfer.
+- Separate wall-clock, process CPU, and allocation measurements.
+- Identify every implicit and explicit queue in a request journey.
+- Distinguish HTTP, process-local, shared application, database, and client caches.
+- Distinguish rate limits, quotas, concurrency limits, and capacity admission.
+- Translate workload forecasts into resource demand.
+- Design a tiered performance verification pipeline.
+
+## Module map
+
+| Day | Chapter | Governing question | Capstone increment |
 |---:|---|---|---|
 | 1 | [Measurement Contract and Critical Workloads](module-01-measurement-contract-and-critical-workloads/index.md) | What exactly is being measured, under which workload and environment identity, and which correctness oracle still applies? | Freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines. |
 | 2 | [Benchmark Design and Statistical Interpretation](module-02-benchmark-design-and-statistical-interpretation/index.md) | How do open and closed demand, warmup, sample size, missing outcomes, variation, and statistical uncertainty change benchmark meaning? | Build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons. |
@@ -44,21 +52,21 @@ After completing the course, you can:
 | 9 | [Capacity Modeling and Scaling Decisions](module-09-capacity-modeling-and-scaling-decisions/index.md) | What capacity does the current system have, what uncertainty surrounds it, and which resource becomes the first bottleneck as demand grows? | Model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions. |
 | 10 | [Performance Regression and Release Engineering](module-10-performance-regression-and-release-engineering/index.md) | How does a performance change become a reproducible release decision rather than a favorable chart? | Build correctness-first regression gates, environment comparability, accepted/rejected/inconclusive candidates, and a performance dossier. |
 
+## Deliberate boundaries
 
-## How the book is organized
+This course does not claim or teach the following as part of its completion:
 
-Each numbered module has five learner-facing files:
+- language benchmark contests;
+- automatic Redis or Kubernetes prescriptions;
+- production capacity claims from laptop evidence;
+- optimization that weakens correctness or security;
 
-1. `index.md` — the complete explanation, worked designs, implementation reading, failure analysis, and transition;
-2. `exercises.md` — twelve transfer questions;
-3. `exercise-answers.md` — matching reasoned reference answers;
-4. `lab.md` — one controlled failure, pressure, or release experiment;
-5. `checkpoint.md` — the evidence required before progression.
+Those boundaries prevent the course from becoming a survey of adjacent tools and make its completion claims defensible.
 
-The course book is authoritative. Capstone source, fixtures, reports, and proof scripts make the material executable; they do not replace the explanation.
+## How to study
 
-## Completion standard
+Begin with [Start here](start-here.md). In Course 5, read each chapter around the question **Where do time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening correctness?**; then use the exercises, controlled lab, and checkpoint to turn the explanation into evidence. [Language strategy](language-strategy.md) and [Evidence model](evidence-model.md) define how implementation and proof support—not replace—the course book.
 
-You complete the course only when every module checkpoint, the capstone proof, and the final defense pass. A strong result states not only what worked but which claim was established, which evidence class supports it, and what remains unexecuted.
+## Completion
 
-Continue with [Start here](start-here.md).
+Complete all ten checkpoints, the capstone release or defense, and the outgoing handoff. A green command without a defensible claim and evidence boundary is not sufficient.

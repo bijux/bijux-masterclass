@@ -1,12 +1,14 @@
 # Module 08 — Abuse Resistance and Resource Budgets
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** How can the service resist brute force and resource exhaustion without turning traffic control into false authorization?
 
 ## Where this module fits
 
-Apply principal-, tenant-, operation-, cost-, storage-, and concurrency-aware budgets. You arrive from Module 07 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **Adversarial Verification and Supply-Chain Assurance**.
+Module 07 produced **Add secret-provider boundaries, non-rendering values, redaction, pseudonymization, rotation, and privacy-bounded audit records**. This module extends that result by asking: **How can the service resist brute force and resource exhaustion without turning traffic control into false authorization?**
+
+The new capstone increment is **Introduce principal/tenant/operation/cost budgets, concurrency permits, quotas, and bounded degradation**. It becomes the prerequisite for **Adversarial Verification and Supply-Chain Assurance**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Apply principal-, tenant-, operation-, cost-, storage-, and concurrency-aware bu
 - Bound uploads, streams, queue depth, and storage.
 - Return coherent `429` or `503` outcomes without amplifying retries.
 
-## Capstone result
+## Capstone increment
 
 Introduce principal/tenant/operation/cost budgets, concurrency permits, quotas, and bounded degradation.
-
-Analysis submission, upload, streaming, and webhook registration have explicit resource budgets.
 
 ## Core security model
 
@@ -97,32 +97,32 @@ Run only against course fixtures. The goal is to understand control boundaries, 
 
 A legitimate token submits many expensive analyses within schema and authorization rules.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Abuse Resistance and Resource Budgets** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 2 — Low-and-slow streams
 
 Many event streams remain open and consume connection/memory state without high request rate.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Abuse Resistance and Resource Budgets** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 3 — Upload concurrency
 
 Several individually legal uploads exceed memory, staging disk, or file-descriptor capacity together.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Abuse Resistance and Resource Budgets** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 4 — Identifier enumeration
 
 A caller sends many cheap object lookups to discover valid IDs or timing differences.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Abuse Resistance and Resource Budgets** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 5 — Retry amplification
 
 Clients retry `429`/`503` immediately or multiple internal layers retry the same failing dependency.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Abuse Resistance and Resource Budgets** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 6 — Noisy tenant
 
 One tenant fills the global worker queue and starves others.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Abuse Resistance and Resource Budgets** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 
 ### Prioritization
 
@@ -148,27 +148,27 @@ Use integer microtokens or bigint nanounits and an injected monotonic time sourc
 
 ### 1. One global requests-per-minute limit for all operations and tenants.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Abuse Resistance and Resource Budgets** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 2. Charging only successful requests, making invalid expensive parsing free.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Abuse Resistance and Resource Budgets** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 3. Acquiring a permit after starting the expensive effect.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Abuse Resistance and Resource Budgets** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 4. Forgetting to release on exception or disconnect.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Abuse Resistance and Resource Budgets** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 5. Using process memory while claiming multi-replica enforcement.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Abuse Resistance and Resource Budgets** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 6. Returning retry hints that synchronize all clients into another burst.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Abuse Resistance and Resource Budgets** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ## What you add to the capstone
 
@@ -270,8 +270,10 @@ Compare the two tracks by this invariant: **cost is charged before expensive wor
 
 ## Module synthesis
 
-The module answer to “How does the API keep expensive operations bounded when valid-looking clients consume resources aggressively?” is now executable in the capstone: Analysis submission, upload, streaming, and webhook registration have explicit resource budgets.
+You are ready to leave this module when you can **Choose rate-limit dimensions from abuse paths, Implement deterministic token-bucket behavior, and Limit simultaneous expensive work with leak-free permits** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Abuse Resistance and Resource Budgets in a temporary branch** and requiring the following oracle: **cost-aware budget keys; deterministic token bucket; exception-safe concurrency permits; upload/stream budgets.**
+
+The cumulative platform now includes **Introduce principal/tenant/operation/cost budgets, concurrency permits, quotas, and bounded degradation**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 09, [Adversarial Verification and Supply-Chain Assurance](../module-09-adversarial-verification-and-supply-chain/index.md), asks: *How do we know a security check detects a missing control rather than merely confirming the control is present?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Adversarial Verification and Supply-Chain Assurance](../module-09-adversarial-verification-and-supply-chain/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

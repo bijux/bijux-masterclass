@@ -1,12 +1,14 @@
 # Module 05 — Hostile Input and File Handling
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** How are hostile strings, numbers, paths, filenames, uploads, and serialized structures constrained at the correct boundary?
 
 ## Where this module fits
 
-Harden semantic input, Unicode, filenames, paths, archives, serialization, and file transfer. You arrive from Module 04 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **Outbound HTTP, SSRF, and Webhook Integrity**.
+Module 04 produced **Build explicit authorization decisions for collections, individual resources, fields, support access, and administration**. This module extends that result by asking: **How are hostile strings, numbers, paths, filenames, uploads, and serialized structures constrained at the correct boundary?**
+
+The new capstone increment is **Harden input parsing, Unicode, traversal, MIME, streaming upload, checksum, query, and error behavior**. It becomes the prerequisite for **Outbound HTTP, SSRF, and Webhook Integrity**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Harden semantic input, Unicode, filenames, paths, archives, serialization, and f
 - Bound archive and upload expansion.
 - Prevent SQL, command, template, and deserialization injection.
 
-## Capstone result
+## Capstone increment
 
 Harden input parsing, Unicode, traversal, MIME, streaming upload, checksum, query, and error behavior.
-
-A shared hostile-input corpus exercises both language tracks and the artifact-storage boundary.
 
 ## Core security model
 
@@ -120,7 +120,6 @@ Declared `text/csv` content is executable or binary data later served with unsaf
 
 A sort or filter field is concatenated into SQL despite value parameterization elsewhere.
 
-
 ## Python implementation
 
 Use `pathlib.Path.resolve(strict=False)` plus ancestry checks, `os.open` flags or no-follow semantics where required, chunked hashing, exclusive publication, and `unicodedata` inspection. Keep SQL identifiers on a server-owned allowlist; parameterize values.
@@ -149,7 +148,6 @@ For each pattern, explain why it can look reasonable, construct the smallest cou
 
 
 ### 6. Using parameter binding for values but concatenating attacker-controlled sort columns.
-
 
 ## What you add to the capstone
 
@@ -274,8 +272,10 @@ Compare the two tracks by this invariant: **decoding, normalization, path resolu
 
 ## Module synthesis
 
-The module answer to “How do valid-looking values become injection, traversal, confusion, or resource-exhaustion attacks after parsing?” is now executable in the capstone: A shared hostile-input corpus exercises both language tracks and the artifact-storage boundary.
+You are ready to leave this module when you can **Distinguish schema validation from semantic security validation, Reject traversal after decoding and normalization, and Treat filenames as labels, never paths** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control and prove the predicted oracle fails** and requiring the following oracle: **Distinguish schema validation from semantic security validation; Reject traversal after decoding and normalization; Treat filenames as labels, never paths; Bound archive and upload expansion.**
+
+The cumulative platform now includes **Harden input parsing, Unicode, traversal, MIME, streaming upload, checksum, query, and error behavior**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 06, [Outbound HTTP, SSRF, and Webhook Integrity](../module-06-outbound-http-ssrf-and-webhooks/index.md), asks: *How does the service call a user-chosen destination without becoming a network pivot or accepting forged delivery?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Outbound HTTP, SSRF, and Webhook Integrity](../module-06-outbound-http-ssrf-and-webhooks/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

@@ -2,7 +2,7 @@
 
 ## Required result
 
-Ingress requests, database calls, artifact operations, and webhooks share finite budgets without retry amplification.
+Implement monotonic deadlines, child budgets, safe retry classification, backoff, Retry-After handling, and cancellation.
 
 ## Demonstrate
 
@@ -19,13 +19,23 @@ make module-proof MODULE=02
 make core-proof
 ```
 
+## Evidence to retain
+
+- baseline transcript proving the previous checkpoint before **Deadlines, Cancellation, and Retry Budgets** changes
+- the exact source, fixture, contract, migration, or configuration diff that implements **Deadlines, Cancellation, and Retry Budgets**
+- focused result for: Distinguish absolute deadlines from per-call timeouts.
+- public, durable, security, or operational observation showing: Ingress requests, database calls, artifact operations, and webhooks share finite budgets without retry amplification.
+- minimized planted-defect failure and repaired regression
+- primary/comparison-track note for **absolute deadline propagation**
+- a limitation statement naming every live dependency required to support the strongest **Deadlines, Cancellation, and Retry Budgets** claim but not exercised
+
 ## Defend the design
 
 1. Answer the central question: **How does one request carry a finite time budget through dependencies without multiplying work or reporting success too late?**
 2. Demonstrate this capstone result: Ingress requests, database calls, artifact operations, and webhooks share finite budgets without retry amplification.
-3. Show the planted defect, the first failing oracle, and the retained regression.
+3. Show the **Deadlines, Cancellation, and Retry Budgets** defect, the first failing oracle, and the exact regression retained after repair.
 4. Explain why this invariant is shared across languages: one caller budget is partitioned across attempts and dependencies without resetting at each layer or retrying unsafe effects.
-5. State exactly which database, network, process, telemetry backend, or operated exercise was not run in the current environment.
+5. State which environment-backed **Deadlines, Cancellation, and Retry Budgets** route was not run and how that limits the claim.
 
 ## Continue only when
 

@@ -1,6 +1,6 @@
-# Exercises — Type System, Nullability, and Semantic Modeling
+# Exercises — Module 02: Type System, Nullability, and Semantic Modeling
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Type System, Nullability, and Semantic Modeling**, every response must settle this question: **How does the schema make useful promises without promising values the runtime cannot sustain?** Treat each problem as a design review: state the rule, construct the smallest counterexample, and select an oracle capable of rejecting your own answer.
 
 ## 1. Why is non-null an operational promise rather than a style preference?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. What evidence should justify changing a field to non-null?
-

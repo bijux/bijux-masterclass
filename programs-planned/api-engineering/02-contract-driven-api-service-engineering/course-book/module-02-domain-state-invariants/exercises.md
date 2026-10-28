@@ -1,5 +1,7 @@
 # Exercises — Module 02: Domain State and Invariants
 
+Work through all twelve problems before opening the answers. In **Domain State and Invariants**, every response must settle this question: **Which state transitions and invariants must remain true regardless of framework or database?** Treat each problem as a design review: state the rule, construct the smallest counterexample, and select an oracle capable of rejecting your own answer.
+
 ## 1. Why is a run status enum insufficient by itself?
 
 ## 2. Can a failed run return to queued for retry? State the course decision and alternative.

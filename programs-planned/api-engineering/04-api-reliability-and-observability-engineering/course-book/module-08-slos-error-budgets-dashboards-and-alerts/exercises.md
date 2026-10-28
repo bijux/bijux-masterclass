@@ -1,5 +1,7 @@
 # Exercises — Module 08: SLOs, Error Budgets, Dashboards, and Alerts
 
+Work through all twelve problems before opening the answers. In **SLOs, Error Budgets, Dashboards, and Alerts**, every response must settle this question: **How do versioned SLOs, exact error budgets, burn rates, dashboards, alerts, and runbooks drive decisions?** Use the cumulative platform, not an invented toy system. Preserve inherited guarantees and make every new assumption explicit and falsifiable.
+
 ## 1. What is the error budget for a 99.9% objective?
 
 ## 2. What does burn rate 1 mean?

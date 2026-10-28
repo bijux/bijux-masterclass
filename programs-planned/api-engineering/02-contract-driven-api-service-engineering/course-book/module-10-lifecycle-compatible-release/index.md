@@ -1,12 +1,14 @@
 # Module 10 — Lifecycle and Compatible Release
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** How can old and new service versions coexist through a database change and still preserve the public contract?
 
 ## Where this module fits
 
-Implement configuration validation, health states, graceful shutdown, and expand–backfill–enforce release sequencing. You arrive from Module 09 with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result closes the course and produces the handoff to **API Security Engineering**.
+Module 09 produced **Assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs**. This final module consolidates the course by asking: **How can old and new service versions coexist through a database change and still preserve the public contract?**
+
+The capstone must now deliver **Build lifecycle controls, compatible expand/backfill/enforce migrations, rollback evidence, and release proof** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **A durable API 1.2 service with migrations 001–005, persistent idempotency, atomic conditional updates, stable pagination, worker recovery, artifact integrity, transactional webhook delivery, and compatible-release evidence.**
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Implement configuration validation, health states, graceful shutdown, and expand
 - Define the rollback boundary explicitly.
 - Release API 1.2 without breaking API 1.1 consumers.
 
-## Capstone result
+## Capstone increment
 
 Build lifecycle controls, compatible expand/backfill/enforce migrations, rollback evidence, and release proof.
-
-Course 2 ends with a release-ready service, migrations 001–005, and an additive API 1.2 contract.
 
 ## Core model
 
@@ -32,10 +32,10 @@ Release readiness is controlled lifecycle and compatibility, not an infrastructu
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Lifecycle and Compatible Release** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Build lifecycle controls, compatible expand/backfill/enforce migrations, rollback evidence, and release proof
 
 
 ### 1. Configuration contract
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Lifecycle and Compatible Release**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: Enumerate configuration with type, secret status, default, and failure behavior.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Lifecycle and Compatible Release**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: How can old and new service versions coexist through a database change and still preserve the public contract?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -248,8 +249,7 @@ async def lifespan(app: FastAPI):
         await resources.close()
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Lifecycle and Compatible Release** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -555,7 +555,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Lifecycle and Compatible Release** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Build lifecycle controls, compatible expand/backfill/enforce migrations, rollback evidence, and release proof The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -580,7 +580,8 @@ These are the smallest useful entry points for **Lifecycle and Compatible Releas
 
 ### Python — `capstone/tracks/python-fastapi/src/analysis_service/config.py`
 
-```python
+```text
+# Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 
 
 @dataclass(frozen=True, slots=True)
@@ -640,7 +641,8 @@ class Settings:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/config.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -699,14 +701,16 @@ export function settingsFromEnvironment(): Settings {
 
 Compare the two tracks by this invariant: **old and new service versions coexist during expand/backfill/enforce without weakening API 1.1 or API 1.2 behavior**. The intended implementation difference is: configuration loaders differ; release identity, migration order, health, and rollback limits are shared.
 
-## Module synthesis
-
-The module answer to “Can the service start, migrate, coexist, drain, roll back, and recover without violating its public contract or data?” is now executable in the capstone: Course 2 ends with a release-ready service, migrations 001–005, and an additive API 1.2 contract.
-
 ## Course exit
 
 The ten module results now satisfy this course promise: A PostgreSQL-backed service with transactions, durable jobs, bounded artifacts, reliable webhooks, and a compatible API 1.2 release. The next course is **API Security Engineering**; it consumes the outgoing handoff rather than reinterpreting completed work.
 
+## Module synthesis
+
+You are ready to leave this module when you can **Distinguish startup, liveness, readiness, and draining, Order application and schema releases safely, and Keep old and new service versions compatible during expansion** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **The lab is successful only when service 1.0 fails during the coexistence experiment, the failure is traced to the premature constraint, and the repaired expand migration is preserved as a regression fixture** and requiring the following oracle: **Service 1.0 and 1.1 both work on the expanded/backfilled schema; rollback succeeds before enforcement; the final constraint is applied only after old writers are gone.**
+
+The cumulative platform now includes **Build lifecycle controls, compatible expand/backfill/enforce migrations, rollback evidence, and release proof**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
 ## Next in the story
 
-This course now has the mechanism needed for its final defense. The outgoing handoff becomes the immutable starting point for **Course 3 — API Security Engineering**, where the responsibility becomes: Preserve the API and durable-service guarantees when callers, credentials, inputs, destinations, and dependencies are not trusted by default.
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 3 may treat only the manifested handoff as settled.

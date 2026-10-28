@@ -1,6 +1,6 @@
-# Exercises — Golden Paths, Templates, and Self-Service Provisioning
+# Exercises — Module 06: Golden Paths, Templates, and Self-Service Provisioning
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Golden Paths, Templates, and Self-Service Provisioning**, every response must settle this question: **How can a platform reduce repeated setup work without hiding essential engineering decisions or creating clone-and-forget debt?** Answer as though another team must implement and operate the design. Ambiguous ownership, unbounded behavior, and evidence-free claims are defects.
 
 ## 1. What makes a golden path different from a code template?
 

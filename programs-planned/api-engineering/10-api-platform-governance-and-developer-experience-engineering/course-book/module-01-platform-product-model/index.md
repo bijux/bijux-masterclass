@@ -1,22 +1,24 @@
-# Platform Product Model and Operating Boundaries
+# Module 01 — Platform Product Model and Operating Boundaries
 
-**Module 01 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** Which recurring problems should an API platform own, and which decisions must stay with domain teams?
+> **Central question:** Which recurring problems should an API platform own, and which decisions must stay with domain teams?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–9 optimized individual interfaces and services. Course 10 begins by treating the platform itself as a product with users, outcomes, boundaries, and operating cost.
+Course 10 begins from this incoming boundary: **The Course 9 handoff containing HTTP, event, RPC, distributed-service, and GraphQL contracts with explicit ownership and release evidence.**
+
+This module establishes the course’s first new responsibility by asking: **Which recurring problems should an API platform own, and which decisions must stay with domain teams?** Its capstone increment is **Publish the platform product charter, user journeys, ownership boundary, and initial outcome model**. That result is required before **Catalog, Ownership Graph, and Metadata Authority** can be studied honestly.
 
 ## Learning outcomes
 
-- define the platform as a product with distinct users
-- separate essential domain decisions from accidental repeated work
-- establish platform, domain, and governance ownership
-- evaluate paved roads and justified exceptions
-- choose outcome metrics instead of feature counts
+- Define the platform as a product with distinct users.
+- Separate essential domain decisions from accidental repeated work.
+- Establish platform, domain, and governance ownership.
+- Evaluate paved roads and justified exceptions.
+- Choose outcome metrics instead of feature counts.
 
-## Capstone result
+## Capstone increment
 
 Publish the platform product charter, user journeys, ownership boundary, and initial outcome model.
 
@@ -55,7 +57,6 @@ Both tracks expose a release decision as explicit inputs rather than as a portal
 ## Standards anchors
 
 Backstage describes a software catalog as a centralized inventory of software and ownership metadata, and models APIs as first-class boundaries. The course adopts those useful ideas without claiming that the dependency-light catalog core is Backstage itself. Read the official [Software Catalog](https://backstage.io/docs/features/software-catalog/) and [system model](https://backstage.io/docs/features/software-catalog/system-model/) after you understand the product boundary.
-
 
 ## Write a platform product charter
 
@@ -170,7 +171,6 @@ At a quarterly platform review, ask:
   decisions?
 
 These questions lead to product action. “We registered 200 APIs” does not.
-
 
 ## Case study: the rejected universal gateway
 
@@ -338,3 +338,13 @@ function decide(proposal: CapabilityProposal): string {
 The function is intentionally not a product roadmap algorithm. It encodes only
 objective incompleteness and one authority boundary. Human product judgment
 still decides whether the recurring problem is valuable enough to operate.
+
+## Module synthesis
+
+You are ready to leave this module when you can **define the platform as a product with distinct users, separate essential domain decisions from accidental repeated work, and establish platform, domain, and governance ownership** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **Digest publication, search, sandbox control, and consumer retirement tracking may belong to the platform. Project-owner authorization and domain repair remain with the owning services.**
+
+The cumulative platform now includes **Publish the platform product charter, user journeys, ownership boundary, and initial outcome model**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Catalog, Ownership Graph, and Metadata Authority](../module-02-catalog-ownership-and-topology/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

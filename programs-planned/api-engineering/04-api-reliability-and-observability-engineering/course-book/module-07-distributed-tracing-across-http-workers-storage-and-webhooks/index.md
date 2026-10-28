@@ -1,12 +1,14 @@
 # Module 07 — Distributed Tracing Across Asynchronous Work
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** How does trace context cross HTTP, queues, workers, storage, retries, and webhooks without inventing false parentage?
 
 ## Where this module fits
 
-Validate trace context, use parent-child relationships for synchronous calls, and links for durable asynchronous continuation. You arrive from Module 06 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **SLOs, Error Budgets, Dashboards, and Alerts**.
+Module 06 produced **Implement bounded metric dimensions, units, good/bad/eligible/excluded populations, and aggregation semantics**. This module extends that result by asking: **How does trace context cross HTTP, queues, workers, storage, retries, and webhooks without inventing false parentage?**
+
+The new capstone increment is **Implement validated context, synchronous parent-child spans, asynchronous links, attempts, queue time, and privacy-safe attributes**. It becomes the prerequisite for **SLOs, Error Budgets, Dashboards, and Alerts**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Validate trace context, use parent-child relationships for synchronous calls, an
 - Link asynchronous work to durable causation.
 - Understand sampling and missing-span limits.
 
-## Capstone result
+## Capstone increment
 
 Implement validated context, synchronous parent-child spans, asynchronous links, attempts, queue time, and privacy-safe attributes.
-
-One run can be followed from client request through worker attempt, artifact publication, outbox dispatch, and receiver acknowledgement.
 
 ## Core reliability model
 
@@ -96,7 +96,6 @@ Apply **Span relationship, Propagation carrier, Queue timing** to this module’
 Deterministic contexts prove propagation rules; backend sampling, clock skew, and trace visualization require live multi-process execution.
 
 ## Worked failures
-
 
 ### Case 1 — Worker as long HTTP child
 
@@ -184,7 +183,7 @@ assert child.trace_id == context.trace_id
 assert child.span_id != context.span_id
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Distributed Tracing Across Asynchronous Work** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Worker as long HTTP child
 
@@ -229,7 +228,7 @@ const child = childOf(context, "b7ad6b7169203331");
 if (child.traceId !== context.traceId) throw new Error("trace disconnected");
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Distributed Tracing Across Asynchronous Work** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Worker as long HTTP child
 
@@ -446,8 +445,10 @@ Compare the two tracks by this invariant: **untrusted incoming context is valida
 
 ## Module synthesis
 
-The module answer to “How do we reconstruct one outcome across HTTP, database, worker, storage, and webhook boundaries without inventing false parentage?” is now executable in the capstone: One run can be followed from client request through worker attempt, artifact publication, outbox dispatch, and receiver acknowledgement.
+You are ready to leave this module when you can **Parse and validate W3C trace context, Create bounded span names and attributes, and Represent queue and worker attempts accurately** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Distributed Tracing Across Asynchronous Work in a temporary branch** and requiring the following oracle: **The request ends after durable acceptance; Worker execution is linked, not falsely nested for its full lifetime; Queue delay and processing time are distinguishable; Both webhook attempts are visible when sampled.**
+
+The cumulative platform now includes **Implement validated context, synchronous parent-child spans, asynchronous links, attempts, queue time, and privacy-safe attributes**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 08, [SLOs, Error Budgets, Dashboards, and Alerts](../module-08-slos-error-budgets-dashboards-and-alerts/index.md), asks: *How do operational signals become explicit objectives and actionable decisions rather than decorative dashboards?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [SLOs, Error Budgets, Dashboards, and Alerts](../module-08-slos-error-budgets-dashboards-and-alerts/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

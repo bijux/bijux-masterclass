@@ -1,6 +1,6 @@
-# Exercises — Unary RPCs, Metadata, Status, and Rich Errors
+# Exercises — Module 04: Unary RPCs, Metadata, Status, and Rich Errors
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **Unary RPCs, Metadata, Status, and Rich Errors**, every response must settle this question: **How should a unary RPC expose success and failure so that generated clients receive stable application meaning rather than transport accidents or leaked internals?** For every answer, separate the authoritative boundary from convenient diagnostics, then explain which failing experiment would force you to revise the design.
 
 ## 1. Which fields belong in metadata for `CreateRun`, and which belong in the request message?
 

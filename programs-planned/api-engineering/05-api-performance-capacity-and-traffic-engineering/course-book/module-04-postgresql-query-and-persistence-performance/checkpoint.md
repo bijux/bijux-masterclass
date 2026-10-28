@@ -1,21 +1,8 @@
-# Module 04 checkpoint — PostgreSQL Query and Persistence Performance
+# Checkpoint — Module 04: PostgreSQL Query and Persistence Performance
 
 ## Required result
 
-- [ ] migration 009 has forward and operational rollback guidance
-- [ ] plan parser vectors pass in both tracks
-- [ ] live or fixture plan evidence is clearly classified
-- [ ] pool wait and execution time are separate
-- [ ] read and write budgets are reported
-- [ ] no correctness predicate was removed
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. Why did the planner choose the baseline plan?
-2. Which index column order follows your predicates?
-3. What resource or workload became worse after the index?
+Capture before/after plans, add evidence-backed indexes, size database connections, and preserve owner-aware query semantics.
 
 ## Demonstrate
 
@@ -29,6 +16,34 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=04 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-04/
+├── dataset-manifest.json
+├── query.sql
+├── parameters.json
+├── before-plan.json
+├── after-plan.json
+├── before-envelope.json
+├── after-envelope.json
+├── write-cost.json
+├── migration-notes.md
+└── decision.md
+```
+
+When PostgreSQL is unavailable, use packaged plan fixtures and mark the evidence Class A/B. The module cannot claim live index behavior from fixtures alone.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. Why did the planner choose the baseline plan?
+2. Which index column order follows your predicates?
+3. What resource or workload became worse after the index?
 
 ## Continue only when
 

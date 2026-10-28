@@ -171,8 +171,8 @@ def structure_proof() -> None:
             fail(f"missing root file {relative}")
     course_book = ROOT / "course-book"
     pages = sorted(course_book.rglob("*.md"))
-    if len(pages) != 59:
-        fail(f"expected 59 course-book pages, found {len(pages)}")
+    if len(pages) != 61:
+        fail(f"expected 61 course-book pages, found {len(pages)}")
     modules = sorted(course_book.glob("module-*"))
     if len(modules) != 11:
         fail(f"expected orientation plus 10 modules, found {len(modules)}")
@@ -186,7 +186,7 @@ def structure_proof() -> None:
         if exercises != [str(i) for i in range(1, 13)] or answers != exercises:
             fail(f"exercise/answer numbering mismatch in {module.name}")
         lab = (module / "lab.md").read_text()
-        for heading in ["Objective", "Setup conditions", "Failure action and investigation", "Operational oracle", "Required evidence", "Cleanup and reset", "Completion gate"]:
+        for heading in ["Objective", "Setup conditions", "Controlled action and investigation", "Operational oracle", "Required evidence", "Cleanup and reset", "Completion gate"]:
             if f"## {heading}" not in lab:
                 fail(f"lab missing {heading}: {module.name}")
     mkdocs = load_yaml(ROOT / "mkdocs.yml")
@@ -202,7 +202,7 @@ def structure_proof() -> None:
     actual = {p.relative_to(course_book).as_posix() for p in pages}
     if nav_paths != actual:
         fail(f"MkDocs coverage mismatch missing={sorted(actual-nav_paths)[:5]} extra={sorted(nav_paths-actual)[:5]}")
-    passed("course structure — 59 navigated pages, 10 complete modules")
+    passed("course structure — 61 navigated pages, 10 complete modules")
 
 
 def data_proof() -> None:

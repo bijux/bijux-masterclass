@@ -1,22 +1,24 @@
-# Federated Governance, Platform Operations, and Final Defense
+# Module 10 — Federated Governance, Platform Operations, and Final Defense
 
-**Module 10 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** How can the platform scale across an organization while remaining useful, operable, accountable, and subordinate to domain ownership?
+> **Central question:** How can the platform scale across an organization while remaining useful, operable, accountable, and subordinate to domain ownership?
 
-## Place in the program
+## Where this module fits
 
-Modules 1–9 built the platform mechanisms. Module 10 integrates them into an operating model that can scale across teams without centralizing business authority or turning governance into paperwork.
+Module 09 produced **Publish runtime desired state, drift proof, product metrics, and support routing evidence**. This final module consolidates the course by asking: **How can the platform scale across an organization while remaining useful, operable, accountable, and subordinate to domain ownership?**
+
+The capstone must now deliver **Complete and defend Analysis API Platform 1.0 and the ten-course API Engineering program** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **Analysis API Platform 1.0, a governed catalog and registry, lifecycle and policy engine, golden path, documentation and sandbox, SDK and provenance publication, runtime reconciliation, support model, and a ten-course graduation dossier.**
 
 ## Learning outcomes
 
-- design a federated platform operating model
-- apply SLO and lifecycle discipline to the platform itself
-- focus central review on novel risk
-- drive adoption through measurable value
-- defend Analysis API Platform 1.0 across all user perspectives
+- Design a federated platform operating model.
+- Apply SLO and lifecycle discipline to the platform itself.
+- Focus central review on novel risk.
+- Drive adoption through measurable value.
+- Defend Analysis API Platform 1.0 across all user perspectives.
 
-## Capstone result
+## Capstone increment
 
 Complete and defend Analysis API Platform 1.0 and the ten-course API Engineering program.
 
@@ -61,7 +63,6 @@ Course 1 taught that a contract is a public promise. Course 2 made it durable. C
 ## Standards and product neutrality
 
 Backstage is a useful reference for catalogs, templates, and docs. OpenAPI, AsyncAPI, Protobuf, and GraphQL remain the native contract authorities. SLSA and CycloneDX provide supply-chain vocabulary. The course uses these standards without making one product the architecture. A mature platform can replace an integration while preserving catalog identity, evidence, lifecycle, and consumer outcomes.
-
 
 ## Governance topology
 
@@ -193,7 +194,6 @@ place ownership, make semantics durable, defend and operate the system, measure
 pressure, communicate asynchronously, use typed RPC, distribute deliberately,
 compose graph capabilities, and build the organizational platform around them
 without confusing any layer for another.
-
 
 ## Final architecture review
 
@@ -390,3 +390,13 @@ function decideRelease(checks: Record<string, boolean>, policy: string): Release
 The final capstone passes catalog, registry, lifecycle, template, documentation,
 SDK, runtime, and sandbox gates. It separately demonstrates one valid review and
 nine rejection paths so the learner proves the controls can say no.
+
+## Module synthesis
+
+You are ready to leave this module when you can **design a federated platform operating model, apply SLO and lifecycle discipline to the platform itself, and focus central review on novel risk** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Then attempt an immutable-release overwrite, an expiry-free exception, unsafe retirement, untraceable SDK publication, and gateway-owned domain policy** and requiring the following oracle: **Valid journeys complete with bounded evidence. Every unsafe candidate is rejected at the earliest authoritative gate. Review-required evidence remains review; it is not silently promoted.**
+
+The cumulative platform now includes **Complete and defend Analysis API Platform 1.0 and the ten-course API Engineering program**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 10 may treat only the manifested handoff as settled.

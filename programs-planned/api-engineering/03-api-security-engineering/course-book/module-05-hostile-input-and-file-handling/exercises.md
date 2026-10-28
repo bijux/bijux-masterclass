@@ -1,5 +1,7 @@
 # Exercises — Module 05: Hostile Input and File Handling
 
+Work through all twelve problems before opening the answers. In **Hostile Input and File Handling**, every response must settle this question: **How are hostile strings, numbers, paths, filenames, uploads, and serialized structures constrained at the correct boundary?** A useful solution connects semantics to mechanism: who owns the decision, what can go wrong, and which retained artifact proves the claimed outcome.
+
 ## 1. Why is OpenAPI validation insufficient for file paths?
 
 ## 2. What is the safe role of a client filename?

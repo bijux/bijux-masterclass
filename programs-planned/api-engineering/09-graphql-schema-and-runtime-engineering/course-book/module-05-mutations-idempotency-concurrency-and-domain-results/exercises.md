@@ -1,6 +1,6 @@
-# Exercises — Mutations, Idempotency, Concurrency, and Domain Results
+# Exercises — Module 05: Mutations, Idempotency, Concurrency, and Domain Results
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Mutations, Idempotency, Concurrency, and Domain Results**, every response must settle this question: **How do graph mutations preserve the durable command guarantees of the owning service?** A useful solution connects semantics to mechanism: who owns the decision, what can go wrong, and which retained artifact proves the claimed outcome.
 
 ## 1. Does serial top-level mutation execution make two fields atomic?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. Why avoid a generic updateRun mutation?
-

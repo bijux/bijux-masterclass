@@ -1,5 +1,7 @@
 # Exercises — Module 03: JSON Schema Contract Modeling
 
+Work through all twelve problems before opening the answers. In **JSON Schema Contract Modeling**, every response must settle this question: **How do schemas reject invalid states while remaining usable for providers, clients, and future evolution?** Do not stop at terminology. Show how the decision changes a request, durable state, consumer, operator action, or release result, and state how that consequence is tested.
+
 ## 1. List the four distinct instances for a `description` property: missing, null, empty, non-empty.
 
 ## 2. Design required-but-nullable `completedAt`.

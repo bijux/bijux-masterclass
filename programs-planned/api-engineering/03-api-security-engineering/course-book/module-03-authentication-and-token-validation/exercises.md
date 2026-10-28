@@ -1,5 +1,7 @@
 # Exercises — Module 03: Authentication and Token Validation
 
+Work through all twelve problems before opening the answers. In **Authentication and Token Validation**, every response must settle this question: **How should a resource server validate bearer tokens and API keys without trusting convenient claims?** Do not stop at terminology. Show how the decision changes a request, durable state, consumer, operator action, or release result, and state how that consequence is tested.
+
 ## 1. Why is signature validity insufficient?
 
 ## 2. Who chooses the accepted JWT algorithm?

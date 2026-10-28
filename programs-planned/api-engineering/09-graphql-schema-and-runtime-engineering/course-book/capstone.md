@@ -1,43 +1,46 @@
-# Capstone: Analysis Graph
+# Capstone — GraphQL Schema and Runtime Engineering
 
-The graph gateway sits over the services extracted in Course 8.
+## Cumulative system
 
-```text
-                         Analysis Graph Gateway
-                          /        |        \
-                         /         |         \
-                        v          v          v
-                Analysis Control  Artifact  Notification
-```
+Course 9 continues the Analysis Runs Platform at the point where the previous course stopped. Its capstone exists to compose governed client-shaped capabilities while preserving the same projects, datasets, runs, artifacts, identities, and user journeys.
 
-The gateway owns:
+## Inherited state
 
-- schema and operation admission;
-- request-scoped context and loaders;
-- graph-specific demand limits;
-- composition and partial-response policy;
-- graph telemetry and client-operation inventory.
+The Course 8 distributed architecture handoff with explicit service, data, contract, and trust boundaries.
 
-It does not own project, run, artifact, or notification state. Mutations delegate to the owning service. Nested fields call the service that owns the fact. The gateway may cache only under an explicit consistency and authorization policy.
+The inherited boundary is read-only: The Course 8 distributed architecture handoff with explicit service, data, contract, and trust boundaries. A difficult implementation is not permission to rewrite predecessor contracts, migrations, profiles, or evidence; the current course must solve the problem at its own owning layer.
 
-## Principal workflow
+## Course additions
 
-A client requests a project and its recent analysis runs. For each run it selects artifacts and delivery status. A naïve resolver produces one analysis call, one artifact call per run, and one notification call per run. The corrected runtime batches artifacts and delivery summaries once per request.
+- graph interface placement and operation lifecycle;
+- type-system, nullability, resolver, source-ownership, and batching discipline;
+- stable identifiers, connections, mutations, idempotency, and policy enforcement;
+- persisted operations, demand control, caching, partial data, and observability;
+- subscriptions, schema evolution, federation boundaries, and release governance;
 
-The client starts an analysis through a mutation. The gateway passes the client idempotency key to Analysis Control. It does not create a graph-only duplicate-prevention mechanism that can diverge from the authoritative command.
+## Increment map
 
-A completed run is observed through a subscription sourced from Analysis Events API 1.0. Resume begins after a sequence value. Duplicate events are suppressed; a gap stops delivery and requires replay.
+| Module | Mechanism | Cumulative result |
+|---:|---|---|
+| 1 | Graph Interface Placement and the Operation Lifecycle | Publish the graph boundary and operation-lifecycle trace. |
+| 2 | Type System, Nullability, and Semantic Modeling | Release Analysis Graph API 1.0 type and nullability policies. |
+| 3 | Resolver Architecture, Batching, and Source Ownership | Replace N+1 nested calls with request-scoped batching. |
+| 4 | Queries, Identifiers, Connections, and Pagination | Implement global IDs and stable, bound connections. |
+| 5 | Mutations, Idempotency, Concurrency, and Domain Results | Expose idempotent create/start/cancel mutations over owning services. |
+| 6 | Authorization, Tenancy, and Schema Exposure | Prove field, tenant, collection, and sensitive-output authorization. |
+| 7 | Demand Control, Persisted Operations, and Caching | Admit only bounded trusted operations and record cost evidence. |
+| 8 | Errors, Partial Data, Consistency, and Observability | Return truthful partial data with path-specific errors and traces. |
+| 9 | Subscriptions, Resume, and Incremental Delivery | Deliver resumable run updates with gap and duplicate handling. |
+| 10 | Schema Evolution, Federation, Governance, and Final Defense | Approve Graph API 1.0, reject breaking candidates, and publish Course 10 handoff. |
 
-## Final result
+## Implementation route
 
-By Module 10 the capstone contains:
+Build the complete Course 9 increment in one primary track. Use the second track only after the chapter model is clear, then run shared vectors to test whether **compose governed client-shaped capabilities** survives an idiomatic implementation in another runtime.
 
-- Analysis Graph API 1.0 SDL;
-- ten trusted operation documents;
-- Python and TypeScript semantic tracks;
-- optional Strawberry and Yoga adapters;
-- query budget and persisted-operation registries;
-- field ownership, authorization, nullability, and consistency policies;
-- a real loopback graph-composition laboratory;
-- release compatibility fixtures;
-- a sanitized Course 10 platform handoff.
+## Final state
+
+Analysis Graph API 1.0, GraphQL September 2025 schema, persisted operation registry, resolver ownership, demand policy, resumable subscriptions, compatibility gates, and platform-publication metadata.
+
+## Handoff discipline
+
+The successor receives only the settled result: Analysis Graph API 1.0, GraphQL September 2025 schema, persisted operation registry, resolver ownership, demand policy, resumable subscriptions, compatibility gates, and platform-publication metadata. Local caches, secrets, ad-hoc reports, and environment-specific artifacts remain outside the handoff.

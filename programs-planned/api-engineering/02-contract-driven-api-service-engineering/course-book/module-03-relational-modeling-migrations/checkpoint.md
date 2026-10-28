@@ -2,7 +2,7 @@
 
 ## Required result
 
-Projects, datasets, runs, jobs, artifacts, idempotency records, and subscriptions survive restart.
+Persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations.
 
 ## Demonstrate
 
@@ -22,13 +22,23 @@ make module-proof MODULE=03 TRACK=typescript
 make core-proof
 ```
 
+## Evidence to retain
+
+- baseline transcript proving the previous checkpoint before **Relational Modeling and Migrations** changes
+- the exact source, fixture, contract, migration, or configuration diff that implements **Relational Modeling and Migrations**
+- focused result for: Map relationships and ownership to keys and constraints.
+- public, durable, security, or operational observation showing: Projects, datasets, runs, jobs, artifacts, idempotency records, and subscriptions survive restart.
+- minimized planted-defect failure and repaired regression
+- primary/comparison-track note for **migration ownership**
+- a limitation statement naming every live dependency required to support the strongest **Relational Modeling and Migrations** claim but not exercised
+
 ## Defend the design
 
 1. Answer the central question: **How does PostgreSQL reinforce the service invariants instead of acting as an unstructured persistence dictionary?**
 2. Demonstrate this capstone result: Projects, datasets, runs, jobs, artifacts, idempotency records, and subscriptions survive restart.
-3. Show the planted defect, the first failing oracle, and the retained regression.
+3. Show the **Relational Modeling and Migrations** defect, the first failing oracle, and the exact regression retained after repair.
 4. Explain why this invariant is shared across languages: ordered migration names, one migration history, and atomic application are identical commitments.
-5. State exactly which database, network, process, telemetry backend, or operated exercise was not run in the current environment.
+5. State which environment-backed **Relational Modeling and Migrations** route was not run and how that limits the claim.
 
 ## Continue only when
 

@@ -1,12 +1,50 @@
-# Checkpoint 01 — Graph Interface Placement and the Operation Lifecycle
+# Checkpoint — Module 01: Graph Interface Placement and the Operation Lifecycle
 
-Do not continue until every condition is supported by executable or inspected evidence.
+## Required result
 
-- [ ] For all ten trusted operations, I can trace HTTP framing, parse, validation, admission, execution, completion, and response construction.
-- [ ] Every root field and composed field names a source authority; no resolver opens another service's private database.
-- [ ] GET rejects mutation and subscription operations before execution.
-- [ ] The operation registry chooses exactly one named operation and unknown digests make zero source calls.
-- [ ] The loopback trace proves the graph gateway owns composition metadata but no project, run, artifact, or delivery fact.
-- [ ] Lab 01 report separates request errors, execution errors, downstream failures, and host failures with the correct oracle.
+Publish the graph boundary and operation-lifecycle trace.
 
-**Gate:** run `make module-01-proof`. A green command without the lab report and the listed evidence does not count.
+## Demonstrate
+
+- [ ] Place graphql without changing service authority.
+- [ ] Trace parse, validate, admit, execute, complete, and serialize phases.
+- [ ] Classify failures by phase.
+- [ ] Apply the course http profile.
+- [ ] Review a field as an architecture edge.
+
+## Commands
+
+```bash
+make core-proof
+```
+
+## Evidence to retain
+
+Create `reports/module-01-operation-lifecycle.json` with:
+
+```json
+{
+  "schemaRelease": "1.0.0",
+  "cases": [
+    {
+      "name": "valid",
+      "lastPhase": "serialization",
+      "operationId": "...",
+      "sourceCalls": {},
+      "responseClass": "complete"
+    }
+  ]
+}
+```
+
+Do not include bearer tokens, raw arbitrary variables, or returned business data. Include assertions showing which planted defect would make the report fail.
+
+## Defend the design
+
+1. Answer the central question in one paragraph: Where does GraphQL belong, and what happens between receiving a document and returning a response?
+2. Name the authoritative owner and smallest counterexample.
+3. State what the available evidence does not prove.
+
+## Continue only when
+
+Continue only after you can demonstrate the **Graph Interface Placement and the Operation Lifecycle** increment, preserve the controlled counterexample as a regression, keep inherited checkpoints green, and explain which stronger claim remains outside the evidence you collected.

@@ -1,12 +1,14 @@
 # Module 10 — Incident Command, Reconciliation, and Readiness
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** How do responders command an incident, reconcile durable state, repair safely, and decide whether a release is operationally ready?
 
 ## Where this module fits
 
-Run a non-security incident with explicit roles, read-only reconciliation, idempotent repair plans, and observable release gates. You arrive from Module 09 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result closes the course and produces the handoff to **API Performance, Capacity, and Traffic Engineering**.
+Module 09 produced **Design bounded faults, control populations, abort conditions, cleanup contracts, and proof-sensitive planted defects**. This final module consolidates the course by asking: **How do responders command an incident, reconcile durable state, repair safely, and decide whether a release is operationally ready?**
+
+The capstone must now deliver **Run incident roles, read-only reconciliation, stable repair plans, verification, retrospective, and observable release gates** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **Reliability Profile 1.0, migration 008, critical journeys, deadline and resilience policies, lifecycle controls, telemetry contracts, SLOs, alerts, runbooks, game-day evidence, and reconciliation plans.**
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Run a non-security incident with explicit roles, read-only reconciliation, idemp
 - Generate stable repair actions before mutation.
 - Close only after user outcomes, cleanup, and regressions are verified.
 
-## Capstone result
+## Capstone increment
 
 Run incident roles, read-only reconciliation, stable repair plans, verification, retrospective, and observable release gates.
-
-Course 4 ends with reliability profile 1.0, migration 008, tested runbooks, and an operational handoff to performance engineering.
 
 ## Core reliability model
 
@@ -96,7 +96,6 @@ Apply **Incident command, Severity, Mitigation** to this module’s capstone inc
 Scripted incidents prove role, timeline, reconciliation, and release gates; they do not prove a team can execute those practices under a real incident.
 
 ## Worked failures
-
 
 ### Case 1 — Everyone is incident commander
 
@@ -186,7 +185,7 @@ assert {item.kind.value for item in findings} == {
 }
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Incident Command, Reconciliation, and Readiness** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Everyone is incident commander
 
@@ -230,7 +229,7 @@ const findings = inspect({
 if (findings.length !== 3) throw new Error("incomplete reconciliation");
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Incident Command, Reconciliation, and Readiness** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Everyone is incident commander
 
@@ -390,7 +389,8 @@ _RUN_TERMINAL = frozenset({"completed", "failed", "canceled"})
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/reliability/reconcile.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 export type FindingKind =
   | "run-without-job"
   | "job-without-run"
@@ -460,14 +460,16 @@ export function inspect(snapshot: Snapshot): Finding[] {
 
 Compare the two tracks by this invariant: **operators diagnose from telemetry but reconcile and repair from read-only durable facts using stable, idempotent repair identifiers**. The intended implementation difference is: data-access mechanics differ; findings and repair plans must be deterministic and reviewable.
 
-## Module synthesis
-
-The module answer to “During a real incident, how do people coordinate, determine durable truth, repair safely, and decide that the service is ready again?” is now executable in the capstone: Course 4 ends with reliability profile 1.0, migration 008, tested runbooks, and an operational handoff to performance engineering.
-
 ## Course exit
 
 The ten module results now satisfy this course promise: A reliability profile with deadlines, resilience, lifecycle control, telemetry, SLIs, SLOs, alerting, fault injection, reconciliation, and incident readiness. The next course is **API Performance, Capacity, and Traffic Engineering**; it consumes the outgoing handoff rather than reinterpreting completed work.
 
+## Module synthesis
+
+You are ready to leave this module when you can **Assign incident command, operations, communication, and recording roles, Construct a timeline with source and confidence, and Reconcile database, jobs, artifacts, and outbox state** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Incident Command, Reconciliation, and Readiness in a temporary branch** and requiring the following oracle: **Decision log has one command owner and source-linked entries; Mitigation reduces impact without duplicate terminal effects; Initial reconciliation performs no mutation; Repeated repair execution is idempotent.**
+
+The cumulative platform now includes **Run incident roles, read-only reconciliation, stable repair plans, verification, retrospective, and observable release gates**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
 ## Next in the story
 
-This course now has the mechanism needed for its final defense. The outgoing handoff becomes the immutable starting point for **Course 5 — API Performance, Capacity, and Traffic Engineering**, where the responsibility becomes: Preserve correctness, latency, throughput, fairness, and bounded resource use as demand and data volume grow.
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 5 may treat only the manifested handoff as settled.

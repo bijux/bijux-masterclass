@@ -1,172 +1,46 @@
-# Capstone — Analysis RPC Control Plane
+# Capstone — gRPC and Protobuf Engineering
 
-Course 7 continues the Analysis Runs Platform. The public HTTP API and Analysis Events API remain intact. The capstone adds a controlled internal RPC surface:
+## Cumulative system
 
-```text
-Public clients
-    |
-    v
-HTTP/OpenAPI gateway ---------------------> public resource semantics
-    |
-    v
-AnalysisControlService (gRPC) ------------> authoritative run decisions
-    |                 |
-    |                 +-------------------> transactional event outbox
-    v
-WorkerPlaneService (bidirectional stream) -> assignments, progress, results
-    |
-    v
-DatasetTransferService -------------------> bounded binary upload/download
-```
+Course 7 continues the Analysis Runs Platform at the point where the previous course stopped. Its capstone exists to engineer typed internal invocation and streaming while preserving the same projects, datasets, runs, artifacts, identities, and user journeys.
 
-## Services
+## Inherited state
 
-### AnalysisControlService
+The Course 6 HTTP API 1.2 and Analysis Events API 1.0 handoff with profiles and migrations through 012.
 
-- `CreateRun` — unary, idempotent mutation;
-- `GetRun` — unary authoritative read;
-- `CancelRun` — unary conditional mutation;
-- `WatchRun` — resumable server stream.
+The inherited boundary is read-only: The Course 6 HTTP API 1.2 and Analysis Events API 1.0 handoff with profiles and migrations through 012. A difficult implementation is not permission to rewrite predecessor contracts, migrations, profiles, or evidence; the current course must solve the problem at its own owning layer.
 
-### DatasetTransferService
+## Course additions
 
-- `UploadDataset` — client stream with metadata-first framing;
-- `DownloadArtifact` — bounded server stream with offsets and checksum.
+- interaction-choice and ownership discipline;
+- Protobuf semantic modeling and wire compatibility;
+- unary metadata, status, deadlines, cancellation, and retries;
+- bounded unary and streaming protocols;
+- workload identity, authorization, health, discovery, generation, and governance;
 
-### WorkerPlaneService
+## Increment map
 
-- `Work` — bidirectional worker session with durable assignment and lease authority.
+| Module | Mechanism | Cumulative result |
+|---:|---|---|
+| 1 | RPC Boundaries, Service Ownership, and Interaction Choice | Publish an interaction decision record, service-ownership map, and minimal Analysis RPC surface without splitting the platform prematurely. |
+| 2 | Protobuf Modeling, Presence, and Semantic Types | Complete the Analysis RPC 1.0 message model, publish cross-language presence and integer vectors, and document every field whose absence changes behavior. |
+| 3 | Wire Format, Unknown Fields, and Compatibility Discipline | Publish Analysis RPC compatibility policy 1.0, golden wire fixtures, and a release report that accepts one additive candidate while rejecting unsafe tag, enum, and method-shape changes. |
+| 4 | Unary RPCs, Metadata, Status, and Rich Errors | Implement `CreateRun`, `GetRun`, and `CancelRun` with shared status vectors, safe metadata policy, and equivalent Python and TypeScript client behavior. |
+| 5 | Deadlines, Cancellation, Retries, and Idempotent Calls | Implement deadline-aware CreateRun and GetRun clients, persistent retry semantics, deterministic retry vectors, and fault-injection evidence for failures before invocation, before commit, after commit, and during response delivery. |
+| 6 | Streaming RPCs, Flow Control, and Backpressure | Implement `WatchRun`, `UploadDataset`, `DownloadArtifact`, and the worker `Work` stream with shared schedule vectors, bounded buffers, resumable observation, and stale-attempt fencing. |
+| 7 | Identity, Authorization, mTLS, and Tenant Isolation | Implement RPC security profile 1.0 with method policy, workload and user identity binding, tenant-isolation vectors, mTLS-ready configuration, and secure worker-stream authorization. |
+| 8 | Channels, Health, Discovery, Load Balancing, and Lifecycle | Implement channel and server lifecycle state machines, standard health semantics, bounded reconnect behavior, two-instance routing evidence, graceful drain, and an operational service configuration. |
+| 9 | Generation, Testing, Reflection, and Schema Governance | Publish a reproducible generation pipeline, checked descriptor inventory, generated-client build matrix, runtime catalogue comparison, and Course 7 RPC release gate. |
+| 10 | HTTP, Events, and gRPC in One Architecture: Release and Final Defense | Release Analysis RPC API 1.0 behind the unchanged public HTTP API and Event API, execute the final defense, and publish a sanitized service-boundary dossier rather than prematurely splitting the system. |
 
-## What remains outside gRPC
+## Implementation route
 
-- the public HTTP API remains the external client contract;
-- integration events remain the durable independent-consumer contract;
-- domain invariants and same-process application logic remain local calls;
-- PostgreSQL remains the authority for idempotency, leases, state, and outbox records.
+Build the complete Course 7 increment in one primary track. Use the second track only after the chapter model is clear, then run shared vectors to test whether **engineer typed internal invocation and streaming** survives an idiomatic implementation in another runtime.
 
-## Evidence classes
+## Final state
 
-The capstone separates schema evidence, generated-surface evidence, deterministic in-process behavior, live Python gRPC network evidence, full TypeScript network evidence, and TLS or infrastructure-backed evidence. Missing environment-backed evidence is reported as not executed. It is never inferred from a model test.
+Analysis RPC API 1.0, gRPC Profile 1.0, proto3 executable baseline, Edition 2024 frontier, migrations 013–015, streaming protocols, method policy, and compatibility evidence.
 
+## Handoff discipline
 
-## End-to-end capstone progression
-
-The capstone is built in ten increments. Each increment is useful by itself and preserves the predecessor guarantees.
-
-### Increment 1 — interaction decision
-
-Before a proto exists, create an interaction matrix. For each candidate call, record:
-
-- caller and callee;
-- capability and state owner;
-- whether the caller needs an answer now;
-- public, internal, or operator audience;
-- expected latency and availability path;
-- deadline and retry owner;
-- transaction boundary;
-- rollback path;
-- reason not to use HTTP, an event, or a local call.
-
-The approved RPC surface is intentionally small. The exercise includes rejected candidates because architecture quality depends on what the system refuses to distribute.
-
-### Increment 2 — semantic message model
-
-Model resources, requests, snapshots, stream frames, and worker assignments. Every field receives a semantic record: creator, unit, range, presence, sensitivity, identity scope, and compatibility rule. Cross-language fixtures prove optional fields, enum zero behavior, `oneof`, 64-bit integers, and canonical golden bytes.
-
-### Increment 3 — compatibility policy
-
-Freeze RPC 1.0. Build a descriptor inventory, consumer declarations, and golden binary fixtures. Evaluate candidates across wire, source, ProtoJSON, and behavioral dimensions. Reserve removed tags and names. Treat enum additions and field renames according to actual consumer evidence.
-
-### Increment 4 — unary outcomes
-
-Implement `CreateRun`, `GetRun`, and `CancelRun`. The handler layer performs transport mapping and delegates to existing application behavior. Expected application errors map to stable gRPC statuses and bounded details. The HTTP adapter preserves the public Problem Details contract. Response-loss experiments prove durable idempotency and reconciliation.
-
-### Increment 5 — time and retry
-
-Propagate one absolute deadline from the HTTP edge. Implement method-specific retry profiles. Query retries remain bounded; mutation retries require persistent request identity and fingerprint binding. Cancellation stops unnecessary work but never claims rollback after commit. Every ambiguous outcome has a query or replay path.
-
-### Increment 6 — streams
-
-Implement metadata-first upload, bounded artifact download, resumable run observation, and a worker bidirectional session. Define legal frame order, total and per-message size, queue capacity, maximum age, cancellation cleanup, reconnection, duplicate handling, and durable authority. HTTP/2 flow control is treated as one layer, not the whole backpressure system.
-
-### Increment 7 — security
-
-Bind calls to trusted workload identity and, where required, a delegated end-user principal. Enforce default-deny method policy, tenant-aware resource access, stream freshness, and assignment-generation fencing. Keep credentials out of statuses, logs, metrics, and traces. The fixture issuer and certificates remain educational material, not production identity claims.
-
-### Increment 8 — operation
-
-Manage reusable channels, health, resolution, balancing, reconnect backoff, keepalive, and graceful drain. Run two server instances to reveal hidden process-local state. A draining server stops admission, completes or terminates active work within a bound, and leaves durable state reconcilable.
-
-### Increment 9 — generation and governance
-
-Generate or inspect language surfaces, descriptor sets, catalogues, and reflection. Build representative clients. Run local and optional external compatibility checks. Detect drift between proto, generated code, registered services, policy, and documentation. Record unexecuted tool capabilities explicitly.
-
-### Increment 10 — reversible release
-
-Route public HTTP behavior through the internal RPC adapter under shadow and canary controls. Compare public responses, durable state, event history, security decisions, reliability signals, and performance budgets. Rehearse response loss, stale completion, slow streams, drain, and rollback. Export a service-boundary dossier for Course 8.
-
-## Repository reading order
-
-Use the implementation in this order:
-
-1. `rpc-case/interaction-decisions.yaml`
-2. `rpc-case/service-ownership.yaml`
-3. `contracts/proto/bijux/analysis/v1/analysis.proto`
-4. `contracts/descriptors/analysis-v1.json`
-5. `rpc-case/rpc-catalog.yaml`
-6. shared vectors and golden fixtures
-7. primary language semantic adapters
-8. primary language live server/client
-9. second language comparison
-10. release and handoff evidence
-
-Starting with the server encourages framework-first reasoning. Starting with ownership and contract makes the runtime code explainable.
-
-## Correctness invariants
-
-The final system preserves these invariants:
-
-- one request identifier and semantic input produce at most one logical run;
-- changed semantic input under the same identifier is rejected;
-- no read operation advances application state;
-- no RPC response claims success before authoritative commit;
-- no worker result is accepted without the current assignment and lease generation;
-- no upload publishes unverified or partial content;
-- no artifact download is trusted without completion and digest evidence;
-- no stream can grow without message, byte, queue, concurrency, and time bounds;
-- no internal metadata can assert unverified tenant or user authority;
-- no schema release reuses a published field or enum number;
-- no RPC migration changes the documented public HTTP or Event API behavior;
-- rollback never requires duplicate mutation or historical event rewriting.
-
-## Final evidence package
-
-A complete learner submission contains:
-
-```text
-rpc-source-and-descriptor/
-interaction-and-ownership/
-model-vectors/
-compatibility-report/
-unary-status-report/
-deadline-and-retry-report/
-stream-pressure-report/
-security-report/
-lifecycle-report/
-generation-and-catalogue-report/
-public-http-and-event-comparison/
-rollback-trace/
-service-boundary-dossier/
-```
-
-Every report names its evidence class and limitations. A deterministic state-machine proof does not claim live load-balancer behavior. A successful Python network test does not claim TypeScript network parity. A tool that was unavailable is recorded as not executed.
-
-## What Course 8 receives
-
-Course 8 receives a system with three mature communication contracts:
-
-- OpenAPI/HTTP for public resource behavior;
-- AsyncAPI/events for durable facts and independent consumers;
-- Protobuf/gRPC for controlled internal synchronous and streaming capabilities.
-
-It also receives evidence that some capabilities should remain together. That is essential. Distributed architecture begins with ownership and failure boundaries, not with a target service count.
+The successor receives only the settled result: Analysis RPC API 1.0, gRPC Profile 1.0, proto3 executable baseline, Edition 2024 frontier, migrations 013–015, streaming protocols, method policy, and compatibility evidence. Local caches, secrets, ad-hoc reports, and environment-specific artifacts remain outside the handoff.

@@ -13,10 +13,10 @@
       "sha256": "c4e3041f10f3c0796c2818c4f03ba6e1580c4ebdbca58f1999db9959ca2bd3c6"
     },
     {
-      "bytes": 2408,
+      "bytes": 1102,
       "mode": "0644",
       "path": "README.md",
-      "sha256": "c645e1a4e1ea7b456598257b5702ccd61a97899694452bad633a93f2cea6e697"
+      "sha256": "94582e79e9e11af8ca1881119277ba1da949492f0b1a1649003f74fc135dbc09"
     },
     {
       "bytes": 267,
@@ -1201,370 +1201,382 @@
       "sha256": "6281ec8b7d59677af89a04c097bae980580e4a422b262d154a2e2fa2996028db"
     },
     {
-      "bytes": 3027,
+      "bytes": 3506,
       "mode": "0644",
       "path": "course-book/capstone.md",
-      "sha256": "95c28b7aece6d003097ff4a576d56de8041e4a6b802ccc4a2b90bc887942d6c8"
+      "sha256": "875ea3cbe407fbd181e890101c6a3c4cc2a66a7b82d42ee10f68b76b1726ebd9"
     },
     {
-      "bytes": 4050,
+      "bytes": 1629,
+      "mode": "0644",
+      "path": "course-book/evidence-model.md",
+      "sha256": "15d584d1274f4b5488601fc6b3d6a6df11a603b3f346f46e449ba44fba817ff9"
+    },
+    {
+      "bytes": 3107,
       "mode": "0644",
       "path": "course-book/glossary.md",
-      "sha256": "11cd4631e65c73f783ad5ce352eb64dea91e38b0846fcd90fe463a94ac057605"
+      "sha256": "75b74d41198ee9fe367897dd6d8f4ba65e4cd17b4939f900cb985ad04f8580ba"
     },
     {
-      "bytes": 6109,
+      "bytes": 6118,
       "mode": "0644",
       "path": "course-book/index.md",
-      "sha256": "b4cb3ddabb1cf0cf72060077db136c68e21f3deb7130d01a829664007096831f"
+      "sha256": "8ed2499207a4e354e078241f4114c79e822d4439d92f2223e8e2430ed7fe7369"
     },
     {
-      "bytes": 1204,
+      "bytes": 1479,
+      "mode": "0644",
+      "path": "course-book/language-strategy.md",
+      "sha256": "07feeee0a5c494baf4b1fc2fc5cb473bae314e95eb66fe031e61bf406794aecf"
+    },
+    {
+      "bytes": 1644,
       "mode": "0644",
       "path": "course-book/module-00-orientation/checkpoint.md",
-      "sha256": "42a6a768b9072cd21f208b1d4e196aebed5f173b6d0bcd170f23cc29196c13c3"
+      "sha256": "a0e83c603c5a6198c54306ce20fbda08e952dca055918dc33e4ba1c174197fea"
     },
     {
-      "bytes": 3562,
+      "bytes": 3606,
       "mode": "0644",
       "path": "course-book/module-00-orientation/index.md",
-      "sha256": "dd2fdbf2aa3dfe334f1e63fe6b42366fdd36473f789327047008c6c436e3305d"
+      "sha256": "4fb58f1fd24f26d5b66a159917a4fb47cb0739317b57ee2b461c341dd974403b"
     },
     {
-      "bytes": 2446,
+      "bytes": 3237,
       "mode": "0644",
       "path": "course-book/module-00-orientation/lab.md",
-      "sha256": "5501b86325933ae5fdc2321a2d516bb482b9a2ac875648dae333cc65dd2a27d0"
+      "sha256": "0564cb22b48709d40f2f8a168951525d3d651313f7dfd9a895d06e863b41f258"
     },
     {
-      "bytes": 1763,
+      "bytes": 2604,
       "mode": "0644",
       "path": "course-book/module-01-application-use-cases/checkpoint.md",
-      "sha256": "5d1be135d5267aa93960c51a3e6b738a32f5b06d9978a1c4f4482994f9f69d9f"
+      "sha256": "a501821a586305d075afea24363261f75502daec5f2d5233083834beff6aba23"
     },
     {
-      "bytes": 3845,
+      "bytes": 8488,
       "mode": "0644",
       "path": "course-book/module-01-application-use-cases/exercise-answers.md",
-      "sha256": "9c48e4a3f2126f70f0828e27e3ddf2de790e4a98b2bd9603518390bf35fbaf6d"
+      "sha256": "afacf292261fca9a6806b60b6d5e94301881fcdbb3a8119d1b0a7e85306f6ad8"
     },
     {
-      "bytes": 1848,
+      "bytes": 2274,
       "mode": "0644",
       "path": "course-book/module-01-application-use-cases/exercises.md",
-      "sha256": "e39eb8a3bdd51ed5eb12db2577b037ed0bb36a2eae04161939219c6a9cf299dc"
+      "sha256": "0dbb4c07e9d348c210e72841b46253f375e0dc52111f2b6273a44c24c3bb5b11"
     },
     {
-      "bytes": 26555,
+      "bytes": 27939,
       "mode": "0644",
       "path": "course-book/module-01-application-use-cases/index.md",
-      "sha256": "f1c1f8e55269a56adf28ea0d6c097d632417e3ef920570f74b18b879c95eeadc"
+      "sha256": "865fa04d082e61d6912ed500533f8d2c73ad34ca541c47240009644e580d0407"
     },
     {
-      "bytes": 3421,
+      "bytes": 6833,
       "mode": "0644",
       "path": "course-book/module-01-application-use-cases/lab.md",
-      "sha256": "9e68ade6ae198c905bc53dd2eecc041d98634c29f8402baba92b2dccdc4491c3"
+      "sha256": "6b0ed5bf8892768ec6cc4efe71549ded72b44b0fcc775e5415a0c6558cdbdb47"
     },
     {
-      "bytes": 1636,
+      "bytes": 2415,
       "mode": "0644",
       "path": "course-book/module-02-domain-state-invariants/checkpoint.md",
-      "sha256": "4cf9a9a8bc3f77f9e3a8e0f7d96ba95d7eb838469caa27f7e954eb546c0e9d66"
+      "sha256": "73d2356e6506230ea587149352a3510591ba9275a1c5b0a495e37cddf0eb65f4"
     },
     {
-      "bytes": 3075,
+      "bytes": 8241,
       "mode": "0644",
       "path": "course-book/module-02-domain-state-invariants/exercise-answers.md",
-      "sha256": "6656178409d0106df6204a34470f568f2eca123332c982a8ce9a0e350e89f229"
+      "sha256": "7ded374f04c6aa3488b37c33a3244d79aa408432ac11aa22b0d8411ef9edb0d4"
     },
     {
-      "bytes": 1665,
+      "bytes": 2055,
       "mode": "0644",
       "path": "course-book/module-02-domain-state-invariants/exercises.md",
-      "sha256": "e064cd58b146616bc4d9aa696c73c71a230b745032d889795f2fb93e9f9423ed"
+      "sha256": "5a1b0e26926bfeb5b0275f26a0ab5ebd9b8d215eff04e9b7fc571cea30c6a066"
     },
     {
-      "bytes": 25394,
+      "bytes": 26697,
       "mode": "0644",
       "path": "course-book/module-02-domain-state-invariants/index.md",
-      "sha256": "16736c8f75557a29e74d0beb6ae6887c9a2d114f2abe7f962941f15ca7d4a720"
+      "sha256": "53565c58a01a28ebbbbabedadf64698d01cab74834a8d9167fda8029f3b97ee9"
     },
     {
-      "bytes": 3306,
+      "bytes": 6728,
       "mode": "0644",
       "path": "course-book/module-02-domain-state-invariants/lab.md",
-      "sha256": "a353a79660b382ddafaca1f526026e9ef931e417ea2c58afe779d5ab3009af28"
+      "sha256": "983836a8bab9cf25d54ecfa852da0df5954b9f97afd8f5f33d6870c7dfcaacb7"
     },
     {
-      "bytes": 1732,
+      "bytes": 2564,
       "mode": "0644",
       "path": "course-book/module-03-relational-modeling-migrations/checkpoint.md",
-      "sha256": "8f377bda444952767076ab8d6f32bec4c1411a99214fd6de40714f98edf9d0bb"
+      "sha256": "7cb7596b454035386e5797806a4537843ec2e6385dd2c2454e84e18c6db3044a"
     },
     {
-      "bytes": 3171,
+      "bytes": 8260,
       "mode": "0644",
       "path": "course-book/module-03-relational-modeling-migrations/exercise-answers.md",
-      "sha256": "3a725abb27b5303626c6763f5cc7ccf94e9f73406b49efd35712db5d76d627bd"
+      "sha256": "a4d65eccabca1c96133adf8a2f72b1f0012a6ae2764689cd574aba801a982958"
     },
     {
-      "bytes": 1689,
+      "bytes": 2118,
       "mode": "0644",
       "path": "course-book/module-03-relational-modeling-migrations/exercises.md",
-      "sha256": "1e1392ec8e03045614e58c8529e66604257a5d62d97249d7659afa301798d95b"
+      "sha256": "408488e7c4854c084152206fd66957971d5f7e62d782f5bc5527767793da60c9"
     },
     {
-      "bytes": 25907,
+      "bytes": 27425,
       "mode": "0644",
       "path": "course-book/module-03-relational-modeling-migrations/index.md",
-      "sha256": "2aa72983f49435e68c55e51811d992cda84d6388739c2858fc50c91063b0a2f5"
+      "sha256": "bbbfe0f6028e3de94dd44fdaabe646604bf1a0a4b72731b23e8f26b19a00455d"
     },
     {
-      "bytes": 3469,
+      "bytes": 6947,
       "mode": "0644",
       "path": "course-book/module-03-relational-modeling-migrations/lab.md",
-      "sha256": "0c0810886bb96d41f272ce424eea8ddec3ad5502e8c3243181695edce317953e"
+      "sha256": "3f6a124c221c32be4974e94b4e44831575b50c3c67ab61bba0de1e8f8d69a44e"
     },
     {
-      "bytes": 1762,
+      "bytes": 2686,
       "mode": "0644",
       "path": "course-book/module-04-transactions-concurrency-idempotency/checkpoint.md",
-      "sha256": "be7c69a899b7dedc9734b28afa0ce3b515455d4926e0a84042edc90e1d0db315"
+      "sha256": "f87fea9187fca3ce1f531321011aa5cabf9f723b13cdeb17ea5bea085668e466"
     },
     {
-      "bytes": 3046,
+      "bytes": 8432,
       "mode": "0644",
       "path": "course-book/module-04-transactions-concurrency-idempotency/exercise-answers.md",
-      "sha256": "b84a21bbbe9e338beed5329098fab86fc467d4e871ee61af11b859f9fad9d2a5"
+      "sha256": "daaedc8f04b84d79e100133a503a75a152e65cb15868f1191a89ade0ad3b6ef1"
     },
     {
-      "bytes": 1676,
+      "bytes": 2106,
       "mode": "0644",
       "path": "course-book/module-04-transactions-concurrency-idempotency/exercises.md",
-      "sha256": "ddfee1c6167dfff9294d2d2727a42f5f81a21282b17de93e0b326128ae0bbc29"
+      "sha256": "faabd3591b5a4bc22accbc01096783830edeea5156f01ae3fc4c8d1bcba8cfc8"
     },
     {
-      "bytes": 25133,
+      "bytes": 26584,
       "mode": "0644",
       "path": "course-book/module-04-transactions-concurrency-idempotency/index.md",
-      "sha256": "8bda974ec8fa83550983bb8a4d8efc8e98828fd75d0f938cfb3c2a48ec7abce9"
+      "sha256": "52c3c41ebeb8d5b3b0970c54adb7e9497570ef8f47cb3a3cbdc6883862610248"
     },
     {
-      "bytes": 3433,
+      "bytes": 6958,
       "mode": "0644",
       "path": "course-book/module-04-transactions-concurrency-idempotency/lab.md",
-      "sha256": "d284e418042986ea26f1dda1469587f0e601211b9e2c12ea5b21cd6adcc26b64"
+      "sha256": "00f70e993b312f4a8dde2bea8dc1bd56c367248e4b59e6295208bceb23243180"
     },
     {
-      "bytes": 1709,
+      "bytes": 2606,
       "mode": "0644",
       "path": "course-book/module-05-query-pagination-authorization/checkpoint.md",
-      "sha256": "8de6011188d27310063f4980dcc7f74183bf1c17c2f0028a6a6e6bcc766f2775"
+      "sha256": "cf08d1b1dd2d2d77661cd50b0306f9eb73a86055295d3e325896d8190cc2cf62"
     },
     {
-      "bytes": 3990,
+      "bytes": 9143,
       "mode": "0644",
       "path": "course-book/module-05-query-pagination-authorization/exercise-answers.md",
-      "sha256": "42f4ebde8df7887b32d432419f054786b7ee31c78ee3f4b59e564a50876bf96c"
+      "sha256": "49f1b311701bacd0b8205e2fc387bd296bf6139be127f4a34c2f2ffcb6fda5f9"
     },
     {
-      "bytes": 1768,
+      "bytes": 2182,
       "mode": "0644",
       "path": "course-book/module-05-query-pagination-authorization/exercises.md",
-      "sha256": "dc0156e3061193fc2f645a00768fba53ff31a9a647f0ec63e75ea2a184e9651c"
+      "sha256": "a07c82402b4f5999744406a564a48fd8d0268172162ddb3c08d0c5fa820b2b18"
     },
     {
-      "bytes": 25359,
+      "bytes": 26741,
       "mode": "0644",
       "path": "course-book/module-05-query-pagination-authorization/index.md",
-      "sha256": "0eb0f12335fb23001fd92ed32c9049daf26d603e799fb611d04f91c805b8b73d"
+      "sha256": "7bce55da6dfae592a9dd626c1ff957e462b081fdbc75723854fc4a9812aa9d67"
     },
     {
-      "bytes": 3560,
+      "bytes": 7017,
       "mode": "0644",
       "path": "course-book/module-05-query-pagination-authorization/lab.md",
-      "sha256": "48eaff78c1bc915068e0865a5819e84af0b7d4df4f4ee5762a3ca61ceeae6576"
+      "sha256": "36763a1ea60ae3d9afaa0b88be0d7631e6b2b4e4b5ff3af783d6ad055c98a77b"
     },
     {
-      "bytes": 1690,
+      "bytes": 2487,
       "mode": "0644",
       "path": "course-book/module-06-durable-workers-recovery/checkpoint.md",
-      "sha256": "971f9f4da044051fb0f2cb4b79d3503a930d978dc291dc0cb3c556f253e3a14a"
+      "sha256": "f88214e5354de0eae5f5e4e5a34083d30a406eb3968ef14147549e70f4934215"
     },
     {
-      "bytes": 2892,
+      "bytes": 7982,
       "mode": "0644",
       "path": "course-book/module-06-durable-workers-recovery/exercise-answers.md",
-      "sha256": "99aa68f8254c84fc79920faf0ef03c936a355b4e15b2a305e9504d9326764b15"
+      "sha256": "0fd394f57829054b316578097286b064ad3633c415f0449e7cbad2914b9311a1"
     },
     {
-      "bytes": 1553,
+      "bytes": 1927,
       "mode": "0644",
       "path": "course-book/module-06-durable-workers-recovery/exercises.md",
-      "sha256": "c5edc2287a01b30b515c83475eb7521f75301b91a9bacab4413e5b08b97a708a"
+      "sha256": "5a786a4db53cabf4ec0147332422afc2ebe5322beb2624f30b1f8f7a3e6d2e12"
     },
     {
-      "bytes": 25377,
+      "bytes": 26761,
       "mode": "0644",
       "path": "course-book/module-06-durable-workers-recovery/index.md",
-      "sha256": "6fb9af939ed5dfb017257100d2ac4c162746d4996162cb89552e010cc4288e69"
+      "sha256": "6f83fae3c485412f911e1607df53653990af0165437715d99aa57f8161981f10"
     },
     {
-      "bytes": 3191,
+      "bytes": 6549,
       "mode": "0644",
       "path": "course-book/module-06-durable-workers-recovery/lab.md",
-      "sha256": "3d074b9a8f0674d518d1bb24605a3448939fe554edf7bb51c2585697167f2bd4"
+      "sha256": "cafffd7fa100ae6fb619d0a204cd5705c0432489a4a31b02331fa8c199ea0c9e"
     },
     {
-      "bytes": 1713,
+      "bytes": 2562,
       "mode": "0644",
       "path": "course-book/module-07-streaming-artifact-integrity/checkpoint.md",
-      "sha256": "6d30670dd96d82f74e33edf931fddef632597261dff44ac2d62836b01543308c"
+      "sha256": "152dfd7165ff0767d3af0d6ae344c68ca18b72fd7a5de9775ea18060b97c3b0d"
     },
     {
-      "bytes": 2882,
+      "bytes": 8256,
       "mode": "0644",
       "path": "course-book/module-07-streaming-artifact-integrity/exercise-answers.md",
-      "sha256": "d283671a04ad28d1cee9a763fb009ad41b5a73ac8f209aae39312aa93aaaf9b2"
+      "sha256": "526408a50ab8c0c7442cc3f6cd7cdaae33da14951293f1482b0e63a39a527a92"
     },
     {
-      "bytes": 1652,
+      "bytes": 2059,
       "mode": "0644",
       "path": "course-book/module-07-streaming-artifact-integrity/exercises.md",
-      "sha256": "dda7c985baba12cb1dfedcd83a4cf2c96a578f6ad4ff2f14418fd01c4ecf2c7b"
+      "sha256": "5dcf2b0e72ac3acf299787800733f13c94b04f0c15712a3b13385fa5ead016c2"
     },
     {
-      "bytes": 25529,
+      "bytes": 26851,
       "mode": "0644",
       "path": "course-book/module-07-streaming-artifact-integrity/index.md",
-      "sha256": "d13eef843fc7312be0289b0dd65b0b10bd0131acbfea11a06b8e54ba02c9b553"
+      "sha256": "6fea0119f4123f3e992b1f1f3a7cca019a7924b97c165371c89455d5575c724c"
     },
     {
-      "bytes": 3182,
+      "bytes": 6499,
       "mode": "0644",
       "path": "course-book/module-07-streaming-artifact-integrity/lab.md",
-      "sha256": "44af8ee7ce29ba65a02dce220e2a9d2f79ecb9bfcbba34d96b1eb83c93b952cd"
+      "sha256": "a3f6e5ea7dffd937c875a0f8e832ead07c4f9ddce9bab048cb30c00361850243"
     },
     {
-      "bytes": 1721,
+      "bytes": 2559,
       "mode": "0644",
       "path": "course-book/module-08-webhooks-transactional-outbox/checkpoint.md",
-      "sha256": "ec8f58bff324cba23945c9e1d44d16d58f057641f84282992e7b27efa05e2b1b"
+      "sha256": "71313b2e94bf888cbdcab568dd5d005ea3529271af439eb4d3f2302a085cac38"
     },
     {
-      "bytes": 2933,
+      "bytes": 8214,
       "mode": "0644",
       "path": "course-book/module-08-webhooks-transactional-outbox/exercise-answers.md",
-      "sha256": "c0fca7743fe35ed49ee6d40459e1e41057a9c5dd2a67cda9c8fc577e95612515"
+      "sha256": "b0d375366ab5d7152a9d9cb0d7721734049e0d4e71cb8c95066a98bbafcbdd26"
     },
     {
-      "bytes": 1657,
+      "bytes": 2053,
       "mode": "0644",
       "path": "course-book/module-08-webhooks-transactional-outbox/exercises.md",
-      "sha256": "8dc49ae741dbafc8f80ae3aa89232f4977635308e0a7935d2689c2d5570a5df9"
+      "sha256": "5891f56408ffa0294d227c7cdd4c1b8fbb7c7de4651cbe148d4f3ec8bece9d7c"
     },
     {
-      "bytes": 24816,
+      "bytes": 26299,
       "mode": "0644",
       "path": "course-book/module-08-webhooks-transactional-outbox/index.md",
-      "sha256": "09a364255d2733d7e78570ecc9b455dd2680328fde662209e774749f061a073c"
+      "sha256": "5dd8d0ce25404d1b64d709ce9d2012a5deba2f74ecdd4e50fbabcca34c2bbc4c"
     },
     {
-      "bytes": 3275,
+      "bytes": 6778,
       "mode": "0644",
       "path": "course-book/module-08-webhooks-transactional-outbox/lab.md",
-      "sha256": "7c98fd0c0dfb4524ed6dd44e62156ab1d35c65d3748832e7abb69af15a371760"
+      "sha256": "740b12ba16437301a1da8b87297fa47f697ef3d30a15bd002e0ae65906cf36d2"
     },
     {
-      "bytes": 1801,
+      "bytes": 2588,
       "mode": "0644",
       "path": "course-book/module-09-failure-proof-architecture/checkpoint.md",
-      "sha256": "2f92dadf6c37cb7acc89752bf3a4e755648786e22c86042ac48c24db3ae60dc4"
+      "sha256": "1b2e7967d5f5da39ebf63965ff99af8c48285d5d338485e3d3cdd42fbeb99734"
     },
     {
-      "bytes": 2694,
+      "bytes": 8116,
       "mode": "0644",
       "path": "course-book/module-09-failure-proof-architecture/exercise-answers.md",
-      "sha256": "810586fa572e3a2254369b0f2471e1098950f5244a875b1d3350843f1e319e36"
+      "sha256": "ad33cb6937e9a6eb9e6a2e4d72dc7a75639088708bcda87e30d026fa5f1531f4"
     },
     {
-      "bytes": 1592,
+      "bytes": 2005,
       "mode": "0644",
       "path": "course-book/module-09-failure-proof-architecture/exercises.md",
-      "sha256": "b674ec916732b50922eb7fd5b1b4630b5c2839464e2eec2709852d4120b607d8"
+      "sha256": "5fa6cf07f02d36c3b3154f17ab322d3f8eb422eb7f61a3cba21303e5b6ab1d6f"
     },
     {
-      "bytes": 24224,
+      "bytes": 25501,
       "mode": "0644",
       "path": "course-book/module-09-failure-proof-architecture/index.md",
-      "sha256": "cc9b3e2185d4cebbddbdeadd7405c07c771a11b6448c6d443c25f369b00001b6"
+      "sha256": "9e43393a7c3f130bdf5ad8eb9db1160dabf13e3f043fcefd3861a59e18d4f7f3"
     },
     {
-      "bytes": 3274,
+      "bytes": 6850,
       "mode": "0644",
       "path": "course-book/module-09-failure-proof-architecture/lab.md",
-      "sha256": "9033aeec8b537507e36c056518da0b108c2d8d39f279962213b63fc8a7ed36a2"
+      "sha256": "daf51f888003f9d69483ca0d7225f20c2be85da332ea35a401613c0e0fa3f0b3"
     },
     {
-      "bytes": 1729,
+      "bytes": 2561,
       "mode": "0644",
       "path": "course-book/module-10-lifecycle-compatible-release/checkpoint.md",
-      "sha256": "52f330ec5dcc094a3420373d623f2ee6a911c416e85ac06916d6de179e3f9bc9"
+      "sha256": "eec0378817f781f5355919375d9f6c7bf36d32127a6718c4d9aa91e289de877d"
     },
     {
-      "bytes": 3230,
+      "bytes": 8259,
       "mode": "0644",
       "path": "course-book/module-10-lifecycle-compatible-release/exercise-answers.md",
-      "sha256": "a5bee3704213b3d6d1476b808e40aa3bfdcae91c96f7a17c6af776b9535a8b63"
+      "sha256": "53c2efc0a6010cdd704c615b30184dffa044132ce4ee250adae9bfbc3bccbf10"
     },
     {
-      "bytes": 1700,
+      "bytes": 2104,
       "mode": "0644",
       "path": "course-book/module-10-lifecycle-compatible-release/exercises.md",
-      "sha256": "d84656631efe4d207d55032a504a3e9e5252bab39525b7fda5f758ea6e8121b5"
+      "sha256": "a4b8af24e6fb79f432d3efaad5be15df8c95400700900a4974922fab296f85ce"
     },
     {
-      "bytes": 26642,
+      "bytes": 28313,
       "mode": "0644",
       "path": "course-book/module-10-lifecycle-compatible-release/index.md",
-      "sha256": "b9ba648031172e2d49260b235dd2256b69562e47762c67aa2e7c739215b19458"
+      "sha256": "12269bfe51842036912c6533e9440b82ab96e04154898c0bb56a5c8a52cd7804"
     },
     {
-      "bytes": 3430,
+      "bytes": 7197,
       "mode": "0644",
       "path": "course-book/module-10-lifecycle-compatible-release/lab.md",
-      "sha256": "8a1e775aee03a0e560b13c71d72f4fafe2702531b6e51bb5015d0e300b0029f9"
+      "sha256": "29db98041290c381325f50266a9d59d3a37a008665ce856638afb39f2c3fa156"
     },
     {
-      "bytes": 2181,
+      "bytes": 1900,
       "mode": "0644",
       "path": "course-book/standards.md",
-      "sha256": "e32ba0cb46145d2def089c51c62f236411f7b21af89e4fc2697ee6e63012a614"
+      "sha256": "3c814752dbc007fec38b5de5ea224af80b0a8e528d3c5ac57de2c21d8c8380d2"
     },
     {
-      "bytes": 1983,
+      "bytes": 2445,
       "mode": "0644",
       "path": "course-book/start-here.md",
-      "sha256": "9d52de1518594072d030c9fdeb44ac2b10e4a4d3030db47959540ce9c6a69f49"
+      "sha256": "ab8eb0164fde8647b8582a0e47bd7d059d9c0a5e537ce14e32485c9365362812"
     },
     {
-      "bytes": 4420,
+      "bytes": 3604,
       "mode": "0644",
       "path": "course-book/study-plan.md",
-      "sha256": "d70675a45552616e474e2ecafeb55c832337ae49162c4042efd031253fab20db"
+      "sha256": "8f023f805de865f246ff76f2e206235600187996cc3028c0be98045b74fa0318"
     },
     {
-      "bytes": 1491,
+      "bytes": 8976,
       "mode": "0644",
       "path": "course.json",
-      "sha256": "efca416f7439dd4af54682bc640c8f4ade39166588af1db931f2646e87f11cf3"
+      "sha256": "1a5c428c40bf1529716bf3fd8ba5eafd4ced90124293d6a5d1b2fc4f1cba30da"
     },
     {
-      "bytes": 4447,
+      "bytes": 4668,
       "mode": "0644",
       "path": "mkdocs.yml",
-      "sha256": "b8952f7f62849260146b480f18e98e8a8f39d7add5e66d163f4a38f6a57d175a"
+      "sha256": "366008e278d90d9fd6d4ee058431da3b98723d60ef6fa0607e811f69babfbd8d"
     },
     {
       "bytes": 318,

@@ -1,6 +1,6 @@
-# Exercises — Graph Interface Placement and the Operation Lifecycle
+# Exercises — Module 01: Graph Interface Placement and the Operation Lifecycle
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Graph Interface Placement and the Operation Lifecycle**, every response must settle this question: **Where does GraphQL belong, and what happens between receiving a document and returning a response?** A complete response identifies the contract owner, predicts one observable failure, and names the evidence that decides the case; a definition by itself is incomplete.
 
 ## 1. Why is a graph edge not permission to join two private databases?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. When should a capability remain an HTTP endpoint rather than enter GraphQL?
-

@@ -1,60 +1,43 @@
 # Evidence Model
 
-## Claims need the right oracle
+## Claims require the right oracle
 
-The program distinguishes evidence by the property it can actually establish. A strong engineering explanation names the claim, the owner, the cheapest decisive oracle, and the remaining uncertainty.
+The program separates evidence classes because a green check at one layer cannot prove another layer.
 
-| Claim type | Decisive evidence | Common false substitute |
+| Evidence class | Establishes | Does not establish |
 |---|---|---|
-| Contract structure | standards-aware parse, reference resolution, schema fixtures | rendered documentation |
-| Provider conformance | provider-neutral live request/response observation | framework route existence |
-| Domain rule | deterministic pure test and state-transition counterexample | database constraint alone |
-| Durable effect | database/storage transaction evidence across restart and failure | log line or trace span |
-| Security decision | adversarial input and policy test at the enforcement boundary | authentication success or scanner output |
-| Operational diagnosis | bounded logs, metrics, and traces correlated with durable truth | telemetry treated as business authority |
-| Performance decision | comparable workload/environment identity, complete outcome populations, correctness oracle, repeated runs | one favorable latency number |
-| Event effect | source fact, outbox publication, delivery attempt, inbox/effect transaction, acknowledgement/replay evidence | broker publish success |
+| document and schema proof | parseability, references, examples, structural policy | live provider behavior |
+| provider-neutral protocol proof | observed request and response behavior | durable database outcomes |
+| pure domain proof | deterministic rules and state transitions | transaction or process behavior |
+| database and storage proof | committed constraints, locks, bytes, and recovery state | user-perceived availability |
+| adversarial security proof | a control rejects or constrains a threat case | absence of all vulnerabilities |
+| lifecycle and fault proof | startup, drain, restart, deadline, and recovery behavior | production-scale capacity |
+| telemetry proof | emitted diagnostic signals and propagation | authoritative business truth |
+| workload and benchmark proof | behavior under a declared comparable workload | unrelated environments or future scale |
+| broker and consumer proof | delivery attempts, deduplication, effects, and replay | all broker implementations |
+| network and distributed proof | remote-call, partial-failure, and ownership behavior | operated multi-region reliability |
+| governance proof | evidence-backed publication and lifecycle decisions | organizational adoption by itself |
 
-## Evidence classes
+## Evidence record
 
-Reports should state whether evidence is:
+Every serious report should name:
 
-- **deterministic** — pure logic, parsing, fixtures, canonicalization, or static release rules;
-- **local-process** — a real process without representative external dependencies;
-- **live-dependency** — PostgreSQL, broker, network, or filesystem behavior in a controlled environment;
-- **representative** — workload and topology close enough to support a bounded operational claim;
-- **operated** — sustained evidence from a real service context.
+```text
+claim
+owner
+version
+input or workload identity
+environment identity
+oracle
+result
+known exclusions
+retained artifact
+```
 
-A lower evidence class is not worthless. It becomes misleading only when presented as a stronger class.
+## Negative evidence
 
-## The falsification-first loop
+A proof is stronger when a planted defect demonstrates sensitivity. Every course includes defects or incompatible candidates that should fail before a valid candidate passes. A test suite that never rejects anything is not a trustworthy release gate.
 
-For each lab:
+## Environment boundary
 
-1. state the guarantee;
-2. plant one controlled defect or pressure condition;
-3. predict the first oracle that should fail;
-4. capture the smallest failing observation;
-5. repair the mechanism, not merely the assertion;
-6. retain a regression;
-7. rerun broader proof;
-8. record what remains untested.
-
-This loop prevents “green test” reasoning. A proof that has never been shown to reject the named defect may be checking the wrong property.
-
-## Negative claims
-
-Some of the most important statements are negative:
-
-- a valid OpenAPI document does not prove runtime conformance;
-- a trace does not prove a transaction committed;
-- an API key does not establish resource ownership;
-- a benchmark does not establish production capacity unless the environment and workload justify that claim;
-- at-least-once delivery does not guarantee duplicate business effects;
-- a dependency-light audit does not establish live PostgreSQL or broker behavior.
-
-The course checkpoints require these limits because honest boundaries are part of professional competence.
-
-## Evidence retention
-
-Retain small, reviewable artifacts: request/response transcripts, failing fixtures, transaction rows, minimized hostile vectors, trace IDs, metric snapshots, benchmark envelopes, query plans, replay reports, and release decisions. Do not retain secrets, full sensitive payloads, uncontrolled logs, or generated bulk that another reader cannot interpret.
+When a required environment is missing, report `not-executed`. Do not substitute an in-memory simulator for a live transaction claim, a local broker for operated retention, or a laptop benchmark for production capacity.

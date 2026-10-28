@@ -1,5 +1,7 @@
 # Exercises — Module 01: Application Use Cases and Boundaries
 
+Work through all twelve problems before opening the answers. In **Application Use Cases and Boundaries**, every response must settle this question: **How does a public operation become an application use case without letting the framework own the system?** A complete response identifies the contract owner, predicts one observable failure, and names the evidence that decides the case; a definition by itself is incomplete.
+
 ## 1. Explain why the OpenAPI contract is an input to this course rather than an output.
 
 ## 2. Draw the ownership path for `createProject`. Where may HTTP status `201` be selected?

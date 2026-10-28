@@ -1,12 +1,14 @@
 # Module 07 — Secrets, Cryptography, and Sensitive Data
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** How should secrets, cryptographic keys, sensitive fields, logs, retention, and audit evidence be handled?
 
 ## Where this module fits
 
-Create secret-provider, key-version, redaction, pseudonymization, retention, and audit boundaries. You arrive from Module 06 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **Abuse Resistance and Resource Budgets**.
+Module 06 produced **Implement destination policy, address classification, peer verification, exact-byte signatures, freshness, rotation, and replay defense**. This module extends that result by asking: **How should secrets, cryptographic keys, sensitive fields, logs, retention, and audit evidence be handled?**
+
+The new capstone increment is **Add secret-provider boundaries, non-rendering values, redaction, pseudonymization, rotation, and privacy-bounded audit records**. It becomes the prerequisite for **Abuse Resistance and Resource Budgets**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Create secret-provider, key-version, redaction, pseudonymization, retention, and
 - Redact nested structures and embedded credentials.
 - Minimize, retain, and delete sensitive data deliberately.
 
-## Capstone result
+## Capstone increment
 
 Add secret-provider boundaries, non-rendering values, redaction, pseudonymization, rotation, and privacy-bounded audit records.
-
-Secrets become non-rendering values, audit records are privacy-bounded, and key rotation is testable.
 
 ## Core security model
 
@@ -89,32 +89,32 @@ Run only against course fixtures. The goal is to understand control boundaries, 
 
 A failed request prints a settings object whose default representation includes database and webhook credentials.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Secrets, Cryptography, and Sensitive Data** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 2 — Key reuse
 
 The same HMAC key signs webhooks and pseudonymizes users, coupling compromise and enabling cross-domain analysis.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Secrets, Cryptography, and Sensitive Data** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 3 — Log injection and leakage
 
 Hostile input creates fake multiline audit entries or embeds bearer tokens in error details.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Secrets, Cryptography, and Sensitive Data** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 4 — Incomplete redaction
 
 Top-level `token` is removed but nested authorization headers, URL credentials, or exception messages remain.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Secrets, Cryptography, and Sensitive Data** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 5 — Rotation outage
 
 A producer switches keys before receivers know the new key, or removes the old verifier before in-flight deliveries finish.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Secrets, Cryptography, and Sensitive Data** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 6 — False audit immutability
 
 A local hash chain is called immutable even though an attacker who can rewrite the log can recompute the chain.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Secrets, Cryptography, and Sensitive Data** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 
 ### Prioritization
 
@@ -140,27 +140,27 @@ Represent secrets as classes with private fields, `toString()` redaction, and no
 
 ### 1. Using one master secret for every purpose.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Secrets, Cryptography, and Sensitive Data** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 2. Passing raw secret strings through domain objects and exceptions.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Secrets, Cryptography, and Sensitive Data** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 3. Redacting only keys named exactly `password`.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Secrets, Cryptography, and Sensitive Data** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 4. Hashing low-entropy identifiers without a key and calling them anonymous.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Secrets, Cryptography, and Sensitive Data** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 5. Rotating a verifier with no overlap or version identifier.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Secrets, Cryptography, and Sensitive Data** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 6. Claiming local hash chaining prevents a privileged attacker from rewriting history.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Secrets, Cryptography, and Sensitive Data** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ## What you add to the capstone
 
@@ -278,8 +278,10 @@ Compare the two tracks by this invariant: **secrets never render, keys are separ
 
 ## Module synthesis
 
-The module answer to “How do we use cryptographic mechanisms without exposing keys, inventing protocols, or leaking sensitive data through diagnostics?” is now executable in the capstone: Secrets become non-rendering values, audit records are privacy-bounded, and key rotation is testable.
+You are ready to leave this module when you can **Distinguish hashing, HMAC, encryption, and password hashing, Keep secret values out of representation and logs, and Rotate signing and verification keys with overlap** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Secrets, Cryptography, and Sensitive Data in a temporary branch** and requiring the following oracle: **secret-provider boundary; non-rendering values; purpose-separated keys; explicit algorithm profiles.**
+
+The cumulative platform now includes **Add secret-provider boundaries, non-rendering values, redaction, pseudonymization, rotation, and privacy-bounded audit records**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 08, [Abuse Resistance and Resource Budgets](../module-08-abuse-resistance-and-resource-budgets/index.md), asks: *How does the API keep expensive operations bounded when valid-looking clients consume resources aggressively?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Abuse Resistance and Resource Budgets](../module-08-abuse-resistance-and-resource-budgets/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

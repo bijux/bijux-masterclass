@@ -1,26 +1,27 @@
-# Distribution Economics, Boundary Evidence, and Architecture Fitness Functions
+# Module 01 — Distribution Economics, Boundary Evidence, and Architecture Fitness Functions
 
-**Module 01 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** When does a remote service boundary create more value than the coordination, latency, failure, and operational costs it introduces?
+> **Central question:** When does a remote service boundary create more value than the coordination, latency, failure, and operational costs it introduces?
 
-## Place in the program
+## Where this module fits
 
-Course 7 introduced typed internal RPC but deliberately refused to equate a remote method with an independently owned service. Course 8 now uses ownership, data, failure, release, and operational evidence to decide which capabilities deserve distribution.
+Course 8 begins from this incoming boundary: **The Course 7 platform with governed HTTP, event, and RPC interfaces and migration history through 015.**
+
+This module establishes the course’s first new responsibility by asking: **When does a remote service boundary create more value than the coordination, latency, failure, and operational costs it introduces?** Its capstone increment is **Publish a measured boundary scorecard that approves Notification Delivery for first extraction, approves Artifact Delivery conditionally, keeps Analysis Control cohesive, and rejects table-shaped services**. That result is required before **Service Boundaries, Bounded Contexts, and Contract Ownership** can be studied honestly.
 
 ## Learning outcomes
 
-- treat distribution as an economic and organizational decision rather than a maturity badge
-- compare modular-monolith and service extraction options using change, scale, failure, security, and ownership evidence
-- define architecture fitness functions that can reject an attractive but harmful decomposition
-- distinguish independently deployable process boundaries from independently owned business services
-- calculate the synchronous latency and availability cost of proposed remote edges
-- write an architecture decision that includes reversal criteria and residual risk
+- Treat distribution as an economic and organizational decision rather than a maturity badge.
+- Compare modular-monolith and service extraction options using change, scale, failure, security, and ownership evidence.
+- Define architecture fitness functions that can reject an attractive but harmful decomposition.
+- Distinguish independently deployable process boundaries from independently owned business services.
+- Calculate the synchronous latency and availability cost of proposed remote edges.
+- Write an architecture decision that includes reversal criteria and residual risk.
 
-## Capstone result
+## Capstone increment
 
 Publish a measured boundary scorecard that approves Notification Delivery for first extraction, approves Artifact Delivery conditionally, keeps Analysis Control cohesive, and rejects table-shaped services.
-
 
 ## Distribution is an exchange, not an upgrade
 
@@ -159,6 +160,7 @@ The reference tracks represent candidates as explicit data and run the same deci
 ## Evidence required before Module 2
 
 The boundary scorecard must approve Notification Delivery, conditionally approve Artifact Delivery, keep Analysis Control, classify Worker Plane correctly, and reject table services. More importantly, you must defend one rejection with the same rigor as one approval.
+
 ## Worked architecture review: why Notification crosses the boundary first
 
 A boundary review should begin with the current transaction and failure model, not with a proposed service diagram. In the Course 7 baseline, run completion and notification delivery are already separated by a durable event. Analysis Control commits the terminal run state and the corresponding event record under one authority. Delivery can happen later, can be retried, and can fail without changing whether the analysis completed. That existing temporal seam is the strongest extraction evidence in the system.
@@ -313,3 +315,13 @@ Consider a Dataset Service extracted because datasets are a prominent noun. It o
 The split adds synchronous depth, duplicates authorization context, and moves no independent business decision. Dataset lifecycle changes still coordinate with project and run rules. The service is a remote table gateway. The correct response is not to add caching or a service mesh; it is to reject the boundary.
 
 This example establishes the central discipline of Course 8: **the first microservice skill is the ability not to create a microservice.**
+
+## Module synthesis
+
+You are ready to leave this module when you can **treat distribution as an economic and organizational decision rather than a maturity badge, compare modular-monolith and service extraction options using change, scale, failure, security, and ownership evidence, and define architecture fitness functions that can reject an attractive but harmful decomposition** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Reject Project Service, Dataset Table Service, and Idempotency Service with concrete failure paths** and requiring the following oracle: **Every approved service has one owner, autonomous writes or an explicitly non-data role, independent value, acceptable coordination cost, and reversal criteria. At least three attractive but harmful services are rejected.**
+
+The cumulative platform now includes **Publish a measured boundary scorecard that approves Notification Delivery for first extraction, approves Artifact Delivery conditionally, keeps Analysis Control cohesive, and rejects table-shaped services**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Service Boundaries, Bounded Contexts, and Contract Ownership](../module-02-service-boundaries-and-contract-ownership/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

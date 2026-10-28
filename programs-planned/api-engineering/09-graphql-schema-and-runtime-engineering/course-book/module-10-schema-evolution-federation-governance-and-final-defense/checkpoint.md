@@ -1,12 +1,33 @@
-# Checkpoint 10 — Schema Evolution, Federation, Governance, and Final Defense
+# Checkpoint — Module 10: Schema Evolution, Federation, Governance, and Final Defense
 
-Do not continue until every condition is supported by executable or inspected evidence.
+## Required result
 
-- [ ] All ten active operations validate against the candidate schema and retain their declared budget and policy outcomes.
-- [ ] Removing fields, adding required inputs, weakening output guarantees, and introducing unbounded lists are rejected.
-- [ ] Enum or union expansion is classified as review-required when supported clients may use exhaustive handling.
-- [ ] Federation examples preserve service ownership and do not authorize cross-service database joins or gateway-owned facts.
-- [ ] The released schema, operation registry, client catalogue, ownership map, budget policy, and evidence summary agree.
-- [ ] The Course 10 handoff verifies exactly and contains no secrets, private database schema, generated cache, or unsupported production claim.
+Approve Graph API 1.0, reject breaking candidates, and publish Course 10 handoff.
 
-**Gate:** run `make module-10-proof`. A green command without the lab report and the listed evidence does not count.
+## Demonstrate
+
+- [ ] Classify schema evolution by client direction.
+- [ ] Govern field ownership.
+- [ ] Evaluate federation without cargo culting.
+- [ ] Run an operation-aware release gate.
+- [ ] Publish a sanitized platform handoff.
+
+## Commands
+
+```bash
+make core-proof
+```
+
+## Evidence to retain
+
+Create `reports/module-10-release.json`, `capstone/final-defense/defense-record.json`, and the Course 10 handoff manifest. The release report includes tool versions, schema digest, operation population, change classification, policy deltas, runtime scenarios, decision, approvers by role, and residual risks.
+
+## Defend the design
+
+1. Answer the central question in one paragraph: How does the graph evolve without breaking clients, erasing service ownership, or becoming an ungoverned platform?
+2. Name the authoritative owner and smallest counterexample.
+3. State what the available evidence does not prove.
+
+## Continue only when
+
+Continue only after you can demonstrate the **Schema Evolution, Federation, Governance, and Final Defense** increment, preserve the controlled counterexample as a regression, keep inherited checkpoints green, and explain which stronger claim remains outside the evidence you collected.

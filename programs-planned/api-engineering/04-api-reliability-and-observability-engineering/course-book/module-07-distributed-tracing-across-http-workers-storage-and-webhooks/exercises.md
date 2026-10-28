@@ -1,5 +1,7 @@
 # Exercises — Module 07: Distributed Tracing Across Asynchronous Work
 
+Work through all twelve problems before opening the answers. In **Distributed Tracing Across Asynchronous Work**, every response must settle this question: **How does trace context cross HTTP, queues, workers, storage, retries, and webhooks without inventing false parentage?** Each solution must survive delay, duplication, version skew, hostile input, or partial failure where relevant; happy-path intuition alone earns no credit.
+
 ## 1. Why should a durable worker usually not be a direct child of the request span?
 
 ## 2. Where should trace context be stored for a job?

@@ -1,12 +1,33 @@
-# Checkpoint 02 — Type System, Nullability, and Semantic Modeling
+# Checkpoint — Module 02: Type System, Nullability, and Semantic Modeling
 
-Do not continue until every condition is supported by executable or inspected evidence.
+## Required result
 
-- [ ] Every schema field has a deliberate nullability decision tied to a real source guarantee.
-- [ ] OneOf input coercion accepts exactly one non-null member and rejects zero, multiple, or null members.
-- [ ] Enums, interfaces, unions, custom scalars, and input objects are used for semantic reasons rather than cosmetic grouping.
-- [ ] Controlled resolver failures demonstrate the intended null-bubbling boundary.
-- [ ] The schema contains no output field whose non-null promise is stronger than the underlying service can sustain.
-- [ ] Lab 02 report includes accepted and rejected coercion cases plus the response position affected by failure.
+Release Analysis Graph API 1.0 type and nullability policies.
 
-**Gate:** run `make module-02-proof`. A green command without the lab report and the listed evidence does not count.
+## Demonstrate
+
+- [ ] Design types around client concepts.
+- [ ] Choose nullability from failure guarantees.
+- [ ] Model lists, interfaces, unions, enums, scalars, and inputs.
+- [ ] Apply oneof input semantics.
+- [ ] Detect schema promises the runtime cannot keep.
+
+## Commands
+
+```bash
+make core-proof
+```
+
+## Evidence to retain
+
+Create `reports/module-02-type-nullability.json` containing the released and scratch type declarations, completed data trees, error paths, bubble targets, and OneOf coercion table. Include a short design decision explaining why the released nullability is sustainable across authorization and source failure.
+
+## Defend the design
+
+1. Answer the central question in one paragraph: How does the schema make useful promises without promising values the runtime cannot sustain?
+2. Name the authoritative owner and smallest counterexample.
+3. State what the available evidence does not prove.
+
+## Continue only when
+
+Continue only after you can demonstrate the **Type System, Nullability, and Semantic Modeling** increment, preserve the controlled counterexample as a regression, keep inherited checkpoints green, and explain which stronger claim remains outside the evidence you collected.

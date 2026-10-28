@@ -1,12 +1,14 @@
 # Module 03 — Authentication and Token Validation
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** How should a resource server validate bearer tokens and API keys without trusting convenient claims?
 
 ## Where this module fits
 
-Validate bearer tokens and API keys against explicit issuer, audience, algorithm, lifetime, key, and revocation policy. You arrive from Module 02 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **Authorization and Policy Enforcement**.
+Module 02 produced **Establish host, forwarding, media-type, strict-JSON, body-size, and canonicalization rules before model validation**. This module extends that result by asking: **How should a resource server validate bearer tokens and API keys without trusting convenient claims?**
+
+The new capstone increment is **Implement issuer, audience, algorithm, key, lifetime, revocation, subject, tenant, and scope validation**. It becomes the prerequisite for **Authorization and Policy Enforcement**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Validate bearer tokens and API keys against explicit issuer, audience, algorithm
 - Handle key rotation and unknown key identifiers safely.
 - Store API-key digests rather than reusable keys.
 
-## Capstone result
+## Capstone increment
 
 Implement issuer, audience, algorithm, key, lifetime, revocation, subject, tenant, and scope validation.
-
-Fixture credentials are replaced by a deterministic but realistic resource-server validation boundary.
 
 ## Core security model
 
@@ -113,7 +113,6 @@ Claims are parsed to make an authorization decision before signature validation.
 
 A bearer token and API key are supplied together and different middleware selects different identities.
 
-
 ## Python implementation
 
 Use PyJWT only through a narrow validator that supplies allowed algorithms, key selected from a trusted JWKS, expected issuer/audience, and required claims. Inject `Clock`, `JwkProvider`, and `RevocationStore`. Convert library exceptions into a small internal credential-error vocabulary.
@@ -142,7 +141,6 @@ For each pattern, explain why it can look reasonable, construct the smallest cou
 
 
 ### 6. Keeping fixture private keys in public handoff artifacts.
-
 
 ## What you add to the capstone
 
@@ -231,7 +229,8 @@ def validate_access_token(
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/security/tokens.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 import type { Principal } from "./models.js";
 import { parseStrictJson } from "./strict-json.js";
 
@@ -308,8 +307,10 @@ Compare the two tracks by this invariant: **algorithm, key, type, issuer, audien
 
 ## Module synthesis
 
-The module answer to “How does a resource server establish one unambiguous caller identity from an untrusted credential?” is now executable in the capstone: Fixture credentials are replaced by a deterministic but realistic resource-server validation boundary.
+You are ready to leave this module when you can **Accept exactly one credential mechanism, Select accepted JWT algorithms from server configuration, and Validate signature, type, issuer, audience, time, subject, tenant, scopes, and token ID** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control and prove the predicted oracle fails** and requiring the following oracle: **Accept exactly one credential mechanism; Select accepted JWT algorithms from server configuration; Validate signature, type, issuer, audience, time, subject, tenant, scopes, and token ID; Handle key rotation and unknown key identifiers safely.**
+
+The cumulative platform now includes **Implement issuer, audience, algorithm, key, lifetime, revocation, subject, tenant, and scope validation**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 04, [Authorization and Policy Enforcement](../module-04-authorization-and-policy-enforcement/index.md), asks: *After identity is known, which exact action on which exact resource is allowed, and where is that decision enforced?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Authorization and Policy Enforcement](../module-04-authorization-and-policy-enforcement/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

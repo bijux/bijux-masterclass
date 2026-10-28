@@ -1,51 +1,29 @@
 # Module 04 — Transactional Publication, Inbox Deduplication, and Exactly-Once Effects
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** How do producers avoid dual writes and consumers obtain exactly-once effects on top of at-least-once delivery?
 
 ## Where this module fits
 
-Module 03 made the hardest duplicate visible: a consumer commits its effect, crashes before acknowledgement,
-and receives the same broker record again. It also exposed the producer-side dual write: domain state can
-commit while publication fails, or publication can succeed while the domain transaction rolls back.
+Module 03 produced **Implement deterministic delivery attempts, partition order, group independence, acknowledgement expiry, negative acknowledgement, and redelivery**. This module extends that result by asking: **How do producers avoid dual writes and consumers obtain exactly-once effects on top of at-least-once delivery?**
 
-Distributed transactions across application databases, brokers, email providers, object stores, and
-third-party APIs are usually unavailable or operationally inappropriate. The practical design is to move
-each boundary into one local transaction and make the bridge retryable. The producer writes domain state
-and an outbox record atomically. A relay repeatedly publishes unsent rows. The consumer records inbox
-identity and business effect atomically. Acknowledgement occurs after that local transaction.
-
-This pattern does not create exactly-once delivery. The relay may publish the same outbox row more than once,
-and the broker may redeliver. It creates **exactly-once committed effects within a declared effect store**
-when deduplication identity, transaction isolation, and side-effect boundaries are correct. External calls
-require their own idempotency or another outbox.
-
-## Capstone result
-
-Implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects.
-
-Extend the Analysis Events capstone with a producer transaction, outbox relay, consumer inbox, and
-projection transaction. Reproduce both critical crash windows:
-
-```text
-domain commit → relay publish → relay mark-published
-consumer effect commit → broker acknowledgement
-```
-
-Demonstrate that one logical run-completion effect is committed even when the message is published or
-delivered more than once.
+The new capstone increment is **Implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects**. It becomes the prerequisite for **Schema Evolution, Compatibility, Replay, and Historical Truth**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- explain the producer dual-write problem and why ordinary exception handling cannot close it
-- design an outbox row with stable event identity, payload bytes, state, attempts, and leasing
-- separate broker acceptance from outbox publication completion
-- make relay retries safe under crash after broker acceptance
-- design an inbox uniqueness key from event and effect identity
-- commit inbox state and projection/effect in one local transaction
-- distinguish one handler invocation, one message delivery, and one committed business effect
-- extend idempotency across external side effects using a downstream key or another outbox
+- Explain the producer dual-write problem and why ordinary exception handling cannot close it.
+- Design an outbox row with stable event identity, payload bytes, state, attempts, and leasing.
+- Separate broker acceptance from outbox publication completion.
+- Make relay retries safe under crash after broker acceptance.
+- Design an inbox uniqueness key from event and effect identity.
+- Commit inbox state and projection/effect in one local transaction.
+- Distinguish one handler invocation, one message delivery, and one committed business effect.
+- Extend idempotency across external side effects using a downstream key or another outbox.
+
+## Capstone increment
+
+Implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects.
 
 ## Core event model
 
@@ -271,11 +249,10 @@ or inbox transaction.
 
 ## Module synthesis
 
-Implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects. The central distinction is this: how do producers avoid dual writes and consumers obtain exactly-once effects on top of at-least-once delivery? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **explain the producer dual-write problem and why ordinary exception handling cannot close it, design an outbox row with stable event identity, payload bytes, state, attempts, and leasing, and separate broker acceptance from outbox publication completion** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant an inbox-before-effect defect and require its proof to fail** and requiring the following oracle: **The authoritative state and outbox are atomic, relay recovery may duplicate publication, each logical consumer/effect commits exactly one projection update, and independent effects each run once. The planted non-atomic consumer must demonstrate a missing or duplicated effect.**
+
+The cumulative platform now includes **Implement transactional outbox publication, inbox deduplication, effect-version identity, and atomic consumer effects**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Durable publication and one committed effect solve the immediate duplicate windows. They do not guarantee
-that an event schema will remain intelligible after producers and consumers evolve independently. Module 05
-treats historical events as long-lived public data: compatibility direction, semantic changes, versioning,
-upcasting, bounded replay, and release gates.
+Continue to [Schema Evolution, Compatibility, Replay, and Historical Truth](../module-05-evolution-replay-and-historical-truth/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

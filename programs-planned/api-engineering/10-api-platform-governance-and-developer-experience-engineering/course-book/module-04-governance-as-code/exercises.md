@@ -1,6 +1,6 @@
-# Exercises — Governance as Code, Evidence, Scorecards, and Exceptions
+# Exercises — Module 04: Governance as Code, Evidence, Scorecards, and Exceptions
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Governance as Code, Evidence, Scorecards, and Exceptions**, every response must settle this question: **How can governance scale without becoming either a rubber stamp or a centralized release bottleneck?** For every answer, separate the authoritative boundary from convenient diagnostics, then explain which failing experiment would force you to revise the design.
 
 ## 1. Why should governance rules produce pass, review, or fail rather than one score?
 

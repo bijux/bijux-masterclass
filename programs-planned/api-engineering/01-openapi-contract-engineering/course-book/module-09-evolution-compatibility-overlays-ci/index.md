@@ -1,12 +1,14 @@
 # Module 09 — Evolution, Compatibility, and Audience Views
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How can a published API evolve without silently breaking request writers or response readers?
 
 ## Where this module fits
 
-Classify request-side and response-side changes, gate releases, and derive public and partner views without copying the contract. You arrive from Module 08 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **OpenAPI 3.2, Streaming, Webhooks, and Workflows**.
+Module 08 produced **Describe API-key and OAuth-style schemes, scopes, anonymous overrides, and documented security failures**. This module extends that result by asking: **How can a published API evolve without silently breaking request writers or response readers?**
+
+The new capstone increment is **Create compatible and rejected release candidates, compatibility gates, and public/partner audience views**. It becomes the prerequisite for **OpenAPI 3.2, Streaming, Webhooks, and Workflows**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Classify request-side and response-side changes, gate releases, and derive publi
 - Apply Overlay documents deterministically.
 - Block incompatible minor releases in CI.
 
-## Capstone result
+## Capstone increment
 
 Create compatible and rejected release candidates, compatibility gates, and public/partner audience views.
-
-API 1.1 is released, a breaking candidate is rejected, and public/partner views are derived from the canonical contract.
 
 ## Core model
 
@@ -352,11 +352,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The Compatibility, Releases, Overlay, and CI checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “How can a published API change without silently breaking existing consumers?” is now executable in the capstone: API 1.1 is released, a breaking candidate is rejected, and public/partner views are derived from the canonical contract.
+You are ready to leave this module when you can **Analyze compatibility in the correct message direction, Treat requiredness, enums, media types, statuses, and operation IDs as consumer commitments, and Design deprecation and major-version migration** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **v1.1 is classified non-breaking under stated policy; attempted v1.2 fails for all planted defects; v2.0 needs migration and approval evidence; release bundles reproduce exact digests.**
+
+The cumulative platform now includes **Create compatible and rejected release candidates, compatibility gates, and public/partner audience views**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 10, [OpenAPI 3.2, Streaming, Webhooks, and Workflows](../module-10-openapi-32-workflows-advanced/index.md), asks: *How do we use current OpenAPI capabilities without claiming that every tool supports them equally?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [OpenAPI 3.2, Streaming, Webhooks, and Workflows](../module-10-openapi-32-workflows-advanced/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

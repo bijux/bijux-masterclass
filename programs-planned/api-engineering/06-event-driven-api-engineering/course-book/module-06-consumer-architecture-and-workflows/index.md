@@ -1,53 +1,29 @@
 # Module 06 — Consumer Architecture and Asynchronous Workflows
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** How do idempotent consumers, projections, and process managers coordinate asynchronous workflows without hidden synchronous coupling?
 
 ## Where this module fits
 
-A consumer is not a callback attached to a topic. It is an application with an owner, accepted message
-versions, durable state, transaction boundaries, deadlines, retry policy, observability, release process,
-and recovery procedure. Treating handlers as anonymous functions produces systems that are easy to start
-and difficult to operate.
+Module 05 produced **Classify compatibility, add upcasters, preserve source bytes, define retention, and run bounded dry-run replay**. This module extends that result by asking: **How do idempotent consumers, projections, and process managers coordinate asynchronous workflows without hidden synchronous coupling?**
 
-Some consumers build projections. Some create one external effect. Some coordinate a long-running process
-across several facts and commands. Those responsibilities should not be collapsed. A projection can usually
-rebuild from history with side effects disabled. A notification consumer cannot “rebuild” sent emails. A
-process manager owns workflow state and emits commands; it must not pretend that commands succeeded until
-corresponding facts arrive.
-
-This module also resolves the false choice between orchestration and choreography. Pure choreography can
-hide the business process in subscriptions spread across teams. Central orchestration can become a
-controlling distributed monolith. The right design assigns one owner to a process that genuinely requires
-coordination while allowing independent reactions to facts that do not belong in that process.
-
-## Capstone result
-
-Build notification, analytics, audit, and orchestration consumers with stable derived-command identities and explicit state.
-
-Implement three independent consumers and one process manager:
-
-```text
-notification-v1   → one outbound notification intent per completed run
-analytics-v1      → replayable completion/failure projection
-audit-v1          → append-only safe audit projection
-run-process-v1    → requested → started → completed/failed workflow state
-```
-
-Each consumer has a catalogue entry, group identity, accepted types, effect version, ordering requirement,
-retry/dead-letter policy, replay mode, and owner.
+The new capstone increment is **Build notification, analytics, audit, and orchestration consumers with stable derived-command identities and explicit state**. It becomes the prerequisite for **Event-Time Stream Processing, Windows, Watermarks, and Corrections**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- treat a consumer as a versioned application rather than a handler function
-- separate projections, external effects, and process coordination
-- choose orchestration, choreography, or a hybrid from ownership and failure needs
-- model process-manager transitions idempotently from facts
-- emit commands without assuming that the requested action succeeded
-- use correlation and causation to reconstruct asynchronous workflows
-- handle out-of-order facts without inventing global broker order
-- define timeouts and compensations as explicit process decisions
+- Treat a consumer as a versioned application rather than a handler function.
+- Separate projections, external effects, and process coordination.
+- Choose orchestration, choreography, or a hybrid from ownership and failure needs.
+- Model process-manager transitions idempotently from facts.
+- Emit commands without assuming that the requested action succeeded.
+- Use correlation and causation to reconstruct asynchronous workflows.
+- Handle out-of-order facts without inventing global broker order.
+- Define timeouts and compensations as explicit process decisions.
+
+## Capstone increment
+
+Build notification, analytics, audit, and orchestration consumers with stable derived-command identities and explicit state.
 
 ## Core event model
 
@@ -258,10 +234,10 @@ an event was delayed.
 
 ## Module synthesis
 
-Build notification, analytics, audit, and orchestration consumers with stable derived-command identities and explicit state. The central distinction is this: how do idempotent consumers, projections, and process managers coordinate asynchronous workflows without hidden synchronous coupling? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **treat a consumer as a versioned application rather than a handler function, separate projections, external effects, and process coordination, and choose orchestration, choreography, or a hybrid from ownership and failure needs** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a defect that advances to running immediately after command publication and show the state-machine proof rejects it** and requiring the following oracle: **Each consumer owns one effect and group. Duplicate facts do not repeat effects. Command publication leaves the process in start-requested. Only authoritative facts advance state. Stale timer is a no-op with evidence. Out-of-order artifact data does not invent run completion. No replay path sends an external notification.**
+
+The cumulative platform now includes **Build notification, analytics, audit, and orchestration consumers with stable derived-command identities and explicit state**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Consumer architecture explains who processes facts, but continuous analytics introduces another time model.
-Module 07 distinguishes event time from processing time, defines windows and watermarks, handles late data
-and corrections, and makes stream-state replay deterministic.
+Continue to [Event-Time Stream Processing, Windows, Watermarks, and Corrections](../module-07-event-time-stream-processing/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

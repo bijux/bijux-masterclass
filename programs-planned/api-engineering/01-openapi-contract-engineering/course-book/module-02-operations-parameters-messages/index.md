@@ -1,12 +1,14 @@
 # Module 02 — Operations, Parameters, and Messages
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How are parameters, request bodies, media types, status codes, and headers modeled without ambiguity?
 
 ## Where this module fits
 
-Complete project and dataset operations, including parameter location, serialization, media types, headers, and error responses. You arrive from Module 01 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **JSON Schema Contract Modeling**.
+Module 01 produced **Establish health and project operations as raw messages, OpenAPI operations, and equivalent provider behavior**. This module extends that result by asking: **How are parameters, request bodies, media types, status codes, and headers modeled without ambiguity?**
+
+The new capstone increment is **Complete project and dataset messages, including pagination inputs, creation responses, and problem representations**. It becomes the prerequisite for **JSON Schema Contract Modeling**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Complete project and dataset operations, including parameter location, serializa
 - Choose stable operation identifiers.
 - Validate examples against their schemas.
 
-## Capstone result
+## Capstone increment
 
 Complete project and dataset messages, including pagination inputs, creation responses, and problem representations.
-
-Projects and datasets now have complete create, list, retrieve, update, and delete message contracts.
 
 ## Core model
 
@@ -360,11 +360,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The Operations, Parameters, and HTTP Messages checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “How do we specify every input and output precisely enough that independent clients serialize the same exchange?” is now executable in the capstone: Projects and datasets now have complete create, list, retrieve, update, and delete message contracts.
+You are ready to leave this module when you can **Model path, query, header, cookie, and body input deliberately, Use request bodies and media types correctly, and Describe response codes, headers, and representations as a complete outcome** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a body on one 204 response, demonstrate the failing raw-byte assertion, then repair it** and requiring the following oracle: **every value has one intentional wire location; serialization has literal examples; 201 includes Location; 204 carries no content.**
+
+The cumulative platform now includes **Complete project and dataset messages, including pagination inputs, creation responses, and problem representations**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 03, [JSON Schema Contract Modeling](../module-03-json-schema-contract-modeling/index.md), asks: *Which JSON values are legal, and which invalid states must the contract make impossible?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [JSON Schema Contract Modeling](../module-03-json-schema-contract-modeling/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

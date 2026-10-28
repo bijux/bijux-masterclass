@@ -1,6 +1,6 @@
-# Exercises — Errors, Partial Data, Consistency, and Observability
+# Exercises — Module 08: Errors, Partial Data, Consistency, and Observability
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Errors, Partial Data, Consistency, and Observability**, every response must settle this question: **How does the graph tell the truth when some fields succeed, some fail, and some are stale?** Use the cumulative platform, not an invented toy system. Preserve inherited guarantees and make every new assumption explicit and falsifiable.
 
 ## 1. What prevents execution after a validation error?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. What proves partial failure semantics?
-

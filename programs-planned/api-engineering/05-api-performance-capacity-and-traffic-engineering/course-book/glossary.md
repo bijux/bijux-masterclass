@@ -1,45 +1,83 @@
 # Glossary — API Performance, Capacity, and Traffic Engineering
 
-Use this glossary alongside `program-book/glossary.md`. Program terms keep one meaning across all six courses; the entries below add course-specific distinctions.
+These terms have precise meanings in Course 5. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
-**Admission control** — deciding whether new work may enter a bounded system.
+## latency
 
-**Arrival rate** — new work offered per unit of time, conventionally written λ.
+Elapsed time for a defined operation population, measured from a declared start point to a declared outcome.
 
-**Backpressure** — a mechanism by which downstream capacity constrains upstream production.
+## throughput
 
-**Benchmark envelope** — the complete machine-readable record of workload, environment, correctness, measurements, and identity needed to interpret a run.
+Useful completed work per unit time; offered requests, admitted requests, and successful completions must not be conflated.
 
-**Capacity** — the maximum demand a system can serve while meeting stated correctness and service objectives in a stated environment.
+## offered load
 
-**Closed workload model** — a fixed or bounded population issues a new request after completing or waiting between previous requests; slowdown reduces generated arrival rate.
+Demand presented by clients or a load generator whether or not the service accepts or completes it.
 
-**Coordinated omission** — a measurement error in which the load generator does not record requests that should have arrived while the system was slow.
+## admitted load
 
-**CPU time** — processor time consumed by the process; different from elapsed wall time.
+The subset of offered work accepted after authentication, policy, quotas, concurrency, and shedding decisions.
 
-**Event-loop delay** — delay before scheduled event-loop work can run, often caused by synchronous blocking or overload.
+## saturation
 
-**Headroom** — usable capacity intentionally retained above forecast demand.
+The condition in which a limiting resource is fully utilized and additional demand primarily increases queues, rejections, or latency.
 
-**Little’s Law** — for a stable system over a compatible interval, average work in the system equals arrival rate multiplied by average time in the system: `L = λW`.
+## tail latency
 
-**Load shedding** — rejecting or degrading work before it consumes a resource needed by more valuable or already admitted work.
+Latency in the slower end of a distribution, such as p95 or p99, where queueing and rare expensive paths become visible.
 
-**Nearest-rank quantile** — the sorted observation at rank `ceil(p × n)` for quantile `p`.
+## coordinated omission
 
-**Open workload model** — arrivals occur according to an external schedule independent of response completion.
+A measurement error in which a closed generator waits for slow responses and therefore fails to record requests that should have arrived during the delay.
 
-**Performance budget** — a versioned bound on latency, throughput, error, queueing, or resource use for a named workload.
+## warmup
 
-**Saturation** — the state in which a resource has no useful spare capacity and additional demand primarily creates waiting or rejection.
+A pre-measurement period used to reach the intended runtime state, caches, pools, and code paths before collecting comparable data.
 
-**Service demand** — resource time required by one unit of work at a particular resource.
+## steady state
 
-**Tail latency** — latency in the slower part of a distribution, commonly p95 or p99.
+A bounded interval during which workload and important resource behavior are sufficiently stable for the intended comparison.
 
-**Throughput** — completed work per unit of time. Offered load, admitted load, and completed throughput are distinct.
+## quantile
 
-**Utilization** — fraction of a resource’s capacity in use over an interval.
+A value below which a stated fraction of observations falls under a specified quantile algorithm.
 
-**Workload identity** — a stable identifier plus content hash for the complete workload definition.
+## confidence interval
+
+A range produced by a stated statistical procedure to express uncertainty in an estimate; it does not guarantee truth for one environment.
+
+## query plan
+
+The database optimizer’s chosen access and join strategy, inspected with actual row and buffer evidence rather than cost numbers alone.
+
+## selectivity
+
+The fraction of rows expected to satisfy a predicate, which strongly influences whether an index is useful.
+
+## connection budget
+
+The maximum safe sum of database connections across replicas, workers, tools, and administrative reserves.
+
+## backpressure
+
+A mechanism that slows, blocks, bounds, or rejects upstream work when downstream capacity is unavailable.
+
+## single-flight
+
+A cache-fill pattern in which concurrent requests for the same missing key share one in-flight computation.
+
+## load shedding
+
+Deliberate rejection of lower-priority or excess work before saturation causes uncontrolled failure of all work.
+
+## capacity model
+
+An explicit relationship among workload demand, service demand, resource limits, queue growth, headroom, and uncertainty.
+
+## headroom
+
+Reserved capacity between expected demand and a resource limit to absorb variation, failure, growth, and recovery work.
+
+## regression gate
+
+A release decision that compares a candidate with an accepted baseline under matching identity, correctness, and evidence conditions.

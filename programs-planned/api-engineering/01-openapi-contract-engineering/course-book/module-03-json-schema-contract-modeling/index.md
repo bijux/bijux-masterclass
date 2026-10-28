@@ -1,12 +1,14 @@
 # Module 03 — JSON Schema Contract Modeling
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How do schemas reject invalid states while remaining usable for providers, clients, and future evolution?
 
 ## Where this module fits
 
-Model the domain with JSON Schema 2020-12 semantics instead of treating schemas as decorative classes. You arrive from Module 02 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **References and Multi-Document Architecture**.
+Module 02 produced **Complete project and dataset messages, including pagination inputs, creation responses, and problem representations**. This module extends that result by asking: **How do schemas reject invalid states while remaining usable for providers, clients, and future evolution?**
+
+The new capstone increment is **Define precise project, dataset, run, artifact, and problem schemas with a shared valid/invalid fixture corpus**. It becomes the prerequisite for **References and Multi-Document Architecture**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Model the domain with JSON Schema 2020-12 semantics instead of treating schemas 
 - Design tagged unions and separate input/output models.
 - Verify a shared corpus of valid and invalid instances.
 
-## Capstone result
+## Capstone increment
 
 Define precise project, dataset, run, artifact, and problem schemas with a shared valid/invalid fixture corpus.
-
-Dataset sources, analysis parameters, artifacts, and Problem Details become precise schemas with boundary fixtures.
 
 ## Core model
 
@@ -369,11 +369,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The JSON Schema 2020-12 Contract Modeling checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “Which JSON values are legal, and which invalid states must the contract make impossible?” is now executable in the capstone: Dataset sources, analysis parameters, artifacts, and Problem Details become precise schemas with boundary fixtures.
+You are ready to leave this module when you can **Distinguish missing, null, empty, and default, Constrain objects, arrays, strings, and numbers precisely, and Use composition as logic rather than inheritance** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant an overlapping union branch, observe the independent failure, and repair it without weakening closure** and requiring the following oracle: **at least 60 fixtures cover valid and invalid boundaries; missing and null are independent; domain objects are closed; intentional maps have bounded value schemas.**
+
+The cumulative platform now includes **Define precise project, dataset, run, artifact, and problem schemas with a shared valid/invalid fixture corpus**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 04, [References and Multi-Document Architecture](../module-04-references-multi-document-architecture/index.md), asks: *How do we split a growing contract without changing its meaning or creating a maze of fragile references?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [References and Multi-Document Architecture](../module-04-references-multi-document-architecture/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

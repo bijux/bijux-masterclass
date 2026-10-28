@@ -1,5 +1,7 @@
 # Exercises — Module 06: Metrics and Service-Level Indicators
 
+Work through all twelve problems before opening the answers. In **Metrics and Service-Level Indicators**, every response must settle this question: **How are counters, gauges, histograms, and SLI populations defined so the math means what operators think it means?** Answer as though another team must implement and operate the design. Ambiguous ownership, unbounded behavior, and evidence-free claims are defects.
+
 ## 1. When should a counter be used?
 
 ## 2. When should a gauge be used?

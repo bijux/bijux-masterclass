@@ -1,39 +1,31 @@
 # Module 09 — Capacity Modeling and Scaling Decisions
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** What capacity does the current system have, what uncertainty surrounds it, and which resource becomes the first bottleneck as demand grows?
 
 ## Where this module fits
 
+Module 08 produced **Implement multi-dimensional fixed-point budgets, tenant isolation, staged shedding, and rollback of partial reservations**. This module extends that result by asking: **What capacity does the current system have, what uncertainty surrounds it, and which resource becomes the first bottleneck as demand grows?**
 
-Capacity planning is not guessing how many servers are needed next year. It is a model that connects demand, per-unit resource consumption, service objectives, failure assumptions, and available capacity. The model is useful when it makes assumptions visible and predicts the first bottleneck well enough to choose the next experiment.
-
-The capacity of the Analysis Runs platform is not one requests-per-second number. Reads, submissions, uploads, downloads, workers, storage, and webhooks consume different resources. Growth can change the workload mix as well as the volume. A platform that handles ten times more metadata reads may still fail when artifact size doubles or one tenant submits long-running analyses.
-
-This module builds a scenario model from measured service demand. It includes headroom, uncertainty, maintenance and failure capacity, storage growth, queue drain time, and cost. It rejects scaling as a reflex. Sometimes the correct decision is a query/index change, a lower concurrency limit, demand shaping, or a product constraint—not more instances.
-
-
-## Capstone result
-
-Model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions.
-
-Produce the capacity model for three growth scenarios, identify the first bottleneck and bottleneck migration, and write a staged scaling decision with trigger metrics.
+The new capstone increment is **Model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions**. It becomes the prerequisite for **Performance Regression and Release Engineering**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Translate workload forecasts into resource demand.
+- Calculate service demand from utilization and throughput.
+- Identify the first bottleneck across CPU, database, memory, storage, network, and worker capacity.
+- Apply headroom and failure/maintenance assumptions.
+- Model queue drain and recovery capacity.
+- Represent uncertainty with ranges and scenarios.
+- Compare vertical, horizontal, optimization, and demand-shaping options.
+- Include stateful dependency and connection limits.
+- Estimate cost per useful completed unit.
+- Define trigger metrics and remeasurement conditions.
 
-- translate workload forecasts into resource demand
-- calculate service demand from utilization and throughput
-- identify the first bottleneck across CPU, database, memory, storage, network, and worker capacity
-- apply headroom and failure/maintenance assumptions
-- model queue drain and recovery capacity
-- represent uncertainty with ranges and scenarios
-- compare vertical, horizontal, optimization, and demand-shaping options
-- include stateful dependency and connection limits
-- estimate cost per useful completed unit
-- define trigger metrics and remeasurement conditions
+## Capstone increment
+
+Model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions.
 
 ## Core performance model
 
@@ -208,7 +200,6 @@ Store model version and actual-versus-predicted observations. When software, wor
 
 The final handoff gives Course 6 the measured worker/queue budgets needed to design asynchronous contracts without inventing broker capacity.
 
-
 ## Course requirements
 
 | Rule | Required behavior | Failure if omitted | Decisive evidence |
@@ -355,10 +346,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-Capacity engineering turns measured service demand and uncertain growth into a staged decision. It identifies the first bottleneck, includes failure and recovery, and chooses the smallest justified change rather than scaling every tier.
+You are ready to leave this module when you can **translate workload forecasts into resource demand, calculate service demand from utilization and throughput, and identify the first bottleneck across CPU, database, memory, storage, network, and worker capacity** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **all resource arithmetic has units; workload classes remain separate; normal and degraded headroom are reported; backlog drains only when completion exceeds arrivals.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **Performance Regression and Release Engineering**, asks: How does a performance change become a reproducible release decision rather than a favorable chart? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [Performance Regression and Release Engineering](../module-10-performance-regression-and-release-engineering/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

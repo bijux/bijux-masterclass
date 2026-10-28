@@ -1,6 +1,6 @@
-# Exercises — Runtime Control Plane, Usage Intelligence, and Support Operations
+# Exercises — Module 09: Runtime Control Plane, Usage Intelligence, and Support Operations
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Runtime Control Plane, Usage Intelligence, and Support Operations**, every response must settle this question: **How can platform metadata remain connected to the running system and to consumer outcomes without becoming a new domain owner or surveillance system?** The strongest answer distinguishes specification, implementation, and operational evidence, then demonstrates where a plausible shortcut would fail.
 
 ## 1. Why must gateway state derive from approved releases?
 

@@ -1,39 +1,31 @@
 # Module 10 — Performance Regression and Release Engineering
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** How does a performance change become a reproducible release decision rather than a favorable chart?
 
 ## Where this module fits
 
+Module 09 produced **Model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions**. This final module consolidates the course by asking: **How does a performance change become a reproducible release decision rather than a favorable chart?**
 
-A performance course is incomplete if it ends with a tuning report. Real systems change continuously. Dependencies, compilers, data scale, indexes, configuration, and traffic mix can erase a gain or introduce a regression months later. Performance engineering therefore needs a release process.
-
-A good regression gate is strict about identity and correctness but cautious about noisy latency. It does not fail every build because one shared runner was busy, and it does not ignore a material tail regression because the mean improved. It uses tiered evidence: deterministic mechanism tests on every change, controlled workload comparisons on selected changes, and representative environment validation before consequential releases.
-
-This final module assembles the performance dossier. The learner must accept one candidate, reject one faster-but-invalid candidate, and classify one result as insufficient evidence. The ability to refuse a misleading result is part of mastery.
-
-
-## Capstone result
-
-Build correctness-first regression gates, environment comparability, accepted/rejected/inconclusive candidates, and a performance dossier.
-
-Publish performance profile 1.0, an accepted release, a deliberately rejected regression candidate, CI comparison logic, rollback triggers, and the sanitized Course 6 handoff.
+The capstone must now deliver **Build correctness-first regression gates, environment comparability, accepted/rejected/inconclusive candidates, and a performance dossier** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **Performance Profile 1.0, migration 009, workload identities, benchmark evidence, HTTP and query optimizations, concurrency and cache policy, traffic controls, capacity models, and performance release gates.**
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Design a tiered performance verification pipeline.
+- Enforce identity and correctness before metric comparison.
+- Combine absolute and relative regression thresholds.
+- Handle noise through run series and inconclusive decisions.
+- Select stable mechanism-level CI tests.
+- Avoid brittle wall-clock gates on uncontrolled runners.
+- Write release acceptance, rollback, and remeasurement criteria.
+- Connect performance alerts and capacity triggers to operations.
+- Produce a reviewable performance dossier.
+- Sanitize and manifest the next-course handoff.
 
-- design a tiered performance verification pipeline
-- enforce identity and correctness before metric comparison
-- combine absolute and relative regression thresholds
-- handle noise through run series and inconclusive decisions
-- select stable mechanism-level CI tests
-- avoid brittle wall-clock gates on uncontrolled runners
-- write release acceptance, rollback, and remeasurement criteria
-- connect performance alerts and capacity triggers to operations
-- produce a reviewable performance dossier
-- sanitize and manifest the next-course handoff
+## Capstone increment
+
+Build correctness-first regression gates, environment comparability, accepted/rejected/inconclusive candidates, and a performance dossier.
 
 ## Core performance model
 
@@ -236,7 +228,6 @@ Course 6 needs measured queue, worker, and traffic budgets to design asynchronou
 
 The handoff includes stable profiles, workload catalogue, accepted capacity model, migration 009, and sanitized benchmark envelopes. It has its own manifest. The receiving course verifies it before changing communication architecture.
 
-
 ## Course requirements
 
 | Rule | Required behavior | Failure if omitted | Decisive evidence |
@@ -377,10 +368,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-Performance engineering becomes durable when it is part of release governance. Module 10 creates a correctness-first, reproducible, noise-aware pipeline and hands measured capacity constraints to the next course.
+You are ready to leave this module when you can **design a tiered performance verification pipeline, enforce identity and correctness before metric comparison, and combine absolute and relative regression thresholds** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Create an environment-mismatched or noisy candidate and classify it inconclusive** and requiring the following oracle: **accepted candidate passes all earlier and performance gates; faster wrong candidate is rejected before latency approval; incomparable/noisy candidate is inconclusive; all ten planted defects are detected by the intended proof.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Build correctness-first regression gates, environment comparability, accepted/rejected/inconclusive candidates, and a performance dossier**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-This course now has the mechanism needed for its final defense. The outgoing handoff becomes the immutable starting point for **Course 6 — Event-Driven API Engineering**, where the responsibility becomes: Design, evolve, secure, operate, and verify asynchronous contracts when delivery may be delayed, duplicated, reordered within declared limits, or replayed.
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 6 may treat only the manifested handoff as settled.

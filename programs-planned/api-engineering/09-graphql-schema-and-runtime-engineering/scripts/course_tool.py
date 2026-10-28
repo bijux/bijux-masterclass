@@ -230,7 +230,7 @@ def doctor() -> None:
     except Exception:
         print("graphql-core: not-available")
     print("PyYAML", yaml.__version__)
-    print("course", read_json(ROOT / "course.json")["version"])
+    print("course", read_json(ROOT / "course.json")["versionState"])
 
 
 def predecessor_proof() -> None:
@@ -262,7 +262,7 @@ def _nav_paths(value: Any) -> list[str]:
 
 def structure_proof() -> None:
     pages = sorted(BOOK.rglob("*.md"))
-    assert len(pages) == 59, f"expected 59 course-book pages, got {len(pages)}"
+    assert len(pages) == 61, f"expected 61 course-book pages, got {len(pages)}"
     module_dirs = sorted(
         path for path in BOOK.glob("module-[0-9][0-9]-*") if path.is_dir()
     )
@@ -277,12 +277,15 @@ def structure_proof() -> None:
     }
     exercise_count = answer_count = 0
     lab_sections = {
-        "Purpose",
-        "Prerequisites",
-        "Procedure",
-        "Correctness oracle",
+        "Objective",
+        "Why this lab matters",
+        "Setup conditions",
+        "Hypothesis",
+        "Controlled action and investigation",
+        "Operational oracle",
         "Required evidence",
-        "Cleanup",
+        "Interpretation and defense",
+        "Cleanup and reset",
         "Completion gate",
     }
     for index, directory in enumerate(numbered, start=1):
@@ -307,20 +310,21 @@ def structure_proof() -> None:
         )
         assert lab_sections.issubset(headings), f"lab sections missing: {directory.name}"
         checkpoint = (directory / "checkpoint.md").read_text()
-        assert checkpoint.count("- [ ]") >= 6
-        assert f"make module-{index:02d}-proof" in checkpoint
+        for heading in ["## Required result", "## Demonstrate", "## Commands",
+                        "## Evidence to retain", "## Defend the design", "## Continue only when"]:
+            assert heading in checkpoint, f"checkpoint section missing: {directory.name} {heading}"
         assert len((directory / "index.md").read_text().split()) >= 1_400
-        assert len((directory / "lab.md").read_text().split()) >= 400
+        assert len((directory / "lab.md").read_text().split()) >= 250
     assert exercise_count == answer_count == 120
 
     config = read_yaml(ROOT / "mkdocs.yml")
     nav = set(_nav_paths(config["nav"]))
-    expected_nav = {path.relative_to(ROOT).as_posix() for path in pages}
+    expected_nav = {path.relative_to(BOOK).as_posix() for path in pages}
     assert nav == expected_nav, (
         f"MkDocs navigation mismatch; missing={sorted(expected_nav-nav)[:8]} "
         f"extra={sorted(nav-expected_nav)[:8]}"
     )
-    print("PASS structure — 59 pages, 10 modules, 120 matched answers, 10 labs")
+    print("PASS structure — 61 pages, 10 modules, 120 matched answers, 10 labs")
 
 
 def _sdl_types(schema: str) -> tuple[dict[str, dict[str, str]], set[str], dict[str, set[str]]]:

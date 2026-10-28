@@ -1,5 +1,7 @@
 # Exercises — Module 04: Transactions, Concurrency, ETags, and Idempotency
 
+Work through all twelve problems before opening the answers. In **Transactions, Concurrency, ETags, and Idempotency**, every response must settle this question: **How do idempotency and conditional updates remain atomic under concurrent requests and process restarts?** For every answer, separate the authoritative boundary from convenient diagnostics, then explain which failing experiment would force you to revise the design.
+
 ## 1. Why is an in-process mutex insufficient for idempotency?
 
 ## 2. What belongs in the idempotency scope?

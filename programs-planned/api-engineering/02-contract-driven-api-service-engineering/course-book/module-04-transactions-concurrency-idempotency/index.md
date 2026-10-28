@@ -1,12 +1,14 @@
 # Module 04 — Transactions, Concurrency, ETags, and Idempotency
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** How do idempotency and conditional updates remain atomic under concurrent requests and process restarts?
 
 ## Where this module fits
 
-Use atomic predicates, unique constraints, transaction boundaries, and durable replay records. You arrive from Module 03 with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result is the baseline for **Queries, Stable Pagination, and Authorized Access**.
+Module 03 produced **Persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations**. This module extends that result by asking: **How do idempotency and conditional updates remain atomic under concurrent requests and process restarts?**
+
+The new capstone increment is **Implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback**. It becomes the prerequisite for **Queries, Stable Pagination, and Authorized Access**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Use atomic predicates, unique constraints, transaction boundaries, and durable r
 - Handle simultaneous duplicate requests with one logical winner.
 - Prove rollback leaves no partial state.
 
-## Capstone result
+## Capstone increment
 
 Implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback.
-
-One hundred concurrent identical submissions create one run; stale ETags fail atomically; replay survives restart.
 
 ## Core model
 
@@ -32,10 +32,10 @@ Correctness under concurrency comes from atomic predicates, unique constraints, 
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Transactions, Concurrency, ETags, and Idempotency** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback
 
 
 ### 1. Atomic decision
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Transactions, Concurrency, ETags, and Idempotency**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: List every row created by `createAnalysisRun` and place them in one transaction.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Transactions, Concurrency, ETags, and Idempotency**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: How do idempotency and conditional updates remain atomic under concurrent requests and process restarts?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -257,8 +258,7 @@ async def update_project(
     return map_project(updated)
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Transactions, Concurrency, ETags, and Idempotency** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -565,7 +565,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Transactions, Concurrency, ETags, and Idempotency** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -650,7 +650,8 @@ class PostgresRepository:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/repository.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
   WebhookSubscriptionCreate,
 } from "./types.js";
 
@@ -712,8 +713,10 @@ Compare the two tracks by this invariant: **one key and fingerprint produce one 
 
 ## Module synthesis
 
-The module answer to “How do public guarantees survive simultaneous requests, retries, lost responses, and process restart?” is now executable in the capstone: One hundred concurrent identical submissions create one run; stale ETags fail atomically; replay survives restart.
+You are ready to leave this module when you can **Draw the transaction boundary for each use case, Implement compare-and-swap for `If-Match`, and Persist idempotency scope, fingerprint, and response** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a pre-read/unconditional-update path, capture the double-success counterexample, repair, and retain the race test** and requiring the following oracle: **One hundred synchronized identical requests produce exactly one run, one job, one idempotency record, and one original logical response; all others replay it.**
+
+The cumulative platform now includes **Implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 05, [Queries, Stable Pagination, and Authorized Access](../module-05-query-pagination-authorization/index.md), asks: *How do list and retrieval operations remain stable, efficient, and non-leaking while data changes?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Queries, Stable Pagination, and Authorized Access](../module-05-query-pagination-authorization/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

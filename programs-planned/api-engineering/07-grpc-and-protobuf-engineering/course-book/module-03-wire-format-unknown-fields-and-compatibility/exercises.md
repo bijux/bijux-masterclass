@@ -1,6 +1,6 @@
-# Exercises — Wire Format, Unknown Fields, and Compatibility Discipline
+# Exercises — Module 03: Wire Format, Unknown Fields, and Compatibility Discipline
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **Wire Format, Unknown Fields, and Compatibility Discipline**, every response must settle this question: **How can an RPC contract evolve without corrupting old data, breaking generated clients, or creating behavior that is wire-readable but operationally unsafe?** Do not stop at terminology. Show how the decision changes a request, durable state, consumer, operator action, or release result, and state how that consequence is tested.
 
 ## 1. Why is reusing a removed field number more dangerous than reusing a local variable name?
 

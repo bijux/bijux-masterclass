@@ -1,6 +1,6 @@
-# Exercises — Queries, Identifiers, Connections, and Pagination
+# Exercises — Module 04: Queries, Identifiers, Connections, and Pagination
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Queries, Identifiers, Connections, and Pagination**, every response must settle this question: **How can clients navigate lists and relationships without unstable pages, leaked internals, or unbounded work?** For every answer, separate the authoritative boundary from convenient diagnostics, then explain which failing experiment would force you to revise the design.
 
 ## 1. Why is a global ID not an authorization token?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. When should node lookup be omitted?
-

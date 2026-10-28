@@ -1,12 +1,14 @@
 # Module 10 — Security Operations and Incident Response
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** How is a suspected compromise detected, contained, investigated, rotated, patched, and converted into improved requirements?
 
 ## Where this module fits
 
-Run a controlled security incident from detection through containment, recovery, compatible release, and post-incident learning. You arrive from Module 09 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result closes the course and produces the handoff to **API Reliability and Observability Engineering**.
+Module 09 produced **Build hostile vectors, negative policy tests, planted vulnerabilities, dependency evidence, SBOM/provenance routes, and scanner disposition**. This final module consolidates the course by asking: **How is a suspected compromise detected, contained, investigated, rotated, patched, and converted into improved requirements?**
+
+The capstone must now deliver **Run a controlled credential and cross-tenant incident with timelines, revocation, rotation, release, and threat-model revision** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **Security Profile 1.0, migrations 006–007, a threat-to-requirement security case, identity and authorization policy, hostile-input vectors, SSRF and webhook protections, abuse controls, and incident evidence.**
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Run a controlled security incident from detection through containment, recovery,
 - Preserve timelines and confidence levels.
 - Update threats, controls, and tests after the incident.
 
-## Capstone result
+## Capstone increment
 
 Run a controlled credential and cross-tenant incident with timelines, revocation, rotation, release, and threat-model revision.
-
-Course 3 ends with security profile 1.0, migrations 006–007, and a closed compromise exercise.
 
 ## Core security model
 
@@ -89,32 +89,32 @@ Run only against course fixtures. The goal is to understand control boundaries, 
 
 A current signing key appears in a build log and forged delivery attempts begin.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Security Operations and Incident Response** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 2 — Suspected stolen access token
 
 A valid `jti` shows impossible travel or abnormal run submissions before expiry.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Security Operations and Incident Response** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 3 — Cross-tenant artifact probe
 
 Audit shows repeated denied identifiers followed by one anomalous success candidate.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Security Operations and Incident Response** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 4 — Vulnerable dependency
 
 A security advisory affects a parsing dependency used at the raw-message boundary.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Security Operations and Incident Response** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 5 — Over-broad containment
 
 Operators disable all identity verification or delete logs to restore availability quickly.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Security Operations and Incident Response** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 ### Attack 6 — Incomplete rotation
 
 The secret is changed for new deliveries but old verification remains indefinitely or one receiver is missed.
 
-Trace precondition, controlled input, interpretations, security decision, harmful outcome, expected evidence, and residual risk.
+Trace the **Security Operations and Incident Response** precondition, controlled input, interpretation, decision, harmful outcome, expected evidence, and residual risk.
 
 ### Prioritization
 
@@ -140,27 +140,27 @@ Mirror the incident state machine with exhaustive status handling. Use immutable
 
 ### 1. Rotating every secret without identifying which one is compromised, causing unnecessary outage and evidence loss.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Security Operations and Incident Response** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 2. Deleting or rewriting logs before preserving hashes and access records.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Security Operations and Incident Response** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 3. Treating token expiry as sufficient containment for an actively abused long-lived token.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Security Operations and Incident Response** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 4. Patching code but not revoking issued credentials or replay state.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Security Operations and Incident Response** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 5. Releasing a breaking API change under emergency pressure without compatibility review.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Security Operations and Incident Response** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ### 6. Closing the incident without updating threats, tests, and assumptions.
 
-Explain why it seems reasonable, what attacker capability invalidates it, and where the repair belongs.
+Explain why the unsafe **Security Operations and Incident Response** design appears reasonable, which attacker capability invalidates it, and which boundary owns the repair.
 
 ## What you add to the capstone
 
@@ -251,14 +251,16 @@ export class Incident { status:IncidentStatus="detected"; readonly timeline:Time
 
 Compare the two tracks by this invariant: **revocation, key overlap, evidence preservation, compatible release, verification, and threat-model revision form one controlled timeline**. The intended implementation difference is: state-machine syntax differs; illegal transitions and premature key retirement must fail in both tracks.
 
-## Module synthesis
-
-The module answer to “When a credential, key, or dependency is compromised, how do we contain the event without destroying evidence or breaking the API?” is now executable in the capstone: Course 3 ends with security profile 1.0, migrations 006–007, and a closed compromise exercise.
-
 ## Course exit
 
 The ten module results now satisfy this course promise: A threat-driven security profile with hardened edge, identity, authorization, input, outbound, secret, abuse, supply-chain, and incident controls. The next course is **API Reliability and Observability Engineering**; it consumes the outgoing handoff rather than reinterpreting completed work.
 
+## Module synthesis
+
+You are ready to leave this module when you can **Design actionable security events and audit records, Revoke tokens and API keys deliberately, and Rotate webhook and signing keys with overlap** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Security Operations and Incident Response in a temporary branch** and requiring the following oracle: **structured incident timeline; token/API-key revocation; webhook-key rotation; evidence preservation.**
+
+The cumulative platform now includes **Run a controlled credential and cross-tenant incident with timelines, revocation, rotation, release, and threat-model revision**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
 ## Next in the story
 
-This course now has the mechanism needed for its final defense. The outgoing handoff becomes the immutable starting point for **Course 4 — API Reliability and Observability Engineering**, where the responsibility becomes: Detect, diagnose, contain, reconcile, and recover when processes, dependencies, networks, or operators fail.
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 4 may treat only the manifested handoff as settled.

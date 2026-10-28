@@ -1,31 +1,208 @@
 {
-  "capstone": "Analysis Runs Platform",
-  "centralQuestion": "Where does time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening its promise?",
+  "schemaVersion": 2,
+  "program": "api-engineering",
+  "number": 5,
+  "id": "api-performance-capacity-and-traffic-engineering",
+  "directory": "05-api-performance-capacity-and-traffic-engineering",
+  "title": "API Performance, Capacity, and Traffic Engineering",
+  "stage": "Sustain the promise under pressure",
+  "centralQuestion": "Where do time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening correctness?",
+  "responsibility": "Measure, model, and control latency, throughput, resource use, fairness, and overload behavior with comparable evidence.",
   "duration": {
     "calendarWeeks": 2,
-    "orientationCounted": false,
-    "teachingDays": 10
+    "teachingDays": 10,
+    "orientationCounted": false
   },
-  "id": "api-performance-capacity-and-traffic-engineering",
-  "incomingBoundary": "The Course 4 observable and recoverable API 1.2 service with Security and Reliability Profiles 1.0 and migrations 001\u2013008.",
-  "languages": {
-    "strategy": "Choose one primary implementation track. Compare measurement identity, arithmetic, and externally visible traffic decisions across both languages.",
-    "tracks": [
-      "python-fastapi",
-      "typescript-fastify"
-    ]
-  },
-  "number": 5,
+  "incomingBoundary": "The Course 4 observable and recoverable API 1.2 service with Security and Reliability Profiles 1.0 and migrations 001–008.",
   "outgoingBoundary": "Performance Profile 1.0, migration 009, workload identities, benchmark evidence, HTTP and query optimizations, concurrency and cache policy, traffic controls, capacity models, and performance release gates.",
+  "versionState": "API 1.2, Security Profile 1.0, and Reliability Profile 1.0 preserved; Performance Profile 1.0 introduced; migrations 001–009.",
   "predecessor": "04-api-reliability-and-observability-engineering",
-  "responsibility": "Preserve correctness, latency, throughput, fairness, and bounded resource use as demand and data volume grow.",
-  "schemaVersion": 1,
   "successor": "06-event-driven-api-engineering",
-  "title": "API Performance, Capacity, and Traffic Engineering",
-  "versions": {
-    "databaseMigrations": "001\u2013009",
-    "engineeringProfiles": "Security and Reliability Profiles 1.0 preserved; Performance Profile 1.0 introduced",
-    "interfaceSpecifications": "3.1.2 baseline preserved",
-    "publicInterface": "1.2 preserved"
-  }
+  "primaryProduct": "course-book",
+  "languageStrategy": "one primary implementation track plus one comparative reference track",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-measurement-contract-and-critical-workloads",
+      "title": "Measurement Contract and Critical Workloads",
+      "centralQuestion": "What exactly is being measured, under which workload and environment identity, and which correctness oracle still applies?",
+      "capstoneIncrement": "Freeze six critical workloads, measurement envelopes, outcome populations, evidence classes, and comparable baselines.",
+      "learningOutcomes": [
+        "distinguish performance requirements from reliability objectives and capacity claims",
+        "derive critical workloads from inherited user journeys instead of endpoint popularity",
+        "choose an open, closed, or mixed load model deliberately",
+        "define offered, admitted, completed, rejected, and failed populations",
+        "hash identity-bearing workload and environment fields deterministically",
+        "write correctness oracles that survive optimization",
+        "reject an incomparable baseline before calculating improvement"
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-benchmark-design-and-statistical-interpretation",
+      "title": "Benchmark Design and Statistical Interpretation",
+      "centralQuestion": "How do open and closed demand, warmup, sample size, missing outcomes, variation, and statistical uncertainty change benchmark meaning?",
+      "capstoneIncrement": "Build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons.",
+      "learningOutcomes": [
+        "distinguish load generation, timing, outcome collection, and analysis",
+        "design open and closed schedules and explain their different questions",
+        "detect coordinated omission using intended start times",
+        "choose warmup and measurement windows from observed behavior",
+        "calculate nearest-rank quantiles and explain alternative algorithms",
+        "separate run-to-run variability from within-run latency distribution",
+        "use bootstrap intervals over independent run summaries cautiously",
+        "declare regression thresholds before seeing candidate results"
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-http-efficiency-and-representation-cost",
+      "title": "HTTP Efficiency and Representation Cost",
+      "centralQuestion": "Where do HTTP connections, representations, compression, conditional requests, range delivery, and streaming consume time and bytes?",
+      "capstoneIncrement": "Optimize artifact and metadata delivery while preserving authorization, ETags, ranges, and bounded memory.",
+      "learningOutcomes": [
+        "separate resource state, selected representation, and transferred message",
+        "measure bytes and buffering alongside latency",
+        "apply strong and weak entity tags intentionally",
+        "evaluate conditional requests in the correct precedence",
+        "implement single byte-range requests and documented unsatisfied ranges",
+        "stream large bodies with bounded memory",
+        "choose compression from media type, size, CPU, and cache-key consequences",
+        "design authorization-aware cache directives and `Vary` behavior",
+        "reject optimizations that break checksums, ranges, or tenant isolation"
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-postgresql-query-and-persistence-performance",
+      "title": "PostgreSQL Query and Persistence Performance",
+      "centralQuestion": "Which query plan, index, lock, pool, or pagination behavior is the first persistence bottleneck for a declared workload?",
+      "capstoneIncrement": "Capture before/after plans, add evidence-backed indexes, size database connections, and preserve owner-aware query semantics.",
+      "learningOutcomes": [
+        "separate client wait, pool wait, lock wait, planning, execution, and transfer",
+        "read PostgreSQL text and JSON plans from the root downward",
+        "compare estimated and actual row counts",
+        "interpret sequential scans, index scans, bitmap scans, sorts, joins, and loops",
+        "design composite index column order from equality, range, and ordering predicates",
+        "preserve authorization and stable keyset pagination",
+        "measure read gain alongside write amplification and index size",
+        "size connection pools against database capacity rather than request concurrency",
+        "use `pg_stat_statements` as aggregate evidence without losing workload identity",
+        "write a reversible migration and a plan-regression gate"
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-runtime-profiling-and-allocation-control",
+      "title": "Runtime Profiling and Allocation Control",
+      "centralQuestion": "Which Python or Node.js runtime phase consumes wall time, CPU, allocations, event-loop capacity, or serialization effort?",
+      "capstoneIncrement": "Profile named phases, detect blocking work, bound profiling overhead, and prove mechanism-level improvements.",
+      "learningOutcomes": [
+        "separate wall-clock, process CPU, and allocation measurements",
+        "choose sampling, deterministic, or tracing profilers for the question",
+        "read call counts, cumulative time, self time, and caller relationships",
+        "use `tracemalloc` snapshots to locate Python allocation growth",
+        "measure Node event-loop delay and utilization",
+        "identify synchronous blocking inside asynchronous request paths",
+        "measure serialization and validation cost without bypassing them",
+        "avoid micro-optimizations that increase copying or memory",
+        "compare runtime-specific improvements through the shared workload envelope"
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-queueing-concurrency-and-backpressure",
+      "title": "Queueing, Concurrency, and Backpressure",
+      "centralQuestion": "How do arrival rate, service time, queue depth, concurrency, fairness, and backpressure determine overload behavior?",
+      "capstoneIncrement": "Implement bounded admission, per-operation limits, queue accounting, permit release, and recovery after pressure.",
+      "learningOutcomes": [
+        "identify every implicit and explicit queue in a request journey",
+        "apply Little’s Law with compatible populations and intervals",
+        "distinguish service time, waiting time, response time, and service demand",
+        "explain why tail latency rises rapidly near saturation",
+        "size concurrency from a limiting resource rather than CPU count folklore",
+        "bound queue length and waiting time",
+        "propagate cancellation without undoing committed work",
+        "design backpressure across API, worker, storage, and outbound stages",
+        "preserve fairness and avoid starvation",
+        "separate admission rejection from internal failure"
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-caching-freshness-and-invalidation",
+      "title": "Caching, Freshness, and Invalidation",
+      "centralQuestion": "Which data is safe to cache, for whom, for how long, and who owns invalidation after mutation or failure?",
+      "capstoneIncrement": "Build authorization-aware keys, TTL/capacity policy, source-version invalidation, single-flight fills, and failure semantics.",
+      "learningOutcomes": [
+        "distinguish HTTP, process-local, shared application, database, and client caches",
+        "classify values by mutability and authorization sensitivity",
+        "define complete cache keys and value envelopes",
+        "choose freshness and stale behavior explicitly",
+        "implement invalidation from durable change rather than best-effort route code",
+        "prevent cross-tenant and cross-policy reuse",
+        "bound entries, bytes, and concurrent fills",
+        "control cache stampedes and failure amplification",
+        "measure hit, miss, fill, stale, eviction, and origin cost",
+        "reject caches that improve latency while worsening correctness or tail load"
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-traffic-shaping-quotas-and-load-shedding",
+      "title": "Traffic Shaping, Quotas, and Load Shedding",
+      "centralQuestion": "How should quotas, priorities, cost budgets, and load shedding preserve fairness and truthful 429/503 outcomes?",
+      "capstoneIncrement": "Implement multi-dimensional fixed-point budgets, tenant isolation, staged shedding, and rollback of partial reservations.",
+      "learningOutcomes": [
+        "distinguish rate limits, quotas, concurrency limits, and capacity admission",
+        "choose dimensions that reflect resource cost",
+        "implement deterministic token-bucket arithmetic",
+        "bind policy to principal, tenant, operation, and service class",
+        "preserve fairness under skewed traffic",
+        "calculate truthful retry guidance",
+        "define a load-shedding ladder before overload",
+        "protect admitted work and critical control operations",
+        "measure offered, admitted, rejected, and completed traffic by reason",
+        "state local versus distributed enforcement limitations"
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-capacity-modeling-and-scaling-decisions",
+      "title": "Capacity Modeling and Scaling Decisions",
+      "centralQuestion": "What capacity does the current system have, what uncertainty surrounds it, and which resource becomes the first bottleneck as demand grows?",
+      "capstoneIncrement": "Model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions.",
+      "learningOutcomes": [
+        "translate workload forecasts into resource demand",
+        "calculate service demand from utilization and throughput",
+        "identify the first bottleneck across CPU, database, memory, storage, network, and worker capacity",
+        "apply headroom and failure/maintenance assumptions",
+        "model queue drain and recovery capacity",
+        "represent uncertainty with ranges and scenarios",
+        "compare vertical, horizontal, optimization, and demand-shaping options",
+        "include stateful dependency and connection limits",
+        "estimate cost per useful completed unit",
+        "define trigger metrics and remeasurement conditions"
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-performance-regression-and-release-engineering",
+      "title": "Performance Regression and Release Engineering",
+      "centralQuestion": "How does a performance change become a reproducible release decision rather than a favorable chart?",
+      "capstoneIncrement": "Build correctness-first regression gates, environment comparability, accepted/rejected/inconclusive candidates, and a performance dossier.",
+      "learningOutcomes": [
+        "design a tiered performance verification pipeline",
+        "enforce identity and correctness before metric comparison",
+        "combine absolute and relative regression thresholds",
+        "handle noise through run series and inconclusive decisions",
+        "select stable mechanism-level CI tests",
+        "avoid brittle wall-clock gates on uncontrolled runners",
+        "write release acceptance, rollback, and remeasurement criteria",
+        "connect performance alerts and capacity triggers to operations",
+        "produce a reviewable performance dossier",
+        "sanitize and manifest the next-course handoff"
+      ]
+    }
+  ]
 }

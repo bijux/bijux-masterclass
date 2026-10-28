@@ -1,6 +1,6 @@
 # Exercises — Module 06: Outbound HTTP, SSRF, and Webhook Integrity
 
-For questions 1–10, give a direct decision, governing invariant, smallest counterexample, decisive proof, and evidence limitation.
+Work through all twelve problems before opening the answers. In **Outbound HTTP, SSRF, and Webhook Integrity**, every response must settle this question: **How can outbound HTTP and webhook delivery avoid SSRF, rebinding, redirect abuse, tampering, and replay?** Answer as though another team must implement and operate the design. Ambiguous ownership, unbounded behavior, and evidence-free claims are defects.
 
 ## 1. Why is `https://` alone insufficient SSRF defense?
 

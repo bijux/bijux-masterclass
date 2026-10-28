@@ -2,7 +2,7 @@
 
 ## Required result
 
-Fixture credentials are replaced by a deterministic but realistic resource-server validation boundary.
+Implement issuer, audience, algorithm, key, lifetime, revocation, subject, tenant, and scope validation.
 
 ## Demonstrate
 
@@ -20,13 +20,23 @@ make module-proof MODULE=03 TRACK=typescript
 make core-proof
 ```
 
+## Evidence to retain
+
+- baseline transcript proving the previous checkpoint before **Authentication and Token Validation** changes
+- the exact source, fixture, contract, migration, or configuration diff that implements **Authentication and Token Validation**
+- focused result for: Accept exactly one credential mechanism.
+- public, durable, security, or operational observation showing: Fixture credentials are replaced by a deterministic but realistic resource-server validation boundary.
+- minimized planted-defect failure and repaired regression
+- primary/comparison-track note for **resource-server credential validation**
+- a limitation statement naming every live dependency required to support the strongest **Authentication and Token Validation** claim but not exercised
+
 ## Defend the design
 
 1. Answer the central question: **How does a resource server establish one unambiguous caller identity from an untrusted credential?**
 2. Demonstrate this capstone result: Fixture credentials are replaced by a deterministic but realistic resource-server validation boundary.
-3. Show the planted defect, the first failing oracle, and the retained regression.
+3. Show the **Authentication and Token Validation** defect, the first failing oracle, and the exact regression retained after repair.
 4. Explain why this invariant is shared across languages: algorithm, key, type, issuer, audience, time, subject, tenant, token ID, scopes, and revocation are all required by profile.
-5. State exactly which database, network, process, telemetry backend, or operated exercise was not run in the current environment.
+5. State which environment-backed **Authentication and Token Validation** route was not run and how that limits the claim.
 
 ## Continue only when
 

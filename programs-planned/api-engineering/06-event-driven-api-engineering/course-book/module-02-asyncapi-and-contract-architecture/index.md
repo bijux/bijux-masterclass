@@ -1,55 +1,29 @@
 # Module 02 — AsyncAPI, CloudEvents, and Contract Architecture
 
-> **Program stage:** Course 6 of 6 — Extend the promise across asynchronous time.
+> **Program stage:** Course 6 of 10 — Extend the promise across asynchronous time.
 
 > **Central question:** How do AsyncAPI, CloudEvents, schemas, channels, operations, bindings, and examples form one governed event contract?
 
 ## Where this module fits
 
-Module 01 established which messages deserve a public asynchronous boundary. Those decisions are still
-prose until machines can parse the channels, operations, messages, schemas, examples, security schemes,
-and server bindings. An informal wiki page cannot support validation, generation, compatibility review,
-or consumer discovery.
+Module 01 produced **Create the minimal message taxonomy, publication decision record, owner catalogue, and synchronous/asynchronous boundary**. This module extends that result by asking: **How do AsyncAPI, CloudEvents, schemas, channels, operations, bindings, and examples form one governed event contract?**
 
-AsyncAPI is the description format for this course, but learning its object model is not the final goal.
-The goal is to express an asynchronous interface without losing semantic ownership. A syntactically valid
-document can still be misleading: an operation may use the wrong direction, a message may omit the
-partition key, examples may violate schemas, or a NATS subject may be mistaken for the event’s business
-identity.
-
-The course combines an AsyncAPI 3.1.0 document with a constrained CloudEvents 1.0 envelope profile. AsyncAPI
-describes the interface and transport-facing operations. CloudEvents supplies interoperable event metadata.
-JSON Schema describes the `data` payload. The event catalogue records governance facts that are awkward or
-inappropriate to encode as transport syntax. Each artifact has a distinct responsibility.
-
-## Capstone result
-
-Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles.
-
-Complete and validate the Analysis Events 1.0 contract:
-
-```text
-capstone/contracts/asyncapi.yaml
-capstone/contracts/components/messages/
-capstone/contracts/components/schemas/
-capstone/contracts/examples/
-capstone/contracts/event-catalog.yaml
-```
-
-The contract describes commands sent to the analysis control plane and events received by independent
-consumers. It remains transport-aware enough to operate on NATS JetStream while preserving message meaning
-independently of NATS.
+The new capstone increment is **Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles**. It becomes the prerequisite for **Delivery Semantics, Ordering, Partitioning, and Acknowledgement**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- navigate the AsyncAPI 3.1 document model: servers, channels, operations, messages, components, and bindings
-- model producer and consumer perspectives without reversing send and receive semantics
-- apply a constrained CloudEvents 1.0 envelope with course-specific extension attributes
-- separate envelope validation from payload-schema validation
-- use JSON Schema identifiers and examples that remain stable after bundling or relocation
-- distinguish logical channel identity from physical broker address and event type
-- construct a multi-document contract with offline reference resolution
-- state exactly what local validation proves and what requires an independent tool or live transport
+- Navigate the AsyncAPI 3.1 document model: servers, channels, operations, messages, components, and bindings.
+- Model producer and consumer perspectives without reversing send and receive semantics.
+- Apply a constrained CloudEvents 1.0 envelope with course-specific extension attributes.
+- Separate envelope validation from payload-schema validation.
+- Use JSON Schema identifiers and examples that remain stable after bundling or relocation.
+- Distinguish logical channel identity from physical broker address and event type.
+- Construct a multi-document contract with offline reference resolution.
+- State exactly what local validation proves and what requires an independent tool or live transport.
+
+## Capstone increment
+
+Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles.
 
 ## Core event model
 
@@ -302,11 +276,10 @@ binding-specific behavior without changing the contract.
 
 ## Module synthesis
 
-Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles. The central distinction is this: how do AsyncAPI, CloudEvents, schemas, channels, operations, bindings, and examples form one governed event contract? The checkpoint is complete only when the mechanism, failure, oracle, and evidence limitation can all be explained together.
+You are ready to leave this module when you can **navigate the AsyncAPI 3.1 document model: servers, channels, operations, messages, components, and bindings, model producer and consumer perspectives without reversing send and receive semantics, and apply a constrained CloudEvents 1.0 envelope with course-specific extension attributes** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant one reversed operation, one invalid example, and one unresolved reference** and requiring the following oracle: **The source document parses with duplicate-key detection, every local reference resolves offline, each operation points to an allowed message, all examples satisfy event profile 1.0 and their payload schemas, and the catalogue covers every public message. The validation report states its scope without claiming complete protocol conformance.**
+
+The cumulative platform now includes **Publish Analysis Events API 1.0 with canonical envelopes, message schemas, examples, operation ownership, and deterministic bundles**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-A precise contract states what may be exchanged, but it does not determine what happens when a consumer
-fails before acknowledgement or when messages for several subjects interleave. Module 03 builds the
-deterministic delivery model: partitioning, offsets, consumer groups, acknowledgement deadlines,
-redelivery, negative acknowledgement, termination, and honest delivery semantics.
+Continue to [Delivery Semantics, Ordering, Partitioning, and Acknowledgement](../module-03-delivery-ordering-and-acknowledgement/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

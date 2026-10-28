@@ -1,12 +1,14 @@
 # Module 10 — OpenAPI 3.2, Streaming, Webhooks, and Workflows
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How do current OpenAPI features express streaming, webhooks, links, query methods, and multi-step workflows?
 
 ## Where this module fits
 
-Add multipart transfer, progress streams, webhooks, links, enhanced tags, and an Arazzo outcome workflow. You arrive from Module 09 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result closes the course and produces the handoff to **Contract-Driven API Service Engineering**.
+Module 09 produced **Create compatible and rejected release candidates, compatibility gates, and public/partner audience views**. This final module consolidates the course by asking: **How do current OpenAPI features express streaming, webhooks, links, query methods, and multi-step workflows?**
+
+The capstone must now deliver **Publish the OpenAPI 3.2 frontier, streaming and webhook contracts, links, and an Arazzo workflow** while preserving every earlier module result. Successful completion establishes the outgoing boundary for the next course or final program defense: **A frozen API 1.1 contract, operation ledger, schema fixtures, security decisions, workflow description, compatibility policy, and provider-neutral behavioral scenarios.**
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Add multipart transfer, progress streams, webhooks, links, enhanced tags, and an
 - Connect operations with links, callbacks, webhooks, and runtime expressions.
 - Describe a multi-step outcome with Arazzo and record tool support honestly.
 
-## Capstone result
+## Capstone increment
 
 Publish the OpenAPI 3.2 frontier, streaming and webhook contracts, links, and an Arazzo workflow.
-
-Course 1 ends with API 1.1, an OpenAPI 3.2 frontier, and an executable create-to-artifact workflow.
 
 ## Core model
 
@@ -396,15 +396,16 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The OpenAPI 3.2, Streaming, and Arazzo Workflows checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
-## Module synthesis
-
-The module answer to “How do we use current OpenAPI capabilities without claiming that every tool supports them equally?” is now executable in the capstone: Course 1 ends with API 1.1, an OpenAPI 3.2 frontier, and an executable create-to-artifact workflow.
-
 ## Course exit
 
 The ten module results now satisfy this course promise: A modular OpenAPI 3.1 contract, a current OpenAPI 3.2 frontier, conforming Python and TypeScript providers, usable clients, and controlled release evidence. The next course is **Contract-Driven API Service Engineering**; it consumes the outgoing handoff rather than reinterpreting completed work.
 
+## Module synthesis
+
+You are ready to leave this module when you can **Maintain a broadly executable OpenAPI 3.1 baseline, Use OpenAPI 3.2 features where they add real meaning, and Model SSE and JSON Lines streams** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **3.2 frontier validates independently; common operation identities remain stable; tag hierarchy resolves without cycles; QUERY/querystring and sequential itemSchema are present.**
+
+The cumulative platform now includes **Publish the OpenAPI 3.2 frontier, streaming and webhook contracts, links, and an Arazzo workflow**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
 ## Next in the story
 
-This course now has the mechanism needed for its final defense. The outgoing handoff becomes the immutable starting point for **Course 2 — Contract-Driven API Service Engineering**, where the responsibility becomes: Implement the fixed contract with durable application, database, worker, storage, and release mechanisms.
+Complete the course final defense and outgoing handoff described in [Capstone](../capstone.md). Course 2 may treat only the manifested handoff as settled.

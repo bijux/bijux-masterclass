@@ -1,6 +1,6 @@
-# Exercises — Module 03 — Delivery Semantics, Ordering, Partitioning, and Acknowledgement
+# Exercises — Module 03: Delivery Semantics, Ordering, Partitioning, and Acknowledgement
 
-Model concrete crash windows and state transitions. Avoid vendor slogans.
+Work through all twelve problems before opening the answers. In **Delivery Semantics, Ordering, Partitioning, and Acknowledgement**, every response must settle this question: **What do acknowledgement, redelivery, ordering, partitioning, lag, and consumer groups actually guarantee?** Do not stop at terminology. Show how the decision changes a request, durable state, consumer, operator action, or release result, and state how that consequence is tested.
 
 ## 1. Name six states
 

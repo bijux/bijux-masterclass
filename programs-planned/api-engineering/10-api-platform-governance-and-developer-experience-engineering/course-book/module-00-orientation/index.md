@@ -1,208 +1,59 @@
-# Orientation and the Platform Boundary
+# Orientation — API Platform, Governance, and Developer Experience Engineering
 
-**Module 00 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** What is Course 10 allowed to centralize, and what must remain with the API owners?
+> **Orientation question:** Is the incoming boundary exact, and can you explain why Course 10 owns the next engineering responsibility?
 
-## Place in the program
+## Why this orientation exists
 
-Course 9 published the exact boundary that Course 10 is allowed to catalogue and govern. Orientation locks that boundary, establishes the language-track strategy, and distinguishes platform mechanisms from business ownership.
+Course 10 starts from accumulated guarantees rather than an empty repository. Orientation prevents a stale handoff, an unavailable tool, or an accidental version change from contaminating the ten teaching days. The goal is not setup for its own sake; it is to make the first claim of **API Platform, Governance, and Developer Experience Engineering** honest.
 
-## Learning outcomes
+## Incoming boundary
 
-- lock the exact Course 9 handoff
-- identify the authority of every inherited interface
-- choose a primary language track
-- classify local, environment-backed, and operational evidence
-- state the platform team’s allowed and forbidden responsibilities
+The Course 9 handoff containing HTTP, event, RPC, distributed-service, and GraphQL contracts with explicit ownership and release evidence.
 
-## Capstone result
+Verify that boundary before editing. Compare the predecessor bytes or entry evidence, inspect the version ledger, and identify which artifacts are historical inputs. A hard implementation problem in Course 10 must be solved at the current layer, not by rewriting an earlier contract or proof.
 
-Verify the predecessor handoff and publish the initial platform-boundary statement.
+## Course responsibility
 
-## The platform boundary
+Turn the interfaces, evidence, and ownership model from Courses 1–9 into a product-oriented API platform with governed self-service and measurable consumer outcomes.
 
-The platform may make trusted API work easier. It may ingest metadata, publish immutable artifacts, run policy, generate documentation, issue sandbox sessions, and route support. It may not redefine project ownership, analysis state, artifact integrity, or notification delivery. If a portal becomes the only place where a business rule exists, the platform has stolen domain authority.
+The governing question is:
 
-## Verify before extending
+> How can an organization make trustworthy API work easier to discover, create, publish, consume, evolve, support, and retire without centralizing domain ownership?
 
-Run predecessor proof before modifying any capstone file. Then inspect the four contract releases copied from Courses 2, 6, 7, and 9. Their different formats are intentional. A platform registry must preserve protocol-specific evidence rather than flatten every contract into one lowest-common-denominator model.
+The current version state is:
 
-## Evidence discipline
+> All earlier interface and engineering profiles preserved; Analysis API Platform 1.0 and platform-catalog metadata migrations 001–004 introduced.
 
-The course uses small executable cores so that catalog, policy, lifecycle, and publication decisions remain visible. Optional Backstage, gateway, and hosted-registry routes are integration exercises. The core is not advertised as a replacement product; it is the place where the learner can see the governing semantics without vendor internals.
+## Reader route
 
-## A reader-first route
+Use the course book in this order:
 
-Do not begin by exploring hundreds of capstone files. Start with the course book, then open only the implementation paths named by the chapter. The repository is organized to support reasoning, not to reward archaeology.
+1. [Course introduction](../index.md) for the complete module arc;
+2. [Capstone](../capstone.md) for the cumulative Analysis Runs Platform state;
+3. [Standards](../standards.md) for normative and course-profile boundaries;
+4. [Evidence model](../evidence-model.md) for authoritative versus diagnostic proof;
+5. [Language strategy](../language-strategy.md) before opening implementation code.
+6. Re-read the list through this course’s lens: **Operate APIs as an organizational platform**.
 
+The chapter teaches the model. Exercises force transfer. Worked answers expose reasoning. The lab attacks one mechanism. The checkpoint decides whether the result is strong enough to carry into the next module.
 
-## The inherited version ledger
+## Implementation route
 
-Course 10 does not begin from a blank repository. It inherits a public HTTP API,
-an event API, an RPC API, and a GraphQL API, plus service, security, reliability,
-and performance profiles. These versions belong to different axes. The platform
-must preserve that distinction:
+The course strategy is **one primary implementation track plus one comparative reference track**. Record the selected route and the reason it supports your learning goal. Do not switch runtimes in the middle of a failed mechanism; first determine whether the model, the implementation, or the environment is wrong.
 
-| Axis | Inherited value | Authority |
-|---|---|---|
-| Public Analysis HTTP API | 1.2 | Analysis Control owner |
-| OpenAPI description format | 3.1.2 baseline | OpenAPI specification |
-| Analysis Events API | 1.0 | Analysis Control owner |
-| AsyncAPI format | 3.1.0 | AsyncAPI specification |
-| Analysis RPC API | 1.0 | Analysis Control owner |
-| Protobuf syntax/profile | proto3 baseline | Protobuf specification and owner policy |
-| Analysis Graph API | 1.0 | Graph gateway and source owners |
-| GraphQL specification | September 2025 | GraphQL specification |
-| Platform profile | proposed 1.0 | API Platform team |
+## Evidence boundary
 
-A common platform mistake is to display one field named `version` and thereby
-mix all of these. A consumer asking for Graph API 1.0 does not mean GraphQL 1.0.
-An SDK 1.2.1 does not imply HTTP API 1.2.1. The course registry and catalog use
-explicit field names so a lifecycle action affects the correct subject.
+List the proof routes available on your machine and classify them as deterministic, local process, live persistence/network, documentation, or independent-tool evidence. The first stronger environment-backed claim is **an operated catalog, registry, and runtime control plane**. Until that route actually runs, use narrower wording and record it as `not-executed`.
 
-## Inspect the boundary as a reviewer
+## Readiness test
 
-Open the Course 9 boundary file before the GraphQL schema. It states what the
-next course may and may not do. Then inspect field ownership, active persisted
-operations, query budgets, and client records. This order matters. A platform
-engineer who begins by parsing a schema can miss the organizational contract
-around it.
+You are ready for [Platform Product Model and Operating Boundaries](../module-01-platform-product-model/index.md) when you can explain, without repository jargon:
 
-Next inspect the actual HTTP, event, and RPC artifacts copied into the Course 10
-contract directory. Their digests are computed from the original release bytes.
-The course does not translate them into a new universal schema. A registry entry
-points at a native artifact and records a normalized publication envelope around
-it.
-
-## Build an evidence map
-
-For every platform claim, write four fields:
-
-1. **Subject** — the entity, release, template, package, route, or consumer.
-2. **Claim** — for example, “HTTP API 1.2 bytes are immutable.”
-3. **Evidence** — digest record, compatibility report, test, runtime observation,
-   or human approval.
-4. **Evidence class** — course-executed, environment-backed, or operational.
-
-This prevents a common substitution. A course-executed test can prove the local
-registry rejects an overwrite. It cannot prove a cloud registry’s authorization
-or durability until that environment is exercised. Conversely, an operational
-screenshot cannot replace a deterministic test of the release invariant.
-
-## Primary and comparative tracks
-
-Implement the full laboratory in one language. In the comparative track, read
-the API, run shared vectors, and review one mechanism where language design
-changes the implementation. For example, Python’s dataclasses and TypeScript’s
-structural types express catalog records differently, but both must reject the
-same orphan API. This strategy develops transfer rather than duplicate typing.
-
-## Orientation failure modes
-
-- **Portal-first exploration:** browsing screens before learning authorities.
-- **Version collapse:** treating API, format, package, and platform versions as
-  one number.
-- **Tool conformance inflation:** claiming a bounded parser proves full external
-  specification compliance.
-- **Handoff mutation:** “fixing” a predecessor contract inside the platform
-  course instead of publishing a new owner-approved release.
-- **Evidence laundering:** presenting a generated report as operational proof
-  merely because its JSON shape looks formal.
-
-The orientation checkpoint exists to catch these errors before the learner builds
-anything on top of them.
-
-
-## Orientation design review
-
-Before moving on, perform a verbal boundary review using one sentence per layer:
-
-- **Domain:** Analysis Control owns run truth and legal transitions.
-- **Interface owner:** each HTTP, event, RPC, and graph release has named semantic
-  authority.
-- **Platform:** Course 10 indexes, verifies, publishes, and supports these
-  releases.
-- **Runtime:** gateways, brokers, servers, and registries expose approved
-  subjects.
-- **Consumer:** integrations choose and pin released subjects.
-
-Now test the sentence “the platform owns the API.” It is too broad. The platform
-may own the graph gateway or publication mechanism, while Analysis Control owns
-the HTTP and event semantics. Always name the exact subject and responsibility.
-
-Create a personal evidence notebook with one row for each course proof. Include
-the command, subject, expected failure, and cleanup. This turns the course into a
-repeatable learning system: when a proof fails, you can identify whether the
-cause is contract, code, metadata, environment, or packaging rather than rerun
-random commands.
-
-Finally, decide what you will not learn through tool installation. Course 10 can
-teach catalog and governance semantics without a large portal deployment. Once
-the invariants are understood, a Backstage or commercial platform integration
-becomes an implementation choice instead of the source of the mental model.
-
-## Evidence before progression
-
-Complete the module laboratory and checkpoint. The evidence must show the decision and its consequences; screenshots of a portal or a green status badge are not sufficient.
-
-## How to read platform evidence
-
-A platform course can easily become a tour of screenshots, products, and policy
-files. This course uses a stricter evidence ladder. First identify the
-**authoritative fact**: for example, an API owner, a released contract digest, a
-consumer relationship, or an approved runtime route. Then identify the
-**mechanism** that stores or derives it. Next identify the **failure** that could
-make the mechanism lie. Finally choose a proof that would detect that failure.
-A catalog page is therefore not evidence that an API is owned; the source
-metadata, relation validation, and accountable group are the evidence. A green
-scorecard is not evidence that a release is safe; the individual, fresh,
-traceable evidence records are.
-
-Use three labels throughout the course:
-
-- **authoritative** — the system or team allowed to create or change a fact;
-- **derived** — a projection computed from authoritative facts and safe to
-  rebuild;
-- **advisory** — information that helps a decision but cannot make it alone.
-
-The contract registry is authoritative for released bytes and digests. The
-portal search index is derived from source documentation. A numerical product
-metric is advisory: it can reveal friction, but it cannot decide whether a
-security blocker may be ignored. Confusing these labels is one of the fastest
-ways to build a polished but unsafe platform.
-
-## A disciplined ten-day route
-
-Each day begins with the chapter because the book defines the engineering
-problem. The exercises then force transfer: you must apply the model to cases
-that differ from the capstone. The laboratory changes one controlled variable
-and records an oracle. The checkpoint is a gate, not a summary. Do not move on
-because the command is green if you cannot explain why the proof would fail
-when the mechanism is broken.
-
-Keep one notebook or Markdown log with five columns:
-
-```text
-claim | authority | mechanism | failure | decisive evidence
-```
-
-For `analysis-http@1.2.0`, a row might state that the released bytes are
-immutable; the registry owns the release record; content addressing and a
-primary key enforce the mechanism; version reuse with different bytes is the
-failure; digest comparison and an overwrite attempt are the evidence. By the
-final defense, the notebook becomes a compact map of the entire platform.
-
-## Primary and comparative language tracks
-
-Choose Python or TypeScript as the implementation track you read line by line.
-Run the other track against the shared vectors after you understand the primary
-implementation. The goal is not line-for-line symmetry. Python may use data
-classes and pathlib while TypeScript uses interfaces and ESM modules. The parity
-boundary is the outcome: canonical entity references, immutable releases,
-blocking policy, consumer-safe retirement, deterministic templates, isolated
-sandboxes, and the same release decisions.
-
-When the two languages disagree, do not immediately patch one to imitate the
-other. First identify whether the difference is internal representation or an
-observable platform guarantee. Only the latter is a parity defect.
+1. what the predecessor already settled;
+2. what Course 10 is allowed to change;
+3. which versions and profiles are independent axes;
+4. which implementation route you selected;
+5. which evidence classes are available;
+6. what the outgoing handoff must prove: Analysis API Platform 1.0, a governed catalog and registry, lifecycle and policy engine, golden path, documentation and sandbox, SDK and provenance publication, runtime reconciliation, support model, and a ten-course graduation dossier.

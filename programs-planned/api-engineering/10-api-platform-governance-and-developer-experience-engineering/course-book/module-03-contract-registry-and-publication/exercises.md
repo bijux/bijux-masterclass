@@ -1,6 +1,6 @@
-# Exercises — Contract Registry and Multi-Protocol Publication
+# Exercises — Module 03: Contract Registry and Multi-Protocol Publication
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Contract Registry and Multi-Protocol Publication**, every response must settle this question: **What makes an API contract a trustworthy published release across HTTP, events, RPC, and GraphQL?** Do not stop at terminology. Show how the decision changes a request, durable state, consumer, operator action, or release result, and state how that consequence is tested.
 
 ## 1. Why store releases by digest as well as version?
 

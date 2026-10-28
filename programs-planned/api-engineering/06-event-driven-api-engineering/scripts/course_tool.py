@@ -170,7 +170,7 @@ def orientation_proof() -> None:
 def structure_proof() -> None:
     require((ROOT / "README.md").is_file(), "README.md missing")
     pages = sorted(COURSE_BOOK.rglob("*.md"))
-    require(len(pages) == 59, f"expected 59 course-book pages, found {len(pages)}")
+    require(len(pages) == 61, f"expected 61 course-book pages, found {len(pages)}")
     module_dirs = sorted(path for path in COURSE_BOOK.iterdir() if path.is_dir() and path.name.startswith("module-"))
     require(len(module_dirs) == 11, f"expected orientation plus ten modules, found {len(module_dirs)}")
     orientation = COURSE_BOOK / "module-00-orientation"
@@ -188,7 +188,7 @@ def structure_proof() -> None:
         require(ex_numbers == [str(i) for i in range(1, 13)], f"module {number:02d} does not have exercises 1–12")
         require(an_numbers == ex_numbers, f"module {number:02d} answer numbering does not match exercises")
         lab = (module / "lab.md").read_text(encoding="utf-8")
-        for heading in ["Objective", "Setup conditions", "Failure action and investigation", "Operational oracle", "Required evidence", "Cleanup and reset", "Completion gate"]:
+        for heading in ["Objective", "Setup conditions", "Controlled action and investigation", "Operational oracle", "Required evidence", "Cleanup and reset", "Completion gate"]:
             require(f"## {heading}" in lab, f"module {number:02d} lab lacks {heading}")
     mkdocs = load_yaml(ROOT / "mkdocs.yml")
     nav_paths: set[str] = set()
@@ -202,9 +202,9 @@ def structure_proof() -> None:
             for item in value.values():
                 collect_nav(item)
     collect_nav(mkdocs.get("nav", []))
-    expected_nav = {path.relative_to(ROOT).as_posix() for path in pages}
+    expected_nav = {path.relative_to(COURSE_BOOK).as_posix() for path in pages}
     require(nav_paths == expected_nav, f"MkDocs navigation differs from course-book pages: extra={sorted(nav_paths-expected_nav)}, missing={sorted(expected_nav-nav_paths)}")
-    pass_line("course structure — 59 navigated pages, ten modules, 120 exercises and answers")
+    pass_line("course structure — 61 navigated pages, ten modules, 120 exercises and answers")
 
 
 def data_proof() -> None:

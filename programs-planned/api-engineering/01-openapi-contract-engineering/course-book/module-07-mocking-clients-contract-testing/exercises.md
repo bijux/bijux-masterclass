@@ -1,5 +1,7 @@
 # Exercises — Module 07: Mocks, Clients, and Contract Testing
 
+Work through all twelve problems before opening the answers. In **Mocks, Clients, and Contract Testing**, every response must settle this question: **How do mocks, generated clients, examples, property tests, and stateful tests provide different evidence?** Each solution must survive delay, duplication, version skew, hostile input, or partial failure where relevant; happy-path intuition alone earns no credit.
+
 ## 1. What does a successful bundle prove?
 
 ## 2. When should a custom lint rule block CI?

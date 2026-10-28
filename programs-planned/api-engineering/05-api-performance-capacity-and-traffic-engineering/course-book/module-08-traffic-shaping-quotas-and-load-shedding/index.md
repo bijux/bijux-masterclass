@@ -1,39 +1,31 @@
 # Module 08 — Traffic Shaping, Quotas, and Load Shedding
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** How should quotas, priorities, cost budgets, and load shedding preserve fairness and truthful 429/503 outcomes?
 
 ## Where this module fits
 
+Module 07 produced **Build authorization-aware keys, TTL/capacity policy, source-version invalidation, single-flight fills, and failure semantics**. This module extends that result by asking: **How should quotas, priorities, cost budgets, and load shedding preserve fairness and truthful 429/503 outcomes?**
 
-Course 3 introduced abuse resistance: hostile or excessive clients must not exhaust the service. Course 5 extends the same control plane to legitimate demand, fairness, and service preservation. A client may be fully authorized and still offer more work than the platform can complete within its objectives.
-
-Traffic engineering combines rate, quota, concurrency, cost, and priority. No single requests-per-second limit captures the difference between a metadata read, a 10 GiB upload, an analysis submission, and a long artifact stream. The policy must express the resource consumed and the time horizon.
-
-The goal is not zero rejection. Under overload, refusing some work early can preserve already admitted and higher-value journeys. The failure is hidden overload: accepting everything, then timing out, violating freshness, or exhausting a shared dependency.
-
-
-## Capstone result
-
-Implement multi-dimensional fixed-point budgets, tenant isolation, staged shedding, and rollback of partial reservations.
-
-Implement performance traffic policy 1.0 with cost-weighted token buckets, concurrency classes, tenant fairness, retry guidance, and a staged load-shedding ladder.
+The new capstone increment is **Implement multi-dimensional fixed-point budgets, tenant isolation, staged shedding, and rollback of partial reservations**. It becomes the prerequisite for **Capacity Modeling and Scaling Decisions**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Distinguish rate limits, quotas, concurrency limits, and capacity admission.
+- Choose dimensions that reflect resource cost.
+- Implement deterministic token-bucket arithmetic.
+- Bind policy to principal, tenant, operation, and service class.
+- Preserve fairness under skewed traffic.
+- Calculate truthful retry guidance.
+- Define a load-shedding ladder before overload.
+- Protect admitted work and critical control operations.
+- Measure offered, admitted, rejected, and completed traffic by reason.
+- State local versus distributed enforcement limitations.
 
-- distinguish rate limits, quotas, concurrency limits, and capacity admission
-- choose dimensions that reflect resource cost
-- implement deterministic token-bucket arithmetic
-- bind policy to principal, tenant, operation, and service class
-- preserve fairness under skewed traffic
-- calculate truthful retry guidance
-- define a load-shedding ladder before overload
-- protect admitted work and critical control operations
-- measure offered, admitted, rejected, and completed traffic by reason
-- state local versus distributed enforcement limitations
+## Capstone increment
+
+Implement multi-dimensional fixed-point budgets, tenant isolation, staged shedding, and rollback of partial reservations.
 
 ## Core performance model
 
@@ -194,7 +186,6 @@ resource utilization
 
 Requests per second alone can improve while cost or bytes explode. Compare admitted work with completed work and service objectives. Rejection is acceptable only when policy selects it and the response is correct.
 
-
 ## Course requirements
 
 | Rule | Required behavior | Failure if omitted | Decisive evidence |
@@ -336,10 +327,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-Traffic engineering allocates finite capacity before overload turns into hidden waiting and failure. Module 8 combines rate, quota, concurrency, cost, fairness, and shedding while preserving the public contract.
+You are ready to leave this module when you can **distinguish rate limits, quotas, concurrency limits, and capacity admission, choose dimensions that reflect resource cost, and implement deterministic token-bucket arithmetic** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **offered/admitted/rejected/completed cost reconciles; no partial token leak occurs; tenant B retains the declared minimum service; status and cancellation remain available.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Implement multi-dimensional fixed-point budgets, tenant isolation, staged shedding, and rollback of partial reservations**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **Capacity Modeling and Scaling Decisions**, asks: What capacity does the current system have, what uncertainty surrounds it, and which resource becomes the first bottleneck as demand grows? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [Capacity Modeling and Scaling Decisions](../module-09-capacity-modeling-and-scaling-decisions/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

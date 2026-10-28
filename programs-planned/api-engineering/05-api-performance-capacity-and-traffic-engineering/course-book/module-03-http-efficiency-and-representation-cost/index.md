@@ -1,38 +1,30 @@
 # Module 03 — HTTP Efficiency and Representation Cost
 
-> **Program stage:** Course 5 of 6 — Sustain the promise under pressure.
+> **Program stage:** Course 5 of 10 — Sustain the promise under pressure.
 
 > **Central question:** Where do HTTP connections, representations, compression, conditional requests, range delivery, and streaming consume time and bytes?
 
 ## Where this module fits
 
+Module 02 produced **Build reproducible benchmark profiles, repeated runs, quantile and interval summaries, and accepted/rejected/inconclusive comparisons**. This module extends that result by asking: **Where do HTTP connections, representations, compression, conditional requests, range delivery, and streaming consume time and bytes?**
 
-HTTP already contains performance mechanisms: persistent connections, validators, conditional requests, ranges, representation metadata, and caching controls. They are easy to misuse because an optimization at the byte level can change the meaning seen by a client or intermediary.
-
-This module treats HTTP efficiency as representation engineering. You will measure header bytes, body bytes, time to first byte, completion time, memory peak, storage reads, and status distribution. You will then apply conditional retrieval, range delivery, compression, and streaming only where their semantics are correct.
-
-The inherited Analysis Runs API contains two distinct classes. Metadata responses are small, authorization-sensitive JSON representations. Artifacts may be large, immutable, content-addressed byte sequences. The correct strategy differs. Shared caching that is safe for a public immutable artifact can be a tenant leak for project metadata.
-
-
-## Capstone result
-
-Optimize artifact and metadata delivery while preserving authorization, ETags, ranges, and bounded memory.
-
-Implement and verify the HTTP performance policy for metadata and artifacts, including validators, conditional requests, byte ranges, bounded streaming, and compression decisions.
+The new capstone increment is **Optimize artifact and metadata delivery while preserving authorization, ETags, ranges, and bounded memory**. It becomes the prerequisite for **PostgreSQL Query and Persistence Performance**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-By the end of this module, you can:
+- Separate resource state, selected representation, and transferred message.
+- Measure bytes and buffering alongside latency.
+- Apply strong and weak entity tags intentionally.
+- Evaluate conditional requests in the correct precedence.
+- Implement single byte-range requests and documented unsatisfied ranges.
+- Stream large bodies with bounded memory.
+- Choose compression from media type, size, CPU, and cache-key consequences.
+- Design authorization-aware cache directives and `Vary` behavior.
+- Reject optimizations that break checksums, ranges, or tenant isolation.
 
-- separate resource state, selected representation, and transferred message
-- measure bytes and buffering alongside latency
-- apply strong and weak entity tags intentionally
-- evaluate conditional requests in the correct precedence
-- implement single byte-range requests and documented unsatisfied ranges
-- stream large bodies with bounded memory
-- choose compression from media type, size, CPU, and cache-key consequences
-- design authorization-aware cache directives and `Vary` behavior
-- reject optimizations that break checksums, ranges, or tenant isolation
+## Capstone increment
+
+Optimize artifact and metadata delivery while preserving authorization, ETags, ranges, and bounded memory.
 
 ## Core performance model
 
@@ -125,7 +117,6 @@ HTTP caching is not an in-process dictionary. A response’s policy declares whe
 Immutable content-addressed artifacts can use long freshness with `immutable` when authorization and URL design ensure that reuse cannot cross principals improperly. If an artifact URL is protected by bearer authorization, shared caching requires a deliberate design; `public` is not safe by default.
 
 `Vary` affects cache keys. Varying on high-cardinality or unstable headers can destroy hit rate. Omitting a selection header can return the wrong representation.
-
 
 ## Course requirements
 
@@ -267,10 +258,10 @@ Before accepting the module increment, answer:
 
 ## Module synthesis
 
-HTTP efficiency is achieved by selecting and transferring the right representation, not by removing semantics. Validators, ranges, compression, streaming, and cache directives must form one consistent model.
+You are ready to leave this module when you can **separate resource state, selected representation, and transferred message, measure bytes and buffering alongside latency, and apply strong and weak entity tags intentionally** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **304 sends no body and retains validator/cache metadata; 206 and 416 metadata matches exact bytes; reconstructed checksum equals the original; unauthorized access remains rejected before reuse.**
 
-Proceed to [Exercises](exercises.md), then complete the [Lab](lab.md) and [Checkpoint](checkpoint.md).
+The cumulative platform now includes **Optimize artifact and metadata delivery while preserving authorization, ETags, ranges, and bounded memory**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-The next module, **PostgreSQL Query and Persistence Performance**, asks: Which query plan, index, lock, pool, or pagination behavior is the first persistence bottleneck for a declared workload? It builds on the evidence produced here rather than reopening this module's decisions.
+Continue to [PostgreSQL Query and Persistence Performance](../module-04-postgresql-query-and-persistence-performance/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

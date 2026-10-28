@@ -1,6 +1,6 @@
-# Exercises — Subscriptions, Resume, and Incremental Delivery
+# Exercises — Module 09: Subscriptions, Resume, and Incremental Delivery
 
-Answer before reading the worked answers. Each response must name the invariant, failure mode, and decisive evidence.
+Work through all twelve problems before opening the answers. In **Subscriptions, Resume, and Incremental Delivery**, every response must settle this question: **How can real-time graph results remain authorized, bounded, and recoverable across disconnects?** The strongest answer distinguishes specification, implementation, and operational evidence, then demonstrates where a plausible shortcut would fail.
 
 ## 1. What does GraphQL core define for subscriptions?
 
@@ -36,4 +36,3 @@ Answer before reading the worked answers. Each response must name the invariant,
 
 
 ## 12. What evidence proves resume correctness?
-

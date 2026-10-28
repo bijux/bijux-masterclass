@@ -1,15 +1,38 @@
-# Evidence model
+# Evidence Model — gRPC and Protobuf Engineering
 
-| Evidence | Establishes | Does not establish |
-|---|---|---|
-| proto text inspection | declared schema and method shape | compiler acceptance or runtime behavior |
-| descriptor comparison | machine-readable schema identity and selected compatibility | application behavior |
-| golden binary vectors | encoding and old/new parsing for specific messages | network or transaction behavior |
-| in-process service tests | deterministic application and protocol schedules | HTTP/2, TLS, proxies, real channel behavior |
-| live Python gRPC tests | Python serialization, metadata, status, cancellation, and streams | TypeScript network parity or production infrastructure |
-| TypeScript core tests | language-level policy and shared-vector parity | grpc-js transport behavior without dependencies |
-| Buf/protoc proof | independent lint, compilation, generation, and breaking rules | security, idempotency, or operational correctness |
-| TLS/load-balancer proof | configured network and identity behavior in that environment | every production topology |
-| database-backed proof | durable idempotency, leases, and outbox semantics | public contract compatibility by itself |
+## Course-specific proof ladder
 
-The final report records `passed`, `failed`, `not-executed`, or `not-applicable`. A missing tool never becomes a synthetic pass.
+| Level | Evidence | Minimum record |
+|---:|---|---|
+| 1 | descriptor and golden-wire evidence | A named claim, version, environment, oracle, and retained artifact |
+| 2 | live unary and streaming observations | A named claim, version, environment, oracle, and retained artifact |
+| 3 | deadline, cancellation, and flow-control schedules | A named claim, version, environment, oracle, and retained artifact |
+| 4 | method policy and compatibility candidates | A named claim, version, environment, oracle, and retained artifact |
+
+## Authority versus diagnosis
+
+For RPC claims, the published descriptors and observed status, metadata, messages, deadlines, and stream termination decide conformance; generated stubs cannot prove network behavior.
+
+## Negative evidence
+
+Every Course 7 lab contains a defect specific to engineer typed internal invocation and streaming. Predict the first failing oracle, retain the raw counterexample, and keep it after repair; a proof that accepts that defect cannot support the checkpoint claim.
+
+## Evidence package
+
+Each checkpoint should retain:
+
+```text
+claim and owner
+input, workload, or candidate identity
+software and contract versions
+environment identity
+command or procedure
+raw result
+interpreted decision
+known exclusions
+cleanup state
+```
+
+## Unavailable infrastructure
+
+When generated descriptors, a networked gRPC stack, TLS identity, and streaming peers is unavailable, run the deterministic evidence that still applies and record the stronger route as `not-executed`. The wording of the claim must shrink with the environment.

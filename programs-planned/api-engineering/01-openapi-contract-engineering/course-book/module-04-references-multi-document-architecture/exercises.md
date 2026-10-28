@@ -1,5 +1,7 @@
 # Exercises — Module 04: References and Multi-Document Architecture
 
+Work through all twelve problems before opening the answers. In **References and Multi-Document Architecture**, every response must settle this question: **How can a multi-document contract remain understandable, relocatable, and deterministically buildable?** For every answer, separate the authoritative boundary from convenient diagnostics, then explain which failing experiment would force you to revise the design.
+
 ## 1. Resolve `../components/schemas/Project.yaml` from `spec/paths/projects.yaml`.
 
 ## 2. Decode JSON Pointer `/components/schemas/A~1B~0C`.

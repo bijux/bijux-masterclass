@@ -1,125 +1,87 @@
 # Glossary — API Security Engineering
 
-Use this glossary alongside `program-book/glossary.md`. Program terms keep one meaning across all six courses; the entries below add course-specific distinctions.
+These terms have precise meanings in Course 3. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
-Terms are defined as used in this program. When an Internet or OpenAPI specification gives a narrower normative meaning, the chapter and standards page name it.
+## asset
 
-## Threat
+Something with value that the system must protect, such as credentials, tenant data, availability, artifact integrity, or audit evidence.
 
-A plausible actor, capability, action, and consequence that can violate a security property.
+## threat
 
-## Asset
+A plausible actor, condition, or action capable of violating a security property of an asset.
 
-Data, capability, identity, availability, or evidence that the system must protect.
+## abuse case
 
-## Trust boundary
+A concrete hostile or improper interaction described from the attacker’s goal through the expected defensive outcome.
 
-A point where the system begins relying on an assertion made under a different authority, not necessarily a network hop.
+## trust boundary
 
-## Abuse case
+A point where data or authority crosses between components, identities, networks, or administrative domains with different assumptions.
 
-A concrete adversarial scenario stating attacker capability, action, prohibited outcome, and evidence.
+## security invariant
 
-## Security invariant
+A security property that must hold across all relevant paths, such as “a principal cannot read another tenant’s artifact.”
 
-A property that must hold for every relevant execution, such as tenant isolation.
+## principal
 
-## Residual risk
+The authenticated identity on whose behalf a request or action is evaluated.
 
-Accepted or unresolved exposure remaining after controls, with assumptions and ownership stated explicitly.
+## issuer
 
-## Resource server
+The authority identified by a token’s `iss` claim and trusted to create the credential under a configured policy.
 
-The API that accepts and validates access tokens to protect resources; it is not the authorization server.
+## audience
 
-## JWT profile
+The intended recipient identified by a credential; the resource server must reject tokens not issued for it.
 
-The configured set of accepted algorithms, keys, types, issuers, audiences, times, and required claims.
+## scope
 
-## JWKS
+A delegated permission string constraining categories of actions; it does not by itself establish tenant membership or object ownership.
 
-A JSON Web Key Set published by a trusted issuer and used under a configured key-selection policy.
+## role
 
-## Audience
+A named grouping of permissions or responsibilities assigned within a defined administrative context.
 
-The resource server or service for which a token is intended.
+## tenant
 
-## Revocation
+An isolation domain whose data, quotas, policies, and memberships must not be confused with those of another tenant.
 
-A decision to reject a still-unexpired credential or key.
+## object ownership
 
-## Principal
+The relationship establishing which principal or tenant controls a specific resource instance.
 
-The authenticated caller identity and validated attributes used by policy.
+## default deny
 
-## Authorization policy
+The policy that access is refused unless a rule explicitly authorizes the exact action and resource context.
 
-A default-deny rule over operation, principal, resource facts, relationship, and context.
+## confused deputy
 
-## BOLA
+A failure in which a component with authority is induced to use that authority for a caller who is not entitled to the result.
 
-Broken object-level authorization: access to an object without the required relationship or tenant permission.
+## canonicalization
 
-## Existence concealment
-
-Returning an indistinguishable not-found outcome for selected unauthorized foreign resources.
-
-## Canonicalization
-
-Producing one defined interpretation after protocol parsing; careless or repeated normalization can create ambiguity.
-
-## Strict JSON
-
-A constrained parser profile rejecting duplicate members, malformed encoding, excessive depth, and unsupported numeric forms.
-
-## Path confinement
-
-Resolving a path under a fixed root and proving it cannot escape through encoding, normalization, or links.
+The process of converting multiple textual or structural representations into one form before comparison, signing, policy, or hashing.
 
 ## SSRF
 
-Server-side request forgery: abuse of server-initiated network access to reach forbidden destinations or capabilities.
+Server-side request forgery: attacker influence over outbound requests that can reach unintended hosts, networks, protocols, or credentials.
 
-## Connected-peer verification
+## replay
 
-Checking that the actual remote address used by the connection remains within the validated destination set.
+Reuse of a valid credential, signed message, or request outside its intended one-time or freshness boundary.
 
-## Webhook replay
+## secret rotation
 
-Reusing an otherwise valid signed delivery to apply an effect more than once.
+Replacing active secret material while supporting a bounded overlap and an explicit retirement path for the old version.
 
-## Secret provider
+## audit event
 
-A narrow interface that supplies secret bytes without making them generally renderable application values.
+A privacy-bounded, security-relevant record of who attempted what action, on which protected object, with which decision and reason.
 
-## Pepper
+## abuse budget
 
-A separately stored secret used in keyed verification of stored credential digests.
+A bounded allowance for costly or suspicious behavior, enforced across dimensions such as principal, tenant, operation, and resource cost.
 
-## Pseudonymization
+## residual risk
 
-Replacing direct identifiers with keyed, stable aliases while retaining controlled correlation.
-
-## Rate limit
-
-A bound on admitted cost over time for a defined identity and operation dimension.
-
-## Concurrency limit
-
-A bound on simultaneous ownership of a scarce resource.
-
-## Hostile vector
-
-A language-neutral adversarial input with an expected security outcome.
-
-## Mutant
-
-A controlled implementation defect used to show that a security test can detect removal of a control.
-
-## SBOM
-
-A software bill of materials describing components present in a build or artifact.
-
-## Incident containment
-
-Actions that block or bound an active compromise while preserving necessary evidence and service safety.
+The explicitly accepted risk remaining after controls and verification, with an owner, rationale, review point, and limits.

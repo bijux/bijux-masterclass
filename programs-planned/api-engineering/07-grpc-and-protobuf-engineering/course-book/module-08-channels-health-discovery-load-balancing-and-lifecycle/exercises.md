@@ -1,6 +1,6 @@
-# Exercises — Channels, Health, Discovery, Load Balancing, and Lifecycle
+# Exercises — Module 08: Channels, Health, Discovery, Load Balancing, and Lifecycle
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **Channels, Health, Discovery, Load Balancing, and Lifecycle**, every response must settle this question: **How do clients and servers manage long-lived channels, instance health, name resolution, load balancing, startup, draining, and shutdown without hiding failure or losing active work?** Use the cumulative platform, not an invented toy system. Preserve inherited guarantees and make every new assumption explicit and falsifiable.
 
 ## 1. Why should a gRPC channel normally outlive one call?
 

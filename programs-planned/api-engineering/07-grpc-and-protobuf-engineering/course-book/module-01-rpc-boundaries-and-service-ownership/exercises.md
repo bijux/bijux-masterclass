@@ -1,6 +1,6 @@
-# Exercises — RPC Boundaries, Service Ownership, and Interaction Choice
+# Exercises — Module 01: RPC Boundaries, Service Ownership, and Interaction Choice
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **RPC Boundaries, Service Ownership, and Interaction Choice**, every response must settle this question: **Which interactions deserve a typed RPC boundary, and which should remain HTTP requests, durable events, or local function calls?** A complete response identifies the contract owner, predicts one observable failure, and names the evidence that decides the case; a definition by itself is incomplete.
 
 ## 1. A public browser client needs to list analysis runs. Should this become a gRPC method? Explain the governing factors.
 

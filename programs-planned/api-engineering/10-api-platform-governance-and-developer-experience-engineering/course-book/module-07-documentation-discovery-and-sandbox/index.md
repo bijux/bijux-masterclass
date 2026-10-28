@@ -1,22 +1,24 @@
-# Documentation, Discovery, Sandboxes, and Consumer Onboarding
+# Module 07 — Documentation, Discovery, Sandboxes, and Consumer Onboarding
 
-**Module 07 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** Can a new consumer find the right interface, trust it, and complete a useful workflow safely without private organizational knowledge?
+> **Central question:** Can a new consumer find the right interface, trust it, and complete a useful workflow safely without private organizational knowledge?
 
-## Place in the program
+## Where this module fits
 
-Module 06 created a safe starting point for owners. Module 07 serves consumers: discovery must lead to a successful and correctly understood interaction, not merely to a rendered reference page.
+Module 06 produced **Publish and verify the `api-capability-v1` golden path and generated reference fixture**. This module extends that result by asking: **Can a new consumer find the right interface, trust it, and complete a useful workflow safely without private organizational knowledge?**
+
+The new capstone increment is **Publish the task-oriented portal source, search index, sandbox profile, and first-success evidence**. It becomes the prerequisite for **SDKs, CLIs, Artifacts, SBOMs, and Provenance**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- organize documentation around tasks and interface choice
-- publish trustworthy discovery metadata
-- build executable version-bound examples
-- design isolated synthetic sandboxes
-- measure onboarding outcomes and route support
+- Organize documentation around tasks and interface choice.
+- Publish trustworthy discovery metadata.
+- Build executable version-bound examples.
+- Design isolated synthetic sandboxes.
+- Measure onboarding outcomes and route support.
 
-## Capstone result
+## Capstone increment
 
 Publish the task-oriented portal source, search index, sandbox profile, and first-success evidence.
 
@@ -63,7 +65,6 @@ The portal core builds a deterministic search index from Markdown and contract m
 ## Standards anchor
 
 Backstage TechDocs follows a docs-like-code model that keeps Markdown near software and makes it discoverable with catalog entities. The course uses the same useful separation: owners maintain semantics near code; the platform publishes and searches. See [TechDocs](https://backstage.io/docs/features/techdocs/) and [creating and publishing docs](https://backstage.io/docs/features/techdocs/creating-and-publishing/).
-
 
 ## Information architecture
 
@@ -170,7 +171,6 @@ Index titles, task vocabulary, protocol, owner, lifecycle, and released versions
 Down-rank deprecated content unless the query is migration-related. Show why a
 result is recommended. A search system that sends new users to a retired version
 because it has historical traffic undermines lifecycle governance.
-
 
 ## Interface-selection decision table
 
@@ -334,3 +334,13 @@ function sandboxFromDigest(digest: string, now: Date): SandboxSession {
 The TypeScript course implementation computes the same SHA-256 digest. The
 sandbox boundary also rejects production-data import, limits credentials, and
 uses controlled endpoints. Identity alone is not isolation.
+
+## Module synthesis
+
+You are ready to leave this module when you can **organize documentation around tasks and interface choice, publish trustworthy discovery metadata, and build executable version-bound examples** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **The normal path reaches a defined first success. The stale example fails quality checks. Production data import is rejected. The owner and support path remain discoverable at every step.**
+
+The cumulative platform now includes **Publish the task-oriented portal source, search index, sandbox profile, and first-success evidence**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [SDKs, CLIs, Artifacts, SBOMs, and Provenance](../module-08-sdks-artifacts-and-supply-chain/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

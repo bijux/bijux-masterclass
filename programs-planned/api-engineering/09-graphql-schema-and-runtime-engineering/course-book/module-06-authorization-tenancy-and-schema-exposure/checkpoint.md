@@ -1,12 +1,33 @@
-# Checkpoint 06 — Authorization, Tenancy, and Schema Exposure
+# Checkpoint — Module 06: Authorization, Tenancy, and Schema Exposure
 
-Do not continue until every condition is supported by executable or inspected evidence.
+## Required result
 
-- [ ] Root, object, collection, field, and mutation authorization decisions are all explicit and default-deny.
-- [ ] Tenant isolation is enforced by source queries or policy inputs, not inferred from parent traversal.
-- [ ] Denied protected fields cause zero downstream calls and return only the declared nullable/error behavior.
-- [ ] Global IDs, aliases, fragments, node lookup, and search cannot bypass ownership or field policy.
-- [ ] Request-scoped loader keys cannot share a protected value across principals or tenants.
-- [ ] Lab 06 includes wrong-tenant, missing-permission, field-level denial, and support-context cases with call-count evidence.
+Prove field, tenant, collection, and sensitive-output authorization.
 
-**Gate:** run `make module-06-proof`. A green command without the lab report and the listed evidence does not count.
+## Demonstrate
+
+- [ ] Enforce field and tenant authorization.
+- [ ] Filter collections at the source.
+- [ ] Protect sensitive output fields.
+- [ ] Delegate state-dependent policy.
+- [ ] Choose an introspection and trusted-document policy.
+
+## Commands
+
+```bash
+make core-proof
+```
+
+## Evidence to retain
+
+Create `reports/module-06-authorization.json` with principal class, tenant, operation, field coordinate, decision, concealment behavior, source-call count, cache key class, and subscription closure reason. Pseudonymize subject and object identities.
+
+## Defend the design
+
+1. Answer the central question in one paragraph: How can clients select flexible fields without gaining flexible authority?
+2. Name the authoritative owner and smallest counterexample.
+3. State what the available evidence does not prove.
+
+## Continue only when
+
+Continue only after you can demonstrate the **Authorization, Tenancy, and Schema Exposure** increment, preserve the controlled counterexample as a regression, keep inherited checkpoints green, and explain which stronger claim remains outside the evidence you collected.

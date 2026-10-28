@@ -1,26 +1,24 @@
-# Subscriptions, Resume, and Incremental Delivery
+# Module 09 — Subscriptions, Resume, and Incremental Delivery
 
-**Module 09 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How can real-time graph results remain authorized, bounded, and recoverable across disconnects?
+> **Central question:** How can real-time graph results remain authorized, bounded, and recoverable across disconnects?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 09 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 08 produced **Return truthful partial data with path-specific errors and traces**. This module extends that result by asking: **How can real-time graph results remain authorized, bounded, and recoverable across disconnects?**
+
+The new capstone increment is **Deliver resumable run updates with gap and duplicate handling**. It becomes the prerequisite for **Schema Evolution, Federation, Governance, and Final Defense**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- map durable events to subscription responses
+- Map durable events to subscription responses.
+- Resume by sequence.
+- Re-evaluate long-lived authorization.
+- Bound subscriber buffers.
+- Classify incremental-delivery features honestly.
 
-- resume by sequence
-
-- re-evaluate long-lived authorization
-
-- bound subscriber buffers
-
-- classify incremental-delivery features honestly
-
-## Capstone result
+## Capstone increment
 
 Deliver resumable run updates with gap and duplicate handling.
 
@@ -168,3 +166,13 @@ Both tracks implement duplicate suppression, strict next-sequence checks, and bo
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-09-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **map durable events to subscription responses, resume by sequence, and re-evaluate long-lived authorization** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Expect delivery 4, 5; the duplicate must not produce a second response** and requiring the following oracle: **resume begins strictly after the last processed sequence;; duplicates are suppressed;; gaps and retention expiry are explicit;; sequence values remain precision-safe strings;.**
+
+The cumulative platform now includes **Deliver resumable run updates with gap and duplicate handling**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Schema Evolution, Federation, Governance, and Final Defense](../module-10-schema-evolution-federation-governance-and-final-defense/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

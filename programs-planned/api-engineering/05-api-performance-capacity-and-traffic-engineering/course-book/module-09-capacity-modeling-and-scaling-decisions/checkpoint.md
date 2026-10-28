@@ -1,21 +1,8 @@
-# Module 09 checkpoint — Capacity Modeling and Scaling Decisions
+# Checkpoint — Module 09: Capacity Modeling and Scaling Decisions
 
 ## Required result
 
-- [ ] capacity vectors pass in both tracks
-- [ ] three scenarios validate
-- [ ] resource units and Decimal scale are explicit
-- [ ] downstream effects of scale are included
-- [ ] cost per useful outcome is reported
-- [ ] model limitations and remeasurement triggers are documented
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. Which resource limits the expected scenario?
-2. Why would adding API instances help or hurt?
-3. What input uncertainty is most important to measure next?
+Model CPU, connections, workers, queues, storage, egress, cost, headroom, and scaling decisions.
 
 ## Demonstrate
 
@@ -29,6 +16,33 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=09 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-09/
+├── assumptions.yaml
+├── service-demand.json
+├── expected-scenario.json
+├── high-scenario.json
+├── degraded-scenario.json
+├── drain-model.json
+├── validation-run.json
+├── options.md
+└── capacity-decision.md
+```
+
+Include a sensitivity table showing which input changes the first bottleneck or required scale step. Record the source date for each forecast.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. Which resource limits the expected scenario?
+2. Why would adding API instances help or hurt?
+3. What input uncertainty is most important to measure next?
 
 ## Continue only when
 

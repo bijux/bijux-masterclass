@@ -1,6 +1,6 @@
-# Exercises — Documentation, Discovery, Sandboxes, and Consumer Onboarding
+# Exercises — Module 07: Documentation, Discovery, Sandboxes, and Consumer Onboarding
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Documentation, Discovery, Sandboxes, and Consumer Onboarding**, every response must settle this question: **Can a new consumer find the right interface, trust it, and complete a useful workflow safely without private organizational knowledge?** Each solution must survive delay, duplication, version skew, hostile input, or partial failure where relevant; happy-path intuition alone earns no credit.
 
 ## 1. Why is generated reference documentation insufficient for onboarding?
 

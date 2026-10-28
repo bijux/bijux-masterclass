@@ -1,12 +1,14 @@
 # Module 02 — HTTP Edge and Canonicalization
 
-> **Program stage:** Course 3 of 6 — Defend the promise.
+> **Program stage:** Course 3 of 10 — Defend the promise.
 
 > **Central question:** Which raw HTTP message should the application trust after proxies, parsers, duplicate fields, and size limits intervene?
 
 ## Where this module fits
 
-Harden host, scheme, forwarding, media type, request size, duplicate header, and strict JSON boundaries. You arrive from Module 01 with all earlier checkpoints still green. API 1.2 and its durable service behavior are fixed. This course adds controls derived from explicit threats; it does not redefine successful business outcomes or treat middleware configuration as proof of security. The result is the baseline for **Authentication and Token Validation**.
+Module 01 produced **Create a security case that traces threats to requirements, control owners, tests, and residual risk**. This module extends that result by asking: **Which raw HTTP message should the application trust after proxies, parsers, duplicate fields, and size limits intervene?**
+
+The new capstone increment is **Establish host, forwarding, media-type, strict-JSON, body-size, and canonicalization rules before model validation**. It becomes the prerequisite for **Authentication and Token Validation**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Harden host, scheme, forwarding, media type, request size, duplicate header, and
 - Enforce content type and body limits before model validation.
 - Separate browser CORS policy from API authentication.
 
-## Capstone result
+## Capstone increment
 
 Establish host, forwarding, media-type, strict-JSON, body-size, and canonicalization rules before model validation.
-
-FastAPI and Fastify reject ambiguous edge input consistently before application models are constructed.
 
 ## Core security model
 
@@ -113,7 +113,6 @@ A small byte body contains extreme nested arrays and consumes parser stack or CP
 
 A denied browser preflight is treated as proof that scripted non-browser callers cannot invoke the API.
 
-
 ## Python implementation
 
 Implement an ASGI middleware that reads bounded raw bytes, rejects ambiguous critical headers, invokes a strict JSON decoder with `object_pairs_hook`, and replays the validated body to FastAPI. Do not modify Starlette private request attributes. Put verified edge context in `scope["state"]`.
@@ -142,7 +141,6 @@ For each pattern, explain why it can look reasonable, construct the smallest cou
 
 
 ### 6. Redirecting to a Host-derived URL without host policy.
-
 
 ## What you add to the capstone
 
@@ -271,8 +269,10 @@ Compare the two tracks by this invariant: **critical singleton headers, trusted 
 
 ## Module synthesis
 
-The module answer to “Which bytes and proxy assertions does the application actually trust before framework parsing begins?” is now executable in the capstone: FastAPI and Fastify reject ambiguous edge input consistently before application models are constructed.
+You are ready to leave this module when you can **Define direct-client and trusted-proxy behavior, Reject ambiguous singleton headers and duplicate JSON members, and Normalize only after preserving raw evidence** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control and prove the predicted oracle fails** and requiring the following oracle: **Define direct-client and trusted-proxy behavior; Reject ambiguous singleton headers and duplicate JSON members; Normalize only after preserving raw evidence; Enforce content type and body limits before model validation.**
+
+The cumulative platform now includes **Establish host, forwarding, media-type, strict-JSON, body-size, and canonicalization rules before model validation**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 03, [Authentication and Token Validation](../module-03-authentication-and-token-validation/index.md), asks: *How does a resource server establish one unambiguous caller identity from an untrusted credential?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Authentication and Token Validation](../module-03-authentication-and-token-validation/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

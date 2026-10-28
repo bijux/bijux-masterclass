@@ -1,12 +1,14 @@
 # Module 08 — Transactional Outbox and Webhook Delivery
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** How can a committed business change reliably produce an external webhook without a dual write?
 
 ## Where this module fits
 
-Commit an outbox record with the domain state, then deliver at least once with stable event identity. You arrive from Module 07 with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result is the baseline for **Failure-Oriented Verification**.
+Module 07 produced **Implement streamed upload, content-addressed publication, checksums, SSE/NDJSON progress, and authorized download**. This module extends that result by asking: **How can a committed business change reliably produce an external webhook without a dual write?**
+
+The new capstone increment is **Add a transactional outbox, signed deliveries, retry state, deduplication, and destination constraints**. It becomes the prerequisite for **Failure-Oriented Verification**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Commit an outbox record with the domain state, then deliver at least once with s
 - Retry only classified failures with bounded delay.
 - Require receiver deduplication for at-least-once delivery.
 
-## Capstone result
+## Capstone increment
 
 Add a transactional outbox, signed deliveries, retry state, deduplication, and destination constraints.
-
-Run completion and webhook intent cannot diverge; duplicate delivery is detectable and safe.
 
 ## Core model
 
@@ -32,10 +32,10 @@ Commit domain state and an outbox event together; perform network delivery after
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Transactional Outbox and Webhook Delivery** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Add a transactional outbox, signed deliveries, retry state, deduplication, and destination constraints
 
 
 ### 1. Dual-write problem
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Transactional Outbox and Webhook Delivery**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: Define terminal run event payload and stable event ID before delivery code.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Transactional Outbox and Webhook Delivery**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: How can a committed business change reliably produce an external webhook without a dual write?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -249,8 +250,7 @@ def signed_request(secret: str, event: dict[str, object], now: int) -> SignedReq
     )
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Transactional Outbox and Webhook Delivery** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -553,7 +553,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Transactional Outbox and Webhook Delivery** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Add a transactional outbox, signed deliveries, retry state, deduplication, and destination constraints The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -578,7 +578,8 @@ These are the smallest useful entry points for **Transactional Outbox and Webhoo
 
 ### Python — `capstone/tracks/python-fastapi/src/analysis_service/webhooks.py`
 
-```python
+```text
+# Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 APPROVED_WEBHOOK_HOST = "hooks.example.test"
 
 
@@ -643,7 +644,8 @@ class HttpxOutboundTransport:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/webhooks.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 import { canonicalJson, webhookSignature } from "./domain.js";
 import { ApiProblem } from "./problems.js";
 
@@ -710,8 +712,10 @@ Compare the two tracks by this invariant: **terminal run state and its outbound 
 
 ## Module synthesis
 
-The module answer to “How can a committed domain outcome produce an external notification without losing intent or duplicating effects unpredictably?” is now executable in the capstone: Run completion and webhook intent cannot diverge; duplicate delivery is detectable and safe.
+You are ready to leave this module when you can **Explain the dual-write failure, Insert outbox intent in the domain transaction, and Separate dispatcher attempts from logical events** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant direct send-after-commit without outbox, demonstrate lost notification on kill, repair, and retain the process proof** and requiring the following oracle: **If the terminal run transaction commits, exactly one logical outbox event exists; network failure may delay delivery but cannot erase or invent the domain event.**
+
+The cumulative platform now includes **Add a transactional outbox, signed deliveries, retry state, deduplication, and destination constraints**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 09, [Failure-Oriented Verification](../module-09-failure-proof-architecture/index.md), asks: *How do we prove the service’s guarantees rather than infer them from happy-path unit tests?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Failure-Oriented Verification](../module-09-failure-proof-architecture/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

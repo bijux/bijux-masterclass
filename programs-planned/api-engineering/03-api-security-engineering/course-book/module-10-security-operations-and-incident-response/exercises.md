@@ -1,6 +1,6 @@
 # Exercises — Module 10: Security Operations and Incident Response
 
-For questions 1–10, give a direct decision, governing invariant, smallest counterexample, decisive proof, and evidence limitation.
+Work through all twelve problems before opening the answers. In **Security Operations and Incident Response**, every response must settle this question: **How is a suspected compromise detected, contained, investigated, rotated, patched, and converted into improved requirements?** Conclude each problem with a release decision: what may proceed, what must be rejected, and what remains unproven by the available environment.
 
 ## 1. What is the first goal of triage?
 

@@ -1,12 +1,14 @@
 # Module 04 — Lifecycle, Health, Shutdown, and Recovery
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** How do APIs, workers, and dispatchers start, become ready, drain, stop, and recover without losing accepted work?
 
 ## Where this module fits
 
-Implement explicit lifecycle states, meaningful health decisions, bounded drain, and lease-aware worker shutdown. You arrive from Module 03 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **Telemetry Architecture and Structured Events**.
+Module 03 produced **Add dependency-local state machines, bounded probes, concurrency isolation, and truthful degraded responses**. This module extends that result by asking: **How do APIs, workers, and dispatchers start, become ready, drain, stop, and recover without losing accepted work?**
+
+The new capstone increment is **Implement lifecycle states, liveness/readiness separation, graceful draining, lease handling, and startup reconciliation**. It becomes the prerequisite for **Telemetry Architecture and Structured Events**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Implement explicit lifecycle states, meaningful health decisions, bounded drain,
 - Recover incomplete work on startup.
 - Make health endpoints report service ability, not every dependency detail.
 
-## Capstone result
+## Capstone increment
 
 Implement lifecycle states, liveness/readiness separation, graceful draining, lease handling, and startup reconciliation.
-
-API, worker, and dispatcher processes expose explicit startup, accepting, draining, stopping, and recovery behavior.
 
 ## Core reliability model
 
@@ -96,7 +96,6 @@ Apply **Lifecycle state machine, Startup gate, Liveness** to this module’s cap
 Lifecycle tests prove state transitions; orchestrator signal ordering, load-balancer removal, and real process drain timing require live execution.
 
 ## Worked failures
-
 
 ### Case 1 — Collector-dependent liveness
 
@@ -188,7 +187,7 @@ assert snapshot.live is True
 assert snapshot.ready is False
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Lifecycle, Health, Shutdown, and Recovery** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Collector-dependent liveness
 
@@ -233,7 +232,7 @@ const snapshot = evaluateHealth({
 if (!snapshot.live || snapshot.ready) throw new Error("drain contract violated");
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Lifecycle, Health, Shutdown, and Recovery** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Collector-dependent liveness
 
@@ -393,7 +392,8 @@ class ComponentHealth:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/reliability/health.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 export type LifecyclePhase =
   | "starting"
   | "accepting"
@@ -465,8 +465,10 @@ Compare the two tracks by this invariant: **liveness reports process existence, 
 
 ## Module synthesis
 
-The module answer to “How does a process start, accept work, drain, stop, and recover without lying to orchestrators or losing durable work?” is now executable in the capstone: API, worker, and dispatcher processes expose explicit startup, accepting, draining, stopping, and recovery behavior.
+You are ready to leave this module when you can **Separate startup, liveness, and readiness, Stop accepting before draining, and Bound graceful shutdown and preserve durable claims** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Remove or bypass the central control for Lifecycle, Health, Shutdown, and Recovery in a temporary branch** and requiring the following oracle: **No new admission occurs after drain begins; Acknowledged responses correspond to committed state; A stale worker cannot complete after takeover; Telemetry failure changes only diagnostic evidence.**
+
+The cumulative platform now includes **Implement lifecycle states, liveness/readiness separation, graceful draining, lease handling, and startup reconciliation**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 05, [Telemetry Architecture and Structured Events](../module-05-telemetry-architecture-and-structured-operational-events/index.md), asks: *What should the system record so an operator can reconstruct behavior without leaking secrets or blocking the request path?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Telemetry Architecture and Structured Events](../module-05-telemetry-architecture-and-structured-operational-events/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

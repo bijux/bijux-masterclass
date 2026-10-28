@@ -1,6 +1,6 @@
-# Exercises — Federated Governance, Platform Operations, and Final Defense
+# Exercises — Module 10: Federated Governance, Platform Operations, and Final Defense
 
-Answer before reading the worked answers. Use the capstone facts when the question names them; do not answer from slogans.
+Work through all twelve problems before opening the answers. In **Federated Governance, Platform Operations, and Final Defense**, every response must settle this question: **How can the platform scale across an organization while remaining useful, operable, accountable, and subordinate to domain ownership?** Conclude each problem with a release decision: what may proceed, what must be rejected, and what remains unproven by the available environment.
 
 ## 1. What is federated governance?
 

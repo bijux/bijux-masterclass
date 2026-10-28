@@ -1,90 +1,38 @@
-# Evidence model
+# Evidence Model — Distributed API Architecture and Microservices Engineering
 
-Distributed architecture claims span more layers than local application claims. Course 8 classifies evidence so that a passing low-level check is not presented as proof of the whole system.
+## Course-specific proof ladder
 
-## Evidence classes
+| Level | Evidence | Minimum record |
+|---:|---|---|
+| 1 | ownership and dependency fitness functions | A named claim, version, environment, oracle, and retained artifact |
+| 2 | projection and saga state | A named claim, version, environment, oracle, and retained artifact |
+| 3 | network partial-failure experiments | A named claim, version, environment, oracle, and retained artifact |
+| 4 | shadow, canary, cutover, and rollback evidence | A named claim, version, environment, oracle, and retained artifact |
 
-| Class | What it establishes | What it does not establish |
-|---|---|---|
-| Structural | files, schemas, owners, graphs, and policies exist and are internally consistent | live behavior or real ownership capacity |
-| Semantic | deterministic models implement the intended rule | network, database, or process behavior |
-| Component | one service honors its contract and local invariants | end-to-end distributed outcome |
-| Contract | supported producer/consumer combinations agree | data ownership or workflow recovery |
-| Topology | service graph, routes, identities, and network policies are coherent | authoritative business-state correctness |
-| Failure | a controlled schedule produces the expected recovery | all production schedules |
-| Reconciliation | durable states agree or produce actionable findings | absence of future divergence |
-| Release | supported versions coexist, cut over, and roll back within a declared window | unlimited future compatibility |
-| Operator | alerts, runbooks, owner, and recovery decisions exist | that every incident will be handled perfectly |
-| Environment-backed | actual databases, brokers, containers, or clusters execute the route | environments not tested |
+## Authority versus diagnosis
 
-## Claim-to-proof examples
+For distributed-architecture claims, authoritative ownership maps and owner-local durable state decide who may change a fact; traces and gateway responses reveal coordination but not ownership.
 
-```text
-Claim: Notification does not block run completion
-Proof: dependency graph forbids the synchronous edge,
-       completion path test succeeds during Notification failure,
-       event/outbox evidence remains durable.
+## Negative evidence
 
-Claim: Artifact upload creates one effect after response loss
-Proof: stable effect identity, duplicate schedule,
-       owner-state inspection, reconciliation.
+Every Course 8 lab contains a defect specific to distribute ownership deliberately. Predict the first failing oracle, retain the raw counterexample, and keep it after repair; a proof that accepts that defect cannot support the checkpoint claim.
 
-Claim: Artifact Service is independently deployable
-Proof: owned migrations, old/new interface matrix,
-       shadow comparison, route rollback, no shared database write.
+## Evidence package
 
-Claim: tenant isolation survives gateway compromise
-Proof: Artifact authorizes delegated/capability context locally;
-       trusted identity-header planted defect is rejected.
-```
-
-## Distributed ambiguity
-
-The most important schedules are ambiguous outcomes:
-
-- caller times out after callee commit;
-- event is published but acknowledgement is lost;
-- artifact is stored but the run attempt becomes stale;
-- new route returns a different representation during shadow;
-- rollback occurs after the new service emitted an external effect;
-- projection receives version 15 without version 14;
-- old consumer processes a new additive event during rolling release.
-
-The course demands stable identities and durable comparison points for these schedules. “Retry and hope” is not evidence.
-
-## Proof sensitivity
-
-A proof suite should demonstrate that it can fail. Course 8 includes ten planted defects. Each defect identifies the gate that must reject it. For example:
+Each checkpoint should retain:
 
 ```text
-DIST-01 shared database
-    rejected by ownership and data proof
-
-DIST-03 synchronous cycle
-    rejected by dependency graph proof
-
-DIST-05 dual write
-    rejected by data and extraction proof
-
-DIST-08 trusted identity header
-    rejected by security proof
-
-DIST-09 unsupported version skew
-    rejected by release proof
+claim and owner
+input, workload, or candidate identity
+software and contract versions
+environment identity
+command or procedure
+raw result
+interpreted decision
+known exclusions
+cleanup state
 ```
 
-If a planted defect passes, repair the proof before trusting the architecture.
+## Unavailable infrastructure
 
-## Honest environment boundaries
-
-The dependency-light model proves deterministic semantics. It does not prove:
-
-- PostgreSQL isolation under live concurrent connections;
-- real DNS refresh and connection draining;
-- Kubernetes NetworkPolicy enforcement;
-- container shutdown ordering;
-- service-mesh behavior;
-- production latency or capacity;
-- real certificate rotation.
-
-Those routes are present as environment-backed labs. The final verification record must distinguish executed from unexecuted evidence.
+When independent processes, owner-local databases, real routing, mixed versions, and network faults is unavailable, run the deterministic evidence that still applies and record the stronger route as `not-executed`. The wording of the claim must shrink with the environment.

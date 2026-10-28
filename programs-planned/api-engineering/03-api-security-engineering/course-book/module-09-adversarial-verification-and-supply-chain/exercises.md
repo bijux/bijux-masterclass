@@ -1,6 +1,6 @@
 # Exercises — Module 09: Adversarial Verification and Supply-Chain Assurance
 
-For questions 1–10, give a direct decision, governing invariant, smallest counterexample, decisive proof, and evidence limitation.
+Work through all twelve problems before opening the answers. In **Adversarial Verification and Supply-Chain Assurance**, every response must settle this question: **How do adversarial tests and supply-chain evidence show that controls fail closed and that the proof is sensitive?** The strongest answer distinguishes specification, implementation, and operational evidence, then demonstrates where a plausible shortcut would fail.
 
 ## 1. What makes a negative test security-relevant?
 

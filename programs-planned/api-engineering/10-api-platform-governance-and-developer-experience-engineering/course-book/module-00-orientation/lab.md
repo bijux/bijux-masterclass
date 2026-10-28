@@ -1,30 +1,63 @@
-# Orientation lab — Lock the predecessor and classify claims
+# Orientation Lab — Establish the Course 10 Baseline
 
-## Setup
+## Objective
 
-Run `make doctor`, `make predecessor-proof`, and inspect
-`capstone/predecessor/handoff/BOUNDARY.json`.
+Verify the inherited boundary, record the study and implementation route, and prove that the dependency-light gates for **API Platform, Governance, and Developer Experience Engineering** can reject one safe controlled defect before Module 1.
 
-## Controlled action
+## Why this lab matters
 
-Create a scratch copy of `schema.graphql`, change one field, and point a scratch
-registry entry to it. Then run predecessor and registry checks.
+The course asks: **How can an organization make trustworthy API work easier to discover, create, publish, consume, evolve, support, and retire without centralizing domain ownership?** That question cannot be answered on top of altered predecessor bytes or ambiguous evidence. This lab creates a reproducible starting state and records the strongest claim the current environment can support.
 
-## Oracle
+## Setup conditions
 
-The original handoff remains valid. The changed bytes must receive a new release
-identity or be rejected; they may not overwrite Graph API 1.0.
+- use a clean extraction or branch;
+- keep predecessor and handoff directories read-only;
+- confirm Python, Node.js, and Make are discoverable;
+- create `work/orientation/course-10/` outside manifest-controlled payloads;
+- list unavailable live infrastructure before running a proof.
+
+## Hypothesis
+
+The untouched Course 10 tree will pass its dependency-light entry proof. The controlled operate apis as an organizational platform defect will fail the predicted gate, and restoring the copied fixture will return the baseline to green without changing inherited bytes.
+
+## Controlled action and investigation
+
+1. Run the predecessor or entry-boundary proof and retain its summary.
+2. Record the version state exactly as written in `course.json`.
+3. Run the course structure and dependency-light core proof.
+4. In scratch space, copy one catalog, policy, or lifecycle candidate, remove accountable ownership or fresh evidence, and confirm the platform release proof blocks it.
+5. Predict the first failing gate before running it.
+6. Restore the clean fixture and rerun the same route.
+7. Record the primary/comparison language strategy.
+8. State which claim still requires an operated catalog, registry, and runtime control plane.
+
+## Operational oracle
+
+The incoming boundary remains byte-identical, the clean route passes, the copied defect is rejected by the predicted Course 10 gate, and the restored route passes again. No unavailable live proof is reported as successful.
 
 ## Required evidence
 
-Record the original digest, changed digest, rejecting check, platform authority,
-and domain authority in `reports/orientation-boundary.json`.
+Retain outside the release payload:
 
-## Cleanup
+```text
+work/orientation/course-10/
+├── environment.txt
+├── incoming-boundary.txt
+├── clean-proof.txt
+├── controlled-defect.txt
+├── restored-proof.txt
+├── language-route.md
+└── evidence-boundary.md
+```
 
-Delete the scratch artifact and report. Rerun predecessor proof.
+## Interpretation and defense
+
+Explain why the clean dependency-light result establishes readiness but not an operated catalog, registry, and runtime control plane. Name the authoritative oracle for the controlled defect, the layer that owns the repair, and one tempting change that would merely hide the problem downstream.
+
+## Cleanup and reset
+
+Delete scratch credentials, sockets, PID files, caches, and generated output. Restore every modified fixture, rerun the entry proof, and verify that predecessor or handoff bytes did not change.
 
 ## Completion gate
 
-You can explain why the platform can publish a release but cannot silently mutate
-the owner’s release.
+Proceed only when the incoming boundary is exact, the Course 10 responsibility can be stated in your own words, one controlled defect was rejected by the expected gate, the implementation route is recorded, and unavailable evidence is named explicitly.

@@ -12,8 +12,8 @@
 
 ## Learner-facing product
 
-- course-book pages: **59**
-- course-book words: **35,040**
+- course-book pages: **61**
+- course-book words: **52,020**
 - numbered modules: **10**, plus orientation
 - exercises: **120**
 - matching worked answers: **120**

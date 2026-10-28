@@ -1,6 +1,6 @@
-# Exercises — Module 05 — Schema Evolution, Compatibility, Replay, and Historical Truth
+# Exercises — Module 05: Schema Evolution, Compatibility, Replay, and Historical Truth
 
-Treat retained events as public historical data. Every answer must address old records and current consumers.
+Work through all twelve problems before opening the answers. In **Schema Evolution, Compatibility, Replay, and Historical Truth**, every response must settle this question: **How do event schemas evolve while retained historical events remain immutable and replay remains intelligible?** A useful solution connects semantics to mechanism: who owns the decision, what can go wrong, and which retained artifact proves the claimed outcome.
 
 ## 1. Classify an optional addition
 

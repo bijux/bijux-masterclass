@@ -1,31 +1,165 @@
 {
-  "capstone": "Analysis Runs Platform",
-  "centralQuestion": "How does the service remain trustworthy under hostile behavior without hiding behind middleware or scanner output?",
+  "schemaVersion": 2,
+  "program": "api-engineering",
+  "number": 3,
+  "id": "api-security-engineering",
+  "directory": "03-api-security-engineering",
+  "title": "API Security Engineering",
+  "stage": "Defend the promise",
+  "centralQuestion": "How does the API remain trustworthy when callers, credentials, inputs, destinations, dependencies, and networks cannot be trusted by default?",
+  "responsibility": "Derive, implement, and adversarially verify security properties around the durable service without replacing engineering judgment with middleware or scanner output.",
   "duration": {
     "calendarWeeks": 2,
-    "orientationCounted": false,
-    "teachingDays": 10
+    "teachingDays": 10,
+    "orientationCounted": false
   },
-  "id": "api-security-engineering",
-  "incomingBoundary": "The Course 2 API 1.2 durable-service handoff and migrations 001\u2013005.",
-  "languages": {
-    "strategy": "Choose one primary implementation track. Compare policy decisions and externally observable security outcomes across both languages.",
-    "tracks": [
-      "python-fastapi",
-      "typescript-fastify"
-    ]
-  },
-  "number": 3,
-  "outgoingBoundary": "Security Profile 1.0, migrations 006\u2013007, threat-to-requirement traceability, identity and authorization policy, hostile-input vectors, secure webhook rules, abuse controls, and incident evidence.",
+  "incomingBoundary": "The Course 2 API 1.2 durable-service handoff and migrations 001–005.",
+  "outgoingBoundary": "Security Profile 1.0, migrations 006–007, a threat-to-requirement security case, identity and authorization policy, hostile-input vectors, SSRF and webhook protections, abuse controls, and incident evidence.",
+  "versionState": "API 1.2 preserved; Security Profile 1.0 introduced; migrations 001–007.",
   "predecessor": "02-contract-driven-api-service-engineering",
-  "responsibility": "Preserve the API and durable-service guarantees when callers, credentials, inputs, destinations, and dependencies are not trusted by default.",
-  "schemaVersion": 1,
   "successor": "04-api-reliability-and-observability-engineering",
-  "title": "API Security Engineering",
-  "versions": {
-    "databaseMigrations": "001\u2013007",
-    "engineeringProfiles": "Security Profile 1.0 introduced",
-    "interfaceSpecifications": "3.1.2 baseline preserved",
-    "publicInterface": "1.2 preserved"
-  }
+  "primaryProduct": "course-book",
+  "languageStrategy": "one primary implementation track plus one comparative reference track",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-threat-modeling",
+      "title": "Threat Modeling and Security Requirements",
+      "centralQuestion": "Which assets, actors, trust boundaries, abuse cases, and assumptions define the real security problem?",
+      "capstoneIncrement": "Create a security case that traces threats to requirements, control owners, tests, and residual risk.",
+      "learningOutcomes": [
+        "Identify assets, actors, entry points, and trust boundaries",
+        "Write concrete abuse cases and security invariants",
+        "Use STRIDE as a prompt rather than a substitute for analysis",
+        "Rank risk with explicit assumptions",
+        "Trace every control to a threat, requirement, owner, and test"
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-http-edge-and-canonicalization",
+      "title": "HTTP Edge and Canonicalization",
+      "centralQuestion": "Which raw HTTP message should the application trust after proxies, parsers, duplicate fields, and size limits intervene?",
+      "capstoneIncrement": "Establish host, forwarding, media-type, strict-JSON, body-size, and canonicalization rules before model validation.",
+      "learningOutcomes": [
+        "Define direct-client and trusted-proxy behavior",
+        "Reject ambiguous singleton headers and duplicate JSON members",
+        "Normalize only after preserving raw evidence",
+        "Enforce content type and body limits before model validation",
+        "Separate browser CORS policy from API authentication"
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-authentication-and-token-validation",
+      "title": "Authentication and Token Validation",
+      "centralQuestion": "How should a resource server validate bearer tokens and API keys without trusting convenient claims?",
+      "capstoneIncrement": "Implement issuer, audience, algorithm, key, lifetime, revocation, subject, tenant, and scope validation.",
+      "learningOutcomes": [
+        "Accept exactly one credential mechanism",
+        "Select accepted JWT algorithms from server configuration",
+        "Validate signature, type, issuer, audience, time, subject, tenant, scopes, and token ID",
+        "Handle key rotation and unknown key identifiers safely",
+        "Store API-key digests rather than reusable keys"
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-authorization-and-policy-enforcement",
+      "title": "Authorization and Policy Enforcement",
+      "centralQuestion": "How are scopes, roles, ownership, tenant membership, relationships, assurance, and freshness combined under default deny?",
+      "capstoneIncrement": "Build explicit authorization decisions for collections, individual resources, fields, support access, and administration.",
+      "learningOutcomes": [
+        "Separate authentication from authorization",
+        "Model operation policy explicitly",
+        "Constrain collection queries before loading data",
+        "Apply field-level input and output policy",
+        "Prevent existence leaks and stale authorization decisions"
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-hostile-input-and-file-handling",
+      "title": "Hostile Input and File Handling",
+      "centralQuestion": "How are hostile strings, numbers, paths, filenames, uploads, and serialized structures constrained at the correct boundary?",
+      "capstoneIncrement": "Harden input parsing, Unicode, traversal, MIME, streaming upload, checksum, query, and error behavior.",
+      "learningOutcomes": [
+        "Distinguish schema validation from semantic security validation",
+        "Reject traversal after decoding and normalization",
+        "Treat filenames as labels, never paths",
+        "Bound archive and upload expansion",
+        "Prevent SQL, command, template, and deserialization injection"
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-outbound-http-ssrf-and-webhooks",
+      "title": "Outbound HTTP, SSRF, and Webhook Integrity",
+      "centralQuestion": "How can outbound HTTP and webhook delivery avoid SSRF, rebinding, redirect abuse, tampering, and replay?",
+      "capstoneIncrement": "Implement destination policy, address classification, peer verification, exact-byte signatures, freshness, rotation, and replay defense.",
+      "learningOutcomes": [
+        "Reject forbidden schemes, ports, credentials, fragments, and address ranges",
+        "Evaluate every resolved address and the connected peer",
+        "Revalidate redirects and DNS changes",
+        "Sign exact webhook bytes with key identity and timestamp",
+        "Reject stale and replayed deliveries"
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-secrets-cryptography-and-sensitive-data",
+      "title": "Secrets, Cryptography, and Sensitive Data",
+      "centralQuestion": "How should secrets, cryptographic keys, sensitive fields, logs, retention, and audit evidence be handled?",
+      "capstoneIncrement": "Add secret-provider boundaries, non-rendering values, redaction, pseudonymization, rotation, and privacy-bounded audit records.",
+      "learningOutcomes": [
+        "Distinguish hashing, HMAC, encryption, and password hashing",
+        "Keep secret values out of representation and logs",
+        "Rotate signing and verification keys with overlap",
+        "Redact nested structures and embedded credentials",
+        "Minimize, retain, and delete sensitive data deliberately"
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-abuse-resistance-and-resource-budgets",
+      "title": "Abuse Resistance and Resource Budgets",
+      "centralQuestion": "How can the service resist brute force and resource exhaustion without turning traffic control into false authorization?",
+      "capstoneIncrement": "Introduce principal/tenant/operation/cost budgets, concurrency permits, quotas, and bounded degradation.",
+      "learningOutcomes": [
+        "Choose rate-limit dimensions from abuse paths",
+        "Implement deterministic token-bucket behavior",
+        "Limit simultaneous expensive work with leak-free permits",
+        "Bound uploads, streams, queue depth, and storage",
+        "Return coherent `429` or `503` outcomes without amplifying retries"
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-adversarial-verification-and-supply-chain",
+      "title": "Adversarial Verification and Supply-Chain Assurance",
+      "centralQuestion": "How do adversarial tests and supply-chain evidence show that controls fail closed and that the proof is sensitive?",
+      "capstoneIncrement": "Build hostile vectors, negative policy tests, planted vulnerabilities, dependency evidence, SBOM/provenance routes, and scanner disposition.",
+      "learningOutcomes": [
+        "Trace tests to threats and requirements",
+        "Remove or mutate controls and confirm the proof fails",
+        "Use shared hostile vectors across languages",
+        "Pin direct and transitive dependencies and produce an SBOM",
+        "Interpret scanner output instead of treating tools as authorities"
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-security-operations-and-incident-response",
+      "title": "Security Operations and Incident Response",
+      "centralQuestion": "How is a suspected compromise detected, contained, investigated, rotated, patched, and converted into improved requirements?",
+      "capstoneIncrement": "Run a controlled credential and cross-tenant incident with timelines, revocation, rotation, release, and threat-model revision.",
+      "learningOutcomes": [
+        "Design actionable security events and audit records",
+        "Revoke tokens and API keys deliberately",
+        "Rotate webhook and signing keys with overlap",
+        "Preserve timelines and confidence levels",
+        "Update threats, controls, and tests after the incident"
+      ]
+    }
+  ]
 }

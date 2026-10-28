@@ -1,5 +1,7 @@
 # Exercises — Module 08: Security in the Public Contract
 
+Work through all twelve problems before opening the answers. In **Security in the Public Contract**, every response must settle this question: **What can the public contract say about authentication and authorization, and what remains a runtime responsibility?** Use the cumulative platform, not an invented toy system. Preserve inherited guarantees and make every new assumption explicit and falsifiable.
+
 ## 1. Translate `security: [{ bearerAuth: [], mtls: [] }, { apiKeyAuth: [] }]`.
 
 ## 2. What does `security: []` mean on an operation?

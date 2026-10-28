@@ -1,5 +1,7 @@
 # Exercises — Module 07: Streaming and Artifact Integrity
 
+Work through all twelve problems before opening the answers. In **Streaming and Artifact Integrity**, every response must settle this question: **How can large uploads, progress streams, and artifacts remain bounded, durable, and integrity-checked?** Each solution must survive delay, duplication, version skew, hostile input, or partial failure where relevant; happy-path intuition alone earns no credit.
+
 ## 1. Why is Content-Length insufficient for enforcement?
 
 ## 2. Why must staging and final paths share a filesystem?

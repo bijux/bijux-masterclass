@@ -1,22 +1,24 @@
-# Golden Paths, Templates, and Self-Service Provisioning
+# Module 06 — Golden Paths, Templates, and Self-Service Provisioning
 
-**Module 06 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** How can a platform reduce repeated setup work without hiding essential engineering decisions or creating clone-and-forget debt?
+> **Central question:** How can a platform reduce repeated setup work without hiding essential engineering decisions or creating clone-and-forget debt?
 
-## Place in the program
+## Where this module fits
 
-Module 05 made lifecycle work repeatable. Module 06 moves earlier in the value stream: it helps an owner create a new API surface with the right foundations before governance becomes remediation.
+Module 05 produced **Publish the lifecycle policy, consumer inventory, deprecation impact report, and retirement decision**. This module extends that result by asking: **How can a platform reduce repeated setup work without hiding essential engineering decisions or creating clone-and-forget debt?**
+
+The new capstone increment is **Publish and verify the `api-capability-v1` golden path and generated reference fixture**. It becomes the prerequisite for **Documentation, Discovery, Sandboxes, and Consumer Onboarding**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- design a golden path as a maintained product
-- choose safe defaults and essential parameters
-- render deterministically and atomically
-- include ownership, tests, docs, and governance hooks
-- govern upgrades and supported escape hatches
+- Design a golden path as a maintained product.
+- Choose safe defaults and essential parameters.
+- Render deterministically and atomically.
+- Include ownership, tests, docs, and governance hooks.
+- Govern upgrades and supported escape hatches.
 
-## Capstone result
+## Capstone increment
 
 Publish and verify the `api-capability-v1` golden path and generated reference fixture.
 
@@ -59,7 +61,6 @@ The Python renderer validates patterns and enumerations, creates only declared o
 ## Standards anchor
 
 Backstage Software Templates demonstrate a practical scaffolding model: a versioned template declares parameters and executes actions to create components. The course adopts the self-service idea while keeping the golden-path contract explicit. See [Software Templates](https://backstage.io/docs/features/software-templates/) and [writing templates](https://backstage.io/docs/features/software-templates/writing-templates/).
-
 
 ## The golden-path contract
 
@@ -138,7 +139,6 @@ and support categories. A large number of old unupgraded projects signals that
 the path is not maintainable. Survey owners about removed work, not only
 satisfaction. The best path may be one teams rarely notice because it eliminates
 routine failure.
-
 
 ## Generated-project ownership contract
 
@@ -290,3 +290,13 @@ function renderText(source: string, values: Record<string, string>): string {
 The complete implementation adds parameter schemas, empty-destination checks,
 secret detection, and an exact output-set comparison. Those controls turn a
 string replacement helper into a governed golden path.
+
+## Module synthesis
+
+You are ready to leave this module when you can **design a golden path as a maintained product, choose safe defaults and essential parameters, and render deterministically and atomically** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **Valid generation is deterministic and complete. Invalid inputs fail before publication. Secret and output-contract defects fail. Version impact is explained from generated-consumer compatibility, not intuition.**
+
+The cumulative platform now includes **Publish and verify the `api-capability-v1` golden path and generated reference fixture**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Documentation, Discovery, Sandboxes, and Consumer Onboarding](../module-07-documentation-discovery-and-sandbox/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

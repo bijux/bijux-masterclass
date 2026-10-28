@@ -1,65 +1,38 @@
-# Standards and source policy
+# Standards and Evidence — Distributed API Architecture and Microservices Engineering
 
-Distributed architecture combines standardized protocols with system-specific ownership decisions. This course separates the two so that infrastructure vocabulary is not mistaken for an application guarantee.
+## How standards are used
 
-## Normative inherited contracts
+Standards settle the protocol and compatibility questions relevant to **Distributed API Architecture and Microservices Engineering**; they do not decide the architecture for you. Classify every cited rule as normative requirement, interoperability advice, course profile, observed tool behavior, or architecture decision.
 
-Course 8 preserves the following contracts from earlier courses:
+## Standards profile
 
-- OpenAPI 3.1.2 executable public HTTP baseline;
-- OpenAPI 3.2.0 standards frontier;
-- AsyncAPI 3.1.0 Analysis Events API;
-- CloudEvents 1.0 course profile;
-- Protobuf/gRPC Analysis RPC API 1.0;
-- W3C Trace Context propagation profile;
-- HTTP semantics and Problem Details;
-- OAuth/JWT resource-server and capability profiles;
-- database migration history through revision 015.
+- the inherited HTTP, AsyncAPI, CloudEvents, Protobuf, and gRPC contracts;
+- service identity and trace-context standards inherited from earlier courses;
+- course-defined architecture fitness functions and release profiles;
+- container and orchestration examples as implementation environments rather than normative architecture;
 
-Course 8 adds a **Distributed Architecture Profile 1.0**. This is a course-owned architecture policy, not an Internet standard. It defines service ownership, data authority, dependency depth, consistency, release skew, extraction, and reconciliation for the Analysis Runs Platform.
+## Reading discipline
 
-## Primary architecture and platform references
+Start from the module question, then read only the primary-source clauses needed for distribute ownership deliberately. Restate the rule, build a counterexample in the Analysis Runs Platform, and name a falsifying oracle; citation alone never proves that the Python or TypeScript runtime conforms.
 
-Use primary sources for platform behavior:
+## Executable profile and frontier
 
-- NIST SP 800-204, *Security Strategies for Microservices-based Application Systems*;
-- Kubernetes documentation for Services, DNS, NetworkPolicy, Deployments, and Gateway API concepts;
-- OpenTelemetry documentation for context, traces, metrics, links, and baggage;
-- gRPC documentation for deadlines, retries, health, service configuration, and graceful lifecycle;
-- PostgreSQL documentation for transaction, locking, and migration behavior used in environment-backed labs.
+Examples and proofs use the pinned Course 8 profile recorded in `course.json`: HTTP API 1.2, Events API 1.0, and RPC API 1.0 preserved; distributed architecture profile 1.0 introduced; owner-local migration histories begin. A newer specification or tool does not silently change that profile; advance contracts, fixtures, compatibility rules, and the version ledger together.
 
-The course avoids treating vendor blog posts as normative behavior.
+## Evidence boundary
 
-## Local policy versus universal rule
+The strongest environment-backed claims in Course 8 require independent processes, owner-local databases, real routing, mixed versions, and network faults. Local parsers, fixtures, unit tests, or simulators remain useful but support narrower claims; [Evidence model](evidence-model.md) names those boundaries.
 
-Several course rules are deliberate local architecture constraints:
+## Primary-source review worksheet
+
+For a rule used in a module, record:
 
 ```text
-public synchronous depth <= 2
-one writer per authoritative fact
-no cross-service application database reads
-current and previous service version supported during rollout
-Notification extracted before Artifact
-Analysis Control retained as one authority
+claim:
+source and version:
+category:
+course interpretation:
+smallest counterexample:
+cheapest falsifying proof:
+tool limitation:
 ```
-
-These are justified by the platform’s invariants and objectives. A different system may choose different limits, but it must supply equivalent evidence.
-
-## Infrastructure does not create application semantics
-
-Examples:
-
-- Kubernetes Service and DNS can provide stable discovery; they cannot decide whether a mutation retry is safe.
-- NetworkPolicy can restrict connectivity; it cannot prove tenant authorization.
-- A service mesh can provide workload mTLS and traffic policy; it cannot compensate a failed business workflow.
-- OpenTelemetry can correlate attempts; it cannot decide which database row is authoritative.
-- A broker can redeliver events; it cannot produce exactly-once business effects without application identity and transaction design.
-- A gateway can route and normalize; it cannot own run completion merely because every request passes through it.
-
-Every chapter identifies whether decisive evidence belongs to the application, database, message system, network, platform, or operator.
-
-## Citation and update policy
-
-Course prose explains stable concepts. When a lab depends on tool-specific behavior, use the pinned `tool-versions.json` and the official documentation for that version. Do not silently replace a pinned tool with the latest release and assume identical behavior.
-
-The final proof records unavailable environment-backed tools as not executed. A present YAML file is not evidence that a cluster accepted or enforced it.

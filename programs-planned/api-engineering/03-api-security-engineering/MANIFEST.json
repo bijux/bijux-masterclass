@@ -8,8 +8,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "8d61385235f5f98bfefff41a9240d2f09860d4bae191551b2236897f32733e1c",
-      "size": 2538
+      "sha256": "d1ccc4f831263c2384d07584d7fe0e0c22028c71497fa08adab9bde0bb51398d",
+      "size": 1074
     },
     {
       "path": "assessment/final-defense.md",
@@ -1493,303 +1493,313 @@
     },
     {
       "path": "course-book/capstone.md",
-      "sha256": "f024b0a11fbccd71b3cbc1f42581eabfced069aed182be3c0894fd1edf7f9d77",
-      "size": 3162
+      "sha256": "a17aab0a2542143426172313e84416723e71e6e1e78fcc2e39c4723c4727481d",
+      "size": 3618
+    },
+    {
+      "path": "course-book/evidence-model.md",
+      "sha256": "990b5fc7eff4ee5140c132fe6e1b5de9c8af2dc2c857c2bc8beeb7461ef1f562",
+      "size": 1583
     },
     {
       "path": "course-book/glossary.md",
-      "sha256": "be65596898376b5734da82d87ebdb0ec07c5bf0dc7eb10e0be876089c79967bc",
-      "size": 3747
+      "sha256": "d067345767212a2225e82edfdaae9b76434bc14871c82314ea65e27ad9fd052f",
+      "size": 3061
     },
     {
       "path": "course-book/index.md",
-      "sha256": "68e0c90e5d4175c7d64407f7070e0c1ec971983911291a4297f53ea236a19f0e",
-      "size": 6632
+      "sha256": "3edc882c162cc42a9dacd6add83c53230a4af23442258cae0835446ffba7caee",
+      "size": 6509
+    },
+    {
+      "path": "course-book/language-strategy.md",
+      "sha256": "e701bcfa10e13c14c67322b8c83fa352ae942ac7771ea753e8ae9a0010628a4d",
+      "size": 1448
     },
     {
       "path": "course-book/module-00-orientation/checkpoint.md",
-      "sha256": "44bf2952f4edaa3c958680f3d52f274ef3055d64514366a2b94574139b7b447e",
-      "size": 1189
+      "sha256": "e13b6b24288a794e8685ae569be1b3b87c5bfe47481a2c74f688661924d76f76",
+      "size": 1618
     },
     {
       "path": "course-book/module-00-orientation/index.md",
-      "sha256": "1fe622f92f27739c587b10dff4616fbbdcb55a9072447557e262c20b93cb644b",
-      "size": 3607
+      "sha256": "c58352eac9c6ee558503357b78482a1d8148c9ddecc7f72f5d078ade3c48d5da",
+      "size": 3539
     },
     {
       "path": "course-book/module-00-orientation/lab.md",
-      "sha256": "88700a80af09f47bc333e9691448babb24bea35db871f3813e64b39522dde9d1",
-      "size": 2401
+      "sha256": "b9cc3f812ac3a1893ecc3162fc40adb5364f9083428c4a87168ed4420012dd0c",
+      "size": 3233
     },
     {
       "path": "course-book/module-01-threat-modeling/checkpoint.md",
-      "sha256": "af33d859c84a3524e0391a48581148ddb7948df50dedcefcaf1fb704b6e64fed",
-      "size": 1769
+      "sha256": "3aa109e75d3d22c9a929be694d095b99cdae359822e3231278a20239a1953e31",
+      "size": 2635
     },
     {
       "path": "course-book/module-01-threat-modeling/exercise-answers.md",
-      "sha256": "750f635e9ff3397870b7871a86f0b5214456ab69788d6294ad02f671529e35a3",
-      "size": 3100
+      "sha256": "ad5fb0cb03821a9e83bec5f0d10d90f39d2a3413eceb12d8ccae58a6f0ce288b",
+      "size": 8522
     },
     {
       "path": "course-book/module-01-threat-modeling/exercises.md",
-      "sha256": "fe244f364d5ec30a28ad5c3adb99e41be86a38df75571c9e3f59e723ad64af4a",
-      "size": 1669
+      "sha256": "d84c4644f276686e99eeeabb395071a31950ad9c147905655ca0eb13e88d4a24",
+      "size": 2098
     },
     {
       "path": "course-book/module-01-threat-modeling/index.md",
-      "sha256": "97d576983dbdf3f459d1aa9da7ea545ba993b873d18363c21562c5f2f3d8efd3",
-      "size": 14186
+      "sha256": "de1e420966343bd21b6e257505624f3cb797925858a14524a7deb0ad8a36404f",
+      "size": 14757
     },
     {
       "path": "course-book/module-01-threat-modeling/lab.md",
-      "sha256": "9f6a41c857cec8d37437c5cd0aa7b5f0389e923cc5b42826751459d398aa343e",
-      "size": 3502
+      "sha256": "75506abd21d4f23c532c2e9d4c931198e84f5195ab562edb0caf0600d6c303cd",
+      "size": 6983
     },
     {
       "path": "course-book/module-02-http-edge-and-canonicalization/checkpoint.md",
-      "sha256": "ce0241edd20e3c01974bc84f076b61ee54bac56fee277480fd73a9d755bed4c2",
-      "size": 1710
+      "sha256": "98063f7858fe6a03d748aa2b4fda85ffdd56523397992f42b0d8baa71a5c7ecb",
+      "size": 2517
     },
     {
       "path": "course-book/module-02-http-edge-and-canonicalization/exercise-answers.md",
-      "sha256": "0df58a09e5673d62f716eb2a1dfd83484f43a5a3c1b655108608864360bd0020",
-      "size": 2795
+      "sha256": "c9fb1dbbe8fe790106f62ec9f4b0eb892600ac449246ac2f2af0cc39bf23145f",
+      "size": 8271
     },
     {
       "path": "course-book/module-02-http-edge-and-canonicalization/exercises.md",
-      "sha256": "cffe5fb18bd42c61a97a6a0d19438da2c4d73ad5fa4b9122e6bb84be31e53d97",
-      "size": 1603
+      "sha256": "0ead41f1fdf07928330c04c3271f092d83d3bb3003a8c654a8a1e58d1ab52059",
+      "size": 2024
     },
     {
       "path": "course-book/module-02-http-edge-and-canonicalization/index.md",
-      "sha256": "8e90ac941adb058443493431ad5c3865b0ffe1d6b9eeea2a43427f97124f8b60",
-      "size": 15639
+      "sha256": "86257e5fdf49525fe5c0ff4d096e11853242cbb67b72bb2871585134631fe2f0",
+      "size": 16345
     },
     {
       "path": "course-book/module-02-http-edge-and-canonicalization/lab.md",
-      "sha256": "95d98b13eb0b98828f4e8a68433c24a22cbca8d6cb21502607a1156d20936e1a",
-      "size": 3479
+      "sha256": "769c46879a434cd45f3c9cc0127852f93e9702e4bfd4cb52badfb5c6da2d753b",
+      "size": 6833
     },
     {
       "path": "course-book/module-03-authentication-and-token-validation/checkpoint.md",
-      "sha256": "3bf1c7e6b8e27de53829f6be7ecffe351c38a4888e51b8ae1c819fdefb20467e",
-      "size": 1726
+      "sha256": "371986c4ed8f42b24990b3e61595667b73afb40be3e5f2f8702b419e0a08f033",
+      "size": 2552
     },
     {
       "path": "course-book/module-03-authentication-and-token-validation/exercise-answers.md",
-      "sha256": "0ada242e62d9a8d31ba69041aa72209824c69e41ababdcd0ed2fc0b6cb708b7d",
-      "size": 2662
+      "sha256": "e17610e49c211b1fa5d75e3a40ca02f9b27a6f4b9853ce32e3d49831e9a460cd",
+      "size": 7847
     },
     {
       "path": "course-book/module-03-authentication-and-token-validation/exercises.md",
-      "sha256": "946a47733f73f9408ed3a7d7271dde370d2f556c450030155e3734e33b3d5813",
-      "size": 1490
+      "sha256": "0288d424efcd4bb5789536d79023d37eb8b41beebce00b013ce53470a3859d5b",
+      "size": 1915
     },
     {
       "path": "course-book/module-03-authentication-and-token-validation/index.md",
-      "sha256": "04fd4f8da29c9f77077b92b9dfece8c3c813337da18c3e4d2e9331dc43e5040f",
-      "size": 18229
+      "sha256": "51430c4397713479ab5354b50ab67fa80a5a2aea7ae3d170120d6f5bd98b046f",
+      "size": 19051
     },
     {
       "path": "course-book/module-03-authentication-and-token-validation/lab.md",
-      "sha256": "2b1a93c78093efaa91ab4d78684a7f7d6501b7637bc3a4f741123e43c75d84e1",
-      "size": 3514
+      "sha256": "ba08b2e82f0d24a5762050f529a5c39a552b0fe54a8a43fdc9aa8c84f843a86c",
+      "size": 6881
     },
     {
       "path": "course-book/module-04-authorization-and-policy-enforcement/checkpoint.md",
-      "sha256": "6b35efe2541abc355bf3bb25867f70a6fb4d9ec3a49a23113f48b11d782f60f1",
-      "size": 1693
+      "sha256": "a59386f316768cc990f8c5d8a65b96651393423c4ce27ee8ebc85df41bac0949",
+      "size": 2542
     },
     {
       "path": "course-book/module-04-authorization-and-policy-enforcement/exercise-answers.md",
-      "sha256": "0d27498f81b5afc0859b30c28d29df1f04c6c8ff67ed683870021c76e97950f4",
-      "size": 2847
+      "sha256": "b37d63741cd83b7688799605287be073ed3f30e24a74c7eb0cac838abfb8af39",
+      "size": 8046
     },
     {
       "path": "course-book/module-04-authorization-and-policy-enforcement/exercises.md",
-      "sha256": "e0894265994c539c3b4037842ac640192e4799b8c8b7945a3d0b8ca8d8a6d6c8",
-      "size": 1550
+      "sha256": "bb0433f29fd4a2bb7f842709c17ae0e9e0504f00fe1bb06cff2f8ac69012faff",
+      "size": 1984
     },
     {
       "path": "course-book/module-04-authorization-and-policy-enforcement/index.md",
-      "sha256": "3b7cffa0c597337974e07b42c52a9b5973a4a9020776a143e3af6317ec5e00c0",
-      "size": 16985
+      "sha256": "6efdbb846bd622778f50e126ce68bf1e098077d8c394ead565e5b9af5d4286c3",
+      "size": 17584
     },
     {
       "path": "course-book/module-04-authorization-and-policy-enforcement/lab.md",
-      "sha256": "81d72644a188283017274124b664f8f20765ca42dbbd898170ab523963c3a7da",
-      "size": 3518
+      "sha256": "e5cb7da802136922bf4c78ecb380e1474c6bd214f544d4bd9b4660dc72709fd5",
+      "size": 6938
     },
     {
       "path": "course-book/module-05-hostile-input-and-file-handling/checkpoint.md",
-      "sha256": "507912e91b35deef08072262c91fa4bf7cadfe3260b9cca3ca3d0391af327bc7",
-      "size": 1675
+      "sha256": "2562a2c5ccb1cebf1973993d05834e31960f147ef2447deae4049ff1cc3b32c1",
+      "size": 2501
     },
     {
       "path": "course-book/module-05-hostile-input-and-file-handling/exercise-answers.md",
-      "sha256": "fe5e10d2e401111ff99f0171cb568ba95bd9ef8a7963b69c4bc364f394d99f85",
-      "size": 2849
+      "sha256": "907e1051248d10fb4a44984499303348252038597ff1044eeaf062c39830d88a",
+      "size": 8262
     },
     {
       "path": "course-book/module-05-hostile-input-and-file-handling/exercises.md",
-      "sha256": "52e3381d1a0e49e277bab3b61e0b28373352b2e315734c3c9954df6d6c870f55",
-      "size": 1631
+      "sha256": "d632316a604a30972c508c1a593acda285557afa88762ed0e306605c844c4e5e",
+      "size": 2052
     },
     {
       "path": "course-book/module-05-hostile-input-and-file-handling/index.md",
-      "sha256": "049c2d5b2dccef063976fc670aefb1e31776845ac0dd7c4b6cf1070a920d776c",
-      "size": 16518
+      "sha256": "620e606808acc0885ee4c14ee28ce6d0b5f9ba9d7118acd407868008bd96afc8",
+      "size": 17190
     },
     {
       "path": "course-book/module-05-hostile-input-and-file-handling/lab.md",
-      "sha256": "b055a7b031c976d5012a7fb9f2a8895b0195ddc2ee7e7f16e0b4c1688b15e56d",
-      "size": 3541
+      "sha256": "4b10e5523ecbd7517ba5f5bc7ab6a28c7108f9549cfc97345d61c5ef891a75e6",
+      "size": 6716
     },
     {
       "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/checkpoint.md",
-      "sha256": "3edb5418ceed1ccac7a6498a528de4b342afb3db60e361ded25e2357c7106908",
-      "size": 1739
+      "sha256": "738a8fb5975add13dcbc2e326e29c7ff934003901eaecd93d9163d8c0a55e60b",
+      "size": 2671
     },
     {
       "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/exercise-answers.md",
-      "sha256": "f0733ffcc2e0b72bdb27c5c28075c9c906776abd70e742ba3387af09ab0998cb",
-      "size": 4508
+      "sha256": "01d704d1cb5e2967fb75bbbfa899724eb32e99087cf2077a6ec1c899c30c7877",
+      "size": 9390
     },
     {
       "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/exercises.md",
-      "sha256": "6ee764fbd4916dba6b9dd818fcd48ac7f65a4a804f688c351610f00ccc821f0d",
-      "size": 1737
+      "sha256": "a0f3bd377de051f72147f502ed1ada47e877ed6623f42a91074511951772e967",
+      "size": 2015
     },
     {
       "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/index.md",
-      "sha256": "9fc52c9f05cb339d3242eaf7b670c65495520d7b92f49998a446df0aac200904",
-      "size": 18703
+      "sha256": "dd625780b65514f268ea2a629f9dbd8bb44c2e182e7f89d7f676d07d9d724b61",
+      "size": 19985
     },
     {
       "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/lab.md",
-      "sha256": "c9f3d4e2d61058bb9d172274684e1ff7cb8e6df1b84fd2ee53bf09ca41af0107",
-      "size": 3141
+      "sha256": "41db6fb77f8e7f2ba34e3a26357f7148e4baaae5bdc65948e1e211789988cd75",
+      "size": 6566
     },
     {
       "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/checkpoint.md",
-      "sha256": "e811ccd5e1f2ee1435cde1b9f3efad6ec0072355b720573444bbb23c2a607386",
-      "size": 1747
+      "sha256": "2e333b03efb98ce05ede0f7acc3e0a7cc4345daa6189d5695e94fd5f04364a93",
+      "size": 2658
     },
     {
       "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/exercise-answers.md",
-      "sha256": "96da02eae5d864d39793d7e5f7c9287234d2281bd11f1a437d757eec3643eaaf",
-      "size": 4569
+      "sha256": "a960677807a7ac469a7d6d7248d723711a0bac990f5c7a7955c246e21daa53a3",
+      "size": 8754
     },
     {
       "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/exercises.md",
-      "sha256": "8a6a390d82d5a96f772ba723f136ee4ca42ad6fedd4d4d37c541005039848868",
-      "size": 1736
+      "sha256": "d1953901810ce83f83b3e12c44d6f7e2356372ac239c0b9d50348562236d3830",
+      "size": 2021
     },
     {
       "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/index.md",
-      "sha256": "cfd66cd04221cde633c585d2b933eddc5aba60832c1ac9af5ee824468e8db4c8",
-      "size": 17090
+      "sha256": "ab3276798115a11d76b97363bf2f205386a666bf97b108df7313c79e74a3c883",
+      "size": 18390
     },
     {
       "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/lab.md",
-      "sha256": "ed533113e91349d53344b6550dcfc0909e863f79941316ef4377000cd8dc9e75",
-      "size": 3156
+      "sha256": "1b5e9a99106856fb6e865a948e9cd0f87671ce1b09b99df58246d1908af0bef8",
+      "size": 6575
     },
     {
       "path": "course-book/module-08-abuse-resistance-and-resource-budgets/checkpoint.md",
-      "sha256": "28caef90a7c8a8c5c0a56e92757e874543d18eade27a8453c483d2e24454a07b",
-      "size": 1701
+      "sha256": "5f57be493831a1ca4c020736ac003513bcde37e6b36249b3dd80ee2253205f0b",
+      "size": 2542
     },
     {
       "path": "course-book/module-08-abuse-resistance-and-resource-budgets/exercise-answers.md",
-      "sha256": "f4c80073fb89c7bcdce977cc103bf1921ce256dd7bc090c13cd6029cb20ccf93",
-      "size": 4197
+      "sha256": "e8e6bf2d985e569dbb46e3d1735c978b33f161455071661c9ca40b41e24ac5db",
+      "size": 8658
     },
     {
       "path": "course-book/module-08-abuse-resistance-and-resource-budgets/exercises.md",
-      "sha256": "69ccc43b5c02f1774af2538ec836b5183848fa45089378f321f319e3e57b8451",
-      "size": 1705
+      "sha256": "c220e493265696fdeed7ecdffd6fbd0106b96cd017a6a91eedce45010f0bc1e6",
+      "size": 1989
     },
     {
       "path": "course-book/module-08-abuse-resistance-and-resource-budgets/index.md",
-      "sha256": "81c4752687e32a078b48ab336fc110ab76e787545ffce8413a527a89913e44b0",
-      "size": 16175
+      "sha256": "689c4501a36cb962cc8cd9cada61015ef50d5f53176b60e45c6afaa296f59441",
+      "size": 17422
     },
     {
       "path": "course-book/module-08-abuse-resistance-and-resource-budgets/lab.md",
-      "sha256": "9ad1430ae6bdebcbc2ac2da9568fbfe4bd0898dde29c787d919b3c9aea53927d",
-      "size": 3077
+      "sha256": "c66d00a1644ae784c66847882cc86ae6c319b14de0cfc9c1767a5f45e8ad7584",
+      "size": 6582
     },
     {
       "path": "course-book/module-09-adversarial-verification-and-supply-chain/checkpoint.md",
-      "sha256": "ce40fb2e7d7a1fc58148e914c99f2c5a2c26cdf0d637b6fef6ff991faa9318a3",
-      "size": 1810
+      "sha256": "483cd1e39e1584e547cda43ec6af136ee70fbbfc26646971d0ae82a34c83ef85",
+      "size": 2756
     },
     {
       "path": "course-book/module-09-adversarial-verification-and-supply-chain/exercise-answers.md",
-      "sha256": "dc3f57dfc7619c771ca4aa7172eb65de50eca9c45364c41c7c38e657025c1194",
-      "size": 4518
+      "sha256": "22db511568b1f59ed6af667a529a393d91cd3022d7763260118f50c27d5f629d",
+      "size": 8507
     },
     {
       "path": "course-book/module-09-adversarial-verification-and-supply-chain/exercises.md",
-      "sha256": "bc937eb7206be2ba0d9f8f61aea2c5bc2fc394fc50fe7ff232fb5a7b738963b1",
-      "size": 1688
+      "sha256": "f4023b6231b178c5aedfbbaa416dcaca90e4f32ec134be949d3d3a45740d4091",
+      "size": 1986
     },
     {
       "path": "course-book/module-09-adversarial-verification-and-supply-chain/index.md",
-      "sha256": "2de91328ae3fe8aa1a5d2d8b5975927b3d4a4acbfdd74786de79df86c84cf62a",
-      "size": 15649
+      "sha256": "84a02e19ab4a28b0a8824b685bdec253dec0f788f028069380b0a7e10b7a7fc1",
+      "size": 16945
     },
     {
       "path": "course-book/module-09-adversarial-verification-and-supply-chain/lab.md",
-      "sha256": "f621e92d63a0c23032d2d617c70dca4d32961b05593c49db2a197babe7c9f4a6",
-      "size": 3175
+      "sha256": "addb3a7238315271c41bc875dccd259cbe80c3dd0d0620a0ee2a223fee17900a",
+      "size": 6545
     },
     {
       "path": "course-book/module-10-security-operations-and-incident-response/checkpoint.md",
-      "sha256": "cb6443ad9def59d17941d17c697577953146a7e66027fb34a0845ebce703ce2d",
-      "size": 1710
+      "sha256": "e1a70f59eb5c2d5f9d127c45232aa1a817e98e48014f6262ac8e61e2884582ed",
+      "size": 2606
     },
     {
       "path": "course-book/module-10-security-operations-and-incident-response/exercise-answers.md",
-      "sha256": "a6badf3cbc6f8f344ab308bdbd56bbdad04bc3e5dd245fc9ad95eb1c7cd661ef",
-      "size": 4572
+      "sha256": "c44bddceedd00a9515ae6a194e0c4b245f6808f1b9d532306aaf2fa948413511",
+      "size": 9160
     },
     {
       "path": "course-book/module-10-security-operations-and-incident-response/exercises.md",
-      "sha256": "ff8a2fbc2c08ad6c476bd67384bfd85718ca38edd3d97513cd9609a23c035b35",
-      "size": 1691
+      "sha256": "331429bec1ed1e7569a95ac95a421d25bde7385634a1b582f5cbf76e3a4c9d3d",
+      "size": 1984
     },
     {
       "path": "course-book/module-10-security-operations-and-incident-response/index.md",
-      "sha256": "62c5f9a80a40411544fe360d2ae7f53749840d19a61a3ebb1579527a44c2e739",
-      "size": 16879
+      "sha256": "6358ec4112e78a335100fb1f8762404c4bf6de81ed907b5772d45ef92b2bf6e6",
+      "size": 18242
     },
     {
       "path": "course-book/module-10-security-operations-and-incident-response/lab.md",
-      "sha256": "e9f5f06878abf08abc206ec4b2861b9fd85b22de39c84970e0e23788cfe331ec",
-      "size": 3126
+      "sha256": "39c371e3557a3e9a5d45fb55ff495193265d4009dc12cffd79ff24ef930a1047",
+      "size": 6563
     },
     {
       "path": "course-book/standards.md",
-      "sha256": "ff65a16250cc6e8509845b6fbe278745cec48d9e18cf4d8cc9af493d27829fef",
-      "size": 2094
+      "sha256": "5c0ec50df5f9ba167746f3976827d07f2ef5d9c5bfe59019ec762841daefb5f1",
+      "size": 1859
     },
     {
       "path": "course-book/start-here.md",
-      "sha256": "73395c561872a84a303a41c1ef30ce493ff757c275fdcfdf5aec15c099b1cbd1",
-      "size": 1992
+      "sha256": "b5328f1da03aaedbd1ce8e03f1d60d0cf71859d00151842eafc762cde5425303",
+      "size": 2382
     },
     {
       "path": "course-book/study-plan.md",
-      "sha256": "1bf9aad61ea41223a555ba4d1ae84b4b6609216d254e8a75b94e34dde46cdd19",
-      "size": 4761
+      "sha256": "6b33ecfaffa0a6a021d0e5a08ea9022ff6a2d583e9a03273f747b71a16bbd302",
+      "size": 3789
     },
     {
       "path": "course.json",
-      "sha256": "50b6358e44d4988227b12892b9ebe7792e70aa026d54a440e6093aa46e041b6c",
-      "size": 1486
+      "sha256": "d6ce15a659790c7f2ced6d291bdbc82fb255f713b932e19f3ecbb71f91550627",
+      "size": 9351
     },
     {
       "path": "instructor/README.md",
@@ -1803,8 +1813,8 @@
     },
     {
       "path": "mkdocs.yml",
-      "sha256": "93080166bb078ef535fcc381c43d21b2c5c52d30dbd99ba99835b44413563d75",
-      "size": 4765
+      "sha256": "ad1c48416ea99928c99d35b17dcdc8828c82b123828a48f8da7f46e8f52860fc",
+      "size": 4986
     },
     {
       "path": "scripts/course_tool.py",

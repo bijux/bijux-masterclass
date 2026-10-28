@@ -1,5 +1,5 @@
 {
-  "file_count": 284,
+  "file_count": 286,
   "files": [
     {
       "path": ".gitignore",
@@ -13,12 +13,12 @@
     },
     {
       "path": "COURSE-CONTENTS.md",
-      "sha256": "296a65e8bdbe16586eff054f77f6421a221fd08941c2ae17b6942a65bad9152c",
+      "sha256": "3156c7a1234fe05eddc6160e0ea06e7aa0c1b5972466efb4b490783c18d32130",
       "size": 12411
     },
     {
       "path": "FINAL-VERIFICATION.md",
-      "sha256": "171dbbdca9968cd1f7f96072b974470d61a1a69c9657773ccd679f434d226e48",
+      "sha256": "6de69c39ee8c7f71e0c2e25d175f777112607cfc7708471a56a061d3ab0561a7",
       "size": 5828
     },
     {
@@ -43,8 +43,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "e99684ef228c0bed95e3e72187d1cd1dc68b530b9f83809f03f6fbf4460341ce",
-      "size": 6337
+      "sha256": "edbeb831926c152dfcdcb7097bcfd00b2110af2cf25a8e3b9a05e30d2acb7028",
+      "size": 1187
     },
     {
       "path": "assessment/final-defense.md",
@@ -1013,303 +1013,313 @@
     },
     {
       "path": "course-book/capstone.md",
-      "sha256": "1638d9510f38dce3360b600eab567eca00c5d1ae2a01426e27d4d6d5bbd2a52b",
-      "size": 5950
+      "sha256": "a1f9b19b4a6c51478c87b1360e00c5a8ec689f77692a2c1da0ef8d6716edc2ad",
+      "size": 4621
     },
     {
       "path": "course-book/evidence-model.md",
-      "sha256": "58ce9ff5c221a93754105fb72991c0b4055287fa822e6d88aba7f000f1a50717",
-      "size": 3917
+      "sha256": "fb478c3705f36b64fa3f5e9d60ecbf4355665ad20ad3e67dbd5f44c1b4bace12",
+      "size": 1684
     },
     {
       "path": "course-book/glossary.md",
-      "sha256": "a7b13b699ef413a1ae8ecb1be948acfcb1c0520740a9e7bc930981a8ff30bd35",
-      "size": 3426
+      "sha256": "f3c7a78dc8e6762fd7185a4af24a5a3d54aac1d57b7cd12fb9e75a2a40726956",
+      "size": 3119
     },
     {
       "path": "course-book/index.md",
-      "sha256": "53f8a31044c76190bcda648d5c1741a5f13a618dba87366430972907883b1c2a",
-      "size": 2761
+      "sha256": "4263097d701c25ec568aa73edae2bb6b5a2eef3a670d71b1cc9d6001c5223ea8",
+      "size": 8153
     },
     {
       "path": "course-book/language-strategy.md",
-      "sha256": "bbe5fb722165d0dcd4fbdd3499a54ecc484dff6f914d2d62063ccaf456899db8",
-      "size": 2722
+      "sha256": "a729f49ec136af00a366f2ac344dcfc8aad01cd04e646e9a9b9dc0ac1c89c451",
+      "size": 1496
+    },
+    {
+      "path": "course-book/module-00-orientation/checkpoint.md",
+      "sha256": "a5431b218ad24ea640a122415772412e494e4ba49181eb4b83708c6271f97821",
+      "size": 1795
     },
     {
       "path": "course-book/module-00-orientation/index.md",
-      "sha256": "1b59d33c50ee79c8f8b410ca36cd7093c589e8ae3528f862d357b9a256f752db",
-      "size": 3508
+      "sha256": "40816381ffd44960dbad4587c162e1631a0d9810aca555c6d17721d51866cd96",
+      "size": 3803
+    },
+    {
+      "path": "course-book/module-00-orientation/lab.md",
+      "sha256": "1d837d66616d38617d30b64ceb1793c57d967b544b852045b0b49e7bb3960efd",
+      "size": 3297
     },
     {
       "path": "course-book/module-01-distribution-economics-and-boundary-evidence/checkpoint.md",
-      "sha256": "f848c09ecfe81608083cb3869f23bca99fa59da37059fef2f387c91aecfb577b",
-      "size": 1059
+      "sha256": "9fb89d72e47ba0ebe4d6ec146c72be596de8b7434556a6743df0d1511d734c9f",
+      "size": 2013
     },
     {
       "path": "course-book/module-01-distribution-economics-and-boundary-evidence/exercise-answers.md",
-      "sha256": "ba934422329625a369021faa1ba8d4f4f14dca1d0fb0ca2a3348f2721e61a8b4",
-      "size": 4290
+      "sha256": "1d73f8e6822be2bc559b18b7e0e4d0272d15420eb7ce2b8e322a3ab6710b20da",
+      "size": 9118
     },
     {
       "path": "course-book/module-01-distribution-economics-and-boundary-evidence/exercises.md",
-      "sha256": "8ced55d53aeed063146813e27c7e22983c9962f07a4f28c6c2efea19022dc02b",
-      "size": 2620
+      "sha256": "654fdb1e9e07cfa6f0c8e55b0fd653158b198d00f9abbf78e9618f81e93ffcba",
+      "size": 1620
     },
     {
       "path": "course-book/module-01-distribution-economics-and-boundary-evidence/index.md",
-      "sha256": "9d3649745c7911e61beec254634fa9dc321dc870e1a48b5d4ecbacc58778212f",
-      "size": 17224
+      "sha256": "3372254e6187e0506ae875fc7cf9689c19d103cadf3c09c2801c9129f3645277",
+      "size": 19346
     },
     {
       "path": "course-book/module-01-distribution-economics-and-boundary-evidence/lab.md",
-      "sha256": "ab4306f753ff6dac16b2bb66d914c2c05b270518a6d44b909bf331306ee83df7",
-      "size": 1635
+      "sha256": "1cc83de41427fc0fa19e34a84885624bc8d82b314bb7161bfed852c3e076e5ba",
+      "size": 4942
     },
     {
       "path": "course-book/module-02-service-boundaries-and-contract-ownership/checkpoint.md",
-      "sha256": "a905680f72889ceb19e40ae3bc9bb517248151ca934b20038a1cdba74df09982",
-      "size": 1029
+      "sha256": "3747d60e6a7a39f7f196f9fe9b25ec7675d664193aa6d8a907477c1febec1e06",
+      "size": 1799
     },
     {
       "path": "course-book/module-02-service-boundaries-and-contract-ownership/exercise-answers.md",
-      "sha256": "935fc293a385565a39b72d2578bf2a561d2dafcd57315a4a63a7856322d66eee",
-      "size": 3834
+      "sha256": "3b94a1941400c75f404bfcabb1425c703fd5232f0959fdb333467978f7245e2f",
+      "size": 8808
     },
     {
       "path": "course-book/module-02-service-boundaries-and-contract-ownership/exercises.md",
-      "sha256": "cff4b65516c154576293e71914be695128df99ee451a8fc624a501f493636b63",
-      "size": 2542
+      "sha256": "847e136932bc8557bcde20eead66d17903240d08afaaed3edc87c07c56db3fff",
+      "size": 1519
     },
     {
       "path": "course-book/module-02-service-boundaries-and-contract-ownership/index.md",
-      "sha256": "76d3a620d3513bd3b3d07728b3a6268852d6b5ce6e755bbcb1dd6a853b35ed7b",
-      "size": 15294
+      "sha256": "c6796caf40cdae24e7cfd7cd5b786f8b1546d58415d84c1b56e3856c9f6d77e1",
+      "size": 17250
     },
     {
       "path": "course-book/module-02-service-boundaries-and-contract-ownership/lab.md",
-      "sha256": "da205c92e22cde177a73c032930789a2606720acde012ee5d15b707025399fd3",
-      "size": 1398
+      "sha256": "b523379cdcdf5009ba0e53c9d8d1d8f5d299e6f823dd68adf271b9c538be0095",
+      "size": 4373
     },
     {
       "path": "course-book/module-03-data-ownership-replication-and-cross-service-queries/checkpoint.md",
-      "sha256": "67b89586e9ca58c874ebd48f0402937a01166c8803b86105c68c10b363aa2ed8",
-      "size": 983
+      "sha256": "0e353a0ff47f02cec9aa4f01e0392ea2d67b44c353cc09f0aab25a8768368bc9",
+      "size": 1819
     },
     {
       "path": "course-book/module-03-data-ownership-replication-and-cross-service-queries/exercise-answers.md",
-      "sha256": "2bcd74ebe1f6d6d1ee2423cacafc463a8afd904fb64bfbfd2950264744a152c0",
-      "size": 3578
+      "sha256": "aff6f350a51e940090c92212aee473f73b443d44b7c1156065ce5249d998d6df",
+      "size": 8368
     },
     {
       "path": "course-book/module-03-data-ownership-replication-and-cross-service-queries/exercises.md",
-      "sha256": "98722b388c939fec19534d9515b1bbcee4982675fd4388d958016d360c4dc3d0",
-      "size": 2444
+      "sha256": "865250140b8f96cdb7e30ad4fef9a826a200e93bfebdb153bf4172095e6cebdb",
+      "size": 1450
     },
     {
       "path": "course-book/module-03-data-ownership-replication-and-cross-service-queries/index.md",
-      "sha256": "ef876b828097b81ca3ec30cc87e5ccba97854122d628f26726718293c2116eac",
-      "size": 15506
+      "sha256": "cfa6985b28f6cfc364d816203549b6357b93072e819bc3bb1e0da58c830ec478",
+      "size": 17482
     },
     {
       "path": "course-book/module-03-data-ownership-replication-and-cross-service-queries/lab.md",
-      "sha256": "25d693cb63917d6e43f186b09e7ab65207d1707729fa8654cfc4b09b0e1e8aa7",
-      "size": 1552
+      "sha256": "b7c1a8a9ea3d75da2797c476515750113f72beee0b654303e9d33437c5a56bf7",
+      "size": 4858
     },
     {
       "path": "course-book/module-04-synchronous-collaboration-and-dependency-budgets/checkpoint.md",
-      "sha256": "6680bb5ea3dd590c7bcb1ec9c6e8d4aa2ece8716ec27ca7efb592f1af8b96659",
-      "size": 1048
+      "sha256": "53ac39db89bc9b9a3c09824f19e82e683f9d37e9e124a864c79e0d65d6c2da68",
+      "size": 1796
     },
     {
       "path": "course-book/module-04-synchronous-collaboration-and-dependency-budgets/exercise-answers.md",
-      "sha256": "c8734610c98a09643f0b6000097e938088757528a64154927b7440ab3aabc019",
-      "size": 3228
+      "sha256": "89f1403627ad4499c6c8cdc697b3c3d99446ce3026941de80b660b6e3496f243",
+      "size": 8293
     },
     {
       "path": "course-book/module-04-synchronous-collaboration-and-dependency-budgets/exercises.md",
-      "sha256": "0cd097e7c4615ea21802e73fd737ec2d85781153402265b4c53b59a56e50db59",
-      "size": 2397
+      "sha256": "6ffdb28ecf9e1860050217ddbe22bd6e397f6e53ca5963c80da37a1252ec7527",
+      "size": 1390
     },
     {
       "path": "course-book/module-04-synchronous-collaboration-and-dependency-budgets/index.md",
-      "sha256": "e34ef867403bc33945020ec56f4833fc7c548564957046636836a10e38a57f48",
-      "size": 13344
+      "sha256": "f32edb6bc03fb689a48b503ced1b8ca6f649f25e55d25e161c301b7fc3463fb4",
+      "size": 15283
     },
     {
       "path": "course-book/module-04-synchronous-collaboration-and-dependency-budgets/lab.md",
-      "sha256": "93f8712edd6a48430b791c3377ad0ab905ce53b605165b53f7295f58a18c8bab",
-      "size": 1696
+      "sha256": "472e4049b6840e54581e71eea00fa451796ce8e33e6962657920a775a53fd058",
+      "size": 4664
     },
     {
       "path": "course-book/module-05-distributed-workflows-sagas-and-compensation/checkpoint.md",
-      "sha256": "8181a0f8aa01f467519b98ed37a8131a283b2b549b19bd5746441fb3697ab010",
-      "size": 970
+      "sha256": "a9b80be432b1562f609360172ec31c098f8970a0d350d24c7268e2b61325d068",
+      "size": 1766
     },
     {
       "path": "course-book/module-05-distributed-workflows-sagas-and-compensation/exercise-answers.md",
-      "sha256": "c1d6089fa706c5928b0ec016aff9cedccb364154d576074018c6730d51936d3b",
-      "size": 3268
+      "sha256": "41c1c9a7cfa725f579165f70cc49c36da72f3ed74b776b4cd10d3436beedfe5c",
+      "size": 8221
     },
     {
       "path": "course-book/module-05-distributed-workflows-sagas-and-compensation/exercises.md",
-      "sha256": "eacc967fe032c7bd48f01313932746fbc8f57ad6db88e2d63c180e73dbbf94b6",
-      "size": 2349
+      "sha256": "5475b400e3eca8880258593af7c8687573c094366368b9f2c050d89ff8d655d5",
+      "size": 1288
     },
     {
       "path": "course-book/module-05-distributed-workflows-sagas-and-compensation/index.md",
-      "sha256": "a3992c4cdd75f51d2386695c83ca60e91c3cc27de2b90d802dc44cb14d5a24d4",
-      "size": 13654
+      "sha256": "1f1c35f8d4c645f683764498fb877e40603916cc73d70067a44cb15c731bac21",
+      "size": 15548
     },
     {
       "path": "course-book/module-05-distributed-workflows-sagas-and-compensation/lab.md",
-      "sha256": "eec6236c939b6c0d814462969746bcc92ee547f5c6970dede730507130ebe03c",
-      "size": 1330
+      "sha256": "b1a6909eec10a59396f039fe7963aa6758a667a937f628af77684bd9b2da57c9",
+      "size": 4363
     },
     {
       "path": "course-book/module-06-service-identity-authorization-and-trust-propagation/checkpoint.md",
-      "sha256": "39c6e6d5db8996eb1bd8485addc5c7c2bf967411b96951c4f08ffc77aaf9ffb8",
-      "size": 1026
+      "sha256": "39a3298ba20b6d40ae829f28dcebbea95f71645027d788f5c82f4ca336ba4d78",
+      "size": 1824
     },
     {
       "path": "course-book/module-06-service-identity-authorization-and-trust-propagation/exercise-answers.md",
-      "sha256": "1d0bb365538f2cde672724ecea493d31dc21c68b4688f5952e793db85c1af67c",
-      "size": 3340
+      "sha256": "07d4123b9c05d350b4a45b184a19e3d4dd89a380b1e86ac820d1cbfe8ea3bf45",
+      "size": 8643
     },
     {
       "path": "course-book/module-06-service-identity-authorization-and-trust-propagation/exercises.md",
-      "sha256": "79f0b1873e566a7a0767681b76d47ecb2e27f82e5cc112d5222a2d5d9d6f507b",
-      "size": 2367
+      "sha256": "b2bf0031c42f78f2a383e5768da4cc02bc050c4a1981a37e279b94c961a0c466",
+      "size": 1344
     },
     {
       "path": "course-book/module-06-service-identity-authorization-and-trust-propagation/index.md",
-      "sha256": "62f250aea2c37bd6d8abdf1cf7c3435f7ab11a6be10fbaf1b7af66f0189ebfa8",
-      "size": 14143
+      "sha256": "28bf3a5999616f3f3598b2de7a2fefe850847cf0c1020ebafb3efcc94e997762",
+      "size": 16136
     },
     {
       "path": "course-book/module-06-service-identity-authorization-and-trust-propagation/lab.md",
-      "sha256": "08c6ff6463f30b811f98aef35a9d5aeaed115db442b08813d67168453aa831f8",
-      "size": 1425
+      "sha256": "e3e799bd76cca0038718ebc8ff1d8b8ba87c9f7a10f3abb1325128ad7a050833",
+      "size": 4529
     },
     {
       "path": "course-book/module-07-discovery-routing-gateways-and-traffic-topology/checkpoint.md",
-      "sha256": "3f0d83ed19175e66ebf01c5a0fbb8c72857081c6ad67000783851ba36da3e6f4",
-      "size": 1041
+      "sha256": "5e8198fd7e0b0bd09ede3a811628e1a251f5556f0cdc52fb15a3bc7d2cc638aa",
+      "size": 1872
     },
     {
       "path": "course-book/module-07-discovery-routing-gateways-and-traffic-topology/exercise-answers.md",
-      "sha256": "4e14535c50a898c6c64944d38dd5adaca6fa962164481078e9bf4ee4a82fdc5e",
-      "size": 3149
+      "sha256": "0ce49310ac3f1f3da4e710a866841733fa85a9bfae5a371ad670e27c4b563e98",
+      "size": 7952
     },
     {
       "path": "course-book/module-07-discovery-routing-gateways-and-traffic-topology/exercises.md",
-      "sha256": "167d5fd8ba89408e1329452c3326eb2141efb1eebc5d3a477bf3127f5a06cc6a",
-      "size": 2275
+      "sha256": "8ec8bc5ec69932107cfe64d5cf1a631ad1f47616d921af6d8fd28ad737845b2d",
+      "size": 1259
     },
     {
       "path": "course-book/module-07-discovery-routing-gateways-and-traffic-topology/index.md",
-      "sha256": "a9ad67b43239fe9dd83a534849cecc292a0b5550be6d09c59cb32821692ac2ee",
-      "size": 12971
+      "sha256": "f9e1bfed211410131ae19935dd8f094c57077324676572efe38df6eeafe1bb5e",
+      "size": 15059
     },
     {
       "path": "course-book/module-07-discovery-routing-gateways-and-traffic-topology/lab.md",
-      "sha256": "0d0a537d2b6ddc00ca5aae11002428b0108921b04b0d724d8f77a3b4bfff22a8",
-      "size": 1385
+      "sha256": "1defc03cf8ce3b1a92645fda835c82e141f6702cd7e4d1043d6ee3f0ad78856c",
+      "size": 4391
     },
     {
       "path": "course-book/module-08-deployment-independence-version-skew-and-release-choreography/checkpoint.md",
-      "sha256": "97426e082880c8773de58f7f2ed2214702ba8e08a14fd7d4406e4c9faf935a0f",
-      "size": 1003
+      "sha256": "096b4e8bbad3ba495cfd0290a1a5ff9a74bbaa2e9705dbcd4eb837acf3de4cc6",
+      "size": 1759
     },
     {
       "path": "course-book/module-08-deployment-independence-version-skew-and-release-choreography/exercise-answers.md",
-      "sha256": "788978993fee05fe28f704b84faedb90c63c21287ed5bc836c18baea89e68dcc",
-      "size": 3260
+      "sha256": "af641baaa0a0340bf1600ef38a9dbafc9905b148ff4fb7fe4f96e6026875b08c",
+      "size": 8394
     },
     {
       "path": "course-book/module-08-deployment-independence-version-skew-and-release-choreography/exercises.md",
-      "sha256": "86646a99f750eb75ae22d51d8458ecf1992834b8b5cffc7a1f436fb1dc979bc1",
-      "size": 2405
+      "sha256": "e84867c161ea01d8e24229eb282cc5221ceeeface5d21b275876d71f41303b00",
+      "size": 1357
     },
     {
       "path": "course-book/module-08-deployment-independence-version-skew-and-release-choreography/index.md",
-      "sha256": "a6a63729963f4ecd72494f867d21410024c71c365a999f6c9e5cd9173d6d39cc",
-      "size": 11631
+      "sha256": "d0216afcfe9815dfd3758331929dd0e5267d60bc2344600fffb7cf66a8a550a3",
+      "size": 13645
     },
     {
       "path": "course-book/module-08-deployment-independence-version-skew-and-release-choreography/lab.md",
-      "sha256": "9e5656f44153859c03eff982908775f63d50066836fc443ab38769b41ccf830a",
-      "size": 1372
+      "sha256": "0107ac0aef6a0ef852f3d927fea924194b194e0118dc3674be0b31dbc368cf54",
+      "size": 4518
     },
     {
       "path": "course-book/module-09-distributed-verification-fault-injection-and-operability/checkpoint.md",
-      "sha256": "40f2defd8e4cc5b6279661638d0121010b73f71ddb0258345b5eb4de8db7fa91",
-      "size": 1007
+      "sha256": "8b9dffa5ca339202697fbbbeacd9b00991bfe494ec4f699d55ae440ad2706a89",
+      "size": 1849
     },
     {
       "path": "course-book/module-09-distributed-verification-fault-injection-and-operability/exercise-answers.md",
-      "sha256": "003d5852e13bf7f477c6573ef6c7d2e7a0b45a544608c92a0fa2ac11e0fc004f",
-      "size": 3028
+      "sha256": "a132a04fdf8c8efda17c211b046233d5c826ea6a8b14450306a5f0ffbfe1e4b2",
+      "size": 8849
     },
     {
       "path": "course-book/module-09-distributed-verification-fault-injection-and-operability/exercises.md",
-      "sha256": "d5c0de4aa10885f3ce73fb3a47138386b6151b2616e48609627fd73086944b4a",
-      "size": 2396
+      "sha256": "a783c7a185afeebae3ea003395a58147c91560dec33eb433644417b6cfb969ef",
+      "size": 1386
     },
     {
       "path": "course-book/module-09-distributed-verification-fault-injection-and-operability/index.md",
-      "sha256": "8089b9c63f2f9ffbe38e777d4ed554a930ee4788a3d7784d3f79162d2ccfc681",
-      "size": 12490
+      "sha256": "fbca27bbf8de139aa2a4060b5fa66ed4946e39cc09762aa9b52e77fbe534ed0e",
+      "size": 14611
     },
     {
       "path": "course-book/module-09-distributed-verification-fault-injection-and-operability/lab.md",
-      "sha256": "d1fc2da43a4359fd021424ab0319e65ddc592361fae3abab0d97d17691bde249",
-      "size": 1574
+      "sha256": "0edead572f10ee49b0b4d5a620d626ce46516d17624ff3bff5ab3a246e33a9d6",
+      "size": 4740
     },
     {
       "path": "course-book/module-10-incremental-extraction-migration-and-final-defense/checkpoint.md",
-      "sha256": "483a41439bdff1a4ce25b47b4b85f9ad29c766acdf32b908b58b702e466f8b0b",
-      "size": 1179
+      "sha256": "cf6a1bb4f39f9a89604bfdbe77c7528802c5b49f0f5c01bdc4287bb7c8fee7bd",
+      "size": 1964
     },
     {
       "path": "course-book/module-10-incremental-extraction-migration-and-final-defense/exercise-answers.md",
-      "sha256": "36426170ba9ef151724669367d8264f4d2418cf7330d8c8d998d8b3db9e28fce",
-      "size": 3178
+      "sha256": "4b2fbc0b47a694d0003d23314372c8cca9bfb13135cae491b76629a0c5f5b143",
+      "size": 8487
     },
     {
       "path": "course-book/module-10-incremental-extraction-migration-and-final-defense/exercises.md",
-      "sha256": "954a46a2ac579f7584f4270d92579430fd4215feff604d00365648a06ffb3350",
-      "size": 2323
+      "sha256": "12616126528c41f7965ba7c3dcc2b9a40c6d0d90b41436b4fe3f2e08248be3d7",
+      "size": 1327
     },
     {
       "path": "course-book/module-10-incremental-extraction-migration-and-final-defense/index.md",
-      "sha256": "e9803a0f3ff7a7225a3bc3456262a767480f2289bf247ad25ea9a9a03e1282fd",
-      "size": 14771
+      "sha256": "8e5a2c8188391df6391479600a4856bec80314b9801bad63c568e6199d4f2732",
+      "size": 16909
     },
     {
       "path": "course-book/module-10-incremental-extraction-migration-and-final-defense/lab.md",
-      "sha256": "4ed009c31e332bb0806f0e581377f184b8b4e75f1c01deab575d5a269257fca2",
-      "size": 1633
+      "sha256": "68a9644ff475cd41781e4b883fce06443452f6f9f7485f291ae14df5e5abd1f7",
+      "size": 4877
     },
     {
       "path": "course-book/standards.md",
-      "sha256": "f28f02a55afdbe60b3a1cd719171c499151ae0d1541b32370029a6248c83e347",
-      "size": 3473
+      "sha256": "a15019812476ffcd580f1d816a9228c10ddfb7420cbbff7a7a382b4c7171015a",
+      "size": 2075
     },
     {
       "path": "course-book/start-here.md",
-      "sha256": "2e9b68f372187c85ae77e585d134fffded4ead169588b32affe3477144ce81a7",
-      "size": 6776
+      "sha256": "7823a8a0d1899916b53408c9fa4f836a4843c49b04d3e1228aae5ca156564487",
+      "size": 2603
     },
     {
       "path": "course-book/study-plan.md",
-      "sha256": "ca59a0ef49b5d6ae5e84795cd61843b5969b9dcad6869af9b369af02424a96eb",
-      "size": 3988
+      "sha256": "dbbd9171c7a9916d42d47414a85405c8d6d015dfcf220da6f652935231d87a5d",
+      "size": 4886
     },
     {
       "path": "course.json",
-      "sha256": "68338f150201671221e50fc1c095bd10af705bd10f314298a9a03ff0bcc0d81d",
-      "size": 11517
+      "sha256": "377353885ec625998f1da5f496569c0f36d27fcd7d690ce8c5371a873bd0fc96",
+      "size": 12953
     },
     {
       "path": "instructor/teaching-notes.md",
@@ -1318,8 +1328,8 @@
     },
     {
       "path": "mkdocs.yml",
-      "sha256": "19aaea871b77018d5c4db2dbfe7f26afd46ef9debb9bdd86246f3a0a1c864a14",
-      "size": 6640
+      "sha256": "e9083f77f9c7409fc387791de7d92815977837035e13125d79096a79e260d421",
+      "size": 6056
     },
     {
       "path": "reports/README.md",
@@ -1408,8 +1418,8 @@
     },
     {
       "path": "scripts/course_tool.py",
-      "sha256": "ad347bd9ef6a8c2ceeb176a8075c30f303d2c2db1c23fdc7e43084c3c75831a4",
-      "size": 37962
+      "sha256": "6d6fbee3fff9588ba259f2c681892678f2dc4e0883abf9e6c0cb43ed7c1540ae",
+      "size": 38358
     },
     {
       "path": "scripts/postgres_proof.py",

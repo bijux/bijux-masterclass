@@ -1,5 +1,7 @@
 # Exercises — Module 06: Contract-First and Code-First Runtimes
 
+Work through all twelve problems before opening the answers. In **Contract-First and Code-First Runtimes**, every response must settle this question: **How do design-first and code-first descriptions relate, and how is semantic drift detected?** Answer as though another team must implement and operate the design. Ambiguous ownership, unbounded behavior, and evidence-free claims are defects.
+
 ## 1. When is code-first a defensible choice?
 
 ## 2. Why not require text-identical generated documents?

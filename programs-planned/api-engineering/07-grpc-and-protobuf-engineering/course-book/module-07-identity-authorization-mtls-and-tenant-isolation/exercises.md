@@ -1,6 +1,6 @@
-# Exercises — Identity, Authorization, mTLS, and Tenant Isolation
+# Exercises — Module 07: Identity, Authorization, mTLS, and Tenant Isolation
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **Identity, Authorization, mTLS, and Tenant Isolation**, every response must settle this question: **How do internal RPC peers establish workload and delegated user identity, enforce method and resource policy, and protect long-lived streams without treating a private network as trust?** Each solution must survive delay, duplication, version skew, hostile input, or partial failure where relevant; happy-path intuition alone earns no credit.
 
 ## 1. Differentiate server TLS, mTLS workload identity, and delegated user identity.
 

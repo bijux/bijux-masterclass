@@ -1,6 +1,6 @@
-# Exercises — Module 02 — AsyncAPI, CloudEvents, and Contract Architecture
+# Exercises — Module 02: AsyncAPI, CloudEvents, and Contract Architecture
 
-Use the actual AsyncAPI and schema artifacts. Answers must separate interface semantics from transport configuration.
+Work through all twelve problems before opening the answers. In **AsyncAPI, CloudEvents, and Contract Architecture**, every response must settle this question: **How do AsyncAPI, CloudEvents, schemas, channels, operations, bindings, and examples form one governed event contract?** Treat each problem as a design review: state the rule, construct the smallest counterexample, and select an oracle capable of rejecting your own answer.
 
 ## 1. Correct an operation direction
 

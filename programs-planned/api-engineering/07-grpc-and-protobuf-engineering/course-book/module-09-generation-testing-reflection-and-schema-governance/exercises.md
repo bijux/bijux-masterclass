@@ -1,6 +1,6 @@
-# Exercises — Generation, Testing, Reflection, and Schema Governance
+# Exercises — Module 09: Generation, Testing, Reflection, and Schema Governance
 
-Answer before opening the reference answers. For every answer, state the governing rule, one failure example, and the evidence that decides the case.
+Work through all twelve problems before opening the answers. In **Generation, Testing, Reflection, and Schema Governance**, every response must settle this question: **How do we make proto source, generated code, runtime services, tests, descriptors, reflection, and release policy agree without treating code generation as proof?** The strongest answer distinguishes specification, implementation, and operational evidence, then demonstrates where a plausible shortcut would fail.
 
 ## 1. Why is generated source not the contract source of truth?
 

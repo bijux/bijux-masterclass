@@ -1,22 +1,24 @@
-# Runtime Control Plane, Usage Intelligence, and Support Operations
+# Module 09 — Runtime Control Plane, Usage Intelligence, and Support Operations
 
-**Module 09 of 10**
+> **Program stage:** Course 10 of 10 — Operate APIs as an organizational platform.
 
-> **Governing question:** How can platform metadata remain connected to the running system and to consumer outcomes without becoming a new domain owner or surveillance system?
+> **Central question:** How can platform metadata remain connected to the running system and to consumer outcomes without becoming a new domain owner or surveillance system?
 
-## Place in the program
+## Where this module fits
 
-Module 08 published trusted developer artifacts. Module 09 connects the control plane to runtime state and measures whether consumers and owners actually benefit.
+Module 08 produced **Publish Python and TypeScript client artifacts with contract identity, SBOM, and bounded provenance evidence**. This module extends that result by asking: **How can platform metadata remain connected to the running system and to consumer outcomes without becoming a new domain owner or surveillance system?**
+
+The new capstone increment is **Publish runtime desired state, drift proof, product metrics, and support routing evidence**. It becomes the prerequisite for **Federated Governance, Platform Operations, and Final Defense**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- reconcile approved releases with runtime routes
-- keep edge and domain policy boundaries explicit
-- measure onboarding, adoption, migration, and support outcomes
-- route support through authoritative ownership
-- apply privacy and cardinality limits to platform analytics
+- Reconcile approved releases with runtime routes.
+- Keep edge and domain policy boundaries explicit.
+- Measure onboarding, adoption, migration, and support outcomes.
+- Route support through authoritative ownership.
+- Apply privacy and cardinality limits to platform analytics.
 
-## Capstone result
+## Capstone increment
 
 Publish runtime desired state, drift proof, product metrics, and support routing evidence.
 
@@ -59,7 +61,6 @@ Suppose the gateway still exposes Analysis HTTP 1.1 after the registry marks it 
 ## Implementation review
 
 The runtime core validates that domain authorization remains with owner services and computes desired/current drift. The analytics core calculates active consumers, median time to first success, and deprecated-version use. The support core resolves a category through explicit routes and catalog ownership.
-
 
 ## Runtime control-plane model
 
@@ -163,7 +164,6 @@ Track registry storage, portal search load, sandbox resource consumption, build
 minutes, and support effort. Cost evidence informs product choices. It should not
 encourage teams to bypass security or stop collecting essential evidence. Show
 both cost and value of a capability.
-
 
 ## Runtime change workflow
 
@@ -327,3 +327,13 @@ function routeDrift(desired: Array<{id: string}>, current: Array<{id: string}>) 
 Production comparison should use canonical structured values rather than
 `JSON.stringify`; the compact snippet emphasizes the state model. The complete
 course vectors require identical canonical route records.
+
+## Module synthesis
+
+You are ready to leave this module when you can **reconcile approved releases with runtime routes, keep edge and domain policy boundaries explicit, and measure onboarding, adoption, migration, and support outcomes** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Then route one contract question and one portal failure through support** and requiring the following oracle: **Runtime drift is visible. Gateway-owned domain authorization is rejected. Deprecated use appears in migration impact. Support reaches the domain owner for semantics and the platform owner for portal failure.**
+
+The cumulative platform now includes **Publish runtime desired state, drift proof, product metrics, and support routing evidence**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Federated Governance, Platform Operations, and Final Defense](../module-10-federated-governance-and-final-defense/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

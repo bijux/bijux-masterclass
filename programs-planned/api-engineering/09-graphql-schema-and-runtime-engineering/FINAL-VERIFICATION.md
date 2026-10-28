@@ -8,7 +8,7 @@
 ## Release conclusion
 
 The dependency-light release proof passes from the source tree. It verifies the
-exact Course 8 predecessor handoff, all 59 course-book pages, ten numbered
+exact Course 8 predecessor handoff, all 61 course-book pages, ten numbered
 modules, 120 exercises and matching answers, ten laboratories, ten checkpoints,
 the released schema and operation registry, both semantic implementation
 tracks, the real loopback composition laboratory, release fixtures, planted
@@ -23,13 +23,13 @@ that uninstalled external environments were executed.
 ### Course structure and pedagogy
 
 ```text
-Course-book pages:              59
+Course-book pages:              61
 Numbered modules:               10 plus orientation
 Exercises:                     120
 Matching worked answers:       120
 Laboratories:                   10
 Evidence checkpoints:           10
-Course-book words:          33,576
+Course-book words:          48,474
 Total Markdown words:       36,978 before this report
 ```
 

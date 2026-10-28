@@ -1,6 +1,6 @@
-# Exercises — Module 04 — Transactional Publication, Inbox Deduplication, and Exactly-Once Effects
+# Exercises — Module 04: Transactional Publication, Inbox Deduplication, and Exactly-Once Effects
 
-Reason in transactions and durable identities. “Retry it” is not a complete answer.
+Work through all twelve problems before opening the answers. In **Transactional Publication, Inbox Deduplication, and Exactly-Once Effects**, every response must settle this question: **How do producers avoid dual writes and consumers obtain exactly-once effects on top of at-least-once delivery?** For every answer, separate the authoritative boundary from convenient diagnostics, then explain which failing experiment would force you to revise the design.
 
 ## 1. Place the outbox transaction
 

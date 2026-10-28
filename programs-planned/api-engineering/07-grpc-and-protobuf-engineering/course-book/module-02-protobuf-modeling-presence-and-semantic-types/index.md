@@ -1,23 +1,25 @@
-# Protobuf Modeling, Presence, and Semantic Types
+# Module 02 — Protobuf Modeling, Presence, and Semantic Types
 
-**Module 02 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** How do we encode domain meaning in Protobuf without allowing language defaults, JSON conventions, or storage models to erase important distinctions?
+> **Central question:** How do we encode domain meaning in Protobuf without allowing language defaults, JSON conventions, or storage models to erase important distinctions?
 
-## Place in the program
+## Where this module fits
 
-Module 01 approved a deliberately small RPC boundary. This module gives that boundary a durable type system. The task is not to translate database columns into fields. It is to decide which distinctions must survive generation in Python and TypeScript, binary transport, ProtoJSON, logging, replay, and future schema evolution. Presence, identity, units, and one-of-many alternatives become explicit contract decisions.
+Module 01 produced **Publish an interaction decision record, service-ownership map, and minimal Analysis RPC surface without splitting the platform prematurely**. This module extends that result by asking: **How do we encode domain meaning in Protobuf without allowing language defaults, JSON conventions, or storage models to erase important distinctions?**
+
+The new capstone increment is **Complete the Analysis RPC 1.0 message model, publish cross-language presence and integer vectors, and document every field whose absence changes behavior**. It becomes the prerequisite for **Wire Format, Unknown Fields, and Compatibility Discipline**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- design request and response messages around application decisions rather than persistence records
-- distinguish absent, present-with-default, empty, unknown, and inapplicable values
-- use enum zero values, `optional`, `oneof`, repeated fields, maps, and semantic wrappers deliberately
-- model resource names, request identifiers, correlation identifiers, revisions, and lease generations as different concepts
-- protect 64-bit integer meaning across Python, JavaScript, binary Protobuf, and ProtoJSON
-- maintain a proto3 executable baseline while understanding the Editions 2024 frontier without pretending universal tool support
+- Design request and response messages around application decisions rather than persistence records.
+- Distinguish absent, present-with-default, empty, unknown, and inapplicable values.
+- Use enum zero values, `optional`, `oneof`, repeated fields, maps, and semantic wrappers deliberately.
+- Model resource names, request identifiers, correlation identifiers, revisions, and lease generations as different concepts.
+- Protect 64-bit integer meaning across Python, JavaScript, binary Protobuf, and ProtoJSON.
+- Maintain a proto3 executable baseline while understanding the Editions 2024 frontier without pretending universal tool support.
 
-## Capstone result
+## Capstone increment
 
 Complete the Analysis RPC 1.0 message model, publish cross-language presence and integer vectors, and document every field whose absence changes behavior.
 
@@ -123,3 +125,13 @@ Study `capstone/contracts/proto/bijux/analysis/v1/analysis.proto`, the Editions 
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Wire Format, Unknown Fields, and Compatibility Discipline**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **design request and response messages around application decisions rather than persistence records, distinguish absent, present-with-default, empty, unknown, and inapplicable values, and use enum zero values, `optional`, `oneof`, repeated fields, maps, and semantic wrappers deliberately** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Inject an unknown enum number and record whether each runtime preserves, exposes, or rejects it** and requiring the following oracle: **Both tracks produce the same declared semantic projection and exact binary digest for supported cases. Unsafe numeric coercion, collapsed presence, invalid oneof sequences, or undocumented unknown-enum behavior fails the lab.**
+
+The cumulative platform now includes **Complete the Analysis RPC 1.0 message model, publish cross-language presence and integer vectors, and document every field whose absence changes behavior**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Wire Format, Unknown Fields, and Compatibility Discipline](../module-03-wire-format-unknown-fields-and-compatibility/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

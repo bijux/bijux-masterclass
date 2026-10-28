@@ -1,26 +1,24 @@
-# Demand Control, Persisted Operations, and Caching
+# Module 07 — Demand Control, Persisted Operations, and Caching
 
-**Module 07 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How can a client-shaped query language remain bounded under adversarial and accidental demand?
+> **Central question:** How can a client-shaped query language remain bounded under adversarial and accidental demand?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 07 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 06 produced **Prove field, tenant, collection, and sensitive-output authorization**. This module extends that result by asking: **How can a client-shaped query language remain bounded under adversarial and accidental demand?**
+
+The new capstone increment is **Admit only bounded trusted operations and record cost evidence**. It becomes the prerequisite for **Errors, Partial Data, Consistency, and Observability**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- separate validity from affordability
+- Separate validity from affordability.
+- Analyze aliases, fragments, and lists.
+- Operate a trusted-document registry.
+- Design authorization-aware caching.
+- Reject overload truthfully.
 
-- analyze aliases, fragments, and lists
-
-- operate a trusted-document registry
-
-- design authorization-aware caching
-
-- reject overload truthfully
-
-## Capstone result
+## Capstone increment
 
 Admit only bounded trusted operations and record cost evidence.
 
@@ -174,3 +172,13 @@ Both tracks parse the course operation subset and produce the same budget outcom
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-07-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **separate validity from affordability, analyze aliases, fragments, and lists, and operate a trusted-document registry** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Confirm keys include all required dimensions and that partial failure is not cached as complete success** and requiring the following oracle: **parse, validation, and admission failures are distinct;; cost uses selected operation, expanded fragments, aliases, and coerced variables;; list and nested cardinality are bounded;; service fan-out enters the decision;.**
+
+The cumulative platform now includes **Admit only bounded trusted operations and record cost evidence**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Errors, Partial Data, Consistency, and Observability](../module-08-errors-partial-data-consistency-and-observability/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

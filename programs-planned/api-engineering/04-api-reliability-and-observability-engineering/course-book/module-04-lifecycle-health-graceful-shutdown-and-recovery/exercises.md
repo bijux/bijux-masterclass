@@ -1,5 +1,7 @@
 # Exercises — Module 04: Lifecycle, Health, Shutdown, and Recovery
 
+Work through all twelve problems before opening the answers. In **Lifecycle, Health, Shutdown, and Recovery**, every response must settle this question: **How do APIs, workers, and dispatchers start, become ready, drain, stop, and recover without losing accepted work?** For every answer, separate the authoritative boundary from convenient diagnostics, then explain which failing experiment would force you to revise the design.
+
 ## 1. Why should a database outage usually affect readiness but not liveness?
 
 ## 2. What must happen first during graceful shutdown?

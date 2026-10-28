@@ -1,6 +1,6 @@
-# Exercises — Module 09 — Event Reliability, Backpressure, Dead Letters, and Recovery
+# Exercises — Module 09: Event Reliability, Backpressure, Dead Letters, and Recovery
 
-Use failure classes, rates, durable stores, and runbooks. Do not equate transport availability with recovery.
+Work through all twelve problems before opening the answers. In **Event Reliability, Backpressure, Dead Letters, and Recovery**, every response must settle this question: **How do lag, backpressure, retry, poison messages, dead-letter custody, broker failure, and replay storms affect recovery?** The strongest answer distinguishes specification, implementation, and operational evidence, then demonstrates where a plausible shortcut would fail.
 
 ## 1. Classify failures
 

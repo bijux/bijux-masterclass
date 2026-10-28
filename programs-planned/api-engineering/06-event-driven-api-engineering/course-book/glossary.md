@@ -1,143 +1,83 @@
 # Glossary — Event-Driven API Engineering
 
-Use this glossary alongside `program-book/glossary.md`. Program terms keep one meaning across all six courses; the entries below add course-specific distinctions.
+These terms have precise meanings in Course 6. Use them with the program glossary at `program-book/glossary.md`, which preserves shared meanings across the complete sequence.
 
-## Acknowledgement
+## command
 
-A protocol action that settles one delivery attempt and advances consumer progress according to broker policy.
-It is not proof that an external business effect occurred unless the consumer’s transaction and evidence say so.
+A request that an owner consider performing an action; it expresses intent and may be accepted or rejected.
 
-## AsyncAPI
+## domain event
 
-A machine-readable description format for asynchronous application interfaces, including channels, operations,
-messages, schemas, servers, bindings, and security.
+An immutable fact meaningful inside a domain model, named in the past tense and owned by the domain that established it.
 
-## At-least-once delivery
+## integration event
 
-A delivery policy that keeps a record eligible until acknowledgement, protecting against loss at the cost of
-possible duplicate delivery.
+A stable, externally published fact intended for independent consumers rather than internal domain implementation.
 
-## Causation ID
+## message envelope
 
-Identity of the command or event that directly caused another event.
+The governed metadata surrounding a payload, including identity, type, source, time, subject, correlation, causation, partition, and schema version.
 
-## Channel
+## producer
 
-A logical communication location in an asynchronous API. A physical broker address or subject implements a
-channel but is not identical to event type.
+The component authorized to publish a particular message type and accountable for its semantic correctness.
 
-## CloudEvent
+## consumer group
 
-An event represented using the CloudEvents common attribute model. Course-specific extension attributes remain
-profile policy.
+A logical subscriber whose members share delivery work and one progression through each partition.
 
-## Command
+## partition
 
-A request for one logical handler to attempt an action. It expresses intent and may be rejected.
+An ordered shard selected by a stable key; ordering claims generally hold only within one partition.
 
-## Consumer effect version
+## offset
 
-Versioned identity of one durable outcome produced by a consumer. It participates in inbox deduplication and
-replay isolation.
+A broker or log position used to identify progression through a partition, not the business identity of an event.
 
-## Consumer group
+## acknowledgement
 
-A broker-side logical subscription whose instances share partitions and progress. Different business effects
-normally use different groups.
+A consumer’s signal that the current delivery attempt reached the required durable boundary and need not be redelivered.
 
-## Correlation ID
+## redelivery
 
-Identity that links messages and operations belonging to a wider user or business journey.
+A later attempt to deliver the same message identity after timeout, failure, negative acknowledgement, or consumer recovery.
 
-## Dead letter
+## at-least-once
 
-Durable evidence that automated handling stopped after a declared terminal policy. It requires ownership,
-classification, repair, retention, and replay controls.
+A delivery property in which a message may be delivered more than once, requiring consumers to tolerate duplicates.
 
-## Domain event
+## outbox
 
-An internal application fact used to model one domain boundary. It is not automatically a public integration
-event.
+Durable publication intent committed atomically with the producer’s business state.
 
-## Event
+## inbox
 
-An immutable statement that an authoritative fact became true.
+Consumer-side durable state recording message/effect identities so duplicate deliveries do not duplicate effects.
 
-## Event API
+## effect identity
 
-The versioned public set of commands/events, envelopes, schemas, channels, ownership, delivery expectations,
-security, replay, and lifecycle policy.
+A stable key representing the business effect produced by a message, often including consumer and effect-version context.
 
-## Event time
+## replay
 
-The business time when the fact occurred, distinct from ingestion or processing time.
+Intentional reprocessing of retained historical messages within a bounded scope and side-effect policy.
 
-## Inbox
+## upcaster
 
-Durable consumer identity used in the same transaction as a business effect to suppress repeated application of
-one event to one effect version.
+A deterministic read-time transformation that maps an older event shape into the current consumer model without rewriting history.
 
-## Integration event
+## event time
 
-A deliberately designed event published for independently deployed consumers.
+The time the represented fact occurred according to the producer’s domain, distinct from ingestion or processing time.
 
-## Message
+## watermark
 
-The transported unit containing envelope metadata and payload. A message can carry a command, event, or other
-interaction category.
+An estimate of event-time completeness used to decide when a window may be emitted while allowing bounded lateness.
 
-## Outbox
+## late event
 
-A durable producer table or store written atomically with authoritative state to record publication intent.
+An event arriving after a window result has been emitted or after the allowed-lateness policy, requiring correction or quarantine.
 
-## Partition
+## dead letter
 
-An ordered shard of a channel or stream. Order is generally comparable only inside one partition.
-
-## Partition key
-
-Stable domain identity used to assign related records to the same partition.
-
-## Processing time
-
-Time when a consumer handles a record, which may differ substantially from event time.
-
-## Projection
-
-Derived state built from events, usually replayable under a versioned effect identity.
-
-## Replay
-
-Controlled reprocessing of retained events under an explicit scope, target, consumer/effect version, side-effect
-policy, bound, and operational budget.
-
-## Retention
-
-Policy defining how long broker/archive records remain available. It constrains replay and privacy obligations.
-
-## Schema compatibility
-
-Whether new producers, current consumers, and retained records remain mutually intelligible under declared
-structural and semantic policy.
-
-## Subject
-
-Domain resource identity the event concerns. It is not the same as a NATS subject/address.
-
-## Transactional outbox
-
-Pattern that commits domain state and immutable publication intent in one local transaction.
-
-## Upcaster
-
-Deterministic representation translation from an older event schema/version to a newer consumer input. It must
-not invent unavailable historical truth.
-
-## Watermark
-
-A stream-processing estimate that events earlier than a threshold are unlikely under normal conditions. It is
-not proof that none will arrive.
-
-## Window
-
-A time-bounded grouping used for stream aggregation, such as tumbling, sliding, or session windows.
+A message placed into explicit operational custody after bounded retries or permanent failure, together with reason and recovery metadata.

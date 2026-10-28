@@ -1,85 +1,47 @@
-# Ten-day study plan
+# Two-Week Study Plan — Distributed API Architecture and Microservices Engineering
 
-Course 8 is designed as ten dense study days after orientation. Each day produces one durable architecture artifact. The artifacts accumulate into the final extraction and defense; they are not isolated assignments.
+## Rhythm
 
-## Before Day 1 — orientation
+Course 8 uses ten teaching days over two weeks. Orientation freezes the incoming boundary before Day 1; each day moves from the distribute ownership deliberately model to transfer problems, a controlled experiment, and an evidence defense. The middle weekend is for repairing failed checkpoints, not adding features.
 
-Prove the Course 7 handoff, select a primary implementation track, and trace one analysis from public request to artifact and notification. Do not begin decomposition until you can identify every existing transaction authority and contract.
-
-## Daily progression
-
-| Day | Module | Cumulative result |
+| Day | Module | Required result |
 |---:|---|---|
-| 1 | Distribution economics and boundary evidence | boundary scorecard with approved, conditional, retained, and rejected candidates |
-| 2 | Service boundaries and contract ownership | service catalogue, context map, contract ownership, and anti-corruption mappings |
-| 3 | Data ownership and cross-service queries | one-writer data map, projection policies, staleness contracts, and reconciliation design |
-| 4 | Synchronous collaboration | acyclic dependency graph, absolute budgets, bounded composition, and truthful partiality |
-| 5 | Sagas and compensation | durable artifact-completion process manager with failure schedules and manual-review state |
-| 6 | Service identity and authorization | workload/user/tenant/effect identity matrix and narrow artifact capabilities |
-| 7 | Discovery, routing, and topology | health-aware routing, gateway limits, shadow safety, and declared network paths |
-| 8 | Deployment independence | old/new compatibility matrix, service-owned migrations, shadow/canary evidence, and rollback |
-| 9 | Distributed verification | proof matrix, fault experiments, reconciliation findings, and operability review |
-| 10 | Incremental extraction | notification and artifact strangler migration, decommission evidence, merge-back criteria, and final defense |
+| 1 | [Distribution Economics, Boundary Evidence, and Architecture Fitness Functions](module-01-distribution-economics-and-boundary-evidence/index.md) | Publish a measured boundary scorecard that approves Notification Delivery for first extraction, approves Artifact Delivery conditionally, keeps Analysis Control cohesive, and rejects table-shaped services. |
+| 2 | [Service Boundaries, Bounded Contexts, and Contract Ownership](module-02-service-boundaries-and-contract-ownership/index.md) | Publish the service catalogue, bounded-context map, contract ownership map, and explicit list of capabilities that remain inside Analysis Control. |
+| 3 | [Data Ownership, Replication, and Cross-Service Query Design](module-03-data-ownership-replication-and-cross-service-queries/index.md) | Split authoritative data ownership, build versioned projections for cross-service reads, define staleness budgets, and prove reconciliation for missing, duplicate, and out-of-order updates. |
+| 4 | [Synchronous Collaboration, API Composition, and Dependency Budgets](module-04-synchronous-collaboration-and-dependency-budgets/index.md) | Publish an acyclic synchronous dependency graph, one edge-owned deadline budget, bounded fan-out rules, and a gateway composition path that degrades truthfully. |
+| 5 | [Distributed Workflows, Sagas, Compensation, and Process Managers](module-05-distributed-workflows-sagas-and-compensation/index.md) | Implement the artifact-publication and run-completion saga with durable step identity, semantic locks, compensation, timeout handling, and operator-visible reconciliation. |
+| 6 | [Service Identity, Authorization, and Trust Propagation](module-06-service-identity-authorization-and-trust-propagation/index.md) | Introduce workload identities, audience-bound service credentials, delegated user context, short-lived artifact capabilities, and explicit authorization at every trust boundary. |
+| 7 | [Discovery, Routing, Gateways, and Traffic Topology](module-07-discovery-routing-gateways-and-traffic-topology/index.md) | Implement service registration, health-aware routing, gateway edge policy, bounded traffic shifting, and an optional Kubernetes topology with explicit ownership of each routing decision. |
+| 8 | [Deployment Independence, Version Skew, and Release Choreography](module-08-deployment-independence-version-skew-and-release-choreography/index.md) | Publish and execute a mixed-version release matrix for Analysis Control, Artifact, Notification, Gateway, and Worker Plane with expand-and-contract changes and rollback evidence. |
+| 9 | [Distributed Verification, Fault Injection, and Operability](module-09-distributed-verification-fault-injection-and-operability/index.md) | Build a distributed proof ladder spanning contract, component, topology, fault, reconciliation, and operator evidence, then use it to reject ten planted architecture defects. |
+| 10 | [Incremental Extraction, Strangler Migration, and Final Architecture Defense](module-10-incremental-extraction-migration-and-final-defense/index.md) | Extract Notification Delivery and Artifact Delivery through shadow, compare, backfill, cutover, and decommission phases; retain Analysis Control; and publish the Course 9 graph-access handoff. |
 
-## Suggested daily rhythm
-
-```text
-08:30–09:00  retrieval from the previous module
-09:00–11:15  authoritative chapter and worked decisions
-11:30–12:30  architecture artifact review
-13:30–15:00  primary implementation track
-15:15–17:30  controlled lab or failure schedule
-18:30–19:30  twelve exercises
-19:30–20:30  compare worked answers and revise
-20:30–21:00  checkpoint evidence and architecture journal
-```
-
-The schedule is demanding because the course is cumulative. Do not compensate for a missing checkpoint by reading faster. Repair the evidence.
-
-## Middle-of-course review after Module 5
-
-Before continuing, defend these statements without notes:
-
-- why Notification deserves extraction before Artifact;
-- why Analysis Control remains cohesive;
-- which facts each proposed service may write;
-- how a run-with-artifacts query behaves during Artifact outage;
-- why a timeout does not reveal whether a remote mutation committed;
-- how the artifact saga handles a stale worker attempt;
-- why compensation is a new business action rather than rollback.
-
-Then run:
-
-```bash
-make boundary-proof
-make ownership-proof
-make data-proof
-make dependency-proof
-make saga-proof
-```
-
-## Final review after Module 10
-
-The final defense is not a tour of files. It is a causal explanation of one workflow and one failure:
-
-1. show the public request and owner decision;
-2. identify each local transaction;
-3. show every remote contract and identity;
-4. inject response loss after Artifact commit;
-5. recover with stable effect identity;
-6. reconcile owner state;
-7. show mixed-version compatibility and route rollback;
-8. justify every retained and extracted boundary;
-9. identify a merge-back condition.
-
-## Alternative pacing
-
-A self-directed learner may take two weeks with weekends reserved for repair:
+## Suggested day
 
 ```text
-Week 1: orientation and Modules 1–5
-Weekend: repeat failure schedules and repair evidence
-Week 2: Modules 6–10 and final defense
+08:30  retrieval practice and checkpoint repair
+09:00  chapter reading and diagram reconstruction
+11:00  worked examples and standards review
+13:00  primary-track implementation reading
+15:00  exercises before answers
+17:00  controlled lab
+19:30  evidence package and checkpoint defense
 ```
 
-Do not split one module across many weeks without revisiting earlier artifacts. Distributed architecture concepts depend heavily on retained context.
+The two-week schedule is subordinate to evidence. If the distribute ownership deliberately argument becomes unclear, stop at the last green checkpoint, reduce the counterexample, and resume only after the owning mechanism is understood.
+
+## Weekend synthesis
+
+At the Week 1 boundary, reconstruct how Modules 1–5 change the platform while preserving this incoming state: The Course 7 platform with governed HTTP, event, and RPC interfaces and migration history through 015. Rerun those checkpoints and postpone every feature that does not serve the Course 8 responsibility.
+
+## Recovery route
+
+When a checkpoint fails:
+
+1. isolate the first broken invariant;
+2. restore the predecessor baseline if necessary;
+3. reduce the failing case;
+4. repair the owning mechanism;
+5. retain the case as a regression;
+6. update your explanation before continuing.

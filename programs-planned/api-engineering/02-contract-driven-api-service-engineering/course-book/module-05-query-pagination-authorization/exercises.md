@@ -1,5 +1,7 @@
 # Exercises — Module 05: Queries, Stable Pagination, and Authorized Access
 
+Work through all twelve problems before opening the answers. In **Queries, Stable Pagination, and Authorized Access**, every response must settle this question: **How do filters, stable cursors, and authorization-aware queries remain correct while data changes?** A useful solution connects semantics to mechanism: who owns the decision, what can go wrong, and which retained artifact proves the claimed outcome.
+
 ## 1. Why must an order be total for cursor pagination?
 
 ## 2. How does pure keyset pagination behave when a row appears before the boundary, and what extra rule does the capstone high-water value provide?

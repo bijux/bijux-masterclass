@@ -1,6 +1,8 @@
-# Checkpoint — Event Security, Multi-Tenancy, Privacy, and Trust
+# Checkpoint — Module 08: Event Security, Multi-Tenancy, Privacy, and Trust
 
-Do not progress because the chapter has been read. Progress when the following evidence can be reproduced from a clean working tree.
+## Required result
+
+Add producer policy, tenant-scoped subscriptions/replay, exact-byte signatures, freshness, classification, and privacy rules.
 
 ## Demonstrate
 
@@ -9,14 +11,6 @@ Do not progress because the chapter has been read. Progress when the following e
 - Describe exact-byte signing and cross-language canonicalization.
 - Separate live replay attack prevention from authorized historical replay.
 
-## Required result
-
-- `work/module-08/authorization-matrix.yaml`
-- `work/module-08/signature-vectors.json`
-- `work/module-08/rejection-evidence.json`
-- `work/module-08/key-rotation-timeline.md`
-- `work/module-08/residual-risk.md`
-
 ## Commands
 
 ```bash
@@ -24,6 +18,16 @@ make security-proof
 make vector-proof
 make module-proof MODULE=08 TRACK=$TRACK
 ```
+
+## Evidence to retain
+
+- `work/module-08/authorization-matrix.yaml`
+- `work/module-08/signature-vectors.json`
+- `work/module-08/rejection-evidence.json`
+- `work/module-08/key-rotation-timeline.md`
+- cross-tenant projection assertions
+- live-versus-historical replay comparison
+- output from `make security-proof`
 
 ## Defend the design
 
@@ -39,4 +43,4 @@ make module-proof MODULE=08 TRACK=$TRACK
 - Raw secrets or sensitive payloads enter event evidence.
 - Freshness is confused with durable event deduplication.
 
-The checkpoint is complete only when all commands pass, all artifacts are reviewable, and each oral-defense question can be answered without appealing to a broker feature as magic.
+The **Event Security, Multi-Tenancy, Privacy, and Trust** checkpoint is complete only when the commands pass, the retained artifacts explain the event-system state, and you can defend the result without treating broker delivery, ordering, or replay as magic.

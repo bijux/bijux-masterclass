@@ -1,22 +1,8 @@
-# Module 10 checkpoint — Performance Regression and Release Engineering
+# Checkpoint — Module 10: Performance Regression and Release Engineering
 
 ## Required result
 
-- [ ] all ten module checkpoints pass
-- [ ] performance profile 1.0 validates
-- [ ] release vectors agree across languages
-- [ ] accepted dossier contains complete identities and evidence
-- [ ] faster invalid candidate is rejected
-- [ ] inconclusive candidate is not misreported
-- [ ] final handoff is sanitized and manifested
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. Why is your accepted candidate actually comparable?
-2. Which earlier gate rejects the fastest invalid candidate?
-3. What exact condition triggers remeasurement or rollback?
+Build correctness-first regression gates, environment comparability, accepted/rejected/inconclusive candidates, and a performance dossier.
 
 ## Demonstrate
 
@@ -30,6 +16,34 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=10 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-10/
+├── release-policy.yaml
+├── baseline-series/
+├── candidate-series/
+├── accepted-decision.json
+├── rejected-decision.json
+├── inconclusive-decision.json
+├── sensitivity.json
+├── rollback.md
+├── remeasurement.md
+└── final-dossier.md
+```
+
+`final-dossier.md` must link each conclusion to machine-readable evidence and state the strongest evidence class reached. Include one rejected optimization from earlier modules.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. Why is your accepted candidate actually comparable?
+2. Which earlier gate rejects the fastest invalid candidate?
+3. What exact condition triggers remeasurement or rollback?
 
 ## Continue only when
 

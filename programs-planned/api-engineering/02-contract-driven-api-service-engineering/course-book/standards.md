@@ -1,32 +1,39 @@
-# Standards, Profiles, and Evidence — Contract-Driven API Service Engineering
+# Standards and Evidence — Contract-Driven API Service Engineering
 
-## Version boundary
+## How standards are used
 
-| Axis | Value in this course |
-|---|---|
-| Public interface | 1.1 preserved; compatible API 1.2 introduced |
-| Interface specification | 3.1.2 baseline preserved |
-| Engineering profiles | No security profile yet; contract-level security decisions remain fixed. |
-| Database migration history | 001–005 |
+Standards settle the protocol and compatibility questions relevant to **Contract-Driven API Service Engineering**; they do not decide the architecture for you. Classify every cited rule as normative requirement, interoperability advice, course profile, observed tool behavior, or architecture decision.
 
-## Four labels for claims
+## Standards profile
 
-**Normative requirement.** A published specification defines required behavior or document structure.
+- HTTP idempotency and conditional request semantics;
+- RFC 9457 Problem Details;
+- PostgreSQL transaction, locking, and constraint behavior;
+- OpenAPI 3.1.2 inherited contract;
+- language-specific framework documentation only where runtime behavior matters;
 
-**Interoperability recommendation.** Several legal choices exist, but one reduces ambiguity across clients, providers, operators, or consumers.
+## Reading discipline
 
-**Course policy.** The capstone adopts a stricter or more specific rule so the design can be reviewed and tested consistently.
+Start from the module question, then read only the primary-source clauses needed for implement the promise durably. Restate the rule, build a counterexample in the Analysis Runs Platform, and name a falsifying oracle; citation alone never proves that the Python or TypeScript runtime conforms.
 
-**Observed tool boundary.** A pinned tool supports, transforms, partially supports, or rejects a feature. Tool behavior must not be presented as the normative standard.
+## Executable profile and frontier
 
-## Reading standards without wasting time
-
-Start with the chapter’s engineering question. Read the cited normative section needed to settle that question. Write the rule in your own words, one counterexample, and the cheapest oracle that can falsify your implementation. Do not read an entire specification linearly unless you are conducting a broader standards review.
+Examples and proofs use the pinned Course 2 profile recorded in `course.json`: API 1.1 preserved; additive API 1.2 introduced; OpenAPI 3.1.2 preserved; migrations 001–005. A newer specification or tool does not silently change that profile; advance contracts, fixtures, compatibility rules, and the version ledger together.
 
 ## Evidence boundary
 
-A local structural checker does not establish full standards conformance. A fixture validator does not establish live provider behavior. A passing unit test does not establish process recovery. A local benchmark does not establish production capacity. A broker emulator does not establish a real broker’s retention and failure behavior. Every report must name the evidence class and missing environment explicitly.
+The strongest environment-backed claims in Course 2 require concurrent PostgreSQL transactions, process termination, and migration coexistence. Local parsers, fixtures, unit tests, or simulators remain useful but support narrower claims; [Evidence model](evidence-model.md) names those boundaries.
 
-## Stable program sources
+## Primary-source review worksheet
 
-The course references official specifications and primary project documentation where normative or tool behavior matters. The repository pins the versions used by executable routes. When a living specification advances, update the version ledger, compatibility analysis, examples, and proof expectations together rather than silently changing one citation.
+For a rule used in a module, record:
+
+```text
+claim:
+source and version:
+category:
+course interpretation:
+smallest counterexample:
+cheapest falsifying proof:
+tool limitation:
+```

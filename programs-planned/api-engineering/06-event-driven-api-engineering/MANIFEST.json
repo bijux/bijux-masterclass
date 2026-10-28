@@ -10,8 +10,8 @@
     {
       "mode": "0644",
       "path": "README.md",
-      "sha256": "b4cbefb27fc995933ee077bb4445cb7dfb5ce69b8b1911398f144f6b37c18e92",
-      "size": 2854
+      "sha256": "564220ec66f44098fd4a42d45a2298e24940502ea2542caef69259e66eb9865f",
+      "size": 1150
     },
     {
       "mode": "0644",
@@ -1546,362 +1546,374 @@
     {
       "mode": "0644",
       "path": "course-book/capstone.md",
-      "sha256": "961a54fdec04508daa2f65472ef1a7325b227affac452b5414dd878bd63d93dc",
-      "size": 3290
+      "sha256": "5339abc08f7280832158c63d51fcd28a3a84dda6a3c183bf993f9d212dd23f4f",
+      "size": 3943
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/evidence-model.md",
+      "sha256": "0a39fcaa17ea277ac08bb0d8925fab4861ea4ad67132c6571053d59a3291b47d",
+      "size": 1615
     },
     {
       "mode": "0644",
       "path": "course-book/glossary.md",
-      "sha256": "d1d3fe4f447605565b0008c90f858deba3d08b2d1231175b27aeb8e2832b48f9",
-      "size": 4439
+      "sha256": "e4fad5c073f8c34321bf73ada74b2e1245cfd2884bfc546c32304f703d659945",
+      "size": 2890
     },
     {
       "mode": "0644",
       "path": "course-book/index.md",
-      "sha256": "275931639d5a439208beee531d6252a133cb565f9995b0d5d06d33140f459abd",
-      "size": 7090
+      "sha256": "acb38b1f5ca83ff6776eb68ee47fe32a6f59d5d64704434c50bdb5d1f8bc55cd",
+      "size": 7187
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/language-strategy.md",
+      "sha256": "68caf0c7b455e4b645aed3d6670e880a11323f7cadec33da557af8241299771a",
+      "size": 1438
     },
     {
       "mode": "0644",
       "path": "course-book/module-00-orientation/checkpoint.md",
-      "sha256": "3f57c543cd10aa9dbe3eda37866fa11659201d66a224569f7c041baa2151b993",
-      "size": 1212
+      "sha256": "ac82a8df3ba76070adf8169355338742083ab5be5bbf52b48780bc4b89f72bb7",
+      "size": 1696
     },
     {
       "mode": "0644",
       "path": "course-book/module-00-orientation/index.md",
-      "sha256": "51bd7c19b9cf423a1856341785559c8fab3944847728a0dfab8fc334842b08c1",
-      "size": 3724
+      "sha256": "edc5bd7ada76ef89af0717fb1e76a779e3d2e8e83437b51eb21c09118baf7f23",
+      "size": 3672
     },
     {
       "mode": "0644",
       "path": "course-book/module-00-orientation/lab.md",
-      "sha256": "a63b6bf250d0c1a7874ae17bd0e7f9d918ce457ba01a6a823ae4eae41fa28b40",
-      "size": 2421
+      "sha256": "b681ff62f92767db853cf20636ae447bbcc83b940e1387ffb5e28401ba7972b3",
+      "size": 3260
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-event-thinking-and-ownership/checkpoint.md",
-      "sha256": "227faeda77bdaf6b442d05e457506a28533f9d2fc1e6bb93c08553975d9203b9",
-      "size": 1617
+      "sha256": "a9133cd2b41a0185ef446d9f0172e408ffcefa54019a3b9e101f35d7379f80f1",
+      "size": 1841
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-event-thinking-and-ownership/exercise-answers.md",
-      "sha256": "b90778f8841204511917870b1c5b8f2d6b162ca40bd0dd10500009b7f6a5ec83",
-      "size": 5696
+      "sha256": "c6ae2527ef3f167e254b62391327a62ea503ceb7e91b940dc97e23e778c3df0e",
+      "size": 9848
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-event-thinking-and-ownership/exercises.md",
-      "sha256": "1b05f2ddcac126e345edd59505d82eaa5026f926b061e8891cc2c0899d380829",
-      "size": 2833
+      "sha256": "0fe7533d662870a79ad48eb042aa22812abdb5c663b0836bcee3db1386c7f04c",
+      "size": 3221
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-event-thinking-and-ownership/index.md",
-      "sha256": "fd96f85cb0661701fbb3d8b951239d20c7fa0aee7ba02868c87d57d2ca728408",
-      "size": 20050
+      "sha256": "90d2b44448ae9a096c26fd3bd0e0506fd3862abb3b127d39d10d737e5acddc31",
+      "size": 19653
     },
     {
       "mode": "0644",
       "path": "course-book/module-01-event-thinking-and-ownership/lab.md",
-      "sha256": "415fecf43bef94f75fc35866b22b858b250ec6bb1e7402629a52ef9fe30a511a",
-      "size": 2448
+      "sha256": "e9b1e472d31ec78803fc081d336fbd7e3a9cac8b724a39350139fc7bb9aa7c23",
+      "size": 5841
     },
     {
       "mode": "0644",
       "path": "course-book/module-02-asyncapi-and-contract-architecture/checkpoint.md",
-      "sha256": "a999f4125af5a15b70de4ae5655995218a7da36ad5cb476bdf678a93a89ecc10",
-      "size": 1552
+      "sha256": "494867c2bdb39f3bb77de1c008dc4527ff5a4930b9f4056f9e8f7f3c5617df6f",
+      "size": 1799
     },
     {
       "mode": "0644",
       "path": "course-book/module-02-asyncapi-and-contract-architecture/exercise-answers.md",
-      "sha256": "aa4965b25320e490b9a59830c19086ee35861e8ced4b49ad424362b972aaf625",
-      "size": 4728
+      "sha256": "8c2d3bca0ec38caf4f9b6f0f1bb79996cbe208caae10d4aebc7dec4a688d671d",
+      "size": 8927
     },
     {
       "mode": "0644",
       "path": "course-book/module-02-asyncapi-and-contract-architecture/exercises.md",
-      "sha256": "03bfb1c67a8b5e6287b995b6360cb7de9dddfddf7b3cacdf92c0854d9d20d37c",
-      "size": 2480
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-02-asyncapi-and-contract-architecture/index.md",
-      "sha256": "ea14d6a411df5fa7bb340367c57a4dba888d461a4510558b0abbf929f421c358",
-      "size": 17803
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-02-asyncapi-and-contract-architecture/lab.md",
-      "sha256": "bf5388b4cb55cc376dd4a06654913ad6bca2561c61b726470cd7be97a5b36b2e",
-      "size": 2934
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/checkpoint.md",
-      "sha256": "f6a03e4b834461afddf803b08125163207fdee1f63f80163e51a447bf55d02c1",
-      "size": 1549
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/exercise-answers.md",
-      "sha256": "cc5a4e2e13f83e261b046a6273db8ab3a5789123aadba9f112e02f515953e87a",
-      "size": 4877
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/exercises.md",
-      "sha256": "8b14124672cb793a48d93b0c0f0f2fdb506631ee543139fb7cf107b6d1d635a3",
-      "size": 2400
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/index.md",
-      "sha256": "2f258bd989e93107f9fb1122114cfbca44c13a96ae39db0aa1dc94f38cc2881e",
-      "size": 16644
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/lab.md",
-      "sha256": "c88dfff12fc0e0ffd02dc141a7c8197826ecab9cd7f421a85ff4c589d60fa9a3",
-      "size": 2820
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/checkpoint.md",
-      "sha256": "f11140bd3c03265374d0f3dad1872293d27b91c643fd55d1c1832fc13269d755",
-      "size": 1519
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/exercise-answers.md",
-      "sha256": "53c4c310a9905a8b7e906c5d1b07690de3478b2f469a3ae18da874f603b7fc23",
-      "size": 4339
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/exercises.md",
-      "sha256": "ec0fc33c8a0a37a67256baa1b171f2aee87e7c11265daf05336b3f1c1c780cd7",
-      "size": 2161
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/index.md",
-      "sha256": "1f8e192533053ce2c575518b12f6be15783cbc6ee9550b5b7176415ba91ef51e",
-      "size": 15723
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/lab.md",
-      "sha256": "f1c90bbc7e8b4c470802e0c976ea062c1c91f35a8ac28d9ae137f75c22790d05",
-      "size": 2718
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-05-evolution-replay-and-historical-truth/checkpoint.md",
-      "sha256": "82d0c3b9cb2c20bdf79371a8b5ecd1225f3651ebe2579a1fa7a6106f3e7859d5",
-      "size": 1514
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-05-evolution-replay-and-historical-truth/exercise-answers.md",
-      "sha256": "13669add0a109d67312bf9ae7d0c6ca0baab87047b0900a9b67e8beef6a63161",
-      "size": 4080
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-05-evolution-replay-and-historical-truth/exercises.md",
-      "sha256": "b4ca8ecb6940129177fcb1d5f681ea87eabae7d9b90f61305669abfad819c67c",
-      "size": 2028
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-05-evolution-replay-and-historical-truth/index.md",
-      "sha256": "90ce0d148855adf64dde9a91ce5d73968929019416f080c434babb373f7b23ce",
-      "size": 15685
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-05-evolution-replay-and-historical-truth/lab.md",
-      "sha256": "592720783e099ed795b3a29120f42cad334804a3467019176ee66427434efbe6",
-      "size": 2708
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-06-consumer-architecture-and-workflows/checkpoint.md",
-      "sha256": "a2a821f71c513068258922ca501a6e6afba92326a9581a5da01fbe8bd1c115ed",
-      "size": 1495
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-06-consumer-architecture-and-workflows/exercise-answers.md",
-      "sha256": "8fad138ba630817fc8e0814f51c32f946095a66ebcaf1db30b2e68ae6c120bc4",
-      "size": 4316
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-06-consumer-architecture-and-workflows/exercises.md",
-      "sha256": "41a5fc8b95677c1eaf0a750bb278940dcd54e29f6f64a479d417ff8b4130912d",
-      "size": 2135
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-06-consumer-architecture-and-workflows/index.md",
-      "sha256": "c00fe7a0d9ed93f4feeb60ba0c3860b81d1aeee450011dcf9eeaa0034a040c67",
-      "size": 15184
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-06-consumer-architecture-and-workflows/lab.md",
-      "sha256": "3cf8eb978bc0537383219f3ddbfecc202da1d5999dc6ddaa2e7f09376153a56e",
+      "sha256": "7162e1e76d1e83f150d58305f86c1b83d3a1a5e6acefcf8b51ff6b78fe0ba225",
       "size": 2794
     },
     {
       "mode": "0644",
+      "path": "course-book/module-02-asyncapi-and-contract-architecture/index.md",
+      "sha256": "eaea05782922999094e40435c1c2d20cc2743ec56d771dca4283e040b2e9ee93",
+      "size": 17563
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-asyncapi-and-contract-architecture/lab.md",
+      "sha256": "cd61cd280513f0e31bfbe97ab94a392e22fe53ee893e54a140251b2fbb532e50",
+      "size": 5808
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/checkpoint.md",
+      "sha256": "eff52469421a91c084d4864f4c256feb0c124f306f56d4040a22fa277c2ff40b",
+      "size": 1784
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/exercise-answers.md",
+      "sha256": "536b1b0e9b19f6b23c4ddfb5d866f57200a0fba97fcfe0018c4a2a152a37e48f",
+      "size": 8758
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/exercises.md",
+      "sha256": "86214a71ae0e4712ba009be72e6d5b4e8209350c74990a61d69fe1f93adbd62b",
+      "size": 2780
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/index.md",
+      "sha256": "12a85dae03b446b1c14399bf3f665d713f47ce35af378c6a3dd01d1df602a9cd",
+      "size": 16265
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-delivery-ordering-and-acknowledgement/lab.md",
+      "sha256": "86473bf07cf2cffd62e83f278aac563681c5eee41c1756e47cd4dc6c4081b78d",
+      "size": 5527
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/checkpoint.md",
+      "sha256": "13401c9d27fd094a89c1b8537ce8495a208662b063da7b885b369cb383e79514",
+      "size": 1741
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/exercise-answers.md",
+      "sha256": "c5b4398ae748ab0ac41b51046ff332b9f0dbc49f98d0915146f51478d095dd73",
+      "size": 8186
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/exercises.md",
+      "sha256": "29ad4530aa738b41dc1cedeb1c9252a42820941afeed0074c538dc761488ee41",
+      "size": 2528
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/index.md",
+      "sha256": "8872a1e499665283c9cdfbde3bc7ae1c41133a2ac812e76e6ec73abbfcef4980",
+      "size": 15442
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-transactional-publication-and-idempotent-effects/lab.md",
+      "sha256": "48ff78e2778a6cffb7bcb202e5e354d264518b5c51263a85cba0156c3e00466b",
+      "size": 5425
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-evolution-replay-and-historical-truth/checkpoint.md",
+      "sha256": "0dd86dde216daad2e7ca8e2831e141ebf5f2a6e98134c125ccd283db1d1aee6b",
+      "size": 1691
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-evolution-replay-and-historical-truth/exercise-answers.md",
+      "sha256": "67b42853154b788ba22ab7d6be21cc1011e03438a69b934c3b5bbc5d0855ae72",
+      "size": 8055
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-evolution-replay-and-historical-truth/exercises.md",
+      "sha256": "1163dbf4666043a8def52323b01373ebd2c863eb7e3c0449c4d20d8e37ea8050",
+      "size": 2352
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-evolution-replay-and-historical-truth/index.md",
+      "sha256": "9691a5d7f6d52b306bafc2d3f45c85455c09bfca54d935c5e790d17739a83936",
+      "size": 15432
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-evolution-replay-and-historical-truth/lab.md",
+      "sha256": "b72d055f1998cbb9cc6b5c53e256531128127094535bd3570d180c86e2b539e7",
+      "size": 5518
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-consumer-architecture-and-workflows/checkpoint.md",
+      "sha256": "9e38e6c18cfa2131e6401f1ad46c321ae344f7344e8c162bb259297ff963f21b",
+      "size": 1672
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-consumer-architecture-and-workflows/exercise-answers.md",
+      "sha256": "2fb3ea53771eb82958d7c40b29f1a3bc35c27837d21713e6d7bcbd3b351d5561",
+      "size": 8144
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-consumer-architecture-and-workflows/exercises.md",
+      "sha256": "7a9e17149222e504c5189cfe57e90e1adf0ffe35e8450c6102790569986ee3ef",
+      "size": 2457
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-consumer-architecture-and-workflows/index.md",
+      "sha256": "310771a024068ebffb8781ef7c995283317dea1bdc72b6fbc8b01328bfbaeb8f",
+      "size": 14939
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-consumer-architecture-and-workflows/lab.md",
+      "sha256": "faef0bade959006a6c72a445e8a791cdafaafbf6330b8f78da97f24f8ae1aa45",
+      "size": 5670
+    },
+    {
+      "mode": "0644",
       "path": "course-book/module-07-event-time-stream-processing/checkpoint.md",
-      "sha256": "330205d3978d76d2932423e713c4ec6552550c3f95ed1c8f7639d909022b2f3d",
-      "size": 1793
+      "sha256": "10cc1f41f3fefe769d1c0ae5bb113c882f2d44421621c4f670da3b44e952884b",
+      "size": 1943
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-event-time-stream-processing/exercise-answers.md",
-      "sha256": "e57f5a0075c6fa035bdcba7f9833f63053c100585298a48fbb318664b13534f2",
-      "size": 3963
+      "sha256": "a1022786749bc3c1d2906f5bcba57ae3e607a5c0124b09e2a2f3afa412ca22d9",
+      "size": 8147
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-event-time-stream-processing/exercises.md",
-      "sha256": "c5b83678f8dd91059f63d1673f9e21d0bc5ae288f6ce901c94c4a6539e90b5bf",
-      "size": 1913
+      "sha256": "bfa5df9f6c8ce8dfbfde13de42b3a8836b0f614e509645bdca224fcfbfac5a14",
+      "size": 2259
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-event-time-stream-processing/index.md",
-      "sha256": "dce931a2915df6021ebbffa1b31c77d6ffe8be282c5eaad070f26f807ecaf815",
-      "size": 14545
+      "sha256": "a0d481732ebeaa550d6cc960d348778b359973100dd067e84246817ed4df0ae9",
+      "size": 14292
     },
     {
       "mode": "0644",
       "path": "course-book/module-07-event-time-stream-processing/lab.md",
-      "sha256": "d13ccafeab716cdd53b6dfcff0320b3c4e4a139dd4e17d21eced06ce7255183f",
-      "size": 2530
+      "sha256": "8fb768b96fb4d7d6665ac887c7d2195ec4ae6ee2a8da30d9f99e697fc3f34aa8",
+      "size": 5342
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-event-security-and-multitenancy/checkpoint.md",
-      "sha256": "2734fa58e5cb0d712c3f3fe27764049cda9efb7e9644bcc8b5580a6af532cdac",
-      "size": 1600
+      "sha256": "d6b2f7f8a02d86c0ce7ccc028fbf4d543a5f6b60b3d117a2127d5fcb681ec395",
+      "size": 1785
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-event-security-and-multitenancy/exercise-answers.md",
-      "sha256": "8395d50b3c5b9f997afedb279d038d24ac30bc1499f00ffb13282f73a61ea526",
-      "size": 4208
+      "sha256": "9bf698c2a930b587cb6f89b5ccc8b86d6e8a59940df120b959c365de627476e6",
+      "size": 7990
     },
     {
       "mode": "0644",
       "path": "course-book/module-08-event-security-and-multitenancy/exercises.md",
-      "sha256": "74b66df1b2490ca8bf2d6a172c9f734a430b23448502cffbc86d7ca00cda3bb1",
-      "size": 1922
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-08-event-security-and-multitenancy/index.md",
-      "sha256": "60f1ae72b61d8de084bf0f263ae99ab93c40a6a9ce7fc998ae1c216825d50697",
-      "size": 15473
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-08-event-security-and-multitenancy/lab.md",
-      "sha256": "b589b1b21132eea41d385986c5359684cdbd251d6bd6ace240072c4a73cbc375",
-      "size": 2844
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-09-event-reliability-and-recovery/checkpoint.md",
-      "sha256": "ad598a1eea0ebdaae9c9a7aa5bf99bd2289a7386e15d6f1d331baac5d915c43c",
-      "size": 1767
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-09-event-reliability-and-recovery/exercise-answers.md",
-      "sha256": "a66411749bd440d42ca4aa82d4c83f1a389bc5cb8275a948c9387625ae3ce6ce",
-      "size": 4187
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-09-event-reliability-and-recovery/exercises.md",
-      "sha256": "0c9fd17be3d7622b52d300968d1736144e7e2092e509ae03bb3505430f588a3e",
-      "size": 1877
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-09-event-reliability-and-recovery/index.md",
-      "sha256": "c4a97e5b699594790236500439dbd1bc08eb421c6caeb390d8442c5c841f5498",
-      "size": 15471
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-09-event-reliability-and-recovery/lab.md",
-      "sha256": "1c77baa22f9c618b68a03ad248ee6cdfc638bcb369f9377a7b54e1bcb0a3f489",
-      "size": 2731
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-10-governance-release-and-final-defense/checkpoint.md",
-      "sha256": "af60b019c0cd2211837afe4d20e70c6f80e00243e5d10b20d789c3f24199fb26",
-      "size": 1629
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-10-governance-release-and-final-defense/exercise-answers.md",
-      "sha256": "752b663f0a971f76b28dbf9f145b3204a969b02f1a39665494e6db78b50a9a8c",
-      "size": 4530
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-10-governance-release-and-final-defense/exercises.md",
-      "sha256": "91b1ae3185f5aba3951906c1a7201e7f12d357c6aad26a4dab0182ee85f119ec",
-      "size": 2005
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-10-governance-release-and-final-defense/index.md",
-      "sha256": "22e22cc0f10c11fd3950aabe6ffdad129d38fb020126f3358fe97c5103eb392d",
-      "size": 16299
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/module-10-governance-release-and-final-defense/lab.md",
-      "sha256": "d5d17a461c866eefe863d9468908e94e9588e91294e440fb2aa793a7b166d3e4",
-      "size": 3003
-    },
-    {
-      "mode": "0644",
-      "path": "course-book/standards.md",
-      "sha256": "2e609bf773697bd5664541f7c3ee704188a45f10861c10ca2d2326c4bdbd2c9a",
+      "sha256": "3458c557edefe710a245433b0f66a121b41500398208e166fdfdfc99fcb6ab5b",
       "size": 2238
     },
     {
       "mode": "0644",
+      "path": "course-book/module-08-event-security-and-multitenancy/index.md",
+      "sha256": "4fde39a3e28fc537b0d01736b3bb5526988024bd254dfb2a8ec6dcf4e5fabe01",
+      "size": 15112
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-08-event-security-and-multitenancy/lab.md",
+      "sha256": "cd054f007e8dc2120557eb1d7519f8da93d86072428be947df2dbce89359cc69",
+      "size": 5590
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-event-reliability-and-recovery/checkpoint.md",
+      "sha256": "fd7df6268e6a084546615d2b0a00de973531a116fc39a222a9a9adc11fb5f641",
+      "size": 1938
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-event-reliability-and-recovery/exercise-answers.md",
+      "sha256": "b2dd22dbfcd306dc43bc0792d055e2e246aadfd5789ee9a502f911e3a2785f6f",
+      "size": 8103
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-event-reliability-and-recovery/exercises.md",
+      "sha256": "4eaf38c172704963f336b1462ddca0ec0f0a2c258e347508dfba65a342c3556b",
+      "size": 2210
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-event-reliability-and-recovery/index.md",
+      "sha256": "895cba44203c36697d68df19a94ea391fe44f287f228697d69eb28e056550ab4",
+      "size": 15351
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-event-reliability-and-recovery/lab.md",
+      "sha256": "2ba627d2f7553e6cb18acda0e439493075f903c632d2ff362b96ce213c248bdf",
+      "size": 5496
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-governance-release-and-final-defense/checkpoint.md",
+      "sha256": "aad5a07c9155e16713fc87da829a95f42adb8b9c5b4a87a44cfebb62d0cd55c6",
+      "size": 1846
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-governance-release-and-final-defense/exercise-answers.md",
+      "sha256": "916e428034aae1763be846a36003e21cd0e1d5ba76117f622b141e8472e3aa69",
+      "size": 8628
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-governance-release-and-final-defense/exercises.md",
+      "sha256": "b16260a7c6f0ef4e2f177df446f085ceff4f1c664ca859cec5b166399894da8d",
+      "size": 2325
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-governance-release-and-final-defense/index.md",
+      "sha256": "44cf596410eaf0f96b52bcaba7bdbc482d781fc5647fc7a66cf5885de0482ef1",
+      "size": 16153
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-governance-release-and-final-defense/lab.md",
+      "sha256": "672bb931e16ec13fbdd4e685a4f9d410d8b4f32624573b39ac58c29f22aba523",
+      "size": 5960
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/standards.md",
+      "sha256": "b73da38e646493fe1e0e2992e18c5f7ed99156109b130767db79c2ffcc4c0b07",
+      "size": 1912
+    },
+    {
+      "mode": "0644",
       "path": "course-book/start-here.md",
-      "sha256": "41d2610119ff61a21f67e025257c51b7c340c787683afab32eff83e896273100",
-      "size": 2080
+      "sha256": "410613cf6412326f09f326a8547e7a75b5dd2ffa827acd152c2496a169ff8411",
+      "size": 2552
     },
     {
       "mode": "0644",
       "path": "course-book/study-plan.md",
-      "sha256": "1f2c26e9e1921781f47f9f301fd3e1d986c8f7c4ea7bbfdf4aa763047387ea59",
-      "size": 5059
+      "sha256": "dd93853aab30955aabcf886380f2a3e51c82e955931383a2bd8b0cae0fb5d729",
+      "size": 4124
     },
     {
       "mode": "0644",
       "path": "course.json",
-      "sha256": "75645ff6de8b083ea2503420038f1e4d5fd52c4833000807f5606e5a75c16734",
-      "size": 1695
+      "sha256": "22a79938dc5fc94ae6d9b2d97f81518e69953b00384dddcd7a0faae615946886",
+      "size": 13549
     },
     {
       "mode": "0644",
@@ -1930,8 +1942,8 @@
     {
       "mode": "0644",
       "path": "mkdocs.yml",
-      "sha256": "e3315aea9a24d5553e9dd4d3ae5ec36a64e6833e68f171bba0bbd8a3d5e0212a",
-      "size": 5839
+      "sha256": "13e19b3aafd93529987e152e55cec078fce034ae8f77e50ecfb87808ad70beed",
+      "size": 5211
     },
     {
       "mode": "0644",
@@ -1954,8 +1966,8 @@
     {
       "mode": "0755",
       "path": "scripts/course_tool.py",
-      "sha256": "ab15e6c29b3a57bd249aaa19a1525de5e9bb785a9781f7859954c2d835ba2e20",
-      "size": 39318
+      "sha256": "8c476dbc41d90075c6bc9a28ee1d46f97fdfa2682a2315419b63923b782be4c6",
+      "size": 39328
     },
     {
       "mode": "0755",

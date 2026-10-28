@@ -1,12 +1,14 @@
 # Module 08 — Security in the Public Contract
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** What can the public contract say about authentication and authorization, and what remains a runtime responsibility?
 
 ## Where this module fits
 
-Describe security schemes, scopes, ownership outcomes, and anonymous exceptions, then verify basic enforcement. You arrive from Module 07 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **Evolution, Compatibility, and Audience Views**.
+Module 07 produced **Build the consumer and contract-test ladder against the mock and both real providers**. This module extends that result by asking: **What can the public contract say about authentication and authorization, and what remains a runtime responsibility?**
+
+The new capstone increment is **Describe API-key and OAuth-style schemes, scopes, anonymous overrides, and documented security failures**. It becomes the prerequisite for **Evolution, Compatibility, and Audience Views**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Describe security schemes, scopes, ownership outcomes, and anonymous exceptions,
 - Separate authentication, authorization, and ownership.
 - Document security failures without leaking implementation details.
 
-## Capstone result
+## Capstone increment
 
 Describe API-key and OAuth-style schemes, scopes, anonymous overrides, and documented security failures.
-
-Every operation has an explicit security decision and cross-owner artifact access is rejected.
 
 ## Core model
 
@@ -380,11 +380,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The Security Contracts and Runtime Enforcement checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “How does the contract state who may call an operation and what failures clients can observe without pretending that documentation enforces policy?” is now executable in the capstone: Every operation has an explicit security decision and cross-owner artifact access is rejected.
+You are ready to leave this module when you can **Model API-key and bearer security schemes, Read AND/OR semantics in security requirements correctly, and Use global security and operation overrides deliberately** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Translate all security failures to documented Problem Details and add required challenge headers** and requiring the following oracle: **health is explicitly anonymous; each documented credential alternative works independently; missing/invalid/insufficient credentials are distinct; scope does not bypass ownership.**
+
+The cumulative platform now includes **Describe API-key and OAuth-style schemes, scopes, anonymous overrides, and documented security failures**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 09, [Evolution, Compatibility, and Audience Views](../module-09-evolution-compatibility-overlays-ci/index.md), asks: *How can a published API change without silently breaking existing consumers?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Evolution, Compatibility, and Audience Views](../module-09-evolution-compatibility-overlays-ci/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

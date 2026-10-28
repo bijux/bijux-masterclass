@@ -1,5 +1,7 @@
 # Exercises — Module 04: Authorization and Policy Enforcement
 
+Work through all twelve problems before opening the answers. In **Authorization and Policy Enforcement**, every response must settle this question: **How are scopes, roles, ownership, tenant membership, relationships, assurance, and freshness combined under default deny?** For every answer, separate the authoritative boundary from convenient diagnostics, then explain which failing experiment would force you to revise the design.
+
 ## 1. Why is a scope not object authorization?
 
 ## 2. Where should tenant filtering occur?

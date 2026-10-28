@@ -1,12 +1,14 @@
 # Module 04 — References and Multi-Document Architecture
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How can a multi-document contract remain understandable, relocatable, and deterministically buildable?
 
 ## Where this module fits
 
-Refactor the contract into a maintainable multi-document source and produce a deterministic bundle. You arrive from Module 03 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **Production HTTP API Design**.
+Module 03 produced **Define precise project, dataset, run, artifact, and problem schemas with a shared valid/invalid fixture corpus**. This module extends that result by asking: **How can a multi-document contract remain understandable, relocatable, and deterministically buildable?**
+
+The new capstone increment is **Split the contract into owned documents, resolve every reference offline, and produce deterministic bundles**. It becomes the prerequisite for **Production HTTP API Design**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Refactor the contract into a maintainable multi-document source and produce a de
 - Bundle deterministically and work offline.
 - Relocate the source tree without breaking resolution.
 
-## Capstone result
+## Capstone increment
 
 Split the contract into owned documents, resolve every reference offline, and produce deterministic bundles.
-
-The contract becomes a modular source tree with deterministic baseline and frontier bundles.
 
 ## Core model
 
@@ -330,11 +330,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The References and Multi-Document Architecture checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “How do we split a growing contract without changing its meaning or creating a maze of fragile references?” is now executable in the capstone: The contract becomes a modular source tree with deterministic baseline and frontier bundles.
+You are ready to leave this module when you can **Resolve relative references from the correct document base, Use components where identity or reuse justifies them, and Distinguish schema recursion from file-reference cycles** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Repair the path and remove one needless reference hop found during review** and requiring the following oracle: **all references resolve offline; nested references use the correct document base; two bundles are deterministic; source and bundle operation ledgers match.**
+
+The cumulative platform now includes **Split the contract into owned documents, resolve every reference offline, and produce deterministic bundles**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 05, [Production HTTP API Design](../module-05-production-http-api-design/index.md), asks: *How should an API express asynchronous work, retries, conflicts, pagination, and conditional mutation honestly?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Production HTTP API Design](../module-05-production-http-api-design/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

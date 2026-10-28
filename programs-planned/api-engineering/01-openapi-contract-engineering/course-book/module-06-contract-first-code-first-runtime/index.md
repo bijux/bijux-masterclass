@@ -1,12 +1,14 @@
 # Module 06 — Contract-First and Code-First Runtimes
 
-> **Program stage:** Course 1 of 6 — Specify the promise.
+> **Program stage:** Course 1 of 10 — Specify the public promise.
 
 > **Central question:** How do design-first and code-first descriptions relate, and how is semantic drift detected?
 
 ## Where this module fits
 
-Map every operation to a handler and compare canonical, generated, and observed descriptions. You arrive from Module 05 with all earlier checkpoints still green. This course owns the public contract. It can describe downstream consequences, but it does not claim that persistence, authorization, or operations are correct merely because the document is valid. The result is the baseline for **Mocks, Clients, and Contract Testing**.
+Module 05 produced **Add the analysis-run workflow, idempotency key, status resource, ETags, cancellation, and Problem Details**. This module extends that result by asking: **How do design-first and code-first descriptions relate, and how is semantic drift detected?**
+
+The new capstone increment is **Map every operation to both providers and compare generated observations with the canonical contract**. It becomes the prerequisite for **Mocks, Clients, and Contract Testing**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Map every operation to a handler and compare canonical, generated, and observed 
 - Classify generated-description drift.
 - Preserve equivalent observable behavior across FastAPI and Fastify.
 
-## Capstone result
+## Capstone increment
 
 Map every operation to both providers and compare generated observations with the canonical contract.
-
-Both providers implement the complete contract and pass one provider-neutral behavioral suite.
 
 ## Core model
 
@@ -363,11 +363,12 @@ The paths identify the main review surface, not permission to ignore related ref
 
 The Contract-First and Code-First Runtimes checkpoint commit should contain only this coherent vertical slice and its evidence. Remove temporary planted defects while preserving their minimized reproducers and permanent regressions.
 
-
 ## Module synthesis
 
-The module answer to “How do we implement one contract in two frameworks without letting framework defaults become accidental public behavior?” is now executable in the capstone: Both providers implement the complete contract and pass one provider-neutral behavioral suite.
+You are ready to leave this module when you can **Keep the canonical contract authoritative, Translate framework validation errors into the public problem model, and Validate responses as well as requests** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant one wrong status in Python, one leaked field in TypeScript, one coercion mismatch, and one renamed operation ID** and requiring the following oracle: **canonical operation triples equal both handler maps; validation errors use one public problem shape; undeclared internal fields are filtered; shared scenarios pass against both base URLs.**
+
+The cumulative platform now includes **Map every operation to both providers and compare generated observations with the canonical contract**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 07, [Mocks, Clients, and Contract Testing](../module-07-mocking-clients-contract-testing/index.md), asks: *How do we turn the contract into a development and verification tool rather than a static document?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Mocks, Clients, and Contract Testing](../module-07-mocking-clients-contract-testing/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

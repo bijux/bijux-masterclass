@@ -1,12 +1,14 @@
 # Module 09 — Failure-Oriented Verification
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** How do tests prove transactions, concurrency, restart, storage, and delivery guarantees rather than only happy paths?
 
 ## Where this module fits
 
-Assemble domain, database, concurrency, process-kill, storage, network, contract, and client checks into one evidence ladder. You arrive from Module 08 with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result is the baseline for **Lifecycle and Compatible Release**.
+Module 08 produced **Add a transactional outbox, signed deliveries, retry state, deduplication, and destination constraints**. This module extends that result by asking: **How do tests prove transactions, concurrency, restart, storage, and delivery guarantees rather than only happy paths?**
+
+The new capstone increment is **Assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs**. It becomes the prerequisite for **Lifecycle and Compatible Release**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Assemble domain, database, concurrency, process-kill, storage, network, contract
 - Retain planted defects as regression tests.
 - Separate deterministic local checks from environment-backed checks.
 
-## Capstone result
+## Capstone increment
 
 Assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs.
-
-A single proof command exposes missing transactions, stale-worker writes, unstable cursors, unbounded uploads, and lost outbox intent.
 
 ## Core model
 
@@ -32,10 +32,10 @@ Each claim requires evidence at the narrowest layer that can falsify it, then se
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Failure-Oriented Verification** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs
 
 
 ### 1. Claim–evidence mapping
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Failure-Oriented Verification**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: Inventory all course claims and assign a proof layer.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Failure-Oriented Verification**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: How do tests prove transactions, concurrency, restart, storage, and delivery guarantees rather than only happy paths?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -248,8 +249,7 @@ async def test_same_etag_has_one_winner(project, client_factory, barrier):
     assert await database.project_version(project.id) == project.version + 1
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Failure-Oriented Verification** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -551,7 +551,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Failure-Oriented Verification** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -576,7 +576,8 @@ These are the smallest useful entry points for **Failure-Oriented Verification**
 
 ### Python — `capstone/tests/runtime/proof_runner.py`
 
-```python
+```text
+# Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 COMPOSE = CAPSTONE / "compose.yaml"
 
 
@@ -666,8 +667,10 @@ Compare the two tracks by this invariant: **a planted defect must cause the smal
 
 ## Module synthesis
 
-The module answer to “How do we prove the service’s guarantees rather than infer them from happy-path unit tests?” is now executable in the capstone: A single proof command exposes missing transactions, stale-worker writes, unstable cursors, unbounded uploads, and lost outbox intent.
+You are ready to leave this module when you can **Choose the narrowest oracle for each claim, Use real PostgreSQL for database concurrency claims, and Inject failures at transaction and process boundaries** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Assemble a proof runner that detects every planted defect: broken transaction, unstable cursor, lost replay, stale update, worker overwrite, unbounded upload, unsigned webhook, and cross-owner leak** and requiring the following oracle: **Each planted defect fails the gate that claims to detect it; disabling PostgreSQL or Node changes status to not-executed rather than green.**
+
+The cumulative platform now includes **Assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 10, [Lifecycle and Compatible Release](../module-10-lifecycle-compatible-release/index.md), asks: *Can the service start, migrate, coexist, drain, roll back, and recover without violating its public contract or data?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Lifecycle and Compatible Release](../module-10-lifecycle-compatible-release/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

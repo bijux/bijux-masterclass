@@ -839,7 +839,7 @@ def structure_proof() -> None:
             lab = (module / "lab.md").read_text(encoding="utf-8")
             for heading in [
                 "## Setup conditions",
-                "## Failure action and investigation",
+                "## Controlled action and investigation",
                 "## Operational oracle",
                 "## Required evidence",
                 "## Cleanup and reset",
@@ -942,7 +942,7 @@ def education_proof() -> None:
                 paragraphs[paragraph] += 1
         if page.name == "lab.md" and page.parent.name.startswith("module-") and page.parent.name != "module-00-orientation":
             match = re.search(
-                r"## Failure action and investigation\s+(.+?)(?=\n## )",
+                r"## Controlled action and investigation\s+(.+?)(?=\n## )",
                 text,
                 flags=re.S,
             )

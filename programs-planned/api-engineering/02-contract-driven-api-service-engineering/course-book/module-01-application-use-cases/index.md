@@ -1,12 +1,14 @@
 # Module 01 — Application Use Cases and Boundaries
 
-> **Program stage:** Course 2 of 6 — Make the promise durable.
+> **Program stage:** Course 2 of 10 — Implement the promise durably.
 
 > **Central question:** How does a public operation become an application use case without letting the framework own the system?
 
 ## Where this module fits
 
-Map the fixed operation ledger to use cases, ports, adapters, and one explicit composition root. You arrive from the course orientation with all earlier checkpoints still green. The Course 1 handoff is fixed. This course may change internal architecture and add a compatible API release, but it may not solve an implementation problem by quietly weakening the public contract. The result is the baseline for **Domain State and Invariants**.
+Course 2 begins from this incoming boundary: **The immutable Course 1 API 1.1 handoff and its provider-neutral proof corpus.**
+
+This module establishes the course’s first new responsibility by asking: **How does a public operation become an application use case without letting the framework own the system?** Its capstone increment is **Create transport, application, and adapter boundaries for the fixed operation ledger**. That result is required before **Domain State and Invariants** can be studied honestly.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Map the fixed operation ledger to use cases, ports, adapters, and one explicit c
 - Keep business decisions out of FastAPI and Fastify handlers.
 - Map every operation ID to one application owner.
 
-## Capstone result
+## Capstone increment
 
 Create transport, application, and adapter boundaries for the fixed operation ledger.
-
-Project operations run through framework-independent use cases while preserving the Course 1 contract.
 
 ## Core model
 
@@ -32,10 +32,10 @@ The contract names observable behavior; an application use case owns the decisio
 
 A useful mental model predicts behavior under a counterexample. For every concept below, distinguish:
 
-- the public behavior inherited from Course 1;
-- the application or domain decision owner;
-- the durable database, worker, storage, or delivery mechanism;
-- the proof that exposes failure after retry, concurrency, or restart.
+- which Course 1 operation or representation **Application Use Cases and Boundaries** must preserve;
+- which application or domain component owns the decision;
+- where durable state or external effects cross a boundary;
+- which counterexample and proof would falsify the result: Create transport, application, and adapter boundaries for the fixed operation ledger
 
 
 ### 1. Frozen public boundary
@@ -181,7 +181,7 @@ For each decision, produce three artifacts:
 2. a sequence/state/transaction sketch;
 3. a falsifying example with expected evidence.
 
-For each decision, record the inherited API behavior, the new durable requirement, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof file that owns the choice.
+For **Application Use Cases and Boundaries**, record the inherited API behavior, the new durable rule, one rejected alternative, the first counterexample, and the exact application, adapter, migration, or proof artifact that owns the choice.
 
 ### Decision 1: Draw the complete `createProject` request path from raw HTTP to returned representation.
 
@@ -203,15 +203,16 @@ For each decision, record the inherited API behavior, the new durable requiremen
 
 Suppose a learner proposes: “The route can check first, then the repository can write.” Ask:
 
-- Can another request change the fact between check and write?
-- Which rows or effects must commit atomically?
-- What survives a lost response or process restart?
-- Which focused test makes the race or partial effect observable?
+- Which concurrent request, restart, or dependency failure challenges **Application Use Cases and Boundaries**?
+- What must be decided or committed at one owning boundary?
+- Which state survives a lost response or interrupted process?
+- Which focused proof answers the module question: How does a public operation become an application use case without letting the framework own the system?
 
 
 ### Design review
 
 The design review must challenge the module-specific failure named in the lab and identify the durable oracle that distinguishes a real repair from a cosmetic pass.
+
 ## Python implementation
 
 ### Reading route
@@ -255,8 +256,7 @@ class CreateProjectUseCase:
         return await self._projects.create(command)
 ```
 
-This excerpt is deliberately smaller than the complete implementation. Identify the transaction or decision boundary, one hidden assumption, the cleanup/error path, and the regression that would fail if the guard moved outside that boundary.
-
+The excerpt for **Application Use Cases and Boundaries** isolates one mechanism from the full service. Before copying it, locate the decision or transaction boundary, state the assumption it makes, trace cleanup on failure, and name the regression that would expose moving the guard elsewhere.
 
 ## TypeScript implementation
 
@@ -564,7 +564,7 @@ capstone/scripts/course_tool.py
 
 ### Integration invariant
 
-The increment must preserve the frozen contract, all earlier durable invariants, owner-aware access, bounded resources, restart safety, and equivalent public outcomes in the comparison track.
+The **Application Use Cases and Boundaries** increment must preserve the frozen API and every earlier durability invariant while delivering this result: Create transport, application, and adapter boundaries for the fixed operation ledger The comparison track must expose the same public outcomes even when internal libraries and control flow differ.
 
 
 ### Review trace
@@ -589,7 +589,8 @@ These are the smallest useful entry points for **Application Use Cases and Bound
 
 ### Python — `capstone/tracks/python-fastapi/src/analysis_service/service.py`
 
-```python
+```text
+# Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
 )
 
 
@@ -649,7 +650,8 @@ class AnalysisService:
 
 ### TypeScript — `capstone/tracks/typescript-fastify/src/service.ts`
 
-```typescript
+```text
+// Abridged source excerpt; intentionally non-executable. Follow the cited repository path for the complete implementation.
   WebhookSubscriptionCreate,
 } from "./types.js";
 
@@ -711,8 +713,10 @@ Compare the two tracks by this invariant: **route adapters translate HTTP input 
 
 ## Module synthesis
 
-The module answer to “How does a public operation become maintainable application behavior without making route handlers the architecture?” is now executable in the capstone: Project operations run through framework-independent use cases while preserving the Course 1 contract.
+You are ready to leave this module when you can **Separate transport, application, domain, and infrastructure responsibilities, Translate public models into internal commands and results, and Inject clocks, identifiers, and external dependencies** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a framework-owned validation rule, observe which direct test fails to detect it, then move the rule and keep the regression** and requiring the following oracle: **A direct application test must reject the same invalid command as the HTTP route while importing no framework package.**
+
+The cumulative platform now includes **Create transport, application, and adapter boundaries for the fixed operation ledger**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 02, [Domain State and Invariants](../module-02-domain-state-invariants/index.md), asks: *Which rules must remain true regardless of framework, database, worker, or deployment?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Domain State and Invariants](../module-02-domain-state-invariants/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

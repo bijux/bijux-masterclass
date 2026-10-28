@@ -1,5 +1,7 @@
 # Exercises — Module 08: Transactional Outbox and Webhook Delivery
 
+Work through all twelve problems before opening the answers. In **Transactional Outbox and Webhook Delivery**, every response must settle this question: **How can a committed business change reliably produce an external webhook without a dual write?** Use the cumulative platform, not an invented toy system. Preserve inherited guarantees and make every new assumption explicit and falsifiable.
+
 ## 1. State the dual-write problem in this service.
 
 ## 2. Why does an outbox solve lost intent but not exactly-once delivery?

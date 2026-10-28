@@ -1,26 +1,27 @@
-# Discovery, Routing, Gateways, and Traffic Topology
+# Module 07 — Discovery, Routing, Gateways, and Traffic Topology
 
-**Module 07 of 10**
+> **Program stage:** Course 8 of 10 — Distribute ownership deliberately.
 
-> **Governing question:** How do callers find healthy service instances and route traffic without moving business ownership into gateways or creating several competing retry layers?
+> **Central question:** How do callers find healthy service instances and route traffic without moving business ownership into gateways or creating several competing retry layers?
 
-## Place in the program
+## Where this module fits
 
-The platform now has explicit service and data ownership, bounded synchronous collaboration, and one durable cross-service workflow. This module adds the next necessary property without weakening the previous guarantees.
+Module 06 produced **Introduce workload identities, audience-bound service credentials, delegated user context, short-lived artifact capabilities, and explicit authorization at every trust boundary**. This module extends that result by asking: **How do callers find healthy service instances and route traffic without moving business ownership into gateways or creating several competing retry layers?**
+
+The new capstone increment is **Implement service registration, health-aware routing, gateway edge policy, bounded traffic shifting, and an optional Kubernetes topology with explicit ownership of each routing decision**. It becomes the prerequisite for **Deployment Independence, Version Skew, and Release Choreography**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- distinguish service identity from instance address and endpoint health
-- compare DNS, registry, client-side, proxy, and platform routing models
-- keep authentication normalization and protocol adaptation at the edge while preserving domain ownership
-- avoid business workflows and private data stores inside the gateway
-- design canary, shadow, and failover routes with bounded blast radius
-- evaluate service mesh features without making the mesh the source of application correctness
+- Distinguish service identity from instance address and endpoint health.
+- Compare DNS, registry, client-side, proxy, and platform routing models.
+- Keep authentication normalization and protocol adaptation at the edge while preserving domain ownership.
+- Avoid business workflows and private data stores inside the gateway.
+- Design canary, shadow, and failover routes with bounded blast radius.
+- Evaluate service mesh features without making the mesh the source of application correctness.
 
-## Capstone result
+## Capstone increment
 
 Implement service registration, health-aware routing, gateway edge policy, bounded traffic shifting, and an optional Kubernetes topology with explicit ownership of each routing decision.
-
 
 ## Service name, instance address, and health are different
 
@@ -129,6 +130,7 @@ Both tracks implement health-aware version-filtered routing. The deterministic r
 ## Evidence required before Module 8
 
 Demonstrate instance registration, health removal, compatible version selection, shadow comparison, bounded canary routing, and gateway refusal to execute a business transition.
+
 ## Control plane and data plane
 
 Routing systems are easier to reason about when two concerns are separated.
@@ -304,3 +306,13 @@ Existing data-plane configuration may continue for a bounded period. New policy 
 Semantic comparison blocks promotion immediately, even if latency is better.
 
 These are topology-specific failure modes, not generic “network error” labels.
+
+## Module synthesis
+
+You are ready to leave this module when you can **distinguish service identity from instance address and endpoint health, compare DNS, registry, client-side, proxy, and platform routing models, and keep authentication normalization and protocol adaptation at the edge while preserving domain ownership** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Canary a stable resource-key fraction and inject candidate failure** and requiring the following oracle: **Only healthy accepting compatible instances receive traffic; retries have one owner; shadow has no uncontrolled effects; gateway owns no business state.**
+
+The cumulative platform now includes **Implement service registration, health-aware routing, gateway edge policy, bounded traffic shifting, and an optional Kubernetes topology with explicit ownership of each routing decision**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Deployment Independence, Version Skew, and Release Choreography](../module-08-deployment-independence-version-skew-and-release-choreography/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

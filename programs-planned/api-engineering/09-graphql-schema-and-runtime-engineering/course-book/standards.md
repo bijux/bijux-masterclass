@@ -1,33 +1,38 @@
-# Standards and profiles
+# Standards and Evidence — GraphQL Schema and Runtime Engineering
 
-## GraphQL core
+## How standards are used
 
-The normative baseline is the **GraphQL September 2025 specification**, the latest published release as of 8 August 2026:
+Standards settle the protocol and compatibility questions relevant to **GraphQL Schema and Runtime Engineering**; they do not decide the architecture for you. Classify every cited rule as normative requirement, interoperability advice, course profile, observed tool behavior, or architecture decision.
 
-- <https://spec.graphql.org/September2025/>
+## Standards profile
 
-The release includes OneOf Input Objects and the built-in `@oneOf` directive. The course uses that feature in `NodeLookup`.
+- GraphQL September 2025 specification;
+- a declared GraphQL-over-HTTP course profile where the external transport specification remains non-final;
+- inherited HTTP, security, reliability, performance, and distributed ownership profiles;
+- course-defined persisted-operation, cost, and release policies;
 
-The latest working draft is not the release baseline. Draft behavior may be discussed as frontier material, but it does not silently enter Analysis Graph API 1.0.
+## Reading discipline
 
-## GraphQL over HTTP
+Start from the module question, then read only the primary-source clauses needed for compose governed client-shaped capabilities. Restate the rule, build a counterexample in the Analysis Runs Platform, and name a falsifying oracle; citation alone never proves that the Python or TypeScript runtime conforms.
 
-GraphQL core is transport-agnostic. The GraphQL over HTTP specification remains a **Stage 2 draft** as of 8 August 2026:
+## Executable profile and frontier
 
-- <https://graphql.github.io/graphql-over-http/draft/>
+Examples and proofs use the pinned Course 9 profile recorded in `course.json`: HTTP, Event, and RPC APIs preserved; Analysis Graph API 1.0 introduced; GraphQL September 2025; graph metadata migrations 001–004. A newer specification or tool does not silently change that profile; advance contracts, fixtures, compatibility rules, and the version ledger together.
 
-The course defines a versioned HTTP profile based on that draft. It supports JSON requests and `application/graphql-response+json`, rejects mutation execution through GET, and distinguishes malformed requests from GraphQL execution errors. Because the source is a draft, the course never labels the profile an official final standard.
+## Evidence boundary
 
-## Subscriptions and incremental delivery
+The strongest environment-backed claims in Course 9 require a standards-complete GraphQL runtime, real source services, subscriptions, and independent schema validation. Local parsers, fixtures, unit tests, or simulators remain useful but support narrower claims; [Evidence model](evidence-model.md) names those boundaries.
 
-The GraphQL core specification defines subscription source and response streams but deliberately does not mandate transport, acknowledgement, replay, or buffering. Course 9 uses a course-specific SSE profile backed by Course 6 events. GraphQL over WebSocket remains optional.
+## Primary-source review worksheet
 
-`@defer` and `@stream` are treated as ecosystem frontier features, not as part of the GraphQL September 2025 release. They may be evaluated only through a separately versioned capability matrix.
+For a rule used in a module, record:
 
-## Pagination and federation
-
-Cursor connections and global object identification are course profiles influenced by established Relay conventions, not GraphQL core requirements. Apollo Federation examples are optional architecture material, not a claim that federation is the only composition model or a GraphQL Foundation standard.
-
-## Implementation libraries
-
-The optional adapters use Strawberry for Python and GraphQL Yoga/GraphQL.js for TypeScript. Library behavior is subordinate to the released schema and course policies. Tool support is measured rather than assumed.
+```text
+claim:
+source and version:
+category:
+course interpretation:
+smallest counterexample:
+cheapest falsifying proof:
+tool limitation:
+```

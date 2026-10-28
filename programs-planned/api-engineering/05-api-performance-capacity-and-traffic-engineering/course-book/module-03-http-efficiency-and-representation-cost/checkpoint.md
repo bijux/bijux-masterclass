@@ -1,21 +1,8 @@
-# Module 03 checkpoint — HTTP Efficiency and Representation Cost
+# Checkpoint — Module 03: HTTP Efficiency and Representation Cost
 
 ## Required result
 
-- [ ] HTTP vectors pass in both tracks
-- [ ] ETag meaning is documented per representation
-- [ ] 304/206/416 behavior is correct
-- [ ] range reconstruction checksum passes
-- [ ] peak buffer calculation and measurement exist
-- [ ] cache directives are reviewed against authorization
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. What exact bytes does your ETag identify?
-2. Why is a 304 not just an empty 200?
-3. Which buffer dominates memory at your chosen concurrency?
+Optimize artifact and metadata delivery while preserving authorization, ETags, ranges, and bounded memory.
 
 ## Demonstrate
 
@@ -29,6 +16,32 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=03 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-03/
+├── http-policy.yaml
+├── full-baseline.json
+├── conditional.json
+├── range-vectors.json
+├── reconstruction.sha256
+├── compression.json
+├── memory.json
+└── decision.md
+```
+
+The decision must distinguish metadata and artifact policy and state which evidence comes from pure vectors versus a local socket experiment.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. What exact bytes does your ETag identify?
+2. Why is a 304 not just an empty 200?
+3. Which buffer dominates memory at your chosen concurrency?
 
 ## Continue only when
 

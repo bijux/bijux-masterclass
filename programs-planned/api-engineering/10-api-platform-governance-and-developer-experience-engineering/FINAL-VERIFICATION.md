@@ -12,8 +12,8 @@ The dependency-light source proof passed before packaging. It verified the immut
 
 | Item | Count |
 |---|---:|
-| Course-book pages | 59 |
-| Course-book words | 32,788 |
+| Course-book pages | 61 |
+| Course-book words | 50,281 |
 | Exercises / worked answers | 120 / 120 |
 | Full laboratories / checkpoints | 10 / 10 |
 | Python / TypeScript chapter snippets | 10 / 10 |
@@ -27,7 +27,7 @@ The dependency-light source proof passed before packaging. It verified the immut
 ## Executed proof
 
 - Course 9 handoff: 12 exact files;
-- course structure: 59 pages, eleven module directories, ten numbered modules;
+- course structure: 61 pages, eleven module directories, ten numbered modules;
 - contracts: seven exact releases across four protocol families;
 - catalog: ownership, systems, providers, consumers, dependencies, and descriptor parity;
 - registry: digest verification, idempotent replay, and changed-byte rejection;

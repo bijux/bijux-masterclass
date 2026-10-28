@@ -1,31 +1,165 @@
 {
-  "capstone": "Analysis Runs Platform",
-  "centralQuestion": "Which internal mechanisms keep the public contract true under concurrency, restart, and partial failure?",
+  "schemaVersion": 2,
+  "program": "api-engineering",
+  "number": 2,
+  "id": "contract-driven-api-service-engineering",
+  "directory": "02-contract-driven-api-service-engineering",
+  "title": "Contract-Driven API Service Engineering",
+  "stage": "Implement the promise durably",
+  "centralQuestion": "Which application, database, worker, storage, and release mechanisms keep the public contract true under concurrency, restart, and partial failure?",
+  "responsibility": "Turn the fixed Course 1 contract into a durable modular service whose important guarantees survive concurrent requests and process failure.",
   "duration": {
     "calendarWeeks": 2,
-    "orientationCounted": false,
-    "teachingDays": 10
+    "teachingDays": 10,
+    "orientationCounted": false
   },
-  "id": "contract-driven-api-service-engineering",
   "incomingBoundary": "The immutable Course 1 API 1.1 handoff and its provider-neutral proof corpus.",
-  "languages": {
-    "strategy": "Choose one primary implementation track. Use the second as an idiomatic comparison and shared-vector parity reference.",
-    "tracks": [
-      "python-fastapi",
-      "typescript-fastify"
-    ]
-  },
-  "number": 2,
-  "outgoingBoundary": "A durable API 1.2 service handoff with migrations 001\u2013005, idempotency, optimistic concurrency, stable pagination, worker recovery, artifact integrity, and transactional webhook delivery.",
+  "outgoingBoundary": "A durable API 1.2 service with migrations 001–005, persistent idempotency, atomic conditional updates, stable pagination, worker recovery, artifact integrity, transactional webhook delivery, and compatible-release evidence.",
+  "versionState": "API 1.1 preserved; additive API 1.2 introduced; OpenAPI 3.1.2 preserved; migrations 001–005.",
   "predecessor": "01-openapi-contract-engineering",
-  "responsibility": "Implement the fixed contract with durable application, database, worker, storage, and release mechanisms.",
-  "schemaVersion": 1,
   "successor": "03-api-security-engineering",
-  "title": "Contract-Driven API Service Engineering",
-  "versions": {
-    "databaseMigrations": "001\u2013005",
-    "engineeringProfiles": "No security profile yet; contract-level security decisions remain fixed.",
-    "interfaceSpecifications": "3.1.2 baseline preserved",
-    "publicInterface": "1.1 preserved; compatible API 1.2 introduced"
-  }
+  "primaryProduct": "course-book",
+  "languageStrategy": "one primary implementation track plus one comparative reference track",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-application-use-cases",
+      "title": "Application Use Cases and Boundaries",
+      "centralQuestion": "How does a public operation become an application use case without letting the framework own the system?",
+      "capstoneIncrement": "Create transport, application, and adapter boundaries for the fixed operation ledger.",
+      "learningOutcomes": [
+        "Separate transport, application, domain, and infrastructure responsibilities",
+        "Translate public models into internal commands and results",
+        "Inject clocks, identifiers, and external dependencies",
+        "Keep business decisions out of FastAPI and Fastify handlers",
+        "Map every operation ID to one application owner"
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-domain-state-invariants",
+      "title": "Domain State and Invariants",
+      "centralQuestion": "Which state transitions and invariants must remain true regardless of framework or database?",
+      "capstoneIncrement": "Implement project, dataset, run, cancellation, and artifact rules as testable domain behavior.",
+      "learningOutcomes": [
+        "Model legal and illegal state transitions",
+        "Distinguish entities, values, commands, and outcomes pragmatically",
+        "Keep domain failures stable and transport-neutral",
+        "Control time and identifiers in tests",
+        "Prove invariants with pure state-transition tests"
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-relational-modeling-migrations",
+      "title": "Relational Modeling and Migrations",
+      "centralQuestion": "How should relational structure and migrations reinforce rather than merely store application invariants?",
+      "capstoneIncrement": "Persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations.",
+      "learningOutcomes": [
+        "Map relationships and ownership to keys and constraints",
+        "Use nullability and checks to exclude invalid states",
+        "Choose indexes from actual query patterns",
+        "Own migrations explicitly and apply them from an empty database",
+        "Map rows to domain objects without leaking persistence shape"
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-transactions-concurrency-idempotency",
+      "title": "Transactions, Concurrency, ETags, and Idempotency",
+      "centralQuestion": "How do idempotency and conditional updates remain atomic under concurrent requests and process restarts?",
+      "capstoneIncrement": "Implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback.",
+      "learningOutcomes": [
+        "Draw the transaction boundary for each use case",
+        "Implement compare-and-swap for `If-Match`",
+        "Persist idempotency scope, fingerprint, and response",
+        "Handle simultaneous duplicate requests with one logical winner",
+        "Prove rollback leaves no partial state"
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-query-pagination-authorization",
+      "title": "Queries, Stable Pagination, and Authorized Access",
+      "centralQuestion": "How do filters, stable cursors, and authorization-aware queries remain correct while data changes?",
+      "capstoneIncrement": "Implement owner-bound, filter-bound, high-water keyset traversal and evidence-backed query plans.",
+      "learningOutcomes": [
+        "Bind queries to principal, operation, filters, and order",
+        "Use opaque server-side cursor handles",
+        "Prevent duplicates and omissions during a traversal",
+        "Conceal foreign-resource existence where policy requires it",
+        "Read query plans and index use"
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-durable-workers-recovery",
+      "title": "Durable Workers and Recovery",
+      "centralQuestion": "What makes a 202 Accepted operation honest after the API process or worker dies?",
+      "capstoneIncrement": "Add durable jobs, leases, heartbeats, fencing, cancellation, duplicate-safe effects, and abandoned-work recovery.",
+      "learningOutcomes": [
+        "Separate durable acceptance from execution",
+        "Claim work without holding a long transaction",
+        "Fence stale workers with lease generation",
+        "Recover abandoned jobs safely",
+        "Make duplicate execution converge on one durable outcome"
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-streaming-artifact-integrity",
+      "title": "Streaming and Artifact Integrity",
+      "centralQuestion": "How can large uploads, progress streams, and artifacts remain bounded, durable, and integrity-checked?",
+      "capstoneIncrement": "Implement streamed upload, content-addressed publication, checksums, SSE/NDJSON progress, and authorized download.",
+      "learningOutcomes": [
+        "Enforce limits while streaming rather than after buffering",
+        "Stage bytes safely and clean up failures",
+        "Use content addressing and no-clobber publication",
+        "Persist event streams for SSE and NDJSON consumers",
+        "Keep artifact authorization and storage paths separate"
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-webhooks-transactional-outbox",
+      "title": "Transactional Outbox and Webhook Delivery",
+      "centralQuestion": "How can a committed business change reliably produce an external webhook without a dual write?",
+      "capstoneIncrement": "Add a transactional outbox, signed deliveries, retry state, deduplication, and destination constraints.",
+      "learningOutcomes": [
+        "Explain the dual-write failure",
+        "Insert outbox intent in the domain transaction",
+        "Separate dispatcher attempts from logical events",
+        "Retry only classified failures with bounded delay",
+        "Require receiver deduplication for at-least-once delivery"
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-failure-proof-architecture",
+      "title": "Failure-Oriented Verification",
+      "centralQuestion": "How do tests prove transactions, concurrency, restart, storage, and delivery guarantees rather than only happy paths?",
+      "capstoneIncrement": "Assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs.",
+      "learningOutcomes": [
+        "Choose the narrowest oracle for each claim",
+        "Use real PostgreSQL for database concurrency claims",
+        "Inject failures at transaction and process boundaries",
+        "Retain planted defects as regression tests",
+        "Separate deterministic local checks from environment-backed checks"
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-lifecycle-compatible-release",
+      "title": "Lifecycle and Compatible Release",
+      "centralQuestion": "How can old and new service versions coexist through a database change and still preserve the public contract?",
+      "capstoneIncrement": "Build lifecycle controls, compatible expand/backfill/enforce migrations, rollback evidence, and release proof.",
+      "learningOutcomes": [
+        "Distinguish startup, liveness, readiness, and draining",
+        "Order application and schema releases safely",
+        "Keep old and new service versions compatible during expansion",
+        "Define the rollback boundary explicitly",
+        "Release API 1.2 without breaking API 1.1 consumers"
+      ]
+    }
+  ]
 }

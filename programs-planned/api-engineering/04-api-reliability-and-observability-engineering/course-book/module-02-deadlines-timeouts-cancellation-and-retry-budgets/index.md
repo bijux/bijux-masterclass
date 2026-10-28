@@ -1,12 +1,14 @@
 # Module 02 — Deadlines, Cancellation, and Retry Budgets
 
-> **Program stage:** Course 4 of 6 — Operate and recover the promise.
+> **Program stage:** Course 4 of 10 — Observe, diagnose, contain, and recover the promise.
 
 > **Central question:** How is one absolute time budget propagated through retries, dependencies, and cancellation without multiplying work?
 
 ## Where this module fits
 
-Propagate absolute deadlines, classify retries by effect, observe cancellation, and assign one retry owner. You arrive from Module 01 with all earlier checkpoints still green. API 1.2 and security profile 1.0 are fixed. This course adds budgets, telemetry, recovery, and operational decisions; observations may explain durable truth but never replace it. The result is the baseline for **Dependency Resilience and Graceful Degradation**.
+Module 01 produced **Create the reliability case, critical-journey populations, failure modes, ownership, residual risk, and negative claims**. This module extends that result by asking: **How is one absolute time budget propagated through retries, dependencies, and cancellation without multiplying work?**
+
+The new capstone increment is **Implement monotonic deadlines, child budgets, safe retry classification, backoff, Retry-After handling, and cancellation**. It becomes the prerequisite for **Dependency Resilience and Graceful Degradation**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
@@ -16,11 +18,9 @@ Propagate absolute deadlines, classify retries by effect, observe cancellation, 
 - Retry only safe or idempotent effects.
 - Use bounded backoff, jitter, and `Retry-After` inside the remaining budget.
 
-## Capstone result
+## Capstone increment
 
 Implement monotonic deadlines, child budgets, safe retry classification, backoff, Retry-After handling, and cancellation.
-
-Ingress requests, database calls, artifact operations, and webhooks share finite budgets without retry amplification.
 
 ## Core reliability model
 
@@ -91,7 +91,6 @@ Apply **Absolute deadline, Timeout scope, Cancellation** to this module’s caps
 Injected clocks and deterministic retries prove budget arithmetic; they do not establish operating-system socket cancellation or intermediary retry behavior.
 
 ## Worked failures
-
 
 ### Case 1 — Timeout multiplication
 
@@ -180,7 +179,7 @@ assert fit_delays_to_deadline(
 ) == [100, 200]
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Deadlines, Cancellation, and Retry Budgets** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Timeout multiplication
 
@@ -227,7 +226,7 @@ const fitted = fitDelaysToDeadline(
 if (JSON.stringify(fitted) !== "[100,200]") throw new Error("budget leak");
 ```
 
-The cited files own the complete implementation and regression evidence.
+The cited files must expose the complete **Deadlines, Cancellation, and Retry Budgets** implementation path and its negative regression evidence.
 
 ### Guided failure investigation — Timeout multiplication
 
@@ -386,8 +385,10 @@ Compare the two tracks by this invariant: **one caller budget is partitioned acr
 
 ## Module synthesis
 
-The module answer to “How does one request carry a finite time budget through dependencies without multiplying work or reporting success too late?” is now executable in the capstone: Ingress requests, database calls, artifact operations, and webhooks share finite budgets without retry amplification.
+You are ready to leave this module when you can **Distinguish absolute deadlines from per-call timeouts, Budget connect, pool, transaction, read, write, and cleanup waits, and Preserve committed durable work after caller cancellation** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Plant a loop resetting timeout per attempt** and requiring the following oracle: **No child exceeds parent expiry; Unsafe POST gets one attempt; Delay plus minimum attempt fits remaining time; Attempt count matches named owner policy.**
+
+The cumulative platform now includes **Implement monotonic deadlines, child budgets, safe retry classification, backoff, Retry-After handling, and cancellation**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
 
 ## Next in the story
 
-Module 03, [Dependency Resilience and Graceful Degradation](../module-03-dependency-resilience-and-graceful-degradation/index.md), asks: *When a dependency slows or fails, which work should stop, continue, queue, or degrade—and what must the API say?* The current checkpoint must remain green while that new responsibility is added.
+Continue to [Dependency Resilience and Graceful Degradation](../module-03-dependency-resilience-and-graceful-degradation/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

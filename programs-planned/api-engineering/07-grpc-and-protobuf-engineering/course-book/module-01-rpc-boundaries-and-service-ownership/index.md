@@ -1,23 +1,25 @@
-# RPC Boundaries, Service Ownership, and Interaction Choice
+# Module 01 — RPC Boundaries, Service Ownership, and Interaction Choice
 
-**Module 01 of 10**
+> **Program stage:** Course 7 of 10 — Engineer typed internal invocation and streaming.
 
-> **Governing question:** Which interactions deserve a typed RPC boundary, and which should remain HTTP requests, durable events, or local function calls?
+> **Central question:** Which interactions deserve a typed RPC boundary, and which should remain HTTP requests, durable events, or local function calls?
 
-## Place in the program
+## Where this module fits
 
-Course 6 established durable asynchronous facts and independent consumers. This module does not begin by generating stubs. It begins by deciding whether a remote synchronous boundary is justified at all. The Analysis Runs Platform already has three valid interaction forms—public HTTP, durable events, and local calls. gRPC becomes a fourth form only where ownership, latency, typing, and deployment independence justify the additional failure boundary.
+Course 7 begins from this incoming boundary: **The Course 6 HTTP API 1.2 and Analysis Events API 1.0 handoff with profiles and migrations through 012.**
+
+This module establishes the course’s first new responsibility by asking: **Which interactions deserve a typed RPC boundary, and which should remain HTTP requests, durable events, or local function calls?** Its capstone increment is **Publish an interaction decision record, service-ownership map, and minimal Analysis RPC surface without splitting the platform prematurely**. That result is required before **Protobuf Modeling, Presence, and Semantic Types** can be studied honestly.
 
 ## Learning outcomes
 
-- distinguish local calls, public HTTP operations, durable events, and internal RPCs by ownership, coupling, latency, and failure semantics
-- recognize when gRPC improves a boundary and when it merely makes a distributed monolith more efficient
-- design RPC services around stable capabilities rather than database tables or existing classes
-- separate control-plane commands from event facts and bulk data movement
-- identify caller, callee, deadline owner, retry owner, and authoritative state for every proposed RPC
-- reject unjustified service extraction with explicit evidence rather than architectural fashion
+- Distinguish local calls, public HTTP operations, durable events, and internal RPCs by ownership, coupling, latency, and failure semantics.
+- Recognize when gRPC improves a boundary and when it merely makes a distributed monolith more efficient.
+- Design RPC services around stable capabilities rather than database tables or existing classes.
+- Separate control-plane commands from event facts and bulk data movement.
+- Identify caller, callee, deadline owner, retry owner, and authoritative state for every proposed RPC.
+- Reject unjustified service extraction with explicit evidence rather than architectural fashion.
 
-## Capstone result
+## Capstone increment
 
 Publish an interaction decision record, service-ownership map, and minimal Analysis RPC surface without splitting the platform prematurely.
 
@@ -93,3 +95,13 @@ Read `capstone/rpc-case/interaction-decisions.yaml`, `service-ownership.yaml`, a
 ## Transition
 
 After preserving the checkpoint evidence, continue to **Protobuf Modeling, Presence, and Semantic Types**. Do not progress while the non-compensable gate remains unresolved.
+
+## Module synthesis
+
+You are ready to leave this module when you can **distinguish local calls, public HTTP operations, durable events, and internal RPCs by ownership, coupling, latency, and failure semantics, recognize when gRPC improves a boundary and when it merely makes a distributed monolith more efficient, and design RPC services around stable capabilities rather than database tables or existing classes** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **Reject at least three RPC candidates and record the concrete coupling or failure they would introduce** and requiring the following oracle: **Every approved RPC has one authority, one caller need for synchronous communication, a deadline owner, a retry position, and a named operational owner. No approved service is merely a table wrapper.**
+
+The cumulative platform now includes **Publish an interaction decision record, service-ownership map, and minimal Analysis RPC surface without splitting the platform prematurely**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Protobuf Modeling, Presence, and Semantic Types](../module-02-protobuf-modeling-presence-and-semantic-types/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

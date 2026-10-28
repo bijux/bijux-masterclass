@@ -1,26 +1,24 @@
-# Authorization, Tenancy, and Schema Exposure
+# Module 06 — Authorization, Tenancy, and Schema Exposure
 
-**Module 06 of 10**
+> **Program stage:** Course 9 of 10 — Compose governed client-shaped capabilities.
 
-> **Governing question:** How can clients select flexible fields without gaining flexible authority?
+> **Central question:** How can clients select flexible fields without gaining flexible authority?
 
-## Place in the program
+## Where this module fits
 
-Courses 1–8 established the contract, durable implementation, security, operations, performance, asynchronous events, typed RPC, and distributed ownership. Module 06 applies those guarantees to the graph interface; none are reset at the GraphQL boundary.
+Module 05 produced **Expose idempotent create/start/cancel mutations over owning services**. This module extends that result by asking: **How can clients select flexible fields without gaining flexible authority?**
+
+The new capstone increment is **Prove field, tenant, collection, and sensitive-output authorization**. It becomes the prerequisite for **Demand Control, Persisted Operations, and Caching**, so the previous module’s guarantees must remain visible in the new evidence.
 
 ## Learning outcomes
 
-- enforce field and tenant authorization
+- Enforce field and tenant authorization.
+- Filter collections at the source.
+- Protect sensitive output fields.
+- Delegate state-dependent policy.
+- Choose an introspection and trusted-document policy.
 
-- filter collections at the source
-
-- protect sensitive output fields
-
-- delegate state-dependent policy
-
-- choose an introspection and trusted-document policy
-
-## Capstone result
+## Capstone increment
 
 Prove field, tenant, collection, and sensitive-output authorization.
 
@@ -164,3 +162,13 @@ Both tracks use one field-coordinate policy and explicit resource tenant. Framew
 ## Evidence required before the next module
 
 Complete the lab and checkpoint. The decisive artifact is the module report under `reports/module-06-*.json`; prose claims without its oracle do not pass.
+
+## Module synthesis
+
+You are ready to leave this module when you can **enforce field and tenant authorization, filter collections at the source, and protect sensitive output fields** without relying on framework vocabulary or a happy-path demonstration. The lab makes that competence falsifiable by introducing **the lab introduces its declared planted defect** and requiring the following oracle: **correct scope without resource authority is insufficient;; resource relationship without required permission is insufficient;; collection membership is filtered at the owner;; denied fields do not call protected sources unnecessarily;.**
+
+The cumulative platform now includes **Prove field, tenant, collection, and sensitive-output authorization**. Carry forward the resulting source changes, negative regression, evidence record, and limitation statement; the next module assumes all four, not merely a passing command.
+
+## Next in the story
+
+Continue to [Demand Control, Persisted Operations, and Caching](../module-07-demand-control-persisted-operations-and-caching/index.md). Before moving on, complete the exercises, lab, and checkpoint in this module; the next chapter assumes their evidence.

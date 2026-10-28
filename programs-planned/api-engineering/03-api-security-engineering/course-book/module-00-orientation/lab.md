@@ -1,58 +1,63 @@
-# Orientation Lab — Establish a Trustworthy Starting Point
+# Orientation Lab — Establish the Course 3 Baseline
 
 ## Objective
 
-Prove that the Course 3 repository, predecessor boundary, language choice, and evidence routes are understood before module work begins.
+Verify the inherited boundary, record the study and implementation route, and prove that the dependency-light gates for **API Security Engineering** can reject one safe controlled defect before Module 1.
+
+## Why this lab matters
+
+The course asks: **How does the API remain trustworthy when callers, credentials, inputs, destinations, dependencies, and networks cannot be trusted by default?** That question cannot be answered on top of altered predecessor bytes or ambiguous evidence. This lab creates a reproducible starting state and records the strongest claim the current environment can support.
 
 ## Setup conditions
 
-- extract the program into a clean workspace;
-- do not modify predecessor or handoff files;
-- ensure Python, Node.js, and Make are discoverable;
-- create `work/orientation/` for evidence;
-- record unavailable optional infrastructure before running proofs.
+- use a clean extraction or branch;
+- keep predecessor and handoff directories read-only;
+- confirm Python, Node.js, and Make are discoverable;
+- create `work/orientation/course-03/` outside manifest-controlled payloads;
+- list unavailable live infrastructure before running a proof.
 
-## Failure action and investigation
+## Hypothesis
 
-1. Read the course responsibility and incoming boundary aloud or write them from memory.
-2. Run `make doctor` and `make predecessor-proof`.
-3. Select the primary track and locate its implementation root and focused tests.
-4. Locate the same invariant in the comparison track.
-5. Introduce one reversible, dependency-light defect: change one token-validation vector so a wrong audience is expected to be accepted.
-6. Predict which focused proof should fail, run it, and capture the smallest failing output.
-7. Restore the original file, rerun the narrow proof, then run `make core-proof`.
-8. Write the exact live dependency or external tool not exercised in this environment.
+The untouched Course 3 tree will pass its dependency-light entry proof. The controlled defend the promise defect will fail the predicted gate, and restoring the copied fixture will return the baseline to green without changing inherited bytes.
+
+## Controlled action and investigation
+
+1. Run the predecessor or entry-boundary proof and retain its summary.
+2. Record the version state exactly as written in `course.json`.
+3. Run the course structure and dependency-light core proof.
+4. In scratch space, copy one hostile-input or authorization vector, remove the denial expectation, and confirm the security traceability proof rejects the weaker case.
+5. Predict the first failing gate before running it.
+6. Restore the clean fixture and rerun the same route.
+7. Record the primary/comparison language strategy.
+8. State which claim still requires an operated identity and network boundary.
 
 ## Operational oracle
 
-The predecessor remains byte-identical, the planted defect is rejected by the predicted proof, the restored tree passes the dependency-light course proof, and no unavailable live route is reported as passed.
+The incoming boundary remains byte-identical, the clean route passes, the copied defect is rejected by the predicted Course 3 gate, and the restored route passes again. No unavailable live proof is reported as successful.
 
 ## Required evidence
 
-Create:
+Retain outside the release payload:
 
 ```text
-work/orientation/
-├── trust-boundaries.md
-├── track-choice.md
-├── doctor.txt
-├── predecessor-proof.txt
-├── planted-defect.md
-├── repaired-proof.txt
+work/orientation/course-03/
+├── environment.txt
+├── incoming-boundary.txt
+├── clean-proof.txt
+├── controlled-defect.txt
+├── restored-proof.txt
+├── language-route.md
 └── evidence-boundary.md
 ```
 
-`planted-defect.md` must name the claim, owner, failure, predicted oracle, actual observation, and permanent regression.
+## Interpretation and defense
+
+Explain why the clean dependency-light result establishes readiness but not an operated identity and network boundary. Name the authoritative oracle for the controlled defect, the layer that owns the repair, and one tempting change that would merely hide the problem downstream.
 
 ## Cleanup and reset
 
-Remove transient caches and processes, restore the fixture from version control or the packaged archive, retain only reviewable evidence, and verify that the predecessor manifest still passes.
+Delete scratch credentials, sockets, PID files, caches, and generated output. Restore every modified fixture, rerun the entry proof, and verify that predecessor or handoff bytes did not change.
 
 ## Completion gate
 
-- [ ] course responsibility and predecessor boundary are stated correctly;
-- [ ] primary and comparison tracks are recorded;
-- [ ] the course book and capstone paths are located;
-- [ ] one controlled defect was rejected and repaired;
-- [ ] dependency-light proof passes from the restored tree;
-- [ ] unavailable live evidence is explicitly named.
+Proceed only when the incoming boundary is exact, the Course 3 responsibility can be stated in your own words, one controlled defect was rejected by the expected gate, the implementation route is recorded, and unavailable evidence is named explicitly.

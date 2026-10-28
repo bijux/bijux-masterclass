@@ -1,5 +1,7 @@
 # Exercises — Module 01: Reliability Model and Critical Journeys
 
+Work through all twelve problems before opening the answers. In **Reliability Model and Critical Journeys**, every response must settle this question: **Which user journeys matter, what makes them good or bad, and which durable facts establish the outcome?** A complete response identifies the contract owner, predicts one observable failure, and names the evidence that decides the case; a definition by itself is incomplete.
+
 ## 1. Why is process uptime not a user-journey SLI?
 
 ## 2. Define the eligible population for run-start freshness.

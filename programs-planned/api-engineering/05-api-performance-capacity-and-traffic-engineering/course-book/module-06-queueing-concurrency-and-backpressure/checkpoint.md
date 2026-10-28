@@ -1,21 +1,8 @@
-# Module 06 checkpoint — Queueing, Concurrency, and Backpressure
+# Checkpoint — Module 06: Queueing, Concurrency, and Backpressure
 
 ## Required result
 
-- [ ] queueing and admission vectors pass in both tracks
-- [ ] Little’s Law calculations use named units and intervals
-- [ ] active and waiting work are bounded
-- [ ] permit leak tests pass
-- [ ] fairness evidence exists
-- [ ] overload responses match the inherited contract
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. Which queue grew first and why?
-2. What does Little’s Law say about your measured work in system?
-3. How does your admission policy protect already accepted work?
+Implement bounded admission, per-operation limits, queue accounting, permit release, and recovery after pressure.
 
 ## Demonstrate
 
@@ -29,6 +16,31 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=06 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-06/
+├── queue-inventory.yaml
+├── unbounded.json
+├── bounded.json
+├── fairness.json
+├── cancellation.json
+├── downstream-slow.json
+└── decision.md
+```
+
+Include a conservation equation for offered, admitted, rejected, completed, failed, and remaining work. State maximum implied memory for each cap.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. Which queue grew first and why?
+2. What does Little’s Law say about your measured work in system?
+3. How does your admission policy protect already accepted work?
 
 ## Continue only when
 

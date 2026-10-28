@@ -1,21 +1,8 @@
-# Module 08 checkpoint — Traffic Shaping, Quotas, and Load Shedding
+# Checkpoint — Module 08: Traffic Shaping, Quotas, and Load Shedding
 
 ## Required result
 
-- [ ] traffic vectors pass in both tracks
-- [ ] policy profile validates
-- [ ] cost, rate, concurrency, and quota dimensions are explicit
-- [ ] limiter state is bounded
-- [ ] fairness and retry behavior are tested
-- [ ] overload preserves inherited correctness
-
-## Defend the design
-
-Answer without reading from the chapter:
-
-1. Why is one request not one unit of capacity?
-2. Which stage of your shedding ladder activates first and why?
-3. What aggregate limit does your deployment actually enforce?
+Implement multi-dimensional fixed-point budgets, tenant isolation, staged shedding, and rollback of partial reservations.
 
 ## Demonstrate
 
@@ -29,6 +16,32 @@ Answer without reading from the chapter:
 ```bash
 make module-proof MODULE=08 TRACK=${TRACK:-python}
 ```
+
+## Evidence to retain
+
+Create:
+
+```text
+work/module-08/
+├── traffic-policy.yaml
+├── cost-catalog.yaml
+├── uncontrolled.json
+├── controlled.json
+├── fairness.json
+├── shedding-stages.json
+├── multi-process-scope.md
+└── decision.md
+```
+
+Report both request counts and cost units. Include a table mapping each rejection reason to 429/503 behavior and retry guidance.
+
+## Defend the design
+
+Answer without reading from the chapter:
+
+1. Why is one request not one unit of capacity?
+2. Which stage of your shedding ladder activates first and why?
+3. What aggregate limit does your deployment actually enforce?
 
 ## Continue only when
 

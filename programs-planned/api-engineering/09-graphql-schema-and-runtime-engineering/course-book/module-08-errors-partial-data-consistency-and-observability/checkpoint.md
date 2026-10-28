@@ -1,12 +1,33 @@
-# Checkpoint 08 — Errors, Partial Data, Consistency, and Observability
+# Checkpoint — Module 08: Errors, Partial Data, Consistency, and Observability
 
-Do not continue until every condition is supported by executable or inspected evidence.
+## Required result
 
-- [ ] Request errors prevent execution; execution errors identify exact response paths and can coexist with partial data.
-- [ ] Nullable remote fields fail as null plus structured errors, while non-null failures bubble to the nearest nullable ancestor.
-- [ ] Unavailable data is never represented as an authoritative empty list.
-- [ ] Staleness and observation time are visible where the graph serves eventually consistent projections.
-- [ ] Telemetry records bounded operation and field coordinates without object IDs or sensitive variables as metric labels.
-- [ ] Lab 08 correlates one controlled source outage across data, errors, traces, service calls, and cache behavior.
+Return truthful partial data with path-specific errors and traces.
 
-**Gate:** run `make module-08-proof`. A green command without the lab report and the listed evidence does not count.
+## Demonstrate
+
+- [ ] Separate request and execution errors.
+- [ ] Use error paths and stable codes.
+- [ ] Predict null bubbling.
+- [ ] Disclose staleness and partiality.
+- [ ] Trace graph execution without cardinality explosions.
+
+## Commands
+
+```bash
+make core-proof
+```
+
+## Evidence to retain
+
+Create `reports/module-08-partial-data.json` with source state, data path, returned value class, error code, bubble target, unaffected siblings, consistency metadata, and trace outcome. Include one client decision for each case: render partial, refetch, retry, or stop.
+
+## Defend the design
+
+1. Answer the central question in one paragraph: How does the graph tell the truth when some fields succeed, some fail, and some are stale?
+2. Name the authoritative owner and smallest counterexample.
+3. State what the available evidence does not prove.
+
+## Continue only when
+
+Continue only after you can demonstrate the **Errors, Partial Data, Consistency, and Observability** increment, preserve the controlled counterexample as a regression, keep inherited checkpoints green, and explain which stronger claim remains outside the evidence you collected.

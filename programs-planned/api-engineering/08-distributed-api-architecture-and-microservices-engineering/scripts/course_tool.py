@@ -133,7 +133,7 @@ def doctor() -> None:
     for tool in ["node", "tsc", "mkdocs", "docker", "kubectl", "psql"]:
         print(f"{tool}: {shutil.which(tool) or 'not-available'}")
     print("PyYAML", yaml.__version__)
-    print("course", read_json(ROOT / "course.json")["version"])
+    print("course", read_json(ROOT / "course.json")["versionState"])
 
 
 def predecessor_proof() -> None:
@@ -147,7 +147,7 @@ def predecessor_proof() -> None:
 
 def structure_proof() -> None:
     pages = sorted(BOOK.rglob("*.md"))
-    assert len(pages) == 59, f"expected 59 course-book pages, got {len(pages)}"
+    assert len(pages) == 61, f"expected 61 course-book pages, got {len(pages)}"
     module_dirs = sorted(p for p in BOOK.glob("module-[0-9][0-9]-*") if p.is_dir())
     assert len(module_dirs) == 11, f"expected orientation plus 10 modules, got {len(module_dirs)}"
     numbered = [p for p in module_dirs if not p.name.startswith("module-00-")]
@@ -165,14 +165,19 @@ def structure_proof() -> None:
         answers += len(ans_heads)
         lab = (directory / "lab.md").read_text()
         for heading in [
-            "## Setup", "## Controlled actions", "## Correctness oracle",
-            "## Required evidence", "## Cleanup", "## Completion gate",
+            "## Objective", "## Why this lab matters", "## Setup conditions",
+            "## Hypothesis", "## Controlled action and investigation",
+            "## Operational oracle", "## Required evidence",
+            "## Interpretation and defense", "## Cleanup and reset",
+            "## Completion gate",
         ]:
             assert heading in lab, f"missing {heading}: {directory.name}/lab.md"
         checkpoint = (directory / "checkpoint.md").read_text()
-        assert "## Non-compensable gate" in checkpoint
+        for heading in ["## Required result", "## Demonstrate", "## Commands",
+                           "## Evidence to retain", "## Defend the design", "## Continue only when"]:
+            assert heading in checkpoint, f"missing {heading}: {directory.name}/checkpoint.md"
     assert exercises == answers == 120
-    print("PASS course structure — 59 pages, 120 exercises, 120 worked answers, 10 labs")
+    print("PASS course structure — 61 pages, 120 exercises, 120 worked answers, 10 labs")
 
 
 def boundary_proof() -> None:
@@ -638,7 +643,7 @@ def education_proof() -> None:
         assert words >= 1_600, f"main chapter too thin ({words} words): {path.parent.name}"
         text = path.read_text()
         assert "## Learning outcomes" in text
-        assert "## Capstone result" in text
+        assert "## Capstone increment" in text
         assert "## Python and TypeScript implications" in text
     forbidden = ["lorem ipsum", "write something here", "coming soon", "to be completed", "placeholder text"]
     combined = "\n".join(path.read_text().lower() for path in pages)

@@ -1,37 +1,45 @@
 # Contract-Driven API Service Engineering
 
-**Course 2 of 6 — Make the promise durable**
+**Course 2 of 10 — Implement the promise durably**
 
-> **Central question:** Which internal mechanisms keep the public contract true under concurrency, restart, and partial failure?
+## Course promise
 
-## Course responsibility
+Turn the fixed Course 1 contract into a durable modular service whose important guarantees survive concurrent requests and process failure.
 
-Implement the fixed contract with durable application, database, worker, storage, and release mechanisms. The course inherits earlier guarantees rather than restating them as new work. Its purpose is to add one mature engineering responsibility to the same Analysis Runs Platform.
+> **Governing question:** Which application, database, worker, storage, and release mechanisms keep the public contract true under concurrency, restart, and partial failure?
 
-## Incoming and outgoing boundaries
+## Place in the program
 
 **Incoming boundary:** The immutable Course 1 API 1.1 handoff and its provider-neutral proof corpus.
 
-**Outgoing boundary:** A durable API 1.2 service handoff with migrations 001–005, idempotency, optimistic concurrency, stable pagination, worker recovery, artifact integrity, and transactional webhook delivery.
+**Outgoing boundary:** A durable API 1.2 service with migrations 001–005, persistent idempotency, atomic conditional updates, stable pagination, worker recovery, artifact integrity, transactional webhook delivery, and compatible-release evidence.
 
-## What you will be able to do
+Course 2 treats its incoming handoff as historical evidence, not editable scaffolding. It may add only the implement the promise durably mechanisms governed here; any public or durable change requires an explicit compatibility and release decision.
 
-After completing the course, you can:
+## What you will add
 
-- create transport, application, and adapter boundaries for the fixed operation ledger.
-- implement project, dataset, run, cancellation, and artifact rules as testable domain behavior.
-- persist principals, projects, datasets, runs, artifacts, and ownership with constraints and deterministic migrations.
-- implement persistent request fingerprints, replayed outcomes, version columns, ETags, and transaction rollback.
-- implement owner-bound, filter-bound, high-water keyset traversal and evidence-backed query plans.
-- add durable jobs, leases, heartbeats, fencing, cancellation, duplicate-safe effects, and abandoned-work recovery.
-- implement streamed upload, content-addressed publication, checksums, SSE/NDJSON progress, and authorized download.
-- add a transactional outbox, signed deliveries, retry state, deduplication, and destination constraints.
-- assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs.
-- build lifecycle controls, compatible expand/backfill/enforce migrations, rollback evidence, and release proof.
+- application use cases and domain invariants;
+- PostgreSQL persistence and migration ownership;
+- transactions, idempotency, ETags, and stable cursors;
+- durable workers, leases, and recovery;
+- bounded artifact transfer and transactional outbox delivery;
 
-## Ten-module learning path
+## Course-level learning outcomes
 
-| Day | Module | Governing question | Capstone result |
+- Separate transport, application, domain, and infrastructure responsibilities.
+- Model legal and illegal state transitions.
+- Map relationships and ownership to keys and constraints.
+- Draw the transaction boundary for each use case.
+- Bind queries to principal, operation, filters, and order.
+- Separate durable acceptance from execution.
+- Enforce limits while streaming rather than after buffering.
+- Explain the dual-write failure.
+- Choose the narrowest oracle for each claim.
+- Distinguish startup, liveness, readiness, and draining.
+
+## Module map
+
+| Day | Chapter | Governing question | Capstone increment |
 |---:|---|---|---|
 | 1 | [Application Use Cases and Boundaries](module-01-application-use-cases/index.md) | How does a public operation become an application use case without letting the framework own the system? | Create transport, application, and adapter boundaries for the fixed operation ledger. |
 | 2 | [Domain State and Invariants](module-02-domain-state-invariants/index.md) | Which state transitions and invariants must remain true regardless of framework or database? | Implement project, dataset, run, cancellation, and artifact rules as testable domain behavior. |
@@ -44,21 +52,21 @@ After completing the course, you can:
 | 9 | [Failure-Oriented Verification](module-09-failure-proof-architecture/index.md) | How do tests prove transactions, concurrency, restart, storage, and delivery guarantees rather than only happy paths? | Assemble pure, integration, concurrent, process-kill, conformance, and planted-defect proofs. |
 | 10 | [Lifecycle and Compatible Release](module-10-lifecycle-compatible-release/index.md) | How can old and new service versions coexist through a database change and still preserve the public contract? | Build lifecycle controls, compatible expand/backfill/enforce migrations, rollback evidence, and release proof. |
 
+## Deliberate boundaries
 
-## How the book is organized
+This course does not claim or teach the following as part of its completion:
 
-Each numbered module has five learner-facing files:
+- full security engineering;
+- SRE and observability operations;
+- performance tuning as a goal;
+- service decomposition;
 
-1. `index.md` — the complete explanation, worked designs, implementation reading, failure analysis, and transition;
-2. `exercises.md` — twelve transfer questions;
-3. `exercise-answers.md` — matching reasoned reference answers;
-4. `lab.md` — one controlled failure, pressure, or release experiment;
-5. `checkpoint.md` — the evidence required before progression.
+Those boundaries prevent the course from becoming a survey of adjacent tools and make its completion claims defensible.
 
-The course book is authoritative. Capstone source, fixtures, reports, and proof scripts make the material executable; they do not replace the explanation.
+## How to study
 
-## Completion standard
+Begin with [Start here](start-here.md). In Course 2, read each chapter around the question **Which application, database, worker, storage, and release mechanisms keep the public contract true under concurrency, restart, and partial failure?**; then use the exercises, controlled lab, and checkpoint to turn the explanation into evidence. [Language strategy](language-strategy.md) and [Evidence model](evidence-model.md) define how implementation and proof support—not replace—the course book.
 
-You complete the course only when every module checkpoint, the capstone proof, and the final defense pass. A strong result states not only what worked but which claim was established, which evidence class supports it, and what remains unexecuted.
+## Completion
 
-Continue with [Start here](start-here.md).
+Complete all ten checkpoints, the capstone release or defense, and the outgoing handoff. A green command without a defensible claim and evidence boundary is not sufficient.
