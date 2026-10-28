@@ -6,7 +6,10 @@ completion or readiness for learners.
 
 Supported courses remain under `programs/`. Planned material is outside their
 validation matrix, qualification fingerprints and published documentation
-catalogue. Dependency-update configuration does not enroll these sources.
+catalogue. Dependency-update configuration does not enroll these sources in
+scheduled version updates. GitHub security analysis can still detect their
+dependency manifests and open update pull requests. Those requests do not qualify
+a planned course or enroll it in supported-course CI.
 Repository governance and standards checks still apply to changes in this
 repository.
 
