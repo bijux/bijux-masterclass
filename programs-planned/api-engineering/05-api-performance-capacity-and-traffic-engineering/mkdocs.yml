@@ -1,0 +1,77 @@
+site_name: API Performance, Capacity, and Traffic Engineering
+docs_dir: course-book
+site_dir: site
+strict: true
+theme:
+  name: material
+nav:
+  - Course Home: index.md
+  - Start Here: start-here.md
+  - Study Plan: study-plan.md
+  - Standards and Evidence: standards.md
+  - Capstone: capstone.md
+  - Glossary: glossary.md
+  - Orientation:
+      - Chapter: module-00-orientation/index.md
+      - Lab: module-00-orientation/lab.md
+      - Checkpoint: module-00-orientation/checkpoint.md
+  - 01 — Measurement Contract and Critical Workloads:
+      - Chapter: module-01-measurement-contract-and-critical-workloads/index.md
+      - Exercises: module-01-measurement-contract-and-critical-workloads/exercises.md
+      - Worked Answers: module-01-measurement-contract-and-critical-workloads/exercise-answers.md
+      - Lab: module-01-measurement-contract-and-critical-workloads/lab.md
+      - Checkpoint: module-01-measurement-contract-and-critical-workloads/checkpoint.md
+  - 02 — Benchmark Design and Statistical Interpretation:
+      - Chapter: module-02-benchmark-design-and-statistical-interpretation/index.md
+      - Exercises: module-02-benchmark-design-and-statistical-interpretation/exercises.md
+      - Worked Answers: module-02-benchmark-design-and-statistical-interpretation/exercise-answers.md
+      - Lab: module-02-benchmark-design-and-statistical-interpretation/lab.md
+      - Checkpoint: module-02-benchmark-design-and-statistical-interpretation/checkpoint.md
+  - 03 — HTTP Efficiency and Representation Cost:
+      - Chapter: module-03-http-efficiency-and-representation-cost/index.md
+      - Exercises: module-03-http-efficiency-and-representation-cost/exercises.md
+      - Worked Answers: module-03-http-efficiency-and-representation-cost/exercise-answers.md
+      - Lab: module-03-http-efficiency-and-representation-cost/lab.md
+      - Checkpoint: module-03-http-efficiency-and-representation-cost/checkpoint.md
+  - 04 — PostgreSQL Query and Persistence Performance:
+      - Chapter: module-04-postgresql-query-and-persistence-performance/index.md
+      - Exercises: module-04-postgresql-query-and-persistence-performance/exercises.md
+      - Worked Answers: module-04-postgresql-query-and-persistence-performance/exercise-answers.md
+      - Lab: module-04-postgresql-query-and-persistence-performance/lab.md
+      - Checkpoint: module-04-postgresql-query-and-persistence-performance/checkpoint.md
+  - 05 — Runtime Profiling and Allocation Control:
+      - Chapter: module-05-runtime-profiling-and-allocation-control/index.md
+      - Exercises: module-05-runtime-profiling-and-allocation-control/exercises.md
+      - Worked Answers: module-05-runtime-profiling-and-allocation-control/exercise-answers.md
+      - Lab: module-05-runtime-profiling-and-allocation-control/lab.md
+      - Checkpoint: module-05-runtime-profiling-and-allocation-control/checkpoint.md
+  - 06 — Queueing, Concurrency, and Backpressure:
+      - Chapter: module-06-queueing-concurrency-and-backpressure/index.md
+      - Exercises: module-06-queueing-concurrency-and-backpressure/exercises.md
+      - Worked Answers: module-06-queueing-concurrency-and-backpressure/exercise-answers.md
+      - Lab: module-06-queueing-concurrency-and-backpressure/lab.md
+      - Checkpoint: module-06-queueing-concurrency-and-backpressure/checkpoint.md
+  - 07 — Caching, Freshness, and Invalidation:
+      - Chapter: module-07-caching-freshness-and-invalidation/index.md
+      - Exercises: module-07-caching-freshness-and-invalidation/exercises.md
+      - Worked Answers: module-07-caching-freshness-and-invalidation/exercise-answers.md
+      - Lab: module-07-caching-freshness-and-invalidation/lab.md
+      - Checkpoint: module-07-caching-freshness-and-invalidation/checkpoint.md
+  - 08 — Traffic Shaping, Quotas, and Load Shedding:
+      - Chapter: module-08-traffic-shaping-quotas-and-load-shedding/index.md
+      - Exercises: module-08-traffic-shaping-quotas-and-load-shedding/exercises.md
+      - Worked Answers: module-08-traffic-shaping-quotas-and-load-shedding/exercise-answers.md
+      - Lab: module-08-traffic-shaping-quotas-and-load-shedding/lab.md
+      - Checkpoint: module-08-traffic-shaping-quotas-and-load-shedding/checkpoint.md
+  - 09 — Capacity Modeling and Scaling Decisions:
+      - Chapter: module-09-capacity-modeling-and-scaling-decisions/index.md
+      - Exercises: module-09-capacity-modeling-and-scaling-decisions/exercises.md
+      - Worked Answers: module-09-capacity-modeling-and-scaling-decisions/exercise-answers.md
+      - Lab: module-09-capacity-modeling-and-scaling-decisions/lab.md
+      - Checkpoint: module-09-capacity-modeling-and-scaling-decisions/checkpoint.md
+  - 10 — Performance Regression and Release Engineering:
+      - Chapter: module-10-performance-regression-and-release-engineering/index.md
+      - Exercises: module-10-performance-regression-and-release-engineering/exercises.md
+      - Worked Answers: module-10-performance-regression-and-release-engineering/exercise-answers.md
+      - Lab: module-10-performance-regression-and-release-engineering/lab.md
+      - Checkpoint: module-10-performance-regression-and-release-engineering/checkpoint.md

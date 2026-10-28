@@ -1,0 +1,76 @@
+site_name: 'OpenAPI Contract Engineering'
+docs_dir: course-book
+site_dir: site
+theme:
+  name: material
+nav:
+  - "Home": index.md
+  - "Start here": start-here.md
+  - "Study plan": study-plan.md
+  - "Capstone": capstone.md
+  - "Standards": standards.md
+  - "Glossary": glossary.md
+  - "Orientation":
+      - Chapter: module-00-orientation/index.md
+      - Lab: module-00-orientation/lab.md
+      - Checkpoint: module-00-orientation/checkpoint.md
+  - 'Module 01 — HTTP and OpenAPI Foundations':
+      - Chapter: module-01-http-openapi-foundations/index.md
+      - Exercises: module-01-http-openapi-foundations/exercises.md
+      - Answers: module-01-http-openapi-foundations/exercise-answers.md
+      - Lab: module-01-http-openapi-foundations/lab.md
+      - Checkpoint: module-01-http-openapi-foundations/checkpoint.md
+  - 'Module 02 — Operations, Parameters, and Messages':
+      - Chapter: module-02-operations-parameters-messages/index.md
+      - Exercises: module-02-operations-parameters-messages/exercises.md
+      - Answers: module-02-operations-parameters-messages/exercise-answers.md
+      - Lab: module-02-operations-parameters-messages/lab.md
+      - Checkpoint: module-02-operations-parameters-messages/checkpoint.md
+  - 'Module 03 — JSON Schema Contract Modeling':
+      - Chapter: module-03-json-schema-contract-modeling/index.md
+      - Exercises: module-03-json-schema-contract-modeling/exercises.md
+      - Answers: module-03-json-schema-contract-modeling/exercise-answers.md
+      - Lab: module-03-json-schema-contract-modeling/lab.md
+      - Checkpoint: module-03-json-schema-contract-modeling/checkpoint.md
+  - 'Module 04 — References and Multi-Document Architecture':
+      - Chapter: module-04-references-multi-document-architecture/index.md
+      - Exercises: module-04-references-multi-document-architecture/exercises.md
+      - Answers: module-04-references-multi-document-architecture/exercise-answers.md
+      - Lab: module-04-references-multi-document-architecture/lab.md
+      - Checkpoint: module-04-references-multi-document-architecture/checkpoint.md
+  - 'Module 05 — Production HTTP API Design':
+      - Chapter: module-05-production-http-api-design/index.md
+      - Exercises: module-05-production-http-api-design/exercises.md
+      - Answers: module-05-production-http-api-design/exercise-answers.md
+      - Lab: module-05-production-http-api-design/lab.md
+      - Checkpoint: module-05-production-http-api-design/checkpoint.md
+  - 'Module 06 — Contract-First and Code-First Runtimes':
+      - Chapter: module-06-contract-first-code-first-runtime/index.md
+      - Exercises: module-06-contract-first-code-first-runtime/exercises.md
+      - Answers: module-06-contract-first-code-first-runtime/exercise-answers.md
+      - Lab: module-06-contract-first-code-first-runtime/lab.md
+      - Checkpoint: module-06-contract-first-code-first-runtime/checkpoint.md
+  - 'Module 07 — Mocks, Clients, and Contract Testing':
+      - Chapter: module-07-mocking-clients-contract-testing/index.md
+      - Exercises: module-07-mocking-clients-contract-testing/exercises.md
+      - Answers: module-07-mocking-clients-contract-testing/exercise-answers.md
+      - Lab: module-07-mocking-clients-contract-testing/lab.md
+      - Checkpoint: module-07-mocking-clients-contract-testing/checkpoint.md
+  - 'Module 08 — Security in the Public Contract':
+      - Chapter: module-08-security-authentication-authorization/index.md
+      - Exercises: module-08-security-authentication-authorization/exercises.md
+      - Answers: module-08-security-authentication-authorization/exercise-answers.md
+      - Lab: module-08-security-authentication-authorization/lab.md
+      - Checkpoint: module-08-security-authentication-authorization/checkpoint.md
+  - 'Module 09 — Evolution, Compatibility, and Audience Views':
+      - Chapter: module-09-evolution-compatibility-overlays-ci/index.md
+      - Exercises: module-09-evolution-compatibility-overlays-ci/exercises.md
+      - Answers: module-09-evolution-compatibility-overlays-ci/exercise-answers.md
+      - Lab: module-09-evolution-compatibility-overlays-ci/lab.md
+      - Checkpoint: module-09-evolution-compatibility-overlays-ci/checkpoint.md
+  - 'Module 10 — OpenAPI 3.2, Streaming, Webhooks, and Workflows':
+      - Chapter: module-10-openapi-32-workflows-advanced/index.md
+      - Exercises: module-10-openapi-32-workflows-advanced/exercises.md
+      - Answers: module-10-openapi-32-workflows-advanced/exercise-answers.md
+      - Lab: module-10-openapi-32-workflows-advanced/lab.md
+      - Checkpoint: module-10-openapi-32-workflows-advanced/checkpoint.md

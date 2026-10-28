@@ -1,0 +1,50 @@
+{
+  "cases": [
+    {
+      "body": "{\"event\":\"analysis.completed\",\"runId\":\"run_01\"}",
+      "deliveryId": "del_01HSECURITY00000000000001",
+      "id": "wh-valid",
+      "keyId": "whk-2026-01",
+      "timestamp": 1760000000,
+      "valid": true
+    },
+    {
+      "body": "{\"event\":\"analysis.failed\",\"runId\":\"run_01\"}",
+      "deliveryId": "del_01HSECURITY00000000000001",
+      "id": "wh-altered",
+      "keyId": "whk-2026-01",
+      "timestamp": 1760000000,
+      "useSignatureFrom": "wh-valid",
+      "valid": false
+    },
+    {
+      "body": "{}",
+      "deliveryId": "del_01HSECURITY00000000000002",
+      "id": "wh-stale",
+      "keyId": "whk-2026-01",
+      "maxAge": 300,
+      "now": 1760000000,
+      "timestamp": 1759990000,
+      "valid": false
+    },
+    {
+      "body": "{}",
+      "deliveryId": "del_01HSECURITY00000000000003",
+      "id": "wh-unknown-key",
+      "keyId": "unknown",
+      "timestamp": 1760000000,
+      "valid": false
+    },
+    {
+      "body": "{\"event\":\"analysis.completed\",\"runId\":\"run_01\"}",
+      "deliveryId": "del_01HSECURITY00000000000001",
+      "id": "wh-replay",
+      "keyId": "whk-2026-01",
+      "replayed": true,
+      "timestamp": 1760000000,
+      "valid": false
+    }
+  ],
+  "profile": "analysis-runs-v1",
+  "secret": "fixture-webhook-secret-32-bytes!!"
+}

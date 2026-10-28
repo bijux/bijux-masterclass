@@ -1,0 +1,25 @@
+type: object
+additionalProperties: false
+required:
+- status
+- service
+- version
+- time
+properties:
+  status:
+    type: string
+    const: ok
+  service:
+    type: string
+    const: analysis-runs-api
+  version:
+    type: string
+    pattern: ^[0-9]+\.[0-9]+\.[0-9]+$
+  time:
+    type: string
+    format: date-time
+examples:
+- status: ok
+  service: analysis-runs-api
+  version: 1.0.0
+  time: '2026-08-05T10:00:00Z'

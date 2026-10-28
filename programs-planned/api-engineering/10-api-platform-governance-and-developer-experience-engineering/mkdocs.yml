@@ -1,0 +1,91 @@
+site_name: API Platform, Governance, and Developer Experience Engineering
+site_description: Course 10 of the Bijux Masterclass API Engineering program
+docs_dir: course-book
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
+nav:
+- Home: index.md
+- Start Here: start-here.md
+- Course Guide: course-guide.md
+- Capstone Map: capstone-map.md
+- Orientation and the Platform Boundary:
+  - Chapter: module-00-orientation/index.md
+  - Exercises: module-00-orientation/exercises.md
+  - Worked Answers: module-00-orientation/exercise-answers.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Platform Product Model and Operating Boundaries:
+  - Chapter: module-01-platform-product-model/index.md
+  - Exercises: module-01-platform-product-model/exercises.md
+  - Worked Answers: module-01-platform-product-model/exercise-answers.md
+  - Lab: module-01-platform-product-model/lab.md
+  - Checkpoint: module-01-platform-product-model/checkpoint.md
+- Catalog, Ownership Graph, and Metadata Authority:
+  - Chapter: module-02-catalog-ownership-and-topology/index.md
+  - Exercises: module-02-catalog-ownership-and-topology/exercises.md
+  - Worked Answers: module-02-catalog-ownership-and-topology/exercise-answers.md
+  - Lab: module-02-catalog-ownership-and-topology/lab.md
+  - Checkpoint: module-02-catalog-ownership-and-topology/checkpoint.md
+- Contract Registry and Multi-Protocol Publication:
+  - Chapter: module-03-contract-registry-and-publication/index.md
+  - Exercises: module-03-contract-registry-and-publication/exercises.md
+  - Worked Answers: module-03-contract-registry-and-publication/exercise-answers.md
+  - Lab: module-03-contract-registry-and-publication/lab.md
+  - Checkpoint: module-03-contract-registry-and-publication/checkpoint.md
+- Governance as Code, Evidence, Scorecards, and Exceptions:
+  - Chapter: module-04-governance-as-code/index.md
+  - Exercises: module-04-governance-as-code/exercises.md
+  - Worked Answers: module-04-governance-as-code/exercise-answers.md
+  - Lab: module-04-governance-as-code/lab.md
+  - Checkpoint: module-04-governance-as-code/checkpoint.md
+- Lifecycle, Compatibility, Deprecation, and Retirement:
+  - Chapter: module-05-lifecycle-deprecation-and-retirement/index.md
+  - Exercises: module-05-lifecycle-deprecation-and-retirement/exercises.md
+  - Worked Answers: module-05-lifecycle-deprecation-and-retirement/exercise-answers.md
+  - Lab: module-05-lifecycle-deprecation-and-retirement/lab.md
+  - Checkpoint: module-05-lifecycle-deprecation-and-retirement/checkpoint.md
+- Golden Paths, Templates, and Self-Service Provisioning:
+  - Chapter: module-06-golden-paths-and-self-service/index.md
+  - Exercises: module-06-golden-paths-and-self-service/exercises.md
+  - Worked Answers: module-06-golden-paths-and-self-service/exercise-answers.md
+  - Lab: module-06-golden-paths-and-self-service/lab.md
+  - Checkpoint: module-06-golden-paths-and-self-service/checkpoint.md
+- Documentation, Discovery, Sandboxes, and Consumer Onboarding:
+  - Chapter: module-07-documentation-discovery-and-sandbox/index.md
+  - Exercises: module-07-documentation-discovery-and-sandbox/exercises.md
+  - Worked Answers: module-07-documentation-discovery-and-sandbox/exercise-answers.md
+  - Lab: module-07-documentation-discovery-and-sandbox/lab.md
+  - Checkpoint: module-07-documentation-discovery-and-sandbox/checkpoint.md
+- SDKs, CLIs, Artifacts, SBOMs, and Provenance:
+  - Chapter: module-08-sdks-artifacts-and-supply-chain/index.md
+  - Exercises: module-08-sdks-artifacts-and-supply-chain/exercises.md
+  - Worked Answers: module-08-sdks-artifacts-and-supply-chain/exercise-answers.md
+  - Lab: module-08-sdks-artifacts-and-supply-chain/lab.md
+  - Checkpoint: module-08-sdks-artifacts-and-supply-chain/checkpoint.md
+- Runtime Control Plane, Usage Intelligence, and Support Operations:
+  - Chapter: module-09-runtime-analytics-and-support/index.md
+  - Exercises: module-09-runtime-analytics-and-support/exercises.md
+  - Worked Answers: module-09-runtime-analytics-and-support/exercise-answers.md
+  - Lab: module-09-runtime-analytics-and-support/lab.md
+  - Checkpoint: module-09-runtime-analytics-and-support/checkpoint.md
+- Federated Governance, Platform Operations, and Final Defense:
+  - Chapter: module-10-federated-governance-and-final-defense/index.md
+  - Exercises: module-10-federated-governance-and-final-defense/exercises.md
+  - Worked Answers: module-10-federated-governance-and-final-defense/exercise-answers.md
+  - Lab: module-10-federated-governance-and-final-defense/lab.md
+  - Checkpoint: module-10-federated-governance-and-final-defense/checkpoint.md

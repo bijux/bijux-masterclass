@@ -1,0 +1,11 @@
+serviceRelease: reliability-1.0.0
+publicApi: 1.2.0
+securityProfile: '1.0'
+reliabilityProfile: '1.0'
+databaseMigrations:
+- 008
+compatibility: public-contract-preserving
+evidence:
+- dependency-light core proof
+- shared vector parity
+- static telemetry and alert policy proof

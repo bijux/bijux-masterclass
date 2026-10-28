@@ -1,0 +1,23 @@
+{
+  "course": "07-grpc-and-protobuf-engineering",
+  "version": "1.0.0",
+  "status": "dependency-light-release-passed",
+  "course_book_pages": 59,
+  "course_book_words": 35040,
+  "exercises": 120,
+  "worked_answers": 120,
+  "labs": 10,
+  "checkpoints": 10,
+  "python_tests": 31,
+  "typescript_tests": 18,
+  "services": 3,
+  "methods": 7,
+  "messages": 18,
+  "vector_files": 11,
+  "vector_cases": 58,
+  "migrations": "001-015",
+  "planted_defects": 10,
+  "incoming_handoff_payload_files": 48,
+  "outgoing_handoff_payload_files": 46,
+  "evidence_boundary": "see capability-execution.json"
+}

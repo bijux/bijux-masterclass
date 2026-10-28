@@ -1,0 +1,21 @@
+[
+  {
+    "local_id": "proj-1",
+    "type": "Project",
+    "valid": true
+  },
+  {
+    "local_id": "run-1",
+    "type": "AnalysisRun",
+    "valid": true
+  },
+  {
+    "local_id": "artifact-1",
+    "type": "Artifact",
+    "valid": true
+  },
+  {
+    "encoded": "bm90LWEtZ2xvYmFsLWlk",
+    "valid": false
+  }
+]

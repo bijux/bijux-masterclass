@@ -1,0 +1,7 @@
+{
+  "projectId": "prj_0001",
+  "datasetId": "dts_x",
+  "parameters": {
+    "algorithm": "quality-summary"
+  }
+}

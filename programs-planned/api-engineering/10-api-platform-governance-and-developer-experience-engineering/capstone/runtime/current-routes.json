@@ -1,0 +1,35 @@
+{
+  "routes": [
+    {
+      "apiRef": "api:default/analysis-graph",
+      "domainAuthz": "graph-and-owner-services",
+      "edgeAuthn": "oauth2",
+      "host": "graph.analysis.example.invalid",
+      "id": "analysis-graph",
+      "pathPrefix": "/graphql",
+      "rateClass": "graph",
+      "release": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/analysis-http",
+      "domainAuthz": "owner-service",
+      "edgeAuthn": "oauth2",
+      "host": "api.analysis.example.invalid",
+      "id": "analysis-http",
+      "pathPrefix": "/v1",
+      "rateClass": "interactive",
+      "release": "1.2.0"
+    },
+    {
+      "apiRef": "api:default/platform-catalog",
+      "domainAuthz": "owner-service",
+      "edgeAuthn": "mtls",
+      "host": "platform.internal.example.invalid",
+      "id": "platform-catalog",
+      "pathPrefix": "/platform/v1",
+      "rateClass": "platform-control",
+      "release": "1.0.0"
+    }
+  ],
+  "version": "1.0"
+}

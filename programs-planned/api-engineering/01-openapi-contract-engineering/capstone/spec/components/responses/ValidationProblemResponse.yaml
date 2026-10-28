@@ -1,0 +1,21 @@
+description: Request validation failed.
+headers:
+  X-Request-Id:
+    $ref: ../headers/RequestId.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/ValidationProblem.yaml
+    example:
+      type: https://api.example.test/problems/validation
+      title: Request validation failed
+      status: 422
+      detail: One or more request values are invalid.
+      instance: /projects
+      requestId: req_012345abcdef
+      errors:
+      - location:
+        - body
+        - name
+        message: String should have at least 1 character
+        code: string_too_short

@@ -1,0 +1,5 @@
+{
+  "change": "add AdminService/RepairRun absent from catalogue",
+  "expected": "reject",
+  "reason": "ungoverned method"
+}

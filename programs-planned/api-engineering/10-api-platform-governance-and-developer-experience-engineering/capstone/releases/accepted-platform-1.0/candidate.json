@@ -1,0 +1,5 @@
+{
+  "expectedDecision": "accepted",
+  "id": "accepted-platform-1.0",
+  "reason": "All blocker policies pass; one documented non-blocking exception remains within scope and expiry."
+}

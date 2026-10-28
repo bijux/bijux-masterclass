@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "stream-time",
+  "cases": [
+    {
+      "id": "STR-001",
+      "description": "event time selects the window",
+      "expected": "accepted"
+    },
+    {
+      "id": "STR-002",
+      "description": "duplicate event id does not increment a window",
+      "expected": "accepted"
+    },
+    {
+      "id": "STR-003",
+      "description": "late event inside allowance creates a revision",
+      "expected": "accepted"
+    },
+    {
+      "id": "STR-004",
+      "description": "event beyond lateness is quarantined",
+      "expected": "accepted"
+    },
+    {
+      "id": "STR-005",
+      "description": "processing time does not replace event time",
+      "expected": "rejected"
+    },
+    {
+      "id": "STR-006",
+      "description": "tenant is part of window identity",
+      "expected": "accepted"
+    }
+  ]
+}

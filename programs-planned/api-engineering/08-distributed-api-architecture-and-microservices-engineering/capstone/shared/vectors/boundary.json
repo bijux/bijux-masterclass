@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "candidate": "notification-service",
+      "expected": "extract-first",
+      "id": "B-01"
+    },
+    {
+      "candidate": "artifact-service",
+      "expected": "extract-second",
+      "id": "B-02"
+    },
+    {
+      "candidate": "analysis-control",
+      "expected": "keep-cohesive",
+      "id": "B-03"
+    },
+    {
+      "candidate": "project-service",
+      "expected": "reject",
+      "id": "B-04"
+    },
+    {
+      "candidate": "worker-plane",
+      "expected": "separate-deployment-not-data-owner",
+      "id": "B-05"
+    }
+  ],
+  "profile": "distributed-boundary-1.0"
+}

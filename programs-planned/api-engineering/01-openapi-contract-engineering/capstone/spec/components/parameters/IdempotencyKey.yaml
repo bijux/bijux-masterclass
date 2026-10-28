@@ -1,0 +1,10 @@
+name: Idempotency-Key
+in: header
+required: true
+description: A caller-generated key scoped to the authenticated principal.
+schema:
+  type: string
+  minLength: 16
+  maxLength: 64
+  pattern: ^[A-Za-z0-9._~-]+$
+example: run-summer-2026-0001

@@ -1,0 +1,54 @@
+{
+  "cases": [
+    {
+      "attributes": {
+        "authorization": "Bearer top-secret",
+        "message": "upstream rejected Bearer embedded-secret",
+        "nested": {
+          "safe": "ok",
+          "token": "x"
+        },
+        "url": "https://alice:password@example.test/hook"
+      },
+      "expected": {
+        "authorization": "[REDACTED]",
+        "message": "upstream rejected Bearer [REDACTED]",
+        "nested": {
+          "safe": "ok",
+          "token": "[REDACTED]"
+        },
+        "url": "https://[REDACTED]@example.test/hook"
+      },
+      "id": "telemetry-redact-nested"
+    },
+    {
+      "id": "telemetry-resource",
+      "required": [
+        "service_name",
+        "service_version",
+        "deployment_environment",
+        "schema_version",
+        "event_name",
+        "severity",
+        "timestamp_ms"
+      ]
+    },
+    {
+      "id": "telemetry-forbidden-metric-labels",
+      "labels": [
+        "user.id",
+        "project.id",
+        "request.id",
+        "trace.id"
+      ],
+      "valid": false
+    },
+    {
+      "dropped": 1,
+      "emitCount": 3,
+      "id": "telemetry-bounded-sink",
+      "maximumEvents": 2,
+      "stored": 2
+    }
+  ]
+}

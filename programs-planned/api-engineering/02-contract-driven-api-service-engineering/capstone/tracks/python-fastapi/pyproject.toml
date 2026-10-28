@@ -1,0 +1,15 @@
+[build-system]
+requires=["hatchling>=1.27"]
+build-backend="hatchling.build"
+[project]
+name="analysis-service-python"
+version="1.1.0"
+requires-python=">=3.14"
+dependencies=["fastapi==0.141.1","pydantic==2.13.4","psycopg[binary,pool]==3.3.4","httpx==0.28.1","python-multipart==0.0.20","uvicorn==0.48.0"]
+[project.optional-dependencies]
+dev=["pytest==9.1.1","pytest-asyncio==1.2.0","ruff==0.12.11"]
+[project.scripts]
+analysis-migrate="analysis_service.cli:main"
+analysis-worker="analysis_service.worker:main"
+[tool.hatch.build.targets.wheel]
+packages=["src/analysis_service"]

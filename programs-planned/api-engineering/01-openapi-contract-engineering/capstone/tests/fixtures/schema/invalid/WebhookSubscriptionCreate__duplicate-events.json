@@ -1,0 +1,8 @@
+{
+  "targetUrl": "https://hooks.example.test/team-a",
+  "eventTypes": [
+    "analysis.completed",
+    "analysis.completed"
+  ],
+  "secret": "training-secret-0001"
+}

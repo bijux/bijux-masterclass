@@ -1,0 +1,6 @@
+{
+  "candidate": "synchronous-cycle",
+  "expected": "reject",
+  "issue": "analysis-control and artifact-service call each other",
+  "rejecting_gate": "acyclic-sync-graph"
+}

@@ -1,0 +1,76 @@
+site_name: GraphQL Schema and Runtime Engineering
+site_description: Course 9 of the Bijux API Engineering program
+docs_dir: .
+site_dir: site
+theme:
+  name: material
+nav:
+  - Home: course-book/index.md
+  - Start here: course-book/start-here.md
+  - Study plan: course-book/study-plan.md
+  - Language strategy: course-book/language-strategy.md
+  - Evidence model: course-book/evidence-model.md
+  - Standards: course-book/standards.md
+  - Capstone: course-book/capstone.md
+  - Glossary: course-book/glossary.md
+  - Orientation: course-book/module-00-orientation/index.md
+  - 01. Graph Interface Placement and the Operation Lifecycle:
+      - Chapter: course-book/module-01-graph-interface-placement-and-operation-lifecycle/index.md
+      - Exercises: course-book/module-01-graph-interface-placement-and-operation-lifecycle/exercises.md
+      - Worked answers: course-book/module-01-graph-interface-placement-and-operation-lifecycle/exercise-answers.md
+      - Lab: course-book/module-01-graph-interface-placement-and-operation-lifecycle/lab.md
+      - Checkpoint: course-book/module-01-graph-interface-placement-and-operation-lifecycle/checkpoint.md
+  - 02. Type System, Nullability, and Semantic Modeling:
+      - Chapter: course-book/module-02-type-system-nullability-and-semantic-modeling/index.md
+      - Exercises: course-book/module-02-type-system-nullability-and-semantic-modeling/exercises.md
+      - Worked answers: course-book/module-02-type-system-nullability-and-semantic-modeling/exercise-answers.md
+      - Lab: course-book/module-02-type-system-nullability-and-semantic-modeling/lab.md
+      - Checkpoint: course-book/module-02-type-system-nullability-and-semantic-modeling/checkpoint.md
+  - 03. Resolver Architecture, Batching, and Source Ownership:
+      - Chapter: course-book/module-03-resolver-architecture-batching-and-source-ownership/index.md
+      - Exercises: course-book/module-03-resolver-architecture-batching-and-source-ownership/exercises.md
+      - Worked answers: course-book/module-03-resolver-architecture-batching-and-source-ownership/exercise-answers.md
+      - Lab: course-book/module-03-resolver-architecture-batching-and-source-ownership/lab.md
+      - Checkpoint: course-book/module-03-resolver-architecture-batching-and-source-ownership/checkpoint.md
+  - 04. Queries, Identifiers, Connections, and Pagination:
+      - Chapter: course-book/module-04-queries-identifiers-connections-and-pagination/index.md
+      - Exercises: course-book/module-04-queries-identifiers-connections-and-pagination/exercises.md
+      - Worked answers: course-book/module-04-queries-identifiers-connections-and-pagination/exercise-answers.md
+      - Lab: course-book/module-04-queries-identifiers-connections-and-pagination/lab.md
+      - Checkpoint: course-book/module-04-queries-identifiers-connections-and-pagination/checkpoint.md
+  - 05. Mutations, Idempotency, Concurrency, and Domain Results:
+      - Chapter: course-book/module-05-mutations-idempotency-concurrency-and-domain-results/index.md
+      - Exercises: course-book/module-05-mutations-idempotency-concurrency-and-domain-results/exercises.md
+      - Worked answers: course-book/module-05-mutations-idempotency-concurrency-and-domain-results/exercise-answers.md
+      - Lab: course-book/module-05-mutations-idempotency-concurrency-and-domain-results/lab.md
+      - Checkpoint: course-book/module-05-mutations-idempotency-concurrency-and-domain-results/checkpoint.md
+  - 06. Authorization, Tenancy, and Schema Exposure:
+      - Chapter: course-book/module-06-authorization-tenancy-and-schema-exposure/index.md
+      - Exercises: course-book/module-06-authorization-tenancy-and-schema-exposure/exercises.md
+      - Worked answers: course-book/module-06-authorization-tenancy-and-schema-exposure/exercise-answers.md
+      - Lab: course-book/module-06-authorization-tenancy-and-schema-exposure/lab.md
+      - Checkpoint: course-book/module-06-authorization-tenancy-and-schema-exposure/checkpoint.md
+  - 07. Demand Control, Persisted Operations, and Caching:
+      - Chapter: course-book/module-07-demand-control-persisted-operations-and-caching/index.md
+      - Exercises: course-book/module-07-demand-control-persisted-operations-and-caching/exercises.md
+      - Worked answers: course-book/module-07-demand-control-persisted-operations-and-caching/exercise-answers.md
+      - Lab: course-book/module-07-demand-control-persisted-operations-and-caching/lab.md
+      - Checkpoint: course-book/module-07-demand-control-persisted-operations-and-caching/checkpoint.md
+  - 08. Errors, Partial Data, Consistency, and Observability:
+      - Chapter: course-book/module-08-errors-partial-data-consistency-and-observability/index.md
+      - Exercises: course-book/module-08-errors-partial-data-consistency-and-observability/exercises.md
+      - Worked answers: course-book/module-08-errors-partial-data-consistency-and-observability/exercise-answers.md
+      - Lab: course-book/module-08-errors-partial-data-consistency-and-observability/lab.md
+      - Checkpoint: course-book/module-08-errors-partial-data-consistency-and-observability/checkpoint.md
+  - 09. Subscriptions, Resume, and Incremental Delivery:
+      - Chapter: course-book/module-09-subscriptions-resume-and-incremental-delivery/index.md
+      - Exercises: course-book/module-09-subscriptions-resume-and-incremental-delivery/exercises.md
+      - Worked answers: course-book/module-09-subscriptions-resume-and-incremental-delivery/exercise-answers.md
+      - Lab: course-book/module-09-subscriptions-resume-and-incremental-delivery/lab.md
+      - Checkpoint: course-book/module-09-subscriptions-resume-and-incremental-delivery/checkpoint.md
+  - 10. Schema Evolution, Federation, Governance, and Final Defense:
+      - Chapter: course-book/module-10-schema-evolution-federation-governance-and-final-defense/index.md
+      - Exercises: course-book/module-10-schema-evolution-federation-governance-and-final-defense/exercises.md
+      - Worked answers: course-book/module-10-schema-evolution-federation-governance-and-final-defense/exercise-answers.md
+      - Lab: course-book/module-10-schema-evolution-federation-governance-and-final-defense/lab.md
+      - Checkpoint: course-book/module-10-schema-evolution-federation-governance-and-final-defense/checkpoint.md

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bijux.dev/events/analysis-run-started.v1",
+  "title": "Analysis run started data",
+  "type": "object",
+  "properties": {
+    "runId": {
+      "type": "string"
+    },
+    "workerId": {
+      "type": "string"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "runId",
+    "workerId",
+    "attempt",
+    "startedAt"
+  ],
+  "additionalProperties": false
+}

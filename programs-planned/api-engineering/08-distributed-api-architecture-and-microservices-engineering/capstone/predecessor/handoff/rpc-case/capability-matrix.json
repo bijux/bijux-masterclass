@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "capabilities": [
+    {
+      "name": "python-live-grpc",
+      "required": "grpcio",
+      "build_environment": "executed"
+    },
+    {
+      "name": "python-protoc-generation",
+      "required": "grpcio-tools/protoc",
+      "build_environment": "not-executed"
+    },
+    {
+      "name": "typescript-semantic-track",
+      "required": "tsc/node",
+      "build_environment": "executed"
+    },
+    {
+      "name": "typescript-grpc-js-network",
+      "required": "@grpc/grpc-js and @grpc/proto-loader",
+      "build_environment": "not-executed"
+    },
+    {
+      "name": "buf-lint-breaking",
+      "required": "buf",
+      "build_environment": "not-executed"
+    },
+    {
+      "name": "grpcurl-reflection",
+      "required": "grpcurl",
+      "build_environment": "not-executed"
+    },
+    {
+      "name": "live-mtls",
+      "required": "certificate toolchain",
+      "build_environment": "not-executed"
+    },
+    {
+      "name": "postgresql-concurrency",
+      "required": "PostgreSQL",
+      "build_environment": "not-executed"
+    }
+  ]
+}

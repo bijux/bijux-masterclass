@@ -1,0 +1,6 @@
+{"apiRef": "api:default/analysis-http", "at": "2026-08-01T09:00:00Z", "consumerId": "consumer-lab-cli", "event": "credential_issued", "version": "1.2.0"}
+{"apiRef": "api:default/analysis-http", "at": "2026-08-01T09:04:00Z", "consumerId": "consumer-lab-cli", "event": "first_success", "version": "1.2.0"}
+{"apiRef": "api:default/analysis-graph", "at": "2026-08-02T10:00:00Z", "consumerId": "consumer-web-console", "event": "active_use", "version": "1.0.0"}
+{"apiRef": "api:default/analysis-http", "at": "2026-08-03T11:00:00Z", "consumerId": "consumer-legacy-cli", "event": "active_use", "version": "1.1.0"}
+{"apiRef": "api:default/analysis-events", "at": "2026-08-04T12:00:00Z", "consumerId": "consumer-audit-projection", "event": "active_use", "version": "1.0.0"}
+{"apiRef": "api:default/analysis-rpc", "at": "2026-08-05T13:00:00Z", "consumerId": "consumer-worker-plane", "event": "active_use", "version": "1.0.0"}

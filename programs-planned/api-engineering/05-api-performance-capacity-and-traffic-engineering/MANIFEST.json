@@ -1,0 +1,1597 @@
+{
+  "archiveRoot": "programs/api-engineering/05-api-performance-capacity-and-traffic-engineering",
+  "course": "api-performance-capacity-and-traffic-engineering",
+  "files": [
+    {
+      "mode": "0644",
+      "path": "Makefile",
+      "sha256": "561ca579e5cb0bc872c85cd4f8dd7fb63976d4e5d9c1921c0de5524c046ecb2d",
+      "size": 3422
+    },
+    {
+      "mode": "0644",
+      "path": "README.md",
+      "sha256": "2ba9dc4d12b03f12b116131f7cbfb8dac27452a13eb393c84c3c4314732632f4",
+      "size": 2759
+    },
+    {
+      "mode": "0644",
+      "path": "assessment/README.md",
+      "sha256": "5e2027e1ef66df28674def61bd09ca097d24392305ef4c2841554546f86c473a",
+      "size": 579
+    },
+    {
+      "mode": "0644",
+      "path": "assessment/completion-rubric.md",
+      "sha256": "e828cd4cbd23c4e5fe51d23c2b2cd26d80ebe26f7ba4aae4b5686eee8bbb21cc",
+      "size": 1322
+    },
+    {
+      "mode": "0644",
+      "path": "assessment/final-defense.md",
+      "sha256": "c05d74500e509515b2ac9dde435d345f1e0c7d1de01c18b95cdeb2a703983fc4",
+      "size": 775
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/SOURCE-MAP.md",
+      "sha256": "1beb9fea5954d93c8fc4170b1e09acde0f2cba7ddbf11e92daeba7bc5f3976d8",
+      "size": 1223
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/benchmarks/README.md",
+      "sha256": "42951b9789fc6964111bdf09ebecb02879ebb468222681ea684d50350ac530c6",
+      "size": 786
+    },
+    {
+      "mode": "0755",
+      "path": "capstone/benchmarks/harness/lab_server.py",
+      "sha256": "c3912ed979157e854b6d04ef154f183b64cd7b105b916ba81ac40673918d3f09",
+      "size": 5536
+    },
+    {
+      "mode": "0755",
+      "path": "capstone/benchmarks/harness/local_benchmark.py",
+      "sha256": "df61824baa99a11aa3fd51b87eb018e48d775e5db031b2807e56224e32b20964",
+      "size": 5140
+    },
+    {
+      "mode": "0755",
+      "path": "capstone/benchmarks/harness/run_tour.py",
+      "sha256": "dda18d70f2bea36c8984ed24d3e1c51789eba38c03de8fa132700f28acd58448",
+      "size": 2953
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/benchmarks/k6/mixed-platform.js",
+      "sha256": "df30d4a89f81c1d59ff476c1b3330e12d8512af77adb22db2245fededad6262e",
+      "size": 1553
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/benchmarks/k6/run-list-open.js",
+      "sha256": "160591b4e942eece6244b33294c4c2b95c9b74759f49b69a3c16b332866765a3",
+      "size": 971
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/benchmarks/locust/locustfile.py",
+      "sha256": "092005bb7193f5e50f4f7ef0a60ee4530deec9b730f4e7ef354503f8d4e96d09",
+      "size": 1467
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/benchmarks/profiles/README.md",
+      "sha256": "552c74a6e0e8bdd99ba5ae40e898a5712dca8d206957cc3f9af094bdbe8ed1f2",
+      "size": 245
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/benchmarks/profiles/interactive-closed.yaml",
+      "sha256": "e9a4b7d5d8bdd0ea5be26eda6a2bbb41a0fef23b5bec3b3f2e9825de1e76b4ed",
+      "size": 337
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/benchmarks/profiles/run-list-open.yaml",
+      "sha256": "ecf7912ae833e2c6d5a08d20bb0e1ccc2ec5f97587ce74d6f9410071f7e1d13f",
+      "size": 336
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/benchmarks/profiles/submission-open.yaml",
+      "sha256": "f65bd5b5ef82acc08646d14429e3ac378c3542fa483ed1d93e4bb17bc8fc2990",
+      "size": 359
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/caching/README.md",
+      "sha256": "379f715cc04bc3b7297b10fbfffde2ec874895c9bd621570ce39a2839e5db413",
+      "size": 636
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/capacity/README.md",
+      "sha256": "f44de116a5e686a16d65e8840ddc4426f1699a89af91027b607f97ef7854301d",
+      "size": 358
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/capacity/examples/medium-growth.json",
+      "sha256": "c261d528fb9fd55501a81df54e58d43d035c12fb08726dbc81f51979e5633d66",
+      "size": 1234
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/README.md",
+      "sha256": "0a874911ced417a0c82a5475e4c98e9a2de85f1c827f0b979d03f904e8ecf1e0",
+      "size": 778
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/plans/README.md",
+      "sha256": "5114a5a641b88d39874dc9be4c8a559bd55c3c4190a97121ce6d2536439b9fbb",
+      "size": 666
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/plans/job-claim-after.json",
+      "sha256": "d460e8772f165af800f1e0084ccc6f306a71f7308a137823375c5a1ea0c3702e",
+      "size": 598
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/plans/job-claim-before.json",
+      "sha256": "aa2489e49265fca3bf1020a99f966023dc9c9dc8252ab198ccc9e6ec30985027",
+      "size": 923
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/plans/run-list-after.json",
+      "sha256": "b19731deded2f2966deb68d3eafebefc296c9ecba6490a0617736031c6c176be",
+      "size": 627
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/plans/run-list-before.json",
+      "sha256": "02746cfafa6067e5104a67e614e54a5cd16ec07f52676e974340417a8f3ff26f",
+      "size": 951
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/queries/claim_jobs.sql",
+      "sha256": "799a1e7da1359ff71ae63b415caebec6f502b764197110e6ff022a021c1f726e",
+      "size": 615
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/database/queries/list_runs.sql",
+      "sha256": "9c5cb38e15ba4e99da800c0dc5353fa04a8a2cb474abbdaa6d0a221e38074e18",
+      "size": 492
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/final-review/README.md",
+      "sha256": "e2a7f41a259b90419f169604dc47a57fc2c52784c964121df9102e3442472382",
+      "size": 775
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/final-review/scenario.json",
+      "sha256": "182f3053e3707ffa6d4e75251d7493dee2595b6989aa8c72fdcea3061c3eb5d9",
+      "size": 912
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/MANIFEST.json",
+      "sha256": "75a8f852298a2693ec1547dd0489bec6885ab8bbc5c280249f76e5ad9f657f1a",
+      "size": 1396
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/MANIFEST.sha256",
+      "sha256": "4b3f43d8723c6ba4c878d94a742204800286ba454cd6ce85c116bfe516e985ff",
+      "size": 80
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/README.md",
+      "sha256": "9590ab4bafa6ff0ce7489d8ea98cddae81c934fa862c1b537518f1f00b60deb9",
+      "size": 525
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/performance/concurrency-budget.yaml",
+      "sha256": "6fe7910dbbc02023c016013fc455d898cb0fa2f759bb7804b8f87f79a058d840",
+      "size": 706
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/performance/performance-profile.yaml",
+      "sha256": "fceafe0bfd68bc55f1c2c549cb46301feb27bfcc9e3768c604e440484dabdfc2",
+      "size": 1344
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/performance/traffic-policy.yaml",
+      "sha256": "930d6a9f42f879f47389e864949dd148ba5174c06a5167f5d8e46a1dac62396d",
+      "size": 773
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/performance/workload-catalog.yaml",
+      "sha256": "5723a1693f7afef29df016a7dceabb3aad5b4075238ae3942820ae50a82d5df7",
+      "size": 2420
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/handoff/releases/performance-1.0.json",
+      "sha256": "6680784641df7d58762ad55a6a5c7afe652c2911c200c9b2ad8b244435c4563f",
+      "size": 241
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/performance-case/cache-catalog.yaml",
+      "sha256": "06c4a08f0930d030fedbe3abc9a3baa2f5275830ae4c60a2f455e6ccfe5147ff",
+      "size": 1135
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/performance-case/capacity-scenarios.yaml",
+      "sha256": "40931aba50a578cdd21f097936749975caad23d9a089c9d62ae95f82a64f91b3",
+      "size": 1208
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/performance-case/concurrency-budget.yaml",
+      "sha256": "6fe7910dbbc02023c016013fc455d898cb0fa2f759bb7804b8f87f79a058d840",
+      "size": 706
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/performance-case/environment-schema.json",
+      "sha256": "ba865c322e4803df412328d3cf38a4c27304aebae86277133ae7861eac93b052",
+      "size": 1219
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/performance-case/performance-profile.yaml",
+      "sha256": "fceafe0bfd68bc55f1c2c549cb46301feb27bfcc9e3768c604e440484dabdfc2",
+      "size": 1344
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/performance-case/traffic-policy.yaml",
+      "sha256": "930d6a9f42f879f47389e864949dd148ba5174c06a5167f5d8e46a1dac62396d",
+      "size": 773
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/performance-case/workload-catalog.yaml",
+      "sha256": "5723a1693f7afef29df016a7dceabb3aad5b4075238ae3942820ae50a82d5df7",
+      "size": 2420
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-01-drop-missing-outcomes/README.md",
+      "sha256": "48fe966223a4d4c91d51a61b62cdeb6baab6683e45bb3cfe382c113da3ddeb57",
+      "size": 440
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-01-drop-missing-outcomes/defect.json",
+      "sha256": "f7d4774b28dcf0daae6b4811b67f00e4032759be702ca3259bf5fc52d8400380",
+      "size": 201
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-02-closed-model-for-external-arrivals/README.md",
+      "sha256": "204087e7ba4419fd8c18a2b3715b76790dbcaf476da013fdb7466138834565b1",
+      "size": 487
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-02-closed-model-for-external-arrivals/defect.json",
+      "sha256": "31c75227c9e8917b0274dc5edd3c0aa8e84999b5aafe8588648c511f236683ac",
+      "size": 248
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-03-compare-different-environments/README.md",
+      "sha256": "ef3fbd735adbf74d327db0f9a516e000b6cd3e07d43d4242784200fed223f49c",
+      "size": 469
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-03-compare-different-environments/defect.json",
+      "sha256": "9788f6553ad2e2f77bf7cdea2f95136de7248e758419726383e9e1e556d70c53",
+      "size": 230
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-04-remove-authorization-filter/README.md",
+      "sha256": "fd5994902e7d5a95c3304e5b885375c22f9c58cb12f0fe003e8e55c6bc1bf8c2",
+      "size": 454
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-04-remove-authorization-filter/defect.json",
+      "sha256": "596bb2f0bc085737da687ce310b01df5a83a2693b675941662197efc89e719c9",
+      "size": 215
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-05-unbounded-admission-wait/README.md",
+      "sha256": "f429f767012444400a1129778e952139b5d71c5e9f1ab6d5e0d64182dd4e8b95",
+      "size": 452
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-05-unbounded-admission-wait/defect.json",
+      "sha256": "6cf8cd0c9e51f2a3d5b2b0363843de4cdf079f1435240a39a9a70fa8c62f5605",
+      "size": 213
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-06-cache-without-principal/README.md",
+      "sha256": "bf394c61248b8d74ae170c6111f520a484a55cf8f87e792cde8f13c1cef33ca2",
+      "size": 445
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-06-cache-without-principal/defect.json",
+      "sha256": "26e7077f35b2f86427714e1171e4924c533f18b4ea52fda41e9b1607b7b63026",
+      "size": 206
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-07-global-rate-limit-only/README.md",
+      "sha256": "07e4b80532959fcba2999469efa723c0ad192ecc71aba951a1e220da59abfc4b",
+      "size": 431
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-07-global-rate-limit-only/defect.json",
+      "sha256": "af706fc305d110aafadf89cd2a26175fd89217000a90c449b1fa539939970ba2",
+      "size": 192
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-08-planner-cost-release-gate/README.md",
+      "sha256": "9e4445a11ceba6a574dd66d2f5c00a9fab1325f9dcf826f1f3dea826ad34efb7",
+      "size": 458
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-08-planner-cost-release-gate/defect.json",
+      "sha256": "bca394a17abedd2293ec6d3f4655217133bca56e75a0a7907faf8de936632837",
+      "size": 219
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-09-rewrite-baseline-on-failure/README.md",
+      "sha256": "8e352dde3a9554a44a7fb1237f112b7d2b5e29d5358b84328c556e19c954cc5f",
+      "size": 449
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-09-rewrite-baseline-on-failure/defect.json",
+      "sha256": "11f71365226d07246c8a30347a06de5540d157b00a2cdcd077d39149f0d63617",
+      "size": 210
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-10-optimize-by-disabling-telemetry/README.md",
+      "sha256": "01e1307339feb72559090376a6a043a6829b50dfa92c2ba73dd6b8d100e729bc",
+      "size": 469
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/planted-defects/PERF-10-optimize-by-disabling-telemetry/defect.json",
+      "sha256": "b53b2de4cdcc17bcefa7378beceae8b7712551541a010a0d756788161820841d",
+      "size": 230
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/MANIFEST.json",
+      "sha256": "6dda8df0108d2265e01aa6f45c19889cf1e6f36f502247a2b1cc2feb3fef9938",
+      "size": 5101
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/MANIFEST.sha256",
+      "sha256": "b5965a105c75e2f246d06424d9ddeb90ddb04ad120d500cb7ab50e290b10d29d",
+      "size": 80
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/README.md",
+      "sha256": "aa2e01a58567db1fd1c2a74201bb73b3785bd6bbd164affc1a1a3e28b59c9679",
+      "size": 845
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/contract/openapi-api-1.2.bundle.yaml",
+      "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+      "size": 355600
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/releases/reliability-1.0.yaml",
+      "sha256": "67ca81e3d7d6def3fc58532fc59c1d2598455dcb54534dd5608087fff7b5aadc",
+      "size": 273
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/reliability/alert-catalog.yaml",
+      "sha256": "95c583133365d3a9d9fed980a7fede206afe858c0b4199eb0f5fd9e8b554ff68",
+      "size": 786
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/reliability/dependency-policies.yaml",
+      "sha256": "0a36214548c705cb3e7aeef2b1e007a939f926e9cda1f4d5ed43bc128865215f",
+      "size": 919
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/reliability/journeys.yaml",
+      "sha256": "85227fb850b86b07095bdbfd3ee532cb6d25d620dd6e4c0f2ff94d5dee3f99b7",
+      "size": 1663
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/reliability/reliability-profile.yaml",
+      "sha256": "dd03dbba017a7259e80275bb851fd56e99fdb1864800814de9a73a309f662ad6",
+      "size": 264
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/reliability/residual-risks.yaml",
+      "sha256": "99e232ea8478b59ccdfeb994296713b1d6805bbc9aed8c3b9cb7358359bc7654",
+      "size": 837
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/reliability/slo-catalog.yaml",
+      "sha256": "6c6facddbbbecbbb9458183c925ecda31c175594c2a7b5cbef0508507867f0bc",
+      "size": 1184
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/reliability/telemetry-schema.yaml",
+      "sha256": "e59129a567d184aad6c549f5c00bef94f78bd23db434374d8da8f3477cd2e206",
+      "size": 369
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/reliability/trace-topology.yaml",
+      "sha256": "f411a4c46208cd1195be73c8d82a7930458f4994bab362eab58ab119f5f96ef2",
+      "size": 761
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/runbooks/RB-API-ERROR-BUDGET.yaml",
+      "sha256": "50bc192b3d24c7d86af854f8760b9ee97c06120354a2de0b3f58947bacda54f2",
+      "size": 1814
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/runbooks/RB-STATE-RECONCILIATION.yaml",
+      "sha256": "f55b7f09cbcc90127309662c8bd792f667451dd6731ec1862abc042c59ba63d1",
+      "size": 1669
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/runbooks/RB-TELEMETRY-PIPELINE.yaml",
+      "sha256": "5c13ee4c00fabf35615c112aa9be0718e3bc809793eeee6740a33a1f03ff7967",
+      "size": 1744
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/runbooks/RB-WORKER-BACKLOG.yaml",
+      "sha256": "5698ee94fc3497927dddf3ac6a864132116e6379ee44f38affbed101eb6b16e3",
+      "size": 1673
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/security/security-profile.yaml",
+      "sha256": "f807eb05a16b47a29df44e56a19906066c25694684eca811d4437e646f0439fa",
+      "size": 741
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/alerts.json",
+      "sha256": "4a15d9a5a84373b75da7dcb11b275290065b7fc49bf099e5486dbfb92bc89337",
+      "size": 896
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/deadlines.json",
+      "sha256": "68fb7923d7e1263a09702bd6176b063732129f5bce857f8e70d2c1ceb8a9364a",
+      "size": 592
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/faults.json",
+      "sha256": "faaa5f611567f28d505623f8f50aaeeab0e745456a1cf3fdde9f481a7ca944e4",
+      "size": 482
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/health.json",
+      "sha256": "694450fdb44e4af73ce4355f2773176ed47084c4f32fbbf41627cae297127393",
+      "size": 1619
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/http-outcomes.json",
+      "sha256": "80c62bfb1de3360916100d9785fce53c474a3f7ae6d4fefa1e9efe87a8442e78",
+      "size": 1282
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/reconciliation.json",
+      "sha256": "33117dc0659d31ef943d3fbabbf1a513323e5b554f2e95a3a5d2de422cc7d521",
+      "size": 3687
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/retries.json",
+      "sha256": "fd167f14f1081dcf2b7c637c41633f54421aa76da3b64cd60734c3c96404f8c9",
+      "size": 2706
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/slo.json",
+      "sha256": "84b44c8bf6945fb5b70753742ac093430b646f393debf36696ca3fe004fcaa7e",
+      "size": 547
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/telemetry.json",
+      "sha256": "25009b30d8de2ba30e38116cf67377973dcfd291e6edba95bafebd44195a3315",
+      "size": 1194
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/predecessor/handoff/vectors/trace-context.json",
+      "sha256": "8189cbf693a1ef80c1b9a53aec0105770d03044fa9e65a555a3a22a2f3747257",
+      "size": 1112
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/releases/README.md",
+      "sha256": "277a123f2cc36708bd4948c5a4b78ae50f6fc41f3d1533d8fa86b6f715b19ec4",
+      "size": 574
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/releases/accepted-candidate/envelope.json",
+      "sha256": "44b8b476a0d75762b2c728e3a6227a8d768b2e3f279c787118f34d353212c4d6",
+      "size": 649
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/releases/baseline/envelope.json",
+      "sha256": "7e3434ddb7b7315ca656a8da7c9c5e7bd16802f684dbbcfe42926ac2cb855d41",
+      "size": 649
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/releases/inconclusive-environment-mismatch/envelope.json",
+      "sha256": "c9ee951dfed7eeda93b2626f742831df0a8bf95f0b1b5eadece69e4554ade268",
+      "size": 649
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/releases/performance-policy.json",
+      "sha256": "5fe66a76d5baf10aaa83b746470bf77609d3e48f4f1c8b9f7fc690a29cf9a4da",
+      "size": 808
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/releases/rejected-faster-but-wrong/envelope.json",
+      "sha256": "5b874888130dd6646e22244acb40e0a1ef47df505643ce259ac1ca049c1b1a13",
+      "size": 651
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/releases/rejected-regression/envelope.json",
+      "sha256": "b48949bcb7a9eb6b60d4e597627ea568c83570077979b3d19877500951b6a6b7",
+      "size": 648
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/cache.json",
+      "sha256": "780a07e527ec31ed40642fb147a2102aabddbd63600b7c4bd6dec7eb775066c1",
+      "size": 1104
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/capacity.json",
+      "sha256": "64fdae029942925d8b248e4aff661987d2e873d60c892bd1b4d235d871cc4626",
+      "size": 734
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/http.json",
+      "sha256": "c338563c784a81f57b41c6627ac8407ce7fd9e7b35456836e7b7ff68aa099d21",
+      "size": 1852
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/identity.json",
+      "sha256": "3b768e80ecdd0b8d8e6ad18c2a01b29f3ed6023404013d8a8f1132911feffda3",
+      "size": 904
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/query-plans.json",
+      "sha256": "f3675235f6dd469598a7fe446497df4add617a1e2062bcde204411c31c1cca4e",
+      "size": 842
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/queueing.json",
+      "sha256": "e5cf966678593aed9a921dfebb3bda40bb8003a740cce93f2f65c478c3817326",
+      "size": 684
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/release.json",
+      "sha256": "f70fe69607fcc43024df16b6d0c0882c0903a238fff1f09051d2d92f69bcdbe2",
+      "size": 6457
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/statistics.json",
+      "sha256": "2489605a5f8d768a23d5d07a22a890ee2628706f96780991e44323ad8d989c83",
+      "size": 1091
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/traffic.json",
+      "sha256": "9b2c26b20b9d9b506c29694e23810cc95ce2ad31aee1e213e0c49a0a0d91f86a",
+      "size": 712
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/shared/vectors/workloads.json",
+      "sha256": "783cf2356ab0151c62ea206751c2ffa499233f738a99078e225d32f3130b3a3f",
+      "size": 345
+    },
+    {
+      "mode": "0755",
+      "path": "capstone/tests/postgres_plan_proof.py",
+      "sha256": "3a21b9ed110f16ec327552a273fa47078bf715205ab0dbc21a80c3435a5701f0",
+      "size": 1535
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/pyproject.toml",
+      "sha256": "589435fbc6ec00b34b8e96c03dff342d38479ca3fe38426d8eadb0ed9b010955",
+      "size": 608
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/__init__.py",
+      "sha256": "0a3a68f3ce9c0e204469b5b80d8f1f3c8e039b0b0983c603f183a9b205da52b2",
+      "size": 543
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/admission.py",
+      "sha256": "507a4550c8567e6804d2f3757bdcdc65fcb09bf8751d0f9b8513b593c4f1ea82",
+      "size": 5110
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/cache.py",
+      "sha256": "94a75faa3190224239f4c4e74dd44c73f719f78ba79e13bda3aa690176a6a289",
+      "size": 4537
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/capacity.py",
+      "sha256": "62c8c6b78c96235478f602ac28ba438bf47966c688854ed94fbf912a097be9bb",
+      "size": 5688
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/cost.py",
+      "sha256": "3f4f68d5d08d4915da79b90e53d9fdee40142b328b5f8dfb6c78f5324ca1d922",
+      "size": 819
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/db_budget.py",
+      "sha256": "da78d9951a0ef994850e59615c9dafcb1b36f4119983520d852ad79101a65d6f",
+      "size": 1344
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/fastapi_adapter.py",
+      "sha256": "ff6e99d616c70f0cf724e337243450aaf5bf1aace11e32baa24427fef35f88b9",
+      "size": 1680
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/http_efficiency.py",
+      "sha256": "e7e86ae78416e6e83efc0b326f19fa3144b0b01a56c521273213ad6029a43a15",
+      "size": 5557
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/identity.py",
+      "sha256": "c13dd1dcbea95a27c1bf20bcdd554153db0f546e732ab3218ea9e37d517ab11a",
+      "size": 1650
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/models.py",
+      "sha256": "e5bf7a23e2298b686d79d7027732b29b37a49597e63ecc65c5ad8bfa3a786259",
+      "size": 7030
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/profiling.py",
+      "sha256": "576e8c58ad3e74328c4b11a05a6b775f9b5a67b3c2fc23ee286369d58e0dea0f",
+      "size": 1331
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/query_plans.py",
+      "sha256": "775e0b61dbff8e1dd3a98dba90fad1df463186c5b546607cf0182d60cf6a5841",
+      "size": 3732
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/queueing.py",
+      "sha256": "6bd008f2fd24652dc2e3804ea5d4156915834cf3b5f20dede3cac65f33102450",
+      "size": 2395
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/regression.py",
+      "sha256": "35f6bdf70a55dbeaa8e77ff11e82c48da25d0c682c766998a462957dab6586a7",
+      "size": 2727
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/release.py",
+      "sha256": "3fe57b2560796899e7baa1f032e112cd3f88822aa4477d05318bf05bfd751fcf",
+      "size": 4478
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/runtime.py",
+      "sha256": "c36ddda161ec5f778370d381dfe0296260cdd0d36ecdae5374a84ed547d457e3",
+      "size": 1373
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/shedding.py",
+      "sha256": "45c90b439d0186ed0952b5d8680637bfa3456aed3840c0c237f940b658bac55f",
+      "size": 1821
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/singleflight.py",
+      "sha256": "312adb576632b70b668e9329963f8a73bccb13f15783d7d9518bd76173590e03",
+      "size": 2860
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/statistics.py",
+      "sha256": "72894ab75f014fd907bde7d3fbfc121342ebffb6b61a2c9f1c52898b452aed3c",
+      "size": 2689
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/streaming.py",
+      "sha256": "a3cd6ab60d4c7af695f25b69c4c82d644556cb846a3ec6054ef865a16527ba0a",
+      "size": 1321
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/traffic.py",
+      "sha256": "526bb1d4360b06571a50aec1f30e7121eecfea1469b2ef7034fd4e1655f68813",
+      "size": 5721
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/src/api_performance/workload.py",
+      "sha256": "f430d4ae3b420f1173192afd384fbc5ca8afa44f21deb0c6be7a864dca2faa3d",
+      "size": 2351
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/tests_performance/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size": 1
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/tests_performance/test_http_efficiency.py",
+      "sha256": "4436aaead9d4d4c66ce3d117079abb9a17d9acc4bd51fae59a21b2abf6cd3b5d",
+      "size": 4079
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/tests_performance/test_models_identity.py",
+      "sha256": "418e18f380113ef29170b1e6dd1fa980c062bc331be5ddc948a516542a89393a",
+      "size": 3728
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/tests_performance/test_query_runtime.py",
+      "sha256": "524613822631ffabf05f2337c8aa09c8babc03dcec071904faadd94c1f5933e8",
+      "size": 4050
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/tests_performance/test_queue_cache.py",
+      "sha256": "679d9efe4bdb68011fbfde3f5760f85d4ac03f7753c2413498ff489d57285ab6",
+      "size": 6370
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/tests_performance/test_statistics_workload.py",
+      "sha256": "16c5dd24d1c33bdf1bbd66822ab2512b926152b5c493ddf919e6875317223b5d",
+      "size": 2081
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/python-fastapi/tests_performance/test_traffic_capacity_release.py",
+      "sha256": "bf017c4db7f99e5e968c0c00e8a8761304455c218ed749a77449d54aa4694fc9",
+      "size": 8923
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/008_operational_reconciliation.sql",
+      "sha256": "32b106eaea54623b5abcb69700c1379dc3717191ef168a500b53ee32066aafda",
+      "size": 1071
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/migrations/009_performance_indexes.sql",
+      "sha256": "e76e27c12e00b6453e7039037d75316139ef566db932342cebfe944dfe1f855e",
+      "size": 1138
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/package.json",
+      "sha256": "45ed90378bdae8f4abff66fccb62b771e21c09dd309f3a20d7ac314dcd328c3a",
+      "size": 388
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/node-shim.d.ts",
+      "sha256": "6f2f526d0e34f9d4ee0de538d7d50c2de9c57b58cbb4dcdde59efdc9458c45b7",
+      "size": 358
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/admission.ts",
+      "sha256": "f373d595f62eafc368dfc7a930b690fc74cf2acc36a34da4d8fc84eb2b46c203",
+      "size": 3979
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/cache.ts",
+      "sha256": "7ef60db192a3e6a1ff80e925ef4f3ca4ea58079f9d5ab8cb3d259cddafce677a",
+      "size": 3473
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/capacity.ts",
+      "sha256": "655cc5906110d346a410fa3eabc0d78c6a748b410913e3a9e3fda21cb2a18ada",
+      "size": 4805
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/cost.ts",
+      "sha256": "dc2fc6fc02aac9d0632cb7d39dd169c02b69314d666650c4af01cb7aa0316f53",
+      "size": 632
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/decimal.ts",
+      "sha256": "caf72f7d3aba50b48120e355de18b38dc98e88acd1c8bba1b7540b050689bd9a",
+      "size": 3083
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/fastify-adapter.ts",
+      "sha256": "f2b416482a0af6527ec5a7a8f3821d72a30c76cbb2f79480d5f8cfc2ee12873d",
+      "size": 1132
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/http-efficiency.ts",
+      "sha256": "abdac1d8946e864a3d3b2374376027c1e53d8202a5941c389f1bb500d1209538",
+      "size": 4778
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/identity.ts",
+      "sha256": "4c6772c7e44ec4b0e2ea261b5ea11b611619af127a14b4bdea66a482d0e4dece",
+      "size": 1486
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/models.ts",
+      "sha256": "7de9ed8222916ff72c09426ceed2848088563ebe225e971626e5cae8663aa878",
+      "size": 3463
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/query-plans.ts",
+      "sha256": "824a4703a421449492798d205f48db04e11c87e2ad030bde5f5a5cf43f73fc0d",
+      "size": 3278
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/queueing.ts",
+      "sha256": "62274d91493f573e9de2274aa64b63e970da01b0f689109f32d78326831f85fa",
+      "size": 1315
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/regression.ts",
+      "sha256": "73078f0cd0101ed08d8af734729fe041c5054ecbecb23748de2ff97ee0cbe13d",
+      "size": 2454
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/release.ts",
+      "sha256": "badff7f358f0744e7848c96952abbe2ee8d53205d90df775e08573378a5f54ac",
+      "size": 2781
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/runtime.ts",
+      "sha256": "f4a64ada2f8672a61751c5fa31b39248f43f7890024943bfb08fd352ce0ddd78",
+      "size": 562
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/shedding.ts",
+      "sha256": "03ab5c8178f90f7222bb31047d04c6c515eebb48dc5ff242a64404be70bc6e3f",
+      "size": 1746
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/singleflight.ts",
+      "sha256": "1f5bdaf7bacc369704fa224221d970e748294eeb02571469b4f80f7cb8baaa60",
+      "size": 1935
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/statistics.ts",
+      "sha256": "2216792f3f05af3c439828ab6b877513fad8f7a7899af0e3d43da12ad1d0fcb2",
+      "size": 1416
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/traffic.ts",
+      "sha256": "3ce7edcecb974585c439342b23b29443cff2e264bfaf5e00cc858a9496503ee7",
+      "size": 4527
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/src/performance/workload.ts",
+      "sha256": "7411c38414004d5da630b08119eb370f2ce2b03015bae834fd4a65cc321f1b92",
+      "size": 1080
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/test-performance-core/admission-cache.test.mjs",
+      "sha256": "70b199c4559bb2d27131eb290aa83f30604d7c80ed71128636ed0c7440a32019",
+      "size": 3111
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/test-performance-core/http-query-runtime.test.mjs",
+      "sha256": "51628dd8147312d57acc267462044569bca2aa1ed3a077c70fbaa5c90a085610",
+      "size": 3280
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/test-performance-core/models-statistics.test.mjs",
+      "sha256": "d8a457686d91b029ec121a0301b13346b9d50e240bef8cf6f16eff43daa2116a",
+      "size": 2658
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/test-performance-core/traffic-capacity-release.test.mjs",
+      "sha256": "26684babc7e38985524f151226f863d03d8c8b85a1fe1b521f70d52a51628660",
+      "size": 6204
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/tracks/typescript-fastify/tsconfig.json",
+      "sha256": "02bb27daa9b4375a6522b0cfbb44dcde60ed383065bc3b28a07d2b30e260e816",
+      "size": 429
+    },
+    {
+      "mode": "0644",
+      "path": "capstone/traffic/README.md",
+      "sha256": "46b141f943a7da3b2ce4841c1e924c4f7a1c6032edbf2c1a955772848971589a",
+      "size": 608
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/capstone.md",
+      "sha256": "7493e9d0677345111fc00f177673b0e2b5c67e3191281e4bdac166e559e5d52e",
+      "size": 3288
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/glossary.md",
+      "sha256": "9c080b324e31f10c543a284679a1c0191e0c5a65eebfea345e4a0226a08910f5",
+      "size": 2680
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/index.md",
+      "sha256": "4fdcf744d171cf7d5fdfb4561bc5673572071c4c97a801a6bbfbf9c82f98f4b6",
+      "size": 6921
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-00-orientation/checkpoint.md",
+      "sha256": "3e5bd9793df275e9f1c3cdeed65f1bad75442fe4fd79010a976515a29785411c",
+      "size": 1215
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-00-orientation/index.md",
+      "sha256": "c004e9ef80cd14e55fc88d5af52559ada82280f28f13812ee24ed0e7ccd3c89d",
+      "size": 3694
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-00-orientation/lab.md",
+      "sha256": "e0384ce4db44b352cfb6f394abe75b7af89640c2308c1cf18d59ed6ffa411d5b",
+      "size": 2414
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-measurement-contract-and-critical-workloads/checkpoint.md",
+      "sha256": "1d701e89b5ed140e32ba4f44bb214fc1972b4396e7b9ac0b27033125dfa8bccd",
+      "size": 1687
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-measurement-contract-and-critical-workloads/exercise-answers.md",
+      "sha256": "5134a0f0d3000048c6d51a5881a8f84b9abd2826db3d77882af3003d5eaf777c",
+      "size": 5111
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-measurement-contract-and-critical-workloads/exercises.md",
+      "sha256": "5363ae91a8494d19b0489e2c2ea1e14bf0f36dec854cb03a0652b732f3965a58",
+      "size": 2343
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-measurement-contract-and-critical-workloads/index.md",
+      "sha256": "ee74a9d2c1a675861e2b162a50c1d5ed3b09dcf8d91b6d6d2a2971f78d98b55e",
+      "size": 16257
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-01-measurement-contract-and-critical-workloads/lab.md",
+      "sha256": "477e4b65dfee74f663128231fb727475f27be582e9f893acc0999575fe55bef4",
+      "size": 2956
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/checkpoint.md",
+      "sha256": "38579f3513ae3fb8d28e8c349e4986bdc96e960c8d6f17c426ff0fd58568e6a1",
+      "size": 1719
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/exercise-answers.md",
+      "sha256": "b0000ddc3a1685672481a059ed9c1ddd38ec40ec749f336d839f34338ae200d0",
+      "size": 3980
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/exercises.md",
+      "sha256": "e1b93fed8e8b7b2cbc788b1d81f1e6326f2269c8aaa0e5117e5036cad364fd88",
+      "size": 2427
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/index.md",
+      "sha256": "98162afbbd7ba4566b3232329400e00b6d8ddfed1bf55f55ef1183442a74b880",
+      "size": 14760
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-02-benchmark-design-and-statistical-interpretation/lab.md",
+      "sha256": "9ce38228dc6bcf68f993d277bb2b2d16e6ed609e91d95f7e1ab7565e69d8452b",
+      "size": 2805
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-http-efficiency-and-representation-cost/checkpoint.md",
+      "sha256": "67f8e3e7ab63dde893e8ab9ef72192a878d325177b9ff6c26e7162c49922168c",
+      "size": 1555
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-http-efficiency-and-representation-cost/exercise-answers.md",
+      "sha256": "272a29d654078747fbd0dac656c0a4ef3474d3b6dcce026ac0ea0579f3c9d2dd",
+      "size": 3632
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-http-efficiency-and-representation-cost/exercises.md",
+      "sha256": "de318ea242305155c6faecf966b8424dd8731993759e6446ac0f47537b7249d6",
+      "size": 2297
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-http-efficiency-and-representation-cost/index.md",
+      "sha256": "11da37db9880b154fb0c3b445a6917f552f70b9964d255be1e887d00f00fc928",
+      "size": 15456
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-03-http-efficiency-and-representation-cost/lab.md",
+      "sha256": "f9fd3f3b43557245dc6a7ae56f208d7cef4bff11d8cb78283422c554c39cccba",
+      "size": 2867
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-postgresql-query-and-persistence-performance/checkpoint.md",
+      "sha256": "2471e1190eeb1bb153c86ed47eee1dd89019c504b53f9f8df1c10cd4623efc4a",
+      "size": 1647
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-postgresql-query-and-persistence-performance/exercise-answers.md",
+      "sha256": "4da2d74c7535c3d155b66b2e0baed198d6189b433680e62a547170b23c512058",
+      "size": 3620
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-postgresql-query-and-persistence-performance/exercises.md",
+      "sha256": "cbcff310686713761209ff2bc0add2e3ba7d7f003c1188e251029bc2c1e56bbe",
+      "size": 2251
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-postgresql-query-and-persistence-performance/index.md",
+      "sha256": "a1975f2d74d4d89522495b5dd1dd7b91355b4750cb87511e592c1368d1003156",
+      "size": 16170
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-04-postgresql-query-and-persistence-performance/lab.md",
+      "sha256": "651e3cd2d1a9b86c1e09ab9969a685c1922c20d440a5f962b3d4e13a48ba9a33",
+      "size": 3084
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-runtime-profiling-and-allocation-control/checkpoint.md",
+      "sha256": "b387d1ac41da8c5201559453d473ca3fbd4dd2ea980e171246e60d690877e447",
+      "size": 1615
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-runtime-profiling-and-allocation-control/exercise-answers.md",
+      "sha256": "a116b15a82d8777665b1a03634e888362b918cdd93e150c304f8b7338c6f8201",
+      "size": 3553
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-runtime-profiling-and-allocation-control/exercises.md",
+      "sha256": "6d9006d8ea0ac016d206020cd2ad990b03f24c21a456250ae740f28416c1ce07",
+      "size": 2238
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-runtime-profiling-and-allocation-control/index.md",
+      "sha256": "39d1d70a6eddb05590458ec3c58b707fe5eef0f389b1f0d8b4cf323fe737ec98",
+      "size": 15698
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-05-runtime-profiling-and-allocation-control/lab.md",
+      "sha256": "76a829c78de81db64b40fbc92af84cf374989fade3ed0403d11a39fd4b6a0c55",
+      "size": 2869
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-queueing-concurrency-and-backpressure/checkpoint.md",
+      "sha256": "1672cb9d4e4c3d77a53d2209cbcab5980c2fc946c144baccdebb5b6e419a5a38",
+      "size": 1595
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-queueing-concurrency-and-backpressure/exercise-answers.md",
+      "sha256": "c79066df6e1df82c02d8e8acb444a9e5cb2805b2020197de3e71b2c737a15949",
+      "size": 3353
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-queueing-concurrency-and-backpressure/exercises.md",
+      "sha256": "465c124c9291ed611e6ef9c77f37a6b5935d74941386a9181cc50aad0c10c43d",
+      "size": 2360
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-queueing-concurrency-and-backpressure/index.md",
+      "sha256": "7b5c185a1afcc9ae98f4aa8b675929fefceb2afaf878d8fb7b76b816eec9fba3",
+      "size": 15357
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-06-queueing-concurrency-and-backpressure/lab.md",
+      "sha256": "2086816826f15dc8bd2c733c9da0e5df09d1438bd93b38b17eab8514ca56e5f9",
+      "size": 2721
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-07-caching-freshness-and-invalidation/checkpoint.md",
+      "sha256": "0457f4322b963e391552556f10d0b80ada74d5985cd122aa09c7ae1bdc0efd3c",
+      "size": 1644
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-07-caching-freshness-and-invalidation/exercise-answers.md",
+      "sha256": "247d05764fe786308ad603f08aa2e37131e213596777a519e9ae3c2e585ca0d7",
+      "size": 3354
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-07-caching-freshness-and-invalidation/exercises.md",
+      "sha256": "3d504a8c6ad221c6dccfac9ce362f489726a2361d7402630b43793393d8b9abf",
+      "size": 2179
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-07-caching-freshness-and-invalidation/index.md",
+      "sha256": "cd9a98cbf15fabfb7f332fc30910695db3d4074025007bd2dfb8541b743fb69a",
+      "size": 15445
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-07-caching-freshness-and-invalidation/lab.md",
+      "sha256": "0885059e3c0ff9c906468e09ac004b7a530e98f252ba8f8072e2a5a8eb426471",
+      "size": 2840
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/checkpoint.md",
+      "sha256": "8193a7f8d2b2516c52084bf9daf867c76c71c087e9521be698675ba7e961d259",
+      "size": 1609
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/exercise-answers.md",
+      "sha256": "5c69a67d1cdcbff83486072d70f5ede7577cec11aff3be6b5d93a47fe37e0a00",
+      "size": 3313
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/exercises.md",
+      "sha256": "d0dfb8f5f134a3f62ed14cec3a965dea943fe706be230fbfb0ebd8ab2b1c614d",
+      "size": 2116
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/index.md",
+      "sha256": "0ef4a5aa21003b19e3af6da801c667a0bd14c98e8e5578272c51d29c45969edf",
+      "size": 15313
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-08-traffic-shaping-quotas-and-load-shedding/lab.md",
+      "sha256": "cd2d787e74940c40de71e175eecd32596032f6dfcd42c907b2ea5b459842504d",
+      "size": 2845
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/checkpoint.md",
+      "sha256": "acec5777de838cbe494acb66670ac5dfdf75004d1357dc10bdad15db6504e1d3",
+      "size": 1626
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/exercise-answers.md",
+      "sha256": "b155581e133b99b3c8a81cadd66160cc6f95c9bc51d5f1165c57355bb0d01813",
+      "size": 3110
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/exercises.md",
+      "sha256": "e8dc50b328f294f93bca0f5358dab36fa69162367e24d84b636ad6dd83838fc5",
+      "size": 2161
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/index.md",
+      "sha256": "e9c3a64ddf79907231a987e8a23c7f17829dbe4d7d42fe1a86f5dfdfec18ea4d",
+      "size": 15966
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-09-capacity-modeling-and-scaling-decisions/lab.md",
+      "sha256": "81ba5e51f3460f1971cddbcd050f405cd2340bc3a92eeb9a4dd04769da7f7760",
+      "size": 3053
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-performance-regression-and-release-engineering/checkpoint.md",
+      "sha256": "7de2fdb1b71c19521f4e886039a6dbb0b8e3b61c0461facd8a1d70115ad4e3d2",
+      "size": 1695
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-performance-regression-and-release-engineering/exercise-answers.md",
+      "sha256": "2ab1ad1d5dc545599750784387880fd891f501f1a04c017fb8aa8db6f9d96956",
+      "size": 3614
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-performance-regression-and-release-engineering/exercises.md",
+      "sha256": "50ebd4b467ccc86560ff02335db2e6404cdf0b468d50f032bf792596b49632af",
+      "size": 2161
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-performance-regression-and-release-engineering/index.md",
+      "sha256": "abcde4d022c92402f6c500e467b25df843e0907b5e909aaabba8e97c69979862",
+      "size": 16066
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/module-10-performance-regression-and-release-engineering/lab.md",
+      "sha256": "f80bdcd536ca7347282e02867e7d3726990b0170e8aff3275efa9e84ff1ee239",
+      "size": 3177
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/standards.md",
+      "sha256": "a775376ee08b73af6a23351c44adbf761cfc86d0012b25db8052a0da286a6bcb",
+      "size": 2172
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/start-here.md",
+      "sha256": "abcd62bf5453732f222f1afcca7a3ef20c6fc95ab1f2e3e10d6d0f39fc4129cd",
+      "size": 2092
+    },
+    {
+      "mode": "0644",
+      "path": "course-book/study-plan.md",
+      "sha256": "80d1bc979c2319dfac3a1db258804f093b3c5a38c7ef5e4b1ca371e0db6ba34e",
+      "size": 4964
+    },
+    {
+      "mode": "0644",
+      "path": "course.json",
+      "sha256": "972dc26aaea4e00260f4e06a118d30358e2aaa8ade482e8944df891cc009f02f",
+      "size": 1650
+    },
+    {
+      "mode": "0644",
+      "path": "instructor/README.md",
+      "sha256": "0e2e1d9541168b9d549f826885cc20c341cccfb1f66a6cfbb9249aa744c6e1e7",
+      "size": 684
+    },
+    {
+      "mode": "0644",
+      "path": "instructor/facilitation.md",
+      "sha256": "c8e19d8117885e8098520bb04b83ea091ac4b90d3766096205a32c381b668489",
+      "size": 731
+    },
+    {
+      "mode": "0644",
+      "path": "instructor/lab-oracles.md",
+      "sha256": "f46fcb312e5e0c0d0ad74e733a53591c8759b4bb34fd14cb2fdc66105913c3af",
+      "size": 892
+    },
+    {
+      "mode": "0644",
+      "path": "mkdocs.yml",
+      "sha256": "b8d8d62ecd7dc43627316e467b644cacda3d95d5919a32fbf841e50b44e29205",
+      "size": 5183
+    },
+    {
+      "mode": "0644",
+      "path": "requirements-docs.txt",
+      "sha256": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
+      "size": 38
+    },
+    {
+      "mode": "0755",
+      "path": "scripts/build_manifest.py",
+      "sha256": "a99e3ac8b17f6caa7cf840a44dbcffd5019b6555ae5476fc73534e15b20c4104",
+      "size": 202
+    },
+    {
+      "mode": "0755",
+      "path": "scripts/course_tool.py",
+      "sha256": "8ef909da2b2d9bdfe083b86fe0431d77664929837b8e51e3c7a92b4981907b78",
+      "size": 25421
+    },
+    {
+      "mode": "0644",
+      "path": "tool-versions.json",
+      "sha256": "12ed72d2447820b3f6b54ed8415da0fc3888ecb793bc8deeffa10c53ba6e8533",
+      "size": 610
+    }
+  ],
+  "schema": "bijux-course-manifest-1"
+}

@@ -1,0 +1,32 @@
+version: '1.0'
+sagas:
+- name: artifact-publication-and-run-completion
+  owner: analysis-control-process-manager
+  steps:
+  - n: 1
+    command: MintArtifactUploadCapability
+    target: analysis-control
+    idempotency: run-attempt
+  - n: 2
+    command: StoreArtifact
+    target: artifact-service
+    idempotency: run-attempt-checksum
+    compensation: ExpireOrphanArtifact
+  - n: 3
+    event: ArtifactStored
+    target: analysis-control
+    idempotency: artifact-version
+  - n: 4
+    command: CompleteRun
+    target: analysis-control
+    idempotency: run-attempt
+    guard: current lease generation
+  - n: 5
+    event: AnalysisRunCompleted
+    target: notification-service
+    idempotency: event-id
+  timeout_seconds: 120
+  terminal_states:
+  - completed
+  - compensated
+  - manual-review

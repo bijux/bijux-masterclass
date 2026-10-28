@@ -1,0 +1,5 @@
+{
+  "defect": "An API retires while a critical consumer remains active",
+  "expectedRejectingProof": "lifecycle-proof",
+  "id": "PLAT-05-silent-retirement"
+}

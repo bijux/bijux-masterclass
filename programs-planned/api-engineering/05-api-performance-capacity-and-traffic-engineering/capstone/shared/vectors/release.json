@@ -1,0 +1,270 @@
+{
+  "profile": "1.0",
+  "policy": {
+    "metrics": [
+      {
+        "name": "p95Ms",
+        "direction": "lower",
+        "absoluteRegression": "5",
+        "relativeRegression": "0.05",
+        "hardMaximum": "200"
+      },
+      {
+        "name": "throughputPerSecond",
+        "direction": "higher",
+        "absoluteRegression": "5",
+        "relativeRegression": "0.03",
+        "hardMinimum": "50"
+      },
+      {
+        "name": "peakMemoryBytes",
+        "direction": "lower",
+        "absoluteRegression": "1000000",
+        "relativeRegression": "0.05",
+        "hardMaximum": "536870912"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "accepted",
+      "baseline": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "100",
+          "throughputPerSecond": "100",
+          "peakMemoryBytes": "100000000"
+        }
+      },
+      "candidate": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "90",
+          "throughputPerSecond": "110",
+          "peakMemoryBytes": "95000000"
+        }
+      },
+      "expected": "accepted"
+    },
+    {
+      "id": "correctness",
+      "baseline": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "100",
+          "throughputPerSecond": "100",
+          "peakMemoryBytes": "100000000"
+        }
+      },
+      "candidate": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": false
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "100",
+          "throughputPerSecond": "100",
+          "peakMemoryBytes": "100000000"
+        }
+      },
+      "expected": "rejected"
+    },
+    {
+      "id": "coverage",
+      "baseline": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "100",
+          "throughputPerSecond": "100",
+          "peakMemoryBytes": "100000000"
+        }
+      },
+      "candidate": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 99,
+          "admitted": 100,
+          "completed": 99,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 1
+        },
+        "summary": {
+          "p95Ms": "100",
+          "throughputPerSecond": "100",
+          "peakMemoryBytes": "100000000"
+        }
+      },
+      "expected": "rejected"
+    },
+    {
+      "id": "incomparable",
+      "baseline": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "100",
+          "throughputPerSecond": "100",
+          "peakMemoryBytes": "100000000"
+        }
+      },
+      "candidate": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:other",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "100",
+          "throughputPerSecond": "100",
+          "peakMemoryBytes": "100000000"
+        }
+      },
+      "expected": "inconclusive"
+    },
+    {
+      "id": "regression",
+      "baseline": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "100",
+          "throughputPerSecond": "100",
+          "peakMemoryBytes": "100000000"
+        }
+      },
+      "candidate": {
+        "profileVersion": "1.0",
+        "workloadHash": "sha256:w",
+        "environmentHash": "sha256:e",
+        "correctness": {
+          "passed": true
+        },
+        "outcomes": {
+          "offered": 100,
+          "started": 100,
+          "admitted": 100,
+          "completed": 100,
+          "rejected": 0,
+          "failed": 0,
+          "missing": 0
+        },
+        "summary": {
+          "p95Ms": "130",
+          "throughputPerSecond": "80",
+          "peakMemoryBytes": "600000000"
+        }
+      },
+      "expected": "rejected"
+    }
+  ]
+}

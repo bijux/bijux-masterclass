@@ -1,0 +1,5 @@
+{
+  "change": "RUN_STATE_COMPLETED 3 -> 4",
+  "expected": "reject",
+  "reason": "wire meaning changes"
+}

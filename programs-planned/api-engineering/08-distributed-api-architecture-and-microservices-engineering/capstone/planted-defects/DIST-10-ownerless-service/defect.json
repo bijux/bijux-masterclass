@@ -1,0 +1,9 @@
+{
+  "candidate": "ownerless-service",
+  "defect": "notification service has no accountable owner",
+  "expected": "reject",
+  "id": "DIST-10",
+  "lesson": "A service without change, incident, data, and release ownership is an unmanaged coordination queue.",
+  "rejecting_gate": "operability",
+  "title": "Ownerless Service"
+}

@@ -1,0 +1,14 @@
+query SearchPlatform($text: String!, $first: Int = 20, $after: Cursor) {
+  search(text: $text, first: $first, after: $after) {
+    edges {
+      cursor
+      node {
+        __typename
+        ... on Project { id name }
+        ... on AnalysisRun { id status }
+        ... on Artifact { id mediaType size }
+      }
+    }
+    pageInfo { hasNextPage endCursor }
+  }
+}

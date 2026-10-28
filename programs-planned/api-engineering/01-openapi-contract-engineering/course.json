@@ -1,0 +1,31 @@
+{
+  "capstone": "Analysis Runs Platform",
+  "centralQuestion": "What exactly does the API promise, and how can providers and consumers verify that promise?",
+  "duration": {
+    "calendarWeeks": 2,
+    "orientationCounted": false,
+    "teachingDays": 10
+  },
+  "id": "openapi-contract-engineering",
+  "incomingBoundary": "Basic programming ability and no assumed OpenAPI experience.",
+  "languages": {
+    "strategy": "Both Python/FastAPI and TypeScript/Fastify are used symmetrically to prove that the contract is language-neutral.",
+    "tracks": [
+      "python-fastapi",
+      "typescript-fastify"
+    ]
+  },
+  "number": 1,
+  "outgoingBoundary": "A frozen API 1.1 contract, operation ledger, schema fixtures, security decisions, workflows, and provider-neutral behavioral scenarios.",
+  "predecessor": null,
+  "responsibility": "Define and verify the public HTTP contract.",
+  "schemaVersion": 1,
+  "successor": "02-contract-driven-api-service-engineering",
+  "title": "OpenAPI Contract Engineering",
+  "versions": {
+    "databaseMigrations": "None. Persistence is deliberately instructional and non-durable.",
+    "engineeringProfiles": "No inherited security, reliability, performance, or event profile.",
+    "interfaceSpecifications": "3.1.2 executable baseline; 3.2.0 standards frontier",
+    "publicInterface": "1.1"
+  }
+}

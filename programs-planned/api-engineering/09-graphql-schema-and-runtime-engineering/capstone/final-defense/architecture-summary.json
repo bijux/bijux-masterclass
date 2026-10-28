@@ -1,0 +1,13 @@
+{
+  "direct_database_joins": 0,
+  "graph_gateway_business_facts_owned": 0,
+  "persisted_operations": 10,
+  "schema_version": "1.0",
+  "silent_partial_data_paths": 0,
+  "source_services": [
+    "analysis-control",
+    "artifact-service",
+    "notification-service"
+  ],
+  "unbounded_list_fields": 0
+}

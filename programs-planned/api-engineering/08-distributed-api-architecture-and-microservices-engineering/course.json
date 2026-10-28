@@ -1,0 +1,171 @@
+{
+  "distributed_architecture_profile": "1.0",
+  "event_api": "1.0",
+  "id": "api-engineering-08",
+  "legacy_migration_head": "015",
+  "modules": [
+    {
+      "n": "01",
+      "outcomes": [
+        "treat distribution as an economic and organizational decision rather than a maturity badge",
+        "compare modular-monolith and service extraction options using change, scale, failure, security, and ownership evidence",
+        "define architecture fitness functions that can reject an attractive but harmful decomposition",
+        "distinguish independently deployable process boundaries from independently owned business services",
+        "calculate the synchronous latency and availability cost of proposed remote edges",
+        "write an architecture decision that includes reversal criteria and residual risk"
+      ],
+      "question": "When does a remote service boundary create more value than the coordination, latency, failure, and operational costs it introduces?",
+      "result": "Publish a measured boundary scorecard that approves Notification Delivery for first extraction, approves Artifact Delivery conditionally, keeps Analysis Control cohesive, and rejects table-shaped services.",
+      "slug": "distribution-economics-and-boundary-evidence",
+      "title": "Distribution Economics, Boundary Evidence, and Architecture Fitness Functions"
+    },
+    {
+      "n": "02",
+      "outcomes": [
+        "identify capabilities, invariants, and ubiquitous language that belong together",
+        "separate business-service ownership from gateway, worker, and platform components",
+        "assign one accountable owner to every public HTTP operation, event, RPC, and data set",
+        "reject shared libraries that secretly preserve cross-service domain coupling",
+        "design anti-corruption mappings between service-specific models",
+        "recognize distributed-monolith boundaries before implementation begins"
+      ],
+      "question": "How do we draw service boundaries around cohesive decisions and language without turning tables, classes, or teams into accidental services?",
+      "result": "Publish the service catalogue, bounded-context map, contract ownership map, and explicit list of capabilities that remain inside Analysis Control.",
+      "slug": "service-boundaries-and-contract-ownership",
+      "title": "Service Boundaries, Bounded Contexts, and Contract Ownership"
+    },
+    {
+      "n": "03",
+      "outcomes": [
+        "enforce one authoritative writer for each business fact",
+        "distinguish owned data, replicated views, caches, and derived analytics",
+        "design event-fed projections with version and gap handling",
+        "choose API composition, local read models, or asynchronous reports from latency and consistency needs",
+        "state staleness and monotonicity guarantees in contracts and user experience",
+        "reconcile orphaned, missing, and divergent records without bypassing service ownership"
+      ],
+      "question": "How can each service own its writes while the system still answers cross-capability questions without shared tables or hidden distributed transactions?",
+      "result": "Split authoritative data ownership, build versioned projections for cross-service reads, define staleness budgets, and prove reconciliation for missing, duplicate, and out-of-order updates.",
+      "slug": "data-ownership-replication-and-cross-service-queries",
+      "title": "Data Ownership, Replication, and Cross-Service Query Design"
+    },
+    {
+      "n": "04",
+      "outcomes": [
+        "model the complete synchronous dependency graph and detect cycles",
+        "calculate compounded latency and availability across serial and parallel calls",
+        "propagate one absolute deadline instead of multiplying independent timeouts",
+        "place retries, hedging, and circuit behavior at one accountable layer",
+        "design API composition without chatty per-row remote calls",
+        "separate unavailable, stale, partial, and authoritative responses explicitly"
+      ],
+      "question": "How do we keep synchronous service collaboration bounded so that fan-out, retries, and version skew do not make the public request path fragile?",
+      "result": "Publish an acyclic synchronous dependency graph, one edge-owned deadline budget, bounded fan-out rules, and a gateway composition path that degrades truthfully.",
+      "slug": "synchronous-collaboration-and-dependency-budgets",
+      "title": "Synchronous Collaboration, API Composition, and Dependency Budgets"
+    },
+    {
+      "n": "05",
+      "outcomes": [
+        "distinguish local ACID transactions from distributed workflow guarantees",
+        "choose orchestration or choreography from ownership and visibility needs",
+        "design idempotent saga steps and stable command identities",
+        "write compensations that restore business meaning rather than pretend to erase history",
+        "handle timeout, duplicate, reordering, and crash recovery in process managers",
+        "identify workflows that should be redesigned instead of wrapped in a saga"
+      ],
+      "question": "How do we preserve business intent when one workflow crosses services that cannot share a transaction?",
+      "result": "Implement the artifact-publication and run-completion saga with durable step identity, semantic locks, compensation, timeout handling, and operator-visible reconciliation.",
+      "slug": "distributed-workflows-sagas-and-compensation",
+      "title": "Distributed Workflows, Sagas, Compensation, and Process Managers"
+    },
+    {
+      "n": "06",
+      "outcomes": [
+        "separate workload identity, end-user identity, tenant context, and delegated authority",
+        "design service-to-service authentication without treating network location as trust",
+        "prevent confused-deputy and privilege-amplification failures",
+        "mint and verify narrow, short-lived capability tokens for artifact transfer",
+        "propagate only bounded non-sensitive context across services",
+        "define network policy as defense in depth rather than application authorization"
+      ],
+      "question": "How do services authenticate workloads, preserve end-user intent, and avoid confused-deputy failures without trusting caller-supplied identity headers?",
+      "result": "Introduce workload identities, audience-bound service credentials, delegated user context, short-lived artifact capabilities, and explicit authorization at every trust boundary.",
+      "slug": "service-identity-authorization-and-trust-propagation",
+      "title": "Service Identity, Authorization, and Trust Propagation"
+    },
+    {
+      "n": "07",
+      "outcomes": [
+        "distinguish service identity from instance address and endpoint health",
+        "compare DNS, registry, client-side, proxy, and platform routing models",
+        "keep authentication normalization and protocol adaptation at the edge while preserving domain ownership",
+        "avoid business workflows and private data stores inside the gateway",
+        "design canary, shadow, and failover routes with bounded blast radius",
+        "evaluate service mesh features without making the mesh the source of application correctness"
+      ],
+      "question": "How do callers find healthy service instances and route traffic without moving business ownership into gateways or creating several competing retry layers?",
+      "result": "Implement service registration, health-aware routing, gateway edge policy, bounded traffic shifting, and an optional Kubernetes topology with explicit ownership of each routing decision.",
+      "slug": "discovery-routing-gateways-and-traffic-topology",
+      "title": "Discovery, Routing, Gateways, and Traffic Topology"
+    },
+    {
+      "n": "08",
+      "outcomes": [
+        "distinguish independent deployment from independent change and ownership",
+        "model provider and consumer compatibility across HTTP, events, and gRPC",
+        "design expand, migrate, observe, and contract release sequences",
+        "support bounded version skew without permanent multi-version complexity",
+        "use shadow and canary evidence before route cutover",
+        "define rollback boundaries when data or messages have already changed"
+      ],
+      "question": "How can services release independently while old and new clients, events, schemas, and database migrations coexist safely?",
+      "result": "Publish and execute a mixed-version release matrix for Analysis Control, Artifact, Notification, Gateway, and Worker Plane with expand-and-contract changes and rollback evidence.",
+      "slug": "deployment-independence-version-skew-and-release-choreography",
+      "title": "Deployment Independence, Version Skew, and Release Choreography"
+    },
+    {
+      "n": "09",
+      "outcomes": [
+        "separate service unit tests, contract tests, topology tests, and end-to-end outcome proofs",
+        "test failure timing before invocation, after commit, during delivery, and during recovery",
+        "use traces and durable state together rather than treating telemetry as authority",
+        "design bounded fault injection with abort and cleanup conditions",
+        "verify dependency graphs, ownership, and version matrices mechanically",
+        "diagnose distributed incidents from one critical journey without requiring omniscient logs"
+      ],
+      "question": "How do we prove system behavior when individual services pass their tests but network partitions, version skew, and cross-service timing still create failures?",
+      "result": "Build a distributed proof ladder spanning contract, component, topology, fault, reconciliation, and operator evidence, then use it to reject ten planted architecture defects.",
+      "slug": "distributed-verification-fault-injection-and-operability",
+      "title": "Distributed Verification, Fault Injection, and Operability"
+    },
+    {
+      "n": "10",
+      "outcomes": [
+        "sequence extraction from low-coupling evidence rather than organizational pressure",
+        "use strangler routing, shadow comparison, and read/write cutover safely",
+        "migrate data without uncontrolled dual writes",
+        "define decommission, rollback, and merge-back criteria",
+        "defend the final architecture against shared-database and distributed-monolith critiques",
+        "publish a sanitized service and query boundary for GraphQL without bypassing service ownership"
+      ],
+      "question": "How do we extract services incrementally, preserve every existing contract, and retain a safe path to stop, roll back, or merge a service back into the platform?",
+      "result": "Extract Notification Delivery and Artifact Delivery through shadow, compare, backfill, cutover, and decommission phases; retain Analysis Control; and publish the Course 9 graph-access handoff.",
+      "slug": "incremental-extraction-migration-and-final-defense",
+      "title": "Incremental Extraction, Strangler Migration, and Final Architecture Defense"
+    }
+  ],
+  "program": "api-engineering",
+  "public_api": "1.2",
+  "rpc_api": "1.0",
+  "sequence": 8,
+  "service_migration_heads": {
+    "analysis-control": "001",
+    "artifact-service": "002",
+    "notification-service": "002",
+    "platform-catalog": "001"
+  },
+  "slug": "distributed-api-architecture-and-microservices-engineering",
+  "title": "Distributed API Architecture and Microservices Engineering",
+  "version": "1.0.0"
+}

@@ -1,0 +1,31 @@
+{
+  "capstone": "Analysis Runs Platform",
+  "centralQuestion": "How can independent producers and consumers share durable facts without confusing intent, delivery attempts, processing effects, and historical truth?",
+  "duration": {
+    "calendarWeeks": 2,
+    "orientationCounted": false,
+    "teachingDays": 10
+  },
+  "id": "event-driven-api-engineering",
+  "incomingBoundary": "The Course 5 API 1.2 service with Security, Reliability, and Performance Profiles 1.0 and migrations 001\u2013009.",
+  "languages": {
+    "strategy": "Choose one primary implementation track. Compare canonical bytes, delivery outcomes, replay semantics, and consumer effects across both languages.",
+    "tracks": [
+      "python-fastapi",
+      "typescript-fastify"
+    ]
+  },
+  "number": 6,
+  "outgoingBoundary": "Analysis Events API 1.0, Event Profile 1.0, AsyncAPI 3.1.0 contract, CloudEvents 1.0 envelope profile, migrations 010\u2013012, replay and dead-letter policy, and governed consumer declarations.",
+  "predecessor": "05-api-performance-capacity-and-traffic-engineering",
+  "responsibility": "Design, evolve, secure, operate, and verify asynchronous contracts when delivery may be delayed, duplicated, reordered within declared limits, or replayed.",
+  "schemaVersion": 1,
+  "successor": null,
+  "title": "Event-Driven API Engineering",
+  "versions": {
+    "databaseMigrations": "001\u2013012",
+    "engineeringProfiles": "Security, Reliability, and Performance Profiles 1.0 preserved; Event Profile 1.0 introduced",
+    "interfaceSpecifications": "OpenAPI 3.1.2 baseline preserved; AsyncAPI 3.1.0 introduced",
+    "publicInterface": "HTTP API 1.2 preserved; Analysis Events API 1.0 introduced"
+  }
+}

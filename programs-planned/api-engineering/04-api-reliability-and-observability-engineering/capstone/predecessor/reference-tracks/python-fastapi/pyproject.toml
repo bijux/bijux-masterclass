@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "analysis-service-python-security"
+version = "1.2.0"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi==0.128.2",
+  "pydantic==2.13.4",
+  "psycopg[binary,pool]==3.3.4",
+  "httpx==0.28.1",
+  "python-multipart==0.0.20",
+  "uvicorn==0.48.0",
+  "PyJWT==2.13.0",
+  "cryptography==46.0.4",
+  "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==9.0.2",
+  "pytest-asyncio==1.2.0",
+  "ruff==0.12.11",
+]
+
+[project.scripts]
+analysis-migrate = "analysis_service.cli:main"
+analysis-worker = "analysis_service.worker:main"
+security-fixture-issuer = "api_security.fixture_cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/analysis_service", "src/api_security"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests", "tests_security"]

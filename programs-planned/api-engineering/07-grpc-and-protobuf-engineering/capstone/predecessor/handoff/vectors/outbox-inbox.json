@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "outbox-inbox",
+  "cases": [
+    {
+      "id": "BOX-001",
+      "description": "domain mutation and outbox intent commit together",
+      "expected": "accepted"
+    },
+    {
+      "id": "BOX-002",
+      "description": "relay crash after publish can duplicate the event",
+      "expected": "accepted"
+    },
+    {
+      "id": "BOX-003",
+      "description": "duplicate delivery produces one effect",
+      "expected": "accepted"
+    },
+    {
+      "id": "BOX-004",
+      "description": "effect versions have independent deduplication identities",
+      "expected": "accepted"
+    },
+    {
+      "id": "BOX-005",
+      "description": "tenant is part of deduplication identity",
+      "expected": "accepted"
+    },
+    {
+      "id": "BOX-006",
+      "description": "ack before committed effect is rejected by review",
+      "expected": "rejected"
+    }
+  ]
+}

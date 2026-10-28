@@ -1,0 +1,8 @@
+{
+  "projectId": "prj_0001",
+  "datasetId": "dts_0001",
+  "parameters": {
+    "algorithm": "quality-summary"
+  },
+  "callbackUrl": "https://hooks.example.test/analysis-complete#fragment"
+}

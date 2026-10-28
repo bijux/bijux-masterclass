@@ -1,0 +1,5 @@
+{
+  "defect": "A scaffold skeleton contains a credential",
+  "expectedRejectingProof": "template-proof",
+  "id": "PLAT-06-template-secret"
+}

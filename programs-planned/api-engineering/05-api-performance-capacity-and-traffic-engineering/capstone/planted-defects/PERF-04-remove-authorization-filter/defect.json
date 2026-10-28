@@ -1,0 +1,7 @@
+{
+  "description": "A query is faster because tenant ownership is no longer enforced.",
+  "expectedOracle": "correctness-gate",
+  "id": "PERF-04",
+  "mustBeRejected": true,
+  "slug": "remove-authorization-filter"
+}

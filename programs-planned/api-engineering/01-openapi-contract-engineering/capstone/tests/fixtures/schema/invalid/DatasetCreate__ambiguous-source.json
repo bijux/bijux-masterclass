@@ -1,0 +1,9 @@
+{
+  "name": "reads",
+  "source": {
+    "kind": "local-file",
+    "fileName": "a",
+    "mediaType": "text/csv",
+    "uri": "https://objects.example.test/a"
+  }
+}

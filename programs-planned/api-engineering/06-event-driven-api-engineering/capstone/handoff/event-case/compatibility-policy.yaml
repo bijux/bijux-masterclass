@@ -1,0 +1,26 @@
+version: '1.0'
+schemaDialect: https://json-schema.org/draft/2020-12/schema
+sameMajorVersion:
+  accepted:
+    - add an optional property that tolerant consumers may ignore
+    - widen documentation without changing validation
+  reviewRequired:
+    - expand an output enum because exhaustive consumers may fail
+    - alter semantic meaning without structural change
+    - increase payload size materially
+  rejected:
+    - add a required property
+    - remove or rename an existing property
+    - narrow an accepted type or enum
+    - change the partition-key meaning
+    - reuse an event type for a different fact
+majorVersion:
+  requirement: Publish a new event type suffix and run old and new contracts concurrently.
+  examples:
+    - org.bijux.analysis.run.completed.v1
+    - org.bijux.analysis.run.completed.v2
+historicalPolicy:
+  immutableBytes: true
+  upcasters: pure-and-versioned
+  replayBoundRequired: true
+  externalSideEffectsDuringReplay: disabled

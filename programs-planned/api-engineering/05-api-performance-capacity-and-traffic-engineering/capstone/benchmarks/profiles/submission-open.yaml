@@ -1,0 +1,16 @@
+profile: performance-1.0
+id: WL-RUN-SUBMIT
+model: open
+executor: constant-arrival-rate
+ratePerSecond: 20
+durationSeconds: 300
+preallocatedClients: 20
+maximumClients: 100
+dataset: DS-RUNS-100K
+operationMix:
+  createAnalysisRun: 1.0
+correctnessOracle:
+  - idempotency-one-logical-run
+  - replay-stored-outcome
+  - durable-job-created
+  - all-outcomes-accounted

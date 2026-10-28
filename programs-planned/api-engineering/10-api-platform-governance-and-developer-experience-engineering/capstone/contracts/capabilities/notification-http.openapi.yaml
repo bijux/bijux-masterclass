@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  title: Notification HTTP Capability
+  version: 1.0.0
+  description: Internal query capability owned by Notification Service. Delivery truth remains in the owning service.
+servers:
+  - url: https://notification.internal.example.invalid
+paths:
+  /deliveries/{deliveryId}:
+    get:
+      operationId: getDelivery
+      summary: Read notification-delivery state
+      parameters:
+        - name: deliveryId
+          in: path
+          required: true
+          schema: {type: string, pattern: '^[a-z0-9][a-z0-9-]{2,63}$'}
+      responses:
+        '200':
+          description: Delivery state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+        '404':
+          description: Delivery is absent or concealed from the caller
+  /runs/{runId}/deliveries:
+    get:
+      operationId: listRunDeliveries
+      summary: List bounded delivery summaries for one analysis run
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema: {type: string}
+        - name: limit
+          in: query
+          schema: {type: integer, minimum: 1, maximum: 100, default: 20}
+      responses:
+        '200':
+          description: Delivery summaries
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    maxItems: 100
+                    items: {$ref: '#/components/schemas/Delivery'}
+components:
+  schemas:
+    Delivery:
+      type: object
+      required: [id, runId, eventId, state, attemptCount, updatedAt]
+      properties:
+        id: {type: string}
+        runId: {type: string}
+        eventId: {type: string}
+        state: {type: string, enum: [pending, delivering, delivered, failed, dead]}
+        attemptCount: {type: integer, minimum: 0}
+        updatedAt: {type: string, format: date-time}

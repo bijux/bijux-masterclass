@@ -1,0 +1,7 @@
+{
+  "entityRef": "api:default/analysis-graph",
+  "evidenceClass": "course-executed",
+  "kind": "security",
+  "status": "pass",
+  "summary": "security evidence for api:default/analysis-graph"
+}

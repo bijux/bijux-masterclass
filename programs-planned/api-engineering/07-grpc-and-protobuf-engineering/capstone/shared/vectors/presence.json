@@ -1,0 +1,35 @@
+{
+  "profile": "protobuf-presence-1.0",
+  "cases": [
+    {
+      "id": "PRS-01",
+      "field": "result_summary",
+      "input": "absent",
+      "expected_has_field": false
+    },
+    {
+      "id": "PRS-02",
+      "field": "result_summary",
+      "input": "",
+      "expected_has_field": true
+    },
+    {
+      "id": "PRS-03",
+      "field": "failure_code",
+      "input": "absent",
+      "expected_has_field": false
+    },
+    {
+      "id": "PRS-04",
+      "field": "failure_code",
+      "input": "FAILED_PRECONDITION",
+      "expected_has_field": true
+    },
+    {
+      "id": "PRS-05",
+      "field": "state",
+      "input": 0,
+      "expected": "reject-unspecified"
+    }
+  ]
+}

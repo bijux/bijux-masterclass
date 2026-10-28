@@ -1,0 +1,83 @@
+name: course8-network-lab
+
+services:
+  analysis-control:
+    build:
+      context: ..
+      dockerfile: network-lab/Dockerfile
+    command: ["control", "--host", "0.0.0.0", "--port", "8081"]
+    environment:
+      COURSE8_LAB_KEY: course-eight-network-lab-key-32b
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/health', timeout=1)"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
+
+  artifact-service:
+    build:
+      context: ..
+      dockerfile: network-lab/Dockerfile
+    command: ["artifact", "--host", "0.0.0.0", "--port", "8082"]
+    environment:
+      COURSE8_LAB_KEY: course-eight-network-lab-key-32b
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8082/health', timeout=1)"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
+
+  notification-service:
+    build:
+      context: ..
+      dockerfile: network-lab/Dockerfile
+    command: ["notification", "--host", "0.0.0.0", "--port", "8083"]
+    environment:
+      COURSE8_LAB_KEY: course-eight-network-lab-key-32b
+    restart: "no"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8083/health', timeout=1)"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
+
+  worker-plane:
+    build:
+      context: ..
+      dockerfile: network-lab/Dockerfile
+    command: ["worker", "--host", "0.0.0.0", "--port", "8084"]
+    environment:
+      COURSE8_LAB_KEY: course-eight-network-lab-key-32b
+      CONTROL_URL: http://analysis-control:8081
+      ARTIFACT_URL: http://artifact-service:8082
+    restart: "no"
+    depends_on:
+      analysis-control:
+        condition: service_healthy
+      artifact-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8084/health', timeout=1)"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
+
+  edge-gateway:
+    build:
+      context: ..
+      dockerfile: network-lab/Dockerfile
+    command: ["gateway", "--host", "0.0.0.0", "--port", "8080"]
+    environment:
+      COURSE8_LAB_KEY: course-eight-network-lab-key-32b
+      CONTROL_URL: http://analysis-control:8081
+      ARTIFACT_URL: http://artifact-service:8082
+    restart: "no"
+    depends_on:
+      analysis-control:
+        condition: service_healthy
+      artifact-service:
+        condition: service_healthy
+    ports:
+      - "18080:8080"

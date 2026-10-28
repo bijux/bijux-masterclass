@@ -1,0 +1,20 @@
+[
+  {
+    "key": "idem-1",
+    "operation": "StartAnalysis",
+    "replayed": true,
+    "same_input": true
+  },
+  {
+    "key": "idem-1",
+    "operation": "StartAnalysis",
+    "problem": "CONFLICT",
+    "same_input": false
+  },
+  {
+    "actual": "5",
+    "expected": "4",
+    "operation": "CancelAnalysis",
+    "problem": "PRECONDITION_FAILED"
+  }
+]

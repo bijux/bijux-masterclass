@@ -1,0 +1,4 @@
+description: True when the response replays an earlier request with the same idempotency key.
+schema:
+  type: boolean
+example: true

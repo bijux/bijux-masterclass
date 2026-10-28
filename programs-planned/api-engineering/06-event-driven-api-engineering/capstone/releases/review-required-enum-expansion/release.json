@@ -1,0 +1,15 @@
+{
+  "candidateId": "review-required-enum-expansion",
+  "eventType": "org.bijux.analysis.run.completed.v1",
+  "eventApiVersion": "1.1.0-review",
+  "expectedDecision": "review-required",
+  "comparisonBaseline": "baseline.schema.json",
+  "gates": {
+    "contractValid": true,
+    "replaySafe": true,
+    "catalogComplete": true,
+    "securityValid": true,
+    "reliabilityReady": true
+  },
+  "rationale": "Exhaustive consumers may reject a new enum value even though the producer can emit it."
+}

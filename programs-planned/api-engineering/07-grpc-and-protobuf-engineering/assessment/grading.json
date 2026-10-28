@@ -1,0 +1,39 @@
+{
+  "total": 100,
+  "sections": [
+    {
+      "name": "boundary-and-ownership",
+      "points": 15
+    },
+    {
+      "name": "protobuf-and-compatibility",
+      "points": 15
+    },
+    {
+      "name": "unary-time-and-idempotency",
+      "points": 15
+    },
+    {
+      "name": "streaming-and-fencing",
+      "points": 15
+    },
+    {
+      "name": "security",
+      "points": 10
+    },
+    {
+      "name": "lifecycle-and-governance",
+      "points": 10
+    },
+    {
+      "name": "release-and-rollback",
+      "points": 15
+    },
+    {
+      "name": "evidence",
+      "points": 5
+    }
+  ],
+  "pass_score": 85,
+  "non_compensable_gates": 10
+}

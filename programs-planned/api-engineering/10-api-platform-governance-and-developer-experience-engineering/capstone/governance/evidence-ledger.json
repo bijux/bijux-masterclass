@@ -1,0 +1,509 @@
+{
+  "evidence": [
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-events",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-events-compatibility-1",
+      "kind": "compatibility",
+      "source": "evidence/analysis-events-compatibility.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-events",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-events-documentation-1",
+      "kind": "documentation",
+      "source": "evidence/analysis-events-documentation.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-events",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-events-ownership-1",
+      "kind": "ownership",
+      "source": "evidence/analysis-events-ownership.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-events",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-events-performance-1",
+      "kind": "performance",
+      "source": "evidence/analysis-events-performance.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-events",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-events-reliability-1",
+      "kind": "reliability",
+      "source": "evidence/analysis-events-reliability.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-events",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-events-sandbox-1",
+      "kind": "sandbox",
+      "source": "evidence/analysis-events-sandbox.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-events",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-events-security-1",
+      "kind": "security",
+      "source": "evidence/analysis-events-security.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-events",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-events-support-1",
+      "kind": "support",
+      "source": "evidence/analysis-events-support.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-graph",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-graph-compatibility-1",
+      "kind": "compatibility",
+      "source": "evidence/analysis-graph-compatibility.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-graph",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-graph-documentation-1",
+      "kind": "documentation",
+      "source": "evidence/analysis-graph-documentation.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-graph",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-graph-ownership-1",
+      "kind": "ownership",
+      "source": "evidence/analysis-graph-ownership.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-graph",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-graph-performance-1",
+      "kind": "performance",
+      "source": "evidence/analysis-graph-performance.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-graph",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-graph-reliability-1",
+      "kind": "reliability",
+      "source": "evidence/analysis-graph-reliability.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-graph",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-graph-sandbox-1",
+      "kind": "sandbox",
+      "source": "evidence/analysis-graph-sandbox.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-graph",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-graph-security-1",
+      "kind": "security",
+      "source": "evidence/analysis-graph-security.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-graph",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-graph-support-1",
+      "kind": "support",
+      "source": "evidence/analysis-graph-support.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-http",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-http-compatibility-1",
+      "kind": "compatibility",
+      "source": "evidence/analysis-http-compatibility.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-http",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-http-documentation-1",
+      "kind": "documentation",
+      "source": "evidence/analysis-http-documentation.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-http",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-http-ownership-1",
+      "kind": "ownership",
+      "source": "evidence/analysis-http-ownership.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-http",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-http-performance-1",
+      "kind": "performance",
+      "source": "evidence/analysis-http-performance.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-http",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-http-reliability-1",
+      "kind": "reliability",
+      "source": "evidence/analysis-http-reliability.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-http",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-http-sandbox-1",
+      "kind": "sandbox",
+      "source": "evidence/analysis-http-sandbox.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-http",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-http-security-1",
+      "kind": "security",
+      "source": "evidence/analysis-http-security.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-http",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-http-support-1",
+      "kind": "support",
+      "source": "evidence/analysis-http-support.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-rpc-compatibility-1",
+      "kind": "compatibility",
+      "source": "evidence/analysis-rpc-compatibility.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-rpc-documentation-1",
+      "kind": "documentation",
+      "source": "evidence/analysis-rpc-documentation.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-rpc-ownership-1",
+      "kind": "ownership",
+      "source": "evidence/analysis-rpc-ownership.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-rpc-performance-1",
+      "kind": "performance",
+      "source": "evidence/analysis-rpc-performance.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-rpc-reliability-1",
+      "kind": "reliability",
+      "source": "evidence/analysis-rpc-reliability.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-rpc-sandbox-1",
+      "kind": "sandbox",
+      "source": "evidence/analysis-rpc-sandbox.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-rpc-security-1",
+      "kind": "security",
+      "source": "evidence/analysis-rpc-security.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-07T12:00:00Z",
+      "entityRef": "api:default/analysis-rpc",
+      "expiresAt": "2026-11-07T12:00:00Z",
+      "id": "analysis-rpc-support-1",
+      "kind": "support",
+      "source": "evidence/analysis-rpc-support.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/artifact-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "artifact-http-compatibility-1",
+      "kind": "compatibility",
+      "source": "evidence/artifact-http-compatibility.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/artifact-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "artifact-http-documentation-1",
+      "kind": "documentation",
+      "source": "evidence/artifact-http-documentation.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/artifact-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "artifact-http-ownership-1",
+      "kind": "ownership",
+      "source": "evidence/artifact-http-ownership.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/artifact-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "artifact-http-performance-1",
+      "kind": "performance",
+      "source": "evidence/artifact-http-performance.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/artifact-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "artifact-http-reliability-1",
+      "kind": "reliability",
+      "source": "evidence/artifact-http-reliability.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/artifact-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "artifact-http-sandbox-1",
+      "kind": "sandbox",
+      "source": "evidence/artifact-http-sandbox.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/artifact-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "artifact-http-security-1",
+      "kind": "security",
+      "source": "evidence/artifact-http-security.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/artifact-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "artifact-http-support-1",
+      "kind": "support",
+      "source": "evidence/artifact-http-support.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/notification-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "notification-http-compatibility-1",
+      "kind": "compatibility",
+      "source": "evidence/notification-http-compatibility.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/notification-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "notification-http-documentation-1",
+      "kind": "documentation",
+      "source": "evidence/notification-http-documentation.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/notification-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "notification-http-ownership-1",
+      "kind": "ownership",
+      "source": "evidence/notification-http-ownership.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/notification-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "notification-http-performance-1",
+      "kind": "performance",
+      "source": "evidence/notification-http-performance.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/notification-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "notification-http-reliability-1",
+      "kind": "reliability",
+      "source": "evidence/notification-http-reliability.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/notification-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "notification-http-sandbox-1",
+      "kind": "sandbox",
+      "source": "evidence/notification-http-sandbox.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/notification-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "notification-http-security-1",
+      "kind": "security",
+      "source": "evidence/notification-http-security.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/notification-http",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "notification-http-support-1",
+      "kind": "support",
+      "source": "evidence/notification-http-support.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/platform-catalog",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "platform-catalog-compatibility-1",
+      "kind": "compatibility",
+      "source": "evidence/platform-catalog-compatibility.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/platform-catalog",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "platform-catalog-documentation-1",
+      "kind": "documentation",
+      "source": "evidence/platform-catalog-documentation.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/platform-catalog",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "platform-catalog-ownership-1",
+      "kind": "ownership",
+      "source": "evidence/platform-catalog-ownership.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/platform-catalog",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "platform-catalog-performance-1",
+      "kind": "performance",
+      "source": "evidence/platform-catalog-performance.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/platform-catalog",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "platform-catalog-reliability-1",
+      "kind": "reliability",
+      "source": "evidence/platform-catalog-reliability.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/platform-catalog",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "platform-catalog-sandbox-1",
+      "kind": "sandbox",
+      "source": "evidence/platform-catalog-sandbox.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/platform-catalog",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "platform-catalog-security-1",
+      "kind": "security",
+      "source": "evidence/platform-catalog-security.json",
+      "status": "pass"
+    },
+    {
+      "collectedAt": "2026-08-08T08:30:00Z",
+      "entityRef": "api:default/platform-catalog",
+      "expiresAt": "2026-11-08T08:30:00Z",
+      "id": "platform-catalog-support-1",
+      "kind": "support",
+      "source": "evidence/platform-catalog-support.json",
+      "status": "pass"
+    }
+  ],
+  "version": "1.0"
+}

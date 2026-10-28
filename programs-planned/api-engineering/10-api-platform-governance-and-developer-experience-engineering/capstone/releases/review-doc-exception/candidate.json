@@ -1,0 +1,5 @@
+{
+  "expectedDecision": "review",
+  "id": "review-doc-exception",
+  "reason": "An RPC interactive-example exception is scoped, compensated, and expiring."
+}

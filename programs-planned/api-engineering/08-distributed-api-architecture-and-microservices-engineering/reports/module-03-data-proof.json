@@ -1,0 +1,14 @@
+{
+  "evidence_class": "structural-and-semantic",
+  "legacy_migration_head": "015",
+  "service_migration_heads": {
+    "analysis-control": "001",
+    "artifact-service": "002",
+    "notification-service": "002",
+    "platform-catalog": "001"
+  },
+  "versioned_views": ["notification-run-view", "control-artifact-reference", "gateway-project-cache"],
+  "cross_service_database_reads": 0,
+  "uncontrolled_dual_writes": 0,
+  "status": "pass"
+}

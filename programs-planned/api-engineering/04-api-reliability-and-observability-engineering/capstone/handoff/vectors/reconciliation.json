@@ -1,0 +1,184 @@
+{
+  "cases": [
+    {
+      "findings": [],
+      "id": "reconcile-consistent-complete",
+      "snapshot": {
+        "artifacts": [
+          {
+            "artifactId": "art_1",
+            "runId": "run_1"
+          }
+        ],
+        "events": [
+          {
+            "runId": "run_1",
+            "status": "completed"
+          }
+        ],
+        "jobs": [
+          {
+            "runId": "run_1",
+            "status": "completed"
+          }
+        ],
+        "outbox": [
+          {
+            "eventType": "analysis.completed",
+            "runId": "run_1"
+          }
+        ],
+        "runs": [
+          {
+            "runId": "run_1",
+            "status": "completed"
+          }
+        ]
+      }
+    },
+    {
+      "findings": [
+        "completed-run-missing-artifact",
+        "terminal-run-missing-event",
+        "terminal-run-missing-outbox"
+      ],
+      "id": "reconcile-missing-completion-evidence",
+      "snapshot": {
+        "artifacts": [],
+        "events": [],
+        "jobs": [
+          {
+            "runId": "run_2",
+            "status": "completed"
+          }
+        ],
+        "outbox": [],
+        "runs": [
+          {
+            "runId": "run_2",
+            "status": "completed"
+          }
+        ]
+      }
+    },
+    {
+      "findings": [
+        "terminal-job-nonterminal-run"
+      ],
+      "id": "reconcile-dead-job-running-run",
+      "snapshot": {
+        "artifacts": [],
+        "events": [],
+        "jobs": [
+          {
+            "runId": "run_3",
+            "status": "dead"
+          }
+        ],
+        "outbox": [],
+        "runs": [
+          {
+            "runId": "run_3",
+            "status": "running"
+          }
+        ]
+      }
+    },
+    {
+      "findings": [
+        "duplicate-terminal-event",
+        "duplicate-terminal-outbox",
+        "multiple-artifacts"
+      ],
+      "id": "reconcile-duplicate-terminal-evidence",
+      "snapshot": {
+        "artifacts": [
+          {
+            "artifactId": "art_1",
+            "runId": "run_4"
+          },
+          {
+            "artifactId": "art_2",
+            "runId": "run_4"
+          }
+        ],
+        "events": [
+          {
+            "runId": "run_4",
+            "status": "completed"
+          },
+          {
+            "runId": "run_4",
+            "status": "completed"
+          }
+        ],
+        "jobs": [
+          {
+            "runId": "run_4",
+            "status": "completed"
+          }
+        ],
+        "outbox": [
+          {
+            "eventType": "analysis.completed",
+            "runId": "run_4"
+          },
+          {
+            "eventType": "analysis.completed",
+            "runId": "run_4"
+          }
+        ],
+        "runs": [
+          {
+            "runId": "run_4",
+            "status": "completed"
+          }
+        ]
+      }
+    },
+    {
+      "findings": [
+        "job-without-run"
+      ],
+      "id": "reconcile-job-without-run",
+      "snapshot": {
+        "artifacts": [],
+        "events": [],
+        "jobs": [
+          {
+            "runId": "run_5",
+            "status": "queued"
+          }
+        ],
+        "outbox": [],
+        "runs": []
+      }
+    },
+    {
+      "findings": [],
+      "id": "reconcile-canceled-no-webhook-required",
+      "snapshot": {
+        "artifacts": [],
+        "events": [
+          {
+            "runId": "run_6",
+            "status": "canceled"
+          }
+        ],
+        "jobs": [
+          {
+            "runId": "run_6",
+            "status": "canceled"
+          }
+        ],
+        "outbox": [],
+        "runs": [
+          {
+            "runId": "run_6",
+            "status": "canceled"
+          }
+        ]
+      }
+    }
+  ]
+}

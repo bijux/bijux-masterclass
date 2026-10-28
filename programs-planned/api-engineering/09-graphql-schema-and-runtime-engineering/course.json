@@ -1,0 +1,15 @@
+{
+  "duration_days": 10,
+  "graph_api_version": "1.0",
+  "graphql_over_http_profile": "course-profile-1.0-based-on-stage-2-draft",
+  "graphql_specification": "September 2025",
+  "id": "09-graphql-schema-and-runtime-engineering",
+  "orientation_module": true,
+  "predecessor": "08-distributed-api-architecture-and-microservices-engineering",
+  "primary_language_strategy": "one-primary-track-one-comparative-reference",
+  "program": "api-engineering",
+  "sequence": 9,
+  "successor": "10-api-platform-governance-and-developer-experience-engineering",
+  "title": "GraphQL Schema and Runtime Engineering",
+  "version": "1.0.0"
+}

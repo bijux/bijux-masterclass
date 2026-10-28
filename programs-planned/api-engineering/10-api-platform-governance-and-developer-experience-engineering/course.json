@@ -1,0 +1,26 @@
+{
+  "capstone": "Analysis API Platform 1.0",
+  "course_number": 10,
+  "durationTeachingDays": 10,
+  "id": "api-platform-governance-and-developer-experience-engineering",
+  "languageTracks": [
+    "python",
+    "typescript"
+  ],
+  "number": 10,
+  "orientationRequired": true,
+  "predecessor": "09-graphql-schema-and-runtime-engineering",
+  "primaryProduct": "course-book",
+  "slug": "api-platform-governance-and-developer-experience-engineering",
+  "standardsProfile": {
+    "asyncapi": "3.1.0",
+    "backstage": "course-governed catalog descriptor subset; optional external validation",
+    "cyclonedx": "1.7",
+    "graphql": "September 2025",
+    "openapi": "3.1.2 executable contract inherited from API 1.2",
+    "protobuf": "proto3 baseline with Edition 2024 frontier inherited",
+    "slsa": "1.2 vocabulary and provenance profile"
+  },
+  "title": "API Platform, Governance, and Developer Experience Engineering",
+  "version": "1.0.0"
+}

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-broker
+  namespace: analysis-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: event-broker}
+  template:
+    metadata:
+      labels: {app: event-broker}
+    spec:
+      containers:
+        - name: nats
+          image: nats:2.11
+          args: ["-js"]
+          ports: [{name: client, containerPort: 4222}]
+          readinessProbe: {tcpSocket: {port: client}}
+          livenessProbe: {tcpSocket: {port: client}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-broker
+  namespace: analysis-platform
+spec:
+  selector: {app: event-broker}
+  ports: [{name: client, port: 4222, targetPort: client}]

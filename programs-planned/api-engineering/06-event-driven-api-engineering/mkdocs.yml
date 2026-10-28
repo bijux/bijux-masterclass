@@ -1,0 +1,100 @@
+site_name: "API Engineering 06 \u2014 Event-Driven API Engineering"
+site_description: Contracts, delivery semantics, exactly-once effects, evolution, replay, event time, security, and operations.
+docs_dir: .
+site_dir: site
+theme:
+  name: mkdocs
+nav:
+- Home: course-book/index.md
+- Start here: course-book/start-here.md
+- Study plan: course-book/study-plan.md
+- Capstone: course-book/capstone.md
+- Standards and evidence: course-book/standards.md
+- Glossary: course-book/glossary.md
+- Orientation:
+  - Chapter: course-book/module-00-orientation/index.md
+  - Lab: course-book/module-00-orientation/lab.md
+  - Checkpoint: course-book/module-00-orientation/checkpoint.md
+- "01 \u2014 Event Thinking, Ownership, and Message Taxonomy":
+  - Chapter: course-book/module-01-event-thinking-and-ownership/index.md
+  - Exercises: course-book/module-01-event-thinking-and-ownership/exercises.md
+  - Worked answers: course-book/module-01-event-thinking-and-ownership/exercise-answers.md
+  - Lab: course-book/module-01-event-thinking-and-ownership/lab.md
+  - Checkpoint: course-book/module-01-event-thinking-and-ownership/checkpoint.md
+- "02 \u2014 AsyncAPI, CloudEvents, and Contract Architecture":
+  - Chapter: course-book/module-02-asyncapi-and-contract-architecture/index.md
+  - Exercises: course-book/module-02-asyncapi-and-contract-architecture/exercises.md
+  - Worked answers: course-book/module-02-asyncapi-and-contract-architecture/exercise-answers.md
+  - Lab: course-book/module-02-asyncapi-and-contract-architecture/lab.md
+  - Checkpoint: course-book/module-02-asyncapi-and-contract-architecture/checkpoint.md
+- "03 \u2014 Delivery Semantics, Ordering, Partitioning, and Acknowledgement":
+  - Chapter: course-book/module-03-delivery-ordering-and-acknowledgement/index.md
+  - Exercises: course-book/module-03-delivery-ordering-and-acknowledgement/exercises.md
+  - Worked answers: course-book/module-03-delivery-ordering-and-acknowledgement/exercise-answers.md
+  - Lab: course-book/module-03-delivery-ordering-and-acknowledgement/lab.md
+  - Checkpoint: course-book/module-03-delivery-ordering-and-acknowledgement/checkpoint.md
+- "04 \u2014 Transactional Publication, Inbox Deduplication, and Exactly-Once Effects":
+  - Chapter: course-book/module-04-transactional-publication-and-idempotent-effects/index.md
+  - Exercises: course-book/module-04-transactional-publication-and-idempotent-effects/exercises.md
+  - Worked answers: course-book/module-04-transactional-publication-and-idempotent-effects/exercise-answers.md
+  - Lab: course-book/module-04-transactional-publication-and-idempotent-effects/lab.md
+  - Checkpoint: course-book/module-04-transactional-publication-and-idempotent-effects/checkpoint.md
+- "05 \u2014 Schema Evolution, Compatibility, Replay, and Historical Truth":
+  - Chapter: course-book/module-05-evolution-replay-and-historical-truth/index.md
+  - Exercises: course-book/module-05-evolution-replay-and-historical-truth/exercises.md
+  - Worked answers: course-book/module-05-evolution-replay-and-historical-truth/exercise-answers.md
+  - Lab: course-book/module-05-evolution-replay-and-historical-truth/lab.md
+  - Checkpoint: course-book/module-05-evolution-replay-and-historical-truth/checkpoint.md
+- "06 \u2014 Consumer Architecture and Asynchronous Workflows":
+  - Chapter: course-book/module-06-consumer-architecture-and-workflows/index.md
+  - Exercises: course-book/module-06-consumer-architecture-and-workflows/exercises.md
+  - Worked answers: course-book/module-06-consumer-architecture-and-workflows/exercise-answers.md
+  - Lab: course-book/module-06-consumer-architecture-and-workflows/lab.md
+  - Checkpoint: course-book/module-06-consumer-architecture-and-workflows/checkpoint.md
+- "07 \u2014 Event-Time Stream Processing, Windows, Watermarks, and Corrections":
+  - Chapter: course-book/module-07-event-time-stream-processing/index.md
+  - Exercises: course-book/module-07-event-time-stream-processing/exercises.md
+  - Worked answers: course-book/module-07-event-time-stream-processing/exercise-answers.md
+  - Lab: course-book/module-07-event-time-stream-processing/lab.md
+  - Checkpoint: course-book/module-07-event-time-stream-processing/checkpoint.md
+- "08 \u2014 Event Security, Multi-Tenancy, Privacy, and Trust":
+  - Chapter: course-book/module-08-event-security-and-multitenancy/index.md
+  - Exercises: course-book/module-08-event-security-and-multitenancy/exercises.md
+  - Worked answers: course-book/module-08-event-security-and-multitenancy/exercise-answers.md
+  - Lab: course-book/module-08-event-security-and-multitenancy/lab.md
+  - Checkpoint: course-book/module-08-event-security-and-multitenancy/checkpoint.md
+- "09 \u2014 Event Reliability, Backpressure, Dead Letters, and Recovery":
+  - Chapter: course-book/module-09-event-reliability-and-recovery/index.md
+  - Exercises: course-book/module-09-event-reliability-and-recovery/exercises.md
+  - Worked answers: course-book/module-09-event-reliability-and-recovery/exercise-answers.md
+  - Lab: course-book/module-09-event-reliability-and-recovery/lab.md
+  - Checkpoint: course-book/module-09-event-reliability-and-recovery/checkpoint.md
+- "10 \u2014 Event Platform Governance, Release, and Final Defense":
+  - Chapter: course-book/module-10-governance-release-and-final-defense/index.md
+  - Exercises: course-book/module-10-governance-release-and-final-defense/exercises.md
+  - Worked answers: course-book/module-10-governance-release-and-final-defense/exercise-answers.md
+  - Lab: course-book/module-10-governance-release-and-final-defense/lab.md
+  - Checkpoint: course-book/module-10-governance-release-and-final-defense/checkpoint.md
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- footnotes
+- tables
+- toc
+strict: true
+exclude_docs: 'capstone/**
+
+  assessment/**
+
+  instructor/**
+
+  scripts/**
+
+  reports/**
+
+  tests/**
+
+  README.md
+
+  '

@@ -1,0 +1,7 @@
+{
+  "algorithm": "line-count",
+  "priority": "high",
+  "labels": {
+    "cohort": "A"
+  }
+}

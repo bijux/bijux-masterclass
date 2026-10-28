@@ -1,0 +1,60 @@
+{
+  "cases": [
+    {
+      "eligibility": "eligible",
+      "id": "success",
+      "operation": "getProject",
+      "outcome": "good",
+      "status": 200
+    },
+    {
+      "eligibility": "eligible",
+      "id": "conditional-not-modified",
+      "operation": "downloadArtifactContent",
+      "outcome": "good",
+      "status": 304
+    },
+    {
+      "eligibility": "excluded",
+      "id": "client-validation",
+      "operation": "createProject",
+      "outcome": "neutral",
+      "status": 422
+    },
+    {
+      "eligibility": "excluded",
+      "id": "not-found",
+      "operation": "getProject",
+      "outcome": "neutral",
+      "status": 404
+    },
+    {
+      "eligibility": "eligible",
+      "id": "deadline",
+      "operation": "getProject",
+      "outcome": "bad",
+      "status": 408
+    },
+    {
+      "eligibility": "eligible",
+      "id": "overload",
+      "operation": "startAnalysis",
+      "outcome": "bad",
+      "status": 429
+    },
+    {
+      "eligibility": "eligible",
+      "id": "server-failure",
+      "operation": "startAnalysis",
+      "outcome": "bad",
+      "status": 503
+    },
+    {
+      "eligibility": "excluded",
+      "id": "internal-readiness",
+      "operation": "internalHealthReady",
+      "outcome": "neutral",
+      "status": 503
+    }
+  ]
+}

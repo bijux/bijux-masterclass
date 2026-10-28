@@ -1,0 +1,8 @@
+{
+  "id": "EVT-02",
+  "slug": "EVT-02-ack-before-commit",
+  "summary": "Consumer acknowledges before its database effect commits",
+  "mustBeRejected": true,
+  "expectedOracle": "failure injection must show redelivery can no longer recover the lost effect",
+  "proofFamily": "delivery"
+}

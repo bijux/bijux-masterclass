@@ -1,0 +1,70 @@
+{
+  "capstone": "Analysis Runs Platform",
+  "courseCount": 6,
+  "courses": [
+    {
+      "centralQuestion": "What exactly does the API promise, and how can providers and consumers verify that promise?",
+      "directory": "01-openapi-contract-engineering",
+      "id": "openapi-contract-engineering",
+      "incomingBoundary": "Basic programming ability and no assumed OpenAPI experience.",
+      "number": 1,
+      "outgoingBoundary": "A frozen API 1.1 contract, operation ledger, schema fixtures, security decisions, workflows, and provider-neutral behavioral scenarios.",
+      "responsibility": "Define and verify the public HTTP contract.",
+      "title": "OpenAPI Contract Engineering"
+    },
+    {
+      "centralQuestion": "Which internal mechanisms keep the public contract true under concurrency, restart, and partial failure?",
+      "directory": "02-contract-driven-api-service-engineering",
+      "id": "contract-driven-api-service-engineering",
+      "incomingBoundary": "The immutable Course 1 API 1.1 handoff and its provider-neutral proof corpus.",
+      "number": 2,
+      "outgoingBoundary": "A durable API 1.2 service handoff with migrations 001\u2013005, idempotency, optimistic concurrency, stable pagination, worker recovery, artifact integrity, and transactional webhook delivery.",
+      "responsibility": "Implement the fixed contract with durable application, database, worker, storage, and release mechanisms.",
+      "title": "Contract-Driven API Service Engineering"
+    },
+    {
+      "centralQuestion": "How does the service remain trustworthy under hostile behavior without hiding behind middleware or scanner output?",
+      "directory": "03-api-security-engineering",
+      "id": "api-security-engineering",
+      "incomingBoundary": "The Course 2 API 1.2 durable-service handoff and migrations 001\u2013005.",
+      "number": 3,
+      "outgoingBoundary": "Security Profile 1.0, migrations 006\u2013007, threat-to-requirement traceability, identity and authorization policy, hostile-input vectors, secure webhook rules, abuse controls, and incident evidence.",
+      "responsibility": "Preserve the API and durable-service guarantees when callers, credentials, inputs, destinations, and dependencies are not trusted by default.",
+      "title": "API Security Engineering"
+    },
+    {
+      "centralQuestion": "How do operators know whether the user promise is still true, and how do they recover it without making the incident worse?",
+      "directory": "04-api-reliability-and-observability-engineering",
+      "id": "api-reliability-and-observability-engineering",
+      "incomingBoundary": "The Course 3 API 1.2 service protected by Security Profile 1.0 and migrations 001\u2013007.",
+      "number": 4,
+      "outgoingBoundary": "Reliability Profile 1.0, migration 008, critical journeys, deadlines, resilience policies, lifecycle controls, telemetry contracts, SLOs, alerts, runbooks, game-day evidence, and reconciliation plans.",
+      "responsibility": "Detect, diagnose, contain, reconcile, and recover when processes, dependencies, networks, or operators fail.",
+      "title": "API Reliability and Observability Engineering"
+    },
+    {
+      "centralQuestion": "Where does time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening its promise?",
+      "directory": "05-api-performance-capacity-and-traffic-engineering",
+      "id": "api-performance-capacity-and-traffic-engineering",
+      "incomingBoundary": "The Course 4 observable and recoverable API 1.2 service with Security and Reliability Profiles 1.0 and migrations 001\u2013008.",
+      "number": 5,
+      "outgoingBoundary": "Performance Profile 1.0, migration 009, workload identities, benchmark evidence, HTTP and query optimizations, concurrency and cache policy, traffic controls, capacity models, and performance release gates.",
+      "responsibility": "Preserve correctness, latency, throughput, fairness, and bounded resource use as demand and data volume grow.",
+      "title": "API Performance, Capacity, and Traffic Engineering"
+    },
+    {
+      "centralQuestion": "How can independent producers and consumers share durable facts without confusing intent, delivery attempts, processing effects, and historical truth?",
+      "directory": "06-event-driven-api-engineering",
+      "id": "event-driven-api-engineering",
+      "incomingBoundary": "The Course 5 API 1.2 service with Security, Reliability, and Performance Profiles 1.0 and migrations 001\u2013009.",
+      "number": 6,
+      "outgoingBoundary": "Analysis Events API 1.0, Event Profile 1.0, AsyncAPI 3.1.0 contract, CloudEvents 1.0 envelope profile, migrations 010\u2013012, replay and dead-letter policy, and governed consumer declarations.",
+      "responsibility": "Design, evolve, secure, operate, and verify asynchronous contracts when delivery may be delayed, duplicated, reordered within declared limits, or replayed.",
+      "title": "Event-Driven API Engineering"
+    }
+  ],
+  "id": "api-engineering",
+  "numberedModuleCount": 60,
+  "schemaVersion": 1,
+  "title": "API Engineering"
+}

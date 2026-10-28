@@ -1,0 +1,8 @@
+id: DEFECT-REL-07
+module: 7
+name: Async child misuse
+detector: durable-trace-link-policy
+mutation: Represent durable queue delay as one synchronous child span.
+oracle: topology review
+expectedCommand: make module-proof MODULE=07
+expectedFailure: Durable boundaries require a trace link.

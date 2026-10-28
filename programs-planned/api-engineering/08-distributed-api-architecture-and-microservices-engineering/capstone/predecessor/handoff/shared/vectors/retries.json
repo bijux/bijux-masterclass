@@ -1,0 +1,55 @@
+{
+  "profile": "grpc-retry-1.0",
+  "cases": [
+    {
+      "id": "RTY-01",
+      "method": "GetRun",
+      "status": "UNAVAILABLE",
+      "idempotent": false,
+      "attempt": 1,
+      "remaining": 2.0,
+      "delay": 0.1,
+      "expected": true
+    },
+    {
+      "id": "RTY-02",
+      "method": "CreateRun",
+      "status": "UNAVAILABLE",
+      "idempotent": false,
+      "attempt": 1,
+      "remaining": 2.0,
+      "delay": 0.1,
+      "expected": false
+    },
+    {
+      "id": "RTY-03",
+      "method": "CreateRun",
+      "status": "UNAVAILABLE",
+      "idempotent": true,
+      "attempt": 1,
+      "remaining": 2.0,
+      "delay": 0.1,
+      "expected": true
+    },
+    {
+      "id": "RTY-04",
+      "method": "CreateRun",
+      "status": "UNAVAILABLE",
+      "idempotent": true,
+      "attempt": 3,
+      "remaining": 2.0,
+      "delay": 0.1,
+      "expected": false
+    },
+    {
+      "id": "RTY-05",
+      "method": "GetRun",
+      "status": "UNAVAILABLE",
+      "idempotent": false,
+      "attempt": 1,
+      "remaining": 0.05,
+      "delay": 0.1,
+      "expected": false
+    }
+  ]
+}

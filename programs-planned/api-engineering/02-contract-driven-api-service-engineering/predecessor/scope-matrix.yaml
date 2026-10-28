@@ -1,0 +1,35 @@
+credentials:
+  anonymous: {}
+  reader:
+    Authorization: Bearer learner-read
+  writer:
+    Authorization: Bearer learner-write
+  other-owner:
+    Authorization: Bearer other-owner
+  api-key:
+    X-API-Key: demo-api-key
+  admin:
+    Authorization: Bearer admin
+expectations:
+  getHealth: [anonymous, reader, writer, other-owner, api-key, admin]
+  listProjects: [reader, writer, other-owner, api-key, admin]
+  createProject: [writer, other-owner, api-key, admin]
+  getProject: [reader, writer, other-owner, api-key, admin]
+  updateProject: [writer, other-owner, api-key, admin]
+  listProjectDatasets: [reader, writer, other-owner, api-key, admin]
+  createDataset: [writer, other-owner, api-key, admin]
+  getDataset: [reader, writer, other-owner, api-key, admin]
+  deleteDataset: [writer, other-owner, api-key, admin]
+  uploadDatasetContent: [writer, other-owner, api-key, admin]
+  listAnalysisRuns: [reader, writer, other-owner, api-key, admin]
+  createAnalysisRun: [writer, other-owner, api-key, admin]
+  getAnalysisRun: [reader, writer, other-owner, api-key, admin]
+  cancelAnalysisRun: [writer, other-owner, api-key, admin]
+  listRunArtifacts: [reader, writer, other-owner, api-key, admin]
+  streamAnalysisRunEvents: [reader, writer, other-owner, api-key, admin]
+  getArtifact: [reader, writer, other-owner, api-key, admin]
+  createWebhookSubscription: [writer, other-owner, api-key, admin]
+  getInternalDiagnostics: [admin]
+notes:
+  - A credential appearing in an operation row means its scopes are sufficient, not that it can access another principal's object.
+  - Object ownership is tested separately and deliberately returns 404 to avoid existence disclosure.

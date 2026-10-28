@@ -1,0 +1,1821 @@
+{
+  "algorithm": "sha256",
+  "files": [
+    {
+      "path": "Makefile",
+      "sha256": "eeb13a533af6a299f332c4599b01e8444480c8fb94c06d62b0924540ade54e6d",
+      "size": 1866
+    },
+    {
+      "path": "README.md",
+      "sha256": "8d61385235f5f98bfefff41a9240d2f09860d4bae191551b2236897f32733e1c",
+      "size": 2538
+    },
+    {
+      "path": "assessment/final-defense.md",
+      "sha256": "3673e896913a7bc0712d93b04409f32d1afd87e6b0053997eee5c89903846439",
+      "size": 253
+    },
+    {
+      "path": "assessment/rubric.md",
+      "sha256": "53ddbe294ace77e6a5d7abf9158951f782a17c67c1fc69d8f48986499cf745ef",
+      "size": 622
+    },
+    {
+      "path": "capstone/README.md",
+      "sha256": "a026bc9bd076da083b98ccb418ae7939676a3c086d0201f9a48119f8da9c27d9",
+      "size": 466
+    },
+    {
+      "path": "capstone/docs/security-case.md",
+      "sha256": "3404e2c235dd7c3601c5dc512eb5722a0a3af0c44b9b360358c1e0bb57f0899a",
+      "size": 2119
+    },
+    {
+      "path": "capstone/handoff/README.md",
+      "sha256": "541778e666c2da5d26637326b992a965658ac798a64ef4a3512a69d0d8b3beae",
+      "size": 505
+    },
+    {
+      "path": "capstone/handoff/contract/openapi-api-1.2.bundle.yaml",
+      "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+      "size": 355600
+    },
+    {
+      "path": "capstone/handoff/identity/jwks.json",
+      "sha256": "b82bd9e4fc58982f5aa85ae8bdd7887b8a2d9007cf5b311bbc6a5f581ba93c3a",
+      "size": 505
+    },
+    {
+      "path": "capstone/handoff/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "path": "capstone/handoff/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "path": "capstone/handoff/release/RELEASE.yaml",
+      "sha256": "a76991682e231695627e5810db336247bf98dbced3e069076facdcc22c86c3b2",
+      "size": 336
+    },
+    {
+      "path": "capstone/handoff/security/assumptions.yaml",
+      "sha256": "e5d10c3a041cac2d965463d0e0ef91ddc04e596e0a6ad8243b37eb2e409ceb00",
+      "size": 768
+    },
+    {
+      "path": "capstone/handoff/security/policy-matrix.yaml",
+      "sha256": "dd692bf156a265942ad6c0d2973998b8edda55468a9ebdbd06c7af2dbfc2a27f",
+      "size": 4707
+    },
+    {
+      "path": "capstone/handoff/security/proof-map.yaml",
+      "sha256": "d90f153e2da80b6a72d42a04d59f5efa908e3f5825224111819dbce567d80a7b",
+      "size": 8956
+    },
+    {
+      "path": "capstone/handoff/security/requirements.yaml",
+      "sha256": "be1686ef3d7968140afd140c26b165077272c9493145c063b2665e071f1a24b9",
+      "size": 6415
+    },
+    {
+      "path": "capstone/handoff/security/residual-risks.yaml",
+      "sha256": "5cc555c18ffe070039c08e8c6c0b1803368c7e8df83025260a70db8fcef8e1a7",
+      "size": 785
+    },
+    {
+      "path": "capstone/handoff/security/security-profile.yaml",
+      "sha256": "f807eb05a16b47a29df44e56a19906066c25694684eca811d4437e646f0439fa",
+      "size": 741
+    },
+    {
+      "path": "capstone/handoff/vectors/abuse.json",
+      "sha256": "f0b4b1c92364e54210d3eda3f6cd2daf69ac8bd9e2879238d4865dc500151406",
+      "size": 1464
+    },
+    {
+      "path": "capstone/handoff/vectors/audit.json",
+      "sha256": "ee5d45fce4432ace9e471ae2a2efc018be44c27c48d0b74f1dbbe232d454d9d7",
+      "size": 467
+    },
+    {
+      "path": "capstone/handoff/vectors/authorization.json",
+      "sha256": "d970d8d9627d9448f5d0a6d91013a32db2dc4b2fcfdba115d278f2354cf9ed2e",
+      "size": 2307
+    },
+    {
+      "path": "capstone/handoff/vectors/edge.json",
+      "sha256": "03b548f563559aa8b98a07aa45b503cd927b00df28a697939f2c1a0316589e78",
+      "size": 1770
+    },
+    {
+      "path": "capstone/handoff/vectors/input-security.json",
+      "sha256": "f093c899cd646c8cf918393acf691d534c51faf26ee71dc6a3f55062f0e6580f",
+      "size": 2225
+    },
+    {
+      "path": "capstone/handoff/vectors/redaction.json",
+      "sha256": "ae1d53216751b0e13d2831a9237162bf89fe413dd90287476931cb1c940929da",
+      "size": 1051
+    },
+    {
+      "path": "capstone/handoff/vectors/ssrf.json",
+      "sha256": "142f8d82a0dabe69d075878d90180edbf26fcfeee3a303ac7fc2274e0b23026b",
+      "size": 2051
+    },
+    {
+      "path": "capstone/handoff/vectors/strict-json.json",
+      "sha256": "465183f18a71401081483356dc5e6f3e9ad7f03c2fa3f855dc0146d6ef7b2e4c",
+      "size": 1241
+    },
+    {
+      "path": "capstone/handoff/vectors/webhook.json",
+      "sha256": "9a6034d99ce155f383a8faadf8d70aae7ac79827453350ab38cbfe0ecbeac569",
+      "size": 1330
+    },
+    {
+      "path": "capstone/identity-provider/README.md",
+      "sha256": "c4ad0e89a26e29421938cd1fd6fce5a11efbf178c2d4829e4a5c973788f0cee8",
+      "size": 317
+    },
+    {
+      "path": "capstone/identity-provider/issuer.py",
+      "sha256": "ec39fd6a455bc73df447264f5e9088bb3fdbdc0d8b2584d1ce20e17af05f43df",
+      "size": 1619
+    },
+    {
+      "path": "capstone/identity-provider/jwks.json",
+      "sha256": "b82bd9e4fc58982f5aa85ae8bdd7887b8a2d9007cf5b311bbc6a5f581ba93c3a",
+      "size": 505
+    },
+    {
+      "path": "capstone/identity-provider/private/fixture-private.pem",
+      "sha256": "78077b145db8ebc1221819800da79d59c9f2bae22fd64a8198bb9674e05b1e29",
+      "size": 1704
+    },
+    {
+      "path": "capstone/identity-provider/tokens.json",
+      "sha256": "228bf50b0284d78f8e6f0448c249c2d0e77e9cbb6fb084410dd47e4b100a0b39",
+      "size": 4281
+    },
+    {
+      "path": "capstone/incident/scenario.yaml",
+      "sha256": "e97e8ac290883c30f5db51b9b439bb2024f87b0fa382208f05947e34c51c0502",
+      "size": 999
+    },
+    {
+      "path": "capstone/migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "path": "capstone/migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "path": "capstone/planted-defects/01-orphan-requirement.md",
+      "sha256": "97718be649b6f885abfcd6451b937413e872c81b4aa132863446a6665e639132",
+      "size": 175
+    },
+    {
+      "path": "capstone/planted-defects/02-trust-all-proxy.md",
+      "sha256": "ce94ba3ed1d10bc30e5986b5ab31ccef471d38665c0034ae6cd5faf365275484",
+      "size": 194
+    },
+    {
+      "path": "capstone/planted-defects/03-skip-audience.md",
+      "sha256": "78b0e09658468c1a472c7b79fc29fd4172e65e8568be2b399a1760d1829d3b82",
+      "size": 215
+    },
+    {
+      "path": "capstone/planted-defects/04-omit-owner.md",
+      "sha256": "b1570f2cefb66c70d19c75141d44f45be99edde3ccc66aed1357190cf18db9ee",
+      "size": 191
+    },
+    {
+      "path": "capstone/planted-defects/05-no-percent-decode.md",
+      "sha256": "983aac98a266598eb9cfd96ddad1cc2513a9f5d7fcb4f083ed6fd695f9a4de05",
+      "size": 193
+    },
+    {
+      "path": "capstone/planted-defects/06-host-suffix-only.md",
+      "sha256": "4adf3e4c09cf363822eac62bddc4f6224622cf0d97d8c1ae48d0b1686a88b7e6",
+      "size": 211
+    },
+    {
+      "path": "capstone/planted-defects/07-secret-repr.md",
+      "sha256": "0f21a81ab092d58160ccd9bf347d07877ee148a05ce80f5ec372f5eff05753d3",
+      "size": 192
+    },
+    {
+      "path": "capstone/planted-defects/08-permit-leak.md",
+      "sha256": "bc9158ee3eda1e4b4bc97f3d0afaedc7340d0d7604a88dc2b2e35f2e572ff1c1",
+      "size": 186
+    },
+    {
+      "path": "capstone/planted-defects/09-disable-oracle.md",
+      "sha256": "2d773b842dacdbf94373c4c160556baf66b4e2c36353f880dda8ed9923186e6b",
+      "size": 219
+    },
+    {
+      "path": "capstone/planted-defects/10-incomplete-rotation.md",
+      "sha256": "b8fa10034f12e6c2803168021ed3ffa8376f0ccb7905ca4b38d3cfdced6a9761",
+      "size": 206
+    },
+    {
+      "path": "capstone/predecessor/contract/openapi-api-1.2.bundle.yaml",
+      "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+      "size": 355600
+    },
+    {
+      "path": "capstone/predecessor/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/predecessor/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/predecessor/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/predecessor/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/predecessor/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/Dockerfile",
+      "sha256": "fc4a87a6bf14d1bde258c5b62da22d49a544093474c449b19dfefdda9eaba7ad",
+      "size": 352
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/README.md",
+      "sha256": "bdd098b5db762398bcaeaf34386427cbf51fcbae3a6781fd073f8f6cca077c50",
+      "size": 391
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/fixtures/remote/remote-dataset.json",
+      "sha256": "f4a6dd87f77c9164d4cea38d4a5dc82e779e6cec034c359d6361b46e70ced11a",
+      "size": 238
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/pyproject.toml",
+      "sha256": "91016e61295f589658e11b99704bdbab27212e6d77645b969ffadba5e0b16716",
+      "size": 573
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/__init__.py",
+      "sha256": "ae3506a416e52bd9365fcd68e99482444860bf953e9471257e369b17f255c42c",
+      "size": 69
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/app.py",
+      "sha256": "42db700dae67f9bec174988c81a09dfa8c8547ecded68c87ec679a0d8d3f9504",
+      "size": 16845
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/artifacts.py",
+      "sha256": "271bdf7228964a112db3c38aa1924fdaf38aa6feda0d4bedd3aeadd3d757e16f",
+      "size": 6056
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/auth.py",
+      "sha256": "85effc24eed76c86d06e840f965208bf156f6c1b892a3767c636b1aa93444db9",
+      "size": 3134
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/cli.py",
+      "sha256": "f6ec33c1840dab2736277594dd66a9a37dd556c5b449c60d71766cb22e79ac57",
+      "size": 568
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/config.py",
+      "sha256": "f537cb71fa54cfc196c3f222f421b8d10fb5230fb2b1721bc1c190ac99d4471e",
+      "size": 3974
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/domain.py",
+      "sha256": "4995700ff68928c7dc5640dcf33c88ca772f83da360092f37212e1e9feb35b06",
+      "size": 7483
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/failures.py",
+      "sha256": "b94e9793a3fce822fc85eb747fb7ceee551c5e09f4be405e3c24eebb2270e08b",
+      "size": 447
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/migrations.py",
+      "sha256": "f21b16078725cc77d0832a51cb4e989c792b59aff707f0e27469c78facd3b3d3",
+      "size": 2978
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/models.py",
+      "sha256": "18b8acaa56501f7698dea7ea8a4078f6df18cf45f31e606282ee745a3ff0ad4e",
+      "size": 11103
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/ports.py",
+      "sha256": "280f0adb75e8e352f177dfc2f917ecab19eb8389c00a261efdb77ff91f7c360d",
+      "size": 5924
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/postgres.py",
+      "sha256": "fe5b8aff3c1d1cac88b56bbb0d0aa74ac82c4e760e3cb40f7644a4b67e1ae239",
+      "size": 72481
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/problems.py",
+      "sha256": "d48ee8f9907695eb89fe75f39b4312a548c7e8fb6820401328114d3989da8406",
+      "size": 2431
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/remote_fixtures.py",
+      "sha256": "b100916a229489de3efe552387665b694b88e0d284d2e6106e8a7b08a900f81b",
+      "size": 2646
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/server.py",
+      "sha256": "209548112a11627eda9a7a1ceef45468506424defc687a245dc78dbd37f2b03c",
+      "size": 83
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/service.py",
+      "sha256": "2951a8fde0c93b4ed08a08c51ac1832083095fa12c7d5700a1e0c2d202c9af9c",
+      "size": 5804
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/webhooks.py",
+      "sha256": "9ecf2f646b286359ec3a92488e08fef2248abb706952ad035666ec6d9c26fcc8",
+      "size": 1989
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/src/analysis_service/worker.py",
+      "sha256": "b91a787f4f879177b13224afc57502956d92e4d3143b34f895c55dfec9161b88",
+      "size": 8998
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/tests/test_artifacts.py",
+      "sha256": "874be4182b8b15f693f05b44e3fe5558d1f8624d6485647eb8b4c9eb2956ad35",
+      "size": 3348
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/tests/test_domain.py",
+      "sha256": "969ae95c1de37a14e6aa0e3fc02b3f653e43badeee29180c96677ff92f20f209",
+      "size": 3337
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/tests/test_models.py",
+      "sha256": "57893fa4275b33cbb999bfd1b8dfd03823bc3c950a05c35401c2efb456752d06",
+      "size": 1911
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/tests/test_operation_map.py",
+      "sha256": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
+      "size": 751
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/tests/test_postgres_integration.py",
+      "sha256": "24812dff35e5a4de84983ce8ba6bcd516cd43404d949649811908989360d624f",
+      "size": 724
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/tests/test_remote_fixtures.py",
+      "sha256": "f1417a5a95b45f70925d3d8fe51ced13b47bd96a3a4a900ba9ec7ef753a14061",
+      "size": 2550
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/python-fastapi/tests/test_webhooks.py",
+      "sha256": "00b35553701194142ac1495863e4839440332d933696353f892d8e2f0fc041ca",
+      "size": 1051
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/Dockerfile",
+      "sha256": "494c94a5d3fd6b51b41269961cd5caa235381e32558767b718fb56519a0182e7",
+      "size": 639
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/README.md",
+      "sha256": "dcd98afc1c779641e27b391bd89f1ba569281de71d65964a36da6aefee2ee73f",
+      "size": 856
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/fixtures/remote/remote-dataset.json",
+      "sha256": "f4a6dd87f77c9164d4cea38d4a5dc82e779e6cec034c359d6361b46e70ced11a",
+      "size": 238
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/package.json",
+      "sha256": "5012756b29ce1ff90b1a938f19f83f3ad31c15ea2b02671bc005a061e04e6802",
+      "size": 925
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/app.ts",
+      "sha256": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
+      "size": 17896
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/artifacts.ts",
+      "sha256": "a3bb1cc7ffe94e2a2774635a35f3bb3406fde5f0f3c06e74e16be183d95dcf6d",
+      "size": 5566
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/auth.ts",
+      "sha256": "9a34ce2b89b4ff69a5387bce56f736ade3a13a93f423186a7dcd6911b8d5b140",
+      "size": 3375
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/config.ts",
+      "sha256": "476e10793a9a13e95fb22ed15a22bb4f791b35c1a1d36d3cfcc324d4e985c870",
+      "size": 3335
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/core/domain.ts",
+      "sha256": "fc1167a542070994bdab14433874f9b1f925886167bea14ae1405eb43c4812bd",
+      "size": 5347
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/db.ts",
+      "sha256": "e40608df7ca4ff7591256fe3c46ed0377baf8bfc8b2d72550eb60572c54ac1de",
+      "size": 1342
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/domain.ts",
+      "sha256": "db63b0089b148d36f90cc877c956aa5a5578b8d381ed9a13ed4809aa8143036f",
+      "size": 1381
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/migrate.ts",
+      "sha256": "272acac33ad10227d8f15ab17616e0ab030a30b47e303807cab46dac58109a52",
+      "size": 432
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/migrations.ts",
+      "sha256": "29596bffa48b9a042959511633a13cf742ab44e81b945819174e27a184637c05",
+      "size": 3029
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/problems.ts",
+      "sha256": "f8328a49e23da7140c3beff7506fecf45740bbf92d6e1bff0b1f494598da6136",
+      "size": 3943
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/remoteFixtures.ts",
+      "sha256": "bb02bda3fa0ef50b2283d995b46f19a0ae65db78b3f17ed2221415518347c757",
+      "size": 2149
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/repository.ts",
+      "sha256": "67b70693c764dfcd9d3626c941153866c946cbb0c7b894c7f4ebda08ecfca74c",
+      "size": 58443
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/schemas.ts",
+      "sha256": "3030c6719463b20b945337959e375cfdf60898144db59bd2eb0dccfeacbefe6d",
+      "size": 11944
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/server.ts",
+      "sha256": "e8eaee700946b55294a56523b9245731e10065ac5c46d66b7f067d1651fc690f",
+      "size": 810
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/service.ts",
+      "sha256": "7706b193b66f6791b7a33516357df58c97f19c9cd858ebbac2b78d903cd01f93",
+      "size": 5266
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/types.ts",
+      "sha256": "b81421faed12ba017ac43c84bc7b92e39bf9548f628eba61fe11ef888c601601",
+      "size": 3832
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/webhooks.ts",
+      "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+      "size": 2458
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/src/worker.ts",
+      "sha256": "e605eb8a0f09c7981c5507ad256ef27ef4fcbaa41a2449aa0312e9d05f80fc8d",
+      "size": 8357
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/test/artifacts.test.ts",
+      "sha256": "c31bd9082e44365031c14d88cd08bd312f5817b6b71c356ac4cc1f9492f1e3cb",
+      "size": 2758
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/test/domain.test.ts",
+      "sha256": "f757c89e72510400610c92401b700825cd10a82ff82f36f5e4cf4ab0f7996f90",
+      "size": 2652
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/test/operation-map.test.ts",
+      "sha256": "ac7f3818c094f72a654839ba11078b4eed75f6552cd8e7de65deedce285ad648",
+      "size": 1155
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/test/postgres.integration.test.ts",
+      "sha256": "1e0b18bd5099d8a82cc3c54cbe4a5ae2a6f5ebbd6881108fb5f6aab94af1daf4",
+      "size": 668
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/test-core/artifacts.test.mjs",
+      "sha256": "ba5dc4e38d8a7ee534cc8e6c39789735c0192e528085999749cd0df4e6e65c47",
+      "size": 2421
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/test-core/domain.test.mjs",
+      "sha256": "3b115d3586af17d94455e28bca8a4a59e7cbeca652dd67ce8d883bb0171a7be5",
+      "size": 1452
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/test-core/remote-fixtures.test.mjs",
+      "sha256": "d0a7d2cd15f9d5a0341ca60077021a36ee5420a533a2ac7e39da998b30fe4f31",
+      "size": 2023
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/test-core/webhooks.test.mjs",
+      "sha256": "b47bd6222ac6a2b2b4c8d105d9464aa4c243c31c23171417b2111e6fa5cb7048",
+      "size": 1172
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.audit.json",
+      "sha256": "df4b3c352ab9ecbc016bb1d9b19be007880698a6edd7ed31af124df1663e8762",
+      "size": 578
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.core.json",
+      "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+      "size": 605
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/typescript-fastify/tsconfig.json",
+      "sha256": "0238be9dceaba53cf261b2f1a7ece2cc50da6f66a633a2c89fd25f69d6385d03",
+      "size": 546
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/webhook-receiver/Dockerfile",
+      "sha256": "4aad1bef9af498b6559d920301349c9fae5a8bb64b78da82c9210c0eb38e5c66",
+      "size": 285
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/webhook-receiver/README.md",
+      "sha256": "b1bdcf7682d4806481ce149740a066601eb9e87834d198c86f1f77e719a1aa40",
+      "size": 690
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/webhook-receiver/receiver.py",
+      "sha256": "a94700726ea02fc6e906b5f0a1480240b6661c23c41afc0c143a0997e197ee8a",
+      "size": 9636
+    },
+    {
+      "path": "capstone/predecessor/reference-tracks/webhook-receiver/test_receiver.py",
+      "sha256": "6281ec8b7d59677af89a04c097bae980580e4a422b262d154a2e2fa2996028db",
+      "size": 804
+    },
+    {
+      "path": "capstone/predecessor/shared/cursor-vectors.json",
+      "sha256": "7b0c1f7a99af718e6d104fe9e61c716f4eedbe0e7ec4f80d801cd10050664427",
+      "size": 672
+    },
+    {
+      "path": "capstone/predecessor/shared/error-catalog.json",
+      "sha256": "5d26459e62dc024239da5e0bec69808252aa421a90606f6bcfb234c28cd84c7d",
+      "size": 600
+    },
+    {
+      "path": "capstone/predecessor/shared/idempotency-vectors.json",
+      "sha256": "1235ebaa5cd379c287e733e2b7dacb8ec1bd63d255a8b16b26883d96c5f823f1",
+      "size": 868
+    },
+    {
+      "path": "capstone/predecessor/shared/operation-map.yaml",
+      "sha256": "b7af9cc78b271fb492d94880ec18322d4d0d9e3e29e9d03064b8fbbf3da2247f",
+      "size": 1385
+    },
+    {
+      "path": "capstone/predecessor/shared/state-machine.json",
+      "sha256": "6cf362fdce5ab23914064319c8be4aaaa32c01a89334558ae421bdc8bca9a9fb",
+      "size": 1087
+    },
+    {
+      "path": "capstone/predecessor/shared/webhook-signature-vectors.json",
+      "sha256": "8f1a96fadb815f3a437ae892fa308450d2072e61416205f41feb00df195f8fc0",
+      "size": 427
+    },
+    {
+      "path": "capstone/releases/security-1.0/RELEASE.yaml",
+      "sha256": "a76991682e231695627e5810db336247bf98dbced3e069076facdcc22c86c3b2",
+      "size": 336
+    },
+    {
+      "path": "capstone/releases/security-1.0-rejected-breaking/RELEASE.yaml",
+      "sha256": "74139b454da1b136513b03a5a123761414afaac8843f3ad3a574fba677618f0d",
+      "size": 337
+    },
+    {
+      "path": "capstone/scripts/ts_syntax_check.mjs",
+      "sha256": "26e0c897e77140654beedb0c0868aea7096e2dec7ec190434d373c7328dc03b1",
+      "size": 1341
+    },
+    {
+      "path": "capstone/scripts/typescript_audit_shims.d.ts",
+      "sha256": "06fd749be6352e817af388120260e0775a147735150e3e697b281cf6a85942e3",
+      "size": 8145
+    },
+    {
+      "path": "capstone/security-case/actors.yaml",
+      "sha256": "cbf2ae36e87c1a7bb554acfe53bdd9acea92cf40753d8e5015df7b4452e81b85",
+      "size": 976
+    },
+    {
+      "path": "capstone/security-case/assets.yaml",
+      "sha256": "e2a48a87d09370222bfd06e0d38024c3f74c3d43d5f711b91175a967c5b4d34a",
+      "size": 980
+    },
+    {
+      "path": "capstone/security-case/assumptions.yaml",
+      "sha256": "e5d10c3a041cac2d965463d0e0ef91ddc04e596e0a6ad8243b37eb2e409ceb00",
+      "size": 768
+    },
+    {
+      "path": "capstone/security-case/boundaries.yaml",
+      "sha256": "0ae833bf01108d7fdc3556bc39b11e12354d314c2532c8a8f3c8c2a133d0e201",
+      "size": 901
+    },
+    {
+      "path": "capstone/security-case/policy-matrix.json",
+      "sha256": "e5bbbdc84e243640d8b559e93fcffc67c634fc93378e201874b5b69761d4cfb9",
+      "size": 6880
+    },
+    {
+      "path": "capstone/security-case/policy-matrix.yaml",
+      "sha256": "dd692bf156a265942ad6c0d2973998b8edda55468a9ebdbd06c7af2dbfc2a27f",
+      "size": 4707
+    },
+    {
+      "path": "capstone/security-case/proof-map.yaml",
+      "sha256": "d90f153e2da80b6a72d42a04d59f5efa908e3f5825224111819dbce567d80a7b",
+      "size": 8956
+    },
+    {
+      "path": "capstone/security-case/requirements.yaml",
+      "sha256": "be1686ef3d7968140afd140c26b165077272c9493145c063b2665e071f1a24b9",
+      "size": 6415
+    },
+    {
+      "path": "capstone/security-case/residual-risks.yaml",
+      "sha256": "5cc555c18ffe070039c08e8c6c0b1803368c7e8df83025260a70db8fcef8e1a7",
+      "size": 785
+    },
+    {
+      "path": "capstone/security-case/threats.yaml",
+      "sha256": "3c5c110fab57fbb85e273246f84540db596f2872d4cc5107e7f5825743dc75cb",
+      "size": 5147
+    },
+    {
+      "path": "capstone/security-contract/security-profile.yaml",
+      "sha256": "f807eb05a16b47a29df44e56a19906066c25694684eca811d4437e646f0439fa",
+      "size": 741
+    },
+    {
+      "path": "capstone/shared/sql/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "path": "capstone/shared/sql/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "path": "capstone/shared/vectors/abuse.json",
+      "sha256": "f0b4b1c92364e54210d3eda3f6cd2daf69ac8bd9e2879238d4865dc500151406",
+      "size": 1464
+    },
+    {
+      "path": "capstone/shared/vectors/audit.json",
+      "sha256": "ee5d45fce4432ace9e471ae2a2efc018be44c27c48d0b74f1dbbe232d454d9d7",
+      "size": 467
+    },
+    {
+      "path": "capstone/shared/vectors/authorization.json",
+      "sha256": "d970d8d9627d9448f5d0a6d91013a32db2dc4b2fcfdba115d278f2354cf9ed2e",
+      "size": 2307
+    },
+    {
+      "path": "capstone/shared/vectors/edge.json",
+      "sha256": "03b548f563559aa8b98a07aa45b503cd927b00df28a697939f2c1a0316589e78",
+      "size": 1770
+    },
+    {
+      "path": "capstone/shared/vectors/input-security.json",
+      "sha256": "f093c899cd646c8cf918393acf691d534c51faf26ee71dc6a3f55062f0e6580f",
+      "size": 2225
+    },
+    {
+      "path": "capstone/shared/vectors/redaction.json",
+      "sha256": "ae1d53216751b0e13d2831a9237162bf89fe413dd90287476931cb1c940929da",
+      "size": 1051
+    },
+    {
+      "path": "capstone/shared/vectors/ssrf.json",
+      "sha256": "142f8d82a0dabe69d075878d90180edbf26fcfeee3a303ac7fc2274e0b23026b",
+      "size": 2051
+    },
+    {
+      "path": "capstone/shared/vectors/strict-json.json",
+      "sha256": "465183f18a71401081483356dc5e6f3e9ad7f03c2fa3f855dc0146d6ef7b2e4c",
+      "size": 1241
+    },
+    {
+      "path": "capstone/shared/vectors/webhook.json",
+      "sha256": "9a6034d99ce155f383a8faadf8d70aae7ac79827453350ab38cbfe0ecbeac569",
+      "size": 1330
+    },
+    {
+      "path": "capstone/starter/README.md",
+      "sha256": "bafac5c6431a843044ea651d9d8c73ee86290e558422219bf1407f1591c7b254",
+      "size": 265
+    },
+    {
+      "path": "capstone/starter/python/security_control.py",
+      "sha256": "5891591b29212db50c32d36ae66202193482c8ac465bfc13c2c70bccce00d080",
+      "size": 381
+    },
+    {
+      "path": "capstone/starter/typescript/security-control.ts",
+      "sha256": "9ba6faa7923145051292e8dd285db6c94312c29033395ff7115099d8efb19de4",
+      "size": 237
+    },
+    {
+      "path": "capstone/tests/README.md",
+      "sha256": "b74ce49c0912b4402b857eaab246ee2bf26c722e3cf3abc76dc2d7a8d8e633bd",
+      "size": 224
+    },
+    {
+      "path": "capstone/tests/test_public_handoff.py",
+      "sha256": "dded91b49f3326d7480e98c7cf20e9499c962c9051945a73c20784844a3ca38d",
+      "size": 447
+    },
+    {
+      "path": "capstone/tests/test_security_case.py",
+      "sha256": "ff01f2e31b6c745c2062419d47b3c1c5ee75e153dda1a1ac005dde1996bc1fbf",
+      "size": 705
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/Dockerfile",
+      "sha256": "fc4a87a6bf14d1bde258c5b62da22d49a544093474c449b19dfefdda9eaba7ad",
+      "size": 352
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/README.md",
+      "sha256": "bdd098b5db762398bcaeaf34386427cbf51fcbae3a6781fd073f8f6cca077c50",
+      "size": 391
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/SECURITY-README.md",
+      "sha256": "55fa3d082d4da4266bb17ac38ff89bc1ef9f8ffaceb78ebdea6eb3ca01b4e4ad",
+      "size": 341
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/fixtures/remote/remote-dataset.json",
+      "sha256": "f4a6dd87f77c9164d4cea38d4a5dc82e779e6cec034c359d6361b46e70ced11a",
+      "size": 238
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/pyproject.toml",
+      "sha256": "9cd3ff49a80d667cfaa22993c513ed3f612f5d8ba23f1061249ac54e74da9694",
+      "size": 867
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/__init__.py",
+      "sha256": "ae3506a416e52bd9365fcd68e99482444860bf953e9471257e369b17f255c42c",
+      "size": 69
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/app.py",
+      "sha256": "42db700dae67f9bec174988c81a09dfa8c8547ecded68c87ec679a0d8d3f9504",
+      "size": 16845
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/artifacts.py",
+      "sha256": "271bdf7228964a112db3c38aa1924fdaf38aa6feda0d4bedd3aeadd3d757e16f",
+      "size": 6056
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/auth.py",
+      "sha256": "85effc24eed76c86d06e840f965208bf156f6c1b892a3767c636b1aa93444db9",
+      "size": 3134
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/cli.py",
+      "sha256": "f6ec33c1840dab2736277594dd66a9a37dd556c5b449c60d71766cb22e79ac57",
+      "size": 568
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/config.py",
+      "sha256": "f537cb71fa54cfc196c3f222f421b8d10fb5230fb2b1721bc1c190ac99d4471e",
+      "size": 3974
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/domain.py",
+      "sha256": "4995700ff68928c7dc5640dcf33c88ca772f83da360092f37212e1e9feb35b06",
+      "size": 7483
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/failures.py",
+      "sha256": "b94e9793a3fce822fc85eb747fb7ceee551c5e09f4be405e3c24eebb2270e08b",
+      "size": 447
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/migrations.py",
+      "sha256": "f21b16078725cc77d0832a51cb4e989c792b59aff707f0e27469c78facd3b3d3",
+      "size": 2978
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/models.py",
+      "sha256": "18b8acaa56501f7698dea7ea8a4078f6df18cf45f31e606282ee745a3ff0ad4e",
+      "size": 11103
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/ports.py",
+      "sha256": "280f0adb75e8e352f177dfc2f917ecab19eb8389c00a261efdb77ff91f7c360d",
+      "size": 5924
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/postgres.py",
+      "sha256": "fe5b8aff3c1d1cac88b56bbb0d0aa74ac82c4e760e3cb40f7644a4b67e1ae239",
+      "size": 72481
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/problems.py",
+      "sha256": "d48ee8f9907695eb89fe75f39b4312a548c7e8fb6820401328114d3989da8406",
+      "size": 2431
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/remote_fixtures.py",
+      "sha256": "b100916a229489de3efe552387665b694b88e0d284d2e6106e8a7b08a900f81b",
+      "size": 2646
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/server.py",
+      "sha256": "209548112a11627eda9a7a1ceef45468506424defc687a245dc78dbd37f2b03c",
+      "size": 83
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/service.py",
+      "sha256": "2951a8fde0c93b4ed08a08c51ac1832083095fa12c7d5700a1e0c2d202c9af9c",
+      "size": 5804
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/webhooks.py",
+      "sha256": "9ecf2f646b286359ec3a92488e08fef2248abb706952ad035666ec6d9c26fcc8",
+      "size": 1989
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/analysis_service/worker.py",
+      "sha256": "b91a787f4f879177b13224afc57502956d92e4d3143b34f895c55dfec9161b88",
+      "size": 8998
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/__init__.py",
+      "sha256": "f0746867d5c6632e03bfcc9343adfcf272736a6f6563c87b9245cda8edd211b5",
+      "size": 244
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/abuse.py",
+      "sha256": "92762e0ab37b549b4bd1d19a7f7b705b7f7c02a436d498565f810512e076aab2",
+      "size": 2404
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/api_keys.py",
+      "sha256": "fa8a2f31534f233ac5cda0da5825d0c83184c45d26984f046bb0a20ea535abcc",
+      "size": 1535
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/app.py",
+      "sha256": "6d398d23617daafc12a749caaa718fadfdab919f20e3248b898788c00879662e",
+      "size": 88
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/audit.py",
+      "sha256": "8ebf37438f4e15efbf0302ca3b2faa2b9b6b310726476fe9039dcc71cfbbb65e",
+      "size": 2200
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/authorization.py",
+      "sha256": "1455ca1a0146f9e987e4744f0fe9881500d6c7109f0cd73f6c51cdb285bfe237",
+      "size": 2835
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/edge.py",
+      "sha256": "ad20280b7ad0b79367a1f4bfaaecc6158e3b9653ccb3820d29cacca057348079",
+      "size": 2253
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/errors.py",
+      "sha256": "f0a715a2982b83420dc0c68a7e812408feebd8dd53f5575360356cb74499db3a",
+      "size": 448
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/fastapi_adapter.py",
+      "sha256": "94b47f1c921da44e8e0d8e935c2ffefb900948ea0fe60b8ecc3966c88f3cfb57",
+      "size": 3646
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/gateway.py",
+      "sha256": "9a5209cfe9eacf19a54b44b8b2c55465d1472ac06193114bbea0d504741ea983",
+      "size": 1856
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/incident.py",
+      "sha256": "221d0d4c555eda100a584c3376e410402ed3f2780b9ea613de1d1a923d9babda",
+      "size": 2006
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/input_security.py",
+      "sha256": "ab35b239bdd627f971793758f7943dad5295bfa90bc46b86815255e1db8e7d45",
+      "size": 3478
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/models.py",
+      "sha256": "f4184233654207617e52afc606c5378b607ec4d326014927cbd9c9f7cd334941",
+      "size": 847
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/runtime.py",
+      "sha256": "c113f13fb003ccc3db2b938d514bc06544a0d663c4e671506ab577f71bd2ab1e",
+      "size": 946
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/secrets.py",
+      "sha256": "6089dc95427086aca6cbfab90f333e04e8beb96b7abedaf4bc454576a04e7b31",
+      "size": 2276
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/ssrf.py",
+      "sha256": "a0ffc7f2c2de687c0913b502fa06853010673939da3d78053481e48663f12a03",
+      "size": 2643
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/strict_json.py",
+      "sha256": "542d6a335c59c17827b4d1f83b8322eb39f07b3ba6cd2f323a60085260a809f5",
+      "size": 2169
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/tokens.py",
+      "sha256": "e38f8afec842f56067dca0b9e90a54e96a1baedcf6051d12f04307602db89ac9",
+      "size": 6009
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/src/api_security/webhooks.py",
+      "sha256": "f4d7306ff5e0198cc99d2f1185b171c9047d42d634f8dfc0bd8935137d18ad54",
+      "size": 2090
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests/test_artifacts.py",
+      "sha256": "874be4182b8b15f693f05b44e3fe5558d1f8624d6485647eb8b4c9eb2956ad35",
+      "size": 3348
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests/test_domain.py",
+      "sha256": "969ae95c1de37a14e6aa0e3fc02b3f653e43badeee29180c96677ff92f20f209",
+      "size": 3337
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests/test_models.py",
+      "sha256": "57893fa4275b33cbb999bfd1b8dfd03823bc3c950a05c35401c2efb456752d06",
+      "size": 1911
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests/test_operation_map.py",
+      "sha256": "db0aedd28392942894c6f5db8f4353e39f0d1967c9fca8cb989591cbd1c25450",
+      "size": 751
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests/test_postgres_integration.py",
+      "sha256": "24812dff35e5a4de84983ce8ba6bcd516cd43404d949649811908989360d624f",
+      "size": 724
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests/test_remote_fixtures.py",
+      "sha256": "f1417a5a95b45f70925d3d8fe51ced13b47bd96a3a4a900ba9ec7ef753a14061",
+      "size": 2550
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests/test_webhooks.py",
+      "sha256": "00b35553701194142ac1495863e4839440332d933696353f892d8e2f0fc041ca",
+      "size": 1051
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/conftest.py",
+      "sha256": "31f8d7cd25f07aea14726dde75fb3925083d7369b3ceb16630280a064248b874",
+      "size": 771
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_abuse.py",
+      "sha256": "2f7c2cc8aecba92366337358ae915392e9ebb5f99e06df451df659c7e38f4f96",
+      "size": 802
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_api_keys.py",
+      "sha256": "6a1752d1e54a11b1dcab3236a3facd0d23cba3cc30325d71f36f5770458d86f0",
+      "size": 1025
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_authorization.py",
+      "sha256": "6a1582479b8f32f90d4afdf3600675652370bc3666c0b476a7187de7a0719c98",
+      "size": 1459
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_edge.py",
+      "sha256": "851c13dc0e5eb733322bd176f328037095c74c31414547ed1aa1f14164d4ea28",
+      "size": 1079
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_fastapi_adapter.py",
+      "sha256": "9498433c8c09aea6689b325f21ca9a932a53a979fd6d5fe3d83c714fe124591b",
+      "size": 649
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_gateway.py",
+      "sha256": "aba4fc850272c28b1a0efe4ac2171a5869c621a900796e6f1de95ecd13a2a60d",
+      "size": 1721
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_incident.py",
+      "sha256": "dc16a1b0e5e52448678454b6a8d0c7878025dc18fb7e0536ecc37b33ef19b70b",
+      "size": 909
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_input_security.py",
+      "sha256": "c5220bdab999512ae81e7f25f2345088c660c3e156808825b968a20f3c78234c",
+      "size": 1906
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_secrets_audit.py",
+      "sha256": "d061a25c2758e1e53c52649845897a88c202a71adc6bf522d9644b07b9e93c4c",
+      "size": 1038
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_ssrf.py",
+      "sha256": "4fef7f8d94784a890c456bf1448160b9c1dc5026a775ce154390f929272c9e44",
+      "size": 916
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_strict_json.py",
+      "sha256": "aa878cd5d7a6933fde9cb4008237194789d2175581039d1008ad184bd2314574",
+      "size": 913
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_tokens.py",
+      "sha256": "1b52085785f833e7bdfa9d4a665f0b00b6c279199be78d73598bb2552b5f56f9",
+      "size": 2680
+    },
+    {
+      "path": "capstone/tracks/python-fastapi/tests_security/test_webhooks.py",
+      "sha256": "0ccfe90db3b73eb46f2aa98a9fccf00ac94d3d670c32f7aa7e0005c4f17c0a9f",
+      "size": 2027
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/Dockerfile",
+      "sha256": "494c94a5d3fd6b51b41269961cd5caa235381e32558767b718fb56519a0182e7",
+      "size": 639
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/README.md",
+      "sha256": "dcd98afc1c779641e27b391bd89f1ba569281de71d65964a36da6aefee2ee73f",
+      "size": 856
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/SECURITY-README.md",
+      "sha256": "e853e79bcfb02c0c3d002ec408a071073914a57d2189105bda469eb5c77c991e",
+      "size": 343
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/fixtures/remote/remote-dataset.json",
+      "sha256": "f4a6dd87f77c9164d4cea38d4a5dc82e779e6cec034c359d6361b46e70ced11a",
+      "size": 238
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/migrations/001_base.sql",
+      "sha256": "f16bcd9e9ba1932f1476ae89dd209cc3c23698ce5f6c6d65319d36d0479a9098",
+      "size": 11803
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/migrations/002_indexes.sql",
+      "sha256": "291470bac69b42e39d7438d970ad71da03000374ee0746cb5a60a16d0df43b87",
+      "size": 980
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/migrations/003_expand_result_summary.sql",
+      "sha256": "6e985534b08d9974f761d9a45211059be0af1e714cb8953903f3440a520ce358",
+      "size": 268
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/migrations/004_backfill_result_summary.sql",
+      "sha256": "b8bb55fbd2e8836cbb165f065711f5c2d8dff975cd670ccc69358d0fead2a46f",
+      "size": 380
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/migrations/005_enforce_result_summary.sql",
+      "sha256": "70c57f785cba7710960ab0915cb1513de7ca0b75947fa4d7fdaa44a6be490440",
+      "size": 1322
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/package.json",
+      "sha256": "1b95451e85d8a51fb43aff997c8f71a237d8d420a2a3f1aebeb7c86b8da74591",
+      "size": 1086
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/app.ts",
+      "sha256": "bf197ed02e2edae5d2ee19fa3219f42e46f3aee93a64304dcce3f2d4064de404",
+      "size": 17896
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/artifacts.ts",
+      "sha256": "a3bb1cc7ffe94e2a2774635a35f3bb3406fde5f0f3c06e74e16be183d95dcf6d",
+      "size": 5566
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/auth.ts",
+      "sha256": "9a34ce2b89b4ff69a5387bce56f736ade3a13a93f423186a7dcd6911b8d5b140",
+      "size": 3375
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/config.ts",
+      "sha256": "476e10793a9a13e95fb22ed15a22bb4f791b35c1a1d36d3cfcc324d4e985c870",
+      "size": 3335
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/core/domain.ts",
+      "sha256": "fc1167a542070994bdab14433874f9b1f925886167bea14ae1405eb43c4812bd",
+      "size": 5347
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/db.ts",
+      "sha256": "e40608df7ca4ff7591256fe3c46ed0377baf8bfc8b2d72550eb60572c54ac1de",
+      "size": 1342
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/domain.ts",
+      "sha256": "db63b0089b148d36f90cc877c956aa5a5578b8d381ed9a13ed4809aa8143036f",
+      "size": 1381
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/migrate.ts",
+      "sha256": "272acac33ad10227d8f15ab17616e0ab030a30b47e303807cab46dac58109a52",
+      "size": 432
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/migrations.ts",
+      "sha256": "29596bffa48b9a042959511633a13cf742ab44e81b945819174e27a184637c05",
+      "size": 3029
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/problems.ts",
+      "sha256": "f8328a49e23da7140c3beff7506fecf45740bbf92d6e1bff0b1f494598da6136",
+      "size": 3943
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/remoteFixtures.ts",
+      "sha256": "bb02bda3fa0ef50b2283d995b46f19a0ae65db78b3f17ed2221415518347c757",
+      "size": 2149
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/repository.ts",
+      "sha256": "67b70693c764dfcd9d3626c941153866c946cbb0c7b894c7f4ebda08ecfca74c",
+      "size": 58443
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/schemas.ts",
+      "sha256": "3030c6719463b20b945337959e375cfdf60898144db59bd2eb0dccfeacbefe6d",
+      "size": 11944
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/abuse.ts",
+      "sha256": "d759ff19fcb56b309c260b4303676de72564e04c23982d3b355970cc76e0b406",
+      "size": 1372
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/api-keys.ts",
+      "sha256": "5c8d1d3597c206563fd638598b64a03a27fe12554312c4659450b4c21bee5f46",
+      "size": 1722
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/audit.ts",
+      "sha256": "ab2331cce416dd3a8a7e1b11efe9dcbd0ad3e3af91954f5a357ffe999b42536c",
+      "size": 1907
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/authorization.ts",
+      "sha256": "2e557238a1f66b326a1a240785f2faf4bb49f52aafbbd0d78c8db82589bcf6b5",
+      "size": 3066
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/edge.ts",
+      "sha256": "11552cda57b0b09af427fbf4002a101d735725822320582f8746f602d7e3fdfa",
+      "size": 2199
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/errors.ts",
+      "sha256": "10e696fb78bd2bf630074a1d3db0bde8635a3dc5f3b43fc46ea5da8a77932656",
+      "size": 276
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/fastify-app.ts",
+      "sha256": "533a2b33ae520c7432358c95ed355e56e1f45b2be4a3b12caab34ded9dccd807",
+      "size": 1269
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/gateway.ts",
+      "sha256": "727cc81097f3aa8d1d5e5736dbee0ce6051ef98830c0ada8fbbf7d3863795dbd",
+      "size": 1828
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/incident.ts",
+      "sha256": "a597191e50c3a91cb41c5e1001e17c96bd7d9db2a278b1cf7a953bbd361534ca",
+      "size": 1289
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/index.ts",
+      "sha256": "d3453d89dcfd4e58819965d1817380f16d750786e974afb10e5258f136a693e0",
+      "size": 457
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/input-security.ts",
+      "sha256": "e0163ea77852c0edbd20d0c2bd7ebef9f2d305f92c6668a2ee1dd16da4ab0eb9",
+      "size": 2583
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/models.ts",
+      "sha256": "c5840e6d1ab8f7789be0ea0af493cbdb8c4239b1515e27be2a028e445c948a75",
+      "size": 718
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/secrets.ts",
+      "sha256": "4dd1ae362c3395e4a98583dcbe37b8067f75cc8d55b357f02e18f1659babb799",
+      "size": 1673
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/ssrf.ts",
+      "sha256": "ee0d3876c4becc9b27da97d4fe117d1b46acbd086fdc20ee13987f9194c6b3f4",
+      "size": 2963
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/strict-json.ts",
+      "sha256": "8ae5c0b4a02be50271d94a0870fb48173d3ec010e405bdedb9461411cdac6765",
+      "size": 5743
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/tokens.ts",
+      "sha256": "849f331a0058899e6798d8dd37af77bf73dfe5950e3716c3f9edc6d883607569",
+      "size": 5622
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/security/webhooks.ts",
+      "sha256": "372fa9b9f25d5343bfc23c196ce2542a93e37887403fa7f76187b45407a4ec75",
+      "size": 2187
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/server.ts",
+      "sha256": "e8eaee700946b55294a56523b9245731e10065ac5c46d66b7f067d1651fc690f",
+      "size": 810
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/service.ts",
+      "sha256": "7706b193b66f6791b7a33516357df58c97f19c9cd858ebbac2b78d903cd01f93",
+      "size": 5266
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/types.ts",
+      "sha256": "b81421faed12ba017ac43c84bc7b92e39bf9548f628eba61fe11ef888c601601",
+      "size": 3832
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/webhooks.ts",
+      "sha256": "c8fd2e189c3d66d374e79a7239c21b408bf6796bdeaf22b8f1d1189c3d9dd8ff",
+      "size": 2458
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/src/worker.ts",
+      "sha256": "e605eb8a0f09c7981c5507ad256ef27ef4fcbaa41a2449aa0312e9d05f80fc8d",
+      "size": 8357
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test/artifacts.test.ts",
+      "sha256": "c31bd9082e44365031c14d88cd08bd312f5817b6b71c356ac4cc1f9492f1e3cb",
+      "size": 2758
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test/domain.test.ts",
+      "sha256": "f757c89e72510400610c92401b700825cd10a82ff82f36f5e4cf4ab0f7996f90",
+      "size": 2652
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test/operation-map.test.ts",
+      "sha256": "ac7f3818c094f72a654839ba11078b4eed75f6552cd8e7de65deedce285ad648",
+      "size": 1155
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test/postgres.integration.test.ts",
+      "sha256": "1e0b18bd5099d8a82cc3c54cbe4a5ae2a6f5ebbd6881108fb5f6aab94af1daf4",
+      "size": 668
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-core/artifacts.test.mjs",
+      "sha256": "ba5dc4e38d8a7ee534cc8e6c39789735c0192e528085999749cd0df4e6e65c47",
+      "size": 2421
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-core/domain.test.mjs",
+      "sha256": "3b115d3586af17d94455e28bca8a4a59e7cbeca652dd67ce8d883bb0171a7be5",
+      "size": 1452
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-core/remote-fixtures.test.mjs",
+      "sha256": "d0a7d2cd15f9d5a0341ca60077021a36ee5420a533a2ac7e39da998b30fe4f31",
+      "size": 2023
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-core/webhooks.test.mjs",
+      "sha256": "b47bd6222ac6a2b2b4c8d105d9464aa4c243c31c23171417b2111e6fa5cb7048",
+      "size": 1172
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-security-core/authorization-input-ssrf.test.mjs",
+      "sha256": "87c0a3558aee7022a3b0c86ccc2400c88b09b4f3125a99272f262768e221c4f1",
+      "size": 3207
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-security-core/gateway.test.mjs",
+      "sha256": "14929ba4b35df18d04f64a1482b36e1721e1767b61ceb502c05bbb815fc44992",
+      "size": 1469
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-security-core/strict-edge.test.mjs",
+      "sha256": "8fc790a0324442fb930b30188146e2c693e8b05406c94cd99c6b95ef6a8afafc",
+      "size": 1277
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-security-core/token-api-key.test.mjs",
+      "sha256": "85a7eb92193365c4047f98bd6cabd3eb96da50af80210ac2db093bd35b3b9ddb",
+      "size": 1967
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/test-security-core/webhook-secrets-audit-abuse-incident.test.mjs",
+      "sha256": "9336760701d692ce89db25888e60e7c26a7dcab6784342218ecbd048527ccf2f",
+      "size": 3299
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/tsconfig.audit.json",
+      "sha256": "df4b3c352ab9ecbc016bb1d9b19be007880698a6edd7ed31af124df1663e8762",
+      "size": 578
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/tsconfig.core.json",
+      "sha256": "fcfe2d22f6b0019cff3193a4f30373056802ce399ce1d7b49b11043fffd9e905",
+      "size": 605
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/tsconfig.json",
+      "sha256": "0238be9dceaba53cf261b2f1a7ece2cc50da6f66a633a2c89fd25f69d6385d03",
+      "size": 546
+    },
+    {
+      "path": "capstone/tracks/typescript-fastify/tsconfig.security-core.json",
+      "sha256": "db6afcb26091e41181e535c55283fe1ab348a95023e01122d43320af5adef0c3",
+      "size": 483
+    },
+    {
+      "path": "capstone/webhook-receiver/README.md",
+      "sha256": "12846dee8ded87d0256fb12f9adb1e4e7153e979e4c5fad10806377d9d0e7987",
+      "size": 357
+    },
+    {
+      "path": "capstone/webhook-receiver/receiver.py",
+      "sha256": "316ed3e70c9000499b5d69b81a298af6b3149280af50e133f3451634b72ad82d",
+      "size": 2584
+    },
+    {
+      "path": "capstone/webhook-receiver/test_receiver.py",
+      "sha256": "9c7e13eb6f2e84a030b5e0db6a232941ea230c9f041e28fe9ada60facd3eb6a1",
+      "size": 524
+    },
+    {
+      "path": "course-book/capstone.md",
+      "sha256": "f024b0a11fbccd71b3cbc1f42581eabfced069aed182be3c0894fd1edf7f9d77",
+      "size": 3162
+    },
+    {
+      "path": "course-book/glossary.md",
+      "sha256": "be65596898376b5734da82d87ebdb0ec07c5bf0dc7eb10e0be876089c79967bc",
+      "size": 3747
+    },
+    {
+      "path": "course-book/index.md",
+      "sha256": "68e0c90e5d4175c7d64407f7070e0c1ec971983911291a4297f53ea236a19f0e",
+      "size": 6632
+    },
+    {
+      "path": "course-book/module-00-orientation/checkpoint.md",
+      "sha256": "44bf2952f4edaa3c958680f3d52f274ef3055d64514366a2b94574139b7b447e",
+      "size": 1189
+    },
+    {
+      "path": "course-book/module-00-orientation/index.md",
+      "sha256": "1fe622f92f27739c587b10dff4616fbbdcb55a9072447557e262c20b93cb644b",
+      "size": 3607
+    },
+    {
+      "path": "course-book/module-00-orientation/lab.md",
+      "sha256": "88700a80af09f47bc333e9691448babb24bea35db871f3813e64b39522dde9d1",
+      "size": 2401
+    },
+    {
+      "path": "course-book/module-01-threat-modeling/checkpoint.md",
+      "sha256": "af33d859c84a3524e0391a48581148ddb7948df50dedcefcaf1fb704b6e64fed",
+      "size": 1769
+    },
+    {
+      "path": "course-book/module-01-threat-modeling/exercise-answers.md",
+      "sha256": "750f635e9ff3397870b7871a86f0b5214456ab69788d6294ad02f671529e35a3",
+      "size": 3100
+    },
+    {
+      "path": "course-book/module-01-threat-modeling/exercises.md",
+      "sha256": "fe244f364d5ec30a28ad5c3adb99e41be86a38df75571c9e3f59e723ad64af4a",
+      "size": 1669
+    },
+    {
+      "path": "course-book/module-01-threat-modeling/index.md",
+      "sha256": "97d576983dbdf3f459d1aa9da7ea545ba993b873d18363c21562c5f2f3d8efd3",
+      "size": 14186
+    },
+    {
+      "path": "course-book/module-01-threat-modeling/lab.md",
+      "sha256": "9f6a41c857cec8d37437c5cd0aa7b5f0389e923cc5b42826751459d398aa343e",
+      "size": 3502
+    },
+    {
+      "path": "course-book/module-02-http-edge-and-canonicalization/checkpoint.md",
+      "sha256": "ce0241edd20e3c01974bc84f076b61ee54bac56fee277480fd73a9d755bed4c2",
+      "size": 1710
+    },
+    {
+      "path": "course-book/module-02-http-edge-and-canonicalization/exercise-answers.md",
+      "sha256": "0df58a09e5673d62f716eb2a1dfd83484f43a5a3c1b655108608864360bd0020",
+      "size": 2795
+    },
+    {
+      "path": "course-book/module-02-http-edge-and-canonicalization/exercises.md",
+      "sha256": "cffe5fb18bd42c61a97a6a0d19438da2c4d73ad5fa4b9122e6bb84be31e53d97",
+      "size": 1603
+    },
+    {
+      "path": "course-book/module-02-http-edge-and-canonicalization/index.md",
+      "sha256": "8e90ac941adb058443493431ad5c3865b0ffe1d6b9eeea2a43427f97124f8b60",
+      "size": 15639
+    },
+    {
+      "path": "course-book/module-02-http-edge-and-canonicalization/lab.md",
+      "sha256": "95d98b13eb0b98828f4e8a68433c24a22cbca8d6cb21502607a1156d20936e1a",
+      "size": 3479
+    },
+    {
+      "path": "course-book/module-03-authentication-and-token-validation/checkpoint.md",
+      "sha256": "3bf1c7e6b8e27de53829f6be7ecffe351c38a4888e51b8ae1c819fdefb20467e",
+      "size": 1726
+    },
+    {
+      "path": "course-book/module-03-authentication-and-token-validation/exercise-answers.md",
+      "sha256": "0ada242e62d9a8d31ba69041aa72209824c69e41ababdcd0ed2fc0b6cb708b7d",
+      "size": 2662
+    },
+    {
+      "path": "course-book/module-03-authentication-and-token-validation/exercises.md",
+      "sha256": "946a47733f73f9408ed3a7d7271dde370d2f556c450030155e3734e33b3d5813",
+      "size": 1490
+    },
+    {
+      "path": "course-book/module-03-authentication-and-token-validation/index.md",
+      "sha256": "04fd4f8da29c9f77077b92b9dfece8c3c813337da18c3e4d2e9331dc43e5040f",
+      "size": 18229
+    },
+    {
+      "path": "course-book/module-03-authentication-and-token-validation/lab.md",
+      "sha256": "2b1a93c78093efaa91ab4d78684a7f7d6501b7637bc3a4f741123e43c75d84e1",
+      "size": 3514
+    },
+    {
+      "path": "course-book/module-04-authorization-and-policy-enforcement/checkpoint.md",
+      "sha256": "6b35efe2541abc355bf3bb25867f70a6fb4d9ec3a49a23113f48b11d782f60f1",
+      "size": 1693
+    },
+    {
+      "path": "course-book/module-04-authorization-and-policy-enforcement/exercise-answers.md",
+      "sha256": "0d27498f81b5afc0859b30c28d29df1f04c6c8ff67ed683870021c76e97950f4",
+      "size": 2847
+    },
+    {
+      "path": "course-book/module-04-authorization-and-policy-enforcement/exercises.md",
+      "sha256": "e0894265994c539c3b4037842ac640192e4799b8c8b7945a3d0b8ca8d8a6d6c8",
+      "size": 1550
+    },
+    {
+      "path": "course-book/module-04-authorization-and-policy-enforcement/index.md",
+      "sha256": "3b7cffa0c597337974e07b42c52a9b5973a4a9020776a143e3af6317ec5e00c0",
+      "size": 16985
+    },
+    {
+      "path": "course-book/module-04-authorization-and-policy-enforcement/lab.md",
+      "sha256": "81d72644a188283017274124b664f8f20765ca42dbbd898170ab523963c3a7da",
+      "size": 3518
+    },
+    {
+      "path": "course-book/module-05-hostile-input-and-file-handling/checkpoint.md",
+      "sha256": "507912e91b35deef08072262c91fa4bf7cadfe3260b9cca3ca3d0391af327bc7",
+      "size": 1675
+    },
+    {
+      "path": "course-book/module-05-hostile-input-and-file-handling/exercise-answers.md",
+      "sha256": "fe5e10d2e401111ff99f0171cb568ba95bd9ef8a7963b69c4bc364f394d99f85",
+      "size": 2849
+    },
+    {
+      "path": "course-book/module-05-hostile-input-and-file-handling/exercises.md",
+      "sha256": "52e3381d1a0e49e277bab3b61e0b28373352b2e315734c3c9954df6d6c870f55",
+      "size": 1631
+    },
+    {
+      "path": "course-book/module-05-hostile-input-and-file-handling/index.md",
+      "sha256": "049c2d5b2dccef063976fc670aefb1e31776845ac0dd7c4b6cf1070a920d776c",
+      "size": 16518
+    },
+    {
+      "path": "course-book/module-05-hostile-input-and-file-handling/lab.md",
+      "sha256": "b055a7b031c976d5012a7fb9f2a8895b0195ddc2ee7e7f16e0b4c1688b15e56d",
+      "size": 3541
+    },
+    {
+      "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/checkpoint.md",
+      "sha256": "3edb5418ceed1ccac7a6498a528de4b342afb3db60e361ded25e2357c7106908",
+      "size": 1739
+    },
+    {
+      "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/exercise-answers.md",
+      "sha256": "f0733ffcc2e0b72bdb27c5c28075c9c906776abd70e742ba3387af09ab0998cb",
+      "size": 4508
+    },
+    {
+      "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/exercises.md",
+      "sha256": "6ee764fbd4916dba6b9dd818fcd48ac7f65a4a804f688c351610f00ccc821f0d",
+      "size": 1737
+    },
+    {
+      "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/index.md",
+      "sha256": "9fc52c9f05cb339d3242eaf7b670c65495520d7b92f49998a446df0aac200904",
+      "size": 18703
+    },
+    {
+      "path": "course-book/module-06-outbound-http-ssrf-and-webhooks/lab.md",
+      "sha256": "c9f3d4e2d61058bb9d172274684e1ff7cb8e6df1b84fd2ee53bf09ca41af0107",
+      "size": 3141
+    },
+    {
+      "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/checkpoint.md",
+      "sha256": "e811ccd5e1f2ee1435cde1b9f3efad6ec0072355b720573444bbb23c2a607386",
+      "size": 1747
+    },
+    {
+      "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/exercise-answers.md",
+      "sha256": "96da02eae5d864d39793d7e5f7c9287234d2281bd11f1a437d757eec3643eaaf",
+      "size": 4569
+    },
+    {
+      "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/exercises.md",
+      "sha256": "8a6a390d82d5a96f772ba723f136ee4ca42ad6fedd4d4d37c541005039848868",
+      "size": 1736
+    },
+    {
+      "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/index.md",
+      "sha256": "cfd66cd04221cde633c585d2b933eddc5aba60832c1ac9af5ee824468e8db4c8",
+      "size": 17090
+    },
+    {
+      "path": "course-book/module-07-secrets-cryptography-and-sensitive-data/lab.md",
+      "sha256": "ed533113e91349d53344b6550dcfc0909e863f79941316ef4377000cd8dc9e75",
+      "size": 3156
+    },
+    {
+      "path": "course-book/module-08-abuse-resistance-and-resource-budgets/checkpoint.md",
+      "sha256": "28caef90a7c8a8c5c0a56e92757e874543d18eade27a8453c483d2e24454a07b",
+      "size": 1701
+    },
+    {
+      "path": "course-book/module-08-abuse-resistance-and-resource-budgets/exercise-answers.md",
+      "sha256": "f4c80073fb89c7bcdce977cc103bf1921ce256dd7bc090c13cd6029cb20ccf93",
+      "size": 4197
+    },
+    {
+      "path": "course-book/module-08-abuse-resistance-and-resource-budgets/exercises.md",
+      "sha256": "69ccc43b5c02f1774af2538ec836b5183848fa45089378f321f319e3e57b8451",
+      "size": 1705
+    },
+    {
+      "path": "course-book/module-08-abuse-resistance-and-resource-budgets/index.md",
+      "sha256": "81c4752687e32a078b48ab336fc110ab76e787545ffce8413a527a89913e44b0",
+      "size": 16175
+    },
+    {
+      "path": "course-book/module-08-abuse-resistance-and-resource-budgets/lab.md",
+      "sha256": "9ad1430ae6bdebcbc2ac2da9568fbfe4bd0898dde29c787d919b3c9aea53927d",
+      "size": 3077
+    },
+    {
+      "path": "course-book/module-09-adversarial-verification-and-supply-chain/checkpoint.md",
+      "sha256": "ce40fb2e7d7a1fc58148e914c99f2c5a2c26cdf0d637b6fef6ff991faa9318a3",
+      "size": 1810
+    },
+    {
+      "path": "course-book/module-09-adversarial-verification-and-supply-chain/exercise-answers.md",
+      "sha256": "dc3f57dfc7619c771ca4aa7172eb65de50eca9c45364c41c7c38e657025c1194",
+      "size": 4518
+    },
+    {
+      "path": "course-book/module-09-adversarial-verification-and-supply-chain/exercises.md",
+      "sha256": "bc937eb7206be2ba0d9f8f61aea2c5bc2fc394fc50fe7ff232fb5a7b738963b1",
+      "size": 1688
+    },
+    {
+      "path": "course-book/module-09-adversarial-verification-and-supply-chain/index.md",
+      "sha256": "2de91328ae3fe8aa1a5d2d8b5975927b3d4a4acbfdd74786de79df86c84cf62a",
+      "size": 15649
+    },
+    {
+      "path": "course-book/module-09-adversarial-verification-and-supply-chain/lab.md",
+      "sha256": "f621e92d63a0c23032d2d617c70dca4d32961b05593c49db2a197babe7c9f4a6",
+      "size": 3175
+    },
+    {
+      "path": "course-book/module-10-security-operations-and-incident-response/checkpoint.md",
+      "sha256": "cb6443ad9def59d17941d17c697577953146a7e66027fb34a0845ebce703ce2d",
+      "size": 1710
+    },
+    {
+      "path": "course-book/module-10-security-operations-and-incident-response/exercise-answers.md",
+      "sha256": "a6badf3cbc6f8f344ab308bdbd56bbdad04bc3e5dd245fc9ad95eb1c7cd661ef",
+      "size": 4572
+    },
+    {
+      "path": "course-book/module-10-security-operations-and-incident-response/exercises.md",
+      "sha256": "ff8a2fbc2c08ad6c476bd67384bfd85718ca38edd3d97513cd9609a23c035b35",
+      "size": 1691
+    },
+    {
+      "path": "course-book/module-10-security-operations-and-incident-response/index.md",
+      "sha256": "62c5f9a80a40411544fe360d2ae7f53749840d19a61a3ebb1579527a44c2e739",
+      "size": 16879
+    },
+    {
+      "path": "course-book/module-10-security-operations-and-incident-response/lab.md",
+      "sha256": "e9f5f06878abf08abc206ec4b2861b9fd85b22de39c84970e0e23788cfe331ec",
+      "size": 3126
+    },
+    {
+      "path": "course-book/standards.md",
+      "sha256": "ff65a16250cc6e8509845b6fbe278745cec48d9e18cf4d8cc9af493d27829fef",
+      "size": 2094
+    },
+    {
+      "path": "course-book/start-here.md",
+      "sha256": "73395c561872a84a303a41c1ef30ce493ff757c275fdcfdf5aec15c099b1cbd1",
+      "size": 1992
+    },
+    {
+      "path": "course-book/study-plan.md",
+      "sha256": "1bf9aad61ea41223a555ba4d1ae84b4b6609216d254e8a75b94e34dde46cdd19",
+      "size": 4761
+    },
+    {
+      "path": "course.json",
+      "sha256": "50b6358e44d4988227b12892b9ebe7792e70aa026d54a440e6093aa46e041b6c",
+      "size": 1486
+    },
+    {
+      "path": "instructor/README.md",
+      "sha256": "9a918b105eebc51471244f9f39aab13bc2e64142498192582c84cccd0f95a090",
+      "size": 271
+    },
+    {
+      "path": "instructor/delivery-checklist.md",
+      "sha256": "931a3dd65670a1ba9d44fafb68752015c78b1d33f2ad58de228d7c4aafcd35a8",
+      "size": 463
+    },
+    {
+      "path": "mkdocs.yml",
+      "sha256": "93080166bb078ef535fcc381c43d21b2c5c52d30dbd99ba99835b44413563d75",
+      "size": 4765
+    },
+    {
+      "path": "scripts/course_tool.py",
+      "sha256": "7450262b6f2b0e05405f7394207b9a8392fe2901efc9a0a8e04333c66507d83d",
+      "size": 18085
+    },
+    {
+      "path": "scripts/incident_drill.py",
+      "sha256": "bba9a33d788f788700d6afce811be02aea11d1b4802bc1f990670ef399114739",
+      "size": 1569
+    }
+  ],
+  "root": "programs/api-engineering/03-api-security-engineering"
+}

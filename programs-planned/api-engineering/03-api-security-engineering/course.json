@@ -1,0 +1,31 @@
+{
+  "capstone": "Analysis Runs Platform",
+  "centralQuestion": "How does the service remain trustworthy under hostile behavior without hiding behind middleware or scanner output?",
+  "duration": {
+    "calendarWeeks": 2,
+    "orientationCounted": false,
+    "teachingDays": 10
+  },
+  "id": "api-security-engineering",
+  "incomingBoundary": "The Course 2 API 1.2 durable-service handoff and migrations 001\u2013005.",
+  "languages": {
+    "strategy": "Choose one primary implementation track. Compare policy decisions and externally observable security outcomes across both languages.",
+    "tracks": [
+      "python-fastapi",
+      "typescript-fastify"
+    ]
+  },
+  "number": 3,
+  "outgoingBoundary": "Security Profile 1.0, migrations 006\u2013007, threat-to-requirement traceability, identity and authorization policy, hostile-input vectors, secure webhook rules, abuse controls, and incident evidence.",
+  "predecessor": "02-contract-driven-api-service-engineering",
+  "responsibility": "Preserve the API and durable-service guarantees when callers, credentials, inputs, destinations, and dependencies are not trusted by default.",
+  "schemaVersion": 1,
+  "successor": "04-api-reliability-and-observability-engineering",
+  "title": "API Security Engineering",
+  "versions": {
+    "databaseMigrations": "001\u2013007",
+    "engineeringProfiles": "Security Profile 1.0 introduced",
+    "interfaceSpecifications": "3.1.2 baseline preserved",
+    "publicInterface": "1.2 preserved"
+  }
+}

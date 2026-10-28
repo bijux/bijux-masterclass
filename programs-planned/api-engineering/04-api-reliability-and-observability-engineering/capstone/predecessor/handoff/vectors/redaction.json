@@ -1,0 +1,55 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "authorization": "[REDACTED]",
+        "items": [
+          {
+            "apiKey": "[REDACTED]"
+          },
+          {
+            "value": 2
+          }
+        ],
+        "nested": {
+          "safe": "ok",
+          "webhookSecret": "[REDACTED]"
+        }
+      },
+      "id": "redact-nested",
+      "input": {
+        "authorization": "Bearer secret-token",
+        "items": [
+          {
+            "apiKey": "key123"
+          },
+          {
+            "value": 2
+          }
+        ],
+        "nested": {
+          "safe": "ok",
+          "webhookSecret": "abc"
+        }
+      }
+    },
+    {
+      "expected": {
+        "url": "https://[REDACTED]@example.test/path"
+      },
+      "id": "redact-url",
+      "input": {
+        "url": "https://user:pass@example.test/path"
+      }
+    },
+    {
+      "expected": {
+        "error": "failed for Bearer [REDACTED]"
+      },
+      "id": "redact-token-text",
+      "input": {
+        "error": "failed for Bearer abc.def.ghi"
+      }
+    }
+  ]
+}

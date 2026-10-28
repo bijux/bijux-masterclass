@@ -1,0 +1,105 @@
+site_name: API Engineering 08 — Distributed API Architecture and Microservices Engineering
+site_description: Reader-first course on service boundaries, data ownership, sagas,
+  identity, routing, version skew, verification, and incremental extraction.
+docs_dir: .
+site_dir: site
+theme:
+  name: mkdocs
+strict: true
+nav:
+- Home: course-book/index.md
+- Start here: course-book/start-here.md
+- Study plan: course-book/study-plan.md
+- Capstone: course-book/capstone.md
+- Standards: course-book/standards.md
+- Language strategy: course-book/language-strategy.md
+- Evidence model: course-book/evidence-model.md
+- Glossary: course-book/glossary.md
+- Orientation: course-book/module-00-orientation/index.md
+- 1. Distribution Economics, Boundary Evidence, and Architecture Fitness Functions:
+  - Chapter: course-book/module-01-distribution-economics-and-boundary-evidence/index.md
+  - Exercises: course-book/module-01-distribution-economics-and-boundary-evidence/exercises.md
+  - Worked answers: course-book/module-01-distribution-economics-and-boundary-evidence/exercise-answers.md
+  - Lab: course-book/module-01-distribution-economics-and-boundary-evidence/lab.md
+  - Checkpoint: course-book/module-01-distribution-economics-and-boundary-evidence/checkpoint.md
+- 2. Service Boundaries, Bounded Contexts, and Contract Ownership:
+  - Chapter: course-book/module-02-service-boundaries-and-contract-ownership/index.md
+  - Exercises: course-book/module-02-service-boundaries-and-contract-ownership/exercises.md
+  - Worked answers: course-book/module-02-service-boundaries-and-contract-ownership/exercise-answers.md
+  - Lab: course-book/module-02-service-boundaries-and-contract-ownership/lab.md
+  - Checkpoint: course-book/module-02-service-boundaries-and-contract-ownership/checkpoint.md
+- 3. Data Ownership, Replication, and Cross-Service Query Design:
+  - Chapter: course-book/module-03-data-ownership-replication-and-cross-service-queries/index.md
+  - Exercises: course-book/module-03-data-ownership-replication-and-cross-service-queries/exercises.md
+  - Worked answers: course-book/module-03-data-ownership-replication-and-cross-service-queries/exercise-answers.md
+  - Lab: course-book/module-03-data-ownership-replication-and-cross-service-queries/lab.md
+  - Checkpoint: course-book/module-03-data-ownership-replication-and-cross-service-queries/checkpoint.md
+- 4. Synchronous Collaboration, API Composition, and Dependency Budgets:
+  - Chapter: course-book/module-04-synchronous-collaboration-and-dependency-budgets/index.md
+  - Exercises: course-book/module-04-synchronous-collaboration-and-dependency-budgets/exercises.md
+  - Worked answers: course-book/module-04-synchronous-collaboration-and-dependency-budgets/exercise-answers.md
+  - Lab: course-book/module-04-synchronous-collaboration-and-dependency-budgets/lab.md
+  - Checkpoint: course-book/module-04-synchronous-collaboration-and-dependency-budgets/checkpoint.md
+- 5. Distributed Workflows, Sagas, Compensation, and Process Managers:
+  - Chapter: course-book/module-05-distributed-workflows-sagas-and-compensation/index.md
+  - Exercises: course-book/module-05-distributed-workflows-sagas-and-compensation/exercises.md
+  - Worked answers: course-book/module-05-distributed-workflows-sagas-and-compensation/exercise-answers.md
+  - Lab: course-book/module-05-distributed-workflows-sagas-and-compensation/lab.md
+  - Checkpoint: course-book/module-05-distributed-workflows-sagas-and-compensation/checkpoint.md
+- 6. Service Identity, Authorization, and Trust Propagation:
+  - Chapter: course-book/module-06-service-identity-authorization-and-trust-propagation/index.md
+  - Exercises: course-book/module-06-service-identity-authorization-and-trust-propagation/exercises.md
+  - Worked answers: course-book/module-06-service-identity-authorization-and-trust-propagation/exercise-answers.md
+  - Lab: course-book/module-06-service-identity-authorization-and-trust-propagation/lab.md
+  - Checkpoint: course-book/module-06-service-identity-authorization-and-trust-propagation/checkpoint.md
+- 7. Discovery, Routing, Gateways, and Traffic Topology:
+  - Chapter: course-book/module-07-discovery-routing-gateways-and-traffic-topology/index.md
+  - Exercises: course-book/module-07-discovery-routing-gateways-and-traffic-topology/exercises.md
+  - Worked answers: course-book/module-07-discovery-routing-gateways-and-traffic-topology/exercise-answers.md
+  - Lab: course-book/module-07-discovery-routing-gateways-and-traffic-topology/lab.md
+  - Checkpoint: course-book/module-07-discovery-routing-gateways-and-traffic-topology/checkpoint.md
+- 8. Deployment Independence, Version Skew, and Release Choreography:
+  - Chapter: course-book/module-08-deployment-independence-version-skew-and-release-choreography/index.md
+  - Exercises: course-book/module-08-deployment-independence-version-skew-and-release-choreography/exercises.md
+  - Worked answers: course-book/module-08-deployment-independence-version-skew-and-release-choreography/exercise-answers.md
+  - Lab: course-book/module-08-deployment-independence-version-skew-and-release-choreography/lab.md
+  - Checkpoint: course-book/module-08-deployment-independence-version-skew-and-release-choreography/checkpoint.md
+- 9. Distributed Verification, Fault Injection, and Operability:
+  - Chapter: course-book/module-09-distributed-verification-fault-injection-and-operability/index.md
+  - Exercises: course-book/module-09-distributed-verification-fault-injection-and-operability/exercises.md
+  - Worked answers: course-book/module-09-distributed-verification-fault-injection-and-operability/exercise-answers.md
+  - Lab: course-book/module-09-distributed-verification-fault-injection-and-operability/lab.md
+  - Checkpoint: course-book/module-09-distributed-verification-fault-injection-and-operability/checkpoint.md
+- 10. Incremental Extraction, Strangler Migration, and Final Architecture Defense:
+  - Chapter: course-book/module-10-incremental-extraction-migration-and-final-defense/index.md
+  - Exercises: course-book/module-10-incremental-extraction-migration-and-final-defense/exercises.md
+  - Worked answers: course-book/module-10-incremental-extraction-migration-and-final-defense/exercise-answers.md
+  - Lab: course-book/module-10-incremental-extraction-migration-and-final-defense/lab.md
+  - Checkpoint: course-book/module-10-incremental-extraction-migration-and-final-defense/checkpoint.md
+exclude_docs: 'capstone/**
+
+  assessment/**
+
+  instructor/**
+
+  scripts/**
+
+  tests/**
+
+  reports/**
+
+  README.md
+
+  COURSE-CONTENTS.md
+
+  PREDECESSOR-HANDOFF.md
+
+  NEXT-COURSE-HANDOFF.md
+
+  PRODUCTION-CLAIMS.md
+
+  CHANGELOG.md
+
+  FINAL-VERIFICATION.md
+
+  '

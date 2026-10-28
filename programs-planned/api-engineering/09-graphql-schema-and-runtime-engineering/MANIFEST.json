@@ -1,0 +1,1257 @@
+{
+  "file_count": 250,
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "89734a341424e3984e3eab480e6e17acc9fa14b20c95870febcda501e1d63c95",
+      "size": 115
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "edcdc281443e0190f2f99f0420d9635d7853c96d58b723da866093874e8ba774",
+      "size": 428
+    },
+    {
+      "path": "COURSE-CONTENTS.md",
+      "sha256": "58b121536c7d1cd1fd9553390b356682680850c62c16389faa342f4bd095f240",
+      "size": 2875
+    },
+    {
+      "path": "FINAL-VERIFICATION.md",
+      "sha256": "c5c4b175e546bec1af88f278a48d71444d6e5bd6c5e6b158718909c7efaac535",
+      "size": 5406
+    },
+    {
+      "path": "Makefile",
+      "sha256": "be99d355fd24f87199e03d209d4be9e60f7e339a4cd18e303f3607eacbf59604",
+      "size": 3411
+    },
+    {
+      "path": "NEXT-COURSE-HANDOFF.md",
+      "sha256": "f7c13671ef8282f7c21f9638ed61b92a7fe55c7e62b7a6e7e32d8849f7f87e20",
+      "size": 719
+    },
+    {
+      "path": "PREDECESSOR-HANDOFF.md",
+      "sha256": "0cdc22bbeb920396f908d6433c9bc594676251ec23cac5b45f9a9f35bc8792fa",
+      "size": 630
+    },
+    {
+      "path": "PRODUCTION-CLAIMS.md",
+      "sha256": "4da79d470758baaf4edab1ece1e8cd192149dc714885a26a36e5b99da87f1559",
+      "size": 1270
+    },
+    {
+      "path": "README.md",
+      "sha256": "4151b7547b91513736ec2c0441707902a9852f02a5c71cfdd8142458e29a3964",
+      "size": 3986
+    },
+    {
+      "path": "assessment/final-defense.md",
+      "sha256": "37f40b51ac7d8a90617b6197ddc527434a10a56f884a95c20597d4934c1ab28d",
+      "size": 3411
+    },
+    {
+      "path": "assessment/final-rubric.md",
+      "sha256": "b0720c9cd5df0f0cc624d950424d0af035751b33688d30e0581ce0a82406fd3a",
+      "size": 2514
+    },
+    {
+      "path": "capstone/README.md",
+      "sha256": "35b381d280735cc15b479cc85e47bd227df1c53177816235018784c560d5b4de",
+      "size": 674
+    },
+    {
+      "path": "capstone/contracts/client-catalog.yaml",
+      "sha256": "10279ba74ca8d89524b8a8d5c072d7266ce8e4020a8b3eb6e12cda0193c46635",
+      "size": 429
+    },
+    {
+      "path": "capstone/contracts/examples/get-project-overview-request.json",
+      "sha256": "ec9a9adea1866258fab2ae66d836eeb848fc66ad8aac0e8903cc86a3fc7b3f89",
+      "size": 121
+    },
+    {
+      "path": "capstone/contracts/examples/get-project-overview-response.json",
+      "sha256": "2a19a220d0eab1204439ba1793d836800038903c0c0ee86eb4da219044f32384",
+      "size": 275
+    },
+    {
+      "path": "capstone/contracts/examples/partial-artifact-response.json",
+      "sha256": "7ddcefc5978d02ba39699037aaa96e0a32e14b422c4aa1976a4afc356c67dbb7",
+      "size": 409
+    },
+    {
+      "path": "capstone/contracts/examples/start-analysis-conflict.json",
+      "sha256": "ffd4e7b3c877417e93c0e68d7b32fbe1815f19ba6ca3ed7929d55546183febcb",
+      "size": 207
+    },
+    {
+      "path": "capstone/contracts/federation/README.md",
+      "sha256": "6403dd7ec4062081d9827a5d614f7a8c020406fde891940cd1bb3fcb856d6f6e",
+      "size": 314
+    },
+    {
+      "path": "capstone/contracts/federation/analysis-control.graphql",
+      "sha256": "440472067c470e7cb0060dbd662a56a5bb4ae76d24bd1213c93a60bf57702f28",
+      "size": 304
+    },
+    {
+      "path": "capstone/contracts/federation/artifact-service.graphql",
+      "sha256": "52815c90514b55bd7382e0e732aef5c6fb656b264121290f67a0bd84ec53f3c1",
+      "size": 289
+    },
+    {
+      "path": "capstone/contracts/federation/notification-service.graphql",
+      "sha256": "42e2c63ad62d7a775865c2ccdf8437f2a2ff928a8be0c036c44ceb4ad9eb368e",
+      "size": 299
+    },
+    {
+      "path": "capstone/contracts/operations/CancelAnalysis.graphql",
+      "sha256": "b7f9165463d24958db4c0f86a1c5b62a157a3c8efd227e02c04bfc2b7c6d7bc8",
+      "size": 243
+    },
+    {
+      "path": "capstone/contracts/operations/CreateProject.graphql",
+      "sha256": "2d83c3f19f0c091d8a858a8d94278c0d9dd3cdbbd1f8b6a1f770800857cd6787",
+      "size": 250
+    },
+    {
+      "path": "capstone/contracts/operations/GetProjectOverview.graphql",
+      "sha256": "6cfa56e1ba11ae96a5819f52385a6d2b6a02945a34e7e25e4e130ea1eaa96cbf",
+      "size": 467
+    },
+    {
+      "path": "capstone/contracts/operations/GetRun.graphql",
+      "sha256": "eb8e33d3c31143f74cbe2918a2ccef0bf14f84e8e9eae094ea38be7b2b7935d4",
+      "size": 270
+    },
+    {
+      "path": "capstone/contracts/operations/ListRuns.graphql",
+      "sha256": "9da3efa92ca78014b8a12ea7781e63865bfad2d72562c2b01d9942c59543823b",
+      "size": 248
+    },
+    {
+      "path": "capstone/contracts/operations/NodeLookup.graphql",
+      "sha256": "aeb6916baa168291129ffe0164babe2fc86eec683ac43d2b88458d6b9728054f",
+      "size": 73
+    },
+    {
+      "path": "capstone/contracts/operations/RunUpdates.graphql",
+      "sha256": "2e4505d91d632b5da472e56e26eaec419e95f9ba1b4ecc69eb70f64e2c9d3f59",
+      "size": 210
+    },
+    {
+      "path": "capstone/contracts/operations/SearchPlatform.graphql",
+      "sha256": "726a381179aab4bc2306ba3b1357f83078e9a3f1545a2ba3228f59fbefd3b3ff",
+      "size": 365
+    },
+    {
+      "path": "capstone/contracts/operations/StartAnalysis.graphql",
+      "sha256": "1320d7764acfb437ae05f2ec8b81ccdb2e36c2dc2e47783058b30ce9194ab460",
+      "size": 248
+    },
+    {
+      "path": "capstone/contracts/operations/Viewer.graphql",
+      "sha256": "629ddc83561d89ffd1bac3746676629f55007854a5485f1445c0aa4822447a4a",
+      "size": 57
+    },
+    {
+      "path": "capstone/contracts/persisted-operations.json",
+      "sha256": "d76fcee69b2458119e42f424da42a4f04ee429e976f05b795944de764f46b351",
+      "size": 3508
+    },
+    {
+      "path": "capstone/contracts/schema-catalog.json",
+      "sha256": "c134fe359f0e733b2e028384bca835d9d8150c19ef0168b9c8cb623a96475998",
+      "size": 1710
+    },
+    {
+      "path": "capstone/contracts/schema-frontier.graphql",
+      "sha256": "b2e3b6d46b1a7b108f7a86f6973939163d15a993ee8240557cbe59f14eb754f7",
+      "size": 5052
+    },
+    {
+      "path": "capstone/contracts/schema.graphql",
+      "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9",
+      "size": 4790
+    },
+    {
+      "path": "capstone/database/README.md",
+      "sha256": "b60c86242540b2962af61f9ab3d8dda1f9bc824d91157e79fcbd3674b1e4e99b",
+      "size": 990
+    },
+    {
+      "path": "capstone/database/platform-catalog/migrations/001_graph_schema_registry.sql",
+      "sha256": "7e50e0e4f52ff57e745704bfeb03a4ee11303865892a471e0efa3509685f41b1",
+      "size": 234
+    },
+    {
+      "path": "capstone/database/platform-catalog/migrations/002_persisted_operations.sql",
+      "sha256": "4218947d16450572eea3d3487439d107ebc955e1c14a0ea7290c17611a15c2f0",
+      "size": 348
+    },
+    {
+      "path": "capstone/database/platform-catalog/migrations/003_graph_query_budgets.sql",
+      "sha256": "ec611db5b284052d0584799864c9e54804b86692caebf35b4b665aaf632bcd0f",
+      "size": 290
+    },
+    {
+      "path": "capstone/database/platform-catalog/migrations/004_subscription_resume.sql",
+      "sha256": "78c28ee76678e7438c5fffdfd1cfd5327f25c0980b4bba80bc9d507c0db00d98",
+      "size": 309
+    },
+    {
+      "path": "capstone/final-defense/architecture-summary.json",
+      "sha256": "0043d28fb60bf99c312f96c58377db428fb54dac36db788679fd365fb98c6936",
+      "size": 300
+    },
+    {
+      "path": "capstone/graph-case/boundary-policy.yaml",
+      "sha256": "5933cfd6f3a66dc7267a5b001cea64157c3d643efe3bd8f371da71d397833db5",
+      "size": 480
+    },
+    {
+      "path": "capstone/graph-case/cost-policy.yaml",
+      "sha256": "d7c148ef19555892580a8f0379b3536c9e2723ed7a42a7ce5f2f838115b43890",
+      "size": 466
+    },
+    {
+      "path": "capstone/graph-case/error-policy.yaml",
+      "sha256": "4eb29efdbc381039b17746336f51b5c55cc6a594753f93054fb04a2032612a1b",
+      "size": 421
+    },
+    {
+      "path": "capstone/graph-case/nullability-policy.yaml",
+      "sha256": "1ae981ae83b12dbdd46602079d356efbf9e8ff6a395cbe51f4316f50f95f5678",
+      "size": 547
+    },
+    {
+      "path": "capstone/graph-case/pagination-policy.yaml",
+      "sha256": "dffa2ec3340cb7f06b2189c664aed438a13f93ce71c53acff7a917fcc4632ca5",
+      "size": 826
+    },
+    {
+      "path": "capstone/graph-case/persisted-operation-policy.yaml",
+      "sha256": "588806a67b2a8fda34ba9d2fa95ece09d42a8d2b37357e164d05d324df9b618f",
+      "size": 380
+    },
+    {
+      "path": "capstone/graph-case/release-policy.yaml",
+      "sha256": "e3f83cc57b9016f2c0c56df05cd1950efe26f3f8dddde2829f96a69285e128fd",
+      "size": 661
+    },
+    {
+      "path": "capstone/graph-case/resolver-ownership.yaml",
+      "sha256": "88cb16d6be5092efe81de523c1aa367674cca70c43ade427eaf928bc4f5e1967",
+      "size": 885
+    },
+    {
+      "path": "capstone/graph-case/subscription-policy.yaml",
+      "sha256": "aa71b566305720d82969fffc3d7c7f6e158f869135224bff6ba76567c5580239",
+      "size": 517
+    },
+    {
+      "path": "capstone/graph-case/version-ledger.yaml",
+      "sha256": "25aab152ba0e0e3c0239074a197738357156e9a96b471afd6055833a3e155208",
+      "size": 415
+    },
+    {
+      "path": "capstone/handoff/BOUNDARY.json",
+      "sha256": "3068951f4cd1f1ebe9cc6a3ea4f65ee5016373f59cf3b8865cb98b8c8e3a37c7",
+      "size": 483
+    },
+    {
+      "path": "capstone/handoff/MANIFEST.json",
+      "sha256": "07e5a590b748d60fa967ce630d0f6be120668790a9c4e39797570da20a68f257",
+      "size": 1877
+    },
+    {
+      "path": "capstone/handoff/MANIFEST.sha256",
+      "sha256": "c6159b297a248c70c0dccd385c9c1d08a64bc9c87685052336810b37c666e4af",
+      "size": 80
+    },
+    {
+      "path": "capstone/handoff/README.md",
+      "sha256": "0c11c3a741d3f4cf891f259ddd227029932a199c7226884af6631a180480b288",
+      "size": 500
+    },
+    {
+      "path": "capstone/handoff/client-catalog.yaml",
+      "sha256": "10279ba74ca8d89524b8a8d5c072d7266ce8e4020a8b3eb6e12cda0193c46635",
+      "size": 429
+    },
+    {
+      "path": "capstone/handoff/evidence-summary.json",
+      "sha256": "5f5710e6dcae1a180c959132cf0582caadda5e486a9093ea542cc4ac1f20dddf",
+      "size": 364
+    },
+    {
+      "path": "capstone/handoff/field-ownership.yaml",
+      "sha256": "88cb16d6be5092efe81de523c1aa367674cca70c43ade427eaf928bc4f5e1967",
+      "size": 885
+    },
+    {
+      "path": "capstone/handoff/persisted-operations.json",
+      "sha256": "d76fcee69b2458119e42f424da42a4f04ee429e976f05b795944de764f46b351",
+      "size": 3508
+    },
+    {
+      "path": "capstone/handoff/platform-boundary-brief.yaml",
+      "sha256": "a702e9846b877a0d77b4da78d2b5f1c8641c3104c7c06ca1c1347fa8d2a7496b",
+      "size": 789
+    },
+    {
+      "path": "capstone/handoff/query-budget-policy.yaml",
+      "sha256": "d7c148ef19555892580a8f0379b3536c9e2723ed7a42a7ce5f2f838115b43890",
+      "size": 466
+    },
+    {
+      "path": "capstone/handoff/release-policy.yaml",
+      "sha256": "e3f83cc57b9016f2c0c56df05cd1950efe26f3f8dddde2829f96a69285e128fd",
+      "size": 661
+    },
+    {
+      "path": "capstone/handoff/schema-catalog.json",
+      "sha256": "c134fe359f0e733b2e028384bca835d9d8150c19ef0168b9c8cb623a96475998",
+      "size": 1710
+    },
+    {
+      "path": "capstone/handoff/schema.graphql",
+      "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9",
+      "size": 4790
+    },
+    {
+      "path": "capstone/handoff/version-ledger.yaml",
+      "sha256": "25aab152ba0e0e3c0239074a197738357156e9a96b471afd6055833a3e155208",
+      "size": 415
+    },
+    {
+      "path": "capstone/network-lab/README.md",
+      "sha256": "d0bf1598dc258562311cee04893877477fe1465c20b319b8b8797f95a7b5dffc",
+      "size": 1482
+    },
+    {
+      "path": "capstone/network-lab/graph_lab/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size": 1
+    },
+    {
+      "path": "capstone/network-lab/graph_lab/tour.py",
+      "sha256": "10d31ddcc1d5bd7b0cf3271f2e010a42288896bdd37bbfde5887bb57ed3cd7a0",
+      "size": 12874
+    },
+    {
+      "path": "capstone/network-lab/test_network_lab.py",
+      "sha256": "e1a326d476cbd1e4d0b5fc5cb321e613d603670b340121efca447eef7664a98d",
+      "size": 861
+    },
+    {
+      "path": "capstone/planted-defects/GQL-01-direct-database-join/defect.json",
+      "sha256": "c3d71a57887409b049b74a6f2aed485e40b98e670fe356990e8fac0bc0dd602a",
+      "size": 257
+    },
+    {
+      "path": "capstone/planted-defects/GQL-02-n-plus-one/defect.json",
+      "sha256": "ef5bcf014465a2ad6223c24019c7ef54c1c68661af9095ae7d9f63a91074a3b1",
+      "size": 228
+    },
+    {
+      "path": "capstone/planted-defects/GQL-03-nullability-lie/defect.json",
+      "sha256": "782d1c936f10c6f22da2a5ee672044dcf52145cc12abae44cb362e30aaded0d2",
+      "size": 264
+    },
+    {
+      "path": "capstone/planted-defects/GQL-04-authorization-by-parent/defect.json",
+      "sha256": "9e400f0740d1d63c6004fb5f8124af73c71d5d234732ab431250e13d2d77db5b",
+      "size": 270
+    },
+    {
+      "path": "capstone/planted-defects/GQL-05-unbounded-list/defect.json",
+      "sha256": "b7c2b8a0a941733637c06212081fbce86e0639286122170d892203847bdcb672",
+      "size": 233
+    },
+    {
+      "path": "capstone/planted-defects/GQL-06-alias-cost-bypass/defect.json",
+      "sha256": "2c7dd30073aeb47ccf43eac825cfa73424170fb9a0103252b6fc38da80a0102c",
+      "size": 237
+    },
+    {
+      "path": "capstone/planted-defects/GQL-07-fragment-cycle/defect.json",
+      "sha256": "d5fd8b0a4053f9978d176e080db46d3d14955482a5599b7cb8c665423be517cb",
+      "size": 246
+    },
+    {
+      "path": "capstone/planted-defects/GQL-08-idempotency-lost/defect.json",
+      "sha256": "39837ed6bf983f9793fa32d3fd558b14edb5d4c7a7beccc94fd5f69541f01777",
+      "size": 252
+    },
+    {
+      "path": "capstone/planted-defects/GQL-09-subscription-gap-hidden/defect.json",
+      "sha256": "f7e767c69587ec4f6935ace28b5356c7c87babae088cdabb3c2e3b8626c4bc12",
+      "size": 258
+    },
+    {
+      "path": "capstone/planted-defects/GQL-10-breaking-schema-release/defect.json",
+      "sha256": "2ef03354db253c7cfcb30775829ae4dd8214cfb452a0a55b6e3de8f07bc003c7",
+      "size": 272
+    },
+    {
+      "path": "capstone/predecessor/handoff/BOUNDARY.json",
+      "sha256": "5dfe4b4b6f49a01deaccfcbdbae09a71694c5607de87b7876a83847df0c8f6dd",
+      "size": 447
+    },
+    {
+      "path": "capstone/predecessor/handoff/MANIFEST.json",
+      "sha256": "39761e975e21a9b15dbd55ab1478a06418f66d625161590dc0190623c5769c45",
+      "size": 1317
+    },
+    {
+      "path": "capstone/predecessor/handoff/MANIFEST.sha256",
+      "sha256": "e0aafe03e91da752a1b244783e37fe999082aa1d50594edb94a92b9d6e566769",
+      "size": 80
+    },
+    {
+      "path": "capstone/predecessor/handoff/README.md",
+      "sha256": "b167460f70227246e083d743d9369c1bb0fa04004750edc226a01a482b7ca0b5",
+      "size": 218
+    },
+    {
+      "path": "capstone/predecessor/handoff/consistency-policy.yaml",
+      "sha256": "eede4c18274a16c0fe644a4d7626ce3b66d3115bbace9cfd67532404f57ed4e9",
+      "size": 813
+    },
+    {
+      "path": "capstone/predecessor/handoff/data-ownership.yaml",
+      "sha256": "873ded2fa35e0d85dda97c363533c219a98deea09990fe3bf87a3447bd076399",
+      "size": 913
+    },
+    {
+      "path": "capstone/predecessor/handoff/dependency-graph.yaml",
+      "sha256": "bcd8cb534a1e7d7483954b01a655239650fd5fd4a248a1a817424b31604c2d64",
+      "size": 1041
+    },
+    {
+      "path": "capstone/predecessor/handoff/graphql-boundary-brief.yaml",
+      "sha256": "db462fe93237513c805fd919313ce046ccf113edd5a500fbfe0eb809eff61b0b",
+      "size": 628
+    },
+    {
+      "path": "capstone/predecessor/handoff/service-catalog.yaml",
+      "sha256": "32f35d4f382fe37c8c633601365a9e4cb4aa474a8d942520348d3a23fcd31f35",
+      "size": 1471
+    },
+    {
+      "path": "capstone/predecessor/handoff/version-ledger.yaml",
+      "sha256": "63f2d873e3932dc75aa455de202b94d37b37071dc4255808068b2fde9952066d",
+      "size": 435
+    },
+    {
+      "path": "capstone/releases/accepted-add-optional-field/candidate.json",
+      "sha256": "33bbb125553892b1b3990ffc1944a2ecbc39f0003a014fb2720982e35342c0f2",
+      "size": 197
+    },
+    {
+      "path": "capstone/releases/accepted-add-optional-field/schema.graphql",
+      "sha256": "e6f0d5ee111ade4a8a72317bdf939ced8b56d95d1da0245101487ca0977e2a35",
+      "size": 4812
+    },
+    {
+      "path": "capstone/releases/graph-1.0/release-report.json",
+      "sha256": "5f2ac33da00e5412c7406f473c605cf1f25e494b7cdd0d8effc19d3067a9923f",
+      "size": 142
+    },
+    {
+      "path": "capstone/releases/rejected-budget-regression/candidate.json",
+      "sha256": "591d60322772f5cc0ceaf056d77113763bf760444a27e47069df7f833199fc99",
+      "size": 210
+    },
+    {
+      "path": "capstone/releases/rejected-budget-regression/schema.graphql",
+      "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9",
+      "size": 4790
+    },
+    {
+      "path": "capstone/releases/rejected-direct-database/candidate.json",
+      "sha256": "c2407ff980428afdb4fe7c51b8fd2a396e8cd500ff2b846307f2151fd31ef8d2",
+      "size": 264
+    },
+    {
+      "path": "capstone/releases/rejected-direct-database/schema.graphql",
+      "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9",
+      "size": 4790
+    },
+    {
+      "path": "capstone/releases/rejected-missing-owner/candidate.json",
+      "sha256": "fa18da1726aad7bed340dd27df0c811d069c6793ea2d8bc2b4a29cabcda94099",
+      "size": 208
+    },
+    {
+      "path": "capstone/releases/rejected-missing-owner/schema.graphql",
+      "sha256": "893bd294b0d20a6499abdcd4cfe9028a334432cc1398de8cf513a99737a7d7bc",
+      "size": 4811
+    },
+    {
+      "path": "capstone/releases/rejected-output-nullability/candidate.json",
+      "sha256": "2eaabbb4d94b8890317aa36efc86fc3107b7e4f2bde3c2f73fe06055daec2ca6",
+      "size": 201
+    },
+    {
+      "path": "capstone/releases/rejected-output-nullability/schema.graphql",
+      "sha256": "bf9e042927610db8a9a9cbcddfc8acffc56bded886f312f5f2513452ca47e5e7",
+      "size": 4789
+    },
+    {
+      "path": "capstone/releases/rejected-remove-field/candidate.json",
+      "sha256": "4db45c14f7f40e404d179e230e3417132e102821169dbbd6312c6a2eb60a63a1",
+      "size": 184
+    },
+    {
+      "path": "capstone/releases/rejected-remove-field/schema.graphql",
+      "sha256": "43b9ef16b4b639af3d9ca8d464280b8018651abbce976981fccae5af449f5a13",
+      "size": 4769
+    },
+    {
+      "path": "capstone/releases/rejected-required-argument/candidate.json",
+      "sha256": "465320a83959f3049af2653f5500dded4fd01493da37f7338184b2e7c5d0dccd",
+      "size": 202
+    },
+    {
+      "path": "capstone/releases/rejected-required-argument/schema.graphql",
+      "sha256": "0f320001777ad0fe5ae63e31fa448035bc02d791a904b0797cf514b1dcf26e43",
+      "size": 4807
+    },
+    {
+      "path": "capstone/releases/rejected-silent-partial/candidate.json",
+      "sha256": "599e6d514d1eb8c88e26e8078fbb7add3f9d0d99d63bb1f2bd68ddf3794f3d46",
+      "size": 252
+    },
+    {
+      "path": "capstone/releases/rejected-silent-partial/schema.graphql",
+      "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9",
+      "size": 4790
+    },
+    {
+      "path": "capstone/releases/rejected-unbounded-list/candidate.json",
+      "sha256": "1d54666c077821b35126444b897644eb855d7d33280acce499ae60596b999b84",
+      "size": 210
+    },
+    {
+      "path": "capstone/releases/rejected-unbounded-list/schema.graphql",
+      "sha256": "1e346eb6d160e0b82b3d6ec69ec11243c70a3f34418abaa89a3be9e1f96fc1e6",
+      "size": 4750
+    },
+    {
+      "path": "capstone/releases/review-add-enum-value/candidate.json",
+      "sha256": "4fb4476cbdf2eb7956246a42ffdb37bc78277a5f37f99b499502f740d6021db1",
+      "size": 184
+    },
+    {
+      "path": "capstone/releases/review-add-enum-value/schema.graphql",
+      "sha256": "296cec1aa43da40635106181152f13c897b17114bb4ed92a563404c97a3916fd",
+      "size": 4797
+    },
+    {
+      "path": "capstone/security/field-policy.yaml",
+      "sha256": "88cb16d6be5092efe81de523c1aa367674cca70c43ade427eaf928bc4f5e1967",
+      "size": 885
+    },
+    {
+      "path": "capstone/shared/README.md",
+      "sha256": "e7b76af516a08ad7f268c3cbc00bdd69a1c0c72ab62a224d4c7e17474ffdb1fc",
+      "size": 141
+    },
+    {
+      "path": "capstone/shared/vectors/authorization.json",
+      "sha256": "554c91c33b16f820f9394419d2a974997e445f1eb686a5ae16f596db6e89b455",
+      "size": 556
+    },
+    {
+      "path": "capstone/shared/vectors/batching.json",
+      "sha256": "15b8a88a6ba0fdca0486aa6a533dcd1d2e094da22db6801ee3aa5a6ec8b51dfd",
+      "size": 209
+    },
+    {
+      "path": "capstone/shared/vectors/compatibility.json",
+      "sha256": "a184b98c353c144bd8b4b41971183a163e028f406875c3b34268cc61260a559e",
+      "size": 409
+    },
+    {
+      "path": "capstone/shared/vectors/costs.json",
+      "sha256": "f3582d4b864112eb14b595b2f541543aa4b0f11bbb968ca3674b141206c3c357",
+      "size": 513
+    },
+    {
+      "path": "capstone/shared/vectors/cursors.json",
+      "sha256": "4ab8e83fdf3ef9cc90f7e1a3e908331c5d818f1ee6ef978b3c5af093c411855c",
+      "size": 2240
+    },
+    {
+      "path": "capstone/shared/vectors/global-identifiers.json",
+      "sha256": "5be9e1d6753745b6dd0222a75c89ebce11638d1a12466e5ed7c9a0ba0497a5e0",
+      "size": 306
+    },
+    {
+      "path": "capstone/shared/vectors/http-profile.json",
+      "sha256": "4a32917424b2c3d71e87e14c7b5b113147ae53728839bd6f724769402983bd59",
+      "size": 454
+    },
+    {
+      "path": "capstone/shared/vectors/mutations.json",
+      "sha256": "7872ac7fc03f8be89c5563d6c93000484dd7c0affdfdb17088508b1940702efd",
+      "size": 348
+    },
+    {
+      "path": "capstone/shared/vectors/nullability.json",
+      "sha256": "36ef1fa36dcc0566e6a8920b1873d91f622c5195a296fce6bdf7577df7f27376",
+      "size": 393
+    },
+    {
+      "path": "capstone/shared/vectors/subscriptions.json",
+      "sha256": "0a3313a2214b3afcd80c18c2cc51f88cba33bb41083c7e14601be2fefe4a70b1",
+      "size": 382
+    },
+    {
+      "path": "capstone/tracks/python-graphql/README.md",
+      "sha256": "54690c0f7dce65f2a07f8f9107e1b45bdffc314befa524e834ea84cacefc4c22",
+      "size": 1220
+    },
+    {
+      "path": "capstone/tracks/python-graphql/pyproject.toml",
+      "sha256": "16df9e448dd9744bfffb2fadb683e00b4afeb84ebf15c526aa39204efb9eca99",
+      "size": 330
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/__init__.py",
+      "sha256": "9467e73d7987f31d8da5679706cd4d8c3e104a1afd721b4cd9fb4557564f247c",
+      "size": 271
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/adapters/strawberry_app.py",
+      "sha256": "0a9173c035872c1849832f0fdaaf40baa30cde29c66bf9e64a099ef9ed3bea25",
+      "size": 829
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/compatibility.py",
+      "sha256": "1d9ebb745242ac250a7658efa79a06c08bdf387da85c441e1190ad5b187ce779",
+      "size": 1698
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/cost.py",
+      "sha256": "2ca53caf21b88ea9a89d17b87c42e28e5852dda041166ada7afd044ea6510f3a",
+      "size": 5665
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/cursor.py",
+      "sha256": "27cc0e71cdd26b71dfdd82770ca08aa99a28dfbaf680f2485d484c3dfa4413ee",
+      "size": 4754
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/execution.py",
+      "sha256": "165f4729adacbbc7d8a4618593e67e493e9a3f575828d093c9df232aa5e54d81",
+      "size": 1950
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/gateway.py",
+      "sha256": "c9fb8b95e6e299ccbaf47f47caa4ba93936460276cb776c2dca9d8ae461b7ded",
+      "size": 26547
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/identity.py",
+      "sha256": "4ce96a1356dc85832d9e59c6a44a800bd6312435216578fe38aa673bf63f4ba9",
+      "size": 1000
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/loader.py",
+      "sha256": "83391659a1265d537587ddfcc4ac30194a734892e75c55a73b0dfb187c42372c",
+      "size": 1219
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/model.py",
+      "sha256": "9616c1b976a6c9ede1d62bcc58d2c41c39b99d4a76474c463e62db7244bfc07e",
+      "size": 2124
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/operation.py",
+      "sha256": "bcc91a8c52202eae6675cd7293116a713c458365d92fcec9efa12da87a549b54",
+      "size": 8655
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/persisted.py",
+      "sha256": "2dc58f81715a725f7879a9bc8c61ccb49fbc21f142d77050ead2ff027ce8704b",
+      "size": 2006
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/policy.py",
+      "sha256": "77560a3c6e291bfb814fcc336c2b19dc7afe855f96b78835c4c07d62e20902ea",
+      "size": 1205
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/release.py",
+      "sha256": "cafb6f264520e4ec13a725db3bc8c9d5b7110c8018070f09d067a2b227d0bf90",
+      "size": 1738
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/services.py",
+      "sha256": "d09af7ee349dfa0e7c3675cf1421e9bab08e4550749e8309856f18c12e390132",
+      "size": 12200
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/subscription.py",
+      "sha256": "d6c3b52702594ef64619c2635e3a4bd018f133373dc2029d03729edbb103cd7c",
+      "size": 1470
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/tour.py",
+      "sha256": "572c6b0f5e0243880e098e395cf9f11accaceca8dd7b6cf454a3f5e125d72945",
+      "size": 3412
+    },
+    {
+      "path": "capstone/tracks/python-graphql/src/graph_api/transport.py",
+      "sha256": "937bd9ef9381d6b00963ecf3fe153118831aab70cc045c5201bcdf1e3d38bc9d",
+      "size": 1775
+    },
+    {
+      "path": "capstone/tracks/python-graphql/tests/test_gateway.py",
+      "sha256": "cf0723c78781709f2522cc94a8a7613f2be639446598e487acbe8a3a4d3f319a",
+      "size": 8617
+    },
+    {
+      "path": "capstone/tracks/python-graphql/tests/test_identity_cursor.py",
+      "sha256": "59d89807d97932181997c42ba43bc9cc7e62995249fe1f075ce4b90abeb66334",
+      "size": 3292
+    },
+    {
+      "path": "capstone/tracks/python-graphql/tests/test_loader_execution.py",
+      "sha256": "b43b5aaa73a68474d68b5e48dff1945b7731df9e2143fa293c798ca396780582",
+      "size": 1566
+    },
+    {
+      "path": "capstone/tracks/python-graphql/tests/test_operation_cost.py",
+      "sha256": "385760e199dfe1bbbd9a14dc8d50cab5fc1f08839defafd13f67e42ae9db45b4",
+      "size": 1281
+    },
+    {
+      "path": "capstone/tracks/python-graphql/tests/test_policy_subscription_release.py",
+      "sha256": "ad2789c4a32c62140ad39e6c5890b83da5c13cc124a2ec67d29f61bc129b0812",
+      "size": 1891
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/README.md",
+      "sha256": "2e1598175552f34302de294e1062acbd096999082e50c54df54682b6226406b3",
+      "size": 1178
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/package.json",
+      "sha256": "f621eab49dbd89c9a8b3a7e73d0d401ec386458103b851e3747886e2cedf01c1",
+      "size": 374
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/adapters/yoga-server.ts",
+      "sha256": "e490343a84a099905ae628c3db923690ce9e1189543fb39e41390b22d6de3aec",
+      "size": 373
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/compatibility.ts",
+      "sha256": "765007c52d00efab360146fc24fca213fc7d69b10d3c70b660d7782f73eddba9",
+      "size": 1335
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/cost.ts",
+      "sha256": "dc6b0a166a0470061a1a3508363eddb3cda59f0a96c90817ca6e9bc214e4f762",
+      "size": 4987
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/cursor.ts",
+      "sha256": "faa94f32e55469e03c5ecf4d2bf786eaa31d4f6b0c30a8e77945521c25fcf817",
+      "size": 5244
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/gateway.ts",
+      "sha256": "9327cbded88f2d6bc0e64ade80367721d6e9878d5337d5073af441771962cfb2",
+      "size": 24778
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/identity.ts",
+      "sha256": "b8aabb01d4c2ea36daee7b818217b5148e5f2feaf5b726de13b09dc3a0c1c446",
+      "size": 860
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/index.ts",
+      "sha256": "8851184c3aadd011fc57da5bb11a91d0e3b1b530f6e6e143c0d19a713808de47",
+      "size": 502
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/loader.ts",
+      "sha256": "94dba2ec628708d9ab454ab7570eda6133e0e75fe65ec2069b535e6b1d61291c",
+      "size": 1155
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/model.ts",
+      "sha256": "c1123b5b65ee63657ccf05d5852e0eaf9d28979985e7f6d883f1c7963ca4961e",
+      "size": 933
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/node-shim.d.ts",
+      "sha256": "509971f58c78b0e1897826880264f72b09bcdad2a23746028ae838f00c87330f",
+      "size": 623
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/operation.ts",
+      "sha256": "b4b86a041d3a7b7c35f7cd61c598fd36a01bd8712973203cbddeb8cb88d7b1e2",
+      "size": 7405
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/persisted.ts",
+      "sha256": "c1eafd08a939adb30153fde4068a3dc50deee6930df47a2a18db090b289dc4d4",
+      "size": 1730
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/policy.ts",
+      "sha256": "46bc37795a6bd2a6156fd4309108db885e09aef5ae1e70fb2f74a29e2e9fc797",
+      "size": 1077
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/registered-operations.ts",
+      "sha256": "6004cae8c90e2957f3e1f2b8f17f03745d0e6634e86963aeadcfba3f144e4869",
+      "size": 3147
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/release.ts",
+      "sha256": "12d28682eb53727fb3f5b9f29f3087cdedbff5e6884680c24f4b323ad58a5940",
+      "size": 1542
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/services.ts",
+      "sha256": "07562e2f160b63c3ca5bf442acc11be03d19cc655984d49b0f9fba64bd99bc49",
+      "size": 11236
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/subscription.ts",
+      "sha256": "3d7db737b24d278342313db13cd61180396f874ef935d16de2f1558ad61b3e8f",
+      "size": 1333
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/tour.ts",
+      "sha256": "189ffbb0bc255fb7bb25746c648704f0f98aff7eb50f42694a06a70ae4ff361e",
+      "size": 2244
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/src/transport.ts",
+      "sha256": "f50a14faffa28b3e77aeb29ef79062a926de22f186b22643babcc677b33a8622",
+      "size": 1486
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/test-js/gateway-release.test.mjs",
+      "sha256": "b33d705dedba633ad182b5fa06869e3425028f708ab6380cee3114932d256f4b",
+      "size": 4710
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/test-js/identity-operation.test.mjs",
+      "sha256": "d72298b9c877d73ba285f612d7f684a33a616d7b681dfa8f3afb18364b5f072e",
+      "size": 2580
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/test-js/loader-policy.test.mjs",
+      "sha256": "8496ba77df11aa7ded40e9cbd82315e557e5d49f9c8544de09165d9f233010ea",
+      "size": 2340
+    },
+    {
+      "path": "capstone/tracks/typescript-graphql/tsconfig.json",
+      "sha256": "2b20f2599d87d9817f8acc6014cd3ee28e8dfd4f25a1af15c0c33273e86e99db",
+      "size": 300
+    },
+    {
+      "path": "course-book/capstone.md",
+      "sha256": "d31362e84cb1b53663069a16c1791105c704f225507fa1daeddff546d5a2a29c",
+      "size": 2017
+    },
+    {
+      "path": "course-book/evidence-model.md",
+      "sha256": "cc8c181425817d920d2fd2c5d75938860e2641becc6e20d515d1dadef0595155",
+      "size": 1446
+    },
+    {
+      "path": "course-book/glossary.md",
+      "sha256": "a5213a6e52f1fd9999fcf03198a0b54c6ca722caf2434d30c3589017d57eae4e",
+      "size": 1837
+    },
+    {
+      "path": "course-book/index.md",
+      "sha256": "f47245757fd70c6cb57db976d027120ec6347ac00183f95ed7fc610b3cb7bef0",
+      "size": 1705
+    },
+    {
+      "path": "course-book/language-strategy.md",
+      "sha256": "0c2af0127ff60a0ea9c646e42a13cc537b13b42dc2f34d828fde50143a5a3fcf",
+      "size": 1723
+    },
+    {
+      "path": "course-book/module-00-orientation/index.md",
+      "sha256": "eedfdcbc01bb4b32f27a21b79fc861a57c5d789627c10056c95f7ff50ff2a095",
+      "size": 4802
+    },
+    {
+      "path": "course-book/module-01-graph-interface-placement-and-operation-lifecycle/checkpoint.md",
+      "sha256": "98f6e4a4bb463dcbaf05f0c32c855340fc166a21d6a0de2bb9e7f1b338215376",
+      "size": 983
+    },
+    {
+      "path": "course-book/module-01-graph-interface-placement-and-operation-lifecycle/exercise-answers.md",
+      "sha256": "b09992968acfad61ea04c03db86c914eea49d0021919cb9c869585e7ae635ddf",
+      "size": 5567
+    },
+    {
+      "path": "course-book/module-01-graph-interface-placement-and-operation-lifecycle/exercises.md",
+      "sha256": "b3dc3c7b39d4885d015eeb6b11a02e0d08b9c117ac7521cf35798913a35ae4e3",
+      "size": 1043
+    },
+    {
+      "path": "course-book/module-01-graph-interface-placement-and-operation-lifecycle/index.md",
+      "sha256": "7a6a11fa404740493b5358c617d35b3cedf6cc0006b7ecef0c15e2d8e7dcc851",
+      "size": 13823
+    },
+    {
+      "path": "course-book/module-01-graph-interface-placement-and-operation-lifecycle/lab.md",
+      "sha256": "8fd5690940167615ff82aa5cc0612e5e5646acd3f33bc9efa7a4e958d8bc8f91",
+      "size": 4123
+    },
+    {
+      "path": "course-book/module-02-type-system-nullability-and-semantic-modeling/checkpoint.md",
+      "sha256": "a4355b168ada9cf306fb4a9ecc94df2e1d44fb7799ae9afef2c8ac79434d64c9",
+      "size": 924
+    },
+    {
+      "path": "course-book/module-02-type-system-nullability-and-semantic-modeling/exercise-answers.md",
+      "sha256": "4f43b4c513fe30d646bfd3088c40a32deb704a7e9de3a987118e19c3483e26d4",
+      "size": 5110
+    },
+    {
+      "path": "course-book/module-02-type-system-nullability-and-semantic-modeling/exercises.md",
+      "sha256": "6052e9687d73d8d9ffd08722bdeffc081cd12da60bcb6d471c0ef780b553c56b",
+      "size": 934
+    },
+    {
+      "path": "course-book/module-02-type-system-nullability-and-semantic-modeling/index.md",
+      "sha256": "9e19e325ed9fc02ebfe2e580598c98502631eba828d0e3621f2c1341419fdc47",
+      "size": 13147
+    },
+    {
+      "path": "course-book/module-02-type-system-nullability-and-semantic-modeling/lab.md",
+      "sha256": "1e1834fb7143b217756d06da19f74ee9065796d4a44effe98e21074174629049",
+      "size": 3326
+    },
+    {
+      "path": "course-book/module-03-resolver-architecture-batching-and-source-ownership/checkpoint.md",
+      "sha256": "fd17379bfdb090f1d20c74fd86caeaf9dab6ae92f2eb3ee5cb6a164d719a3c14",
+      "size": 959
+    },
+    {
+      "path": "course-book/module-03-resolver-architecture-batching-and-source-ownership/exercise-answers.md",
+      "sha256": "e7fadcd486c6addb321da6e072c2829443c447833e7dbaddea874af6b919ea8c",
+      "size": 4743
+    },
+    {
+      "path": "course-book/module-03-resolver-architecture-batching-and-source-ownership/exercises.md",
+      "sha256": "c3feb155190cb8912e3c013c65400e7f863281012eb5c770f9519254434f68f4",
+      "size": 880
+    },
+    {
+      "path": "course-book/module-03-resolver-architecture-batching-and-source-ownership/index.md",
+      "sha256": "842618cd1ece7ecf25e88485cc41fd48bf235d8fa7730bb3df758d84d1bf0a29",
+      "size": 11952
+    },
+    {
+      "path": "course-book/module-03-resolver-architecture-batching-and-source-ownership/lab.md",
+      "sha256": "87a127a573cb5eeb835ac10fedc90514e4f7a91ee8e689a0d2eea11dbd5bc66a",
+      "size": 3376
+    },
+    {
+      "path": "course-book/module-04-queries-identifiers-connections-and-pagination/checkpoint.md",
+      "sha256": "b395c1380c82ff4870a0d4bad6c0e96e2e63550f5fdf8ffddd7c7ca5b0eeb460",
+      "size": 910
+    },
+    {
+      "path": "course-book/module-04-queries-identifiers-connections-and-pagination/exercise-answers.md",
+      "sha256": "65dede080c2dddeaeee7dddf062b16eb31913f7ea084f9c333a6ee8bb3217e56",
+      "size": 4480
+    },
+    {
+      "path": "course-book/module-04-queries-identifiers-connections-and-pagination/exercises.md",
+      "sha256": "d0ebd4a394d9e4321d4eb98e4be391ce38d443803741a9e3a58d6bf8aad93127",
+      "size": 770
+    },
+    {
+      "path": "course-book/module-04-queries-identifiers-connections-and-pagination/index.md",
+      "sha256": "5aa9f20937a28f66da6c737004513f42813d984f0b897183e0a70f1226b3c223",
+      "size": 11086
+    },
+    {
+      "path": "course-book/module-04-queries-identifiers-connections-and-pagination/lab.md",
+      "sha256": "e8fe4c9659d40dd0d2691a457449cac4340d93bae54e53c1655f6a6c51c15d3b",
+      "size": 3117
+    },
+    {
+      "path": "course-book/module-05-mutations-idempotency-concurrency-and-domain-results/checkpoint.md",
+      "sha256": "3289cebe698866bded43c2a8d74863c78f6f8942a398859814be6b456f60a41c",
+      "size": 912
+    },
+    {
+      "path": "course-book/module-05-mutations-idempotency-concurrency-and-domain-results/exercise-answers.md",
+      "sha256": "d10711c5d6013cb09488399330f0a72e80633b832831a932650b55752c391596",
+      "size": 4600
+    },
+    {
+      "path": "course-book/module-05-mutations-idempotency-concurrency-and-domain-results/exercises.md",
+      "sha256": "1ee3d877406bab91e0c2efd7c430fdd9b842c9107395050f5a967bfcf4a272b0",
+      "size": 896
+    },
+    {
+      "path": "course-book/module-05-mutations-idempotency-concurrency-and-domain-results/index.md",
+      "sha256": "3179c98ebf01920db032c2c445a2eacd52291c9e8d00029e8d49a9fb915774f2",
+      "size": 10820
+    },
+    {
+      "path": "course-book/module-05-mutations-idempotency-concurrency-and-domain-results/lab.md",
+      "sha256": "3308c8a258fcc4c610c4aef97ac415f7c0737c613d416f1f10f0a41015a143e9",
+      "size": 2990
+    },
+    {
+      "path": "course-book/module-06-authorization-tenancy-and-schema-exposure/checkpoint.md",
+      "sha256": "30dea45dd80a10eb55418cb9af5ee228c997326bc62c59c450b3635d4608d00a",
+      "size": 927
+    },
+    {
+      "path": "course-book/module-06-authorization-tenancy-and-schema-exposure/exercise-answers.md",
+      "sha256": "86eec812aad8b33aae53be7634c43679e9a554724be38db2d29aa57d2c3010f9",
+      "size": 4539
+    },
+    {
+      "path": "course-book/module-06-authorization-tenancy-and-schema-exposure/exercises.md",
+      "sha256": "a9cadc00d5bad99135995daf94ab14f0cbb473586aa3726b74aeacdcfb9bafcd",
+      "size": 862
+    },
+    {
+      "path": "course-book/module-06-authorization-tenancy-and-schema-exposure/index.md",
+      "sha256": "ff31e242f89d2df2325517d7913aeb28683db1633bab89eb85b9ca41c19379fc",
+      "size": 10644
+    },
+    {
+      "path": "course-book/module-06-authorization-tenancy-and-schema-exposure/lab.md",
+      "sha256": "ba46ce0ef6da64575ea27c02ee4315f77957197b9111785b5ca651be16b385a1",
+      "size": 3216
+    },
+    {
+      "path": "course-book/module-07-demand-control-persisted-operations-and-caching/checkpoint.md",
+      "sha256": "c27ff958547f3369efc7c1d2e01c48cf249503c382b6f34c82cbbb9b7f47daad",
+      "size": 936
+    },
+    {
+      "path": "course-book/module-07-demand-control-persisted-operations-and-caching/exercise-answers.md",
+      "sha256": "d3e4213c997a855aa9663ff44b79a044ee6f578d7f08863c765a41f0e51e9efb",
+      "size": 4523
+    },
+    {
+      "path": "course-book/module-07-demand-control-persisted-operations-and-caching/exercises.md",
+      "sha256": "f27cd49b9d57b61435fb0261125684de494c367a3ca7070e486049c1608f5c3d",
+      "size": 800
+    },
+    {
+      "path": "course-book/module-07-demand-control-persisted-operations-and-caching/index.md",
+      "sha256": "fa73c9cab492bbf01437a065c7050a7981ac3603f150569162ac57c9991a0b03",
+      "size": 11774
+    },
+    {
+      "path": "course-book/module-07-demand-control-persisted-operations-and-caching/lab.md",
+      "sha256": "e5f0867159a95e0e12a3a7e5a88e1494cf9c2faa90501f1c479f6de828561fb1",
+      "size": 3238
+    },
+    {
+      "path": "course-book/module-08-errors-partial-data-consistency-and-observability/checkpoint.md",
+      "sha256": "c264437e3cc5148823f05f5b0c5489c8e552a7353d26dafc791289c1d5db640e",
+      "size": 958
+    },
+    {
+      "path": "course-book/module-08-errors-partial-data-consistency-and-observability/exercise-answers.md",
+      "sha256": "b5dd8ffa198f7b54cde6800018dd82c2385bcb6083ca9977c73f9a89d873fb12",
+      "size": 4302
+    },
+    {
+      "path": "course-book/module-08-errors-partial-data-consistency-and-observability/exercises.md",
+      "sha256": "ed952ba56f006080cfaf47399a60d12f96f315a09c616890d2ab97422fd6d53a",
+      "size": 796
+    },
+    {
+      "path": "course-book/module-08-errors-partial-data-consistency-and-observability/index.md",
+      "sha256": "2f5d36c537cb84dfaf00d40483d55dba54d287907b9ef2df6915ebb936947f48",
+      "size": 10774
+    },
+    {
+      "path": "course-book/module-08-errors-partial-data-consistency-and-observability/lab.md",
+      "sha256": "0a101112c51e68b9c017fdbd496f096e72c4d2def6da48a678bc7eea7932c6da",
+      "size": 3048
+    },
+    {
+      "path": "course-book/module-09-subscriptions-resume-and-incremental-delivery/checkpoint.md",
+      "sha256": "c4a343f40a32d4613b543d1e42a29f9da2c15f74c84851bc2f958e24df0c493e",
+      "size": 924
+    },
+    {
+      "path": "course-book/module-09-subscriptions-resume-and-incremental-delivery/exercise-answers.md",
+      "sha256": "995f3b73454193df0ea7b4cfa97cdbb110e0b5137e8f0d9d3a3cc7c26b7bd792",
+      "size": 4361
+    },
+    {
+      "path": "course-book/module-09-subscriptions-resume-and-incremental-delivery/exercises.md",
+      "sha256": "ff9512ad55440ca8b00bce32a77d9ecb98386a27339d973dbc5dc5111d5f9d66",
+      "size": 773
+    },
+    {
+      "path": "course-book/module-09-subscriptions-resume-and-incremental-delivery/index.md",
+      "sha256": "7105338a5edfd42bf0b900a920332fc577d5d24a295a04b09cc33b83fd305fec",
+      "size": 10589
+    },
+    {
+      "path": "course-book/module-09-subscriptions-resume-and-incremental-delivery/lab.md",
+      "sha256": "6826f74c014fa982dff41e953287a85eca9daa66c0b59a0ccbcd61127634b5a1",
+      "size": 3251
+    },
+    {
+      "path": "course-book/module-10-schema-evolution-federation-governance-and-final-defense/checkpoint.md",
+      "sha256": "9664c5a4005361bee0a541a5b7dd081f1d3c3f3eba524d2119369c65e3666345",
+      "size": 1044
+    },
+    {
+      "path": "course-book/module-10-schema-evolution-federation-governance-and-final-defense/exercise-answers.md",
+      "sha256": "060677c2cc071380ab31353761a3b40c1a4ae222a5e6e31ed878787a916e3921",
+      "size": 4721
+    },
+    {
+      "path": "course-book/module-10-schema-evolution-federation-governance-and-final-defense/exercises.md",
+      "sha256": "ae27b4e66e917f55c181fca8eb0f0d4010c5cdbfbb315a59e30c0464b87bf974",
+      "size": 768
+    },
+    {
+      "path": "course-book/module-10-schema-evolution-federation-governance-and-final-defense/index.md",
+      "sha256": "6013e996e46a70bd771cb735ed4cf922a962b8791cd6f505e93145cd57792358",
+      "size": 10791
+    },
+    {
+      "path": "course-book/module-10-schema-evolution-federation-governance-and-final-defense/lab.md",
+      "sha256": "e5f332108c675fe0625dc7fc5c4b2f8ef598244a0f805597a736a6eaf20911e5",
+      "size": 4036
+    },
+    {
+      "path": "course-book/standards.md",
+      "sha256": "2692aede9da9cfc63d47dd0af8d4ee7dedded0a0d307ad7a0ca627e3d6f17c2b",
+      "size": 2129
+    },
+    {
+      "path": "course-book/start-here.md",
+      "sha256": "81a7e734fbe7d98e7a29579877e8727277a988077e96884cc81925f975b018a8",
+      "size": 2282
+    },
+    {
+      "path": "course-book/study-plan.md",
+      "sha256": "c1fff5a01b0dbfc6bb25fab0db7520e12b03b1315c11e803040fa37a9371ca5a",
+      "size": 1112
+    },
+    {
+      "path": "course.json",
+      "sha256": "d18bd9832dd591ac272068c4dbc49dc1f40f3951b113a3d7e148b8ab05c78e27",
+      "size": 626
+    },
+    {
+      "path": "instructor/teaching-notes.md",
+      "sha256": "146bec66dd03fa58b5da0fc4a34ca3fc9beffb394ad23879700df1302e6799ea",
+      "size": 2228
+    },
+    {
+      "path": "mkdocs.yml",
+      "sha256": "fe2dd57ad3d1fa52c3440ea991954b7d164898295760d7d6bb60a02187d280bc",
+      "size": 6289
+    },
+    {
+      "path": "reports/README.md",
+      "sha256": "b0f9f4a5e20ecc34aa1ee3cdaf6854566388feab68e28c4c6c479499deb5fa9d",
+      "size": 169
+    },
+    {
+      "path": "reports/module-01-proof.json",
+      "sha256": "e8636af14a97a314e91b7a643eda3fcc4505b17427f2309aceae9cd24a666dfb",
+      "size": 227
+    },
+    {
+      "path": "reports/module-02-proof.json",
+      "sha256": "390f60667663d3b37426d6a3dd2ab28c875692152d099449eaf2caf187bbc0d0",
+      "size": 132
+    },
+    {
+      "path": "reports/module-03-proof.json",
+      "sha256": "e3832a32fa1e10d0c7610df4d759aa1e463e3db7ab415d5cfdc59076158634a3",
+      "size": 151
+    },
+    {
+      "path": "reports/module-04-proof.json",
+      "sha256": "d2272d62d2eefbcfa541d7efed1142a8e97d8d014c2529883975f40a8d6d279d",
+      "size": 343
+    },
+    {
+      "path": "reports/module-05-proof.json",
+      "sha256": "458b829d92a02bcb7efd7c4c287b683606bc5ddb0ce6361c216a1bdc2814eee0",
+      "size": 184
+    },
+    {
+      "path": "reports/module-06-proof.json",
+      "sha256": "c7577f8512701f1847ee17b1329aa0d2109f859090d994ca28dc8a8c5b215742",
+      "size": 129
+    },
+    {
+      "path": "reports/module-07-proof.json",
+      "sha256": "1844ee4b7e6a8d2643b2cd69caf6761c89f5f8557a3f3761d34c44b6b7f28065",
+      "size": 182
+    },
+    {
+      "path": "reports/module-08-proof.json",
+      "sha256": "fc46d05a1aacdf38dc5f08a4074590e51296a93f44abd0ce2274155dfe685977",
+      "size": 247
+    },
+    {
+      "path": "reports/module-09-proof.json",
+      "sha256": "a347de7299ccc33b61f7c42fbe3eebeec883e949828c1f8cf3e09090f9216532",
+      "size": 192
+    },
+    {
+      "path": "reports/module-10-proof.json",
+      "sha256": "b65b409a2b72792f15e28d9dc9075e01dc2bab3f7056224465f7775b6dd3a17e",
+      "size": 142
+    },
+    {
+      "path": "reports/release-verification.json",
+      "sha256": "fa76c66c543f66e139ce252566bface98a9bd971f99a7f737c8d833ee31d2eae",
+      "size": 2300
+    },
+    {
+      "path": "requirements-docs.txt",
+      "sha256": "4b18f2679cdc886e416177b8a46a054d0b683b14dcf0bdfa6911ffc02f0ca50f",
+      "size": 38
+    },
+    {
+      "path": "scripts/build_manifest.py",
+      "sha256": "edac7be19456823967f76de174276b34f0af112cbc73dee11e20bc8e7da39133",
+      "size": 2285
+    },
+    {
+      "path": "scripts/course_tool.py",
+      "sha256": "91d8193faccec64f9abec5c92cccc67f81024496ac69d4cce8f2835821452167",
+      "size": 51515
+    },
+    {
+      "path": "tool-versions.json",
+      "sha256": "54430de198c21a05083443eb51caa5447cde16bb8c6669d18f5e06828d4e3084",
+      "size": 427
+    }
+  ],
+  "format": "bijux-course-manifest-v1",
+  "root": "09-graphql-schema-and-runtime-engineering"
+}

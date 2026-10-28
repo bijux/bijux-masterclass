@@ -1,0 +1,4 @@
+message AnalysisRun {
+   ...
++  optional string diagnostic_summary = 10;
+ }

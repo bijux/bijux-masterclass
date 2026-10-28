@@ -1,0 +1,39 @@
+{
+  "cases": [
+    {
+      "candidate": "same",
+      "expected": "continue",
+      "id": "E-01",
+      "legacy": "same",
+      "phase": "shadow"
+    },
+    {
+      "candidate": "different",
+      "expected": "block-cutover",
+      "id": "E-02",
+      "legacy": "same",
+      "phase": "shadow"
+    },
+    {
+      "error_rate": 0.001,
+      "expected": "continue",
+      "id": "E-03",
+      "phase": "canary",
+      "threshold": 0.01
+    },
+    {
+      "error_rate": 0.02,
+      "expected": "rollback",
+      "id": "E-04",
+      "phase": "canary",
+      "threshold": 0.01
+    },
+    {
+      "expected": "reject",
+      "id": "E-05",
+      "phase": "cutover",
+      "rollback_target": false
+    }
+  ],
+  "profile": "strangler-1.0"
+}

@@ -1,0 +1,192 @@
+openapi: 3.1.0
+info:
+  title: Analysis Platform Catalog API
+  version: 1.0.0
+  description: Internal platform product API for discovery, release evidence, sandboxes, scorecards, runtime drift, and support routing. It does not own domain authorization or business state.
+servers:
+  - url: https://platform.internal.example.invalid
+paths:
+  /entities:
+    get:
+      operationId: listEntities
+      summary: List catalog entities visible to the caller
+      parameters:
+        - name: kind
+          in: query
+          schema: {type: string}
+        - name: owner
+          in: query
+          schema: {type: string}
+      responses:
+        '200':
+          description: Catalog entities
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: {$ref: '#/components/schemas/Entity'}
+  /apis/{apiRef}:
+    get:
+      operationId: getApiProduct
+      summary: Read one API product and its active releases
+      parameters:
+        - name: apiRef
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: API product
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ApiProduct'}
+        '404': {description: Unknown or concealed API product}
+  /scorecards/{entityRef}:
+    get:
+      operationId: getScorecard
+      summary: Read evidence dimensions and blockers for one entity
+      parameters:
+        - name: entityRef
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: Evidence scorecard
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Scorecard'}
+  /search:
+    get:
+      operationId: searchPlatform
+      summary: Search published platform documentation
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: {type: string, minLength: 2, maxLength: 200}
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    maxItems: 50
+                    items: {$ref: '#/components/schemas/SearchResult'}
+  /sandboxes:
+    post:
+      operationId: createSandbox
+      summary: Create a synthetic-data-only sandbox session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nonce]
+              properties:
+                nonce: {type: string, minLength: 1, maxLength: 128}
+      responses:
+        '201':
+          description: Sandbox session
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Sandbox'}
+  /runtime/drift:
+    get:
+      operationId: getRuntimeDrift
+      summary: Compare approved and observed platform routes
+      responses:
+        '200':
+          description: Drift report
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Drift'}
+  /support/route:
+    get:
+      operationId: routeSupportRequest
+      summary: Resolve a support category to an accountable owner
+      parameters:
+        - name: category
+          in: query
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: Support route
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [owner]
+                properties:
+                  owner: {type: string}
+components:
+  schemas:
+    Entity:
+      type: object
+      required: [ref, kind, name, title, lifecycle]
+      properties:
+        ref: {type: string}
+        kind: {type: string}
+        name: {type: string}
+        title: {type: string}
+        owner: {type: [string, 'null']}
+        lifecycle: {type: string, enum: [proposed, experimental, active, deprecated, retired]}
+    ApiProduct:
+      type: object
+      required: [apiRef, owner, releases]
+      properties:
+        apiRef: {type: string}
+        owner: {type: string}
+        releases:
+          type: array
+          items:
+            type: object
+            required: [version, protocol, sha256, lifecycle]
+            properties:
+              version: {type: string}
+              protocol: {type: string}
+              sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+              lifecycle: {type: string}
+    Scorecard:
+      type: object
+      required: [entityRef, status, dimensions, blockers, reviews]
+      properties:
+        entityRef: {type: string}
+        status: {type: string, enum: [ready, review, blocked]}
+        dimensions: {type: object, additionalProperties: {type: string}}
+        blockers: {type: array, items: {type: string}}
+        reviews: {type: array, items: {type: string}}
+    SearchResult:
+      type: object
+      required: [path, title]
+      properties:
+        path: {type: string}
+        title: {type: string}
+    Sandbox:
+      type: object
+      required: [id, tenant, expiresAt, credentialExpiresAt, dataClass]
+      properties:
+        id: {type: string}
+        tenant: {type: string}
+        expiresAt: {type: string, format: date-time}
+        credentialExpiresAt: {type: string, format: date-time}
+        dataClass: {type: string, const: synthetic-only}
+    Drift:
+      type: object
+      required: [missing, extra, changed, inSync]
+      properties:
+        missing: {type: array, items: {type: string}}
+        extra: {type: array, items: {type: string}}
+        changed: {type: array, items: {type: string}}
+        inSync: {type: boolean}

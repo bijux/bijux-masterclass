@@ -1,0 +1,8 @@
+id: DEFECT-REL-06
+module: 6
+name: Unique-ID label
+detector: metric-identifier-label-policy
+mutation: Add run_id as a metric label.
+oracle: series cardinality test
+expectedCommand: make module-proof MODULE=06
+expectedFailure: Metric descriptor validation rejects identifier labels.

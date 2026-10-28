@@ -1,0 +1,31 @@
+{
+  "capstone": "Analysis Runs Platform",
+  "centralQuestion": "Which internal mechanisms keep the public contract true under concurrency, restart, and partial failure?",
+  "duration": {
+    "calendarWeeks": 2,
+    "orientationCounted": false,
+    "teachingDays": 10
+  },
+  "id": "contract-driven-api-service-engineering",
+  "incomingBoundary": "The immutable Course 1 API 1.1 handoff and its provider-neutral proof corpus.",
+  "languages": {
+    "strategy": "Choose one primary implementation track. Use the second as an idiomatic comparison and shared-vector parity reference.",
+    "tracks": [
+      "python-fastapi",
+      "typescript-fastify"
+    ]
+  },
+  "number": 2,
+  "outgoingBoundary": "A durable API 1.2 service handoff with migrations 001\u2013005, idempotency, optimistic concurrency, stable pagination, worker recovery, artifact integrity, and transactional webhook delivery.",
+  "predecessor": "01-openapi-contract-engineering",
+  "responsibility": "Implement the fixed contract with durable application, database, worker, storage, and release mechanisms.",
+  "schemaVersion": 1,
+  "successor": "03-api-security-engineering",
+  "title": "Contract-Driven API Service Engineering",
+  "versions": {
+    "databaseMigrations": "001\u2013005",
+    "engineeringProfiles": "No security profile yet; contract-level security decisions remain fixed.",
+    "interfaceSpecifications": "3.1.2 baseline preserved",
+    "publicInterface": "1.1 preserved; compatible API 1.2 introduced"
+  }
+}

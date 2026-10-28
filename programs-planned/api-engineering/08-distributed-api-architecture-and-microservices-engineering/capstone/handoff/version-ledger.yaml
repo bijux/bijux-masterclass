@@ -1,0 +1,17 @@
+version: '1.0'
+public_http_api: '1.2'
+analysis_events_api: '1.0'
+analysis_rpc_api: '1.0'
+distributed_architecture_profile: '1.0'
+service_versions:
+  edge-gateway: 1.0.0
+  analysis-control: 1.0.0
+  artifact-service: 1.0.0
+  notification-service: 1.0.0
+  worker-plane: 1.0.0
+legacy_migration_head: '015'
+service_migration_heads:
+  analysis-control: '001'
+  artifact-service: '002'
+  notification-service: '002'
+  platform-catalog: '001'

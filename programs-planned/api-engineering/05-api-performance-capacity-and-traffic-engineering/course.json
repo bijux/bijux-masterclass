@@ -1,0 +1,31 @@
+{
+  "capstone": "Analysis Runs Platform",
+  "centralQuestion": "Where does time and capacity go, what is the first limiting resource, and which measured change improves the system without weakening its promise?",
+  "duration": {
+    "calendarWeeks": 2,
+    "orientationCounted": false,
+    "teachingDays": 10
+  },
+  "id": "api-performance-capacity-and-traffic-engineering",
+  "incomingBoundary": "The Course 4 observable and recoverable API 1.2 service with Security and Reliability Profiles 1.0 and migrations 001\u2013008.",
+  "languages": {
+    "strategy": "Choose one primary implementation track. Compare measurement identity, arithmetic, and externally visible traffic decisions across both languages.",
+    "tracks": [
+      "python-fastapi",
+      "typescript-fastify"
+    ]
+  },
+  "number": 5,
+  "outgoingBoundary": "Performance Profile 1.0, migration 009, workload identities, benchmark evidence, HTTP and query optimizations, concurrency and cache policy, traffic controls, capacity models, and performance release gates.",
+  "predecessor": "04-api-reliability-and-observability-engineering",
+  "responsibility": "Preserve correctness, latency, throughput, fairness, and bounded resource use as demand and data volume grow.",
+  "schemaVersion": 1,
+  "successor": "06-event-driven-api-engineering",
+  "title": "API Performance, Capacity, and Traffic Engineering",
+  "versions": {
+    "databaseMigrations": "001\u2013009",
+    "engineeringProfiles": "Security and Reliability Profiles 1.0 preserved; Performance Profile 1.0 introduced",
+    "interfaceSpecifications": "3.1.2 baseline preserved",
+    "publicInterface": "1.2 preserved"
+  }
+}

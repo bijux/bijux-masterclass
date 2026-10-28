@@ -1,0 +1,31 @@
+{
+  "capstone": "Analysis Runs Platform",
+  "centralQuestion": "How do operators know whether the user promise is still true, and how do they recover it without making the incident worse?",
+  "duration": {
+    "calendarWeeks": 2,
+    "orientationCounted": false,
+    "teachingDays": 10
+  },
+  "id": "api-reliability-and-observability-engineering",
+  "incomingBoundary": "The Course 3 API 1.2 service protected by Security Profile 1.0 and migrations 001\u2013007.",
+  "languages": {
+    "strategy": "Choose one primary implementation track. Compare failure semantics, telemetry meaning, and recovery invariants across both languages.",
+    "tracks": [
+      "python-fastapi",
+      "typescript-fastify"
+    ]
+  },
+  "number": 4,
+  "outgoingBoundary": "Reliability Profile 1.0, migration 008, critical journeys, deadlines, resilience policies, lifecycle controls, telemetry contracts, SLOs, alerts, runbooks, game-day evidence, and reconciliation plans.",
+  "predecessor": "03-api-security-engineering",
+  "responsibility": "Detect, diagnose, contain, reconcile, and recover when processes, dependencies, networks, or operators fail.",
+  "schemaVersion": 1,
+  "successor": "05-api-performance-capacity-and-traffic-engineering",
+  "title": "API Reliability and Observability Engineering",
+  "versions": {
+    "databaseMigrations": "001\u2013008",
+    "engineeringProfiles": "Security Profile 1.0 preserved; Reliability Profile 1.0 introduced",
+    "interfaceSpecifications": "3.1.2 baseline preserved",
+    "publicInterface": "1.2 preserved"
+  }
+}
