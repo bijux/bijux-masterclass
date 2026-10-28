@@ -1,3 +1,5 @@
+> Planned source collection. See [collection status](COLLECTION.md) for preservation and qualification limits.
+
 # API Engineering
 
 ## Ten courses, one platform, one progressively stronger engineering story
