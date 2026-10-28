@@ -20762,5 +20762,95 @@
     "archive_sha256": "3eeb950bc788a921d64f83f48fa5531f7c84088dcbc32567a54590d25bfb3294",
     "files_including_ignored": 9799,
     "scope": "Local recovery archive, including generated outputs, caches and downloaded references. The archive is not tracked or published as curriculum source."
+  },
+  "unreferenced_source_objects": {
+    "retained_commit": "4c0128ef53b6d5ed95f11798e1939dc0907cfe10",
+    "scope": "Original local Git blobs not reachable from a source ref. Paths are unknown; the recovery snapshot stores each blob under its object ID.",
+    "objects": [
+      {
+        "blob": "770e6dc201dd4354c956174f6e2dacc74b5c6ca1",
+        "bytes": 9587,
+        "sha256": "8f0496f8f0647862b1d6fb2cc37f7fffff415b11c0cdd34f532d2f9426ffa46b",
+        "original_path": null,
+        "archive_path": "objects/770e6dc201dd4354c956174f6e2dacc74b5c6ca1"
+      },
+      {
+        "blob": "c11bc6d52a12114caf267a2023ffc606f48eea28",
+        "bytes": 943599,
+        "sha256": "d847e1fcab6f5bedc97fba06088bfef397062e55d6b519155abb7946d70bf6d9",
+        "original_path": null,
+        "archive_path": "objects/c11bc6d52a12114caf267a2023ffc606f48eea28"
+      },
+      {
+        "blob": "4f32296595442ce192b7beb81f978beb17c88a74",
+        "bytes": 37743,
+        "sha256": "5ab11a8ffade6a2ea00a7bc56c652d581debc40114200b68d8f507fb5923a647",
+        "original_path": null,
+        "archive_path": "objects/4f32296595442ce192b7beb81f978beb17c88a74"
+      },
+      {
+        "blob": "513c2194ede48f6a3b380f6a163f1552790c710e",
+        "bytes": 2284,
+        "sha256": "1598d03afad52baa210ff33f94d29ab0382a62742e3402e8b8dfd7b1e37ddf5f",
+        "original_path": null,
+        "archive_path": "objects/513c2194ede48f6a3b380f6a163f1552790c710e"
+      },
+      {
+        "blob": "733e49d107d5b23f57d094c476bccbe661eda0d1",
+        "bytes": 2470,
+        "sha256": "4ae96cf77e65d3bdb3096ebddea9dbd9b9b217e3a32b17e3772cf050ac76025f",
+        "original_path": null,
+        "archive_path": "objects/733e49d107d5b23f57d094c476bccbe661eda0d1"
+      },
+      {
+        "blob": "a46ba64014e1fd78b17c167a6504513a1ad0bccb",
+        "bytes": 43891,
+        "sha256": "80f4b22d97317c31f8a6ee8d27985451f8c732aa822949b63fd06d3dfca5d2e1",
+        "original_path": null,
+        "archive_path": "objects/a46ba64014e1fd78b17c167a6504513a1ad0bccb"
+      },
+      {
+        "blob": "8e79cee2d4a7b4e30783eb49a990a8bc027722df",
+        "bytes": 12880,
+        "sha256": "90eaf25f2afc812885b8688b1a8a1434a766085654fd5f9c3db2526c13f7160c",
+        "original_path": null,
+        "archive_path": "objects/8e79cee2d4a7b4e30783eb49a990a8bc027722df"
+      },
+      {
+        "blob": "6a9dcefdfeffe0e034ce5883d7fd016417cd15a5",
+        "bytes": 34548,
+        "sha256": "141c14e7983b215375d2ee4ab0089f3fb4236982686bdc0938f74b7c170c8c96",
+        "original_path": null,
+        "archive_path": "objects/6a9dcefdfeffe0e034ce5883d7fd016417cd15a5"
+      },
+      {
+        "blob": "e9af8ec54895edfcdf4919f093aa1de072daa70e",
+        "bytes": 57789,
+        "sha256": "605257b29682974f227bba6c38e07fd94036c308036d1a83e05ae6b88aa11bc1",
+        "original_path": null,
+        "archive_path": "objects/e9af8ec54895edfcdf4919f093aa1de072daa70e"
+      },
+      {
+        "blob": "3adb3f47d7c2fe709d242bf1ccf17427ac10ff1e",
+        "bytes": 10815,
+        "sha256": "1213cb839b4f7334761766de292fb0f34c0909abf898db44c77acb0ddc7ac07b",
+        "original_path": null,
+        "archive_path": "objects/3adb3f47d7c2fe709d242bf1ccf17427ac10ff1e"
+      },
+      {
+        "blob": "6fdb0b8b7aa90e511e54f39905c9a6cf6c4bd26f",
+        "bytes": 7363,
+        "sha256": "377cfe7eebaa44f3fbe11043c59caf3813504b42712a40dbb626cbb1b18fe3c6",
+        "original_path": null,
+        "archive_path": "objects/6fdb0b8b7aa90e511e54f39905c9a6cf6c4bd26f"
+      },
+      {
+        "blob": "2bf08b969f986b98ed7f830aea3f3becba33e60a",
+        "bytes": 69354,
+        "sha256": "a7db5440d924f2f38159cbe185f4524ed4e261aa1f6808a301e1b4d2b78ef225",
+        "original_path": null,
+        "archive_path": "objects/2bf08b969f986b98ed7f830aea3f3becba33e60a"
+      }
+    ]
   }
 }
