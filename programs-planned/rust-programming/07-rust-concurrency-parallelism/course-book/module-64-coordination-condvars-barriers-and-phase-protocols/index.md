@@ -1,8 +1,11 @@
-# Module 64: Coordination: Condvars, Barriers, and Phase Protocols
+# Module 64 — Coordination: Condvars, Barriers, and Phase Protocols
 
-**Course 7, day 4 · Module 64 of 90**  
+**Course 7 · Day 4 · Module 64 of 100**
+`████████████████░░░░░░░░░` **64/100**
 
-**64/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-phase-gate/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 63: Shared State: Locks and Protected Invariants](../module-63-shared-state-locks-and-protected-invariants/index.md) · [Module 65: Message Passing, Backpressure, and Shutdown →](../module-65-message-passing-backpressure-and-shutdown/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Module 63 built protected transitions but returned `WouldBlock` when a queue was
 These mechanisms are frequently mislearned as signal APIs: one thread calls `notify`, another wakes, and work continues. That model is unsafe. Notifications carry no durable truth, wakeups may be spurious, and the relevant state may change again before a waiter reacquires the mutex. The predicate under the lock is the protocol; notification only prompts re-evaluation.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 63 established **Shared State: Locks and Protected Invariants**. Before continuing, verify that you can design concurrent tests around preserved invariants rather than exact schedules. This module preserves that capability and adds the ability to write every condition-variable wait as a predicate loop over mutex-protected state;. Module 65, **Message Passing, Backpressure, and Shutdown**, will rely on both when it asks: *Which values cross ownership boundaries, how is capacity bounded, and which explicit protocol event proves that every sender, receiver, and worker can terminate?*
+
+### Scope boundary
+
+This module owns the reasoning for **coordination: condvars, barriers, and phase protocols** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -104,6 +115,24 @@ It does not make later mutation safe, and a process-global cell can make tests a
 A timed wait can return because the deadline elapsed or because it was notified. In both cases the caller must examine the predicate under the reacquired guard. A timeout result often means “the predicate was not observed before the deadline,” not “no notification occurred.”
 
 Deadline arithmetic should use monotonic `Instant`, not wall-clock time. Repeated waits should compute remaining duration against one deadline so spurious wakeups do not reset the full budget.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For write every condition-variable wait as a predicate loop over mutex-protected state, construct one positive and one causal negative example. Mark the first decisive fact in the **predicate and wakeup record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For explain the atomic unlock-and-wait transition and why it prevents the ordinary lost-wakeup window, construct one positive and one causal negative example. Mark the first decisive fact in the **predicate and wakeup record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For distinguish `notify_one` and `notify_all` by which state transition can enable which waiters, construct one positive and one causal negative example. Mark the first decisive fact in the **predicate and wakeup record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design bounded-buffer `not_empty`, `not_full`, and closure predicates, construct one positive and one causal negative example. Mark the first decisive fact in the **predicate and wakeup record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -214,4 +243,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Phase Gate](../../labs/module-04-phase-gate/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 65 — Message Passing, Backpressure, and Shutdown](../module-65-message-passing-backpressure-and-shutdown/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

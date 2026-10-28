@@ -1,8 +1,11 @@
 # Module 81 — Performance Contracts, Workloads, and Benchmark Design
 
-**81/90** · Course 9 · Module 81 of 90
+**Course 9 · Day 1 · Module 81 of 100**
+`████████████████████░░░░░` **81/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-benchmark-integrity-clinic/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 80: Integrated Async Service Architecture, Testing, and Audit](../../../08-rust-async-networked-services/course-book/module-80-integrated-async-service-architecture-testing-and-audit/index.md) · [Module 82: CPU Profiling, Cost Models, and Hot-Path Optimization →](../module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 Courses 1–8 gave you enough Rust to change almost any local mechanism. That power creates a new risk: improving something that was never the product bottleneck, or comparing two implementations that no longer mean the same thing. Module 81 establishes the discipline that every later module depends on. Before you profile, pool, batch, cache, strip, retry, or roll out, you must state which operation matters and what evidence could justify the change.
 
 A performance contract is not a universal promise that code is “fast.” It is a decision rule tied to a workload and environment. It says which semantics remain fixed, which costs matter, which inputs represent the product, and what regression is unacceptable. Without that contract, faster numbers can reward weaker validation, smaller inputs, warmer caches, different profiles, or work moved outside the timer.
+
+### Prerequisite bridge
+
+Module 80 established **Integrated Async Service Architecture, Testing, and Audit**. Before continuing, verify that you can state non-guarantees, deployment scope, and the next architectural change required for multi-process operation. This module preserves that capability and adds the ability to turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle. Module 82, **CPU Profiling, Cost Models, and Hot-Path Optimization**, will rely on both when it asks: *Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase?*
+
+### Scope boundary
+
+This module owns the reasoning for **performance contracts, workloads, and benchmark design** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -106,6 +117,24 @@ Asymmetric setup can dominate the result while appearing to measure the algorith
 
 Percentages hide scale and relevance. Report absolute latency or throughput, variance, and the product threshold that makes the difference worth maintaining.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle, construct one positive and one causal negative example. Mark the first decisive fact in the **performance claim and workload record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For separate latency, throughput, utilization, memory footprint, startup cost, binary size, and tail behavior instead of combining them into one score, construct one positive and one causal negative example. Mark the first decisive fact in the **performance claim and workload record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For design microbenchmarks that exclude setup and validation costs unless those costs belong to the product operation, construct one positive and one causal negative example. Mark the first decisive fact in the **performance claim and workload record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For choose warm-up, sample, batching, parameterization, and baseline policy deliberately, construct one positive and one causal negative example. Mark the first decisive fact in the **performance claim and workload record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -185,7 +214,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 81 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Benchmark Integrity Clinic laboratory](../../labs/module-01-benchmark-integrity-clinic/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 82 — CPU Profiling, Cost Models, and Hot-Path Optimization](../module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

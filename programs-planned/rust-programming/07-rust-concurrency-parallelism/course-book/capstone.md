@@ -6,6 +6,59 @@ BatchWeave is the cumulative product for Modules 61–70. It accepts a small man
 
 The capstone is not a tour of concurrency APIs. It is one product whose contract gradually becomes strong enough to survive concurrency. Each module contributes one new obligation. The final architecture uses ordinary safe Rust for the engine and Rayon for a separate data-parallel reporting stage. The unsafe SPSC ring from Module 68 remains an independent laboratory because inserting it into the product would weaken the design without solving a demonstrated bottleneck.
 
+## How this capstone completes the course
+
+BatchWeave runs a bounded manifest through a fixed worker group, records one terminal outcome for every accepted job, contains panic and cancellation, uses advisory atomics honestly, and renders final results in source order.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; BatchWeave proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | Every accepted job receives exactly one terminal outcome. |
+| 2 | Workers, endpoints, queues, permits, and joins have explicit owners. |
+| 3 | Every accumulation point has a finite capacity and a named admission authority. |
+| 4 | Panic, cancellation, disconnect, and domain failure remain distinguishable. |
+| 5 | Liveness claims are supported by wait predicates, shutdown events, and complete joins. |
+| 6 | Final meaning is normalized independently of schedule-dependent completion order. |
+
+For each BatchWeave change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 61 | Threads, Schedules, Send, Sync, and Race Freedom | Distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions | [Thread Handoff Matrix](../labs/module-01-thread-handoff-matrix/README.md) |
+| 62 | Structured Threads: Scopes, Joins, and Panic Boundaries | Explain the real meaning of a `T: 'static` bound and why owned values can satisfy it | [Scoped Slice Analysis](../labs/module-02-scoped-slice-analysis/README.md) |
+| 63 | Shared State: Locks and Protected Invariants | Name the state invariant protected by each `Mutex` or `RwLock` rather than treating the primitive as a generic thread-safety wrapper | [Protected Inventory](../labs/module-03-protected-inventory/README.md) |
+| 64 | Coordination: Condvars, Barriers, and Phase Protocols | Write every condition-variable wait as a predicate loop over mutex-protected state | [Phase Gate](../labs/module-04-phase-gate/README.md) |
+| 65 | Message Passing, Backpressure, and Shutdown | Model channel operations as ownership transfer rather than shared access | [Bounded Map Pipeline](../labs/module-05-bounded-map-pipeline/README.md) |
+| 66 | Liveness: Deadlock, Cancellation, and Recovery | Distinguish deadlock, starvation, livelock, priority inversion, and slow work | [Cancellable Worker Group](../labs/module-06-cancellable-worker-group/README.md) |
+| 67 | Atomics, Happens-Before, and Memory Ordering | Separate atomicity of one location from visibility of other memory | [Atomic Progress](../labs/module-07-atomic-progress/README.md) |
+| 68 | Lock-Free Protocols, Reclamation, and Unsafe Send/Sync | Distinguish obstruction-free, lock-free, and wait-free progress claims from ordinary nonblocking API behavior | [Bounded SPSC Ring](../labs/module-08-spsc-ring/README.md) |
+| 69 | Rayon, Work Stealing, and Deterministic Parallelism | Distinguish task parallelism, data parallelism, and a long-lived message-driven worker service | [Parallel Histogram](../labs/module-09-parallel-histogram/README.md) |
+| 70 | Integrated Concurrent Architecture, Testing, and Audit | Construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and CLI boundaries | [Concurrent Verifier](../labs/module-10-concurrent-verifier/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **concurrent architecture dossier** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. BatchWeave ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## 1. Product contract
 
 BatchWeave reads this format:

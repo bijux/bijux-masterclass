@@ -1,8 +1,8 @@
-# Module 100 Solutions — Architectural Synthesis: Building and Defending a Long-Lived Rust System
+# Reasoned Solutions — Module 100: Architectural Synthesis: Building and Defending a Long-Lived Rust System
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-architecture-council/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 100: Architectural Synthesis: Building and Defending a Long-Lived Rust System**. Compare the reasoning against this question: *Can you turn ten courses of mechanisms into one restrained architecture whose guarantees, unsafe core, verification evidence, compatibility policy, and operating limits can survive independent review?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the architecture defense dossier: the decisive relati
 
 **Principled repair.** Test through public behavior or crate-private helpers. Keep representation private so evolution remains possible.
 
-A strong answer updates the architecture defense dossier and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Public representation leakage** while preserving the surrounding requirement. The architecture defense dossier must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — One error for every failure
 
@@ -40,7 +40,7 @@ A strong answer updates the architecture defense dossier and includes a negative
 
 **Principled repair.** Restore a typed taxonomy aligned with recovery and stable user reporting.
 
-A strong answer updates the architecture defense dossier and includes a negative case that fails for the original cause.
+The negative case should reintroduce **One error for every failure** while preserving the surrounding requirement. The architecture defense dossier must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Feature accumulation
 
@@ -48,7 +48,7 @@ A strong answer updates the architecture defense dossier and includes a negative
 
 **Principled repair.** Remove every mechanism without a unique requirement. Synthesis is selection and rejection, not feature count.
 
-A strong answer updates the architecture defense dossier and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Feature accumulation** while preserving the surrounding requirement. The architecture defense dossier must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Assign every AxiomStore promise to one primary o
 
 The decisive acceptance criterion is: No rule is authoritative in two unrelated layers.
 
-Evaluate the result through the architecture defense dossier; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Invariant ownership map**, apply the architecture defense dossier to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Mechanism subtraction
 
@@ -66,7 +66,7 @@ The construction should answer: Replace one advanced mechanism with a simpler de
 
 The decisive acceptance criterion is: The final choice follows product requirements, not course coverage.
 
-Evaluate the result through the architecture defense dossier; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Mechanism subtraction**, apply the architecture defense dossier to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — AXIOM02 transfer
 
@@ -74,7 +74,7 @@ The construction should answer: Add schema tags while preserving AXIOM01 reads a
 
 The decisive acceptance criterion is: Compatibility fixtures, migration, CLI, and unknown-version tests all change coherently.
 
-Evaluate the result through the architecture defense dossier; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **AXIOM02 transfer**, apply the architecture defense dossier to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Architecture defense
 
@@ -82,12 +82,11 @@ The construction should answer: Present product, flows, unsafe dossier, compatib
 
 The decisive acceptance criterion is: A fresh reviewer can challenge assumptions and reproduce the reasoning.
 
-Evaluate the result through the architecture defense dossier; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Architecture defense**, apply the architecture defense dossier to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **Architectural Synthesis: Building and Defending a Long-Lived Rust System** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — the mechanism-subtraction council
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the architecture 
 Defend the system in twenty minutes, including five mechanisms deliberately not used and one residual risk that remains after the complete verification portfolio passes.
 
 The defense passes when it reconstructs the architecture defense dossier from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Can you turn ten courses of mechanisms into one restrained architecture whose guarantees, unsafe core, verification evidence, compatibility policy, and operating limits can survive independent review?
+
+Build a **architecture defense record**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Choose static, dynamic, enum, const-generic, borrowing, owned, generated, concurrent, async, and unsafe mechanisms only where their proof benefit exceeds complexity.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Review dependency direction, public surface, failure taxonomy, resource bounds, and deterministic behavior as one architecture.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Perform a threat, compatibility, verification, and production-readiness review without confusing those evidence categories.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Implement an unseen cross-cutting requirement while preserving old data, public behavior, and safety invariants.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the architecture defense record.
+
+### Reference implementation comparison
+
+For [Architecture Council](../../labs/module-10-architecture-council/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 100 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Architectural Synthesis: Building and Defending a Long-Lived Rust System**, which relationship decides this question: “Can you turn ten courses of mechanisms into one restrained architecture whose guarantees, unsafe core, verification evidence, compatibility policy, and operating limits can survive independent review?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

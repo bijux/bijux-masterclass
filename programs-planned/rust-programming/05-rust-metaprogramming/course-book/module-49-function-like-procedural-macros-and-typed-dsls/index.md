@@ -1,9 +1,11 @@
-# 49 — Function-Like Procedural Macros and Typed DSLs
+# Module 49 — Function-Like Procedural Macros and Typed DSLs
 
-**Course 5, day 9 · Module 49 of 90**  
-`████████████████░░░░` **49/90**
+**Course 5 · Day 9 · Module 49 of 100**
+`████████████░░░░░░░░░░░░░` **49/100**
 
-[← Module 48: Attribute Macros and Item Transformation](../module-48-attribute-macros-and-item-transformation/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 50: Build Scripts, Generated Code, and Compile-Time Architecture →](../module-50-build-scripts-generated-code-and-compile-time-architecture/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-route-table-dsl/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 48: Attribute Macros and Item Transformation](../module-48-attribute-macros-and-item-transformation/index.md) · [Module 50: Build Scripts, Generated Code, and Compile-Time Architecture →](../module-50-build-scripts-generated-code-and-compile-time-architecture/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 A derive reads an existing Rust item. An attribute transforms one attached item. A function-like procedural macro owns its entire input language and can coordinate relationships across many declarations. That makes it the right mechanism for command catalogs, route tables, query schemas, and other small compile-time DSLs—but only when the language is simpler than the duplication it removes.
 
 Modules 46–48 supplied the execution boundary, structural parsing, spans, and preservation discipline. Module 49 combines them into a full compiler-like pipeline without pretending to become a general compiler.
+
+### Prerequisite bridge
+
+Module 48 established **Attribute Macros and Item Transformation**. Before continuing, verify that you can test local behavior, downstream visibility, and invalid transformations. This module preserves that capability and adds the ability to design a bounded custom grammar with explicit compatibility space. Module 50, **Build Scripts, Generated Code, and Compile-Time Architecture**, will rely on both when it asks: *How do you integrate macros and build generation into a deterministic architecture with one source of truth and no overlapping authority?*
+
+### Scope boundary
+
+This module owns the reasoning for **function-like procedural macros and typed dsls** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -404,6 +414,24 @@ A useful review table is:
 
 Trying to move every row into the macro makes diagnostics worse and couples unrelated behavior to syntax. Leaving every row to generated Rust wastes the DSL's strongest advantage: domain-specific validation before expansion. Good metaprogramming is therefore not maximal compile-time work. It is accurate placement of authority.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For design a bounded custom grammar with explicit compatibility space, construct one positive and one causal negative example. Mark the first decisive fact in the **DSL syntax-to-model map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For implement `syn::parse::Parse` for syntax nodes rather than splitting strings, construct one positive and one causal negative example. Mark the first decisive fact in the **DSL syntax-to-model map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For separate syntax AST, semantic validation, normalized model, and generation, construct one positive and one causal negative example. Mark the first decisive fact in the **DSL syntax-to-model map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For detect duplicates and cross-entry conflicts with useful multi-span errors, construct one positive and one causal negative example. Mark the first decisive fact in the **DSL syntax-to-model map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge’s catalog syntax is:
@@ -472,7 +500,4 @@ Do not continue if parsing, validation, and generation occur in one function or 
 
 ## Continue
 
-1. Complete the [Module 49 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 49 — Route Table DSL](../../labs/module-09-route-table-dsl/README.md) from its public contract.
-3. Apply the Module 49 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 50 — Build Scripts, Generated Code, and Compile-Time Architecture](../module-50-build-scripts-generated-code-and-compile-time-architecture/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

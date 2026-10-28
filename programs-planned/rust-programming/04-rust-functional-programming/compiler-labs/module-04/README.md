@@ -1,30 +1,11 @@
-# Compiler investigation — Module 34: Folds, Scans, Reductions, and Short-Circuiting
+# Module 34 Investigations — Folds, Scans, and Short-Circuiting
 
-[Compiler-investigation method](../README.md) · [Module chapter](../../course-book/module-34-folds-scans-and-short-circuiting/index.md)
+[Chapter](../../course-book/module-34-folds-scans-and-short-circuiting/index.md) · [Workbook](../../course-book/module-34-folds-scans-and-short-circuiting/workbook.md) · [Course investigation method](../README.md)
 
-This set tests whether the model from Module 34 survives contact with small, adversarial programs. Predict each specimen without opening the machine-readable manifest or the module solutions.
+> **Prediction question:** What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?
 
-| Specimen | Question to resolve before compiling |
-|---|---|
-| [`case-01.rs`](case-01.rs) | Which compile-time or runtime rule decides the behavior of **fold consumes the source into one accumulator**, and what evidence would distinguish the closest competing explanation? |
-| [`case-02.rs`](case-02.rs) | Which compile-time or runtime rule decides the behavior of **reduce uses the first item as the initial accumulator**, and what evidence would distinguish the closest competing explanation? |
-| [`case-03.rs`](case-03.rs) | Which compile-time or runtime rule decides the behavior of **try_fold short-circuits through Result**, and what evidence would distinguish the closest competing explanation? |
-| [`case-04.rs`](case-04.rs) | Which compile-time or runtime rule decides the behavior of **question mark requires the closure return type to carry the residual**, and what evidence would distinguish the closest competing explanation? |
-| [`case-05.rs`](case-05.rs) | Which compile-time or runtime rule decides the behavior of **scan exposes intermediate state while retaining hidden accumulator state**, and what evidence would distinguish the closest competing explanation? |
-| [`case-06.rs`](case-06.rs) | Which compile-time or runtime rule decides the behavior of **every fold branch must return the same accumulator type**, and what evidence would distinguish the closest competing explanation? |
-| [`case-07.rs`](case-07.rs) | Which compile-time or runtime rule decides the behavior of **ControlFlow represents an explicit early-break value**, and what evidence would distinguish the closest competing explanation? |
-| [`case-08.rs`](case-08.rs) | Which compile-time or runtime rule decides the behavior of **sum needs a concrete output type when several implementations are possible**, and what evidence would distinguish the closest competing explanation? |
+Before invoking a compiler or runner, draw a **accumulator invariant** and classify the expected result. The prediction must identify the earliest decisive phase or event and show why the result follows from **Design a fold accumulator with a precise prefix invariant**. Diagnostic wording may vary; the causal relationship may not.
 
-## Work through the set
+After observing Module 34 — Folds, Scans, and Short-Circuiting, preserve two repairs. The first is the smallest change that keeps the product requirement. The second is a tempting change that compiles, runs, or quiets the tool by erasing information, weakening a bound, changing ownership, hiding a failure, or narrowing the public contract. Explain precisely why the second repair is unacceptable here.
 
-For each file, draw or write the smallest model that can decide it: types and expression results, owners and loans, trait obligations, iterator state, macro phase, raw-memory obligations, or operating-system boundary state. Then classify the outcome and name the first causal rule.
-
-Compile only after the prediction is complete. A correct pass/fail guess with the wrong cause is not a successful investigation. When several errors appear, identify which one would remain after secondary errors were removed.
-
-## Repair and transfer
-
-Repair one rejecting or behaviorally defective specimen without deleting the requirement it was designed to express. Preserve the original product need while changing only the mechanism that violated it.
-
-Next, alter one assumption—ownership mode, lifetime source, trait bound, adapter order, macro input, or boundary condition. Predict the result before compiling.
-
-Finish by stating how the same rule constrains the module laboratory or cumulative capstone. This connects an isolated diagnostic to a real design decision.
+Finish by creating a new specimen that changes one relationship while keeping every incidental detail stable. Predict whether that variation changes parsing, name resolution, type checking, trait solving, borrow checking, build execution, runtime behavior, schedule behavior, or only architectural quality.

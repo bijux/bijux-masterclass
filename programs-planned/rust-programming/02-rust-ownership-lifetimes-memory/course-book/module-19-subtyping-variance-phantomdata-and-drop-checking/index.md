@@ -1,9 +1,11 @@
-# 19 — Subtyping, Variance, PhantomData, and Drop Checking
+# Module 19 — Subtyping, Variance, PhantomData, and Drop Checking
 
-**Course 2, day 9 · Module 19 of 90**  
-`██████░░░░░░░░░░░░░░` **19/90**
+**Course 2 · Day 9 · Module 19 of 100**
+`█████░░░░░░░░░░░░░░░░░░░░` **19/100**
 
-[← Module 18: Memory Representation, Validity, and Layout](../module-18-memory-representation-validity-and-layout/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 20: Pinning and Address-Sensitive Design →](../module-20-pinning-and-address-sensitive-design/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-variance-branding/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 18: Memory Representation, Validity, and Layout](../module-18-memory-representation-validity-and-layout/index.md) · [Module 20: Pinning and Address-Sensitive Design →](../module-20-pinning-and-address-sensitive-design/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Generic reference-bearing types can allow or forbid lifetime substitution depending on how their parameters are used. Variance, `PhantomData`, and drop checking now explain those capabilities. The purpose is not type-system ornament; it is to understand which branded handles and ownership markers a public API is actually permitted to expose.
+
+### Prerequisite bridge
+
+Module 18 established **Memory Representation, Validity, and Layout**. Before continuing, verify that you can build memory reports that distinguish inline size, length, capacity, shared allocation deduplication, allocator overhead, and exclusions. This module preserves that capability and adds the ability to state lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally. Module 20, **Pinning and Address-Sensitive Design**, will rely on both when it asks: *What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?*
+
+### Scope boundary
+
+This module owns the reasoning for **subtyping, variance, phantomdata, and drop checking** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -594,6 +604,24 @@ Long-lived application IDs, serialization, and cross-component storage often wor
 
 For every wrapper, derive parameters through all fields. An invariant `RefCell<T>` field makes the wrapper invariant in `T` even if other fields are covariant. Never infer variance from naming.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For state lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally, construct one positive and one causal negative example. Mark the first decisive fact in the **variance and substitution table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For compose variance through shared references, mutable references, cells, function arguments/results, and generic wrappers, construct one positive and one causal negative example. Mark the first decisive fact in the **variance and substitution table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For read outlives bounds and destructor use without claiming owned values are borrowed for the bound lifetime, construct one positive and one causal negative example. Mark the first decisive fact in the **variance and substitution table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For choose PhantomData shapes from ownership, borrowing, variance, auto-trait, and drop-check semantics, while treating current drop-check details as version-sensitive, construct one positive and one causal negative example. Mark the first decisive fact in the **variance and substitution table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Review runtime generational handles against a branded alternative. Explain which invalid combinations each technique prevents and which stale-state problem remains runtime data. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -624,11 +652,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [PhantomData](https://doc.rust-lang.org/std/marker/struct.PhantomData.html)
 - [Rustonomicon: Drop checking](https://doc.rust-lang.org/nomicon/dropck.html)
 
-[← Module 18](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 20 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md)
+[← Module 18](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 20 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md)
 
 ## Continue
 
-1. Complete the [Module 19 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 19 — Variance Branding](../../labs/module-09-variance-branding/README.md) from its public contract.
-3. Apply the Module 19 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 20 — Pinning and Address-Sensitive Design](../module-20-pinning-and-address-sensitive-design/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

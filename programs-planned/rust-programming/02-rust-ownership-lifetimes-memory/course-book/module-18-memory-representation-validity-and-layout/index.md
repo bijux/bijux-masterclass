@@ -1,9 +1,11 @@
-# 18 — Memory Representation, Validity, and Layout
+# Module 18 — Memory Representation, Validity, and Layout
 
-**Course 2, day 8 · Module 18 of 90**  
-`██████░░░░░░░░░░░░░░` **18/90**
+**Course 2 · Day 8 · Module 18 of 100**
+`████░░░░░░░░░░░░░░░░░░░░░` **18/100**
 
-[← Module 17: Interior Mutability and Runtime Borrows](../module-17-interior-mutability-and-runtime-borrows/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 19: Subtyping, Variance, PhantomData, and Drop Checking →](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-layout-observatory/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 17: Interior Mutability and Runtime Borrows](../module-17-interior-mutability-and-runtime-borrows/index.md) · [Module 19: Subtyping, Variance, PhantomData, and Drop Checking →](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 The previous modules described semantic ownership and access. Memory-sensitive design also needs a disciplined distinction among validity, layout guarantees, target observations, and implementation details. This module prevents folklore about stack, heap, padding, niches, and fat pointers from becoming unsafe assumptions later.
+
+### Prerequisite bridge
+
+Module 17 established **Interior Mutability and Runtime Borrows**. Before continuing, verify that you can design caches whose mutation is observationally transparent, correctly invalidated, and memory-bounded. This module preserves that capability and adds the ability to separate semantic value, validity invariant, abstract layout guarantee, abi promise, and measured observation. Module 19, **Subtyping, Variance, PhantomData, and Drop Checking**, will rely on both when it asks: *When may a longer-lived capability substitute for a shorter requirement, and what semantic relationships must marker types communicate?*
+
+### Scope boundary
+
+This module owns the reasoning for **memory representation, validity, and layout** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -514,6 +524,24 @@ Measure `Option<NonZeroU64>`, `Option<&u8>`, and `Option<CustomHandle>`. Label w
 
 A smaller owner may improve density, but no performance conclusion follows until Course 9 benchmarks realistic arrays/access patterns. The observatory establishes legal assumptions and hypotheses.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation, construct one positive and one causal negative example. Mark the first decisive fact in the **representation table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For reason about size, alignment, padding, field non-overlap, repr(Rust), repr(C), and repr(transparent) without overclaiming offsets, construct one positive and one causal negative example. Mark the first decisive fact in the **representation table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For explain thin and wide pointers, metadata, slices, str, trait-object previews, and unsized tails, construct one positive and one causal negative example. Mark the first decisive fact in the **representation table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For classify enum discriminant and niche claims by documented guarantees rather than pattern extrapolation, construct one positive and one causal negative example. Mark the first decisive fact in the **representation table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Produce a memory report with formulas, target observations, and explicit exclusions. Do not present `size_of` observations as a complete allocation or ABI account. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -543,11 +571,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Type layout](https://doc.rust-lang.org/reference/type-layout.html)
 - [Rust Reference: Type validity](https://doc.rust-lang.org/reference/behavior-considered-undefined.html)
 
-[← Module 17](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 19 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
+[← Module 17](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 19 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
 
 ## Continue
 
-1. Complete the [Module 18 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 18 — Layout Observatory](../../labs/module-08-layout-observatory/README.md) from its public contract.
-3. Apply the Module 18 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 19 — Subtyping, Variance, PhantomData, and Drop Checking](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

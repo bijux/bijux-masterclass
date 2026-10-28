@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing
+# Reasoned Solutions — Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-checked-frame-codec/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing**. Compare the reasoning against this question: *How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -120,3 +118,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can derive every slice boundary and allocation from checked arithmetic, explain why no Rust value is reinterpreted from external bytes, and distinguish structural validity from extraction policy.
 
 Then perform this destructive regression check: remove one checked-add or checked-conversion branch and confirm that a truncation or overflow fixture exposes the exact regression. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?
+
+Build a **binary layout and range proof**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Define a binary format as a versioned contract rather than a sequence of convenient writes.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Trace byte offsets, item widths, endianness, and length arithmetic before allocating.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Build a bounds-first cursor that never advances after failure.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Separate structural validity, textual validity, integrity checks, and domain validation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Explain when a borrowed view is possible and when an owned value is the more honest boundary.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Define a binary format as a versioned contract rather than a sequence of convenient writes.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the binary layout and range proof.
+
+### Reference implementation comparison
+
+For [Checked Frame Codec](../../labs/module-01-checked-frame-codec/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 51 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Binary Data Contracts: Bytes, Endianness, and Checked Parsing**, which relationship decides this question: “How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

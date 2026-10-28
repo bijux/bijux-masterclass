@@ -1,6 +1,8 @@
-# Module 87 Solutions — Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation
+# Reasoned Solutions — Module 87: Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-07-overload-control-simulator/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 87: Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation**. Compare the reasoning against this question: *How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Failure reasoning
 
@@ -90,3 +92,42 @@ MetricRail should reject each exhausted capacity with a stable class and possibl
 ## Part 6 — Defense
 
 Uptime ignores request outcomes. Retry layers multiply. One deadline bounds total caller experience. Shedding protects finite resources and useful work. Degraded success requires explicit metadata and bounded semantics. Hysteresis prevents oscillation. Source intent, attempts, and executions are separate identities. MetricRail should expose capacity exhaustion rather than accept work it cannot complete within its contract.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?
+
+Build a **SLO and overload policy**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Derive admission and shedding policies from protected resources and customer-visible priorities.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Build retries around idempotency, one deadline budget, bounded attempts, and retryable classifications.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Distinguish overload, dependency failure, local defect, malformed input, cancellation, and deliberate rejection.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Design degraded modes that preserve explicit subsets of behavior rather than silently returning stale or partial results.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the SLO and overload policy.
+
+### Reference implementation comparison
+
+For [Overload Control Simulator](../../labs/module-07-overload-control-simulator/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 87 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation**, which relationship decides this question: “How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

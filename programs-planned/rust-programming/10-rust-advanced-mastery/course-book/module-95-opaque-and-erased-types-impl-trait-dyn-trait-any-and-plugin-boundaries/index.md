@@ -1,8 +1,11 @@
 # Module 95 — Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries
 
-**95/100** · Course 10 · Module 95 of 100
+**Course 10 · Day 5 · Module 95 of 100**
+`████████████████████████░` **95/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-erased-validator-registry/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 94: Const Generics, Witness Types, and Compile-Time Invariants](../module-94-const-generics-witness-types-and-compile-time-invariants/index.md) · [Module 96: Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits →](../module-96-auditing-unsafe-abstractions-validity-provenance-drop-panic-and-auto-traits/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Course 3 compared static and dynamic dispatch. Advanced library design must dist
 Course 3 introduced static and dynamic polymorphism. This module separates opaque identity, erased behavior, closed variants, and type downcasting so each boundary keeps only the information it needs.
 
 This module is about information loss by design. Opaque types, enums, trait objects, and `Any` all hide something different. The correct choice follows from what callers must still do, who may add implementations, how values are owned, and where mismatch is reported. Starting from “static versus dynamic dispatch” is too late and too narrow.
+
+### Prerequisite bridge
+
+Module 94 established **Const Generics, Witness Types, and Compile-Time Invariants**. Before continuing, verify that you can choose runtime validation when the value is data-dependent, frequently changing, or not worth a new type identity. This module preserves that capability and adds the ability to distinguish opaque return types from trait objects and explain why different branches of `impl trait` must share one hidden concrete type. Module 96, **Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits**, will rely on both when it asks: *What exact proof makes a safe API implemented with unsafe code sound across every constructor, method, failure path, destructor, and thread-safety claim?*
+
+### Scope boundary
+
+This module owns the reasoning for **opaque and erased types: impl trait, dyn trait, any, and plugin boundaries** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -136,6 +147,24 @@ The compiler can enforce dyn compatibility and one-hidden-type rules. It cannot 
 
 Erasure is a budget. Spend it only on information callers are intentionally forbidden or unable to use, and preserve stable identity and failure policy around the erased value.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type, construct one positive and one causal negative example. Mark the first decisive fact in the **open and erased variation map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For derive dyn-compatibility requirements from the operations available through erased receivers, construct one positive and one causal negative example. Mark the first decisive fact in the **open and erased variation map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For choose borrowed, boxed, reference-counted, or inline-erased ownership according to registry and lifetime requirements, construct one positive and one causal negative example. Mark the first decisive fact in the **open and erased variation map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use enums for closed variation and trait objects for open runtime extension without confusing the two evolution models, construct one positive and one causal negative example. Mark the first decisive fact in the **open and erased variation map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Trace the example along two axes: dispatch and ownership. Show which concrete types remain known in the generic path, which are represented by enum variants, and which disappear behind a trait object. Verify that all paths share one semantic oracle before comparing generated artifacts.
@@ -212,7 +241,4 @@ Use the dyn-compatibility and `impl Trait` references to verify exact restrictio
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Erased Validator Registry](../../labs/module-05-erased-validator-registry/README.md).
-3. Apply Module 95 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 96 — Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits](../module-96-auditing-unsafe-abstractions-validity-provenance-drop-panic-and-auto-traits/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,68 +1,99 @@
 # Course 3 — Traits, Generics, and Architectural Design
 
-## Contracts, Polymorphism, Composition, and Evolvable APIs
+## Behavioral Contracts, Variation, and Evolvable APIs
 
-Turn type-level knowledge into architecture: define lawful contracts, choose static or dynamic variation, compose behavior, encode protocols, adapt boundaries, and evolve public APIs without inheritance-shaped thinking.
+## The promise
 
-## Why this course exists
+Course 3 turns traits and generics into architectural tools rather than syntax exercises. It teaches contracts and laws, associated type families, coherence, static and dynamic dispatch, composition, typestate, adapters, and compatibility-aware public APIs.
 
-The first two courses establish what values mean and how they remain valid. Architecture begins when several types must participate in the same product without surrendering their invariants. Rust offers enums, generics, traits, closures, trait objects, newtypes, and ordinary composition; none is the universal answer. This course teaches a mechanism-selection discipline based on who chooses the variation, when the choice is made, what information may be erased, and which downstream obligations become public.
+> **Governing question:** How should a Rust architecture represent shared behavior, type relationships, runtime variation, protocol states, and downstream extension without importing an inheritance model?
 
-## Before you begin
+Course 2 established how values live, borrow, share liveness, clean up, and occupy memory. Course 3 keeps those memory contracts and moves outward to architecture: which types may promise shared behavior, who may implement a contract, when variation is static or dynamic, and how public extension remains coherent.
 
-Course 2, including precise borrow relationships, cleanup and liveness reasoning, smart-pointer trade-offs, and the distinction between semantic guarantees and representation observations.
+## Before Day 1
 
-Keep a trait-law table, variation map, dispatch map, and downstream-compatibility matrix beside the code. The record changes shape as the course advances, but its purpose is constant: make the decisive relationship visible before syntax hides it.
+You should be comfortable with ownership and borrowing, trait basics, generic functions, lifetime annotations, smart-pointer liveness, and private invariant-bearing types.
 
-## What you will be able to do
+From a blank page, sketch one earlier product or a comparable program. Mark an owner, a valid and invalid state, a failure path, cleanup, and a public promise. Repair any relationship you cannot explain before adding this course’s mechanisms.
 
-- Define a trait as a coherent behavioral contract with appropriate receivers, required primitives, derived defaults, supertraits, and explicit semantic laws.
-- Distinguish inherent methods, free functions, traits, extension traits, and adapters by ownership of behavior and evolution responsibility.
-- Choose generic parameters, associated types, associated constants, and equality constraints from the cardinality of the type relationship.
-- Use introductory generic associated types only when an implementation owns a family of borrowed outputs indexed by a lifetime.
-- Predict coherence and orphan-rule legality, detect overlapping blanket implementations, and use newtypes or local adapters to regain implementation ownership.
-- Design generic APIs with the weakest sufficient bounds and understand when monomorphization is a benefit, cost, or irrelevant implementation detail.
-- Use argument-position and return-position `impl Trait` while distinguishing caller-chosen types from implementation-hidden concrete types.
-- Derive dyn compatibility, object lifetime requirements, and erased information before choosing a trait-object boundary.
-- Choose among enums, generics, trait objects, closures, and functions from whether the variant set is closed, who chooses it, and when heterogeneity is required.
-- Build behavior through composition, delegation, strategy, adapter, decorator, and command patterns without reproducing inheritance hierarchies.
-- Encode narrow protocols and single-use authority with typestate or capability tokens while avoiding combinatorial state explosion.
-- Design boundary traits and closure adapters that isolate external data and effects without creating framework-sized abstraction layers.
-- Use `From`, `TryFrom`, `AsRef`, and `Borrow` according to semantic conversion and lookup contracts rather than superficial signature convenience.
-- Evaluate public trait evolution from both downstream roles—caller and implementor—and use sealing, non-exhaustive models, adapters, or versioned traits deliberately.
-- Produce and defend an architecture decision record that names variation axes, dispatch choices, erased information, laws, compatibility obligations, and rejected alternatives.
+## Outcomes
 
-## What this course deliberately leaves for later
+- Define a trait whose methods express a coherent behavioral contract.
+- Choose between generic parameters and associated types from relationship cardinality.
+- Predict whether an implementation satisfies coherence and orphan rules.
+- Design generic functions and types with the weakest sufficient bounds.
+- Derive whether a trait is dyn-compatible and repair it without erasing its meaning.
+- Model encapsulation, substitution, and delegation without class inheritance.
+- Encode a finite protocol with marker states and consuming transitions.
+- Design extension traits, closure adapters, and conversion boundaries with precise contracts.
+- Classify public trait changes by downstream source-compatibility risk.
+- Map axes of variation before selecting polymorphism mechanisms.
+- Integrate all ten mechanisms in Review Engine without creating competing authorities.
+- Complete and defend an unseen change using a architecture decision record.
 
-The course focuses on architectural variation and public API design. Iterator algebra, functional effect architecture, macro construction, unsafe boundaries, and concurrency remain responsibilities of later courses.
+## The ten-day line
 
-## Ten-day route
+| Day | Module | Governing question | Capability that must become visible | Laboratory |
+|---:|---|---|---|---|
+| 1 | [21 — Traits as Behavioral Contracts](./module-21-traits-as-behavioral-contracts/index.md) | What behavior truly belongs in a shared contract, and which laws must every implementation preserve? | **Define a trait whose methods express a coherent behavioral contract.** | [Contract Boundaries](../labs/module-01-contract-boundaries/README.md) |
+| 2 | [22 — Associated Types and Type Families](./module-22-associated-types-and-type-families/index.md) | When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API? | **Choose between generic parameters and associated types from relationship cardinality.** | [Associated Families](../labs/module-02-associated-families/README.md) |
+| 3 | [23 — Coherence and Implementation Ownership](./module-23-coherence-and-implementation-ownership/index.md) | Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation? | **Predict whether an implementation satisfies coherence and orphan rules.** | [Coherence Adapters](../labs/module-03-coherence-adapters/README.md) |
+| 4 | [24 — Static Polymorphism and Opaque Types](./module-24-static-polymorphism-and-opaque-types/index.md) | When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees? | **Design generic functions and types with the weakest sufficient bounds.** | [Static Pipeline](../labs/module-04-static-pipeline/README.md) |
+| 5 | [25 — Trait Objects and Dynamic Polymorphism](./module-25-trait-objects-and-dynamic-polymorphism/index.md) | When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable? | **Derive whether a trait is dyn-compatible and repair it without erasing its meaning.** | [Dynamic Command Bus](../labs/module-05-dynamic-command-bus/README.md) |
+| 6 | [26 — Composition and OOP-Style Design Without Inheritance](./module-26-composition-and-oop-style-design-without-inheritance/index.md) | How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance? | **Model encapsulation, substitution, and delegation without class inheritance.** | [Composed Renderer](../labs/module-06-composed-renderer/README.md) |
+| 7 | [27 — Typestate and Capability-Oriented APIs](./module-27-typestate-and-capability-oriented-apis/index.md) | Which illegal operations can be removed from the API by representing protocol state and authority in types? | **Encode a finite protocol with marker states and consuming transitions.** | [Typestate Publication](../labs/module-07-typestate-publication/README.md) |
+| 8 | [28 — Boundary Traits and Adapters](./module-28-boundary-traits-and-adapters/index.md) | How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model? | **Design extension traits, closure adapters, and conversion boundaries with precise contracts.** | [Boundary Ports](../labs/module-08-boundary-ports/README.md) |
+| 9 | [29 — Public API Evolution](./module-29-public-api-evolution/index.md) | How can a public trait-based API evolve when downstream crates may both call it and implement it? | **Classify public trait changes by downstream source-compatibility risk.** | [Evolvable SDK](../labs/module-09-evolvable-sdk/README.md) |
+| 10 | [30 — Architectural Synthesis](./module-30-architectural-synthesis/index.md) | Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition? | **Map axes of variation before selecting polymorphism mechanisms.** | [Inspection Platform](../labs/module-10-inspection-platform/README.md) |
 
-1. [Module 21: Traits as Behavioral Contracts](module-21-traits-as-behavioral-contracts/index.md) — What behavior truly belongs in a shared contract, and which laws must every implementation preserve?
-2. [Module 22: Associated Types and Type Families](module-22-associated-types-and-type-families/index.md) — When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?
-3. [Module 23: Coherence and Implementation Ownership](module-23-coherence-and-implementation-ownership/index.md) — Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?
-4. [Module 24: Static Polymorphism and Opaque Types](module-24-static-polymorphism-and-opaque-types/index.md) — When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?
-5. [Module 25: Trait Objects and Dynamic Polymorphism](module-25-trait-objects-and-dynamic-polymorphism/index.md) — When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?
-6. [Module 26: Composition and OOP-Style Design Without Inheritance](module-26-composition-and-oop-style-design-without-inheritance/index.md) — How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?
-7. [Module 27: Typestate and Capability-Oriented APIs](module-27-typestate-and-capability-oriented-apis/index.md) — Which illegal operations can be removed from the API by representing protocol state and authority in types?
-8. [Module 28: Boundary Traits and Adapters](module-28-boundary-traits-and-adapters/index.md) — How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?
-9. [Module 29: Public API Evolution](module-29-public-api-evolution/index.md) — How can a public trait-based API evolve when downstream crates may both call it and implement it?
-10. [Module 30: Architectural Synthesis](module-30-architectural-synthesis/index.md) — Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?
+The table is a dependency chain, not a menu. A later module may use an earlier mechanism but may not silently weaken its ownership, failure, ordering, capacity, safety, compatibility, or evidence contract.
 
-## How the learning surfaces fit
+## Decision rules
 
-The chapter is the authoritative explanation. The workbook exposes the model you actually hold through prediction, repair, construction, transfer, and defense. The independent lab removes accumulated capstone complexity so one mechanism remains visible. The capstone increment then asks that mechanism to coexist with every earlier decision.
+| Decision | Rule used throughout this course |
+|---|---|
+| Trait boundary | State behavioral laws before choosing methods or defaults. |
+| Associated type | Use it when an implementation owns one related type family; use a generic parameter when callers select independently. |
+| Dispatch | Use static dispatch for compile-time composition and dynamic dispatch for runtime heterogeneity or extension. |
+| Typestate | Encode a protocol stage when method availability should change after a consuming transition. |
+| Evolution | Review both downstream callers and downstream implementors before publishing a public trait or enum. |
 
-The cumulative product is **Review Engine**: a policy evaluation engine with generic source and reporter boundaries, associated error families, a dynamic rule registry, coherence-safe adapters, typestate construction, and a defended extension surface. Do not read the complete implementation before attempting the corresponding increment; the value of the capstone is the sequence of design decisions, not possession of the finished source.
+Use these rules during prediction and review. When a rule does not decide the case, write the missing product requirement instead of selecting an API by habit.
 
-Use the [compiler investigations](../compiler-labs/README.md), the [ten-day study plan](study-plan.md), the [Review Engine engineering guide](capstone.md), the [course reference](reference.md), and the [independent final review](final-review.md).
+## The reasoning record
 
-## Completion standard
+The ten module-specific records culminate in a **architecture decision record**. State the law, type relationship, implementation owner, dispatch choice, and evolution obligation before introducing a trait boundary. Keep the record small enough to inspect but complete enough to expose the first unsupported assumption.
 
-The course is complete when you can satisfy the public behavior, explain the decisive rule without notes, repair a misleading implementation without weakening its requirement, and transfer the mechanism to the final independent product. A passing test suite without a causal model is incomplete; a persuasive explanation without working evidence is also incomplete.
+## Scope and handoff
 
-## Course handoff
+The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution.
 
-Course 4 uses these contracts as the joints of explicit dataflow, fallible traversal, reduction, and effect isolation.
+Course 4 keeps these contracts but asks how values, failure, demand, and effects compose through closures, iterators, reductions, and persistent transformations.
 
-[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)
+## Capstone — Review Engine
+
+Review Engine evaluates submissions against ordered policies. Generic source and reporting ports, a heterogeneous rule registry, coherence-safe adapters, typestate construction, and deterministic results make the choice of variation mechanism visible.
+
+Open the [engineering guide](capstone.md) before Day 1 so the final architecture is visible. Implement only the current increment. The independent laboratory remains separate so that the mechanism can be learned without hiding behind accumulated capstone code.
+
+## Completion
+
+The course is complete when you can build and defend:
+
+> Build a plugin-capable inspection service with one static pipeline, one dynamic registry, a typestate builder, reusable contract tests, and a written compatibility policy.
+
+and then change the capstone under this constraint:
+
+> Add a versioned rule capability to Review Engine while preserving source compatibility, deterministic rule order, and a clear static-versus-dynamic boundary.
+
+A passing test suite is necessary. It is not sufficient unless you can explain why the tests are capable of falsifying the claim and which target-, scheduler-, workload-, peer-, or policy-dependent facts remain outside them.
+
+## Continue
+
+- [Ten-day plan](study-plan.md)
+- [Module 21 — Traits as Behavioral Contracts](./module-21-traits-as-behavioral-contracts/index.md)
+- [Review Engine engineering guide](capstone.md)
+- [Course reference](reference.md)
+- [Final review](final-review.md)
+- [Compiler and design investigations](../compiler-labs/README.md)
+- [Independent laboratories](../labs/)

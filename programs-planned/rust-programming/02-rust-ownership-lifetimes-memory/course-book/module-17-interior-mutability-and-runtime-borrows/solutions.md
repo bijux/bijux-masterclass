@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 17: Interior Mutability and Runtime Borrows
+# Reasoned Solutions — Module 17: Interior Mutability and Runtime Borrows
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-07-interior-cache/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Interior Mutability and Runtime Borrows**, not to substitute for an attempt. The decisive question is: *Which logically hidden mutation justifies runtime enforcement, and how can guard scope and reentrancy remain controlled?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 17: Interior Mutability and Runtime Borrows**. Compare the reasoning against this question: *Which logically hidden mutation justifies runtime enforcement, and how can guard scope and reentrancy remain controlled?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ Finally, semantic equality must be defined from domain state. Two values with id
 
 Repair a callback-capable cache that holds RefMut across user code, then prove cache invalidation and busy-state behavior.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-07-interior-cache/solution`](../../labs/module-07-interior-cache/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **Interior Mutability and Runtime Borrows**, compare the contract, invariant
 - Design caches whose mutation is observationally transparent, correctly invalidated, and memory-bounded.
 
 A complete explanation of **Interior Mutability and Runtime Borrows** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which logically hidden mutation justifies runtime enforcement, and how can guard scope and reentrancy remain controlled?
+
+Build a **runtime-borrow trace**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Explain UnsafeCell as the primitive behind interior mutability while remaining within safe APIs.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Choose Cell for replaceable Copy state and RefCell for single-threaded dynamically checked borrowed state.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Treat Ref and RefMut as runtime loan guards whose scope is part of the API protocol.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Avoid reentrant borrow panics by computing outside guards, shortening scopes, or using try_borrow variants and typed errors.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Design caches whose mutation is observationally transparent, correctly invalidated, and memory-bounded.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Explain UnsafeCell as the primitive behind interior mutability while remaining within safe APIs.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the runtime-borrow trace.
+
+### Laboratory transfer review
+
+For [Revisioned Interior Cache](../../labs/module-07-interior-cache/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 17 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Interior Mutability and Runtime Borrows**, which relationship decides this question: “Which logically hidden mutation justifies runtime enforcement, and how can guard scope and reentrancy remain controlled?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

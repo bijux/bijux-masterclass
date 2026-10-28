@@ -1,8 +1,11 @@
-# Module 71: Futures, Polling, Wakers, and Async State Machines
+# Module 71 — Futures, Polling, Wakers, and Async State Machines
 
-**Course 8, day 1 · Module 71 of 90**
+**Course 8 · Day 1 · Module 71 of 100**
+`██████████████████░░░░░░░` **71/100**
 
-**71/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-one-shot-signal/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 70: Integrated Concurrent Architecture, Testing, and Audit](../../../07-rust-concurrency-parallelism/course-book/module-70-integrated-concurrent-architecture-testing-and-audit/index.md) · [Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles →](../module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Course 7 taught that a concurrent program is a set of possible schedules and tha
 The syntax is deceptively small: `async fn` and `.await`. The mechanism is not. An async function call creates a future. The body does not run merely because the future exists. The future is a state machine that an executor repeatedly polls. When it cannot finish, it returns `Pending` and must arrange for a useful future wakeup. Values that remain live across `.await` are stored in that state machine. Dropping it destroys that stored state and is the ordinary cancellation mechanism.
 
 Without this model, later APIs become rituals. A reader may add `tokio::spawn`, `timeout`, or `select!` without knowing which future is dropped, whether a partially completed write survives, why a task spins, or why a borrowed value cannot move after the future has started. This module makes the mechanism explicit before a runtime hides the polling loop.
+
+### Prerequisite bridge
+
+Module 70 established **Integrated Concurrent Architecture, Testing, and Audit**. Before continuing, verify that you can state portability, fairness, performance, and lock-free claims at their strongest honest level. This module preserves that capability and adds the ability to explain why a future is inert until polled;. Module 72, **Tokio Runtimes, Tasks, and Structured Async Lifecycles**, will rely on both when it asks: *Once futures are understood as poll-driven state machines, how should a runtime own, schedule, observe, cancel, and finish the tasks that execute them?*
+
+### Scope boundary
+
+This module owns the reasoning for **futures, polling, wakers, and async state machines** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -191,6 +202,24 @@ For each significant async operation, record:
 
 This ledger reveals cancellation and retry questions before code obscures them.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For explain why a future is inert until polled, construct one positive and one causal negative example. Mark the first decisive fact in the **future state and wake-source table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For read the `Future::poll` contract and distinguish completion from scheduling, construct one positive and one causal negative example. Mark the first decisive fact in the **future state and wake-source table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For state what `Context` and `Waker` permit without treating wake as a stored event count, construct one positive and one causal negative example. Mark the first decisive fact in the **future state and wake-source table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For identify busy polling caused by unconditional self-waking, construct one positive and one causal negative example. Mark the first decisive fact in the **future state and wake-source table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The following one-shot signal is intentionally small enough to inspect. One producer completes it once; one future awaits the value. It uses a mutex because the point is the polling contract, not a custom lock-free primitive.
@@ -310,4 +339,4 @@ Continue only when you can explain, without API names:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [One-Shot Signal](../../labs/module-01-one-shot-signal/README.md), and add the first [JobWire increment](../capstone.md#increment-1-freeze-the-async-state-vocabulary). Then continue to [Module 72](../module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/index.md).
+Continue to [Module 72 — Tokio Runtimes, Tasks, and Structured Async Lifecycles](../module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

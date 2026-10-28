@@ -1,12 +1,17 @@
 # Workbook — Module 48: Attribute Macros and Item Transformation
 
-[Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-08-checked-handler-attribute/README.md) · [CommandForge guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Attribute Macros and Item Transformation** as an engineering mechanism rather than repeat its syntax. The governing question is:
+This workbook tests whether **Attribute Macros and Item Transformation** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?* Preserve your first prediction and record decisive facts in a **attribute preservation table**. A repair succeeds only when it keeps the difficult product requirement visible.
 
-> How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?
+## Retrieval warm-up
 
-Trace both inputs to the attribute macro: configuration tokens and the attached item. Mark which parts the attribute owns, which parts must be preserved, and which signature facts can only be checked syntactically.
+Before compiling or running anything:
+
+1. Restate the invariant from Module 47 — Custom Derive Macros and Structural Generation that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?**
+3. Draw the smallest **attribute preservation table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -81,6 +86,17 @@ Two attributes transform the same function. Why can source order matter?
 
 For every answer that proposes a macro, add a one-sentence rejection criterion: what simpler condition would make ordinary Rust preferable?
 
+### Interleaved reasoning pass
+
+1. For **Parse attribute arguments independently from the attached item**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the attribute preservation table.
+2. For **Validate supported item kinds and function signatures**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the attribute preservation table.
+3. For **Preserve visibility, attributes, generics, ABI, safety, asyncness, and body when the macro does not own them**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the attribute preservation table.
+4. For **Decide whether to preserve, augment, wrap, or replace an item**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the attribute preservation table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Attribute Macros and Item Transformation** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 ### Product: Checked Handler Attribute
@@ -102,11 +118,27 @@ Before implementation, complete this module-specific design record:
 
 Build the smallest valid **attribute ownership and item preservation** surface first. Add one accepted case, one rejection owned by this mechanism, and one case that expands successfully before ordinary Rust rejects a later obligation. Compare with the reference only after those three phase boundaries are protected by tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Checked Handler Attribute**, record:
+
+- the public behavior that demonstrates **Parse attribute arguments independently from the attached item**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Implement `#[command_handler]` as a validating augmentation: preserve the handler, validate one owned argument and explicit `Result`, and generate a typed `HandlerDescriptor`. Reject unsupported qualifiers with spanned diagnostics.
 
 The capstone increment must leave a visible design record: one diagram or table, one positive test, one negative test, and one statement of what this mechanism deliberately does **not** own.
+
+### Capstone invariant trace
+
+For the Module 48 CommandForge increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -142,3 +174,7 @@ Before advancing, defend these module-specific points:
 - which item properties the attribute may change
 - what information remains unavailable before type checking
 - how generated companion names avoid collisions
+
+### Closed-book defense
+
+In five minutes, answer “How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?” using the **attribute preservation table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside CommandForge. A list of APIs without the deciding relationship is incomplete.

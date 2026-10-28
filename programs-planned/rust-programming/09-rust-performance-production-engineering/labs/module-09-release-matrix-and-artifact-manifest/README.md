@@ -1,6 +1,14 @@
-# Laboratory 9 — Release Matrix and Artifact Manifest
+# Laboratory 89 — Release Matrix and Artifact Manifest
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 89 chapter](../../course-book/module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md)
+**Course 9 · Module 89: Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases**
+
+[Chapter](../../course-book/module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md) · [Workbook](../../course-book/module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases**: How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions? The product must make **Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **release manifest** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -72,3 +80,25 @@ Corrupt one manifest digest, omit one artifact, change the lockfile after buildi
 
 Could a release operator prove the exact binary’s source, dependencies, profile, target, and review evidence after the build machine has disappeared? Demonstrate the lookup using only the package. Any answer that requires shell history, an uncommitted lockfile, or a mutable “latest” tag fails the exercise.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Release Matrix and Artifact Manifest**.
+2. Draw the smallest **release manifest** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy.
+- Separate development, test, benchmark, profiling, release, and distribution artifacts.
+- Measure binary size by section and dependency contribution before applying size flags.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 89 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **release manifest**. Defend why your design is simpler than one plausible alternative under the new requirements.

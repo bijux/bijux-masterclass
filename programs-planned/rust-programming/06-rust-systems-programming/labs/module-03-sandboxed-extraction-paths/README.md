@@ -1,6 +1,14 @@
 # Laboratory 53 — Sandboxed Extraction Paths
 
-This is the independent product for **Course 6, Module 53: Paths, Names, and Platform Boundaries**. Read the [module chapter](../../course-book/module-53-paths-names-and-platform-boundaries/index.md) and complete its [workbook](../../course-book/module-53-paths-names-and-platform-boundaries/workbook.md) before consulting the reference implementation.
+**Course 6 · Module 53: Paths, Names, and Platform Boundaries**
+
+[Chapter](../../course-book/module-53-paths-names-and-platform-boundaries/index.md) · [Workbook](../../course-book/module-53-paths-names-and-platform-boundaries/workbook.md) · [FrameVault guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Paths, Names, and Platform Boundaries**: How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable? The product must make **Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **path threat model** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -14,7 +22,7 @@ By the end, the answer must be visible in the public API, failure behavior, adve
 
 Build a portable logical-path parser and a bounded extraction resolver. The lab separates archive syntax from host path syntax and refuses direct parent, root, prefix, empty, and dot components.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 This lab separates portable archive identity from host pathname behavior. The goal is not to claim a perfect sandbox with pathname preflight; it is to define the exact lexical and filesystem assumptions under which extraction is acceptable. Write the threat model before using `PathBuf`, because path convenience methods do not choose that policy for you.
 
@@ -66,7 +74,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Wo
 
 The laboratory is complete when the tests and documented failure paths pass, and you can answer this question without the chapter:
 
-> How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable?
+For **Laboratory 53 — Sandboxed Extraction Paths**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -76,3 +84,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Sandboxed Extraction Paths**.
+2. Draw the smallest **path threat model** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to FrameVault so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text.
+- Validate archive-relative paths by components rather than substring tests.
+- Explain why lexical checks, canonicalization, and race-free resolution solve different problems.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 53 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **path threat model**. Defend why your design is simpler than one plausible alternative under the new requirements.

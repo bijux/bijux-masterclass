@@ -1,8 +1,17 @@
 # Workbook — Module 01: Compilation, Expressions, and Types
 
-[Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-measurement-report/README.md) · [Taskboard guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Compilation, Expressions, and Types** without relying on surface syntax. Keep the module question in view: *How does Rust turn source text into a typed program, and what type and value does every expression produce?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Compilation, Expressions, and Types** has become a usable model rather than remembered vocabulary. Its governing question is: *How does Rust turn source text into a typed program, and what type and value does every expression produce?* Preserve your first prediction and record decisive facts in a **type trace**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the entry contract for this program that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How does Rust turn source text into a typed program, and what type and value does every expression produce?**
+3. Draw the smallest **type trace** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -24,7 +33,6 @@ python3 ../tools/run_compiler_labs.py 01-rust-foundations
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 Repair this program without changing the requested report behavior:
 
@@ -118,7 +126,6 @@ The boundary test is stronger than testing only 85 because it protects the compa
 ### Access protocol
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
-
 
 Create one package named `module-01-exercises` with a library and tests. Do not consult answers until the access threshold is met.
 
@@ -221,11 +228,18 @@ cargo test --all-targets
 cargo doc --no-deps
 ```
 
+### Interleaved reasoning pass
 
+1. For **Distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project”**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the type trace.
+2. For **Derive the type and value of blocks, branches, tuples, arrays, function bodies, and semicolon-sensitive expressions before compiling**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the type trace.
+3. For **Choose numeric types and conversions from domain constraints, including overflow and floating-point limitations, rather than from habit**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the type trace.
+4. For **Use compiler diagnostics, tests, rustfmt, Clippy, and rustdoc as separate evidence channels and explain what each channel does not prove**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the type trace.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Compilation, Expressions, and Types** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Product contract
 
@@ -320,6 +334,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-01-measurement-report](../../labs/module-01-measurement-report/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Measurement Report**, record:
+
+- the public behavior that demonstrates **Distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project”**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -329,7 +355,6 @@ The executable starter and reference implementation are in [module-01-measuremen
 - Choose numeric types and conversions from domain constraints, including overflow and floating-point limitations, rather than from habit.
 - Use compiler diagnostics, tests, rustfmt, Clippy, and rustdoc as separate evidence channels and explain what each channel does not prove.
 - Build and verify a small library-plus-binary package with pure calculation separated from rendering.
-
 
 Create the `taskboard` package skeleton. Do not read the final implementation during the attempt.
 
@@ -405,11 +430,13 @@ Record the exact types of `env!(...)`, `MAX_TITLE_CHARS`, `title`, and the valid
 
 The distributed capstone ultimately centralizes title validation in its model rather than exposing this exact Boolean API. That later refactor is intentional: Module 7 needs validation errors with context, not only true/false. Day 1 proves the rule before error modeling is available.
 
-
-
 ### Capstone defense
 
 Given an unfamiliar package with several targets, explain what Cargo will build, predict the types of its key expressions, and repair one warning without changing behavior.
+
+### Capstone invariant trace
+
+For the Module 1 Taskboard increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -419,11 +446,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project”.
-- Derive the type and value of blocks, branches, tuples, arrays, function bodies, and semicolon-sensitive expressions before compiling.
-- Choose numeric types and conversions from domain constraints, including overflow and floating-point limitations, rather than from habit.
-- Use compiler diagnostics, tests, rustfmt, Clippy, and rustdoc as separate evidence channels and explain what each channel does not prove.
-- Build and verify a small library-plus-binary package with pure calculation separated from rendering.
+Without reopening the chapter, reconstruct the outcomes for **Module 01: Compilation, Expressions, and Types**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -469,6 +492,18 @@ Implement `bounds(&[i32]) -> Option<(i32, i32)>` and three tests without reading
 
 ### Transfer defense
 
-Given an unfamiliar package with several targets, explain what Cargo will build, predict the types of its key expressions, and repair one warning without changing behavior.
+Transfer **Module 01: Compilation, Expressions, and Types** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 01: Compilation, Expressions, and Types** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
+
+### Closed-book defense
+
+In five minutes, answer “How does Rust turn source text into a typed program, and what type and value does every expression produce?” using the **type trace**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Taskboard. A list of APIs without the deciding relationship is incomplete.

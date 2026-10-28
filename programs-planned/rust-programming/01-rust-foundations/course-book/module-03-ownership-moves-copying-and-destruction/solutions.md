@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 03: Ownership, Moves, Copying, and Destruction
+# Reasoned Solutions — Module 03: Ownership, Moves, Copying, and Destruction
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-03-ownership-intake/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Ownership, Moves, Copying, and Destruction**, not to substitute for an attempt. The decisive question is: *Who owns each resource after every assignment, call, return, destructure, and scope exit?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 3: Ownership, Moves, Copying, and Destruction**. Compare the reasoning against this question: *Who owns each resource after every assignment, call, return, destructure, and scope exit?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -186,9 +186,7 @@ A correct narrative distinguishes vector allocation, record values, and each tit
 
 Refactor an ingest pipeline so ownership crosses each boundary once, then defend every remaining clone as semantic duplication.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-03-ownership-intake/solution`](../../labs/module-03-ownership-intake/solution). Before reading it, write down:
 
@@ -209,3 +207,42 @@ For **Ownership, Moves, Copying, and Destruction**, compare the contract, invari
 - Audit clone-heavy code and remove symptom-fixing duplication while preserving the product contract.
 
 A complete explanation of **Ownership, Moves, Copying, and Destruction** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Who owns each resource after every assignment, call, return, destructure, and scope exit?
+
+Build a **ownership ledger**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish semantic moves, Copy duplication, explicit Clone cost, and destruction without relying on stack-versus-heap folklore.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Predict partial moves and the remaining usable fields of an aggregate.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Choose consuming, returning, borrowing, or cloning APIs from post-call ownership requirements.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Audit clone-heavy code and remove symptom-fixing duplication while preserving the product contract.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the ownership ledger.
+
+### Laboratory transfer review
+
+For [Ownership Intake Pipeline](../../labs/module-03-ownership-intake/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 3 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Ownership, Moves, Copying, and Destruction**, which relationship decides this question: “Who owns each resource after every assignment, call, return, destructure, and scope exit?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

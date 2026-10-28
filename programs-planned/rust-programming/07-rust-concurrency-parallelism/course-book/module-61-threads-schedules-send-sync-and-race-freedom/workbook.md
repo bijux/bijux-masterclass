@@ -1,8 +1,17 @@
 # Workbook — Module 61: Threads, Schedules, Send, Sync, and Race Freedom
 
-[Return to the chapter](index.md) · [Open the BatchWeave engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-thread-handoff-matrix/README.md) · [BatchWeave guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether the chapter has become an operational model. Freeze predictions, protocol diagrams, and invariants before compiling. Concurrency is unusually forgiving of explanations written after observing one successful run; that is exactly why the reasoning record must come first.
+This workbook tests whether **Threads, Schedules, Send, Sync, and Race Freedom** has become a usable model rather than remembered vocabulary. Its governing question is: *What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?* Preserve your first prediction and record decisive facts in a **thread ownership map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 60 — Integrated Systems Design, Testing, and Audit that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?**
+3. Draw the smallest **thread ownership map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -105,6 +114,17 @@ Bound a thread-per-item implementation honestly.
 
 Required evidence: State the maximum accepted item count and explain when a fixed worker group becomes necessary.
 
+### Interleaved reasoning pass
+
+1. For **Distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the thread ownership map.
+2. For **Derive whether an owned value may move into a thread from its `Send` obligation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the thread ownership map.
+3. For **Derive whether a shared reference may cross a thread boundary from the referent’s `Sync` obligation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the thread ownership map.
+4. For **Explain why `Arc<T>` provides shared ownership but not automatic mutation safety**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the thread ownership map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Threads, Schedules, Send, Sync, and Race Freedom** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Thread Handoff Matrix](../../labs/module-01-thread-handoff-matrix/README.md) from the starter. Before opening the solution, produce:
@@ -116,6 +136,18 @@ Build [Thread Handoff Matrix](../../labs/module-01-thread-handoff-matrix/README.
 - an explicit maximum input or thread count;
 
 Your submission must also identify one schedule that the implementation handles correctly and one product claim it deliberately does not make.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Thread Handoff Matrix**, record:
+
+- the public behavior that demonstrates **Distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -130,6 +162,10 @@ Required capstone evidence:
 
 Add at least one regression test that fails if this module's governing contract is removed. Tests that merely sleep and hope for a schedule do not count as causal evidence.
 
+### Capstone invariant trace
+
+For the Module 61 BatchWeave increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Answer without the chapter:
@@ -143,3 +179,7 @@ Answer without the chapter:
 ### Independent transfer
 
 Design a thumbnail generator for at most 32 in-memory images. Each image is owned, the immutable rendering profile is shared, and the result must remain in request order. Write the thread ledger, choose a bounded thread topology, define panic behavior, and state whether one failed image cancels the rest. Then change the product to accept 100,000 images and explain which architectural assumption becomes invalid first.
+
+### Closed-book defense
+
+In five minutes, answer “What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?” using the **thread ownership map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside BatchWeave. A list of APIs without the deciding relationship is incomplete.

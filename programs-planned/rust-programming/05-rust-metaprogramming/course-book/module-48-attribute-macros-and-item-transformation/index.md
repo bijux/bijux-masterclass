@@ -1,9 +1,11 @@
-# 48 — Attribute Macros and Item Transformation
+# Module 48 — Attribute Macros and Item Transformation
 
-**Course 5, day 8 · Module 48 of 90**  
-`████████████████░░░░` **48/90**
+**Course 5 · Day 8 · Module 48 of 100**
+`████████████░░░░░░░░░░░░░` **48/100**
 
-[← Module 47: Custom Derive Macros and Structural Generation](../module-47-custom-derive-macros-and-structural-generation/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 49: Function-Like Procedural Macros and Typed DSLs →](../module-49-function-like-procedural-macros-and-typed-dsls/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-checked-handler-attribute/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 47: Custom Derive Macros and Structural Generation](../module-47-custom-derive-macros-and-structural-generation/index.md) · [Module 49: Function-Like Procedural Macros and Typed DSLs →](../module-49-function-like-procedural-macros-and-typed-dsls/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 A derive can inspect an item but cannot replace it. An attribute macro receives configuration tokens and the complete attached item, then replaces that item with its output. This enables wrappers, registration metadata, signature checks, instrumentation, and companion items. It also creates a much larger responsibility: anything not re-emitted disappears.
 
 Module 48 therefore treats transformation as a preservation contract, not as an opportunity to rewrite arbitrary code.
+
+### Prerequisite bridge
+
+Module 47 established **Custom Derive Macros and Structural Generation**. Before continuing, verify that you can explain the runtime-crate path and dependency-renaming contract. This module preserves that capability and adds the ability to parse attribute arguments independently from the attached item. Module 49, **Function-Like Procedural Macros and Typed DSLs**, will rely on both when it asks: *How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?*
+
+### Scope boundary
+
+This module owns the reasoning for **attribute macros and item transformation** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -313,6 +323,24 @@ The expansion entry should return all combined errors as `compile_error!` tokens
 - documentation attribute;
 - another harmless built-in attribute.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For parse attribute arguments independently from the attached item, construct one positive and one causal negative example. Mark the first decisive fact in the **attribute preservation table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For validate supported item kinds and function signatures, construct one positive and one causal negative example. Mark the first decisive fact in the **attribute preservation table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For preserve visibility, attributes, generics, ABI, safety, asyncness, and body when the macro does not own them, construct one positive and one causal negative example. Mark the first decisive fact in the **attribute preservation table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For decide whether to preserve, augment, wrap, or replace an item, construct one positive and one causal negative example. Mark the first decisive fact in the **attribute preservation table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge’s handler functions remain ordinary domain code:
@@ -374,7 +402,4 @@ Do not continue if the macro reconstructs a function from selected fields and si
 
 ## Continue
 
-1. Complete the [Module 48 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 48 — Checked Handler Attribute](../../labs/module-08-checked-handler-attribute/README.md) from its public contract.
-3. Apply the Module 48 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 49 — Function-Like Procedural Macros and Typed DSLs](../module-49-function-like-procedural-macros-and-typed-dsls/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

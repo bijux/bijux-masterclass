@@ -1,9 +1,11 @@
-# 12 — Lifetime Relationships and Borrowed APIs
+# Module 12 — Lifetime Relationships and Borrowed APIs
 
-**Course 2, day 2 · Module 12 of 90**  
-`████░░░░░░░░░░░░░░░░` **12/90**
+**Course 2 · Day 2 · Module 12 of 100**
+`███░░░░░░░░░░░░░░░░░░░░░░` **12/100**
 
-[← Module 11: Places, Move Paths, and Advanced Borrowing](../module-11-places-move-paths-and-advanced-borrowing/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 13: Scoped Access and Escape Prevention →](../module-13-scoped-access-and-escape-prevention/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-zero-copy-records/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 11: Places, Move Paths, and Advanced Borrowing](../module-11-places-move-paths-and-advanced-borrowing/index.md) · [Module 13: Scoped Access and Escape Prevention →](../module-13-scoped-access-and-escape-prevention/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 After you can identify the exact place being borrowed, you can ask the deeper question: from which owner may a returned reference remain valid? Lifetimes are introduced as relationships among borrows, not as storage controls. The module develops a derivation method so annotations follow provenance instead of guesswork.
+
+### Prerequisite bridge
+
+Module 11 established **Places, Move Paths, and Advanced Borrowing**. Before continuing, verify that you can repair ownership conflicts by changing topology or phases before considering clone, refcell, or unsafe code. This module preserves that capability and adds the ability to translate lifetime syntax into constraints among borrows rather than durations attached to values. Module 13, **Scoped Access and Escape Prevention**, will rely on both when it asks: *Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?*
+
+### Scope boundary
+
+This module owns the reasoning for **lifetime relationships and borrowed apis** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -821,6 +831,24 @@ A `Selection` cannot outlive a locally created label. Adding `'static` would not
 
 Construct source text in an outer scope and labels in nested scopes. Demonstrate that relabeling can shorten only the label component. Preserve compile-fail evidence for returning a selection containing a local label. Tests with string literals alone are weak because literals are `'static` and hide constraints.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For translate lifetime syntax into constraints among borrows rather than durations attached to values, construct one positive and one causal negative example. Mark the first decisive fact in the **lifetime constraint graph** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For derive elision and explicit relationships for one-source and multiple-source APIs, construct one positive and one causal negative example. Mark the first decisive fact in the **lifetime constraint graph** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use lifetime shortening and subtyping in ordinary covariant borrowed views without extending provenance, construct one positive and one causal negative example. Mark the first decisive fact in the **lifetime constraint graph** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design structs and enums containing references while accounting for temporary and drop scopes, construct one positive and one causal negative example. Mark the first decisive fact in the **lifetime constraint graph** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Expose document views and search excerpts that borrow from workspace-owned text. Derive every output lifetime from the owner that actually supplies the bytes. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -850,11 +878,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Lifetimes](https://doc.rust-lang.org/reference/trait-bounds.html#lifetime-bounds)
 - [Rust Reference: Lifetime elision](https://doc.rust-lang.org/reference/lifetime-elision.html)
 
-[← Module 11](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 13 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md)
+[← Module 11](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 13 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md)
 
 ## Continue
 
-1. Complete the [Module 12 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 12 — Zero-Copy Records](../../labs/module-02-zero-copy-records/README.md) from its public contract.
-3. Apply the Module 12 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 13 — Scoped Access and Escape Prevention](../module-13-scoped-access-and-escape-prevention/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

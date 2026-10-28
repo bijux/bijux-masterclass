@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 47: Custom Derive Macros and Structural Generation
+# Reasoned Solutions — Module 47: Custom Derive Macros and Structural Generation
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-07-field-names-derive/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare compilation for lifetime, type, const, and where-clause fixtures, absence of unnecessary field-type bounds, causal errors for tuple structs, enums, and unions, one normalized interpretation of helper attributes. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 47: Custom Derive Macros and Structural Generation**. Compare the reasoning against this question: *How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ No. Syntax inspection sees a path spelling, not final name resolution. Structura
 
 A union is valid Rust and user input may legitimately reach the derive. It is not an internal invariant violation. A spanned compile error explains the supported surface; panic hides context, and empty output falsely suggests success.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-07-field-names-derive/solution`](../../labs/module-07-field-names-derive/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - which helper-attribute change would be breaking;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?
+
+Build a **derive expansion ledger**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Parse `DeriveInput` and distinguish structs, enums, and unions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Support only documented item shapes and reject others at useful spans.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Inspect named, unnamed, and unit fields without losing source order.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Parse derive helper attributes and reject unknown or duplicate options.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Preserve lifetimes, type parameters, const parameters, and `where` clauses.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Parse `DeriveInput` and distinguish structs, enums, and unions.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the derive expansion ledger.
+
+### Laboratory transfer review
+
+For [Field Names Derive](../../labs/module-07-field-names-derive/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 47 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Custom Derive Macros and Structural Generation**, which relationship decides this question: “How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

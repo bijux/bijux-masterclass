@@ -4,10 +4,11 @@ import json, sys
 ROOT=Path(__file__).resolve().parents[1]
 STATE=ROOT/'.progress.json'
 modules=[]
-for p in sorted(ROOT.glob('[0-9][0-9]-*/course-book/module-*/index.md')):
+for p in ROOT.glob('[0-9][0-9]-*/course-book/module-*/index.md'):
     num=int(p.parent.name.split('-')[1])
     title=p.read_text().splitlines()[0].split('—',1)[-1].strip()
     modules.append((num,title))
+modules.sort(key=lambda item: item[0])
 state={'done':[]} if not STATE.exists() else json.loads(STATE.read_text())
 done=set(state.get('done',[]))
 cmd=sys.argv[1] if len(sys.argv)>1 else 'show'

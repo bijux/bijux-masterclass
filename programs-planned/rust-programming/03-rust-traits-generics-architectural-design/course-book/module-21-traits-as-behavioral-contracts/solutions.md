@@ -1,72 +1,72 @@
-# Reasoned solutions — Module 21: Traits as Behavioral Contracts
+# Reasoned Solutions — Module 21: Traits as Behavioral Contracts
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-contract-boundaries/README.md) · [Review Engine guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Traits as Behavioral Contracts**, not to substitute for an attempt. The decisive question is: *What behavior truly belongs in a shared contract, and which laws must every implementation preserve?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 21: Traits as Behavioral Contracts**. Compare the reasoning against this question: *What behavior truly belongs in a shared contract, and which laws must every implementation preserve?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
 ### 1. `01-trait-import.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Trait import.
-- **Causal explanation:** The specimen compiles because trait import.
+- **Governing rule:** A trait method is available through method-call syntax only when the trait participates in method lookup at the call site.
+- **Causal explanation:** The `Words` trait is imported before the call, so method lookup can consider its implementation for `str` and resolve `"a b".words()` without changing the receiver type.
 - **Principled repair:** Keep the import near the consumer.
 - **Weak repair to reject:** Replace method syntax with unrelated code.
 
 ### 2. `02-missing-generic-bound.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Missing generic bound.
-- **Causal explanation:** The compiler rejects the specimen because missing generic bound.
+- **Governing rule:** A generic body may use trait behavior only when the function signature promises that every admissible type parameter implements that trait.
+- **Causal explanation:** The body calls `label()` on unconstrained `T`, but callers are currently allowed to choose a type with no `Label` implementation. Rust therefore rejects the body while checking the generic definition, before any call exists.
 - **Principled repair:** Add the weakest `T: Label` bound.
 - **Weak repair to reject:** Make the function accept only one concrete type without reviewing the API.
 
 ### 3. `03-default-method.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Default method.
-- **Causal explanation:** The specimen compiles because default method.
+- **Governing rule:** An implementation inherits a trait default method when it supplies every required item used by that default.
+- **Causal explanation:** `User` implements the required `name` method, so the inherited `greeting` body has all of the behavior it needs and is callable without an override.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Override every implementation without semantic need.
 
 ### 4. `04-ambiguous-method.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Ambiguous method.
-- **Causal explanation:** The compiler rejects the specimen because ambiguous method.
+- **Governing rule:** Receiver syntax cannot choose between multiple equally applicable trait methods with the same name and receiver type.
+- **Causal explanation:** Both `A::id` and `B::id` are implemented for `X`; `x.id()` supplies no information that selects one contract, so fully qualified syntax is required.
 - **Principled repair:** Use fully qualified syntax to select the contract.
 - **Weak repair to reject:** Rename methods arbitrarily without reviewing semantics.
 
 ### 5. `05-self-sized-boundary.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Self Sized boundary.
-- **Causal explanation:** The specimen compiles because self Sized boundary.
+- **Governing rule:** A method guarded by `where Self: Sized` is excluded from the trait-object dispatch surface while remaining available to concrete implementors.
+- **Causal explanation:** `name` has an object-callable receiver and can be used through `&dyn Named`; `boxed` is invoked only on concrete `X`, where the compiler knows its size and can construct `Box<Self>`.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Remove the trait-object use entirely.
 
 ### 6. `06-supertrait-obligation.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Supertrait obligation.
-- **Causal explanation:** The compiler rejects the specimen because supertrait obligation.
+- **Governing rule:** Implementing a trait also requires satisfying every supertrait named in its declaration.
+- **Causal explanation:** `Audit` promises that every implementor is also an `Id`, yet `X` has no `Id` implementation. The default `audit` method cannot rely on `self.id()` until that prerequisite is real.
 - **Principled repair:** Implement the real prerequisite or remove an unjustified supertrait.
 - **Weak repair to reject:** Add an empty prerequisite implementation with no valid semantics.
 
 ### 7. `07-conditional-implementation.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Conditional implementation.
-- **Causal explanation:** The specimen compiles because conditional implementation.
+- **Governing rule:** A bounded implementation exists only for concrete substitutions that satisfy its declared bounds.
+- **Causal explanation:** `Wrapped<T>` implements `Render` only when `T: Render`; the chosen `T = u8` has that implementation, so the delegated call is legal.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Clone or stringify without the contract.
 
 ### 8. `08-consuming-receiver.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Consuming receiver.
-- **Causal explanation:** The compiler rejects the specimen because consuming receiver.
+- **Governing rule:** Calling a method whose receiver is `self` moves a non-`Copy` receiver into that call.
+- **Causal explanation:** `finish` consumes the `String`; the later formatting expression tries to use the same moved value, so ownership has already ended at the method call.
 - **Principled repair:** Use the returned value or redesign the receiver if consumption is not semantic.
 - **Weak repair to reject:** Clone before every call without ownership justification.
 
@@ -111,7 +111,7 @@ The inherent method wins ordinary method lookup when applicable. Trait-qualified
 
 A strong trait document says what downstream code may rely on and what implementors must preserve. If the only purpose is grouping methods on one concrete type, an inherent implementation is simpler and leaves future coherence space untouched.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-01-contract-boundaries/solution`](../../labs/module-01-contract-boundaries/solution). Before reading it, write down:
 
@@ -132,3 +132,42 @@ For **Traits as Behavioral Contracts**, compare the contract, invariant, failure
 - Test semantic laws shared by multiple implementations.
 
 A complete explanation of **Traits as Behavioral Contracts** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What behavior truly belongs in a shared contract, and which laws must every implementation preserve?
+
+Build a **trait-law table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Define a trait whose methods express a coherent behavioral contract.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish inherent behavior, free functions, and trait behavior.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Apply bounds, `where` clauses, default methods, supertraits, and UFCS correctly.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Detect traits that merely rename data access or create false substitutability.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Test semantic laws shared by multiple implementations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Define a trait whose methods express a coherent behavioral contract.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the trait-law table.
+
+### Laboratory transfer review
+
+For [Contract Boundaries](../../labs/module-01-contract-boundaries/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Review Engine, Module 21 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Traits as Behavioral Contracts**, which relationship decides this question: “What behavior truly belongs in a shared contract, and which laws must every implementation preserve?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Review Engine?

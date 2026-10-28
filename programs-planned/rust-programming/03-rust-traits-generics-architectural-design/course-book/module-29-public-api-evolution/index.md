@@ -1,9 +1,11 @@
-# 29 — Public API Evolution
+# Module 29 — Public API Evolution
 
-**Course 3, day 9 · Module 29 of 90**  
-`██████████░░░░░░░░░░` **29/90**
+**Course 3 · Day 9 · Module 29 of 100**
+`███████░░░░░░░░░░░░░░░░░░` **29/100**
 
-[← Module 28: Boundary Traits and Adapters](../module-28-boundary-traits-and-adapters/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 30: Architectural Synthesis →](../module-30-architectural-synthesis/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-evolvable-sdk/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 28: Boundary Traits and Adapters](../module-28-boundary-traits-and-adapters/index.md) · [Module 30: Architectural Synthesis →](../module-30-architectural-synthesis/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 A private trait can be changed whenever its crate changes. A public trait may have downstream callers, implementors, blanket impls, and MSRV constraints. This module makes evolution part of the initial design and shows why sealing, non-exhaustive models, adapter layers, and versioned traits preserve room to move.
+
+### Prerequisite bridge
+
+Module 28 established **Boundary Traits and Adapters**. Before continuing, verify that you can refactor a boundary while preserving the domain core. This module preserves that capability and adds the ability to classify public trait changes by downstream source-compatibility risk. Module 30, **Architectural Synthesis**, will rely on both when it asks: *Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?*
+
+### Scope boundary
+
+This module owns the reasoning for **public api evolution** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -395,6 +405,24 @@ When a contract must change materially, a new trait or versioned adapter can be 
 
 Using a newer language or standard-library feature can be a breaking release for users whose toolchain remains within the documented minimum. Record the minimum supported Rust version, test it in CI, and review generated code from macros against the same boundary. Semver, coherence, and MSRV are connected: downstream compatibility includes source, implementation rights, and toolchain availability.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For classify public trait changes by downstream source-compatibility risk, construct one positive and one causal negative example. Mark the first decisive fact in the **compatibility matrix** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For design default methods and extension points without accidental semantic promises, construct one positive and one causal negative example. Mark the first decisive fact in the **compatibility matrix** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use sealing, non-exhaustive data, adapters, and versioned traits appropriately, construct one positive and one causal negative example. Mark the first decisive fact in the **compatibility matrix** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For test compile-time and behavioral compatibility claims, construct one positive and one causal negative example. Mark the first decisive fact in the **compatibility matrix** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Review the public extension surface from both downstream perspectives: callers and implementors. Preserve evolution room with sealing, non-exhaustive data, and compatibility tests. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -424,11 +452,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Cargo SemVer compatibility](https://doc.rust-lang.org/cargo/reference/semver.html)
 - [Rust API Guidelines: Dependability](https://rust-lang.github.io/api-guidelines/dependability.html)
 
-[← Module 28](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 30 →](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md)
+[← Module 28](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 30 →](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md)
 
 ## Continue
 
-1. Complete the [Module 29 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 29 — Evolvable SDK](../../labs/module-09-evolvable-sdk/README.md) from its public contract.
-3. Apply the Module 29 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 30 — Architectural Synthesis](../module-30-architectural-synthesis/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

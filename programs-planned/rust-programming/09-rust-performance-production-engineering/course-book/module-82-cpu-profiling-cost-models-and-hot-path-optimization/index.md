@@ -1,8 +1,11 @@
 # Module 82 — CPU Profiling, Cost Models, and Hot-Path Optimization
 
-**82/90** · Course 9 · Module 82 of 90
+**Course 9 · Day 2 · Module 82 of 100**
+`████████████████████░░░░░` **82/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-profile-guided-query-engine/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 81: Performance Contracts, Workloads, and Benchmark Design](../module-81-performance-contracts-workloads-and-benchmark-design/index.md) · [Module 83: Allocation, Memory Footprint, and Ownership Cost →](../module-83-allocation-memory-footprint-and-ownership-cost/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 Module 81 told you how to decide whether a difference matters. Module 82 asks where the cost comes from. A profiler is valuable only after the workload and artifact are fixed; otherwise it faithfully explains an irrelevant run. You now move from comparison to causality: which call paths, algorithms, branches, cache behaviors, and repeated operations account for the measured cost?
 
 The goal is not to eliminate every visible frame. It is to construct a cost model that predicts how the program changes as input size, key cardinality, or contention changes. A profile gives evidence about one execution. The model turns that evidence into a hypothesis you can falsify.
+
+### Prerequisite bridge
+
+Module 81 established **Performance Contracts, Workloads, and Benchmark Design**. Before continuing, verify that you can decide when a benchmark is too synthetic and must be complemented by a scenario or load test. This module preserves that capability and adds the ability to choose sampling, instrumentation, counters, and targeted tracing based on the question being asked. Module 83, **Allocation, Memory Footprint, and Ownership Cost**, will rely on both when it asks: *Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?*
+
+### Scope boundary
+
+This module owns the reasoning for **cpu profiling, cost models, and hot-path optimization** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -106,6 +117,24 @@ Caches and indexes exchange CPU for memory, invalidation, startup, and complexit
 
 Bundled changes erase causality. Revert to one intervention per experiment so the profile can explain why the result moved.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For choose sampling, instrumentation, counters, and targeted tracing based on the question being asked, construct one positive and one causal negative example. Mark the first decisive fact in the **profile and cost model** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For read call stacks and flame graphs without confusing inclusive cost with exclusive cost, construct one positive and one causal negative example. Mark the first decisive fact in the **profile and cost model** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For separate algorithmic work from parsing, allocation, hashing, formatting, synchronization, and system calls, construct one positive and one causal negative example. Mark the first decisive fact in the **profile and cost model** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For form a cost hypothesis that predicts how runtime changes with input size and distribution, construct one positive and one causal negative example. Mark the first decisive fact in the **profile and cost model** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -187,7 +216,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 82 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Profile-Guided Query Engine laboratory](../../labs/module-02-profile-guided-query-engine/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 83 — Allocation, Memory Footprint, and Ownership Cost](../module-83-allocation-memory-footprint-and-ownership-cost/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

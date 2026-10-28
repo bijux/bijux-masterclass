@@ -1,220 +1,102 @@
-# One reasoning model for all nine courses
+# One Reasoning Model for All Ten Courses
 
-Rust becomes easier when every mechanism is investigated with the same questions. The vocabulary becomes richer across the program, but the reasoning does not restart when the topic changes.
+Rust’s vocabulary changes across the program, but the reasoning does not restart. The same questions scale from a local integer to an unsafe allocator, a task tree, a network protocol, and a versioned public API.
 
 ## 1. What exists?
 
-Name the values, types, resources, syntax, bytes, handles, threads, tasks, queues, buffers, connections, protocol states, and external actors. Distinguish:
+Name concrete entities before discussing behavior: values, places, owners, loans, types, variants, buffers, syntax nodes, files, handles, threads, tasks, queues, frames, protocol states, artifacts, and external actors. Separate a semantic value from its byte layout, a future from the task that polls it, and a generated declaration from the macro that produced it.
 
-- a Rust value from its byte representation;
-- a declaration from generated code;
-- a logical path from the host object a later lookup may resolve;
-- a thread from the work it currently owns;
-- a future value from the task that polls it;
-- a byte stream from the messages a protocol reconstructs;
-- a synchronization primitive from the product condition it protects;
-- a transport endpoint from an authenticated or durable identity.
+## 2. Who owns it, who may observe it, and who has authority to change it?
 
-A vague noun such as “state,” “data,” “worker,” or “connection” is not enough when several obligations are hidden inside it.
+Record unique owners, shared liveness roots, temporary borrows, consuming transitions, callback views, worker endpoints, broker authorities, protocol commit points, and migration owners. Ownership answers who must eventually clean up. Authority answers who is allowed to decide the next valid state.
 
-## 2. Who owns it, and who may act on it?
+## 3. Which states are valid?
 
-Record the unique owner or liveness roots. Then record temporary permissions: shared inspection, exclusive mutation, consumption, callback access, foreign borrowing, cross-thread transfer, shared synchronized access, task-local possession, or protocol authority.
+Write the invariant before the implementation. Include representation validity, domain validity, protocol legality, queue membership, partial initialization, compatibility state, and operating state. If several flags can contradict each other, the state model is not finished.
 
-The artifact evolves through the program:
+## 4. What contract is promised?
 
-```text
-ownership ledger
-    → place and loan graph
-        → liveness graph
-            → capability and dispatch map
-                → dataflow map
-                    → source-of-truth map
-                        → boundary and safety ledger
-                            → thread ownership and join map
-                                → future state, task tree, and connection map
-                                    → workload, cost, signal, threat, and release map
-```
+A function promises inputs, outputs, failure, and visible state. A trait adds laws. An iterator adds item shape, order, cardinality, and termination. A macro adds accepted syntax, rejected syntax, and generated surfaces. An unsafe wrapper adds proof obligations. A concurrent or async component adds progress, cancellation, and shutdown. A public format adds compatibility and migration.
 
-## 3. What contract is promised?
+## 5. When can the fact be established?
 
-Write the invariant before the implementation.
-
-- A function promises inputs, outputs, failure, and visible state.
-- A trait adds laws across implementations.
-- An iterator adds item shape, order, cardinality, and termination.
-- A macro adds an accepted language and generated surface.
-- An unsafe wrapper or FFI function adds obligations Rust cannot verify automatically.
-- A concurrent component adds synchronization, progress, shutdown, and schedule-independence claims.
-- A future adds suspension states, wake sources, output, and drop behavior.
-- A network service adds framing, protocol transitions, capacity, deadlines, retries, and remote-failure semantics.
-
-A mechanism is justified only when it makes that contract easier to state and preserve.
-
-## 4. How does information and authority flow?
-
-Trace type, ownership, cardinality, order, state, failure, effects, and authority from input to output. Parsers, iterator pipelines, state machines, build scripts, binary codecs, channels, brokers, and services become reviewable when every stage has an explicit input, output, and owner.
-
-For concurrency, include publication edges:
+Use the earliest decisive phase or event:
 
 ```text
-producer writes value
-    → synchronization event
-        → consumer observation
+source parsing
+    → macro expansion
+        → name resolution
+            → type and trait solving
+                → borrow and drop checking
+                    → build execution and monomorphization
+                        → runtime validation
+                            → operating-system or foreign action
+                                → synchronization, poll, frame, or protocol event
+                                    → measurement, rollout, or compatibility observation
 ```
 
-For async execution, include readiness edges:
+A later success cannot retroactively prove an earlier assumption. Compilation cannot validate hostile file contents. A successful write cannot prove remote semantic commit. A benchmark cannot prove compatibility.
 
-```text
-task polls future
-    → future returns Pending and registers current waker
-        → readiness source changes state and wakes
-            → executor schedules another poll
-```
+## 6. How do information and authority flow?
 
-For protocols, include authority transitions:
+Trace inputs into validated representations, state transitions, effects, outputs, and durable or externally visible results. At every edge, record type, ownership, cardinality, order, failure, and authority. Parsers, iterator chains, macro pipelines, binary codecs, brokers, and services are all staged transformations when written clearly.
 
-```text
-bytes received
-    → complete bounded frame
-        → syntactically valid message
-            → legal message in current protocol state
-                → admitted application command
-                    → terminal or committed result
-```
+## 7. What can fail, block, suspend, panic, or remain live?
 
-## 5. When is the fact established?
+Follow the non-happy path first. State what has already changed, which owner cleans up, what may remain externally visible, whether retry is safe, who wakes waiters, and how every thread or task terminates. Distinguish rollback, cleanup, cancellation, timeout, disconnect, panic containment, and post-commit uncertainty.
 
-Identify the decisive phase or event:
+## 8. What order is promised?
 
-- source parsing;
-- macro matching or procedural parsing;
-- name resolution;
-- type and borrow checking;
-- build execution;
-- runtime validation;
-- lock acquisition, channel receive, or atomic synchronization;
-- future poll, wakeup, task completion, or join;
-- complete frame decode or protocol transition;
-- application admission or commit;
-- operating-system action;
-- foreign-code or remote-peer behavior.
+Name source order, traversal order, completion order, message order, byte order, modification order, generated declaration order, persistence order, response order, and migration order. Preserve an order deliberately, normalize it, or state that it is unspecified.
 
-A later phase cannot retroactively prove an earlier assumption. A successful compile does not validate a file format. A successful TCP write does not prove remote application commit. A timeout does not prove no effect occurred. A healthy listener does not prove the broker can accept work.
+## 9. What bounds the work and retained state?
 
-## 6. What can fail, block, suspend, or remain live?
+List every accumulation point: input size, allocations, history, queues, tasks, threads, buffers, connections, in-flight requests, retry attempts, duplicate waiters, idempotency records, telemetry labels, generated code, and compatibility fixtures. One bounded component inside an unbounded pipeline does not create a bounded product.
 
-Follow ordinary and exceptional paths.
+## 10. Which part is static, dynamic, erased, generated, unsafe, or external?
 
-- What happens after partial mutation or partial I/O?
-- Which guard or owner performs rollback or cleanup?
-- Which operation can block or suspend?
-- What predicate or readiness event permits progress?
-- Who triggers wakeup during shutdown?
-- Can panic, disconnect, cancellation, deadline expiry, or foreign failure strand a resource or task?
-- Is every spawned thread or task joined, drained, aborted, or deliberately detached?
-- If a future is dropped here, which local and external effects remain?
+Choose where variation and proof live. Static types can remove invalid compositions; dynamic checks can respond to runtime data; erasure can support heterogeneous extension; generation can keep related surfaces consistent; unsafe code can implement a safe abstraction; external systems remain assumptions. Each mechanism creates a different review and evolution cost.
 
-Failure atomicity, cancellation safety, and liveness are product properties, not consequences of choosing a fashionable primitive or runtime.
+## 11. What evidence can falsify the claim?
 
-## 7. What order is promised?
+Match evidence to the claim: compiler prediction, compile-fail cases, unit and integration tests, law tests, model oracles, malformed corpora, failure injection, deterministic clocks, Miri, thread-state exploration, FFI consumers, benchmarks, profiles, load tests, security review, artifact manifests, rollout drills, and compatibility fixtures. Record what each result does not prove.
 
-Name all relevant orders:
+## 12. What happens when the system changes?
 
-- source and input order;
-- iteration and reduction order;
-- completion and join order;
-- message send, arrival, and protocol order;
-- byte order and frame order;
-- macro expansion and generated declaration order;
-- filesystem visibility and durability order;
-- atomic modification order;
-- retry-attempt and idempotency-record order;
-- final rendering order.
-
-Do not preserve an order accidentally. Either define it, normalize it, or state that it is unspecified.
-
-## 8. What bounds the work?
-
-Make every possible accumulation point visible:
-
-- input size and item count;
-- allocation and retained history;
-- threads and tasks;
-- channel and broker queues;
-- active permits;
-- receive and send buffers;
-- frame and body size;
-- connections and in-flight requests;
-- idempotency records and duplicate waiters;
-- retry attempts, backoff, and total deadline.
-
-A bounded component inside an unbounded pipeline does not make the product bounded.
-
-## 9. What evidence supports the claim?
-
-Choose evidence that matches the contract:
-
-- compiler prediction for type-system behavior;
-- unit and integration tests for observable behavior;
-- compile-fail cases for rejected APIs;
-- law tests for substitutability and reduction;
-- golden and adversarial data for formats;
-- state-transition tests for failure atomicity;
-- controlled byte chunking for frame decoders;
-- paused or injected time for deadline and retry behavior;
-- scripted peers for disconnect and ambiguous-commit cases;
-- explicit task joins and shutdown traces for lifecycle claims;
-- target-conditioned measurements for layout or platform claims;
-- a safety ledger for unsafe operations;
-- a matching header and consumer for FFI;
-- Loom or Miri where their models apply, without claiming more than they establish.
+Name downstream callers, implementors, stored data, generated syntax, features, toolchains, platforms, artifacts, operators, and migration paths. A change is complete only when authority remains singular and old behavior is preserved, migrated, rejected, or deliberately retired.
 
 ## The maturity path
 
-| Course | The shared question becomes… |
-|---:|---|
-| 1 | What type, owner, state, and failure path does this complete ordinary program give each value? |
-| 2 | Which place, lifetime, cleanup obligation, and liveness edge makes the memory design valid? |
-| 3 | Which contract and variation mechanism lets several implementations remain lawful and evolvable? |
-| 4 | How do data, failure, state, demand, and effects compose without hidden work? |
-| 5 | Which declaration owns generated syntax, and in which phase can misuse be rejected? |
-| 6 | Which external assumptions remain, and how does one safe boundary contain them? |
-| 7 | Which facts remain true across every legal schedule, and what synchronizes, terminates, and normalizes the work? |
-| 8 | Which future, task, frame, protocol, capacity, cancellation, and commit contracts remain true when peers and timing are only partly observable? |
-| 9 | Which measured cost, resource bound, signal, security control, artifact identity, and operating policy make the product defensible under real load? |
+| Course | The shared model becomes… | Working record |
+|---:|---|---|
+| 1 | Rust Foundations | How do Rust’s types, ownership rules, state models, and error boundaries combine into a complete program you can explain end to end? | type trace, ownership ledger, state-transition table, error map, and public-boundary map |
+| 2 | Ownership, Lifetimes, and Memory | How do places, loans, lifetimes, destruction, shared liveness, representation, and address stability determine whether a memory design is valid? | place and move-path map, loan graph, lifetime relation, destruction trace, liveness graph, representation table, and pinning contract |
+| 3 | Traits, Generics, and Architectural Design | How should a Rust architecture represent shared behavior, type relationships, runtime variation, protocol states, and downstream extension without importing an inheritance model? | trait-law table, associated-type relationship map, coherence ownership map, dispatch map, typestate transition graph, adapter boundary, and compatibility matrix |
+| 4 | Functional Rust | How can Rust make capture, traversal, cardinality, ordering, failure, accumulation, structural sharing, effects, and cost visible in one dataflow? | capture map, iterator stage table, cardinality and order trace, failure-policy matrix, accumulator invariant, structural-sharing graph, effect boundary, and qualitative cost model |
+| 5 | Rust Metaprogramming | Which facts deserve one compile-time source of truth, which generation mechanism is the least powerful adequate choice, and how can expanded code remain diagnosable ordinary Rust? | authority map, accepted grammar, token and repetition trace, hygiene/path map, expansion ledger, diagnostic contract, phase map, generated-surface inventory, and reproducibility record |
+| 6 | Rust Systems Programming | What does each external boundary promise, which facts can Rust verify, which facts require a manual proof, and how does a safe interface contain those obligations? | binary-layout table, cursor/range proof, resource-state machine, durability timeline, path threat model, process contract, safety dossier, allocator layout record, ABI table, and foreign-liveness graph |
+| 7 | Rust Concurrency and Parallelism | Which facts remain true across every legal thread schedule, and what ownership, synchronization, progress, failure, and normalization arguments make those facts reviewable? | thread ownership map, protected-invariant table, wait-for graph, predicate/wakeup record, channel topology, shutdown tree, happens-before graph, atomic state machine, work-partition map, and deterministic reconciliation table |
+| 8 | Rust Async and Networked Services | How do suspension, wakeup, task ownership, framing, protocol state, capacity, cancellation, retry, and shutdown remain explicit when peers and timing are only partly observable? | future state table, wake-source map, task tree, buffer/frame ledger, connection state machine, protocol transition table, capacity ledger, cancellation trace, retry/commit matrix, and shutdown timeline |
+| 9 | Rust Performance and Production Engineering | Which measurements, resource bounds, signals, security controls, artifact records, and operating policies make a Rust system defensible under representative load? | performance claim, workload description, benchmark boundary, cost model, allocation ledger, byte journey, saturation curve, signal dictionary, SLO/error-budget policy, threat model, dependency dossier, release manifest, and rollout decision |
+| 10 | Advanced Rust Mastery | How do you design and evolve a Rust system whose type relationships, unsafe boundaries, compiler behavior, compatibility promises, verification evidence, and operating limits survive independent change? | compiler-phase record, trait-goal graph, lifetime family, witness proof, open/closed variation map, unsafe state-and-operation dossier, source-to-artifact observation, verification claim matrix, compatibility matrix, migration plan, and architecture decision record |
 
-Use this model in every workbook and design review. The goal is not to memorize ninety isolated features. The goal is to reason through unfamiliar Rust systems with one increasingly powerful method.
+## A compact review template
 
-
-## 9. What is measured, and what is operated?
-
-Course 9 adds a final distinction to every earlier proof: the difference between behavior guaranteed by the program and behavior observed for a particular artifact, workload, and environment.
-
-For a production claim, record:
+For any unfamiliar Rust component, write:
 
 ```text
-semantic authority
-workload and corpus
-measurement boundary
-toolchain, target, profile, and features
-resource envelope
-signal and interpretation
-failure and recovery policy
-artifact and configuration identity
+product promise:
+entities and owners:
+valid states:
+primary authority:
+decisive phase or event:
+success transition:
+failure and cleanup:
+order and capacity:
+external assumptions:
+verification evidence:
+compatibility stakeholders:
+residual uncertainty:
 ```
 
-A benchmark cannot prove compatibility. A profile cannot prove a capacity envelope. A dashboard cannot prove authoritative state. A security scanner cannot prove the absence of abuse paths. A successful rollout cannot prove a future rollout will be safe. Each tool supplies one kind of evidence, and the architecture must still explain how the pieces fit.
-
-## 10. What changes after the observation?
-
-A production change is incomplete until its operational consequence is owned. State:
-
-- the expected benefit;
-- the resource or risk that may move elsewhere;
-- the regression or alert that detects failure;
-- the removal or rollback trigger;
-- the compatibility impact;
-- the person or component responsible for the next decision.
-
-This closes the reasoning loop from source code to operated artifact.
+If the component cannot be summarized this way, the architecture may be hiding several responsibilities behind one type or API.

@@ -1,9 +1,11 @@
-# 58 — C FFI: ABI, Strings, Pointers, and Error Boundaries
+# Module 58 — C FFI: ABI, Strings, Pointers, and Error Boundaries
 
-**Course 6, day 8 · Module 58 of 90**  
-`███████████████████░` **58/90**
+**Course 6 · Day 8 · Module 58 of 100**
+`██████████████░░░░░░░░░░░` **58/100**
 
-[← Module 57: Manual Allocation and Owning Unsafe Abstractions](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 59: Foreign Resources, Callbacks, and Wrapper Architecture →](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-c-abi-archive-validator/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 57: Manual Allocation and Owning Unsafe Abstractions](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) · [Module 59: Foreign Resources, Callbacks, and Wrapper Architecture →](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 The aligned owner is one self-contained unsafe abstraction. FFI combines Rust’s rules with a foreign language and toolchain. Module 58 starts from the ABI contract, not from linker syntax. It uses the Rust 2024 forms `unsafe extern` for imports and `#[unsafe(no_mangle)]` for exported symbols, then builds wrappers that expose only C-compatible representations.
+
+### Prerequisite bridge
+
+Module 57 established **Manual Allocation and Owning Unsafe Abstractions**. Before continuing, verify that you can review auto traits, variance, and reallocation before generalizing an owner. This module preserves that capability and adds the ability to distinguish abi compatibility from semantic validity and ownership. Module 59, **Foreign Resources, Callbacks, and Wrapper Architecture**, will rely on both when it asks: *How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations?*
+
+### Scope boundary
+
+This module owns the reasoning for **c ffi: abi, strings, pointers, and error boundaries** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -243,6 +253,24 @@ FrameVault uses stable codes and structured fields in the validator, then call-s
 
 On CI with a C toolchain, compile a tiny program against the generated static or dynamic library and checked-in header. The program should validate a known archive, inspect report fields, open an opaque session, enumerate, and free. This catches header drift and linker-symbol issues that Rust-side calls cannot fully prove.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish ABI compatibility from semantic validity and ownership, construct one positive and one causal negative example. Mark the first decisive fact in the **ABI table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For declare imported functions through `unsafe extern "C"` and document each call contract, construct one positive and one causal negative example. Mark the first decisive fact in the **ABI table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For export C symbols with stable names and `repr(C)` data structures, construct one positive and one causal negative example. Mark the first decisive fact in the **ABI table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use pointer-plus-length for arbitrary bytes and `CStr`/`CString` for NUL-terminated text, construct one positive and one causal negative example. Mark the first decisive fact in the **ABI table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault exports a stateless `framevault_validate` C function over pointer-plus-length bytes and a `repr(C)` report. It checks null cases it can observe, converts the input to a slice under a documented safety contract, catches unwinding panics where the build strategy permits, maps errors to stable codes, and never returns Rust-owned borrowed text.
@@ -267,7 +295,4 @@ You are ready when you can write the C header and Rust signature together, enume
 
 ## Continue
 
-1. Complete the [Module 58 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 58 — C ABI Line Validator](../../labs/module-08-c-abi-archive-validator/README.md) from its public contract.
-3. Apply the Module 58 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 59 — Foreign Resources, Callbacks, and Wrapper Architecture](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

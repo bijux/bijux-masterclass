@@ -1,4 +1,43 @@
-# Course 3 reference — Traits, Generics, and Architectural Design
+# Course 3 Reference Desk — Traits, Generics, and Architectural Design
+
+Use this page while designing or reviewing. It is a decision aid, not a replacement for the module explanations.
+
+## Governing question
+
+> How should a Rust architecture represent shared behavior, type relationships, runtime variation, protocol states, and downstream extension without importing an inheritance model?
+
+## Working record
+
+Keep a trait-law table, associated-type relationship map, coherence ownership map, dispatch map, typestate transition graph, adapter boundary, and compatibility matrix. A design is not ready when the record still contains unnamed owners, contradictory states, implicit failure, accidental order, unbounded accumulation, or a claim with no matching evidence.
+
+## Decision rules
+
+| Decision | Rule |
+|---|---|
+| Trait boundary | State behavioral laws before choosing methods or defaults. |
+| Associated type | Use it when an implementation owns one related type family; use a generic parameter when callers select independently. |
+| Dispatch | Use static dispatch for compile-time composition and dynamic dispatch for runtime heterogeneity or extension. |
+| Typestate | Encode a protocol stage when method availability should change after a consuming transition. |
+| Evolution | Review both downstream callers and downstream implementors before publishing a public trait or enum. |
+
+## Module quick reference
+
+| Module | Mechanism | Minimum usable outcome |
+|---:|---|---|
+| 21 | Traits as Behavioral Contracts | Define a trait whose methods express a coherent behavioral contract |
+| 22 | Associated Types and Type Families | Choose between generic parameters and associated types from relationship cardinality |
+| 23 | Coherence and Implementation Ownership | Predict whether an implementation satisfies coherence and orphan rules |
+| 24 | Static Polymorphism and Opaque Types | Design generic functions and types with the weakest sufficient bounds |
+| 25 | Trait Objects and Dynamic Polymorphism | Derive whether a trait is dyn-compatible and repair it without erasing its meaning |
+| 26 | Composition and OOP-Style Design Without Inheritance | Model encapsulation, substitution, and delegation without class inheritance |
+| 27 | Typestate and Capability-Oriented APIs | Encode a finite protocol with marker states and consuming transitions |
+| 28 | Boundary Traits and Adapters | Design extension traits, closure adapters, and conversion boundaries with precise contracts |
+| 29 | Public API Evolution | Classify public trait changes by downstream source-compatibility risk |
+| 30 | Architectural Synthesis | Map axes of variation before selecting polymorphism mechanisms |
+
+## Claim boundary
+
+Separate language guarantees, library contracts, product policy, target observations, and measured artifact facts. When an exact API or version detail matters, follow the primary source from [Source Notes](../../SOURCE_NOTES.md).
 
 ## Start with the source of variation
 

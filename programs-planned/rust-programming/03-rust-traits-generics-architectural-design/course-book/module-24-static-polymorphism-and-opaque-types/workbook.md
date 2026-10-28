@@ -1,8 +1,17 @@
 # Workbook — Module 24: Static Polymorphism and Opaque Types
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-04-static-pipeline/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Static Polymorphism and Opaque Types** without relying on surface syntax. Keep the module question in view: *When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Static Polymorphism and Opaque Types** has become a usable model rather than remembered vocabulary. Its governing question is: *When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?* Preserve your first prediction and record decisive facts in a **static-dispatch map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 23 — Coherence and Implementation Ownership that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?**
+3. Draw the smallest **static-dispatch map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -84,6 +93,17 @@ Write a precise, limited statement about static dispatch and code generation. Se
 
 In Review Engine, choose which boundaries should remain generic and which concrete types should be hidden. Produce a signature map and explain every bound. Remove at least one unnecessary bound from an initial draft.
 
+### Interleaved reasoning pass
+
+1. For **Design generic functions and types with the weakest sufficient bounds**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the static-dispatch map.
+2. For **Distinguish argument-position and return-position `impl Trait`**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the static-dispatch map.
+3. For **Explain monomorphization without promising optimization outcomes**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the static-dispatch map.
+4. For **Choose static dispatch when concrete type identity carries useful guarantees**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the static-dispatch map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Static Polymorphism and Opaque Types** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build a statically composed validation pipeline whose source code selects concrete validator types.
@@ -99,11 +119,27 @@ Requirements:
 
 The executable starter and reference implementation are in [module-04-static-pipeline](../../labs/module-04-static-pipeline/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Static Pipeline**, record:
+
+- the public behavior that demonstrates **Design generic functions and types with the weakest sufficient bounds**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Define `Engine<S, R>` where `S` is the source and `R` the reporter. Keep both statically dispatched because construction fixes them and reporter output remains useful to the caller.
 
 Do not add the runtime rule registry until Module 25. First prove that one concrete rule set can execute through the generic shell and that source/reporter errors convert at the boundary without forcing `'static` or `Clone` bounds.
+
+### Capstone invariant trace
+
+For the Module 24 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -121,3 +157,7 @@ Oral prompt: **“Which concrete type information does this caller retain, and w
 ### Independent transfer
 
 Build a statically dispatched transformation pipeline for a different record type. Provide one generic input boundary, one opaque iterator return, and one alternative boxed design. Compare caller knowledge, allocation, code size pressure, diagnostics, and API evolution without claiming performance you did not measure.
+
+### Closed-book defense
+
+In five minutes, answer “When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?” using the **static-dispatch map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

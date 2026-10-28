@@ -1,6 +1,8 @@
-# Module 89 Solutions — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases
+# Reasoned Solutions — Module 89: Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-release-matrix-and-artifact-manifest/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 89: Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases**. Compare the reasoning against this question: *How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Artifact reasoning
 
@@ -75,3 +77,42 @@ Build metadata should be supplied by the release environment and embedded determ
 ## Part 6 — Defense
 
 Profile differences can change performance. LTO/codegen units trade runtime, size, build time, and profile quality; stripping/debug info trade package size and diagnosis. Features multiply supported behavior. Artifact identity includes source, dependency graph, toolchain, target, profile, features, generation inputs, and binary digest. A lockfile fixes resolution, not security or toolchain. Retained artifacts make rollback exact. Package proof requires clean install and execution. Leaving symbols or faster codegen is rational when operational diagnosis/build feedback outweighs a small runtime gain.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?
+
+Build a **release manifest**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Separate development, test, benchmark, profiling, release, and distribution artifacts.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Measure binary size by section and dependency contribution before applying size flags.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design feature combinations that do not create untested products or additive surprises.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Build a CI matrix from supported targets, features, MSRV, and risk rather than every theoretical combination.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the release manifest.
+
+### Reference implementation comparison
+
+For [Release Matrix and Artifact Manifest](../../labs/module-09-release-matrix-and-artifact-manifest/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 89 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases**, which relationship decides this question: “How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

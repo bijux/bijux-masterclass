@@ -1,9 +1,11 @@
-# 13 — Scoped Access and Escape Prevention
+# Module 13 — Scoped Access and Escape Prevention
 
-**Course 2, day 3 · Module 13 of 90**  
-`████░░░░░░░░░░░░░░░░` **13/90**
+**Course 2 · Day 3 · Module 13 of 100**
+`███░░░░░░░░░░░░░░░░░░░░░░` **13/100**
 
-[← Module 12: Lifetime Relationships and Borrowed APIs](../module-12-lifetime-relationships-and-borrowed-apis/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 14: RAII, Drop, Unwinding, and Failure Atomicity →](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-scoped-visitors/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 12: Lifetime Relationships and Borrowed APIs](../module-12-lifetime-relationships-and-borrowed-apis/index.md) · [Module 14: RAII, Drop, Unwinding, and Failure Atomicity →](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Some safe APIs must expose a temporary value while making escape impossible. Ordinary input-output lifetime notation is not always enough; the caller may need to choose a fresh borrow for each invocation. Higher-ranked callback bounds and scoped access now extend the lifetime model without introducing self-referential designs.
+
+### Prerequisite bridge
+
+Module 12 established **Lifetime Relationships and Borrowed APIs**. Before continuing, verify that you can reject unnecessary lifetime coupling and choose owned output when retention must outlive input borrowing. This module preserves that capability and adds the ability to distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation. Module 14, **RAII, Drop, Unwinding, and Failure Atomicity**, will rely on both when it asks: *Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?*
+
+### Scope boundary
+
+This module owns the reasoning for **scoped access and escape prevention** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -824,6 +834,24 @@ Deliberately panic in the callback and verify pooled capacity is returned and no
 
 Choose a scoped callback when access is immediate and local resources should remain hidden. Return ownership when callers need to store decoded data, compose asynchronously, or invoke operations after the decoder call. HRTBs are not automatically superior; they encode a precise non-escape product boundary.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation, construct one positive and one causal negative example. Mark the first decisive fact in the **scope and escape table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For read and design for<'a> higher-ranked callback bounds as universal quantification over borrow duration, construct one positive and one causal negative example. Mark the first decisive fact in the **scope and escape table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For account for closure capture and Fn, FnMut, and FnOnce requirements at scoped boundaries, construct one positive and one causal negative example. Mark the first decisive fact in the **scope and escape table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use callbacks and scoped APIs to prevent temporary references or brands from escaping, construct one positive and one causal negative example. Mark the first decisive fact in the **scope and escape table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Normalize temporary queries through a scoped callback so borrowed results cannot escape. The API should permit useful work while making invalid retention unexpressible. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -853,11 +881,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Higher-ranked trait bounds](https://doc.rust-lang.org/reference/trait-bounds.html#higher-ranked-trait-bounds)
 - [Rust Reference: Closure expressions](https://doc.rust-lang.org/reference/expressions/closure-expr.html)
 
-[← Module 12](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 14 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
+[← Module 12](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 14 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
 
 ## Continue
 
-1. Complete the [Module 13 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 13 — Scoped Visitors](../../labs/module-03-scoped-visitors/README.md) from its public contract.
-3. Apply the Module 13 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 14 — RAII, Drop, Unwinding, and Failure Atomicity](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

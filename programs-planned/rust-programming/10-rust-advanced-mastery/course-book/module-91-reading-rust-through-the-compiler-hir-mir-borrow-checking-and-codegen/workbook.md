@@ -1,8 +1,17 @@
-# Module 91 Workbook — Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen
+# Workbook — Module 91: Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen
 
-[Chapter](index.md) · [AxiomStore guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-compiler-evidence-notebook/README.md) · [AxiomStore guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook turns the chapter’s **source-to-artifact evidence ladder** into evidence. Write predictions before compiling or running anything. Preserve the stated product requirement during repair; a green build obtained by deleting the difficult relationship is not a solution.
+This workbook tests whether **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen** has become a usable model rather than remembered vocabulary. Its governing question is: *When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result?* Preserve your first prediction and record decisive facts in a **compiler-phase record**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 90 — Production Readiness, Capacity Planning, Rollouts, and Incident Learning that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result?**
+3. Draw the smallest **compiler-phase record** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -44,7 +53,7 @@ A test prints destructor order and the documentation treats that exact output as
 
 Required direction: Derive required destruction from initialization and exit edges. Keep print order as one observation and remove claims that optimization or future toolchains cannot preserve.
 
-Submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the source-to-artifact evidence ladder changes.
+For **Repair 2 — Runtime experiment used as drop proof**, submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the source-to-artifact evidence ladder changes.
 
 ### Repair 3 — Assembly used to explain a method error
 
@@ -52,7 +61,7 @@ A review begins with assembly to explain why `item.render()` selects the wrong m
 
 Required direction: Return to resolution: enumerate inherent and trait candidates, autoderef/autoref, and bounds. Machine code exists only after selection succeeds.
 
-Submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the source-to-artifact evidence ladder changes.
+For **Repair 3 — Assembly used to explain a method error**, submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the source-to-artifact evidence ladder changes.
 
 ## Part 3 — Focused exercises
 
@@ -82,8 +91,7 @@ Completion standard: The note includes semantic parity, build identity, observat
 
 ### Cross-course transfer
 
-Choose one artifact from Courses 1–9 and reassess it through **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen**. Reconstruct its current invariant owner, then decide whether the source-to-artifact evidence ladder reveals a genuine defect. A justified no-change decision is valid when the advanced mechanism would add proof or compatibility cost without removing a real invalid state.
-
+Choose one artifact from Courses 1–10 and reassess it through **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen**. Reconstruct its current invariant owner, then decide whether the source-to-artifact evidence ladder reveals a genuine defect. A justified no-change decision is valid when the advanced mechanism would add proof or compatibility cost without removing a real invalid state.
 
 ### Applied case study — one error, four representations
 
@@ -93,6 +101,17 @@ Prepare a three-column evidence notebook. In the first column, record the source
 
 Then propose the smallest investigation sequence. It must begin with a minimal source specimen, continue through ordinary compiler diagnostics, use MIR only if control-flow or move elaboration remains unclear, and inspect symbols only after semantic parity is established. End by naming one plausible conclusion that each representation cannot justify.
 
+### Interleaved reasoning pass
+
+1. For **Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the compiler-phase record.
+2. For **Translate source constructs into a control-flow and place-oriented model suitable for borrow, move, and drop reasoning**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the compiler-phase record.
+3. For **Identify when an observation is a language guarantee, a compiler implementation detail, or generated machine-code evidence**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the compiler-phase record.
+4. For **Use compiler diagnostics, expanded code, MIR-oriented reasoning, and assembly inspection without treating any single view as the complete semantics**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the compiler-phase record.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Compiler Evidence Notebook](../../labs/module-01-compiler-evidence-notebook/README.md) from its `starter/` package.
@@ -101,11 +120,27 @@ Build an evidence notebook that classifies claims by phase, records what remains
 
 Before implementation, freeze Compiler Evidence Notebook’s public behavior and the source-to-artifact evidence ladder. After implementation, complete its transfer task in a domain with different ownership, version, capacity, extension, or failure policy; renaming types does not demonstrate transfer.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Compiler Evidence Notebook**, record:
+
+- the public behavior that demonstrates **Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Trace an AxiomStore `RecordView` from snapshot allocation through codec decoding and cursor lending. Separately trace a failed transaction through candidate construction, validation, encoding, temporary-file cleanup, and return. The increment is accepted only when each conclusion names its decisive phase and no artifact observation is presented as a stable language rule.
 
 Update AxiomStore’s source-to-artifact evidence ladder before code. Record the changed invariant owner, new failure paths, compatibility effect, and falsifying evidence. Then run the full capstone route because this module can invalidate guarantees outside its local file.
+
+### Capstone invariant trace
+
+For the Module 91 AxiomStore increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -114,3 +149,7 @@ Explain a borrow rejection, a destructor obligation, and a code-size observation
 Finish without notes by reconstructing the source-to-artifact evidence ladder. Name the requirement, the simpler design, the decisive rejected construction, the state after failure, and the evidence that could falsify your claim. End by stating one condition under which this mechanism should be removed.
 
 The defense is complete only when another reader can reproduce the reasoning behind Compiler Evidence Notebook and the AxiomStore increment without seeing your final implementation.
+
+### Closed-book defense
+
+In five minutes, answer “When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result?” using the **compiler-phase record**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside AxiomStore. A list of APIs without the deciding relationship is incomplete.

@@ -1,8 +1,8 @@
-# Module 97 Solutions — From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size
+# Reasoned Solutions — Module 97: From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-07-dispatch-observatory/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 97: From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size**. Compare the reasoning against this question: *How do type-level architecture and compiler decisions become concrete symbols, call paths, layouts, and artifact size—and which observations are stable enough to guide design?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the source-to-artifact observation record: the decisi
 
 **Principled repair.** Inventory concrete reachable instantiations and inspect one pinned artifact; record compiler transformations and avoid universal claims.
 
-A strong answer updates the source-to-artifact observation record and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Generic equals duplication** while preserving the surrounding requirement. The source-to-artifact observation record must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — Dynamic dispatch equals heap
 
@@ -40,7 +40,7 @@ A strong answer updates the source-to-artifact observation record and includes a
 
 **Principled repair.** Separate dispatch from ownership. Borrowed trait objects need no heap allocation; boxed ownership is a separate choice.
 
-A strong answer updates the source-to-artifact observation record and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Dynamic dispatch equals heap** while preserving the surrounding requirement. The source-to-artifact observation record must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Layout observation becomes format
 
@@ -48,7 +48,7 @@ A strong answer updates the source-to-artifact observation record and includes a
 
 **Principled repair.** Use explicit encoding. Target layout is not a durable wire format unless a precise stable representation contract exists.
 
-A strong answer updates the source-to-artifact observation record and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Layout observation becomes format** while preserving the surrounding requirement. The source-to-artifact observation record must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Implement generic, enum, and trait-object paths 
 
 The decisive acceptance criterion is: All variants produce identical results before measurement.
 
-Evaluate the result through the source-to-artifact observation record; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Dispatch parity**, apply the source-to-artifact observation record to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Artifact record
 
@@ -66,7 +66,7 @@ The construction should answer: Inspect symbols and assembly under two profiles.
 
 The decisive acceptance criterion is: Every observation includes toolchain, target, features, and expiry condition.
 
-Evaluate the result through the source-to-artifact observation record; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Artifact record**, apply the source-to-artifact observation record to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Layout notebook
 
@@ -74,7 +74,7 @@ The construction should answer: Record size/alignment observations and separate 
 
 The decisive acceptance criterion is: No target observation is described as portable Rust semantics.
 
-Evaluate the result through the source-to-artifact observation record; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Layout notebook**, apply the source-to-artifact observation record to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Size attribution
 
@@ -82,12 +82,11 @@ The construction should answer: Add one generic instantiation and one formatting
 
 The decisive acceptance criterion is: The report avoids blaming an abstraction without symbol/section evidence.
 
-Evaluate the result through the source-to-artifact observation record; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Size attribution**, apply the source-to-artifact observation record to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — choosing dispatch with two artifacts
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the source-to-art
 Explain one semantic guarantee and one artifact observation about the same code, then state why neither can replace the other.
 
 The defense passes when it reconstructs the source-to-artifact observation record from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do type-level architecture and compiler decisions become concrete symbols, call paths, layouts, and artifact size—and which observations are stable enough to guide design?
+
+Build a **source-to-artifact observation**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Compare static dispatch, enum dispatch, and trait-object dispatch through behavior, extension model, call shape, and measured artifact cost.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Inspect symbols, section sizes, assembly, and layout observations for one pinned target and profile without claiming portability.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Identify where inlining, dead-code elimination, link-time optimization, and codegen units can obscure naïve source-to-symbol expectations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Use representation attributes only for documented interoperability or layout contracts rather than speculative micro-optimization.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the source-to-artifact observation.
+
+### Reference implementation comparison
+
+For [Dispatch Observatory](../../labs/module-07-dispatch-observatory/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 97 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size**, which relationship decides this question: “How do type-level architecture and compiler decisions become concrete symbols, call paths, layouts, and artifact size—and which observations are stable enough to guide design?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

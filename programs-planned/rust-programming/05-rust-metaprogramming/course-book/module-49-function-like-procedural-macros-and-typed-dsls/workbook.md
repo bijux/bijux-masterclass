@@ -1,12 +1,17 @@
 # Workbook — Module 49: Function-Like Procedural Macros and Typed DSLs
 
-[Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-09-route-table-dsl/README.md) · [CommandForge guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Function-Like Procedural Macros and Typed DSLs** as an engineering mechanism rather than repeat its syntax. The governing question is:
+This workbook tests whether **Function-Like Procedural Macros and Typed DSLs** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?* Preserve your first prediction and record decisive facts in a **DSL syntax-to-model map**. A repair succeeds only when it keeps the difficult product requirement visible.
 
-> How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?
+## Retrieval warm-up
 
-Follow the complete DSL pipeline: token grammar, syntax AST, semantic validation, normalized model, generated Rust, then ordinary type checking. A prediction must identify the earliest stage that owns duplicates, unsupported values, unresolved handler paths, and type mismatches.
+Before compiling or running anything:
+
+1. Restate the invariant from Module 48 — Attribute Macros and Item Transformation that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?**
+3. Draw the smallest **DSL syntax-to-model map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -81,6 +86,17 @@ The DSL references `Args` and `handler`. Which rules belong to DSL validation an
 
 For every answer that proposes a macro, add a one-sentence rejection criterion: what simpler condition would make ordinary Rust preferable?
 
+### Interleaved reasoning pass
+
+1. For **Design a bounded custom grammar with explicit compatibility space**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the DSL syntax-to-model map.
+2. For **Implement `syn::parse::Parse` for syntax nodes rather than splitting strings**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the DSL syntax-to-model map.
+3. For **Separate syntax AST, semantic validation, normalized model, and generation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the DSL syntax-to-model map.
+4. For **Detect duplicates and cross-entry conflicts with useful multi-span errors**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the DSL syntax-to-model map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Function-Like Procedural Macros and Typed DSLs** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 ### Product: Route Table DSL
@@ -102,11 +118,27 @@ Before implementation, complete this module-specific design record:
 
 Build the smallest valid **DSL phase separation and normalization** surface first. Add one accepted case, one rejection owned by this mechanism, and one case that expands successfully before ordinary Rust rejects a later obligation. Compare with the reference only after those three phase boundaries are protected by tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Route Table DSL**, record:
+
+- the public behavior that demonstrates **Design a bounded custom grammar with explicit compatibility space**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Implement `command_catalog!` with explicit table and lookup declarations, semicolon-terminated entries, duplicate-name rejection, deterministic source order, parsed handler metadata paths, and generation of exactly the named table and lookup function.
 
 The capstone increment must leave a visible design record: one diagram or table, one positive test, one negative test, and one statement of what this mechanism deliberately does **not** own.
+
+### Capstone invariant trace
+
+For the Module 49 CommandForge increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -143,3 +175,7 @@ Before advancing, defend these module-specific points:
 - which rules require cross-entry state
 - which relationships should be delegated to the type checker
 - what size or volatility would make a data file preferable
+
+### Closed-book defense
+
+In five minutes, answer “How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?” using the **DSL syntax-to-model map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside CommandForge. A list of APIs without the deciding relationship is incomplete.

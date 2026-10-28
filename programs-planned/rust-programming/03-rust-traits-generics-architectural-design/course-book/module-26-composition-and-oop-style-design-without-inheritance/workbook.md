@@ -1,8 +1,17 @@
 # Workbook — Module 26: Composition and OOP-Style Design Without Inheritance
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-06-composed-renderer/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Composition and OOP-Style Design Without Inheritance** without relying on surface syntax. Keep the module question in view: *How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Composition and OOP-Style Design Without Inheritance** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?* Preserve your first prediction and record decisive facts in a **composition diagram**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 25 — Trait Objects and Dynamic Polymorphism that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?**
+3. Draw the smallest **composition diagram** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -78,6 +87,17 @@ For each case, choose and justify: convert a foreign logger into your `Reporter`
 
 Produce a component diagram for Review Engine. Every arrow must be labeled ownership, borrowing, static generic use, or dynamic trait-object use. Remove one trait that represents no actual substitution need.
 
+### Interleaved reasoning pass
+
+1. For **Model encapsulation, substitution, and delegation without class inheritance**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the composition diagram.
+2. For **Apply composition, strategy, adapter, decorator, and command patterns selectively**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the composition diagram.
+3. For **Separate domain state from interchangeable behavior**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the composition diagram.
+4. For **Detect inheritance-shaped trait hierarchies and replace them with smaller capabilities**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the composition diagram.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Composition and OOP-Style Design Without Inheritance** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build a report-rendering system with two base formats and two optional wrappers.
@@ -94,11 +114,27 @@ Requirements:
 
 The executable starter and reference implementation are in [module-06-composed-renderer](../../labs/module-06-composed-renderer/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Composed Renderer**, record:
+
+- the public behavior that demonstrates **Model encapsulation, substitution, and delegation without class inheritance**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Separate policy parsing, factory construction, rule execution, and reporting. The engine must not become a god object. Add a closure-rule adapter and one diagnostic decorator, then decide whether that decorator is generic or erased.
 
 Document why rule types do not inherit from a common base struct and why shared data, if any, is composed in a helper value.
+
+### Capstone invariant trace
+
+For the Module 26 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -116,3 +152,7 @@ Oral prompt: **“Where does this design use composition, and which invariant wo
 ### Independent transfer
 
 Refactor an inheritance-shaped notification service into explicit domain state plus composed capabilities. Include one strategy, one adapter, and one decorator. For every layer, name the invariant it owns and one test that would expose accidental semantic change.
+
+### Closed-book defense
+
+In five minutes, answer “How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?” using the **composition diagram**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

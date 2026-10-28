@@ -1,9 +1,11 @@
-# 26 — Composition and OOP-Style Design Without Inheritance
+# Module 26 — Composition and OOP-Style Design Without Inheritance
 
-**Course 3, day 6 · Module 26 of 90**  
-`█████████░░░░░░░░░░░` **26/90**
+**Course 3 · Day 6 · Module 26 of 100**
+`██████░░░░░░░░░░░░░░░░░░░` **26/100**
 
-[← Module 25: Trait Objects and Dynamic Polymorphism](../module-25-trait-objects-and-dynamic-polymorphism/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 27: Typestate and Capability-Oriented APIs →](../module-27-typestate-and-capability-oriented-apis/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-composed-renderer/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 25: Trait Objects and Dynamic Polymorphism](../module-25-trait-objects-and-dynamic-polymorphism/index.md) · [Module 27: Typestate and Capability-Oriented APIs →](../module-27-typestate-and-capability-oriented-apis/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Dispatch alone does not produce architecture. This module translates familiar object-oriented goals—encapsulation, substitution, strategies, adapters, decorators, and stateful commands—into explicit Rust composition. Inheritance is rejected where ordinary ownership and delegation make the relationship clearer.
+
+### Prerequisite bridge
+
+Module 25 established **Trait Objects and Dynamic Polymorphism**. Before continuing, verify that you can identify the information and capabilities lost during type erasure. This module preserves that capability and adds the ability to model encapsulation, substitution, and delegation without class inheritance. Module 27, **Typestate and Capability-Oriented APIs**, will rely on both when it asks: *Which illegal operations can be removed from the API by representing protocol state and authority in types?*
+
+### Scope boundary
+
+This module owns the reasoning for **composition and oop-style design without inheritance** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -492,6 +502,24 @@ A class-oriented design might create subclasses for every combination. Rust comp
 
 This avoids a combinatorial subclass matrix. Each wrapper has one responsibility, and the domain type remains independent of presentation.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For model encapsulation, substitution, and delegation without class inheritance, construct one positive and one causal negative example. Mark the first decisive fact in the **composition diagram** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For apply composition, strategy, adapter, decorator, and command patterns selectively, construct one positive and one causal negative example. Mark the first decisive fact in the **composition diagram** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For separate domain state from interchangeable behavior, construct one positive and one causal negative example. Mark the first decisive fact in the **composition diagram** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For detect inheritance-shaped trait hierarchies and replace them with smaller capabilities, construct one positive and one causal negative example. Mark the first decisive fact in the **composition diagram** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Compose parsing, policy, evaluation, and reporting through owned components and adapters. Do not invent an inheritance hierarchy for responsibilities that can be delegated. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -521,11 +549,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Object-Oriented Features](https://doc.rust-lang.org/book/ch18-00-oop.html)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-[← Module 25](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 27 →](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md)
+[← Module 25](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 27 →](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md)
 
 ## Continue
 
-1. Complete the [Module 26 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 26 — Composed Renderer](../../labs/module-06-composed-renderer/README.md) from its public contract.
-3. Apply the Module 26 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 27 — Typestate and Capability-Oriented APIs](../module-27-typestate-and-capability-oriented-apis/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

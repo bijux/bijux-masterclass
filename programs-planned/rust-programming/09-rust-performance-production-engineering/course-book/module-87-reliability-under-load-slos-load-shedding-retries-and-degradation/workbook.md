@@ -1,8 +1,17 @@
-# Module 87 Workbook — Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation
+# Workbook — Module 87: Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation
 
-[Chapter](index.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-07-overload-control-simulator/README.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
 
-Reliability is the controlled behavior of a system outside its comfortable operating region. This workbook makes overload, deadlines, retries, idempotency, and degradation explicit rather than treating them as exceptional details.
+This workbook tests whether **Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation** has become a usable model rather than remembered vocabulary. Its governing question is: *How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?* Preserve your first prediction and record decisive facts in a **SLO and overload policy**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 86 — Observability: Structured Tracing, Metrics, and Diagnostic Context that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?**
+3. Draw the smallest **SLO and overload policy** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -82,15 +91,42 @@ For a three-layer client, proxy, and service path, write which layer owns retrie
 
 Assume the monthly objective has consumed 70% of its error budget in the first week. Define which releases, experiments, and capacity changes remain allowed. Tie the decision to measured causes rather than treating the error budget as a punishment counter. Include the evidence required to resume ordinary rollout speed.
 
+### Interleaved reasoning pass
+
+1. For **Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the SLO and overload policy.
+2. For **Derive admission and shedding policies from protected resources and customer-visible priorities**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the SLO and overload policy.
+3. For **Build retries around idempotency, one deadline budget, bounded attempts, and retryable classifications**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the SLO and overload policy.
+4. For **Distinguish overload, dependency failure, local defect, malformed input, cancellation, and deliberate rejection**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the SLO and overload policy.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build the [Overload Control Simulator](../../labs/module-07-overload-control-simulator/README.md). The simulation must distinguish source arrivals, attempts, admitted attempts, scheduled retries, completed requests, and terminal rejection. Recovery uses hysteresis. Every source ID receives exactly one terminal result, and invalid policies are rejected before simulation.
 
 Run scenarios for steady load, short burst, sustained overload, recovery, and retry amplification. The simulator is deterministic so policy changes can be compared causally.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Overload Control Simulator**, record:
+
+- the public behavior that demonstrates **Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Define MetricRail’s service objectives and error taxonomy. Add explicit admission responses for full connection, mailbox, active-work, series, and output capacities. If clients may retry ingestion, define idempotency or clearly state that retries can duplicate aggregation. Use one request deadline across admission, queueing, and execution. Specify which operations remain available in degraded mode and how readiness changes.
+
+### Capstone invariant trace
+
+For the Module 87 MetricRail increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -111,3 +147,6 @@ Given a monthly availability objective of 99.9%, calculate the total error budge
 
 A resilience mechanism is acceptable only when its failure domain and capacity cost are explicit. Load shedding must occur before an expensive or irreversible commitment; degradation must preserve the most important contract; retry must be safe for the operation and bounded by one deadline. “Eventually succeeds” is not a useful claim if duplicate effects, amplified load, or unbounded waiting remain possible.
 
+### Closed-book defense
+
+In five minutes, answer “How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?” using the **SLO and overload policy**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside MetricRail. A list of APIs without the deciding relationship is incomplete.

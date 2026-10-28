@@ -1,8 +1,11 @@
-# Module 76: Backpressure, Admission Control, and Fair Work Distribution
+# Module 76 — Backpressure, Admission Control, and Fair Work Distribution
 
-**Course 8, day 6 · Module 76 of 90**
+**Course 8 · Day 6 · Module 76 of 100**
+`███████████████████░░░░░░` **76/100**
 
-**76/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-bounded-relay-broker/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 75: Protocol State Machines, Versioning, and Defensive Parsing](../module-75-protocol-state-machines-versioning-and-defensive-parsing/index.md) · [Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown →](../module-77-cancellation-safety-deadlines-and-graceful-shutdown/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ The first week created futures, owned tasks, bounded frames, connection lifecycl
 Async systems are particularly vulnerable because waiting does not consume one OS thread. That scalability advantage can conceal enormous numbers of suspended futures, retained buffers, channel messages, and timers. “Nothing is blocking” can coexist with memory exhaustion and minute-long tail latency.
 
 This module treats backpressure as an end-to-end flow-control contract. The service calculates a resource envelope, admits work only when it can own the consequences, and returns a deliberate overload response when it cannot.
+
+### Prerequisite bridge
+
+Module 75 established **Protocol State Machines, Versioning, and Defensive Parsing**. Before continuing, verify that you can test state transitions and malformed messages independently of sockets. This module preserves that capability and adds the ability to find every accumulation point in an async service;. Module 77, **Cancellation Safety, Deadlines, and Graceful Shutdown**, will rely on both when it asks: *When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state?*
+
+### Scope boundary
+
+This module owns the reasoning for **backpressure, admission control, and fair work distribution** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -177,6 +188,24 @@ Do not test overload by launching many tasks and sleeping. Use:
 
 The test should prove the transition at capacity, not hope the scheduler reaches it.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For find every accumulation point in an async service, construct one positive and one causal negative example. Mark the first decisive fact in the **capacity and admission ledger** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish connection admission, queue capacity, active-work permits, response buffering, and retry budgets, construct one positive and one causal negative example. Mark the first decisive fact in the **capacity and admission ledger** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For choose between waiting, rejecting, shedding, degrading, and disconnecting under overload, construct one positive and one causal negative example. Mark the first decisive fact in the **capacity and admission ledger** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For acquire permits before irreversible commitment, construct one positive and one causal negative example. Mark the first decisive fact in the **capacity and admission ledger** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 A bounded relay separates mailbox capacity from active work. This simplified version owns all waiting requests in one broker task and never spawns more active jobs than permits.
@@ -273,4 +302,4 @@ Continue only when you can explain:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Bounded Relay Broker](../../labs/module-06-bounded-relay-broker/README.md), and add the sixth [JobWire increment](../capstone.md#increment-6-bound-demand-end-to-end). Then continue to [Module 77](../module-77-cancellation-safety-deadlines-and-graceful-shutdown/index.md).
+Continue to [Module 77 — Cancellation Safety, Deadlines, and Graceful Shutdown](../module-77-cancellation-safety-deadlines-and-graceful-shutdown/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

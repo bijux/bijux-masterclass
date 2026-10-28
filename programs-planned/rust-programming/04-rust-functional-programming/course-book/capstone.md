@@ -2,6 +2,59 @@
 
 The capstone supports the course-book. It exists to force cross-layer transfer after each mechanism has been understood in isolation.
 
+## How this capstone completes the course
+
+LedgerFlow parses append-only ledger events, preserves diagnostics and source order, reduces valid events into deterministic state, retains an immutable audit history, exposes borrowed queries, and keeps filesystem and terminal effects outside the core.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; LedgerFlow proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | Every pipeline stage states item type, ownership, cardinality, order, and failure policy. |
+| 2 | Rejected rows preserve physical source evidence without corrupting accepted state. |
+| 3 | Reductions maintain a named accumulator invariant after every accepted event. |
+| 4 | Structural sharing preserves old audit versions without accidental mutable aliases. |
+| 5 | Pure analysis decides effects; the outer shell performs them in a deterministic order. |
+| 6 | Optimization claims distinguish laziness, allocation, copying, and retention honestly. |
+
+For each LedgerFlow change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 31 | Closures, Capture, and Callable Contracts | Distinguish function items, function pointers, and anonymous closure types | [Closure Policy Matrix](../labs/module-01-closure-policy-matrix/README.md) |
+| 32 | The Iterator Model | Explain the distinct roles of `IntoIterator`, `Iterator`, adapters, and consumers | [Lazy Log Query](../labs/module-02-lazy-log-query/README.md) |
+| 33 | Iterator Algebra and Pipeline Shape | Derive the item type and cardinality effect of common iterator adapters | [Record-Shaping Pipeline](../labs/module-03-record-shaping-pipeline/README.md) |
+| 34 | Folds, Scans, and Short-Circuiting | Design a fold accumulator with a precise prefix invariant | [Streaming Metrics](../labs/module-04-streaming-metrics/README.md) |
+| 35 | Option, Result, and Fallible Traversal | Compose optional and fallible transformations while preserving ownership and error meaning | [Resilient Import](../labs/module-05-resilient-import/README.md) |
+| 36 | Custom Iterators and Collection Protocols | Implement a correct custom `Iterator` by defining state and exhaustion behavior | [Custom Cursors](../labs/module-06-custom-cursors/README.md) |
+| 37 | Recursive Data and Structural Sharing | Define recursive algebraic data with the appropriate indirection | [Persistent History](../labs/module-07-persistent-history/README.md) |
+| 38 | Functional Core and Effect Isolation | Separate deterministic domain decisions from filesystem, time, environment, and terminal effects | [Deterministic Batch Runner](../labs/module-08-deterministic-batch-runner/README.md) |
+| 39 | Combinator Laws and Cost Models | Design domain combinators that preserve type and error meaning | [Combinator Contracts](../labs/module-09-combinator-contracts/README.md) |
+| 40 | Functional Architecture Synthesis | Produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries | [Route Analysis Engine](../labs/module-10-route-analysis-engine/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **whole-pipeline architecture map** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. LedgerFlow ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## Product
 
 **LedgerFlow** is a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports.

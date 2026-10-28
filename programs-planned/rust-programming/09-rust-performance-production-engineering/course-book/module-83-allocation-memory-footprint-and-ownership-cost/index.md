@@ -1,8 +1,11 @@
 # Module 83 — Allocation, Memory Footprint, and Ownership Cost
 
-**83/90** · Course 9 · Module 83 of 90
+**Course 9 · Day 3 · Module 83 of 100**
+`█████████████████████░░░░` **83/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-allocation-budgeted-batch-parser/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 82: CPU Profiling, Cost Models, and Hot-Path Optimization](../module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md) · [Module 84: Data Movement, Buffering, and Zero-Copy Boundaries →](../module-84-data-movement-buffering-and-zero-copy-boundaries/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 CPU profiles do not explain why memory grows, why an apparently allocation-light design retains gigabytes, or why a small handle keeps a large backing buffer alive. Module 83 adds ownership cost to the production model. Rust makes ownership explicit, but explicit ownership does not automatically make the chosen lifetime, capacity, or representation economical.
 
 You will distinguish inline size, heap allocation, reserved capacity, live payload, retained backing storage, temporary peaks, and allocator overhead. The key question is not “does this allocate?” but “which bytes remain live, for how long, because of which owner, under which workload?”
+
+### Prerequisite bridge
+
+Module 82 established **CPU Profiling, Cost Models, and Hot-Path Optimization**. Before continuing, verify that you can recognize phase-shifting optimizations that make a microbenchmark faster while leaving end-to-end cost unchanged. This module preserves that capability and adds the ability to distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count. Module 84, **Data Movement, Buffering, and Zero-Copy Boundaries**, will rely on both when it asks: *Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?*
+
+### Scope boundary
+
+This module owns the reasoning for **allocation, memory footprint, and ownership cost** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -111,6 +122,24 @@ Buffer reuse can turn one peak request into permanent per-connection retention. 
 
 Arenas and interners are lifecycle policies, not generic speed tools. Prove repeated values, compatible reclamation, and bounded growth first.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count, construct one positive and one causal negative example. Mark the first decisive fact in the **allocation ledger** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For trace ownership operations that allocate, clone, reallocate, promote, or retain data, construct one positive and one causal negative example. Mark the first decisive fact in the **allocation ledger** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For explain when borrowing reduces work and when it only complicates lifetimes without changing allocation, construct one positive and one causal negative example. Mark the first decisive fact in the **allocation ledger** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design capacity policies from observed size distributions instead of guessing large defaults, construct one positive and one causal negative example. Mark the first decisive fact in the **allocation ledger** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -194,7 +223,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 83 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Allocation-Budgeted Batch Parser laboratory](../../labs/module-03-allocation-budgeted-batch-parser/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 84 — Data Movement, Buffering, and Zero-Copy Boundaries](../module-84-data-movement-buffering-and-zero-copy-boundaries/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

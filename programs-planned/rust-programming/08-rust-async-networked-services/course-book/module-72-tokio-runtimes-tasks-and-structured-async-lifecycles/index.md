@@ -1,8 +1,11 @@
-# Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles
+# Module 72 — Tokio Runtimes, Tasks, and Structured Async Lifecycles
 
-**Course 8, day 2 · Module 72 of 90**
+**Course 8 · Day 2 · Module 72 of 100**
+`██████████████████░░░░░░░` **72/100**
 
-**72/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-task-nursery/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 71: Futures, Polling, Wakers, and Async State Machines](../module-71-futures-polling-wakers-and-async-state-machines/index.md) · [Module 73: Async I/O, Buffers, Streams, and Framing →](../module-73-async-io-buffers-streams-and-framing/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Module 71 deliberately avoided a runtime. You learned what a future promises bef
 Tokio supplies a reactor for I/O readiness, timers, scheduling queues, synchronization primitives, and runtime workers. Those mechanisms make async systems practical; they do not decide the product’s ownership tree. A service that drops join handles, spawns without admission limits, performs blocking work on runtime workers, or shuts down without draining tasks can be type-correct and operationally broken.
 
 This module uses structured concurrency as a design principle even where the library does not enforce it as one universal construct: child tasks should be owned by a scope or manager whose lifetime contains their work, whose shutdown reaches them, and whose terminal outcomes are observed.
+
+### Prerequisite bridge
+
+Module 71 established **Futures, Polling, Wakers, and Async State Machines**. Before continuing, verify that you can produce a future-state ledger for a larger operation. This module preserves that capability and adds the ability to distinguish a runtime, worker thread, task, future, reactor, and blocking pool;. Module 73, **Async I/O, Buffers, Streams, and Framing**, will rely on both when it asks: *How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning?*
+
+### Scope boundary
+
+This module owns the reasoning for **tokio runtimes, tasks, and structured async lifecycles** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -168,6 +179,24 @@ The binary or top-level application owns:
 
 Libraries own future behavior, not the process’s executor policy.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish a runtime, worker thread, task, future, reactor, and blocking pool, construct one positive and one causal negative example. Mark the first decisive fact in the **task ownership tree** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For explain the `Send + 'static` requirements of ordinary multi-threaded task spawning, construct one positive and one causal negative example. Mark the first decisive fact in the **task ownership tree** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For derive when a task should borrow through an enclosing async scope versus own cloned or moved data, construct one positive and one causal negative example. Mark the first decisive fact in the **task ownership tree** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use `JoinHandle` and `JoinSet` as explicit result, panic, cancellation, and cleanup obligations, construct one positive and one causal negative example. Mark the first decisive fact in the **task ownership tree** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The following nursery runs tasks, records all outcomes, and supports a fail-fast policy without abandoning joins. It uses `JoinSet` as the dynamic child owner.
@@ -267,4 +296,4 @@ Continue only when you can state:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Task Nursery](../../labs/module-02-task-nursery/README.md), and add the second [JobWire increment](../capstone.md#increment-2-own-the-runtime-and-task-tree). Then continue to [Module 73](../module-73-async-io-buffers-streams-and-framing/index.md).
+Continue to [Module 73 — Async I/O, Buffers, Streams, and Framing](../module-73-async-io-buffers-streams-and-framing/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

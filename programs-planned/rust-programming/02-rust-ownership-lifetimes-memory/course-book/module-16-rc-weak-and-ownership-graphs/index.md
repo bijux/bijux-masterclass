@@ -1,9 +1,11 @@
-# 16 — Rc, Weak, and Ownership Graphs
+# Module 16 — Rc, Weak, and Ownership Graphs
 
-**Course 2, day 6 · Module 16 of 90**  
-`█████░░░░░░░░░░░░░░░` **16/90**
+**Course 2 · Day 6 · Module 16 of 100**
+`████░░░░░░░░░░░░░░░░░░░░░` **16/100**
 
-[← Module 15: Box, Deref, Dynamically Sized Types, and Cow](../module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 17: Interior Mutability and Runtime Borrows →](../module-17-interior-mutability-and-runtime-borrows/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-rc-weak-graph/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 15: Box, Deref, Dynamically Sized Types, and Cow](../module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [Module 17: Interior Mutability and Runtime Borrows →](../module-17-interior-mutability-and-runtime-borrows/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 A tree with one owner is simple; observers, parent links, caches, and snapshots introduce shared liveness. `Rc` and `Weak` are therefore taught as graph edges with different authority, not as ways to silence the borrow checker. You must be able to draw the graph and predict teardown before writing code.
+
+### Prerequisite bridge
+
+Module 15 established **Box, Deref, Dynamically Sized Types, and Cow**. Before continuing, verify that you can choose among inline ownership, box, rc, handles, arenas, and borrowed views from topology and cost. This module preserves that capability and adds the ability to draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts. Module 17, **Interior Mutability and Runtime Borrows**, will rely on both when it asks: *Which logically hidden mutation justifies runtime enforcement, and how can guard scope and reentrancy remain controlled?*
+
+### Scope boundary
+
+This module owns the reasoning for **rc, weak, and ownership graphs** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -497,6 +507,24 @@ A central `Scene` owning nodes in slots with generational handles eliminates ref
 
 The design is single-threaded. Replacing `Rc` with `Arc` is insufficient because `RefCell` is not thread-safe and rendering/mutation protocols need synchronization. Do not imply future thread support.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts, construct one positive and one causal negative example. Mark the first decisive fact in the **liveness graph** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For use Rc::clone, downgrade, upgrade, strong_count, weak_count, get_mut, and make_mut with their exact preconditions, construct one positive and one causal negative example. Mark the first decisive fact in the **liveness graph** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For prevent strong cycles by assigning ownership direction and weak observers/backlinks deliberately, construct one positive and one causal negative example. Mark the first decisive fact in the **liveness graph** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For distinguish value equality, allocation identity, runtime handles, and liveness observations, construct one positive and one causal negative example. Mark the first decisive fact in the **liveness graph** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Store snapshots with strong ownership, expose weak observers, and define eviction. Draw the liveness graph and prove that observers do not keep snapshots alive. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -527,11 +555,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
 - [Weak](https://doc.rust-lang.org/std/rc/struct.Weak.html)
 
-[← Module 15](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 17 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md)
+[← Module 15](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 17 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md)
 
 ## Continue
 
-1. Complete the [Module 16 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 16 — Shared Ownership Graph](../../labs/module-06-rc-weak-graph/README.md) from its public contract.
-3. Apply the Module 16 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 17 — Interior Mutability and Runtime Borrows](../module-17-interior-mutability-and-runtime-borrows/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,8 +1,8 @@
-# Module 92 Solutions — Advanced Trait Solving: Goals, Projections, and Type Equality
+# Reasoned Solutions — Module 92: Advanced Trait Solving: Goals, Projections, and Type Equality
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-projection-driven-pipeline/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 92: Advanced Trait Solving: Goals, Projections, and Type Equality**. Compare the reasoning against this question: *How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the trait-goal graph: the decisive relationship must 
 
 **Principled repair.** Move the equality to the `Chain` impl or constructor where the components meet. Standalone stages keep their own associated families.
 
-A strong answer updates the trait-goal graph and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Global equality constraint** while preserving the surrounding requirement. The trait-goal graph must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — String-erased stage errors
 
@@ -40,7 +40,7 @@ A strong answer updates the trait-goal graph and includes a negative case that f
 
 **Principled repair.** Preserve a typed sum such as `ChainError<A::Error, B::Error>` and translate once at the application boundary that owns recovery policy.
 
-A strong answer updates the trait-goal graph and includes a negative case that fails for the original cause.
+The negative case should reintroduce **String-erased stage errors** while preserving the surrounding requirement. The trait-goal graph must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Bound accumulation
 
@@ -48,7 +48,7 @@ A strong answer updates the trait-goal graph and includes a negative case that f
 
 **Principled repair.** Remove all bounds, inspect each operation, and restore only the goals actually introduced by the body. Split the helper if one signature is carrying unrelated proof domains.
 
-A strong answer updates the trait-goal graph and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Bound accumulation** while preserving the surrounding requirement. The trait-goal graph must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Expand a nested `Iterator<Item = Result<T, E>>` 
 
 The decisive acceptance criterion is: Every operation is connected to the goal that authorizes it.
 
-Evaluate the result through the trait-goal graph; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Goal expansion**, apply the trait-goal graph to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Three-stage error family
 
@@ -66,7 +66,7 @@ The construction should answer: Compose parse, validate, and encode stages witho
 
 The decisive acceptance criterion is: The final error identifies the failing stage and retains its source type.
 
-Evaluate the result through the trait-goal graph; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Three-stage error family**, apply the trait-goal graph to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Ambiguity redesign
 
@@ -74,7 +74,7 @@ The construction should answer: Produce three APIs that resolve one ambiguous ta
 
 The decisive acceptance criterion is: The comparison names who chooses the type in each design.
 
-Evaluate the result through the trait-goal graph; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Ambiguity redesign**, apply the trait-goal graph to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Coherence boundary
 
@@ -82,12 +82,11 @@ The construction should answer: Create an overlapping blanket-impl proposal and 
 
 The decisive acceptance criterion is: The final implementation ownership is legal and architecturally justified.
 
-Evaluate the result through the trait-goal graph; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Coherence boundary**, apply the trait-goal graph to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **Advanced Trait Solving: Goals, Projections, and Type Equality** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — projected errors in a storage pipeline
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the trait-goal gr
 Normalize one nested projection aloud, identify the owner of every type choice, and explain why a more generic signature can admit nonsense rather than improve reuse.
 
 The defense passes when it reconstructs the trait-goal graph from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal?
+
+Build a **trait-goal and projection graph**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish proving that a trait is implemented from normalizing an associated type selected by that implementation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Choose associated types, generic parameters, and helper traits according to who selects each type relationship.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Express equality between associated outputs without forcing unrelated callers to name implementation details.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Diagnose ambiguity, unconstrained parameters, recursive obligations, overlap, and missing implied bounds.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the trait-goal and projection graph.
+
+### Reference implementation comparison
+
+For [Projection-Driven Pipeline](../../labs/module-02-projection-driven-pipeline/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 92 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Advanced Trait Solving: Goals, Projections, and Type Equality**, which relationship decides this question: “How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

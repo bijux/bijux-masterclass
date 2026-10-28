@@ -1,9 +1,11 @@
-# 37 — Recursive Data and Structural Sharing
+# Module 37 — Recursive Data and Structural Sharing
 
-**Course 4, day 7 · Module 37 of 90**  
-`████████████░░░░░░░░` **37/90**
+**Course 4 · Day 7 · Module 37 of 100**
+`█████████░░░░░░░░░░░░░░░░` **37/100**
 
-[← Module 36: Custom Iterators and Collection Protocols](../module-36-custom-iterators-and-collection-protocols/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 38: Functional Core and Effect Isolation →](../module-38-functional-core-and-effect-isolation/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-persistent-history/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 36: Custom Iterators and Collection Protocols](../module-36-custom-iterators-and-collection-protocols/index.md) · [Module 38: Functional Core and Effect Isolation →](../module-38-functional-core-and-effect-isolation/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Linear streams are only one data shape. Recursive trees and persistent histories require structure-directed transformation and selective rebuilding. The module connects Course 2's shared ownership with Course 4's functional updates so structural sharing is explicit rather than advertised as 'immutability for free.'
+
+### Prerequisite bridge
+
+Module 36 established **Custom Iterators and Collection Protocols**. Before continuing, verify that you can design `size_hint` as a truthful bound and not as an unsupported performance promise. This module preserves that capability and adds the ability to define recursive algebraic data with the appropriate indirection. Module 38, **Functional Core and Effect Isolation**, will rely on both when it asks: *Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?*
+
+### Scope boundary
+
+This module owns the reasoning for **recursive data and structural sharing** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -78,7 +88,7 @@ The same algorithm can have very different allocation and reuse behavior dependi
 
 Recursive enums are closed sets. Course 3 traits are better when third-party node types must participate. For many ASTs and domain trees, exhaustive closed variants are a strength.
 
-### Decision rule
+### Decision rule — Closed variants versus open behavior
 
 Choose recursive representation from ownership and versioning needs. Then let exhaustive shape guide transformations. Do not add traits merely to avoid matching a closed domain.
 
@@ -145,7 +155,7 @@ For pure deterministic functions:
 
 Stateful or effectful mappers can invalidate simple composition laws because call order becomes observable.
 
-### Decision rule
+### Decision rule — Laws
 
 Use structural map when shape is preserved and payload changes. Use a structural fold when many operations share the same traversal shape and the intermediate cost is acceptable. Keep direct recursion when it is clearer.
 
@@ -208,7 +218,7 @@ Persistent structures are not automatically memory-efficient. They are useful wh
 
 Copy-on-write can mutate uniquely owned data in place or clone when shared, given `Clone`. This creates an immutable-looking API with adaptive implementation cost. The cost must be described as conditional.
 
-### Decision rule
+### Decision rule — Rc::make_mut
 
 Use `Rc` structural sharing when old versions must coexist and unchanged structure is substantial. Use owned mutation when only one version is needed. Do not introduce persistence for stylistic purity.
 
@@ -243,7 +253,7 @@ A persistent structure can use a temporary mutable builder during bulk construct
 
 A locally mutating implementation can satisfy idempotence, order normalization, or preservation laws. Tests target observable results, not absence of assignment statements.
 
-### Decision rule
+### Decision rule — Law testing still applies
 
 Prefer unique local mutation when it simplifies implementation without exposing temporal state. Reserve persistent or copy-on-write structures for actual versioning and sharing requirements.
 
@@ -290,7 +300,7 @@ Two versions may contain equal values but have different root allocations. `Rc::
 
 Applying many path-copy updates one at a time can repeatedly allocate overlapping paths. A transient mutable builder or grouped update algorithm may be better. Persistent semantics do not mandate one implementation strategy.
 
-### Decision rule
+### Decision rule — Batch updates
 
 Use path copying for isolated updates with version retention. Specify invalid-path behavior, allocation scale, and whether pointer identity is observable.
 
@@ -344,7 +354,7 @@ A reducer may stop at the first invalid transition or continue with diagnostics 
 
 Given the same initial state and ordered events, a deterministic reducer should produce the same state and diagnostics. Time, random IDs, and filesystem lookups break replay unless injected as explicit inputs.
 
-### Decision rule
+### Decision rule — Replay determinism
 
 Use reducers when state evolution is a deterministic function of prior state and one event. Define snapshot ownership and rejection policy; do not clone entire state by habit.
 
@@ -385,7 +395,7 @@ A custom iterator can expose depth-first traversal lazily. Its state is an expli
 
 Deep recursive ownership may also recurse during destruction. Safe code can still exhaust the stack. Advanced iterative-drop designs should be driven by real depth requirements.
 
-### Decision rule
+### Decision rule — Recursive drops
 
 Use recursive code for bounded or naturally shallow structures. Use an explicit stack or custom iterator when depth is untrusted, early exit matters, or traversal should be reusable.
 
@@ -407,6 +417,24 @@ A rendering fold maps leaves to lines and branches to concatenated child documen
 ### Rejected purity performance claim
 
 “Persistent update is cheaper than cloning the tree” is a cost model dependent on shape, allocation, payloads, and version lifetime. The course states path-copy scale, not measured superiority.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For define recursive algebraic data with the appropriate indirection, construct one positive and one causal negative example. Mark the first decisive fact in the **structural-sharing graph** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For implement structural map, fold, and search operations with explicit base and recursive cases, construct one positive and one causal negative example. Mark the first decisive fact in the **structural-sharing graph** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use `Rc` structural sharing when immutable versions must coexist, construct one positive and one causal negative example. Mark the first decisive fact in the **structural-sharing graph** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For distinguish immutable public semantics from efficient local mutation of uniquely owned data, construct one positive and one causal negative example. Mark the first decisive fact in the **structural-sharing graph** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -438,11 +466,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
 - [The Rust Book: Recursive types](https://doc.rust-lang.org/book/ch15-01-box.html)
 
-[← Module 36](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 38 →](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md)
+[← Module 36](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 38 →](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md)
 
 ## Continue
 
-1. Complete the [Module 37 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 37 — Persistent History](../../labs/module-07-persistent-history/README.md) from its public contract.
-3. Apply the Module 37 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 38 — Functional Core and Effect Isolation](../module-38-functional-core-and-effect-isolation/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

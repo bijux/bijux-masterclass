@@ -1,6 +1,14 @@
 # Laboratory 76 — Bounded Relay Broker
 
-This is the independent product for **Course 8, Module 76**. Read the [module chapter](../../course-book/module-76-backpressure-admission-control-and-fair-work-distribution/index.md) and complete its [workbook](../../course-book/module-76-backpressure-admission-control-and-fair-work-distribution/workbook.md) before consulting the reference implementation.
+**Course 8 · Module 76: Backpressure, Admission Control, and Fair Work Distribution**
+
+[Chapter](../../course-book/module-76-backpressure-admission-control-and-fair-work-distribution/index.md) · [Workbook](../../course-book/module-76-backpressure-admission-control-and-fair-work-distribution/workbook.md) · [JobWire guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Backpressure, Admission Control, and Fair Work Distribution**: When demand exceeds service capacity, where may work wait, which bound is authoritative, and how does overload become an explicit product outcome instead of memory growth, latency collapse, or starvation? The product must make **Find every accumulation point in an async service** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **capacity and admission ledger** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -12,7 +20,7 @@ The completed product must make the answer visible in its types, lifecycle, test
 
 Build an actor-owned relay broker. Callers submit indexed integer work through a bounded mailbox and receive a terminal reply through `oneshot`. The broker keeps a bounded FIFO waiting queue, starts at most a configured number of jobs, answers snapshots while jobs run, and rejects overload before commitment.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 The lab isolates end-to-end capacity from sockets and protocol parsing. It demonstrates that mailbox capacity, committed waiting work, active jobs, reply waiters, and slow consumers are separate resources.
 
@@ -70,7 +78,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Be
 
 The laboratory is complete when its tests pass and you can answer the governing question without the chapter:
 
-> How can an async broker bound queued and active work, remain responsive to control messages, and give every accepted request one terminal outcome?
+For **Laboratory 76 — Bounded Relay Broker**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -80,3 +88,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Bounded Relay Broker**.
+2. Draw the smallest **capacity and admission ledger** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to JobWire so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Find every accumulation point in an async service.
+- Distinguish connection admission, queue capacity, active-work permits, response buffering, and retry budgets.
+- Choose between waiting, rejecting, shedding, degrading, and disconnecting under overload.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 76 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **capacity and admission ledger**. Defend why your design is simpler than one plausible alternative under the new requirements.

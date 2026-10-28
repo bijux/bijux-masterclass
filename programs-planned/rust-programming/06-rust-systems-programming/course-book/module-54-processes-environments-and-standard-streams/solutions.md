@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 54: Processes, Environments, and Standard Streams
+# Reasoned Solutions — Module 54: Processes, Environments, and Standard Streams
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-bounded-process-capture/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 54: Processes, Environments, and Standard Streams**. Compare the reasoning against this question: *How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -120,3 +118,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can derive process behavior from the chosen `Command` method, preserve byte streams and argument boundaries, explain the pipe-deadlock scenario, and state what the standard library does not provide as a portable sandbox.
 
 Then perform this destructive regression check: replace direct argument passing with a shell string and demonstrate one input whose meaning changes before the child program receives it. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result?
+
+Build a **process boundary contract**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Construct commands from a program plus arguments, not an interpolated shell line.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Control environment inheritance and current-directory policy explicitly.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Distinguish `status`, `output`, `spawn`, `wait`, `try_wait`, and `wait_with_output`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Treat stdout and stderr as independent byte streams.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Explain pipe deadlocks and choose an API consistent with the I/O protocol.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Construct commands from a program plus arguments, not an interpolated shell line.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the process boundary contract.
+
+### Reference implementation comparison
+
+For [Bounded Process Capture](../../labs/module-04-bounded-process-capture/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 54 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Processes, Environments, and Standard Streams**, which relationship decides this question: “How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

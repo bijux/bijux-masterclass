@@ -1,8 +1,8 @@
 # Reasoned Solutions — Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the JobWire guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-07-graceful-task-tree/README.md) · [JobWire guide](../capstone.md)
 
-The governing correction is that cancellation is not rollback. It destroys one local future state at a suspension boundary while external systems may already contain prefixes, queued messages, or committed operations.
+Use these notes only after preserving your prediction and repair for **Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown**. Compare the reasoning against this question: *When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -36,3 +36,42 @@ JobWire should stop TCP and HTTP admission first. Connections stop accepting com
 ## Part 6 — Reconstruction and defense
 
 A complete defense names the local state dropped, external state preserved, commit boundary, deadline budget, and exact shutdown phase. It never uses “graceful” as a synonym for “sent a cancellation signal.”
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state?
+
+Build a **cancellation and shutdown trace**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Derive cancellation behavior from future-owned state and external side effects.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Interpret `tokio::select!` as dropping nonselected branch futures.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Distinguish cancellation safety from memory safety.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Define an application commit point and recover ambiguous outcomes.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Propagate an overall deadline without resetting the budget at each stage.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Derive cancellation behavior from future-owned state and external side effects.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the cancellation and shutdown trace.
+
+### Reference implementation comparison
+
+For [Graceful Task Tree](../../labs/module-07-graceful-task-tree/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In JobWire, Module 77 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Cancellation Safety, Deadlines, and Graceful Shutdown**, which relationship decides this question: “When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to JobWire?

@@ -1,8 +1,11 @@
 # Module 97 — From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size
 
-**97/100** · Course 10 · Module 97 of 100
+**Course 10 · Day 7 · Module 97 of 100**
+`████████████████████████░` **97/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-dispatch-observatory/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 96: Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits](../module-96-auditing-unsafe-abstractions-validity-provenance-drop-panic-and-auto-traits/index.md) · [Module 98: Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration →](../module-98-verification-beyond-examples-compile-fail-property-model-fuzz-miri-and-concurrency-exploration/index.md)
 
 ## The question
 
@@ -14,7 +17,15 @@ Course 9 taught measurement discipline. Module 97 applies that discipline to gen
 
 Course 3 chose variation mechanisms and Course 9 taught causal measurement. This module connects those source-level choices to a pinned machine artifact without turning observations into language mythology.
 
-Source elegance and machine efficiency are related only through a specific compiler artifact. This module teaches how to move from semantic equivalence to code-generation evidence without smuggling target observations back into language guarantees. The learner must preserve a behavioral oracle while inspecting monomorphization, dispatch, layout, inlining, and size.
+Source elegance and machine efficiency are related only through a specific compiler artifact. This module teaches how to move from semantic equivalence to code-generation evidence without smuggling target observations back into language guarantees. The you must preserve a behavioral oracle while inspecting monomorphization, dispatch, layout, inlining, and size.
+
+### Prerequisite bridge
+
+Module 96 established **Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits**. Before continuing, verify that you can minimize unsafe reachability by placing a small mechanism behind a safe state machine and adversarial tests. This module preserves that capability and adds the ability to explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication. Module 98, **Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration**, will rely on both when it asks: *Which verification technique can falsify which kind of Rust claim, and how do you combine them without pretending that test volume equals proof?*
+
+### Scope boundary
+
+This module owns the reasoning for **from source to machine code: monomorphization, dispatch, layout, and code size** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -138,6 +149,24 @@ Rust’s type system determines legality and many semantic guarantees. It does n
 
 An advanced engineer may choose dynamic dispatch to reduce code size or static dispatch to enable specialization, but the decision becomes credible only after semantic parity and artifact-specific measurement.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication, construct one positive and one causal negative example. Mark the first decisive fact in the **source-to-artifact observation** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For compare static dispatch, enum dispatch, and trait-object dispatch through behavior, extension model, call shape, and measured artifact cost, construct one positive and one causal negative example. Mark the first decisive fact in the **source-to-artifact observation** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For inspect symbols, section sizes, assembly, and layout observations for one pinned target and profile without claiming portability, construct one positive and one causal negative example. Mark the first decisive fact in the **source-to-artifact observation** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For identify where inlining, dead-code elimination, link-time optimization, and codegen units can obscure naïve source-to-symbol expectations, construct one positive and one causal negative example. Mark the first decisive fact in the **source-to-artifact observation** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Run the same scoring behavior through a generic function, a closed enum, and a trait object. First prove equal outputs over a broad input set. Then inspect only the pinned artifact questions: reachable symbols, indirect calls, and size contribution.
@@ -221,7 +250,4 @@ Compiler output flags and symbol formats are tool interfaces, not language speci
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Dispatch Observatory](../../labs/module-07-dispatch-observatory/README.md).
-3. Apply Module 97 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 98 — Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration](../module-98-verification-beyond-examples-compile-fail-property-model-fuzz-miri-and-concurrency-exploration/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

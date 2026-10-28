@@ -1,9 +1,11 @@
-# 02 — Control Flow, Functions, and Invariants
+# Module 02 — Control Flow, Functions, and Invariants
 
-**Course 1, day 2 · Module 2 of 90**  
-`█░░░░░░░░░░░░░░░░░░░` **2/90**
+**Course 1 · Day 2 · Module 2 of 100**
+`░░░░░░░░░░░░░░░░░░░░░░░░░` **2/100**
 
-[← Module 1: Compilation, Expressions, and Types](../module-01-compilation-expressions-and-types/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 3: Ownership, Moves, Copying, and Destruction →](../module-03-ownership-moves-copying-and-destruction/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-control-flow-policy/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 1: Compilation, Expressions, and Types](../module-01-compilation-expressions-and-types/index.md) · [Module 3: Ownership, Moves, Copying, and Destruction →](../module-03-ownership-moves-copying-and-destruction/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Once expressions have types, a program must decide which expressions run and how results move between functions. Control flow comes before ownership because you need to see complete execution paths before you can account for the values travelling along them. The emphasis is on explicit invariants and termination, not syntax cataloguing.
+
+### Prerequisite bridge
+
+Module 1 established **Compilation, Expressions, and Types**. Before continuing, verify that you can build and verify a small library-plus-binary package with pure calculation separated from rendering. This module preserves that capability and adds the ability to treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior. Module 3, **Ownership, Moves, Copying, and Destruction**, will rely on both when it asks: *Who owns each resource after every assignment, call, return, destructure, and scope exit?*
+
+### Scope boundary
+
+This module owns the reasoning for **control flow, functions, and invariants** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -762,6 +772,24 @@ When reviewing control flow, therefore ask four questions in order: what value d
 
 A reviewer should be able to reconstruct that argument without executing the program or trusting sample output.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior, construct one positive and one causal negative example. Mark the first decisive fact in the **control-flow table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For select for, while, or loop from termination knowledge and data shape, then state the loop invariant and variant, construct one positive and one causal negative example. Mark the first decisive fact in the **control-flow table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For design functions with explicit preconditions, postconditions, total behavior, and guard clauses, construct one positive and one causal negative example. Mark the first decisive fact in the **control-flow table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For decompose stateful logic without creating flag soup, hidden fallthrough, or duplicated policy, construct one positive and one causal negative example. Mark the first decisive fact in the **control-flow table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Write pure policy functions for identifiers, priorities, and state-transition sketches. Keep command parsing out until the decisions can be tested without I/O. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -791,11 +819,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Functions and Control Flow](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html)
 - [Rust Reference: Control-flow expressions](https://doc.rust-lang.org/reference/expressions/loop-expr.html)
 
-[← Module 1](../../../01-rust-foundations/course-book/module-01-compilation-expressions-and-types/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 3 →](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md)
+[← Module 1](../../../01-rust-foundations/course-book/module-01-compilation-expressions-and-types/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 3 →](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md)
 
 ## Continue
 
-1. Complete the [Module 2 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 2 — Control-Flow Policy Engine](../../labs/module-02-control-flow-policy/README.md) from its public contract.
-3. Apply the Module 2 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 3 — Ownership, Moves, Copying, and Destruction](../module-03-ownership-moves-copying-and-destruction/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

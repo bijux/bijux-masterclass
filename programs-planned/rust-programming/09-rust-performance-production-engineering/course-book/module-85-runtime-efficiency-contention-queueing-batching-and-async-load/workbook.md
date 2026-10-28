@@ -1,8 +1,17 @@
-# Module 85 Workbook — Runtime Efficiency: Contention, Queueing, Batching, and Async Load
+# Workbook — Module 85: Runtime Efficiency: Contention, Queueing, Batching, and Async Load
 
-[Chapter](index.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-bounded-throughput-tuner/README.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook studies behavior near saturation. Record offered load, admitted load, completed load, queue residence, service time, rejection, cancellation, and resource use separately. Throughput without accounting is not a capacity result.
+This workbook tests whether **Runtime Efficiency: Contention, Queueing, Batching, and Async Load** has become a usable model rather than remembered vocabulary. Its governing question is: *When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?* Preserve your first prediction and record decisive facts in a **saturation and queueing curve**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 84 — Data Movement, Buffering, and Zero-Copy Boundaries that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?**
+3. Draw the smallest **saturation and queueing curve** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -80,13 +89,40 @@ Create a table for offered rates below, near, and above capacity. Include admitt
 
 Design a queue item that carries admission time, source identity, and deadline without exposing mutable timing state to every worker. Specify whether expired work is rejected before enqueue, while waiting, or immediately before service, and how each terminal outcome is recorded. Explain why processing expired work can reduce useful throughput even when workers are otherwise idle later.
 
+### Interleaved reasoning pass
+
+1. For **Separate service time, wait time, queue depth, concurrency, throughput, and utilization**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the saturation and queueing curve.
+2. For **Apply Little’s Law as a consistency check while stating its steady-state assumptions**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the saturation and queueing curve.
+3. For **Find lock contention, convoying, hot sharding, wake amplification, and blocking-runtime violations**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the saturation and queueing curve.
+4. For **Design queue, semaphore, and batch capacities from latency and memory budgets**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the saturation and queueing curve.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Runtime Efficiency: Contention, Queueing, Batching, and Async Load** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build the [Bounded Throughput Tuner](../../labs/module-05-bounded-throughput-tuner/README.md). The product must return exactly one terminal `Outcome` for every offered input, keep results in source order, expose queue-wait and service samples for admitted work, and treat arithmetic overflow as a terminal failure rather than a missing result. Explore at least six `(queue_capacity, max_active)` settings.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Bounded Throughput Tuner**, record:
+
+- the public behavior that demonstrates **Separate service time, wait time, queue depth, concurrency, throughput, and utilization**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Instrument MetricRail from socket admission through broker queueing and store mutation. Run controlled loads with common keys, hot-key skew, and unique-series growth. Choose connection, mailbox, and active-ingest limits from the saturation curve and memory budget. If batching is introduced, bound it by item count, bytes, and age. No configuration change is accepted without terminal accounting and shutdown tests.
+
+### Capstone invariant trace
+
+For the Module 85 MetricRail increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -107,3 +143,6 @@ Choose a fixed request mix and sweep offered concurrency across at least six poi
 
 A tuning change must be evaluated on both sides of saturation. Below the knee it should not add needless coordination; above the knee it must not hide overload by allowing unbounded waiting. State which component owns admission and why every accepted unit still has a bounded path to a terminal outcome. Thread count, queue length, and batch size are policy variables, not independent speed controls.
 
+### Closed-book defense
+
+In five minutes, answer “When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?” using the **saturation and queueing curve**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside MetricRail. A list of APIs without the deciding relationship is incomplete.

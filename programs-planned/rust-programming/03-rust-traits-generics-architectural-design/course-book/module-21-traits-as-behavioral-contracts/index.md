@@ -1,9 +1,11 @@
-# 21 — Traits as Behavioral Contracts
+# Module 21 — Traits as Behavioral Contracts
 
-**Course 3, day 1 · Module 21 of 90**  
-`███████░░░░░░░░░░░░░` **21/90**
+**Course 3 · Day 1 · Module 21 of 100**
+`█████░░░░░░░░░░░░░░░░░░░░` **21/100**
 
-[← Module 20: Pinning and Address-Sensitive Design](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 22: Associated Types and Type Families →](../module-22-associated-types-and-type-families/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-contract-boundaries/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 20: Pinning and Address-Sensitive Design](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [Module 22: Associated Types and Type Families →](../module-22-associated-types-and-type-families/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Courses 1 and 2 established what values mean and how they live. Course 3 asks how multiple types may promise the same behavior. Traits begin as behavioral contracts with laws and receiver semantics, not as bags of methods or Rust's version of base classes.
+
+### Prerequisite bridge
+
+Module 20 established **Pinning and Address-Sensitive Design**. Before continuing, verify that you can prefer handles, indices, owned indirection, scoped callbacks, or redesigned state when they eliminate self-reference or address dependence. This module preserves that capability and adds the ability to define a trait whose methods express a coherent behavioral contract. Module 22, **Associated Types and Type Families**, will rely on both when it asks: *When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?*
+
+### Scope boundary
+
+This module owns the reasoning for **traits as behavioral contracts** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -748,6 +758,24 @@ That associated error choice is deferred to Module 22. For Module 21, use a shar
 
 The trait itself is not the architecture. The selection point and evolution story determine the architecture.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For define a trait whose methods express a coherent behavioral contract, construct one positive and one causal negative example. Mark the first decisive fact in the **trait-law table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish inherent behavior, free functions, and trait behavior, construct one positive and one causal negative example. Mark the first decisive fact in the **trait-law table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For apply bounds, `where` clauses, default methods, supertraits, and UFCS correctly, construct one positive and one causal negative example. Mark the first decisive fact in the **trait-law table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For detect traits that merely rename data access or create false substitutability, construct one positive and one causal negative example. Mark the first decisive fact in the **trait-law table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Define the Review Engine's source, rule, and reporter contracts with behavioral laws. Separate required methods from defaults and identify what tests must enforce. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -777,11 +805,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Traits](https://doc.rust-lang.org/reference/items/traits.html)
 - [The Rust Book: Traits](https://doc.rust-lang.org/book/ch10-02-traits.html)
 
-[← Module 20](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 22 →](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md)
+[← Module 20](../../../02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 22 →](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md)
 
 ## Continue
 
-1. Complete the [Module 21 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 21 — Contract Boundaries](../../labs/module-01-contract-boundaries/README.md) from its public contract.
-3. Apply the Module 21 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 22 — Associated Types and Type Families](../module-22-associated-types-and-type-families/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

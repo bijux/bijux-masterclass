@@ -1,9 +1,11 @@
-# 52 — Files, Durability, and Transactional Replacement
+# Module 52 — Files, Durability, and Transactional Replacement
 
-**Course 6, day 2 · Module 52 of 90**  
-`█████████████████░░░` **52/90**
+**Course 6 · Day 2 · Module 52 of 100**
+`█████████████░░░░░░░░░░░░` **52/100**
 
-[← Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing](../module-51-binary-data-contracts/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 53: Paths, Names, and Platform Boundaries →](../module-53-paths-names-and-platform-boundaries/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-atomic-archive-store/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing](../module-51-binary-data-contracts/index.md) · [Module 53: Paths, Names, and Platform Boundaries →](../module-53-paths-names-and-platform-boundaries/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Module 51 established a trustworthy in-memory format. A real systems product must persist it through APIs that permit partial I/O, delayed errors, concurrent filesystem changes, and platform-specific rename behavior. This module turns “save the file” into a sequence of explicit state transitions and claims. It also corrects a common overstatement: no short standard-library recipe proves crash durability on every filesystem and operating system.
+
+### Prerequisite bridge
+
+Module 51 established **Binary Data Contracts: Bytes, Endianness, and Checked Parsing**. Before continuing, verify that you can design errors that identify the byte offset and the contract that failed. This module preserves that capability and adds the ability to distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability. Module 53, **Paths, Names, and Platform Boundaries**, will rely on both when it asks: *How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable?*
+
+### Scope boundary
+
+This module owns the reasoning for **files, durability, and transactional replacement** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -85,7 +95,7 @@ The essential application guarantee is simpler and testable: before rename succe
 
 ### Temporary names need collision and attack policy
 
-A predictable `.tmp` name can collide with another process or be pre-created. The standard library has no cross-platform secure temporary-file constructor. For the course product, generate a name from destination, process ID, and a monotonic attempt counter, then open with `create_new(true)` and retry a bounded number of times.
+A predictable `.tmp` name can collide with another process or be pre-created. The standard library has no cross-platform secure temporary-file constructor. For the capstone, generate a name from destination, process ID, and a monotonic attempt counter, then open with `create_new(true)` and retry a bounded number of times.
 
 This is sufficient for a controlled local tool but is not presented as a hardened hostile-directory solution. Production code often uses a well-reviewed temporary-file library or platform-specific APIs that provide stronger creation semantics. The lesson is to state the threat model rather than label every temporary file “safe.”
 
@@ -217,9 +227,27 @@ The test suite should inspect the destination bytes after every failure. Merely 
 
 ### Append-only and replacement are different architectures
 
-When archives grow too large for complete replacement, do not quietly mutate this protocol. An append-only design needs record framing, transaction or commit markers, recovery after torn writes, compaction, and concurrency policy. It can provide excellent properties, but it is a different course product.
+When archives grow too large for complete replacement, do not quietly mutate this protocol. An append-only design needs record framing, transaction or commit markers, recovery after torn writes, compaction, and concurrency policy. It can provide excellent properties, but it is a different capstone.
 
 Module 52 teaches a general decision rule: choose the simplest persistence architecture whose failure states you can enumerate. Direct overwrite has fewer files but destroys the previous value early. Replacement preserves the old value until commit. Journaling avoids full rewrites but introduces recovery state. Each design moves complexity; none removes it.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability, construct one positive and one causal negative example. Mark the first decisive fact in the **durability timeline** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For handle short reads and writes through the `Read` and `Write` contracts, construct one positive and one causal negative example. Mark the first decisive fact in the **durability timeline** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use `OpenOptions` to make creation and truncation policy explicit, construct one positive and one causal negative example. Mark the first decisive fact in the **durability timeline** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design a same-directory temporary-file replacement with cleanup on failure, construct one positive and one causal negative example. Mark the first decisive fact in the **durability timeline** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -244,7 +272,4 @@ You are ready when you can name the commit point, distinguish buffering from syn
 
 ## Continue
 
-1. Complete the [Module 52 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 52 — Atomic Archive Store](../../labs/module-02-atomic-archive-store/README.md) from its public contract.
-3. Apply the Module 52 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 53 — Paths, Names, and Platform Boundaries](../module-53-paths-names-and-platform-boundaries/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

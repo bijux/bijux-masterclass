@@ -1,8 +1,17 @@
 # Workbook — Module 38: Functional Core and Effect Isolation
 
-[Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-08-deterministic-batch-runner/README.md) · [LedgerFlow guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Functional Core and Effect Isolation** without relying on surface syntax. Keep the module question in view: *Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Functional Core and Effect Isolation** has become a usable model rather than remembered vocabulary. Its governing question is: *Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?* Preserve your first prediction and record decisive facts in a **effect boundary map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 37 — Recursive Data and Structural Sharing that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?**
+3. Draw the smallest **effect boundary map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -86,7 +95,16 @@ A batch import inserts events into a ledger. State the conditions under which re
 
 Create a test matrix for `execute_text` and the real CLI. Which properties belong at each layer?
 
+### Interleaved reasoning pass
 
+1. For **Separate deterministic domain decisions from filesystem, time, environment, and terminal effects**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the effect boundary map.
+2. For **Inject small effect capabilities through parameters, closures, or narrow traits without building a framework**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the effect boundary map.
+3. For **Represent intended effects as data when plan-then-execute improves safety or testability**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the effect boundary map.
+4. For **Design idempotent and replayable boundaries where the domain permits them**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the effect boundary map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Functional Core and Effect Isolation** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -144,6 +162,18 @@ Do not solve these with hidden global state in the course lab.
 Submit the boundary map, ID call ledger, effect-order tests, partial-failure report, dry-run proof, and replay note. Explain why `FnMut` is required for ID allocation, why action values are preferable to boxed one-shot callbacks here, and where operational I/O errors belong in a real CLI.
 
 The executable starter and reference implementation are in [module-08-deterministic-batch-runner](../../labs/module-08-deterministic-batch-runner/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Deterministic Batch Runner**, record:
+
+- the public behavior that demonstrates **Separate deterministic domain decisions from filesystem, time, environment, and terminal effects**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -203,6 +233,10 @@ For every public core function, ask:
 
 For every shell function, ask whether it contains domain decisions that belong back in the core.
 
+### Capstone invariant trace
+
+For the Module 38 LedgerFlow increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Do not advance because the calendar day ended. Advance when all hard evidence is present.
@@ -240,3 +274,7 @@ Design a deterministic report generator whose shell supplies time and input byte
 ### Spaced review
 
 Repeat questions 2, 4, 7, and 10 after 24 hours. Repeat the reconstruction after seven days with a different domain.
+
+### Closed-book defense
+
+In five minutes, answer “Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?” using the **effect boundary map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside LedgerFlow. A list of APIs without the deciding relationship is incomplete.

@@ -1,8 +1,17 @@
 # Workbook — Module 03: Ownership, Moves, Copying, and Destruction
 
-[Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-03-ownership-intake/README.md) · [Taskboard guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Ownership, Moves, Copying, and Destruction** without relying on surface syntax. Keep the module question in view: *Who owns each resource after every assignment, call, return, destructure, and scope exit?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Ownership, Moves, Copying, and Destruction** has become a usable model rather than remembered vocabulary. Its governing question is: *Who owns each resource after every assignment, call, return, destructure, and scope exit?* Preserve your first prediction and record decisive facts in a **ownership ledger**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 2 — Control Flow, Functions, and Invariants that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Who owns each resource after every assignment, call, return, destructure, and scope exit?**
+3. Draw the smallest **ownership ledger** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -24,7 +33,6 @@ python3 ../tools/run_compiler_labs.py 01-rust-foundations
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A developer repaired ownership errors by cloning at every call:
 
@@ -103,7 +111,6 @@ Add two records and move one from pending to completed. No title clone. Preserve
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 ### Exercise 1 — Ownership traces
 
 For 20 short snippets covering assignment, call, return, branch, loop, tuple, array, and vector, write owner after each line. Compile only after prediction.
@@ -164,11 +171,18 @@ Write two variants of a function choosing either an owned input or fallback. Exp
 
 Write a one-page ownership narrative for a vector of records: creation, insertion, removal, transfer, return, and destruction. Avoid machine-address language.
 
+### Interleaved reasoning pass
 
+1. For **Trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the ownership ledger.
+2. For **Distinguish semantic moves, Copy duplication, explicit Clone cost, and destruction without relying on stack-versus-heap folklore**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the ownership ledger.
+3. For **Predict partial moves and the remaining usable fields of an aggregate**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the ownership ledger.
+4. For **Choose consuming, returning, borrowing, or cloning APIs from post-call ownership requirements**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the ownership ledger.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Ownership, Moves, Copying, and Destruction** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Product contract
 
@@ -240,6 +254,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-03-ownership-intake](../../labs/module-03-ownership-intake/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Ownership Intake Pipeline**, record:
+
+- the public behavior that demonstrates **Trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -249,7 +275,6 @@ The executable starter and reference implementation are in [module-03-ownership-
 - Predict partial moves and the remaining usable fields of an aggregate.
 - Choose consuming, returning, borrowing, or cloning APIs from post-call ownership requirements.
 - Audit clone-heavy code and remove symptom-fixing duplication while preserving the product contract.
-
 
 Replace fixed policy demonstrations with an early owned task collection.
 
@@ -311,11 +336,13 @@ A function that consumes `Vec<TaskRecord>` makes every read operation awkward. D
 
 The commit passes tests and contains a clone audit. Its design note must identify the tuple's positional risk and string-state risk without prematurely introducing Module 5 types.
 
-
-
 ### Capstone defense
 
 Refactor an ingest pipeline so ownership crosses each boundary once, then defend every remaining clone as semantic duplication.
+
+### Capstone invariant trace
+
+For the Module 3 Taskboard increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -325,11 +352,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger.
-- Distinguish semantic moves, Copy duplication, explicit Clone cost, and destruction without relying on stack-versus-heap folklore.
-- Predict partial moves and the remaining usable fields of an aggregate.
-- Choose consuming, returning, borrowing, or cloning APIs from post-call ownership requirements.
-- Audit clone-heavy code and remove symptom-fixing duplication while preserving the product contract.
+Without reopening the chapter, reconstruct the outcomes for **Module 03: Ownership, Moves, Copying, and Destruction**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -369,6 +392,18 @@ Implement vector-to-vector `transfer` from memory with no clones and preservatio
 
 ### Transfer defense
 
-Refactor an ingest pipeline so ownership crosses each boundary once, then defend every remaining clone as semantic duplication.
+Transfer **Module 03: Ownership, Moves, Copying, and Destruction** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 03: Ownership, Moves, Copying, and Destruction** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
+
+### Closed-book defense
+
+In five minutes, answer “Who owns each resource after every assignment, call, return, destructure, and scope exit?” using the **ownership ledger**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Taskboard. A list of APIs without the deciding relationship is incomplete.

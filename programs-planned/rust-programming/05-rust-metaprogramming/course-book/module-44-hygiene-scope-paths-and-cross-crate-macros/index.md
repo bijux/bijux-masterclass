@@ -1,9 +1,11 @@
-# 44 — Hygiene, Scope, Paths, and Cross-Crate Macros
+# Module 44 — Hygiene, Scope, Paths, and Cross-Crate Macros
 
-**Course 5, day 4 · Module 44 of 90**  
-`███████████████░░░░░` **44/90**
+**Course 5 · Day 4 · Module 44 of 100**
+`███████████░░░░░░░░░░░░░░` **44/100**
 
-[← Module 43: Recursive Macro Parsing and Token-Tree Techniques](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 45: Macro Diagnostics, Testing, and Public API Design →](../module-45-macro-diagnostics-testing-and-public-api-design/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-exported-registry-macro/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 43: Recursive Macro Parsing and Token-Tree Techniques](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md) · [Module 45: Macro Diagnostics, Testing, and Public API Design →](../module-45-macro-diagnostics-testing-and-public-api-design/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 A macro that works beside its definition is not yet a reusable macro. Once expansion occurs in another module or crate, every generated path must answer a scope question: does this name belong to the macro-defining crate, the invocation site, the standard library, or the macro itself?
 
 Modules 42 and 43 established grammar and expansion. Module 44 makes that expansion portable. Without this step, later diagnostics and procedural designs would be tested against a false local environment.
+
+### Prerequisite bridge
+
+Module 43 established **Recursive Macro Parsing and Token-Tree Techniques**. Before continuing, verify that you can decide when a procedural parser is the smaller and safer mechanism. This module preserves that capability and adds the ability to distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros. Module 45, **Macro Diagnostics, Testing, and Public API Design**, will rely on both when it asks: *How do you prove that a macro accepts the intended language, rejects misuse for the intended reason, and remains an evolvable public API?*
+
+### Scope boundary
+
+This module owns the reasoning for **hygiene, scope, paths, and cross-crate macros** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -289,6 +299,24 @@ For every generated path, record one of four owners:
 
 If you cannot classify a path, the expansion is not ready for public use.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros, construct one positive and one causal negative example. Mark the first decisive fact in the **hygiene and path map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For use `$crate` for defining-crate references in exported `macro_rules!` expansions, construct one positive and one causal negative example. Mark the first decisive fact in the **hygiene and path map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For preserve invocation-site identifiers supplied by callers, construct one positive and one causal negative example. Mark the first decisive fact in the **hygiene and path map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For avoid accidental dependence on caller imports or prelude contents, construct one positive and one causal negative example. Mark the first decisive fact in the **hygiene and path map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge’s declarative diagnostic macro will expand inside the `commandforge` runtime crate. It uses `$crate` for the generated support table type and standard absolute paths for formatting traits where appropriate. Later procedural macros will be re-exported from the runtime crate and generate paths through `::commandforge` under a documented integrated-crate assumption.
@@ -336,7 +364,4 @@ Do not continue if your macro works only because the caller imported the same he
 
 ## Continue
 
-1. Complete the [Module 44 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 44 — Exported Registry Macro](../../labs/module-04-exported-registry-macro/README.md) from its public contract.
-3. Apply the Module 44 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 45 — Macro Diagnostics, Testing, and Public API Design](../module-45-macro-diagnostics-testing-and-public-api-design/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

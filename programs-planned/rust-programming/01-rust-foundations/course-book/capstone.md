@@ -2,6 +2,59 @@
 
 The capstone supports the course-book. It exists to force cross-layer transfer after each mechanism has been understood in isolation.
 
+## How this capstone completes the course
+
+Taskboard is a local persistent command-line work queue. Its small domain forces types, ownership, parsing, state transitions, storage, errors, modules, tests, and process behavior to work together without hiding the language behind a framework.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; Taskboard proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | Task status and priority are closed typed domains, not arbitrary strings. |
+| 2 | Command parsing constructs typed commands before domain mutation begins. |
+| 3 | Every failed transition leaves the board and persistent file unchanged. |
+| 4 | Task identifiers remain unique and deterministic across load, mutation, and save. |
+| 5 | The library owns behavior; the binary owns environment, output, and exit status. |
+| 6 | Public output, storage order, tests, and documentation describe the same contract. |
+
+For each Taskboard change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 1 | Compilation, Expressions, and Types | Distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project” | [Measurement Report](../labs/module-01-measurement-report/README.md) |
+| 2 | Control Flow, Functions, and Invariants | Treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior | [Control-Flow Policy Engine](../labs/module-02-control-flow-policy/README.md) |
+| 3 | Ownership, Moves, Copying, and Destruction | Trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger | [Ownership Intake Pipeline](../labs/module-03-ownership-intake/README.md) |
+| 4 | Borrowing, References, Slices, and Strings | Model shared and mutable references as permissions constrained by aliasing and validity | [Borrowed Catalog](../labs/module-04-borrowed-catalog/README.md) |
+| 5 | Structs, Enums, Methods, and Pattern Matching | Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity | [Typed Workflow State Machine](../labs/module-05-state-machine/README.md) |
+| 6 | Collections, Iterators, and Closures | Use Vec, slices, and HashMap with explicit length, capacity, invalidation, lookup, and ordering assumptions | [In-Memory Task Board](../labs/module-06-in-memory-board/README.md) |
+| 7 | Errors, Parsing, Files, and Persistence | Distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values | [Versioned Record Codec](../labs/module-07-record-codec/README.md) |
+| 8 | Generics, Traits, Conversions, and Lifetime Basics | Write generic functions and types whose bounds correspond to operations actually performed | [Trait and Lifetime Boundary](../labs/module-08-traits-and-lifetimes/README.md) |
+| 9 | Crates, Modules, Public APIs, Tests, and Documentation | Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type | [Library Boundary Refactor](../labs/module-09-library-boundaries/README.md) |
+| 10 | Integration and Independent Change | Trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation | [Inventory Ledger](../labs/module-10-inventory-ledger/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **whole-program invariant map** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. Taskboard ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## Product
 
 **Taskboard** is a persistent command-line task board.
@@ -163,7 +216,7 @@ The product does not promise:
 - transaction recovery after external process termination;
 - authorization, networking, or multi-user behavior.
 
-Naming non-contracts is not an apology. It keeps the claims reviewable and prevents a small course product from acquiring fictional production guarantees.
+Naming non-contracts is not an apology. It keeps the claims reviewable and prevents a small capstone from acquiring fictional production guarantees.
 
 ## Architecture and Dependency Graph
 

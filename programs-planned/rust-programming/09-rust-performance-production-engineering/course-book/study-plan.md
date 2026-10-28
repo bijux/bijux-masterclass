@@ -1,193 +1,177 @@
-# Ten-Day Study Plan
+# Course 9 Study Plan — Rust Performance and Production Engineering
 
-This schedule assumes full-time, concentrated work. Each day contains reading, prediction, construction, measurement, and written reconstruction. Do not turn every evening into more coding; the final reconstruction is where short-term familiarity becomes a reusable model.
+Ten dense study days fit into two calendar weeks. The goal is not to maximize reading time; it is to make **Which measurements, resource bounds, signals, security controls, artifact records, and operating policies make a Rust system defensible under representative load?** answerable through construction and explanation.
 
-A practical daily rhythm is:
+## Daily rhythm
 
-```text
-08:30 recall and prediction
-09:00 chapter
-11:00 focused diagnosis
-13:00 workbook construction
-15:00 independent laboratory
-17:30 MetricRail increment
-19:30 result review and reconstruction
-```
-
-Take breaks between tool-heavy sessions. Performance and production decisions become worse when the reader stops distinguishing measurement from interpretation.
+Use a **production decision record** across the course. Each day begins by reconstructing yesterday’s decisive relationship and ends by tracing one capstone invariant. Preserve the first prediction, the observed result, the principled repair, and the shortcut you rejected.
 
 ## Day 1 — Module 81: Performance Contracts, Workloads, and Benchmark Design
 
-### Morning: build the model
+**Question:** What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?
 
-Read the [authoritative chapter](module-81-performance-contracts-workloads-and-benchmark-design/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 80 — Integrated Async Service Architecture, Testing, and Audit. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 81](./module-81-performance-contracts-workloads-and-benchmark-design/index.md) with a **performance claim and workload record** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-81-performance-contracts-workloads-and-benchmark-design/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-81-performance-contracts-workloads-and-benchmark-design/workbook.md) before observation. The day’s minimum result is: **Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Benchmark Integrity Clinic](../labs/module-01-benchmark-integrity-clinic/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Benchmark Integrity Clinic** from its [laboratory brief](../labs/module-01-benchmark-integrity-clinic/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 81 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle.** End with one simpler design that would be preferable under a narrower requirement.
 
-Define MetricRail’s performance charter, representative telemetry corpora, benchmark taxonomy, and regression policy before changing implementation code. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
 ## Day 2 — Module 82: CPU Profiling, Cost Models, and Hot-Path Optimization
 
-### Morning: build the model
+**Question:** Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase?
 
-Read the [authoritative chapter](module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 81 — Performance Contracts, Workloads, and Benchmark Design. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 82](./module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md) with a **profile and cost model** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-82-cpu-profiling-cost-models-and-hot-path-optimization/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-82-cpu-profiling-cost-models-and-hot-path-optimization/workbook.md) before observation. The day’s minimum result is: **Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Profile-Guided Query Engine](../labs/module-02-profile-guided-query-engine/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Profile-Guided Query Engine** from its [laboratory brief](../labs/module-02-profile-guided-query-engine/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 82 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked.** End with one simpler design that would be preferable under a narrower requirement.
 
-Profile MetricRail ingestion and snapshot queries, derive one cost model for each, and optimize only after establishing end-to-end baselines and semantic oracles. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
 ## Day 3 — Module 83: Allocation, Memory Footprint, and Ownership Cost
 
-### Morning: build the model
+**Question:** Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?
 
-Read the [authoritative chapter](module-83-allocation-memory-footprint-and-ownership-cost/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 82 — CPU Profiling, Cost Models, and Hot-Path Optimization. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 83](./module-83-allocation-memory-footprint-and-ownership-cost/index.md) with a **allocation ledger** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-83-allocation-memory-footprint-and-ownership-cost/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-83-allocation-memory-footprint-and-ownership-cost/workbook.md) before observation. The day’s minimum result is: **Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Allocation-Budgeted Batch Parser](../labs/module-03-allocation-budgeted-batch-parser/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Allocation-Budgeted Batch Parser** from its [laboratory brief](../labs/module-03-allocation-budgeted-batch-parser/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 83 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count.** End with one simpler design that would be preferable under a narrower requirement.
 
-Build MetricRail’s allocation ledger, quantify parsing and aggregation ownership, then introduce bounded reuse only where the ledger predicts a material reduction. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
 ## Day 4 — Module 84: Data Movement, Buffering, and Zero-Copy Boundaries
 
-### Morning: build the model
+**Question:** Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?
 
-Read the [authoritative chapter](module-84-data-movement-buffering-and-zero-copy-boundaries/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 83 — Allocation, Memory Footprint, and Ownership Cost. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 84](./module-84-data-movement-buffering-and-zero-copy-boundaries/index.md) with a **byte journey** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-84-data-movement-buffering-and-zero-copy-boundaries/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-84-data-movement-buffering-and-zero-copy-boundaries/workbook.md) before observation. The day’s minimum result is: **Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Borrowed Record Window](../labs/module-04-borrowed-record-window/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Borrowed Record Window** from its [laboratory brief](../labs/module-04-borrowed-record-window/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 84 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers.** End with one simpler design that would be preferable under a narrower requirement.
 
-Redesign MetricRail’s ingestion boundary so framing owns bounded buffers, parsing borrows fields transiently, and aggregation copies only the identifiers that must outlive the frame. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
 ## Day 5 — Module 85: Runtime Efficiency: Contention, Queueing, Batching, and Async Load
 
-### Morning: build the model
+**Question:** When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?
 
-Read the [authoritative chapter](module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 84 — Data Movement, Buffering, and Zero-Copy Boundaries. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 85](./module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md) with a **saturation and queueing curve** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-85-runtime-efficiency-contention-queueing-batching-and-async-load/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-85-runtime-efficiency-contention-queueing-batching-and-async-load/workbook.md) before observation. The day’s minimum result is: **Separate service time, wait time, queue depth, concurrency, throughput, and utilization.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Bounded Throughput Tuner](../labs/module-05-bounded-throughput-tuner/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Bounded Throughput Tuner** from its [laboratory brief](../labs/module-05-bounded-throughput-tuner/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 85 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Separate service time, wait time, queue depth, concurrency, throughput, and utilization.** End with one simpler design that would be preferable under a narrower requirement.
 
-Load MetricRail through controlled concurrency levels, expose queue and service phases, then choose admission, batching, and sharding policies from measured saturation behavior. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
+## Midpoint reconstruction
+
+Do not add a sixth topic on the recovery day. Reconstruct **Performance Contracts, Workloads, and Benchmark Design, CPU Profiling, Cost Models, and Hot-Path Optimization, Allocation, Memory Footprint, and Ownership Cost, Data Movement, Buffering, and Zero-Copy Boundaries, Runtime Efficiency: Contention, Queueing, Batching, and Async Load** as one dependency chain, rerun the two investigations that changed your model most, and describe the current MetricRail state from an empty page. Repair incomplete work, then take a real break; consolidation is part of the course rather than unused time.
+
 ## Day 6 — Module 86: Observability: Structured Tracing, Metrics, and Diagnostic Context
 
-### Morning: build the model
+**Question:** What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?
 
-Read the [authoritative chapter](module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 85 — Runtime Efficiency: Contention, Queueing, Batching, and Async Load. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 86](./module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md) with a **signal dictionary** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-86-observability-structured-tracing-metrics-and-diagnostic-context/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-86-observability-structured-tracing-metrics-and-diagnostic-context/workbook.md) before observation. The day’s minimum result is: **Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Structured Observability Harness](../labs/module-06-structured-observability-harness/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Structured Observability Harness** from its [laboratory brief](../labs/module-06-structured-observability-harness/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 86 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer.** End with one simpler design that would be preferable under a narrower requirement.
 
-Give MetricRail a stable span hierarchy, bounded metrics, redaction rules, health/readiness semantics, and tests that prove required context without exposing telemetry values or tenant secrets. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
 ## Day 7 — Module 87: Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation
 
-### Morning: build the model
+**Question:** How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?
 
-Read the [authoritative chapter](module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 86 — Observability: Structured Tracing, Metrics, and Diagnostic Context. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 87](./module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md) with a **SLO and overload policy** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/workbook.md) before observation. The day’s minimum result is: **Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Overload Control Simulator](../labs/module-07-overload-control-simulator/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Overload Control Simulator** from its [laboratory brief](../labs/module-07-overload-control-simulator/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 87 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous.** End with one simpler design that would be preferable under a narrower requirement.
 
-Define MetricRail’s ingestion and query objectives, error taxonomy, admission response, bounded retry rules, degradation modes, and recovery tests under dependency delay and memory pressure. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
 ## Day 8 — Module 88: Security and Supply-Chain Engineering
 
-### Morning: build the model
+**Question:** Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions?
 
-Read the [authoritative chapter](module-88-security-and-supply-chain-engineering/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 87 — Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 88](./module-88-security-and-supply-chain-engineering/index.md) with a **threat and dependency dossier** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-88-security-and-supply-chain-engineering/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-88-security-and-supply-chain-engineering/workbook.md) before observation. The day’s minimum result is: **Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Attack Surface and Supply-Chain Audit](../labs/module-08-attack-surface-and-supply-chain-audit/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Attack Surface and Supply-Chain Audit** from its [laboratory brief](../labs/module-08-attack-surface-and-supply-chain-audit/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 88 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service.** End with one simpler design that would be preferable under a narrower requirement.
 
-Threat-model MetricRail’s listener, parser, tenant boundary, telemetry labels, operational endpoints, dependency graph, build process, release artifact, and runtime permissions; then implement the highest-value controls. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
 ## Day 9 — Module 89: Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases
 
-### Morning: build the model
+**Question:** How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?
 
-Read the [authoritative chapter](module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 88 — Security and Supply-Chain Engineering. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 89](./module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md) with a **release manifest** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/workbook.md) before observation. The day’s minimum result is: **Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Release Matrix and Artifact Manifest](../labs/module-09-release-matrix-and-artifact-manifest/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Release Matrix and Artifact Manifest** from its [laboratory brief](../labs/module-09-release-matrix-and-artifact-manifest/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 89 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy.** End with one simpler design that would be preferable under a narrower requirement.
 
-Define MetricRail’s build profiles, feature policy, supported targets, CI matrix, artifact manifest, configuration layout, upgrade/rollback route, and size/performance release checks. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
 ## Day 10 — Module 90: Production Readiness, Capacity Planning, Rollouts, and Incident Learning
 
-### Morning: build the model
+**Question:** What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?
 
-Read the [authoritative chapter](module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md). Construct the module’s ledger and write answers to the chapter’s causal review questions. Freeze the workbook predictions before running tools.
+**Retrieval:** Without notes, restate the invariant carried from Module 89 — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases. Mark the point where that earlier guarantee could be weakened today.
 
-### Midday: diagnose and construct
+**Chapter:** Read [Module 90](./module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md) with a **production decision record** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Complete Parts 1–3 of the [workbook](module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/workbook.md). Run focused examples only after the prediction is recorded. Preserve the correctness oracle while changing the mechanism.
+**Workbook:** Complete the [workbook](./module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/workbook.md) before observation. The day’s minimum result is: **Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery.** Keep one positive case and one causal negative case.
 
-### Afternoon: independent laboratory
+**Laboratory:** Build [Production Readiness Review](../labs/module-10-production-readiness-review/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Build **Production Readiness Review** from its [laboratory brief](../labs/module-10-production-readiness-review/README.md). Compare against the reference by contract and decision, not by code shape.
+**Capstone:** Apply Module 90 in the [MetricRail guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Evening: MetricRail and reconstruction
+**Exit:** Explain this capability without notes: **Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery.** End with one simpler design that would be preferable under a narrower requirement.
 
-Complete MetricRail as an operated product: capacity model, performance report, dashboards and alerts, threat model, artifact manifest, configuration contract, rollout plan, rollback rehearsal, incident drill, and final engineering defense. Complete the matching section of the [MetricRail guide](capstone.md), then reconstruct the governing model without notes.
+## Final integration
 
+After Day 10, complete the [final review](final-review.md), run the strongest available course route, and implement this unseen capstone change: **Add one high-cardinality MetricRail query while preserving bounded memory, deterministic output, observability cardinality, overload behavior, and artifact traceability.**
 
-## After Day 10
-
-Run the full proof route available on your machine, package MetricRail, execute the installation and rollback rehearsal in a clean environment, and complete the [final review](final-review.md). Then preserve the benchmark and readiness artifacts with the exact source revision they describe.
+Seven days later, rebuild the ten-module sequence and the core **production decision record** without the book. Write a fresh example for every relationship you cannot recover. Re-reading a solution without recreating the model does not count as retained learning.

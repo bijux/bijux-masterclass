@@ -1,6 +1,14 @@
-# Laboratory 5 — Bounded Throughput Tuner
+# Laboratory 85 — Bounded Throughput Tuner
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 85 chapter](../../course-book/module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md)
+**Course 9 · Module 85: Runtime Efficiency: Contention, Queueing, Batching, and Async Load**
+
+[Chapter](../../course-book/module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md) · [Workbook](../../course-book/module-85-runtime-efficiency-contention-queueing-batching-and-async-load/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Runtime Efficiency: Contention, Queueing, Batching, and Async Load**: When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency? The product must make **Separate service time, wait time, queue depth, concurrency, throughput, and utilization** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **saturation and queueing curve** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -75,3 +83,25 @@ For every accepted unit of work, prove that the experiment records exactly one t
 
 Which number in your report represents useful service capacity rather than admitted demand or queued intent? Defend that choice and show the terminal-accounting equation for the most overloaded run. If the equation does not balance, no batching or worker configuration may be recommended.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Bounded Throughput Tuner**.
+2. Draw the smallest **saturation and queueing curve** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Separate service time, wait time, queue depth, concurrency, throughput, and utilization.
+- Apply Little’s Law as a consistency check while stating its steady-state assumptions.
+- Find lock contention, convoying, hot sharding, wake amplification, and blocking-runtime violations.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 85 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **saturation and queueing curve**. Defend why your design is simpler than one plausible alternative under the new requirements.

@@ -1,68 +1,99 @@
 # Course 1 — Rust Foundations
 
-## Values, Ownership, and Complete Programs
+## Values, Ownership, Errors, and Complete Programs
 
-Learn to read Rust as a typed language, make ownership and failure visible, model valid states, and finish a complete tested program without depending on framework magic.
+## The promise
 
-## Why this course exists
+Course 1 makes ordinary Rust legible. It teaches you to read expressions as typed values, track ownership deliberately, model states with data types, treat failures as part of the interface, and finish a small program whose behavior is protected at several boundaries.
 
-Rust becomes difficult when syntax, ownership, domain modeling, error handling, and project structure are taught as separate lists. This course instead follows one program from expressions to a complete persistent command-line product. Every new feature answers a concrete question: what value exists, who owns it, which states are valid, how failure is represented, and which boundary proves the behavior. The result is not merely familiarity with syntax; it is the ability to make an independent change and explain why the program remains correct.
+> **Governing question:** How do Rust’s types, ownership rules, state models, and error boundaries combine into a complete program you can explain end to end?
 
-## Before you begin
+The program begins here: source text becomes typed expressions, values acquire owners, and small decisions become complete program behavior.
 
-Basic programming experience with variables, conditions, loops, functions, and collections in any mainstream language. No systems-programming or Rust experience is assumed.
+## Before Day 1
 
-Keep a type-and-state trace, ownership ledger, and failure table beside the code. The record changes shape as the course advances, but its purpose is constant: make the decisive relationship visible before syntax hides it.
+You should already understand variables, conditions, loops, functions, and collections in at least one programming language. No systems-programming or memory-management background is assumed.
 
-## What you will be able to do
+From a blank page, sketch one earlier product or a comparable program. Mark an owner, a valid and invalid state, a failure path, cleanup, and a public promise. Repair any relationship you cannot explain before adding this course’s mechanisms.
 
-- Distinguish package, crate, target, module, compiler, Cargo profile, and build artifact, then use compiler diagnostics as structured evidence rather than trial-and-error instructions.
-- Derive the type and value of blocks, branches, tuples, arrays, function bodies, and semicolon-sensitive expressions before compiling.
-- Choose `if`, `match`, `for`, `while`, or `loop` from data shape and termination knowledge, then state the invariant maintained by the control flow.
-- Trace ownership through bindings, calls, returns, aggregates, destructuring, and scope exit; distinguish moves, `Copy`, explicit `Clone`, and destruction.
-- Choose owned values, shared references, mutable references, slices, `String`, and `&str` from the operation’s authority and lifetime requirements.
-- Model domain values with structs, newtypes, enums, methods, and exhaustive patterns so contradictory states are difficult or impossible to construct.
-- Use `Vec`, `HashMap`, slices, and iterators while predicting whether traversal borrows, mutates, or consumes the collection and what invalidation or ordering consequences follow.
-- Represent absence with `Option`, recoverable failure with `Result`, and invariant failure deliberately; propagate errors without routine `unwrap` or silent fallback.
-- Separate parsing, validation, domain mutation, rendering, and file I/O so failed input cannot partially corrupt accepted state.
-- Write foundational generic functions, trait implementations, conversions, and lifetime relationships without inventing abstractions before real duplication exists.
-- Split a product into restrained modules, a reusable library, and a thin binary while keeping representation private and the public API intentional.
-- Write unit, integration, and documentation tests that prove different boundaries; use rustfmt, Clippy, rustdoc, and Cargo’s build/test routes deliberately.
-- Build and maintain a versioned local storage format with deterministic output and contextual malformed-input errors.
-- Implement an unseen cross-layer feature from a behavioral specification, update regression evidence, and preserve earlier invariants.
-- Explain every important function signature in terms of ownership, mutation authority, failure, and public contract rather than saying only that the compiler accepts it.
+## Outcomes
 
-## What this course deliberately leaves for later
+- Distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project”.
+- Treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior.
+- Trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger.
+- Model shared and mutable references as permissions constrained by aliasing and validity.
+- Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity.
+- Use Vec, slices, and HashMap with explicit length, capacity, invalidation, lookup, and ordering assumptions.
+- Distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values.
+- Write generic functions and types whose bounds correspond to operations actually performed.
+- Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type.
+- Trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation.
+- Integrate all ten mechanisms in Taskboard without creating competing authorities.
+- Complete and defend an unseen change using a whole-program invariant map.
 
-This course deliberately stays in safe Rust and the standard library. Advanced lifetime design, smart-pointer architecture, unsafe code, macros, concurrency, async runtimes, and performance measurement belong to later courses.
+## The ten-day line
 
-## Ten-day route
+| Day | Module | Governing question | Capability that must become visible | Laboratory |
+|---:|---|---|---|---|
+| 1 | [1 — Compilation, Expressions, and Types](./module-01-compilation-expressions-and-types/index.md) | How does Rust turn source text into a typed program, and what type and value does every expression produce? | **Distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project”.** | [Measurement Report](../labs/module-01-measurement-report/README.md) |
+| 2 | [2 — Control Flow, Functions, and Invariants](./module-02-control-flow-functions-and-invariants/index.md) | How can control flow make every path, boundary, and loop invariant visible enough to test and review? | **Treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior.** | [Control-Flow Policy Engine](../labs/module-02-control-flow-policy/README.md) |
+| 3 | [3 — Ownership, Moves, Copying, and Destruction](./module-03-ownership-moves-copying-and-destruction/index.md) | Who owns each resource after every assignment, call, return, destructure, and scope exit? | **Trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger.** | [Ownership Intake Pipeline](../labs/module-03-ownership-intake/README.md) |
+| 4 | [4 — Borrowing, References, Slices, and Strings](./module-04-borrowing-references-slices-and-strings/index.md) | Which temporary permissions does an operation require, and how narrowly can those permissions be scoped? | **Model shared and mutable references as permissions constrained by aliasing and validity.** | [Borrowed Catalog](../labs/module-04-borrowed-catalog/README.md) |
+| 5 | [5 — Structs, Enums, Methods, and Pattern Matching](./module-05-structs-enums-methods-and-pattern-matching/index.md) | How can the type system make valid states representable and contradictory states difficult or impossible to construct? | **Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity.** | [Typed Workflow State Machine](../labs/module-05-state-machine/README.md) |
+| 6 | [6 — Collections, Iterators, and Closures](./module-06-collections-iterators-and-closures/index.md) | Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow? | **Use Vec, slices, and HashMap with explicit length, capacity, invalidation, lookup, and ordering assumptions.** | [In-Memory Task Board](../labs/module-06-in-memory-board/README.md) |
+| 7 | [7 — Errors, Parsing, Files, and Persistence](./module-07-errors-parsing-files-and-persistence/index.md) | Which failures are part of the product contract, where are they detected, and what state is visible after failure? | **Distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values.** | [Versioned Record Codec](../labs/module-07-record-codec/README.md) |
+| 8 | [8 — Generics, Traits, Conversions, and Lifetime Basics](./module-08-generics-traits-conversions-and-lifetime-basics/index.md) | What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose? | **Write generic functions and types whose bounds correspond to operations actually performed.** | [Trait and Lifetime Boundary](../labs/module-08-traits-and-lifetimes/README.md) |
+| 9 | [9 — Crates, Modules, Public APIs, Tests, and Documentation](./module-09-crates-modules-public-apis-tests-and-documentation/index.md) | Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary? | **Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type.** | [Library Boundary Refactor](../labs/module-09-library-boundaries/README.md) |
+| 10 | [10 — Integration and Independent Change](./module-10-integration-and-independent-change/index.md) | Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression? | **Trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation.** | [Inventory Ledger](../labs/module-10-inventory-ledger/README.md) |
 
-1. [Module 1: Compilation, Expressions, and Types](module-01-compilation-expressions-and-types/index.md) — How does Rust turn source text into a typed program, and what type and value does every expression produce?
-2. [Module 2: Control Flow, Functions, and Invariants](module-02-control-flow-functions-and-invariants/index.md) — How can control flow make every path, boundary, and loop invariant visible enough to test and review?
-3. [Module 3: Ownership, Moves, Copying, and Destruction](module-03-ownership-moves-copying-and-destruction/index.md) — Who owns each resource after every assignment, call, return, destructure, and scope exit?
-4. [Module 4: Borrowing, References, Slices, and Strings](module-04-borrowing-references-slices-and-strings/index.md) — Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?
-5. [Module 5: Structs, Enums, Methods, and Pattern Matching](module-05-structs-enums-methods-and-pattern-matching/index.md) — How can the type system make valid states representable and contradictory states difficult or impossible to construct?
-6. [Module 6: Collections, Iterators, and Closures](module-06-collections-iterators-and-closures/index.md) — Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow?
-7. [Module 7: Errors, Parsing, Files, and Persistence](module-07-errors-parsing-files-and-persistence/index.md) — Which failures are part of the product contract, where are they detected, and what state is visible after failure?
-8. [Module 8: Generics, Traits, Conversions, and Lifetime Basics](module-08-generics-traits-conversions-and-lifetime-basics/index.md) — What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose?
-9. [Module 9: Crates, Modules, Public APIs, Tests, and Documentation](module-09-crates-modules-public-apis-tests-and-documentation/index.md) — Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?
-10. [Module 10: Integration and Independent Change](module-10-integration-and-independent-change/index.md) — Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?
+The table is a dependency chain, not a menu. A later module may use an earlier mechanism but may not silently weaken its ownership, failure, ordering, capacity, safety, compatibility, or evidence contract.
 
-## How the learning surfaces fit
+## Decision rules
 
-The chapter is the authoritative explanation. The workbook exposes the model you actually hold through prediction, repair, construction, transfer, and defense. The independent lab removes accumulated capstone complexity so one mechanism remains visible. The capstone increment then asks that mechanism to coexist with every earlier decision.
+| Decision | Rule used throughout this course |
+|---|---|
+| Type choice | Choose from the domain range, sign, precision, and overflow policy—not from example habit. |
+| Ownership choice | Consume only when the caller should lose the value; borrow for temporary access; clone only when the product needs two independent owners. |
+| State model | Prefer one enum state over several flags that can contradict each other. |
+| Failure model | Use `Option` for absence and `Result` for an operation that can fail with useful information. |
+| Test boundary | Test the public behavior at the narrowest boundary that can observe the promise. |
 
-The cumulative product is **Taskboard**: a persistent typed command-line task board that grows from pure functions into a library, binary, storage format, tests, documentation, and an independently designed feature. Do not read the complete implementation before attempting the corresponding increment; the value of the capstone is the sequence of design decisions, not possession of the finished source.
+Use these rules during prediction and review. When a rule does not decide the case, write the missing product requirement instead of selecting an API by habit.
 
-Use the [compiler investigations](../compiler-labs/README.md), the [ten-day study plan](study-plan.md), the [Taskboard engineering guide](capstone.md), the [course reference](reference.md), and the [independent final review](final-review.md).
+## The reasoning record
 
-## Completion standard
+The ten module-specific records culminate in a **whole-program invariant map**. Trace type, value, owner, state, and error from source input to visible output. Keep the record small enough to inspect but complete enough to expose the first unsupported assumption.
 
-The course is complete when you can satisfy the public behavior, explain the decisive rule without notes, repair a misleading implementation without weakening its requirement, and transfer the mechanism to the final independent product. A passing test suite without a causal model is incomplete; a persuasive explanation without working evidence is also incomplete.
+## Scope and handoff
 
-## Course handoff
+The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction.
 
-Course 2 keeps the same ownership model but studies it at the level of places, provenance, destruction, sharing, layout, and address sensitivity.
+Course 2 returns to ownership at a deeper level: places, loans, lifetimes, destruction, shared liveness, representation, variance, and pinning.
 
-[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)
+## Capstone — Taskboard
+
+Taskboard is a local persistent command-line work queue. Its small domain forces types, ownership, parsing, state transitions, storage, errors, modules, tests, and process behavior to work together without hiding the language behind a framework.
+
+Open the [engineering guide](capstone.md) before Day 1 so the final architecture is visible. Implement only the current increment. The independent laboratory remains separate so that the mechanism can be learned without hiding behind accumulated capstone code.
+
+## Completion
+
+The course is complete when you can build and defend:
+
+> Build a small persistent inventory program from a behavioral contract. It must use typed states, contextual errors, deterministic storage, a library/binary split, and tests that protect both successful and failing behavior.
+
+and then change the capstone under this constraint:
+
+> Add one cross-layer Taskboard feature—such as due dates or labels—without weakening deterministic storage, typed transitions, or failure atomicity.
+
+A passing test suite is necessary. It is not sufficient unless you can explain why the tests are capable of falsifying the claim and which target-, scheduler-, workload-, peer-, or policy-dependent facts remain outside them.
+
+## Continue
+
+- [Ten-day plan](study-plan.md)
+- [Module 1 — Compilation, Expressions, and Types](./module-01-compilation-expressions-and-types/index.md)
+- [Taskboard engineering guide](capstone.md)
+- [Course reference](reference.md)
+- [Final review](final-review.md)
+- [Compiler and design investigations](../compiler-labs/README.md)
+- [Independent laboratories](../labs/)

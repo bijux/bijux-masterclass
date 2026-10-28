@@ -1,4 +1,43 @@
-# Production Engineering Reference
+# Course 9 Reference Desk — Rust Performance and Production Engineering
+
+Use this page while designing or reviewing. It is a decision aid, not a replacement for the module explanations.
+
+## Governing question
+
+> Which measurements, resource bounds, signals, security controls, artifact records, and operating policies make a Rust system defensible under representative load?
+
+## Working record
+
+Keep a performance claim, workload description, benchmark boundary, cost model, allocation ledger, byte journey, saturation curve, signal dictionary, SLO/error-budget policy, threat model, dependency dossier, release manifest, and rollout decision. A design is not ready when the record still contains unnamed owners, contradictory states, implicit failure, accidental order, unbounded accumulation, or a claim with no matching evidence.
+
+## Decision rules
+
+| Decision | Rule |
+|---|---|
+| Claim | State one falsifiable product claim before selecting a benchmark or profiler. |
+| Workload | Record scale, skew, data shape, environment, and exclusions. |
+| Cost | Separate CPU, allocation, copying, waiting, contention, system calls, and retained state. |
+| Signal | Every metric or event answers a named operational question and has a bounded label space. |
+| Release | Connect source, lockfile, toolchain, target, profile, features, artifact digest, rollout, and rollback. |
+
+## Module quick reference
+
+| Module | Mechanism | Minimum usable outcome |
+|---:|---|---|
+| 81 | Performance Contracts, Workloads, and Benchmark Design | turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle |
+| 82 | CPU Profiling, Cost Models, and Hot-Path Optimization | choose sampling, instrumentation, counters, and targeted tracing based on the question being asked |
+| 83 | Allocation, Memory Footprint, and Ownership Cost | distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count |
+| 84 | Data Movement, Buffering, and Zero-Copy Boundaries | trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers |
+| 85 | Runtime Efficiency: Contention, Queueing, Batching, and Async Load | separate service time, wait time, queue depth, concurrency, throughput, and utilization |
+| 86 | Observability: Structured Tracing, Metrics, and Diagnostic Context | separate events, spans, metrics, profiles, and domain audit records by the questions they can answer |
+| 87 | Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation | write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous |
+| 88 | Security and Supply-Chain Engineering | identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service |
+| 89 | Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases | explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy |
+| 90 | Production Readiness, Capacity Planning, Rollouts, and Incident Learning | write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery |
+
+## Claim boundary
+
+Separate language guarantees, library contracts, product policy, target observations, and measured artifact facts. When an exact API or version detail matters, follow the primary source from [Source Notes](../../SOURCE_NOTES.md).
 
 This reference condenses the distinctions used throughout Course 9. It is not a replacement for the chapters. Use it when writing a benchmark contract, reviewing a profile, designing telemetry, or preparing a release.
 

@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 40: Functional Architecture Synthesis
+# Reasoned Solutions — Module 40: Functional Architecture Synthesis
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-route-analysis-engine/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Functional Architecture Synthesis**, not to substitute for an attempt. The decisive question is: *How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 40: Functional Architecture Synthesis**. Compare the reasoning against this question: *How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ Boxing every iterator hides concrete types and may add allocation/dynamic dispat
 
 Macros may reduce repetitive implementations, generate adapters, derive parsing/reporting boilerplate, or enforce declarative schemas. They must not erase understanding of closure capture, iterator laziness, failure topology, accumulator invariants, effect boundaries, or public semantics. Before macro construction, the expanded behavior should be implementable and testable by hand. Course 4 hands off stable patterns; Course 5 must not use code generation to conceal unresolved design.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-10-route-analysis-engine/solution`](../../labs/module-10-route-analysis-engine/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **Functional Architecture Synthesis**, compare the contract, invariant, fail
 - Defend the architecture, its rejected alternatives, and its remaining limits under oral review.
 
 A complete explanation of **Functional Architecture Synthesis** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?
+
+Build a **whole-pipeline architecture map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Integrate closures, iterators, folds, error traversal, custom protocols, and effect isolation coherently.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Refactor between loops and combinators without changing observable behavior.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Implement an unseen feature across parser, transformation core, reducer, report, CLI, and tests.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Defend the architecture, its rejected alternatives, and its remaining limits under oral review.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the whole-pipeline architecture map.
+
+### Laboratory transfer review
+
+For [Route Analysis Engine](../../labs/module-10-route-analysis-engine/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 40 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Functional Architecture Synthesis**, which relationship decides this question: “How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

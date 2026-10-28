@@ -1,8 +1,11 @@
-# Module 70: Integrated Concurrent Architecture, Testing, and Audit
+# Module 70 — Integrated Concurrent Architecture, Testing, and Audit
 
-**Course 7, day 10 · Module 70 of 90**  
+**Course 7 · Day 10 · Module 70 of 100**
+`██████████████████░░░░░░░` **70/100**
 
-**70/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-concurrent-verifier/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 69: Rayon, Work Stealing, and Deterministic Parallelism](../module-69-rayon-work-stealing-and-deterministic-parallelism/index.md) · [Module 71: Futures, Polling, Wakers, and Async State Machines →](../../../08-rust-async-networked-services/course-book/module-71-futures-polling-wakers-and-async-state-machines/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ The previous nine modules each isolated one proof technique. Production defects 
 The final module builds an architecture review method and completes BatchWeave. It introduces no new primitive. Its standard is independent transfer: given a new cross-cutting requirement, you must update all affected ledgers, code paths, tests, resource bounds, and claims without weakening earlier contracts.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 69 established **Rayon, Work Stealing, and Deterministic Parallelism**. Before continuing, verify that you can choose task granularity, custom pool size, and sequential cutoffs from a cost hypothesis that course 9 can measure. This module preserves that capability and adds the ability to construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and cli boundaries;. Module 71, **Futures, Polling, Wakers, and Async State Machines**, will rely on both when it asks: *What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled?*
+
+### Scope boundary
+
+This module owns the reasoning for **integrated concurrent architecture, testing, and audit** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -40,7 +51,7 @@ A concurrent design review should keep six synchronized artifacts:
 5. **determinism ledger:** which orders may vary and which outputs are normalized;
 6. **resource ledger:** maxima for input, queue, active work, threads, messages, and allocation.
 
-A code change is incomplete until affected rows change. This is not internal bureaucracy; it is a reader-facing explanation of the product’s concurrency contract.
+A code change is incomplete until affected rows change. This is not internal bureaucracy; it is a main explanation of the product’s concurrency contract.
 
 ### BatchWeave topology
 
@@ -175,6 +186,24 @@ When asked to add priorities, retries, deadlines, streaming input, or partial re
 
 The final assessment gives an unseen feature and scores the completeness of this impact analysis before code style.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and CLI boundaries, construct one positive and one causal negative example. Mark the first decisive fact in the **concurrent architecture dossier** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For maintain ownership, synchronization, liveness, failure, determinism, and resource ledgers together, construct one positive and one causal negative example. Mark the first decisive fact in the **concurrent architecture dossier** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For prove boundedness for jobs, payloads, queue slots, workers, result messages, report threads, and output storage, construct one positive and one causal negative example. Mark the first decisive fact in the **concurrent architecture dossier** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For derive exactly one terminal outcome per manifest job under success, domain failure, panic, cancellation, and submission interruption, construct one positive and one causal negative example. Mark the first decisive fact in the **concurrent architecture dossier** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The final report should be derived from authoritative outcomes, not from execution timing or live counters:
@@ -268,4 +297,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Concurrent Verifier](../../labs/module-10-concurrent-verifier/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 71 — Futures, Polling, Wakers, and Async State Machines](../../../08-rust-async-networked-services/course-book/module-71-futures-polling-wakers-and-async-state-machines/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

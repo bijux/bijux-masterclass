@@ -1,9 +1,11 @@
-# 10 — Integration and Independent Change
+# Module 10 — Integration and Independent Change
 
-**Course 1, day 10 · Module 10 of 90**  
-`███░░░░░░░░░░░░░░░░░` **10/90**
+**Course 1 · Day 10 · Module 10 of 100**
+`██░░░░░░░░░░░░░░░░░░░░░░░` **10/100**
 
-[← Module 9: Crates, Modules, Public APIs, Tests, and Documentation](../module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 11: Places, Move Paths, and Advanced Borrowing →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-inventory-ledger/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 9: Crates, Modules, Public APIs, Tests, and Documentation](../module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [Module 11: Places, Move Paths, and Advanced Borrowing →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 The first course ends by removing the tutorial scaffold. Every earlier mechanism must now cooperate in one change that crosses model, parser, storage, tests, documentation, and CLI behavior. The goal is not another Rust feature; it is proof that you can reason through a complete small program independently.
+
+### Prerequisite bridge
+
+Module 9 established **Crates, Modules, Public APIs, Tests, and Documentation**. Before continuing, verify that you can separate a thin effectful binary shell from a testable library core. This module preserves that capability and adds the ability to trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation. Module 11, **Places, Move Paths, and Advanced Borrowing**, will rely on both when it asks: *Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?*
+
+### Scope boundary
+
+This module owns the reasoning for **integration and independent change** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -616,6 +626,24 @@ Choose a domain unrelated to task management. In one page, design:
 
 Then implement a 150–300 line safe-Rust library and one thin executable or example. The design should resemble the domain, not the capstone directory.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-program invariant map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For preserve failure atomicity, deterministic behavior, and public invariants while refactoring across architectural layers, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-program invariant map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For review unfamiliar Rust for ownership workarounds, swallowed errors, invalid-state models, and missing evidence, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-program invariant map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For build a closed-book small program and an independent capstone feature from specification only, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-program invariant map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Implement an independently selected cross-layer feature and defend the entire path from domain invariant to exit status. This is the transfer proof for Course 1. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -645,11 +673,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [Cargo Book: Package layout](https://doc.rust-lang.org/cargo/guide/project-layout.html)
 
-[← Module 9](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 11 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
+[← Module 9](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 11 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
 
 ## Continue
 
-1. Complete the [Module 10 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 10 — Inventory Ledger](../../labs/module-10-inventory-ledger/README.md) from its public contract.
-3. Apply the Module 10 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 11 — Places, Move Paths, and Advanced Borrowing](../../../02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,9 +1,11 @@
-# 28 — Boundary Traits and Adapters
+# Module 28 — Boundary Traits and Adapters
 
-**Course 3, day 8 · Module 28 of 90**  
-`█████████░░░░░░░░░░░` **28/90**
+**Course 3 · Day 8 · Module 28 of 100**
+`███████░░░░░░░░░░░░░░░░░░` **28/100**
 
-[← Module 27: Typestate and Capability-Oriented APIs](../module-27-typestate-and-capability-oriented-apis/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 29: Public API Evolution →](../module-29-public-api-evolution/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-boundary-ports/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 27: Typestate and Capability-Oriented APIs](../module-27-typestate-and-capability-oriented-apis/index.md) · [Module 29: Public API Evolution →](../module-29-public-api-evolution/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 A well-modeled core still has to meet files, clocks, stores, callbacks, and foreign types. Boundary traits and adapters now provide narrow seams without turning every concrete operation into an interface. Conversion traits are taught as contracts with semantic differences, not interchangeable conveniences.
+
+### Prerequisite bridge
+
+Module 27 established **Typestate and Capability-Oriented APIs**. Before continuing, verify that you can quantify typestate complexity and choose a runtime state machine when appropriate. This module preserves that capability and adds the ability to design extension traits, closure adapters, and conversion boundaries with precise contracts. Module 29, **Public API Evolution**, will rely on both when it asks: *How can a public trait-based API evolve when downstream crates may both call it and implement it?*
+
+### Scope boundary
+
+This module owns the reasoning for **boundary traits and adapters** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -446,6 +456,24 @@ A fake port that returns canned success for every input can make the core look c
 
 For each port, record the number of production implementations, test implementations, call sites, translated error variants, and external concepts hidden. A trait with one implementation and no substitution pressure may be premature. A port with dozens of mirrored methods is probably an SDK copy. The ideal boundary is narrow enough to explain in one paragraph and rich enough to protect a real application decision.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For design extension traits, closure adapters, and conversion boundaries with precise contracts, construct one positive and one causal negative example. Mark the first decisive fact in the **adapter boundary map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For use generic or dynamic ports according to ownership and deployment needs, construct one positive and one causal negative example. Mark the first decisive fact in the **adapter boundary map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For build test doubles that preserve the production contract rather than mirror internals, construct one positive and one causal negative example. Mark the first decisive fact in the **adapter boundary map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For recognize visitor, repository, and service abstractions that add more ceremony than leverage, construct one positive and one causal negative example. Mark the first decisive fact in the **adapter boundary map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Add narrow ports, production adapters, fakes, and conversion boundaries. Each trait must correspond to a real substitution need rather than a desire to mock everything. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -476,11 +504,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [AsRef](https://doc.rust-lang.org/std/convert/trait.AsRef.html)
 - [Borrow](https://doc.rust-lang.org/std/borrow/trait.Borrow.html)
 
-[← Module 27](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 29 →](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md)
+[← Module 27](../../../03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 29 →](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md)
 
 ## Continue
 
-1. Complete the [Module 28 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 28 — Boundary Ports](../../labs/module-08-boundary-ports/README.md) from its public contract.
-3. Apply the Module 28 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 29 — Public API Evolution](../module-29-public-api-evolution/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,9 +1,11 @@
-# 07 — Errors, Parsing, Files, and Persistence
+# Module 07 — Errors, Parsing, Files, and Persistence
 
-**Course 1, day 7 · Module 7 of 90**  
-`██░░░░░░░░░░░░░░░░░░` **7/90**
+**Course 1 · Day 7 · Module 7 of 100**
+`██░░░░░░░░░░░░░░░░░░░░░░░` **7/100**
 
-[← Module 6: Collections, Iterators, and Closures](../module-06-collections-iterators-and-closures/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 8: Generics, Traits, Conversions, and Lifetime Basics →](../module-08-generics-traits-conversions-and-lifetime-basics/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-record-codec/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 6: Collections, Iterators, and Closures](../module-06-collections-iterators-and-closures/index.md) · [Module 8: Generics, Traits, Conversions, and Lifetime Basics →](../module-08-generics-traits-conversions-and-lifetime-basics/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Collections make input processing possible, but real input is missing, malformed, duplicated, or unreadable. This module turns failure into part of the type contract and separates parsing, validation, I/O, and state mutation. That separation is the foundation for trustworthy persistence in every later capstone.
+
+### Prerequisite bridge
+
+Module 6 established **Collections, Iterators, and Closures**. Before continuing, verify that you can produce deterministic public output even when internal storage has unspecified iteration order. This module preserves that capability and adds the ability to distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values. Module 8, **Generics, Traits, Conversions, and Lifetime Basics**, will rely on both when it asks: *What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose?*
+
+### Scope boundary
+
+This module owns the reasoning for **errors, parsing, files, and persistence** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -834,6 +844,24 @@ A format deserves tests for:
 - truncated final record fails;
 - old target remains after an injected or naturally induced save failure where the test platform can establish it.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values, construct one positive and one causal negative example. Mark the first decisive fact in the **error map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For design typed errors with context and source preservation rather than flattening failures into strings, construct one positive and one causal negative example. Mark the first decisive fact in the **error map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For parse untrusted text transactionally by tokenizing, converting, validating, and only then committing state, construct one positive and one causal negative example. Mark the first decisive fact in the **error map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For build generic buffered reader and writer boundaries that preserve precise line-level diagnostics and source errors, construct one positive and one causal negative example. Mark the first decisive fact in the **error map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Add typed command and storage errors, a versioned codec, transactional loading, and explicit save behavior. Invalid input must not partially mutate the board. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -864,11 +892,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [std::io](https://doc.rust-lang.org/std/io/)
 
-[← Module 6](../../../01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 8 →](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md)
+[← Module 6](../../../01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 8 →](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md)
 
 ## Continue
 
-1. Complete the [Module 7 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 7 — Versioned Record Codec](../../labs/module-07-record-codec/README.md) from its public contract.
-3. Apply the Module 7 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 8 — Generics, Traits, Conversions, and Lifetime Basics](../module-08-generics-traits-conversions-and-lifetime-basics/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

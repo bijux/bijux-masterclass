@@ -1,12 +1,17 @@
 # Workbook — Module 46: Procedural Macro Execution and TokenStream Engineering
 
-[Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-06-token-stream-inspector/README.md) · [CommandForge guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Procedural Macro Execution and TokenStream Engineering** as an engineering mechanism rather than repeat its syntax. The governing question is:
+This workbook tests whether **Procedural Macro Execution and TokenStream Engineering** has become a usable model rather than remembered vocabulary. Its governing question is: *What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?* Preserve your first prediction and record decisive facts in a **token-stream phase map**. A repair succeeds only when it keeps the difficult product requirement visible.
 
-> What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?
+## Retrieval warm-up
 
-Describe the input as token trees—groups, delimiters, identifiers, literals, and punctuation spacing—before assigning Rust meaning. Separate what the procedural macro can inspect syntactically from what later name resolution and type checking establish.
+Before compiling or running anything:
+
+1. Restate the invariant from Module 45 — Macro Diagnostics, Testing, and Public API Design that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?**
+3. Draw the smallest **token-stream phase map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -81,6 +86,17 @@ Name four sources of nondeterministic generated output and repair each.
 
 For every answer that proposes a macro, add a one-sentence rejection criterion: what simpler condition would make ordinary Rust preferable?
 
+### Interleaved reasoning pass
+
+1. For **Explain when and how a procedural macro executes**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the token-stream phase map.
+2. For **Distinguish `TokenStream`, `TokenTree`, `Group`, `Ident`, `Punct`, `Literal`, and `Span`**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the token-stream phase map.
+3. For **Avoid treating token text as a fully resolved Rust AST**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the token-stream phase map.
+4. For **Emit deterministic tokens and source-local diagnostics**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the token-stream phase map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Procedural Macro Execution and TokenStream Engineering** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 ### Product: TokenStream Inspector
@@ -102,11 +118,27 @@ Before implementation, complete this module-specific design record:
 
 Build the smallest valid **token-stream structure and spans** surface first. Add one accepted case, one rejection owned by this mechanism, and one case that expands successfully before ordinary Rust rejects a later obligation. Compare with the reference only after those three phase boundaries are protected by tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **TokenStream Inspector**, record:
+
+- the public behavior that demonstrates **Explain when and how a procedural macro executes**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Create the `commandforge-macros` crate and a four-phase internal structure: parse, validate, normalize, generate. Pin the minimal proc-macro dependencies and ensure user mistakes become spanned compile errors rather than panics.
 
 The capstone increment must leave a visible design record: one diagram or table, one positive test, one negative test, and one statement of what this mechanism deliberately does **not** own.
+
+### Capstone invariant trace
+
+For the Module 46 CommandForge increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -142,3 +174,7 @@ Before advancing, defend these module-specific points:
 - why stringifying and reparsing tokens is fragile
 - which span is used for each emitted error
 - which effects would make expansion non-reproducible
+
+### Closed-book defense
+
+In five minutes, answer “What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?” using the **token-stream phase map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside CommandForge. A list of APIs without the deciding relationship is incomplete.

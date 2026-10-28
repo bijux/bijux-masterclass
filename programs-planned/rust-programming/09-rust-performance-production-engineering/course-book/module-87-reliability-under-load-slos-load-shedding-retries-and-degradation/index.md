@@ -1,8 +1,11 @@
 # Module 87 — Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation
 
-**87/90** · Course 9 · Module 87 of 90
+**Course 9 · Day 7 · Module 87 of 100**
+`██████████████████████░░░` **87/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-overload-control-simulator/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 86: Observability: Structured Tracing, Metrics, and Diagnostic Context](../module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md) · [Module 88: Security and Supply-Chain Engineering →](../module-88-security-and-supply-chain-engineering/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 Signals reveal failure; Module 87 decides how the product behaves when failure or excess demand occurs. Reliability is not the absence of errors. It is the preservation of explicit outcomes, deadlines, capacity, and recovery behavior when the normal envelope is exceeded.
 
 This module connects service-level objectives to concrete admission, retry, and degradation policies. Those policies must protect useful work without hiding incomplete results or amplifying load.
+
+### Prerequisite bridge
+
+Module 86 established **Observability: Structured Tracing, Metrics, and Diagnostic Context**. Before continuing, verify that you can test observability output for required fields, redaction, boundedness, and deterministic semantics. This module preserves that capability and adds the ability to write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous. Module 88, **Security and Supply-Chain Engineering**, will rely on both when it asks: *Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions?*
+
+### Scope boundary
+
+This module owns the reasoning for **reliability under load: slos, load shedding, retries, and degradation** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -110,6 +121,24 @@ Partial or stale output must be labeled. If correctness cannot be preserved, rej
 
 One good sample is not recovery. Use separate enter and exit thresholds with enough evidence to prevent flapping.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous, construct one positive and one causal negative example. Mark the first decisive fact in the **SLO and overload policy** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For derive admission and shedding policies from protected resources and customer-visible priorities, construct one positive and one causal negative example. Mark the first decisive fact in the **SLO and overload policy** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For build retries around idempotency, one deadline budget, bounded attempts, and retryable classifications, construct one positive and one causal negative example. Mark the first decisive fact in the **SLO and overload policy** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For distinguish overload, dependency failure, local defect, malformed input, cancellation, and deliberate rejection, construct one positive and one causal negative example. Mark the first decisive fact in the **SLO and overload policy** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -194,7 +223,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 87 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Overload Control Simulator laboratory](../../labs/module-07-overload-control-simulator/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 88 — Security and Supply-Chain Engineering](../module-88-security-and-supply-chain-engineering/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

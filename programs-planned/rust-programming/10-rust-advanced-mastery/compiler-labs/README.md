@@ -1,13 +1,29 @@
 # Course 10 Compiler and Design Investigations
 
-Course 10 contains eighty isolated cases, eight per module. Freeze the predicted outcome before running a case. For every case record the earliest decisive phase, the exact relationship that permits or rejects the program, the smallest requirement-preserving repair, and one tempting change that would weaken the product contract.
+These investigations train causal prediction. They are not quizzes about memorizing diagnostic wording. Each specimen isolates one language, runtime, build, schedule, or design relationship from Advanced Rust Mastery.
 
-The outcome categories are `compile-pass`, `compile-fail`, and `manual-review`. A manual-review case compiles because the disputed claim concerns compatibility, release policy, artifact scope, or architecture rather than Rust legality. Compilation is therefore only the beginning of the answer.
+## Method
 
-Run the complete set from the course directory:
+1. Read the specimen without compiling.
+2. Classify the expected result: compile pass, compile fail, run pass, run fail, or manual design review.
+3. Draw the smallest compiler-phase record, trait-goal graph, lifetime family, witness proof, open/closed variation map, unsafe state-and-operation dossier, source-to-artifact observation, verification claim matrix, compatibility matrix, migration plan, and architecture decision record capable of deciding it.
+4. State the intended cause and the earliest decisive phase or event.
+5. Compile or run only after the prediction is fixed.
+6. Apply the smallest principled repair.
+7. Record one tempting repair that weakens the product contract.
+
+A correct pass/fail guess with the wrong cause is not a successful investigation. When several diagnostics appear, identify which one would remain after unrelated mistakes were removed.
+
+Run every course specimen with:
 
 ```bash
 make compiler-labs
 ```
 
-A negative case counts only when it fails for the intended cause. Missing imports, syntax errors, unrelated warnings, and stale APIs do not prove the target rule. Positive cases must exercise the relevant capability rather than compile because the operation is unused.
+or run only this course from the program root:
+
+```bash
+python3 tools/run_compiler_labs.py 10-rust-advanced-mastery
+```
+
+Direct `rustc` cases compile into temporary directories. Cargo fixtures use isolated target directories. Negative cases are successful only when they fail for the intended relationship, not merely because the file contains some unrelated error.

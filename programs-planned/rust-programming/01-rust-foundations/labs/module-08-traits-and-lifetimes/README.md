@@ -1,6 +1,14 @@
 # Laboratory 8 — Trait and Lifetime Boundary
 
-This is the independent product for **Course 1, Module 8: Generics, Traits, Conversions, and Lifetime Basics**. Read the [module chapter](../../course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md) and complete its [workbook](../../course-book/module-08-generics-traits-conversions-and-lifetime-basics/workbook.md) before consulting the reference implementation.
+**Course 1 · Module 8: Generics, Traits, Conversions, and Lifetime Basics**
+
+[Chapter](../../course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [Workbook](../../course-book/module-08-generics-traits-conversions-and-lifetime-basics/workbook.md) · [Taskboard guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Generics, Traits, Conversions, and Lifetime Basics**: What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose? The product must make **Write generic functions and types whose bounds correspond to operations actually performed** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **trait and lifetime contract** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -95,23 +103,35 @@ The lab passes only when removing any bound either makes a body operation illega
 
 ## Working route
 
-Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Work from `starter/`, add the first adversarial test before the design-changing repair, and complete the workbook’s transfer problem before reading the reference implementation.
-
-```bash
-cd starter
-cargo test
-cargo fmt -- --check
-cargo clippy -- -D warnings
-```
+1. Read the product contract and run the starter’s baseline checks for **Trait and Lifetime Boundary**.
+2. Draw the smallest **trait and lifetime contract** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to Taskboard so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
 
 ## Completion check
 
 The laboratory is complete when the required behavior and failure paths pass and you can answer this question without the chapter:
 
-> What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose?
+For **Laboratory 8 — Trait and Lifetime Boundary**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Demonstrate the same mechanism once in the workbook’s unrelated transfer domain. Name one shortcut that would compile or pass the happy path while weakening the product contract.
 
 ## Reference comparison
 
 Open [`solution/`](solution/) only after your implementation works or you have written a precise blocker. For **Trait and Lifetime Boundary**, compare accepted and rejected inputs, state after failure, ownership or authority, deterministic behavior, public surface, and justified cost before comparing syntax.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Write generic functions and types whose bounds correspond to operations actually performed.
+- Define and implement small traits as behavioral contracts without abstraction theater.
+- Use Display, Error, From, FromStr, Read, BufRead, and Write at natural boundaries.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 8 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **trait and lifetime contract**. Defend why your design is simpler than one plausible alternative under the new requirements.

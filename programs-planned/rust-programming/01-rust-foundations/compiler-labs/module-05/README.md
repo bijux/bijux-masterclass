@@ -1,28 +1,11 @@
-# Compiler investigation — Module 5: Structs, Enums, Methods, and Pattern Matching
+# Module 5 Investigations — Structs, Enums, Methods, and Pattern Matching
 
-[Compiler-investigation method](../README.md) · [Module chapter](../../course-book/module-05-structs-enums-methods-and-pattern-matching/index.md)
+[Chapter](../../course-book/module-05-structs-enums-methods-and-pattern-matching/index.md) · [Workbook](../../course-book/module-05-structs-enums-methods-and-pattern-matching/workbook.md) · [Course investigation method](../README.md)
 
-This set tests whether the model from Module 5 survives contact with small, adversarial programs. Predict each specimen without opening the machine-readable manifest or the module solutions.
+> **Prediction question:** How can the type system make valid states representable and contradictory states difficult or impossible to construct?
 
-| Specimen | Question to resolve before compiling |
-|---|---|
-| [`01-private-newtype-field.rs`](01-private-newtype-field.rs) | Which compile-time or runtime rule decides the behavior of **private newtype field**, and what evidence would distinguish the closest competing explanation? |
-| [`02-non-exhaustive-match.rs`](02-non-exhaustive-match.rs) | Which compile-time or runtime rule decides the behavior of **non exhaustive match**, and what evidence would distinguish the closest competing explanation? |
-| [`03-moved-enum-payload.rs`](03-moved-enum-payload.rs) | Which compile-time or runtime rule decides the behavior of **moved enum payload**, and what evidence would distinguish the closest competing explanation? |
-| [`04-option-is-not-sentinel.rs`](04-option-is-not-sentinel.rs) | Which compile-time or runtime rule decides the behavior of **option is not sentinel**, and what evidence would distinguish the closest competing explanation? |
-| [`05-method-receiver-mismatch.rs`](05-method-receiver-mismatch.rs) | Which compile-time or runtime rule decides the behavior of **method receiver mismatch**, and what evidence would distinguish the closest competing explanation? |
-| [`06-let-else-diverges.rs`](06-let-else-diverges.rs) | Which compile-time or runtime rule decides the behavior of **let else diverges**, and what evidence would distinguish the closest competing explanation? |
+Before invoking a compiler or runner, draw a **state model** and classify the expected result. The prediction must identify the earliest decisive phase or event and show why the result follows from **Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity**. Diagnostic wording may vary; the causal relationship may not.
 
-## Work through the set
+After observing Module 5 — Structs, Enums, Methods, and Pattern Matching, preserve two repairs. The first is the smallest change that keeps the product requirement. The second is a tempting change that compiles, runs, or quiets the tool by erasing information, weakening a bound, changing ownership, hiding a failure, or narrowing the public contract. Explain precisely why the second repair is unacceptable here.
 
-For each file, draw or write the smallest model that can decide it: types and expression results, owners and loans, trait obligations, iterator state, macro phase, raw-memory obligations, or operating-system boundary state. Then classify the outcome and name the first causal rule.
-
-Compile only after the prediction is complete. A correct pass/fail guess with the wrong cause is not a successful investigation. When several errors appear, identify which one would remain after secondary errors were removed.
-
-## Repair and transfer
-
-Repair one rejecting or behaviorally defective specimen without deleting the requirement it was designed to express. Preserve the original product need while changing only the mechanism that violated it.
-
-Next, alter one assumption—ownership mode, lifetime source, trait bound, adapter order, macro input, or boundary condition. Predict the result before compiling.
-
-Finish by stating how the same rule constrains the module laboratory or cumulative capstone. This connects an isolated diagnostic to a real design decision.
+Finish by creating a new specimen that changes one relationship while keeping every incidental detail stable. Predict whether that variation changes parsing, name resolution, type checking, trait solving, borrow checking, build execution, runtime behavior, schedule behavior, or only architectural quality.

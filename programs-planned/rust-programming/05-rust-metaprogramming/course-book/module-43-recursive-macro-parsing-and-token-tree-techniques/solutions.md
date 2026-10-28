@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 43: Recursive Macro Parsing and Token-Tree Techniques
+# Reasoned Solutions — Module 43: Recursive Macro Parsing and Token-Tree Techniques
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-03-state-machine-dsl/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare whether every recursive branch consumes input or terminates, whether malformed sequences fail near the offending token, whether parsing and code generation are separated, whether the grammar can be stated without reading the implementation. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 43: Recursive Macro Parsing and Token-Tree Techniques**. Compare the reasoning against this question: *How can a declarative macro process a nontrivial token language with explicit parser state, guaranteed progress, and bounded complexity?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ Specific patterns that recognize the nearby intended shape should precede the ge
 
 Classic TT munchers can exhibit quadratic matching because each recursive call matches a long remaining suffix. Grouping entries with repetition, using larger productions, or delegating a genuinely rich grammar to a procedural parser reduces repeated work. The answer should state that compile-time cost is part of API quality.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-03-state-machine-dsl/solution`](../../labs/module-03-state-machine-dsl/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - when a procedural parser would be clearer;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How can a declarative macro process a nontrivial token language with explicit parser state, guaranteed progress, and bounded complexity?
+
+Build a **recursive grammar state**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Model recursive macro rules as parser states and transitions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Prove that each recursive step consumes input or reaches a base case.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use internal arms and accumulators without exposing implementation syntax.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Distinguish token-tree recursion from arbitrary semantic parsing.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Control expansion depth and avoid accidental quadratic work.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Model recursive macro rules as parser states and transitions.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the recursive grammar state.
+
+### Laboratory transfer review
+
+For [State Machine DSL](../../labs/module-03-state-machine-dsl/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 43 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Recursive Macro Parsing and Token-Tree Techniques**, which relationship decides this question: “How can a declarative macro process a nontrivial token language with explicit parser state, guaranteed progress, and bounded complexity?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

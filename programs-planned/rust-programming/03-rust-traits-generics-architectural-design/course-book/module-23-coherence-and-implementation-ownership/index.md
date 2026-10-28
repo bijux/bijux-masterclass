@@ -1,9 +1,11 @@
-# 23 — Coherence and Implementation Ownership
+# Module 23 — Coherence and Implementation Ownership
 
-**Course 3, day 3 · Module 23 of 90**  
-`████████░░░░░░░░░░░░` **23/90**
+**Course 3 · Day 3 · Module 23 of 100**
+`██████░░░░░░░░░░░░░░░░░░░` **23/100**
 
-[← Module 22: Associated Types and Type Families](../module-22-associated-types-and-type-families/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 24: Static Polymorphism and Opaque Types →](../module-24-static-polymorphism-and-opaque-types/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-coherence-adapters/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 22: Associated Types and Type Families](../module-22-associated-types-and-type-families/index.md) · [Module 24: Static Polymorphism and Opaque Types →](../module-24-static-polymorphism-and-opaque-types/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Once implementations become generic, two seemingly reasonable `impl` blocks can overlap or claim a relationship no crate owns. Coherence is therefore taught before sophisticated dispatch. It forces architectural ownership decisions—newtype, extension trait, sealing, or local adapter—rather than compiler-driven improvisation.
+
+### Prerequisite bridge
+
+Module 22 established **Associated Types and Type Families**. Before continuing, verify that you can write law-oriented tests for a type-family abstraction. This module preserves that capability and adds the ability to predict whether an implementation satisfies coherence and orphan rules. Module 24, **Static Polymorphism and Opaque Types**, will rely on both when it asks: *When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?*
+
+### Scope boundary
+
+This module owns the reasoning for **coherence and implementation ownership** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -476,6 +486,24 @@ Direct implementation is forbidden because both sides are foreign. Three options
 
 The correct choice depends on whether the interpretation should travel as a type. The orphan rule forces the decision to be explicit rather than global.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For predict whether an implementation satisfies coherence and orphan rules, construct one positive and one causal negative example. Mark the first decisive fact in the **coherence ownership map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For detect overlapping blanket implementations and downstream compatibility hazards, construct one positive and one causal negative example. Mark the first decisive fact in the **coherence ownership map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use a newtype to establish local implementation ownership, construct one positive and one causal negative example. Mark the first decisive fact in the **coherence ownership map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design sealed and extension traits deliberately, construct one positive and one causal negative example. Mark the first decisive fact in the **coherence ownership map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Add local adapters, closure-backed rules, and sealed built-in markers without violating coherence. Record which crate owns every implementation relationship. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -505,11 +533,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Implementations](https://doc.rust-lang.org/reference/items/implementations.html)
 - [Rust Reference: Trait implementation coherence](https://doc.rust-lang.org/reference/items/implementations.html#trait-implementation-coherence)
 
-[← Module 22](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 24 →](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md)
+[← Module 22](../../../03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 24 →](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md)
 
 ## Continue
 
-1. Complete the [Module 23 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 23 — Coherence Adapters](../../labs/module-03-coherence-adapters/README.md) from its public contract.
-3. Apply the Module 23 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 24 — Static Polymorphism and Opaque Types](../module-24-static-polymorphism-and-opaque-types/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

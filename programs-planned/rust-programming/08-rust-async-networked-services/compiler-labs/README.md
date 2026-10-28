@@ -1,28 +1,29 @@
-# Course 8 Compiler and Contract Investigations
+# Course 8 Compiler and Design Investigations
 
-This directory contains eighty isolated cases. Forty are expected to compile and forty are expected to fail. Each case targets one type-system, lifetime, async-state, task-boundary, or protocol-interface rule used in the course.
+These investigations train causal prediction. They are not quizzes about memorizing diagnostic wording. Each specimen isolates one language, runtime, build, schedule, or design relationship from Rust Async and Networked Services.
 
-Before running a case, record:
+## Method
 
-1. whether it should compile;
-2. the decisive phase;
-3. the exact rule;
-4. the smallest principled repair;
-5. one repair that may compile but weakens the product design.
+1. Read the specimen without compiling.
+2. Classify the expected result: compile pass, compile fail, run pass, run fail, or manual design review.
+3. Draw the smallest future state table, wake-source map, task tree, buffer/frame ledger, connection state machine, protocol transition table, capacity ledger, cancellation trace, retry/commit matrix, and shutdown timeline capable of deciding it.
+4. State the intended cause and the earliest decisive phase or event.
+5. Compile or run only after the prediction is fixed.
+6. Apply the smallest principled repair.
+7. Record one tempting repair that weakens the product contract.
 
-Run all cases from the course root:
+A correct pass/fail guess with the wrong cause is not a successful investigation. When several diagnostics appear, identify which one would remain after unrelated mistakes were removed.
+
+Run every course specimen with:
 
 ```bash
 make compiler-labs
 ```
 
-A failed program counts only when it fails for the causal reason named in `manifest.json`. An unrelated typo is not evidence of the intended rule.
+or run only this course from the program root:
 
+```bash
+python3 tools/run_compiler_labs.py 08-rust-async-networked-services
+```
 
-## How to use the cases
-
-Each module contains eight isolated programs. Four are expected to compile and four are expected to be rejected. Do not read `manifest.json` before making your prediction; it is machine-readable verification metadata, not the learning route. For every case, record the expected outcome, the exact rule, the earliest compiler phase that can reject it, and the smallest repair that preserves the product requirement.
-
-A negative case is useful only when it fails for the intended cause. An unrelated syntax error, unused-item warning, missing import, or type mismatch does not prove the target async rule. The runner compiles direct cases with Rust 2024 Edition and warnings denied. After execution, compare the decisive diagnostic with the causal contract in the manifest. If they differ, repair the specimen rather than rationalizing the mismatch.
-
-The cases deliberately remain standard-library-only. They test the language-level boundaries underneath runtimes: future output types, `Send`, `'static`, pinning, ownership across async blocks, exhaustive protocol states, body types, and retry callback capability. Tokio- and Hyper-specific behavior belongs in the executable labs, where runtime and transport observations can be tested as behavior rather than mistaken for compiler rules.
+Direct `rustc` cases compile into temporary directories. Cargo fixtures use isolated target directories. Negative cases are successful only when they fail for the intended relationship, not merely because the file contains some unrelated error.

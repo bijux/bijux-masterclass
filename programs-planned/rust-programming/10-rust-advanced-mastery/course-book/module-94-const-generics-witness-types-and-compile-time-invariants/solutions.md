@@ -1,8 +1,8 @@
-# Module 94 Solutions — Const Generics, Witness Types, and Compile-Time Invariants
+# Reasoned Solutions — Module 94: Const Generics, Witness Types, and Compile-Time Invariants
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-bounded-matrix/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 94: Const Generics, Witness Types, and Compile-Time Invariants**. Compare the reasoning against this question: *Which numeric and state facts belong in types, which remain runtime data, and how do you avoid turning a library into an unusable type-level calculator?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the static/dynamic invariant table: the decisive rela
 
 **Principled repair.** Keep runtime policy dynamic unless callers need type-level composition or representation specialization. A small private specialization layer may bridge the two.
 
-A strong answer updates the static/dynamic invariant table and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Every configuration becomes const** while preserving the surrounding requirement. The static/dynamic invariant table must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — Witness constructor unchecked
 
@@ -40,7 +40,7 @@ A strong answer updates the static/dynamic invariant table and includes a negati
 
 **Principled repair.** Make unchecked construction unsafe/private or remove it. Safe constructors must establish the carried predicate.
 
-A strong answer updates the static/dynamic invariant table and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Witness constructor unchecked** while preserving the surrounding requirement. The static/dynamic invariant table must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Const arithmetic assumed infallible
 
@@ -48,7 +48,7 @@ A strong answer updates the static/dynamic invariant table and includes a negati
 
 **Principled repair.** Validate overflow where stable const expressions cannot encode the required proof; const knowledge does not make `usize` multiplication mathematically unbounded.
 
-A strong answer updates the static/dynamic invariant table and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Const arithmetic assumed infallible** while preserving the surrounding requirement. The static/dynamic invariant table must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Implement matrix multiplication with type-equal 
 
 The decisive acceptance criterion is: Incompatible shapes fail before runtime and valid shapes match a dynamic oracle.
 
-Evaluate the result through the static/dynamic invariant table; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Shape-checked multiplication**, apply the static/dynamic invariant table to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Witness API
 
@@ -66,7 +66,7 @@ The construction should answer: Build `BoundedIndex<N>` with private representat
 
 The decisive acceptance criterion is: The first invalid index is rejected for multiple `N`, including zero.
 
-Evaluate the result through the static/dynamic invariant table; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Witness API**, apply the static/dynamic invariant table to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Hybrid capacity design
 
@@ -74,7 +74,7 @@ The construction should answer: Compare inline fixed capacity with a dynamic `Ve
 
 The decisive acceptance criterion is: The decision identifies a real storage/composition requirement rather than style.
 
-Evaluate the result through the static/dynamic invariant table; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Hybrid capacity design**, apply the static/dynamic invariant table to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Instantiation budget
 
@@ -82,12 +82,11 @@ The construction should answer: List all const values used by a sample applicati
 
 The decisive acceptance criterion is: The report identifies unnecessary public instantiation freedom.
 
-Evaluate the result through the static/dynamic invariant table; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Instantiation budget**, apply the static/dynamic invariant table to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **Const Generics, Witness Types, and Compile-Time Invariants** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — static capacity versus runtime policy
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the static/dynami
 For every const parameter, answer: what downstream composition does it enable, what mutable state is still required, and what compatibility or code-generation cost does it create?
 
 The defense passes when it reconstructs the static/dynamic invariant table from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which numeric and state facts belong in types, which remain runtime data, and how do you avoid turning a library into an unusable type-level calculator?
+
+Build a **const witness proof**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Use const parameters when a numeric fact changes representation, layout, or legal composition.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Construct witness types only through checked functions and preserve their proof through private fields.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Distinguish compile-time capacity from runtime length and enforce both without off-by-one ambiguity.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design APIs that compose equal dimensions while rejecting mismatched shapes before execution.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Recognize code-size, inference, ergonomics, and semver costs created by excessive const parameterization.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Use const parameters when a numeric fact changes representation, layout, or legal composition.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the const witness proof.
+
+### Reference implementation comparison
+
+For [Bounded Matrix](../../labs/module-04-bounded-matrix/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 94 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Const Generics, Witness Types, and Compile-Time Invariants**, which relationship decides this question: “Which numeric and state facts belong in types, which remain runtime data, and how do you avoid turning a library into an unusable type-level calculator?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

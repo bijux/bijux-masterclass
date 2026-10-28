@@ -6,6 +6,59 @@ CommandForge is the cumulative product for Modules 41–50. It is not a general-
 
 The result must still be understandable as Rust. After expansion, the runtime crate contains ordinary structs, functions, constants, slices, error types, and command behavior. You should be able to reason about `add`, `slug`, `repeat`, and `contains` without reading the procedural-macro implementation. Conversely, you should be able to change argument-generation rules without touching the arithmetic or text behavior of the commands.
 
+## How this capstone completes the course
+
+CommandForge combines a declarative diagnostic catalog, a custom argument derive, a checked handler attribute, a typed command-catalog DSL, and deterministic build-script input while keeping runtime command behavior in ordinary Rust.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; CommandForge proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | Every generated fact has exactly one compile-time source of truth. |
+| 2 | Declarative syntax has an explicit accepted grammar and causal rejection rules. |
+| 3 | Expansion resolves definition-owned names through robust paths and preserves call-site inputs. |
+| 4 | Derives and attributes preserve supported generics, visibility, signatures, and user attributes. |
+| 5 | Typed DSLs separate syntax parsing, semantic validation, normalized model, and generation. |
+| 6 | Build generation declares inputs, writes deterministically under OUT_DIR, and never edits source. |
+
+For each CommandForge change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 41 | Metaprogramming Boundaries and the Expansion Model | Separate runtime abstraction from compile-time generation | [Decision Table Generator](../labs/module-01-decision-table-generator/README.md) |
+| 42 | Declarative Macros: Matchers, Fragments, and Repetition | Read a matcher as a grammar rather than as textual substitution | [Typed Map Macro](../labs/module-02-typed-map-macro/README.md) |
+| 43 | Recursive Macro Parsing and Token-Tree Techniques | Model recursive macro rules as parser states and transitions | [State Machine DSL](../labs/module-03-state-machine-dsl/README.md) |
+| 44 | Hygiene, Scope, Paths, and Cross-Crate Macros | Distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros | [Exported Registry Macro](../labs/module-04-exported-registry-macro/README.md) |
+| 45 | Macro Diagnostics, Testing, and Public API Design | Treat invocation grammar and generated Rust as two related public APIs | [Diagnostic Enum Macro](../labs/module-05-diagnostic-enum-macro/README.md) |
+| 46 | Procedural Macro Execution and TokenStream Engineering | Explain when and how a procedural macro executes | [TokenStream Inspector](../labs/module-06-token-stream-inspector/README.md) |
+| 47 | Custom Derive Macros and Structural Generation | Parse `DeriveInput` and distinguish structs, enums, and unions | [Field Names Derive](../labs/module-07-field-names-derive/README.md) |
+| 48 | Attribute Macros and Item Transformation | Parse attribute arguments independently from the attached item | [Checked Handler Attribute](../labs/module-08-checked-handler-attribute/README.md) |
+| 49 | Function-Like Procedural Macros and Typed DSLs | Design a bounded custom grammar with explicit compatibility space | [Route Table DSL](../labs/module-09-route-table-dsl/README.md) |
+| 50 | Build Scripts, Generated Code, and Compile-Time Architecture | Explain the Cargo build-script lifecycle and communication protocol | [Generated Code Build](../labs/module-10-generated-code-build/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **generation authority and reproducibility record** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. CommandForge ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## Product behavior
 
 CommandForge exposes these commands:

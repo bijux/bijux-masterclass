@@ -1,28 +1,11 @@
-# Compiler investigation — Module 6: Collections, Iterators, and Closures
+# Module 6 Investigations — Collections, Iterators, and Closures
 
-[Compiler-investigation method](../README.md) · [Module chapter](../../course-book/module-06-collections-iterators-and-closures/index.md)
+[Chapter](../../course-book/module-06-collections-iterators-and-closures/index.md) · [Workbook](../../course-book/module-06-collections-iterators-and-closures/workbook.md) · [Course investigation method](../README.md)
 
-This set tests whether the model from Module 6 survives contact with small, adversarial programs. Predict each specimen without opening the machine-readable manifest or the module solutions.
+> **Prediction question:** Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow?
 
-| Specimen | Question to resolve before compiling |
-|---|---|
-| [`01-into-iter-consumes-vector.rs`](01-into-iter-consumes-vector.rs) | Which compile-time or runtime rule decides the behavior of **into iter consumes vector**, and what evidence would distinguish the closest competing explanation? |
-| [`02-mutate-while-shared-iter.rs`](02-mutate-while-shared-iter.rs) | Which compile-time or runtime rule decides the behavior of **mutate while shared iter**, and what evidence would distinguish the closest competing explanation? |
-| [`03-collect-needs-type.rs`](03-collect-needs-type.rs) | Which compile-time or runtime rule decides the behavior of **collect needs type**, and what evidence would distinguish the closest competing explanation? |
-| [`04-index-can-panic.rs`](04-index-can-panic.rs) | Which compile-time or runtime rule decides the behavior of **index can panic**, and what evidence would distinguish the closest competing explanation? |
-| [`05-hash-order-is-not-contract.rs`](05-hash-order-is-not-contract.rs) | Which compile-time or runtime rule decides the behavior of **hash order is not contract**, and what evidence would distinguish the closest competing explanation? |
-| [`06-filter-borrows-source.rs`](06-filter-borrows-source.rs) | Which compile-time or runtime rule decides the behavior of **filter borrows source**, and what evidence would distinguish the closest competing explanation? |
+Before invoking a compiler or runner, draw a **collection and iteration trace** and classify the expected result. The prediction must identify the earliest decisive phase or event and show why the result follows from **Use Vec, slices, and HashMap with explicit length, capacity, invalidation, lookup, and ordering assumptions**. Diagnostic wording may vary; the causal relationship may not.
 
-## Work through the set
+After observing Module 6 — Collections, Iterators, and Closures, preserve two repairs. The first is the smallest change that keeps the product requirement. The second is a tempting change that compiles, runs, or quiets the tool by erasing information, weakening a bound, changing ownership, hiding a failure, or narrowing the public contract. Explain precisely why the second repair is unacceptable here.
 
-For each file, draw or write the smallest model that can decide it: types and expression results, owners and loans, trait obligations, iterator state, macro phase, raw-memory obligations, or operating-system boundary state. Then classify the outcome and name the first causal rule.
-
-Compile only after the prediction is complete. A correct pass/fail guess with the wrong cause is not a successful investigation. When several errors appear, identify which one would remain after secondary errors were removed.
-
-## Repair and transfer
-
-Repair one rejecting or behaviorally defective specimen without deleting the requirement it was designed to express. Preserve the original product need while changing only the mechanism that violated it.
-
-Next, alter one assumption—ownership mode, lifetime source, trait bound, adapter order, macro input, or boundary condition. Predict the result before compiling.
-
-Finish by stating how the same rule constrains the module laboratory or cumulative capstone. This connects an isolated diagnostic to a real design decision.
+Finish by creating a new specimen that changes one relationship while keeping every incidental detail stable. Predict whether that variation changes parsing, name resolution, type checking, trait solving, borrow checking, build execution, runtime behavior, schedule behavior, or only architectural quality.

@@ -1,8 +1,11 @@
-# Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections
+# Module 78 — HTTP Services with Hyper: Requests, Bodies, and Connections
 
-**Course 8, day 8 · Module 78 of 90**
+**Course 8 · Day 8 · Module 78 of 100**
+`████████████████████░░░░░` **78/100**
 
-**78/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-hyper-health-surface/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown](../module-77-cancellation-safety-deadlines-and-graceful-shutdown/index.md) · [Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing →](../module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ The first seven modules built the mechanics that web frameworks usually hide: fu
 Hyper is intentionally low level. It represents HTTP messages and drives connection state, but it does not choose an application router, JSON model, authentication policy, body limit, task tree, or graceful-shutdown design. That makes it appropriate for learning the boundary clearly. A high-level framework can be used later with better judgment because you will know which guarantees come from HTTP, Hyper, Tokio, and your application.
 
 JobWire uses HTTP only for operational read surfaces: `/health` and `/stats`. Its job protocol remains on the custom framed TCP channel. This separation demonstrates a common production architecture: one protocol optimized for domain interaction, another for standard operational integration.
+
+### Prerequisite bridge
+
+Module 77 established **Cancellation Safety, Deadlines, and Graceful Shutdown**. Before continuing, verify that you can state which operations may finish during shutdown and which must be rejected. This module preserves that capability and adds the ability to distinguish accepted transport, http connection future, request future, body stream, and application service;. Module 79, **Network Failure, Idempotency, Retries, and Deterministic Testing**, will rely on both when it asks: *When a network operation fails without revealing whether the remote side committed it, how do idempotency, retry budgets, failure classification, and deterministic tests preserve one semantic outcome?*
+
+### Scope boundary
+
+This module owns the reasoning for **http services with hyper: requests, bodies, and connections** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -175,6 +186,24 @@ HTTP keep-alive means a connection can remain idle after one request. Service sh
 
 This course capstone uses HTTP/1 to keep the connection lifecycle visible. HTTP/2 introduces multiplexed streams, stream-level flow control, and different head-of-line behavior. The architectural ledgers still apply, but capacities need stream-level dimensions. Do not generalize an HTTP/1 one-request-at-a-time assumption to HTTP/2.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish accepted transport, HTTP connection future, request future, body stream, and application service, construct one positive and one causal negative example. Mark the first decisive fact in the **HTTP boundary map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For serve HTTP/1 connections with Hyper over Tokio I/O, construct one positive and one causal negative example. Mark the first decisive fact in the **HTTP boundary map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For construct stable response body types and status codes, construct one positive and one causal negative example. Mark the first decisive fact in the **HTTP boundary map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For route by method and path without mixing broker logic into transport code, construct one positive and one causal negative example. Mark the first decisive fact in the **HTTP boundary map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 A pure router plus one connection driver keeps boundaries visible:
@@ -281,4 +310,4 @@ Continue only when you can explain:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Hyper Health Surface](../../labs/module-08-hyper-health-surface/README.md), and add the eighth [JobWire increment](../capstone.md#increment-8-add-an-honest-http-operational-surface). Then continue to [Module 79](../module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md).
+Continue to [Module 79 — Network Failure, Idempotency, Retries, and Deterministic Testing](../module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

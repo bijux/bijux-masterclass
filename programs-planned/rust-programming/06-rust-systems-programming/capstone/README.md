@@ -1,5 +1,43 @@
-
 # FrameVault
+
+## Course role
+
+FrameVault is a versioned binary archive with checked parsing, transactional replacement, extraction policy, process capture, one manual allocation owner, and a C ABI with opaque sessions and callback rules.
+
+FrameVault is not a showcase of ten independent features. It is the place where the course’s mechanisms must coexist without creating a second owner for state, validation, order, failure, compatibility, or resource policy.
+
+## Invariants carried through the product
+
+- No hostile length, offset, count, or path component is trusted before bounded validation.
+- File replacement distinguishes pre-commit failure, visible commit, and durability evidence.
+- Native paths and portable archive names remain separate types and threat models.
+- Every unsafe operation is justified by a local invariant reachable from the safe facade.
+- Manual allocation records the exact layout used for allocation and deallocation.
+- C declarations, Rust ABI declarations, nullability, panic policy, and ownership agree.
+
+## Module-to-product map
+
+| Module | Mechanism added | Acceptance criterion |
+|---:|---|---|
+| 51 | Binary Data Contracts: Bytes, Endianness, and Checked Parsing | Define a binary format as a versioned contract rather than a sequence of convenient writes |
+| 52 | Files, Durability, and Transactional Replacement | Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability |
+| 53 | Paths, Names, and Platform Boundaries | Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text |
+| 54 | Processes, Environments, and Standard Streams | Construct commands from a program plus arguments, not an interpolated shell line |
+| 55 | Unsafe Rust as a Proof Boundary | Name the operations Rust requires an unsafe context to perform |
+| 56 | Raw Pointers, Provenance, and Uninitialized Memory | Distinguish raw pointers from references and explain why conversion does not transfer ownership |
+| 57 | Manual Allocation and Owning Unsafe Abstractions | Construct and validate `Layout` values without unchecked size arithmetic |
+| 58 | C FFI: ABI, Strings, Pointers, and Error Boundaries | Distinguish ABI compatibility from semantic validity and ownership |
+| 59 | Foreign Resources, Callbacks, and Wrapper Architecture | Separate raw bindings, checked unsafe shims, and safe domain wrappers |
+| 60 | Integrated Systems Design, Testing, and Audit | Draw one boundary map from external bytes to final effects and back to foreign callers |
+
+## Reading route
+
+1. Read the FrameVault contract and non-goals in the [engineering guide](../course-book/capstone.md).
+2. Locate the type or component that owns each invariant above.
+3. Run the baseline tests and one end-to-end demonstration before changing code.
+4. Implement only the current module increment and its adversarial test.
+5. Trace success, rejection, partial failure, cleanup, order, and capacity through the public surface.
+6. Re-run the complete course route, then explain which claims remain conditioned on a compiler, target, scheduler, peer, workload, or operating system.
 
 FrameVault is the cumulative product for **Rust Systems Programming**. It is a small versioned binary archive, file-replacement, extraction, process-capture, manual-allocation, and C-ABI system. Its purpose is not to compete with established archive formats. Its purpose is to put several systems boundaries in one codebase where every claim can be inspected.
 

@@ -1,6 +1,14 @@
-# Laboratory 5 — Erased Validator Registry
+# Laboratory 95 — Erased Validator Registry
 
-[Course 10](../../README.md) · [Common laboratory method](../../../START_HERE.md#laboratory-method)
+**Course 10 · Module 95: Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries**
+
+[Chapter](../../course-book/module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/index.md) · [Workbook](../../course-book/module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/workbook.md) · [AxiomStore guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries**: When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary? The product must make **Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **open and erased variation map** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -38,6 +46,29 @@ Add a validator versioning strategy. Pretend a future validator can supply a mac
 
 Complete the registry and adversarial tests from `starter/`, then inspect `solution/`. Compare failure policy, deterministic order, duplicate handling, and public surface. The reference uses a minimal first-failure policy; an all-failures design is valid when it states ordering and allocation consequences.
 
-### Completion standard
+### Mechanism-specific completion standard
 
 You can justify erasure from an open heterogeneous requirement, keep normal behavior typed, and explain how trait evolution affects implementors and object users. A registry that downcasts every entry in order to do useful work has failed the design test.
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Erased Validator Registry**.
+2. Draw the smallest **open and erased variation map** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to AxiomStore so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Whole-laboratory completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type.
+- Derive dyn-compatibility requirements from the operations available through erased receivers.
+- Choose borrowed, boxed, reference-counted, or inline-erased ownership according to registry and lifetime requirements.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 95 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **open and erased variation map**. Defend why your design is simpler than one plausible alternative under the new requirements.

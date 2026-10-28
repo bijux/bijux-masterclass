@@ -1,5 +1,44 @@
 # JobWire
 
+## Course role
+
+JobWire is a bounded async job service with a framed TCP protocol, version negotiation, a broker authority, bounded queued and active work, idempotency records, structured cancellation, a small Hyper health surface, and deterministic tests.
+
+JobWire is not a showcase of ten independent features. It is the place where the course’s mechanisms must coexist without creating a second owner for state, validation, order, failure, compatibility, or resource policy.
+
+## Invariants carried through the product
+
+- Every future that can remain pending has a wake source or terminal event.
+- Listeners, connections, broker work, HTTP tasks, and shutdown handles form one owned task tree.
+- Frame lengths are bounded before reserve or allocation and partial reads preserve parser state.
+- Protocol legality is an explicit state machine selected by negotiated version.
+- Mailbox, queued work, active work, retained results, and duplicate waiters are independently bounded.
+- Idempotency, retry, cancellation, quiescence, draining, abort, and join have separate semantics.
+
+## Module-to-product map
+
+| Module | Mechanism added | Acceptance criterion |
+|---:|---|---|
+| 71 | Futures, Polling, Wakers, and Async State Machines | Explain why a future is inert until polled |
+| 72 | Tokio Runtimes, Tasks, and Structured Async Lifecycles | Distinguish a runtime, worker thread, task, future, reactor, and blocking pool |
+| 73 | Async I/O, Buffers, Streams, and Framing | Distinguish readiness from transfer completion |
+| 74 | TCP, UDP, DNS, and Connection Lifecycles | Distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close |
+| 75 | Protocol State Machines, Versioning, and Defensive Parsing | Separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution |
+| 76 | Backpressure, Admission Control, and Fair Work Distribution | Find every accumulation point in an async service |
+| 77 | Cancellation Safety, Deadlines, and Graceful Shutdown | Derive cancellation behavior from future-owned state and external side effects |
+| 78 | HTTP Services with Hyper: Requests, Bodies, and Connections | Distinguish accepted transport, HTTP connection future, request future, body stream, and application service |
+| 79 | Network Failure, Idempotency, Retries, and Deterministic Testing | Classify failures by phase, scope, retryability, and commit ambiguity |
+| 80 | Integrated Async Service Architecture, Testing, and Audit | Construct a complete async service dossier |
+
+## Reading route
+
+1. Read the JobWire contract and non-goals in the [engineering guide](../course-book/capstone.md).
+2. Locate the type or component that owns each invariant above.
+3. Run the baseline tests and one end-to-end demonstration before changing code.
+4. Implement only the current module increment and its adversarial test.
+5. Trace success, rejection, partial failure, cleanup, order, and capacity through the public surface.
+6. Re-run the complete course route, then explain which claims remain conditioned on a compiler, target, scheduler, peer, workload, or operating system.
+
 JobWire is the cumulative capstone for Course 8. It is a bounded single-process async job service with:
 
 - a length-delimited TCP protocol;

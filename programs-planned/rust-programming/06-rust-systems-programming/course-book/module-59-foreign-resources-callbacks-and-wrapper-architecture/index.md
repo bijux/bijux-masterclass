@@ -1,9 +1,11 @@
-# 59 — Foreign Resources, Callbacks, and Wrapper Architecture
+# Module 59 — Foreign Resources, Callbacks, and Wrapper Architecture
 
-**Course 6, day 9 · Module 59 of 90**  
-`████████████████████` **59/90**
+**Course 6 · Day 9 · Module 59 of 100**
+`███████████████░░░░░░░░░░` **59/100**
 
-[← Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 60: Integrated Systems Design, Testing, and Audit →](../module-60-integrated-systems-design-and-audit/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-opaque-foreign-session/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md) · [Module 60: Integrated Systems Design, Testing, and Audit →](../module-60-integrated-systems-design-and-audit/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 A stateless FFI function is useful but limited. Real foreign APIs return handles, borrow buffers, invoke callbacks, and separate status codes from detailed errors. Module 59 builds a layered wrapper architecture and an opaque C-facing session for FrameVault. It also connects the generic RAII work of Course 2 to operating-system and foreign resource handles.
+
+### Prerequisite bridge
+
+Module 58 established **C FFI: ABI, Strings, Pointers, and Error Boundaries**. Before continuing, verify that you can design error codes and out-parameters that remain valid without rust layout assumptions. This module preserves that capability and adds the ability to separate raw bindings, checked unsafe shims, and safe domain wrappers. Module 60, **Integrated Systems Design, Testing, and Audit**, will rely on both when it asks: *How do you prove a systems product across binary formats, files, paths, processes, unsafe code, allocation, and FFI without letting one boundary invalidate another?*
+
+### Scope boundary
+
+This module owns the reasoning for **foreign resources, callbacks, and wrapper architecture** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -227,6 +237,24 @@ An opaque API can make correct use simple, but C can still copy a pointer, free 
 
 The C header marks such behavior invalid. Safe Rust callers receive a separate safe wrapper that owns the raw session and frees it in `Drop`, preventing these errors in ordinary Rust code.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate raw bindings, checked unsafe shims, and safe domain wrappers, construct one positive and one causal negative example. Mark the first decisive fact in the **foreign liveness graph** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For represent owned and borrowed foreign handles as different Rust types, construct one positive and one causal negative example. Mark the first decisive fact in the **foreign liveness graph** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For pair acquisition with exactly one release and define destructor failure policy, construct one positive and one causal negative example. Mark the first decisive fact in the **foreign liveness graph** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design context-pointer callbacks with explicit lifetime, reentrancy, and retention rules, construct one positive and one causal negative example. Mark the first decisive fact in the **foreign liveness graph** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault adds an opaque `FvSession` C API. `framevault_open` validates and owns decoded archive data; `framevault_entry_count` reads metadata; `framevault_for_each_entry` invokes a synchronous callback with temporary name bytes; `framevault_free` consumes the handle. Rust-side tests exercise open, enumerate, early stop, and free through the exported functions without requiring a C compiler.
@@ -250,7 +278,4 @@ You are ready when you can trace who owns a handle after every call, prevent bor
 
 ## Continue
 
-1. Complete the [Module 59 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 59 — Opaque Foreign Session](../../labs/module-09-opaque-foreign-session/README.md) from its public contract.
-3. Apply the Module 59 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 60 — Integrated Systems Design, Testing, and Audit](../module-60-integrated-systems-design-and-audit/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

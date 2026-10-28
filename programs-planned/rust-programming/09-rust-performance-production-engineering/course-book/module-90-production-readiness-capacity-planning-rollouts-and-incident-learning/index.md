@@ -1,8 +1,11 @@
 # Module 90 — Production Readiness, Capacity Planning, Rollouts, and Incident Learning
 
-**90/90** · Course 9 · Module 90 of 90
+**Course 9 · Day 10 · Module 90 of 100**
+`██████████████████████░░░` **90/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-production-readiness-review/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 89: Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases](../module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md) · [Module 91: Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen →](../../../10-rust-advanced-mastery/course-book/module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 The first nine modules produce local evidence: benchmarks, profiles, memory budgets, capacity curves, signal schemas, reliability policies, threat controls, and release identity. Module 90 assembles those pieces into a decision about real exposure. Production readiness is not another test command. It is a reasoned judgment about whether known risks are bounded, observable, reversible, and owned.
 
 Capacity, rollout, rollback, and incident response must be designed together. A service can meet steady-state targets and still fail during deployment overlap, dependency degradation, burst traffic, or a configuration mistake.
+
+### Prerequisite bridge
+
+Module 89 established **Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases**. Before continuing, verify that you can write installation, upgrade, rollback, configuration, and compatibility instructions that match the artifact. This module preserves that capability and adds the ability to write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery. Module 91, **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen**, will rely on both when it asks: *When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result?*
+
+### Scope boundary
+
+This module owns the reasoning for **production readiness, capacity planning, rollouts, and incident learning** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -116,6 +127,24 @@ Runbooks should begin with symptoms and decisions, not source-module names. Test
 
 A patch closes one incident but not the model defect. Add the corrected invariant, signal, limit, or regression scenario.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery, construct one positive and one causal negative example. Mark the first decisive fact in the **production decision record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For derive initial capacity and headroom from measured service demand, resource use, and burst policy, construct one positive and one causal negative example. Mark the first decisive fact in the **production decision record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For distinguish load test, stress test, soak test, fault test, compatibility test, and rollback rehearsal, construct one positive and one causal negative example. Mark the first decisive fact in the **production decision record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design canary, staged, blue/green, or shadow rollout policies with objective promotion and rollback criteria, construct one positive and one causal negative example. Mark the first decisive fact in the **production decision record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -198,7 +227,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 90 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Production Readiness Review laboratory](../../labs/module-10-production-readiness-review/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 91 — Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen](../../../10-rust-advanced-mastery/course-book/module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

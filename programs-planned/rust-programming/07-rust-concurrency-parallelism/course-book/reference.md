@@ -1,4 +1,43 @@
-# Concurrency and parallelism reference desk
+# Course 7 Reference Desk — Rust Concurrency and Parallelism
+
+Use this page while designing or reviewing. It is a decision aid, not a replacement for the module explanations.
+
+## Governing question
+
+> Which facts remain true across every legal thread schedule, and what ownership, synchronization, progress, failure, and normalization arguments make those facts reviewable?
+
+## Working record
+
+Keep a thread ownership map, protected-invariant table, wait-for graph, predicate/wakeup record, channel topology, shutdown tree, happens-before graph, atomic state machine, work-partition map, and deterministic reconciliation table. A design is not ready when the record still contains unnamed owners, contradictory states, implicit failure, accidental order, unbounded accumulation, or a claim with no matching evidence.
+
+## Decision rules
+
+| Decision | Rule |
+|---|---|
+| Shared invariant | One lock protects one named invariant; do not hold it through unrelated effects. |
+| Waiting | Wait in a predicate loop and include cancellation or terminal state in the predicate. |
+| Backpressure | Bound every queue and name the authority that accepts or rejects work. |
+| Atomic ordering | Derive ordering from the visibility edge and linearization point, not from a stronger-ordering reflex. |
+| Determinism | Normalize final meaning separately from schedule-dependent completion order. |
+
+## Module quick reference
+
+| Module | Mechanism | Minimum usable outcome |
+|---:|---|---|
+| 61 | Threads, Schedules, Send, Sync, and Race Freedom | distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions; |
+| 62 | Structured Threads: Scopes, Joins, and Panic Boundaries | explain the real meaning of a `T: 'static` bound and why owned values can satisfy it; |
+| 63 | Shared State: Locks and Protected Invariants | name the state invariant protected by each `Mutex` or `RwLock` rather than treating the primitive as a generic thread-safety wrapper; |
+| 64 | Coordination: Condvars, Barriers, and Phase Protocols | write every condition-variable wait as a predicate loop over mutex-protected state; |
+| 65 | Message Passing, Backpressure, and Shutdown | model channel operations as ownership transfer rather than shared access; |
+| 66 | Liveness: Deadlock, Cancellation, and Recovery | distinguish deadlock, starvation, livelock, priority inversion, and slow work; |
+| 67 | Atomics, Happens-Before, and Memory Ordering | separate atomicity of one location from visibility of other memory; |
+| 68 | Lock-Free Protocols, Reclamation, and Unsafe Send/Sync | distinguish obstruction-free, lock-free, and wait-free progress claims from ordinary nonblocking API behavior; |
+| 69 | Rayon, Work Stealing, and Deterministic Parallelism | distinguish task parallelism, data parallelism, and a long-lived message-driven worker service; |
+| 70 | Integrated Concurrent Architecture, Testing, and Audit | construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and CLI boundaries; |
+
+## Claim boundary
+
+Separate language guarantees, library contracts, product policy, target observations, and measured artifact facts. When an exact API or version detail matters, follow the primary source from [Source Notes](../../SOURCE_NOTES.md).
 
 This page is a retrieval aid after the chapters have established the models. It is not a substitute for the course sequence.
 

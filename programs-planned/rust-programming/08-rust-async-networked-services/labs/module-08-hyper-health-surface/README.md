@@ -1,6 +1,14 @@
 # Laboratory 78 — Hyper Health Surface
 
-This is the independent product for **Course 8, Module 78**. Read the [module chapter](../../course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/index.md) and complete its [workbook](../../course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/workbook.md) before consulting the reference implementation.
+**Course 8 · Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections**
+
+[Chapter](../../course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/index.md) · [Workbook](../../course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/workbook.md) · [JobWire guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **HTTP Services with Hyper: Requests, Bodies, and Connections**: How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate? The product must make **Distinguish accepted transport, HTTP connection future, request future, body stream, and application service** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **HTTP boundary map** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -12,7 +20,7 @@ The completed product must make the answer visible in its types, lifecycle, test
 
 Build an HTTP/1 service with `GET /health` and `GET /stats`. Routing is testable without sockets. Request bodies are bounded and must be empty. Connection admission is bounded, connection futures are tracked, and shutdown drains or aborts keep-alive clients.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 The lab isolates a standard HTTP surface from the custom JobWire protocol. It teaches which responsibilities Hyper owns and which remain application policy.
 
@@ -71,7 +79,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Be
 
 The laboratory is complete when its tests pass and you can answer the governing question without the chapter:
 
-> How can a small Hyper service expose honest operational state without hiding body limits, connection ownership, or shutdown behind framework defaults?
+For **Laboratory 78 — Hyper Health Surface**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -81,3 +89,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Hyper Health Surface**.
+2. Draw the smallest **HTTP boundary map** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to JobWire so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Distinguish accepted transport, HTTP connection future, request future, body stream, and application service.
+- Serve HTTP/1 connections with Hyper over Tokio I/O.
+- Construct stable response body types and status codes.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 78 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **HTTP boundary map**. Defend why your design is simpler than one plausible alternative under the new requirements.

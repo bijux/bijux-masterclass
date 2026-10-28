@@ -1,105 +1,99 @@
-# Course 8: Rust Async and Networked Services
+# Course 8 — Rust Async and Networked Services
 
-**Modules 71–80 · Ten dense days · Futures, Tokio, protocols, and resilient service design**
+## Futures, Tokio, Protocols, and Resilient Service Lifecycles
 
-Async Rust is often taught from the outside in: write `async fn`, call `.await`, spawn some tasks, and use a web framework. That route produces working demos quickly but leaves the reader unable to explain why a task stalled, why a timeout corrupted a frame, why memory grew under load, why a retry duplicated work, or why shutdown never completed.
+## The promise
 
-This course proceeds from the inside out. You first learn the polling contract that makes async execution possible. You then place futures inside a runtime with explicit task ownership. Only after that do you cross byte-stream and socket boundaries, design protocol state machines, enforce capacity, define cancellation behavior, build an HTTP surface, and reason about retry and idempotency. The final module audits the whole service as a collection of explicit contracts.
+Course 8 begins with the `Future::poll` contract and then builds Tokio task trees, bounded codecs, connection lifecycles, versioned protocols, admission control, cancellation-safe operations, a small Hyper surface, and idempotent retry policy.
 
-## The course question
+> **Governing question:** How do suspension, wakeup, task ownership, framing, protocol state, capacity, cancellation, retry, and shutdown remain explicit when peers and timing are only partly observable?
 
-> How do you build a networked Rust service whose suspension, ownership, framing, protocol, capacity, cancellation, failure, retry, shutdown, and observability behavior can be explained before production traffic discovers it?
+Course 7 established ownership, visibility, progress, and termination across threads. Course 8 keeps those obligations while work may suspend and peers may be remote. Futures, runtimes, framing, protocol state, backpressure, retry, and shutdown are therefore taught as one lifecycle rather than as unrelated async APIs.
 
-## What changes after Course 7
+## Before Day 1
 
-A thread normally blocks at a blocking operation. An async task suspends by returning `Poll::Pending`, allowing its executor thread to run other tasks. This improves scalability for waiting-heavy workloads, but it introduces a new class of design obligations:
+You should be able to reason about thread ownership, synchronization, backpressure, liveness, atomics, deterministic reconciliation, system I/O, and bounded resources.
 
-- local variables may become state stored across suspension points;
-- cancellation often occurs by dropping a future at an arbitrary suspension point;
-- a spawned task may outlive the function that created it unless ownership is retained;
-- one TCP read may contain half a message, one message, or several messages;
-- timeouts can abandon an in-progress operation without rolling it back;
-- a disconnected client may not reveal whether the server committed a request;
-- an unbounded async queue can exhaust memory without blocking any OS thread;
-- scheduling freedom can make timing-based tests pass or fail unpredictably.
+From a blank page, sketch one earlier product or a comparable program. Mark an owner, a valid and invalid state, a failure path, cleanup, and a public promise. Repair any relationship you cannot explain before adding this course’s mechanisms.
 
-Course 7’s ledgers remain useful, but they need async-specific extensions. This course uses:
+## Outcomes
 
-| Ledger | Records |
+- Explain why a future is inert until polled.
+- Distinguish a runtime, worker thread, task, future, reactor, and blocking pool.
+- Distinguish readiness from transfer completion.
+- Distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close.
+- Separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution.
+- Find every accumulation point in an async service.
+- Derive cancellation behavior from future-owned state and external side effects.
+- Distinguish accepted transport, HTTP connection future, request future, body stream, and application service.
+- Classify failures by phase, scope, retryability, and commit ambiguity.
+- Construct a complete async service dossier.
+- Integrate all ten mechanisms in JobWire without creating competing authorities.
+- Complete and defend an unseen change using a async service dossier.
+
+## The ten-day line
+
+| Day | Module | Governing question | Capability that must become visible | Laboratory |
+|---:|---|---|---|---|
+| 1 | [71 — Futures, Polling, Wakers, and Async State Machines](./module-71-futures-polling-wakers-and-async-state-machines/index.md) | What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled? | **Explain why a future is inert until polled.** | [One-Shot Signal](../labs/module-01-one-shot-signal/README.md) |
+| 2 | [72 — Tokio Runtimes, Tasks, and Structured Async Lifecycles](./module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/index.md) | Once futures are understood as poll-driven state machines, how should a runtime own, schedule, observe, cancel, and finish the tasks that execute them? | **Distinguish a runtime, worker thread, task, future, reactor, and blocking pool.** | [Task Nursery](../labs/module-02-task-nursery/README.md) |
+| 3 | [73 — Async I/O, Buffers, Streams, and Framing](./module-73-async-io-buffers-streams-and-framing/index.md) | How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning? | **Distinguish readiness from transfer completion.** | [Bounded Length Codec](../labs/module-03-bounded-length-codec/README.md) |
+| 4 | [74 — TCP, UDP, DNS, and Connection Lifecycles](./module-74-tcp-udp-dns-and-connection-lifecycles/index.md) | What lifecycle does each network transport actually provide, and where should connection admission, name resolution, deadlines, half-close, datagram loss, and peer identity be represented? | **Distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close.** | [Deadline Echo Service](../labs/module-04-deadline-echo-service/README.md) |
+| 5 | [75 — Protocol State Machines, Versioning, and Defensive Parsing](./module-75-protocol-state-machines-versioning-and-defensive-parsing/index.md) | Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope? | **Separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution.** | [Negotiated Command Protocol](../labs/module-05-negotiated-command-protocol/README.md) |
+| 6 | [76 — Backpressure, Admission Control, and Fair Work Distribution](./module-76-backpressure-admission-control-and-fair-work-distribution/index.md) | When demand exceeds service capacity, where may work wait, which bound is authoritative, and how does overload become an explicit product outcome instead of memory growth, latency collapse, or starvation? | **Find every accumulation point in an async service.** | [Bounded Relay Broker](../labs/module-06-bounded-relay-broker/README.md) |
+| 7 | [77 — Cancellation Safety, Deadlines, and Graceful Shutdown](./module-77-cancellation-safety-deadlines-and-graceful-shutdown/index.md) | When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state? | **Derive cancellation behavior from future-owned state and external side effects.** | [Graceful Task Tree](../labs/module-07-graceful-task-tree/README.md) |
+| 8 | [78 — HTTP Services with Hyper: Requests, Bodies, and Connections](./module-78-http-services-with-hyper-requests-bodies-and-connections/index.md) | How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate? | **Distinguish accepted transport, HTTP connection future, request future, body stream, and application service.** | [Hyper Health Surface](../labs/module-08-hyper-health-surface/README.md) |
+| 9 | [79 — Network Failure, Idempotency, Retries, and Deterministic Testing](./module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md) | When a network operation fails without revealing whether the remote side committed it, how do idempotency, retry budgets, failure classification, and deterministic tests preserve one semantic outcome? | **Classify failures by phase, scope, retryability, and commit ambiguity.** | [Idempotent Retry Client](../labs/module-09-idempotent-retry-client/README.md) |
+| 10 | [80 — Integrated Async Service Architecture, Testing, and Audit](./module-80-integrated-async-service-architecture-testing-and-audit/index.md) | Can the complete service be explained as one coherent set of lifecycle, protocol, capacity, cancellation, failure, compatibility, and operational contracts rather than as a pile of async APIs? | **Construct a complete async service dossier.** | [Async Service Audit](../labs/module-10-async-service-audit/README.md) |
+
+The table is a dependency chain, not a menu. A later module may use an earlier mechanism but may not silently weaken its ownership, failure, ordering, capacity, safety, compatibility, or evidence contract.
+
+## Decision rules
+
+| Decision | Rule used throughout this course |
 |---|---|
-| future-state ledger | states, stored values, wake sources, completion, and drop behavior |
-| task-tree ledger | parent, child, join owner, cancellation source, and shutdown phase |
-| frame ledger | buffered bytes, required bytes, maximum size, decode state, and EOF meaning |
-| connection ledger | accepted socket, admission permit, protocol state, reader/writer ownership, and close path |
-| capacity ledger | every place work or bytes can wait and its explicit bound |
-| cancellation ledger | each suspension point, abandonability, cleanup, and commit boundary |
-| retry ledger | failure class, attempt limit, deadline, idempotency key, and ambiguous-commit policy |
-| service dossier | public guarantees, non-guarantees, tests, compatibility, and operational limits |
+| Future | List stored states, wake source, completion, and drop behavior before writing `poll` or `async` code. |
+| Task lifecycle | Every spawned task is observed, joined, aborted, or deliberately detached with a stated owner. |
+| Framing | Treat transport chunks as arbitrary; validate frame length before allocation. |
+| Cancellation | Identify the exact suspension points after which dropping the future can leave an external effect. |
+| Retry | Use one overall deadline and an idempotency strategy when commit may be ambiguous. |
 
-## Readiness diagnosis
+Use these rules during prediction and review. When a rule does not decide the case, write the missing product requirement instead of selecting an API by habit.
 
-You are ready when you can answer these without searching:
+## The reasoning record
 
-1. Why is `Arc<Mutex<T>>` not by itself a complete concurrency protocol?
-2. What does dropping a `JoinHandle` do, and what does it not do?
-3. Why can a bounded worker count still coexist with unbounded memory growth?
-4. How does a condition-variable predicate loop differ from waiting for a notification?
-5. What information must a binary frame length be checked against before allocation?
-6. Why is a peer socket address not a durable authenticated identity?
-7. What is the difference between a request identifier and an idempotency key?
-8. Why can a timeout be a correctness boundary rather than only a latency setting?
-9. What must be true before `unsafe impl Send` or `Sync` is defensible?
-10. Which product results must remain deterministic even when completion order is not?
+The ten module-specific records culminate in a **async service dossier**. Trace future state, wake source, task owner, frame state, protocol state, capacity, cancellation, commit ambiguity, and shutdown. Keep the record small enough to inspect but complete enough to expose the first unsupported assumption.
 
-A weak answer to 1–4 means revisit Course 7. A weak answer to 5–6 means revisit Course 6. A weak answer to 7–10 is expected; this course develops those models.
+## Scope and handoff
 
-## What you will be able to do
+The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees.
 
-By the end of Course 8 you will be able to:
+Course 9 asks whether the service’s performance, memory, reliability, observability, security, artifact, and operational claims are supported by representative evidence.
 
-- derive a future’s state machine from its suspension points and stored values;
-- explain `Poll`, `Context`, `Waker`, pinning, wake coalescing, and cancellation by drop;
-- construct bounded Tokio task trees and observe every terminal task outcome;
-- isolate blocking or CPU-heavy work from async runtime workers;
-- implement bounded, incremental frame codecs over arbitrary byte chunking;
-- design TCP and UDP lifecycles without inventing guarantees the transports do not provide;
-- represent a protocol as explicit framing, syntax, semantics, and connection-state layers;
-- calculate an end-to-end resource envelope rather than bounding only one queue;
-- identify cancellation-unsafe operations and move commit points into explicit protocols;
-- implement deadline propagation and phased graceful shutdown;
-- construct a small Hyper service without hiding transport and body behavior behind a framework;
-- define retry policy from failure classification and idempotency semantics;
-- test async time, chunking, cancellation, and shutdown causally rather than probabilistically;
-- defend a complete service architecture through explicit ledgers and non-guarantees.
+## Capstone — JobWire
 
-## Ten-day route
+JobWire is a bounded async job service with a framed TCP protocol, version negotiation, a broker authority, bounded queued and active work, idempotency records, structured cancellation, a small Hyper health surface, and deterministic tests.
 
-Follow [the study plan](study-plan.md). Each day has one required chapter, one workbook, one independent laboratory, and one JobWire increment. The [reference desk](reference.md) is for recall after attempting the explanation yourself. The [final review](final-review.md) is an independent construction and defense, not a recap quiz.
+Open the [engineering guide](capstone.md) before Day 1 so the final architecture is visible. Implement only the current increment. The independent laboratory remains separate so that the mechanism can be learned without hiding behind accumulated capstone code.
 
-## Evidence of mastery
+## Completion
 
-A module is complete only when you can provide all of the following:
+The course is complete when you can build and defend:
 
-- a correct mechanism model in your own words;
-- compiler or runtime predictions made before execution;
-- a principled repair that preserves the product requirement;
-- a passing independent laboratory;
-- a coherent JobWire increment;
-- a short defense naming guarantees, bounds, failure behavior, and non-guarantees.
+> Build a bounded async command service with a length-delimited protocol, tracked task tree, explicit admission, honest health semantics, cancellation-safe shutdown, and deterministic timeout tests.
 
-Reading the chapter is preparation. The ability to reconstruct the model and apply it to an unfamiliar service is the result.
+and then change the capstone under this constraint:
 
-## Primary references
+> Add one streaming JobWire operation with an explicit per-stream capacity and cancellation contract while preserving protocol versioning and service shutdown.
 
-The course is self-contained, but it identifies primary references so claims can be checked against the language and library contracts:
+A passing test suite is necessary. It is not sufficient unless you can explain why the tests are capable of falsifying the claim and which target-, scheduler-, workload-, peer-, or policy-dependent facts remain outside them.
 
-- Rust standard-library `Future`, `Poll`, `Context`, `Waker`, and `Pin` documentation;
-- Tokio runtime, task, synchronization, I/O, time, signal, and testing documentation;
-- `bytes`, `tokio-util`, `futures-util`, Hyper, `hyper-util`, and `http-body-util` crate documentation;
-- relevant Rust RFCs and standard-library network documentation where a guarantee belongs to Rust itself.
+## Continue
 
-References confirm contracts. They do not replace the course’s explanation or exercises.
-
-## Begin
-
-Start with [Module 71: Futures, Polling, Wakers, and Async State Machines](module-71-futures-polling-wakers-and-async-state-machines/index.md).
+- [Ten-day plan](study-plan.md)
+- [Module 71 — Futures, Polling, Wakers, and Async State Machines](./module-71-futures-polling-wakers-and-async-state-machines/index.md)
+- [JobWire engineering guide](capstone.md)
+- [Course reference](reference.md)
+- [Final review](final-review.md)
+- [Compiler and design investigations](../compiler-labs/README.md)
+- [Independent laboratories](../labs/)

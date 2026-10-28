@@ -1,8 +1,17 @@
 # Workbook — Module 28: Boundary Traits and Adapters
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-08-boundary-ports/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Boundary Traits and Adapters** without relying on surface syntax. Keep the module question in view: *How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Boundary Traits and Adapters** has become a usable model rather than remembered vocabulary. Its governing question is: *How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?* Preserve your first prediction and record decisive facts in a **adapter boundary map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 27 — Typestate and Capability-Oriented APIs that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?**
+3. Draw the smallest **adapter boundary map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -85,6 +94,17 @@ Design the smallest port. State whether its key parameter should be owned, borro
 
 Next, implement the same port for a closure. Select `Fn`, `FnMut`, or `FnOnce` from the promised invocation pattern and explain whether a `'static`, `Send`, or `Sync` bound is justified. Finally, write two contract tests that both the production adapter and fake must satisfy. One must cover not-found behavior; the other must cover deterministic interpretation of invalid content.
 
+### Interleaved reasoning pass
+
+1. For **Design extension traits, closure adapters, and conversion boundaries with precise contracts**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the adapter boundary map.
+2. For **Use generic or dynamic ports according to ownership and deployment needs**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the adapter boundary map.
+3. For **Build test doubles that preserve the production contract rather than mirror internals**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the adapter boundary map.
+4. For **Recognize visitor, repository, and service abstractions that add more ceremony than leverage**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the adapter boundary map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Boundary Traits and Adapters** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build a small inspection service with a domain core independent from input and output mechanisms.
@@ -101,6 +121,18 @@ Requirements:
 
 The executable starter and reference implementation are in [module-08-boundary-ports](../../labs/module-08-boundary-ports/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Boundary Ports**, record:
+
+- the public behavior that demonstrates **Design extension traits, closure adapters, and conversion boundaries with precise contracts**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Add:
@@ -112,6 +144,10 @@ Add:
 - an in-memory fake source with failure injection used only in tests.
 
 Remove any trait that has become a pass-through abstraction without independent variation.
+
+### Capstone invariant trace
+
+For the Module 28 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -129,3 +165,7 @@ Oral prompt: **“Which trait did you remove, and what evidence showed it was ab
 ### Independent transfer
 
 Design a narrow clock or identifier source for an application core, with one production adapter, one deterministic fake, and one closure adapter. Write shared contract tests and an abstraction budget explaining why each public trait, conversion, and wrapper remains necessary.
+
+### Closed-book defense
+
+In five minutes, answer “How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?” using the **adapter boundary map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

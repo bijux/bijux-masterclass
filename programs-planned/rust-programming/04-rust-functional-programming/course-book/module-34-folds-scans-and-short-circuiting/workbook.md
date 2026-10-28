@@ -1,8 +1,17 @@
 # Workbook — Module 34: Folds, Scans, and Short-Circuiting
 
-[Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-04-streaming-metrics/README.md) · [LedgerFlow guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Folds, Scans, and Short-Circuiting** without relying on surface syntax. Keep the module question in view: *What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Folds, Scans, and Short-Circuiting** has become a usable model rather than remembered vocabulary. Its governing question is: *What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?* Preserve your first prediction and record decisive facts in a **accumulator invariant**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 33 — Iterator Algebra and Pipeline Shape that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?**
+3. Draw the smallest **accumulator invariant** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -96,7 +105,16 @@ Find the first prefix whose total reaches a quota and return both index and tota
 
 A one-pass fold tracks account state, diagnostics, audit text, progress output, and timing. Refactor the design without automatically making five passes.
 
+### Interleaved reasoning pass
 
+1. For **Design a fold accumulator with a precise prefix invariant**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the accumulator invariant.
+2. For **Distinguish `fold`, `reduce`, `sum`, `product`, and explicit loops by semantics rather than style**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the accumulator invariant.
+3. For **Use `scan` when evolving state must also yield an output stream**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the accumulator invariant.
+4. For **Use `try_fold` and `try_for_each` for fallible short-circuiting traversal**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the accumulator invariant.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Folds, Scans, and Short-Circuiting** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -150,6 +168,18 @@ You must explain why `try_fold` failure is not transactionality for external eff
 
 The executable starter and reference implementation are in [module-04-streaming-metrics](../../labs/module-04-streaming-metrics/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Streaming Metrics**, record:
+
+- the public behavior that demonstrates **Design a fold accumulator with a precise prefix invariant**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Day 4 creates ledger state from accepted events. A reducer is trustworthy only when you can state what its accumulator means after every processed prefix. Begin with that sentence. Do not begin with `fold`.
@@ -202,6 +232,10 @@ For several short sequences, compare every emitted prefix state with a simple tr
 
 The test should identify the shortest prefix at which a defect appears.
 
+### Capstone invariant trace
+
+For the Module 34 LedgerFlow increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Do not advance because the calendar day ended. Advance when all hard evidence is present.
@@ -239,3 +273,7 @@ Aggregate telemetry until either a threshold is crossed or malformed input appea
 ### Spaced review
 
 Repeat questions 2, 4, 7, and 10 after 24 hours. Repeat the reconstruction after seven days with a different domain.
+
+### Closed-book defense
+
+In five minutes, answer “What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?” using the **accumulator invariant**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside LedgerFlow. A list of APIs without the deciding relationship is incomplete.

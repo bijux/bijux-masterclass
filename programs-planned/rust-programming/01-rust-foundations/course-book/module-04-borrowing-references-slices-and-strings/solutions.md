@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 04: Borrowing, References, Slices, and Strings
+# Reasoned Solutions — Module 04: Borrowing, References, Slices, and Strings
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-borrowed-catalog/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Borrowing, References, Slices, and Strings**, not to substitute for an attempt. The decisive question is: *Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 4: Borrowing, References, Slices, and Strings**. Compare the reasoning against this question: *Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -206,9 +206,7 @@ Consuming iteration lets each record move to exactly one destination.
 
 Repair a catalog update that conflicts with an active search borrow by changing access topology rather than extending ownership.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-04-borrowed-catalog/solution`](../../labs/module-04-borrowed-catalog/solution). Before reading it, write down:
 
@@ -229,3 +227,42 @@ For **Borrowing, References, Slices, and Strings**, compare the contract, invari
 - Return borrowed views only when provenance remains valid and explain the source of every returned reference.
 
 A complete explanation of **Borrowing, References, Slices, and Strings** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?
+
+Build a **borrow map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Model shared and mutable references as permissions constrained by aliasing and validity.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Shorten borrow scopes, reborrow correctly, and split disjoint data instead of cloning or over-owning.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Design slice-based APIs and distinguish String, str, &String, and &str by ownership and representation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Handle UTF-8 text without assuming character indexing or byte-boundary equivalence.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Return borrowed views only when provenance remains valid and explain the source of every returned reference.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Model shared and mutable references as permissions constrained by aliasing and validity.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the borrow map.
+
+### Laboratory transfer review
+
+For [Borrowed Catalog](../../labs/module-04-borrowed-catalog/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 4 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Borrowing, References, Slices, and Strings**, which relationship decides this question: “Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

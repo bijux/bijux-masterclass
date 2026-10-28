@@ -1,8 +1,11 @@
 # Module 86 — Observability: Structured Tracing, Metrics, and Diagnostic Context
 
-**86/90** · Course 9 · Module 86 of 90
+**Course 9 · Day 6 · Module 86 of 100**
+`██████████████████████░░░` **86/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-structured-observability-harness/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 85: Runtime Efficiency: Contention, Queueing, Batching, and Async Load](../module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md) · [Module 87: Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation →](../module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 A measured service still cannot be operated when its internal states are invisible or its telemetry is ambiguous. Module 86 turns the causal boundaries from Modules 81–85 into signals. The objective is not to emit more logs. It is to answer specific operational questions with stable, bounded, privacy-safe evidence.
 
 Observability is part of the product contract because signal schemas, label cardinality, redaction, and sampling determine what can be diagnosed during failure. A signal that lies, explodes in cardinality, or leaks input is worse than no signal.
+
+### Prerequisite bridge
+
+Module 85 established **Runtime Efficiency: Contention, Queueing, Batching, and Async Load**. Before continuing, verify that you can preserve deterministic accounting when load shedding, cancellation, and retries interact. This module preserves that capability and adds the ability to separate events, spans, metrics, profiles, and domain audit records by the questions they can answer. Module 87, **Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation**, will rely on both when it asks: *How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?*
+
+### Scope boundary
+
+This module owns the reasoning for **observability: structured tracing, metrics, and diagnostic context** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -110,6 +121,24 @@ Instrumentation inside tight loops can dominate the work. Place spans at product
 
 Readiness must reflect whether essential work can be accepted and completed. A live process can still be unavailable.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate events, spans, metrics, profiles, and domain audit records by the questions they can answer, construct one positive and one causal negative example. Mark the first decisive fact in the **signal dictionary** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For design stable event names and fields that preserve causal context across async and threaded work, construct one positive and one causal negative example. Mark the first decisive fact in the **signal dictionary** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For choose metric types and label sets without creating unbounded cardinality, construct one positive and one causal negative example. Mark the first decisive fact in the **signal dictionary** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For distinguish live advisory telemetry from authoritative product state, construct one positive and one causal negative example. Mark the first decisive fact in the **signal dictionary** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -189,7 +218,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 86 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Structured Observability Harness laboratory](../../labs/module-06-structured-observability-harness/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 87 — Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation](../module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

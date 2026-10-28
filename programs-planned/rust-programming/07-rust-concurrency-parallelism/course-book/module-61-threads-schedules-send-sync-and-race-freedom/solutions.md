@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 61: Threads, Schedules, Send, Sync, and Race Freedom
+# Reasoned Solutions — Module 61: Threads, Schedules, Send, Sync, and Race Freedom
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the BatchWeave guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-thread-handoff-matrix/README.md) · [BatchWeave guide](../capstone.md)
 
-The module’s main correction is conceptual: thread safety is not one Boolean property. `Send` and `Sync` establish which ownership and reference movements safe Rust permits. Product correctness still requires a lifecycle protocol, a schedule-independent invariant, and an output policy.
-
-The answers below are reasoning models, not scripts to imitate. A different implementation can be stronger when it proves the same contract more directly. Compare ownership, synchronization, progress, failure, and determinism—not only surface syntax.
+Use these notes only after preserving your prediction and repair for **Module 61: Threads, Schedules, Send, Sync, and Race Freedom**. Compare the reasoning against this question: *What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -81,3 +79,42 @@ BatchWeave’s first increment should contain no queue and no mutex. Its purpose
 A complete defense says that `Send` permits ownership transfer and `Sync` permits shared-reference transfer. It distinguishes language-level data-race freedom from product-level race freedom, names every join obligation, and states that output order is a chosen stable projection over nondeterministic completion. It also admits that a thread-per-item demonstration is bounded pedagogy, not the final engine topology.
 
 A strong defense states what is guaranteed for every allowed schedule, what is merely likely on one machine, and what the design intentionally leaves unspecified.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?
+
+Build a **thread ownership map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Derive whether an owned value may move into a thread from its `Send` obligation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Derive whether a shared reference may cross a thread boundary from the referent’s `Sync` obligation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Explain why `Arc<T>` provides shared ownership but not automatic mutation safety.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Treat every `JoinHandle` as an explicit completion and failure obligation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the thread ownership map.
+
+### Reference implementation comparison
+
+For [Thread Handoff Matrix](../../labs/module-01-thread-handoff-matrix/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In BatchWeave, Module 61 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Threads, Schedules, Send, Sync, and Race Freedom**, which relationship decides this question: “What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to BatchWeave?

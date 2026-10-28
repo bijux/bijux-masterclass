@@ -1,8 +1,11 @@
-# Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync
+# Module 68 — Lock-Free Protocols, Reclamation, and Unsafe Send/Sync
 
-**Course 7, day 8 · Module 68 of 90**  
+**Course 7 · Day 8 · Module 68 of 100**
+`█████████████████░░░░░░░░` **68/100**
 
-**68/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-spsc-ring/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 67: Atomics, Happens-Before, and Memory Ordering](../module-67-atomics-happens-before-and-memory-ordering/index.md) · [Module 69: Rayon, Work Stealing, and Deterministic Parallelism →](../module-69-rayon-work-stealing-and-deterministic-parallelism/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Course 6 established unsafe Rust as a proof boundary. Module 67 established atom
 The bounded SPSC queue avoids the hardest general problem—reclaiming nodes while unknown readers may still hold pointers. It still requires manual `Sync`, initialization-state reasoning, release/acquire publication, exclusive endpoint roles, and correct destruction. Those obligations show why “replace mutex with atomics” is not a local refactor.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 67 established **Atomics, Happens-Before, and Memory Ordering**. Before continuing, verify that you can document atomic state machines, legal transitions, observation guarantees, and wraparound limits. This module preserves that capability and adds the ability to distinguish obstruction-free, lock-free, and wait-free progress claims from ordinary nonblocking api behavior;. Module 69, **Rayon, Work Stealing, and Deterministic Parallelism**, will rely on both when it asks: *How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?*
+
+### Scope boundary
+
+This module owns the reasoning for **lock-free protocols, reclamation, and unsafe send/sync** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -129,6 +140,24 @@ Head and tail are independently written by different cores. If they occupy the s
 
 The correct conclusion is not “pad every atomic.” It is that lock-free correctness and lock-free performance are separate claims.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish obstruction-free, lock-free, and wait-free progress claims from ordinary nonblocking API behavior, construct one positive and one causal negative example. Mark the first decisive fact in the **atomic state machine** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For explain why `UnsafeCell` is necessary for mutation through shared references and why it removes automatic `Sync`, construct one positive and one causal negative example. Mark the first decisive fact in the **atomic state machine** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use `MaybeUninit<T>` to represent slots whose initialization state is governed by a concurrent protocol, construct one positive and one causal negative example. Mark the first decisive fact in the **atomic state machine** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For justify unsafe `Send` or `Sync` implementations from exclusive role ownership and atomic publication, construct one positive and one causal negative example. Mark the first decisive fact in the **atomic state machine** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The central operations of a bounded SPSC ring can be expressed as follows. The full laboratory includes construction, endpoint markers, error types, and destruction:
@@ -223,4 +252,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Bounded SPSC Ring](../../labs/module-08-spsc-ring/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 69 — Rayon, Work Stealing, and Deterministic Parallelism](../module-69-rayon-work-stealing-and-deterministic-parallelism/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

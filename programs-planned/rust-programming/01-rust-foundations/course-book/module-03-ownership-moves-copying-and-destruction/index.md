@@ -1,9 +1,11 @@
-# 03 — Ownership, Moves, Copying, and Destruction
+# Module 03 — Ownership, Moves, Copying, and Destruction
 
-**Course 1, day 3 · Module 3 of 90**  
-`█░░░░░░░░░░░░░░░░░░░` **3/90**
+**Course 1 · Day 3 · Module 3 of 100**
+`█░░░░░░░░░░░░░░░░░░░░░░░░` **3/100**
 
-[← Module 2: Control Flow, Functions, and Invariants](../module-02-control-flow-functions-and-invariants/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 4: Borrowing, References, Slices, and Strings →](../module-04-borrowing-references-slices-and-strings/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-ownership-intake/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 2: Control Flow, Functions, and Invariants](../module-02-control-flow-functions-and-invariants/index.md) · [Module 4: Borrowing, References, Slices, and Strings →](../module-04-borrowing-references-slices-and-strings/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Functions now create real ownership boundaries: arguments enter, results leave, and locals are destroyed. That makes this the right moment to replace the vague idea of 'variables holding data' with a precise resource ledger. Every later borrow, smart pointer, iterator, and trait object rests on this transfer model.
+
+### Prerequisite bridge
+
+Module 2 established **Control Flow, Functions, and Invariants**. Before continuing, verify that you can test control-flow boundaries systematically, including invalid domains, empty inputs, and off-by-one edges. This module preserves that capability and adds the ability to trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger. Module 4, **Borrowing, References, Slices, and Strings**, will rely on both when it asks: *Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?*
+
+### Scope boundary
+
+This module owns the reasoning for **ownership, moves, copying, and destruction** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -686,6 +696,24 @@ For a function, be able to say:
 
 This level of explanation becomes concise with practice.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For trace ownership through bindings, calls, returns, aggregates, and scopes using a move-path ledger, construct one positive and one causal negative example. Mark the first decisive fact in the **ownership ledger** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish semantic moves, Copy duplication, explicit Clone cost, and destruction without relying on stack-versus-heap folklore, construct one positive and one causal negative example. Mark the first decisive fact in the **ownership ledger** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For predict partial moves and the remaining usable fields of an aggregate, construct one positive and one causal negative example. Mark the first decisive fact in the **ownership ledger** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For choose consuming, returning, borrowing, or cloning APIs from post-call ownership requirements, construct one positive and one causal negative example. Mark the first decisive fact in the **ownership ledger** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Move owned task titles into board storage and document the owner after each operation. Avoid cloning simply because a caller's postcondition was never stated. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -715,11 +743,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Ownership](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
 - [Rust Reference: Destructors](https://doc.rust-lang.org/reference/destructors.html)
 
-[← Module 2](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 4 →](../../../01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md)
+[← Module 2](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 4 →](../../../01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md)
 
 ## Continue
 
-1. Complete the [Module 3 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 3 — Ownership Intake Pipeline](../../labs/module-03-ownership-intake/README.md) from its public contract.
-3. Apply the Module 3 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 4 — Borrowing, References, Slices, and Strings](../module-04-borrowing-references-slices-and-strings/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

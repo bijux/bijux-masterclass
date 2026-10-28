@@ -1,9 +1,11 @@
-# 39 — Combinator Laws and Cost Models
+# Module 39 — Combinator Laws and Cost Models
 
-**Course 4, day 9 · Module 39 of 90**  
-`█████████████░░░░░░░` **39/90**
+**Course 4 · Day 9 · Module 39 of 100**
+`██████████░░░░░░░░░░░░░░░` **39/100**
 
-[← Module 38: Functional Core and Effect Isolation](../module-38-functional-core-and-effect-isolation/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 40: Functional Architecture Synthesis →](../module-40-functional-architecture-synthesis/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-combinator-contracts/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 38: Functional Core and Effect Isolation](../module-38-functional-core-and-effect-isolation/index.md) · [Module 40: Functional Architecture Synthesis →](../module-40-functional-architecture-synthesis/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Reusable combinators can make a codebase concise while quietly changing order, failure, duplication, or cost. Laws and counterexamples now provide a review method. Complexity claims are tied to named operations and data shapes rather than to the visual length of an iterator chain.
+
+### Prerequisite bridge
+
+Module 38 established **Functional Core and Effect Isolation**. Before continuing, verify that you can test the core with values and test the shell with focused boundary evidence. This module preserves that capability and adds the ability to design domain combinators that preserve type and error meaning. Module 40, **Functional Architecture Synthesis**, will rely on both when it asks: *How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?*
+
+### Scope boundary
+
+This module owns the reasoning for **combinator laws and cost models** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -65,7 +75,7 @@ The returned closure captures configuration and can be used in a filter.
 
 Composing functions that return references tied to inputs may require higher-ranked bounds or named functions. Do not box to suppress every type error. Course 3’s trait and lifetime tools remain available, but complexity must earn its value.
 
-### Decision rule
+### Decision rule — Lifetime limits
 
 Use generic composition when the abstraction appears repeatedly and its callable contract is stable. Prefer domain-named functions and built-in combinators for ordinary pipelines.
 
@@ -110,7 +120,7 @@ A reducer can be decorated with auditing or invariant checks, but wrappers must 
 
 `both`, `contramap`, and `lift` may be familiar in functional libraries, but domain names such as `requires_all`, `on_field`, or `validate_each` are often clearer to Rust readers.
 
-### Decision rule
+### Decision rule — Domain vocabulary
 
 Create combinators for repeated domain composition with explicit call order, short-circuiting, error, and ownership contracts. Reject abstractions that require explaining more vocabulary than they remove.
 
@@ -166,7 +176,7 @@ For every proposed law, try:
 
 Tests increase confidence and expose counterexamples. They do not mathematically prove arbitrary domains. State the validation scope honestly.
 
-### Decision rule
+### Decision rule — Law tests are not proofs
 
 Write the domain, preconditions, observation notion, and counterexamples before adopting a law as an API contract.
 
@@ -196,7 +206,7 @@ Adapters are usually small state values containing the inner iterator and closur
 
 Two passes over a small in-memory slice may be cheaper in engineering complexity than one accumulator with many branches. A single pass matters for streams, cache behavior, or expensive sources only under real constraints.
 
-### Decision rule
+### Decision rule — Multiple passes
 
 Write a qualitative cost ledger: allocations, clones, retained ownership, traversal count, dispatch, and early exit. Label it a model until benchmarks validate claims.
 
@@ -254,7 +264,7 @@ fn error_messages(report: &Report) -> Vec<String> {
 
 A type may expose both a borrowed iterator view and an explicit `to_owned_*` collection method. Names should make materialization visible.
 
-### Decision rule
+### Decision rule — API combinations
 
 Return a lazy iterator when caller-selected consumption and borrowing are part of the value. Return an owned collection when stability, repeated use, reordering, or boundary transfer is required.
 
@@ -289,7 +299,7 @@ A retry or fallback combinator needs call-count, idempotence, and effect policy.
 
 Warnings can coexist with success. A combinator that returns only `Result<T, E>` cannot express successful output plus warnings without another layer.
 
-### Decision rule
+### Decision rule — Diagnostics as output
 
 Preserve typed sources and deterministic diagnostic order. Separate fatal failure, recoverable alternatives, warnings, and accumulated validation rather than flattening them into one string channel.
 
@@ -327,7 +337,7 @@ Every public combinator needs documentation, laws, examples, versioning, and err
 
 A program can have an effect-isolated deterministic core implemented mostly with loops. A long chain can be highly stateful and effectful. Judge flows, not appearance.
 
-### Decision rule
+### Decision rule — Functional architecture is not fluent syntax
 
 Stop abstracting when the next layer hides domain control flow, weakens diagnostics, or introduces vocabulary without repeated proof value.
 
@@ -367,6 +377,24 @@ A wrapper adds field context while retaining typed source error. It does not str
 
 A global `Pipe` trait adding `.pipe`, `.tap`, `.also`, and `.apply` is rejected because the course has one use and standard expressions are clearer.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For design domain combinators that preserve type and error meaning, construct one positive and one causal negative example. Mark the first decisive fact in the **law and counterexample table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For state and test laws such as identity, idempotence, order preservation, and partition consistency where they truly apply, construct one positive and one causal negative example. Mark the first decisive fact in the **law and counterexample table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For reason about closure capture, allocation, cloning, and materialization costs without claiming unmeasured optimization, construct one positive and one causal negative example. Mark the first decisive fact in the **law and counterexample table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For choose lazy or eager return types based on lifetime, API, and reuse constraints, construct one positive and one causal negative example. Mark the first decisive fact in the **law and counterexample table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **LedgerFlow**, a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports. Review reusable LedgerFlow combinators with laws and counterexamples for order, identity, error propagation, and duplication. Attach honest operation-count claims. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -396,11 +424,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-[← Module 38](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 40 →](../../../04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md)
+[← Module 38](../../../04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 40 →](../../../04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md)
 
 ## Continue
 
-1. Complete the [Module 39 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 39 — Combinator Contracts](../../labs/module-09-combinator-contracts/README.md) from its public contract.
-3. Apply the Module 39 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 40 — Functional Architecture Synthesis](../module-40-functional-architecture-synthesis/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,8 +1,17 @@
 # Workbook — Module 69: Rayon, Work Stealing, and Deterministic Parallelism
 
-[Return to the chapter](index.md) · [Open the BatchWeave engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-09-parallel-histogram/README.md) · [BatchWeave guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether the chapter has become an operational model. Freeze predictions, protocol diagrams, and invariants before compiling. Concurrency is unusually forgiving of explanations written after observing one successful run; that is exactly why the reasoning record must come first.
+This workbook tests whether **Rayon, Work Stealing, and Deterministic Parallelism** has become a usable model rather than remembered vocabulary. Its governing question is: *How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?* Preserve your first prediction and record decisive facts in a **work-partition and reduction map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 68 — Lock-Free Protocols, Reclamation, and Unsafe Send/Sync that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?**
+3. Draw the smallest **work-partition and reduction map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -105,6 +114,17 @@ Create and reuse a custom pool in a library API.
 
 Required evidence: Make thread count explicit, reject zero, and avoid relying on worker identity.
 
+### Interleaved reasoning pass
+
+1. For **Distinguish task parallelism, data parallelism, and a long-lived message-driven worker service**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the work-partition and reduction map.
+2. For **Explain work stealing without relying on worker identity or execution order**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the work-partition and reduction map.
+3. For **Derive closure `Send` and captured-state `Sync` requirements from parallel execution**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the work-partition and reduction map.
+4. For **Track item ownership and ordering through indexed parallel iterators**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the work-partition and reduction map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Rayon, Work Stealing, and Deterministic Parallelism** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Parallel Histogram](../../labs/module-09-parallel-histogram/README.md) from the starter. Before opening the solution, produce:
@@ -116,6 +136,18 @@ Build [Parallel Histogram](../../labs/module-09-parallel-histogram/README.md) fr
 - a documented sequential cutoff hypothesis rather than a speed claim;
 
 Your submission must also identify one schedule that the implementation handles correctly and one product claim it deliberately does not make.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Parallel Histogram**, record:
+
+- the public behavior that demonstrates **Distinguish task parallelism, data parallelism, and a long-lived message-driven worker service**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -131,6 +163,10 @@ Required capstone evidence:
 
 Add at least one regression test that fails if this module's governing contract is removed. Tests that merely sleep and hope for a schedule do not count as causal evidence.
 
+### Capstone invariant trace
+
+For the Module 69 BatchWeave increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Answer without the chapter:
@@ -144,3 +180,7 @@ Answer without the chapter:
 ### Independent transfer
 
 Build a parallel source-code statistics function over an in-memory file list. Parsing is pure and may fail. Return deterministic per-language counts plus diagnostics sorted by source index. Use a custom pool and sequential oracle. Then add a requirement to stream files from disk with bounded in-flight bytes and explain why the I/O stage should remain outside the Rayon reduction.
+
+### Closed-book defense
+
+In five minutes, answer “How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?” using the **work-partition and reduction map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside BatchWeave. A list of APIs without the deciding relationship is incomplete.

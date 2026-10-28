@@ -1,9 +1,11 @@
-# 22 — Associated Types and Type Families
+# Module 22 — Associated Types and Type Families
 
-**Course 3, day 2 · Module 22 of 90**  
-`███████░░░░░░░░░░░░░` **22/90**
+**Course 3 · Day 2 · Module 22 of 100**
+`██████░░░░░░░░░░░░░░░░░░░` **22/100**
 
-[← Module 21: Traits as Behavioral Contracts](../module-21-traits-as-behavioral-contracts/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 23: Coherence and Implementation Ownership →](../module-23-coherence-and-implementation-ownership/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-associated-families/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 21: Traits as Behavioral Contracts](../module-21-traits-as-behavioral-contracts/index.md) · [Module 23: Coherence and Implementation Ownership →](../module-23-coherence-and-implementation-ownership/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 A trait contract often relates more than behavior: an implementation may choose an item type, error family, constant, or borrowed view. Associated items follow basic traits because you must first see who owns the contract before deciding who chooses each related type.
+
+### Prerequisite bridge
+
+Module 21 established **Traits as Behavioral Contracts**. Before continuing, verify that you can test semantic laws shared by multiple implementations. This module preserves that capability and adds the ability to choose between generic parameters and associated types from relationship cardinality. Module 23, **Coherence and Implementation Ownership**, will rely on both when it asks: *Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?*
+
+### Scope boundary
+
+This module owns the reasoning for **associated types and type families** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -574,6 +584,24 @@ A single trait with `type Item` cannot express both an owned item and a lifetime
 
 The third design is often strongest: the complex mechanism remains local, and most of the program receives an owned, ergonomic API.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For choose between generic parameters and associated types from relationship cardinality, construct one positive and one causal negative example. Mark the first decisive fact in the **associated-type relationship map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For use associated constants and associated types without hiding call-site variation, construct one positive and one causal negative example. Mark the first decisive fact in the **associated-type relationship map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For derive a generic associated type from a borrowing family requirement, construct one positive and one causal negative example. Mark the first decisive fact in the **associated-type relationship map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For explain the effect of associated-item choices on dyn compatibility and callers, construct one positive and one causal negative example. Mark the first decisive fact in the **associated-type relationship map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Attach item, output, and error families to the implementations that choose them. Use associated types where callers should not select arbitrary combinations. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -603,11 +631,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Associated items](https://doc.rust-lang.org/reference/items/associated-items.html)
 - [Rust Reference: Generic parameters](https://doc.rust-lang.org/reference/items/generics.html)
 
-[← Module 21](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 23 →](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md)
+[← Module 21](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 23 →](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md)
 
 ## Continue
 
-1. Complete the [Module 22 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 22 — Associated Families](../../labs/module-02-associated-families/README.md) from its public contract.
-3. Apply the Module 22 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 23 — Coherence and Implementation Ownership](../module-23-coherence-and-implementation-ownership/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

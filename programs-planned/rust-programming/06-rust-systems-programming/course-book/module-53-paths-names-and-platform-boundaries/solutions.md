@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 53: Paths, Names, and Platform Boundaries
+# Reasoned Solutions — Module 53: Paths, Names, and Platform Boundaries
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-03-sandboxed-extraction-paths/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 53: Paths, Names, and Platform Boundaries**. Compare the reasoning against this question: *How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -120,3 +118,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can explain why a validated relative name is not by itself race-free filesystem containment, preserve non-Unicode host identities in errors, and state the exact link and destination threat model of an extraction routine.
 
 Then perform this destructive regression check: replace component validation with a string-prefix check and show which traversal, separator, or drive-prefix fixture now passes incorrectly. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable?
+
+Build a **path threat model**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Validate archive-relative paths by components rather than substring tests.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Explain why lexical checks, canonicalization, and race-free resolution solve different problems.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Distinguish metadata that follows links from metadata about the link itself.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Use target configuration without scattering platform assumptions through domain code.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the path threat model.
+
+### Reference implementation comparison
+
+For [Sandboxed Extraction Paths](../../labs/module-03-sandboxed-extraction-paths/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 53 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Paths, Names, and Platform Boundaries**, which relationship decides this question: “How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

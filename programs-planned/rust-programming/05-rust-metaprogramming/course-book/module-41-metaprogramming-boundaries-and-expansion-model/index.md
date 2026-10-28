@@ -1,9 +1,11 @@
-# 41 — Metaprogramming Boundaries and the Expansion Model
+# Module 41 — Metaprogramming Boundaries and the Expansion Model
 
-**Course 5, day 1 · Module 41 of 90**  
-`██████████████░░░░░░` **41/90**
+**Course 5 · Day 1 · Module 41 of 100**
+`██████████░░░░░░░░░░░░░░░` **41/100**
 
-[← Module 40: Functional Architecture Synthesis](../../../04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 42: Declarative Macros: Matchers, Fragments, and Repetition →](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-decision-table-generator/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 40: Functional Architecture Synthesis](../../../04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md) · [Module 42: Declarative Macros: Matchers, Fragments, and Repetition →](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 The first forty modules gave you ordinary mechanisms for almost every common form of reuse: functions, generics, traits, enums, builders, iterators, closures, modules, and data-driven tables. Course 5 starts by making those mechanisms the default. A macro is justified only when ordinary Rust cannot own a relationship without duplicated declarations or a separate unchecked language.
 
 Beginning with syntax would teach the wrong reflex. The first skill is refusal: identify proposals that should remain functions, values, traits, or parsers. Only then is it useful to learn how expansion works.
+
+### Prerequisite bridge
+
+Module 40 established **Functional Architecture Synthesis**. Before continuing, verify that you can reusable law. This module preserves that capability and adds the ability to separate runtime abstraction from compile-time generation. Module 42, **Declarative Macros: Matchers, Fragments, and Repetition**, will rely on both when it asks: *How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?*
+
+### Scope boundary
+
+This module owns the reasoning for **metaprogramming boundaries and the expansion model** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -320,6 +330,24 @@ Use a phase table when diagnosing a compile-time system.
 
 The same visible compiler output may contain errors from several phases. Find the earliest causal failure. Later errors may be consequences.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate runtime abstraction from compile-time generation, construct one positive and one causal negative example. Mark the first decisive fact in the **mechanism-selection record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For identify the source of truth and generated surface of a proposed macro, construct one positive and one causal negative example. Mark the first decisive fact in the **mechanism-selection record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For explain expansion as a staged production of ordinary Rust tokens, construct one positive and one causal negative example. Mark the first decisive fact in the **mechanism-selection record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For distinguish matcher, parser, name-resolution, type-checking, build, and runtime failures, construct one positive and one causal negative example. Mark the first decisive fact in the **mechanism-selection record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge begins with an ordinary handwritten command registry. Before adding any macro, write:
@@ -380,7 +408,4 @@ These sources define language and tool contracts. The chapter supplies the decis
 
 ## Continue
 
-1. Complete the [Module 41 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 41 — Decision Table Generator](../../labs/module-01-decision-table-generator/README.md) from its public contract.
-3. Apply the Module 41 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 42 — Declarative Macros: Matchers, Fragments, and Repetition](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

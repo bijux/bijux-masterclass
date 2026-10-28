@@ -1,8 +1,11 @@
-# Module 63: Shared State: Locks and Protected Invariants
+# Module 63 — Shared State: Locks and Protected Invariants
 
-**Course 7, day 3 · Module 63 of 90**  
+**Course 7 · Day 3 · Module 63 of 100**
+`████████████████░░░░░░░░░` **63/100**
 
-**63/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-protected-inventory/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries](../module-62-structured-threads-scopes-joins-and-panic-boundaries/index.md) · [Module 64: Coordination: Condvars, Barriers, and Phase Protocols →](../module-64-coordination-condvars-barriers-and-phase-protocols/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ The first two modules preferred ownership transfer and disjoint borrowing becaus
 The weak model says “put the data behind a mutex.” The strong model says “this lock serializes this transition over these fields, every reader observes the invariant while holding the same lock, no blocking effect occurs while the guard is live, and panic recovery has a stated policy.” This module develops that stronger model before condition variables and worker queues add waiting behavior.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 62 established **Structured Threads: Scopes, Joins, and Panic Boundaries**. Before continuing, verify that you can compare owned threads, scoped threads, and rayon decomposition by lifetime, workload, and control needs. This module preserves that capability and adds the ability to name the state invariant protected by each `mutex` or `rwlock` rather than treating the primitive as a generic thread-safety wrapper;. Module 64, **Coordination: Condvars, Barriers, and Phase Protocols**, will rely on both when it asks: *How do threads wait for a state predicate or phase transition without polling, lost wakeups, or treating notification itself as truth?*
+
+### Scope boundary
+
+This module owns the reasoning for **shared state: locks and protected invariants** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -125,6 +136,24 @@ available + reserved == capacity
 ```
 
 Intermediate snapshots may also be checked through a public method that locks consistently. The test should not reach into private state or rely on which worker wins.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For name the state invariant protected by each `Mutex` or `RwLock` rather than treating the primitive as a generic thread-safety wrapper, construct one positive and one causal negative example. Mark the first decisive fact in the **protected-invariant table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish shared liveness supplied by `Arc` from exclusion supplied by a lock, construct one positive and one causal negative example. Mark the first decisive fact in the **protected-invariant table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For keep guard scope limited to the smallest complete state transition, construct one positive and one causal negative example. Mark the first decisive fact in the **protected-invariant table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For avoid performing user callbacks, channel sends, file I/O, or expensive computation while holding a guard, construct one positive and one causal negative example. Mark the first decisive fact in the **protected-invariant table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -252,4 +281,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Protected Inventory](../../labs/module-03-protected-inventory/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 64 — Coordination: Condvars, Barriers, and Phase Protocols](../module-64-coordination-condvars-barriers-and-phase-protocols/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

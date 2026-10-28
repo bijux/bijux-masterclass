@@ -1,6 +1,14 @@
 # Laboratory 79 — Idempotent Retry Client
 
-This is the independent product for **Course 8, Module 79**. Read the [module chapter](../../course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md) and complete its [workbook](../../course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/workbook.md) before consulting the reference implementation.
+**Course 8 · Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing**
+
+[Chapter](../../course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md) · [Workbook](../../course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/workbook.md) · [JobWire guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Network Failure, Idempotency, Retries, and Deterministic Testing**: When a network operation fails without revealing whether the remote side committed it, how do idempotency, retry budgets, failure classification, and deterministic tests preserve one semantic outcome? The product must make **Classify failures by phase, scope, retryability, and commit ambiguity** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **retry and commit matrix** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -12,7 +20,7 @@ The completed product must make the answer visible in its types, lifecycle, test
 
 Build a retry engine against a scripted async attempt function and an in-memory idempotency store. Attempt one may commit and then report transport failure; a later attempt with the same key must retrieve the original terminal result without re-executing the handler.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 The lab removes real sockets so retry semantics, commit count, time, and failure classification can be controlled exactly. It proves that idempotency is server state, not a property of looping client code.
 
@@ -71,7 +79,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Be
 
 The laboratory is complete when its tests pass and you can answer the governing question without the chapter:
 
-> How can several wire attempts converge on one semantic operation under ambiguous commit, bounded retries, and deterministic virtual time?
+For **Laboratory 79 — Idempotent Retry Client**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -81,3 +89,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Idempotent Retry Client**.
+2. Draw the smallest **retry and commit matrix** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to JobWire so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Classify failures by phase, scope, retryability, and commit ambiguity.
+- Distinguish idempotent operation semantics from retrying an HTTP or TCP request.
+- Design idempotency keys with scope, fingerprint, in-progress state, terminal result, and retention.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 79 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **retry and commit matrix**. Defend why your design is simpler than one plausible alternative under the new requirements.

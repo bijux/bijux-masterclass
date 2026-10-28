@@ -1,9 +1,11 @@
-# 01 — Compilation, Expressions, and Types
+# Module 01 — Compilation, Expressions, and Types
 
-**Course 1, day 1 · Module 1 of 90**  
-`░░░░░░░░░░░░░░░░░░░░` **1/90**
+**Course 1 · Day 1 · Module 1 of 100**
+`░░░░░░░░░░░░░░░░░░░░░░░░░` **1/100**
 
-[Program start](../../../README.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 2: Control Flow, Functions, and Invariants →](../module-02-control-flow-functions-and-invariants/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-measurement-report/README.md) · [Taskboard guide](../capstone.md)
+
+[Module 2: Control Flow, Functions, and Invariants →](../module-02-control-flow-functions-and-invariants/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Rust's compiler is not merely a final judge; it is the first instrument you learn to use. Before ownership or traits can make sense, you need a reliable loop for turning source text into typed feedback and for reading expressions as values. This module establishes that loop and the vocabulary every later explanation depends on.
+
+### Prerequisite bridge
+
+Bring one small program you already understand. Name one input assumption, one state invariant, one failure, and one observable result. This module gives you the type and compilation vocabulary to state those claims precisely; Module 2 will reuse that vocabulary when control flow introduces multiple paths and loop invariants.
+
+### Scope boundary
+
+This module owns the reasoning for **compilation, expressions, and types** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -738,6 +748,24 @@ cargo test --all-targets
 
 Run narrow checks during development and the complete route at module exit.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project”, construct one positive and one causal negative example. Mark the first decisive fact in the **type trace** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For derive the type and value of blocks, branches, tuples, arrays, function bodies, and semicolon-sensitive expressions before compiling, construct one positive and one causal negative example. Mark the first decisive fact in the **type trace** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For choose numeric types and conversions from domain constraints, including overflow and floating-point limitations, rather than from habit, construct one positive and one causal negative example. Mark the first decisive fact in the **type trace** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use compiler diagnostics, tests, rustfmt, Clippy, and rustdoc as separate evidence channels and explain what each channel does not prove, construct one positive and one causal negative example. Mark the first decisive fact in the **type trace** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Create the Taskboard package, its help surface, and a title-validation function. The important product lesson is that even the first small function has a type contract and tests. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -768,11 +796,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Cargo Book](https://doc.rust-lang.org/cargo/)
 - [Rust Reference: Expressions](https://doc.rust-lang.org/reference/expressions.html)
 
-[ninety-module map](../../../COURSE_MAP.md) · [Module 2 →](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md)
+[one-hundred-module map](../../../COURSE_MAP.md) · [Module 2 →](../../../01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md)
 
 ## Continue
 
-1. Complete the [Module 1 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 1 — Measurement Report](../../labs/module-01-measurement-report/README.md) from its public contract.
-3. Apply the Module 1 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 2 — Control Flow, Functions, and Invariants](../module-02-control-flow-functions-and-invariants/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

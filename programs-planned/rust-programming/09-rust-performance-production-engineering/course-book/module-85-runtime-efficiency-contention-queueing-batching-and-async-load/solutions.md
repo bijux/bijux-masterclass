@@ -1,6 +1,8 @@
-# Module 85 Solutions — Runtime Efficiency: Contention, Queueing, Batching, and Async Load
+# Reasoned Solutions — Module 85: Runtime Efficiency: Contention, Queueing, Batching, and Async Load
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-05-bounded-throughput-tuner/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 85: Runtime Efficiency: Contention, Queueing, Batching, and Async Load**. Compare the reasoning against this question: *When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Saturation reasoning
 
@@ -81,3 +83,42 @@ Connection admission, mailbox capacity, and active ingestion are independent lim
 ## Part 6 — Defense
 
 Service time is active work; response includes waiting. Queues store overload. The knee is the transition from useful scaling to rapidly increasing waiting/errors. Reporting only completion hides rejected demand. Hot keys defeat uniform sharding assumptions. Three batch bounds constrain memory, latency, and payload. Unbounded blocking submission merely relocates the unbounded queue. A defensible admission limit is tied to measured saturation, memory budget, and an explicit overload response.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?
+
+Build a **saturation and queueing curve**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Separate service time, wait time, queue depth, concurrency, throughput, and utilization.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Apply Little’s Law as a consistency check while stating its steady-state assumptions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Find lock contention, convoying, hot sharding, wake amplification, and blocking-runtime violations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design queue, semaphore, and batch capacities from latency and memory budgets.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Distinguish throughput batching from latency-sensitive coalescing.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Separate service time, wait time, queue depth, concurrency, throughput, and utilization.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the saturation and queueing curve.
+
+### Reference implementation comparison
+
+For [Bounded Throughput Tuner](../../labs/module-05-bounded-throughput-tuner/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 85 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Runtime Efficiency: Contention, Queueing, Batching, and Async Load**, which relationship decides this question: “When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

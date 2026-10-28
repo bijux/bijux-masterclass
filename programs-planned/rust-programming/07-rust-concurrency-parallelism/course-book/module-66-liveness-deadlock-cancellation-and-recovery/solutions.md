@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 66: Liveness: Deadlock, Cancellation, and Recovery
+# Reasoned Solutions — Module 66: Liveness: Deadlock, Cancellation, and Recovery
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the BatchWeave guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-06-cancellable-worker-group/README.md) · [BatchWeave guide](../capstone.md)
 
-Liveness is not inferred from the absence of data races. The strongest solutions make waiting dependencies, cancellation wake paths, panic boundaries, and final identity reconciliation explicit enough that termination can be argued without observing a lucky schedule.
-
-The answers below are reasoning models, not scripts to imitate. A different implementation can be stronger when it proves the same contract more directly. Compare ownership, synchronization, progress, failure, and determinism—not only surface syntax.
+Use these notes only after preserving your prediction and repair for **Module 66: Liveness: Deadlock, Cancellation, and Recovery**. Compare the reasoning against this question: *Why can every blocked operation eventually continue or terminate, and what happens when cancellation, panic, or partial infrastructure failure interrupts the normal path?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -81,3 +79,42 @@ BatchWeave should now survive the first domain failure, explicit cancellation, r
 The defense must show a wait-for graph, the state/wake/checkpoint cancellation triad, a narrow panic boundary, and a finite terminal-accounting proof. It should not claim fairness, instantaneous cancellation, or recovery from process abort.
 
 A strong defense states what is guaranteed for every allowed schedule, what is merely likely on one machine, and what the design intentionally leaves unspecified.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Why can every blocked operation eventually continue or terminate, and what happens when cancellation, panic, or partial infrastructure failure interrupts the normal path?
+
+Build a **wait-for and shutdown graph**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish deadlock, starvation, livelock, priority inversion, and slow work.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Construct a wait-for graph over locks, channels, joins, barriers, and conditions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **State a global lock order and identify operations that violate it.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design cancellation as state plus a wake mechanism plus an observation point.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Make shutdown idempotent and safe under concurrent callers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish deadlock, starvation, livelock, priority inversion, and slow work.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the wait-for and shutdown graph.
+
+### Reference implementation comparison
+
+For [Cancellable Worker Group](../../labs/module-06-cancellable-worker-group/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In BatchWeave, Module 66 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Liveness: Deadlock, Cancellation, and Recovery**, which relationship decides this question: “Why can every blocked operation eventually continue or terminate, and what happens when cancellation, panic, or partial infrastructure failure interrupts the normal path?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to BatchWeave?

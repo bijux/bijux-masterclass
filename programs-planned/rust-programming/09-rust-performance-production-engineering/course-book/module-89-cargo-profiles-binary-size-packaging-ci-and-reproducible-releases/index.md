@@ -1,8 +1,11 @@
 # Module 89 — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases
 
-**89/90** · Course 9 · Module 89 of 90
+**Course 9 · Day 9 · Module 89 of 100**
+`██████████████████████░░░` **89/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-release-matrix-and-artifact-manifest/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 88: Security and Supply-Chain Engineering](../module-88-security-and-supply-chain-engineering/index.md) · [Module 90: Production Readiness, Capacity Planning, Rollouts, and Incident Learning →](../module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 A reviewed source tree is not the artifact that runs. Compiler version, target, Cargo profile, features, dependencies, linker settings, generated inputs, and packaging steps all influence the delivered product. Module 89 makes that transformation explicit and reproducible to the strength the project actually claims.
 
 Release engineering also closes a common measurement error: profiling one artifact and shipping another without comparison. Production profiles are product variants with different optimization, symbols, size, build time, and diagnostic properties.
+
+### Prerequisite bridge
+
+Module 88 established **Security and Supply-Chain Engineering**. Before continuing, verify that you can create security tests for traversal, injection, resource exhaustion, confused-deputy behavior, and unsafe defaults. This module preserves that capability and adds the ability to explain how cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy. Module 90, **Production Readiness, Capacity Planning, Rollouts, and Incident Learning**, will rely on both when it asks: *What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?*
+
+### Scope boundary
+
+This module owns the reasoning for **cargo profiles, binary size, packaging, ci, and reproducible releases** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -111,6 +122,24 @@ Wall clocks, random IDs, absolute paths, and unordered generation can alter arti
 
 Two successful builds on one host prove little. Record inputs, compare manifests, and define the exact reproducibility strength being claimed.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy, construct one positive and one causal negative example. Mark the first decisive fact in the **release manifest** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For separate development, test, benchmark, profiling, release, and distribution artifacts, construct one positive and one causal negative example. Mark the first decisive fact in the **release manifest** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For measure binary size by section and dependency contribution before applying size flags, construct one positive and one causal negative example. Mark the first decisive fact in the **release manifest** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design feature combinations that do not create untested products or additive surprises, construct one positive and one causal negative example. Mark the first decisive fact in the **release manifest** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -196,7 +225,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 89 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Release Matrix and Artifact Manifest laboratory](../../labs/module-09-release-matrix-and-artifact-manifest/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 90 — Production Readiness, Capacity Planning, Rollouts, and Incident Learning](../module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

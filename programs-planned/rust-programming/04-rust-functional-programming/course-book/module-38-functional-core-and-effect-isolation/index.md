@@ -1,9 +1,11 @@
-# 38 — Functional Core and Effect Isolation
+# Module 38 — Functional Core and Effect Isolation
 
-**Course 4, day 8 · Module 38 of 90**  
-`█████████████░░░░░░░` **38/90**
+**Course 4 · Day 8 · Module 38 of 100**
+`██████████░░░░░░░░░░░░░░░` **38/100**
 
-[← Module 37: Recursive Data and Structural Sharing](../module-37-recursive-data-and-structural-sharing/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 39: Combinator Laws and Cost Models →](../module-39-combinator-laws-and-cost-models/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-deterministic-batch-runner/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 37: Recursive Data and Structural Sharing](../module-37-recursive-data-and-structural-sharing/index.md) · [Module 39: Combinator Laws and Cost Models →](../module-39-combinator-laws-and-cost-models/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Pure transformations become valuable when the program must also read files, consult time, print output, or mutate external state. This module separates decision data from effect execution. The result is not artificial purity; it is a core that can be tested exhaustively and a boundary whose failures are visible.
+
+### Prerequisite bridge
+
+Module 37 established **Recursive Data and Structural Sharing**. Before continuing, verify that you can recognize recursion-depth and allocation costs and select iterative alternatives when required. This module preserves that capability and adds the ability to separate deterministic domain decisions from filesystem, time, environment, and terminal effects. Module 39, **Combinator Laws and Cost Models**, will rely on both when it asks: *What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?*
+
+### Scope boundary
+
+This module owns the reasoning for **functional core and effect isolation** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -59,7 +69,7 @@ A function may mutate uniquely owned local data and still satisfy deterministic 
 
 Time can be passed as a timestamp, randomness as a seed or generated token, and environment as a parsed configuration. The core then reasons over values.
 
-### Decision rule
+### Decision rule — Effects as explicit inputs
 
 Do not claim Rust proves purity. Identify observable effects and move unstable inputs into explicit parameters or narrow boundaries. Test determinism as a product property.
 
@@ -92,7 +102,7 @@ Invalid input data may be a reportable analysis result with exit code 1. Failure
 
 The shell may need transactional ordering: write a temporary file, flush, replace, then report success. Functional isolation does not remove effect protocol design; it narrows where it lives.
 
-### Decision rule
+### Decision rule — Effect sequence
 
 Keep domain parsing, validation, reduction, and rendering deterministic where practical. Put acquisition, persistence, terminal output, and process exit behavior in a narrow shell with explicit operational errors.
 
@@ -137,7 +147,7 @@ Use a closure for one narrow operation. Use a trait when several methods form a 
 
 Passing a seed permits replay only if the algorithm and version are controlled. Passing generated choices as explicit data is stronger for long-term audit.
 
-### Decision rule
+### Decision rule — Random seeds and replay
 
 Pass a value for one observation, a callable for one narrow repeated operation, and a trait for a coherent capability. Specify call count and whether failures consume generated values.
 
@@ -184,7 +194,7 @@ For one direct read or write, a plan type can add ceremony. Use it when review, 
 
 A method named `query` that updates a hidden cache is logically observational but internally effectful. That may be acceptable with interior mutability, but document thread and reentrancy behavior. In the functional core, prefer explicit derived values unless caching is justified.
 
-### Decision rule
+### Decision rule — Query purity
 
 Represent effects as data when planning has product value. Keep command and query semantics distinct, and do not mistake a plan for guaranteed execution.
 
@@ -226,7 +236,7 @@ Replay-safe event processing often needs stable event IDs and duplicate policy. 
 
 Writing identical content to the same file may be idempotent in final state but still updates metadata or triggers observers. Define the observable boundary before claiming idempotence.
 
-### Decision rule
+### Decision rule — Idempotent effect execution
 
 State the domain, preconditions, and observation boundary of every idempotence or replay claim. Test counterexamples such as reordered input, duplicates, and hidden unstable values.
 
@@ -262,7 +272,7 @@ Golden output can protect formatting, but it should be small, reviewed, and pair
 
 When failure atomicity depends on sequence, use a fake executor that records attempted actions and can fail at a chosen step. This is a justified callback or trait boundary.
 
-### Decision rule
+### Decision rule — Test effect ordering
 
 Test deterministic logic directly with values. Test the shell at its real observable boundaries, and introduce fakes only for protocols that cannot be proven through values alone.
 
@@ -294,7 +304,7 @@ Returning a closure that performs I/O later does not make the operation pure; it
 
 A tiny CLI may be clearest with one `run` function that reads, transforms, and writes using well-tested helpers. Architecture should reduce risk, not maximize layers.
 
-### Decision rule
+### Decision rule — Over-isolation
 
 Isolate effects at the smallest boundary that improves determinism, reuse, review, or failure control. Reject layers that only relocate complexity.
 
@@ -331,6 +341,24 @@ A batch assignment function accepts `FnMut() -> Id`. Tests supply a deterministi
 
 A plan that stores `Box<dyn FnOnce() -> io::Result<()>>` hides actions and cannot support review or dry-run rendering. Domain action values are preferable.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate deterministic domain decisions from filesystem, time, environment, and terminal effects, construct one positive and one causal negative example. Mark the first decisive fact in the **effect boundary map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For inject small effect capabilities through parameters, closures, or narrow traits without building a framework, construct one positive and one causal negative example. Mark the first decisive fact in the **effect boundary map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For represent intended effects as data when plan-then-execute improves safety or testability, construct one positive and one causal negative example. Mark the first decisive fact in the **effect boundary map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design idempotent and replayable boundaries where the domain permits them, construct one positive and one causal negative example. Mark the first decisive fact in the **effect boundary map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **LedgerFlow**, a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports. Move filesystem and terminal operations into an effect shell around a deterministic analysis core. Represent intended effects as data where that improves testing. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -360,11 +388,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: I/O Project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 - [std::io](https://doc.rust-lang.org/std/io/)
 
-[← Module 37](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 39 →](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md)
+[← Module 37](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 39 →](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md)
 
 ## Continue
 
-1. Complete the [Module 38 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 38 — Deterministic Batch Runner](../../labs/module-08-deterministic-batch-runner/README.md) from its public contract.
-3. Apply the Module 38 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 39 — Combinator Laws and Cost Models](../module-39-combinator-laws-and-cost-models/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

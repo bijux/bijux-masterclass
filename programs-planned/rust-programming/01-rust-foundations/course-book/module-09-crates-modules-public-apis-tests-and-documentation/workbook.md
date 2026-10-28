@@ -1,8 +1,17 @@
 # Workbook — Module 09: Crates, Modules, Public APIs, Tests, and Documentation
 
-[Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-09-library-boundaries/README.md) · [Taskboard guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Crates, Modules, Public APIs, Tests, and Documentation** without relying on surface syntax. Keep the module question in view: *Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Crates, Modules, Public APIs, Tests, and Documentation** has become a usable model rather than remembered vocabulary. Its governing question is: *Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?* Preserve your first prediction and record decisive facts in a **module and API map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 8 — Generics, Traits, Conversions, and Lifetime Basics that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?**
+3. Draw the smallest **module and API map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -24,7 +33,6 @@ python3 ../tools/run_compiler_labs.py 01-rust-foundations
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 You inherit:
 
@@ -101,7 +109,6 @@ Draw the dependency graph and answer:
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 ### 1. Vocabulary map
 
 For ten artifacts in the course workspace, label package, crate, target, module, path, or item. Include the capstone library, capstone binary, one integration test, one lab solution, `model.rs`, and `TaskBoard::add`.
@@ -150,11 +157,18 @@ Write one shell route that runs structural audits, formatting, check, Clippy, al
 
 Change a private helper name and internal collection traversal. Prove public integration and CLI tests remain unchanged while unit tests change only where they intentionally cover representation.
 
+### Interleaved reasoning pass
 
+1. For **Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the module and API map.
+2. For **Design private representation and a minimal public API that preserves invariants**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the module and API map.
+3. For **Choose unit, integration, process, fixture, and documentation tests from the contract under proof**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the module and API map.
+4. For **Write rustdoc examples that teach and execute, and maintain a deliberate warning/lint policy**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the module and API map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Crates, Modules, Public APIs, Tests, and Documentation** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Purpose
 
@@ -260,6 +274,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-09-library-boundaries](../../labs/module-09-library-boundaries/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Library Boundary Refactor**, record:
+
+- the public behavior that demonstrates **Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -269,7 +295,6 @@ The executable starter and reference implementation are in [module-09-library-bo
 - Choose unit, integration, process, fixture, and documentation tests from the contract under proof.
 - Write rustdoc examples that teach and execute, and maintain a deliberate warning/lint policy.
 - Separate a thin effectful binary shell from a testable library core.
-
 
 ### Target source structure
 
@@ -337,11 +362,13 @@ Required:
 ### Review questions
 Run the complete proof route from a fresh copy of only committed course files. Then rename a private helper and change one internal traversal. Public integration, documentation, and CLI tests should continue to pass without edits.
 
-
-
 ### Capstone defense
 
 Reduce an over-public monolithic CLI to a library with explicit boundaries and build one test at each relevant evidence layer.
+
+### Capstone invariant trace
+
+For the Module 9 Taskboard increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -351,11 +378,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type.
-- Design private representation and a minimal public API that preserves invariants.
-- Choose unit, integration, process, fixture, and documentation tests from the contract under proof.
-- Write rustdoc examples that teach and execute, and maintain a deliberate warning/lint policy.
-- Separate a thin effectful binary shell from a testable library core.
+Without reopening the chapter, reconstruct the outcomes for **Module 09: Crates, Modules, Public APIs, Tests, and Documentation**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -410,6 +433,18 @@ A capstone with domain logic in `main.rs` cannot pass regardless of test count.
 
 ### Transfer defense
 
-Reduce an over-public monolithic CLI to a library with explicit boundaries and build one test at each relevant evidence layer.
+Transfer **Module 09: Crates, Modules, Public APIs, Tests, and Documentation** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 09: Crates, Modules, Public APIs, Tests, and Documentation** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
+
+### Closed-book defense
+
+In five minutes, answer “Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?” using the **module and API map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Taskboard. A list of APIs without the deciding relationship is incomplete.

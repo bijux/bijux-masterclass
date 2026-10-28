@@ -1,30 +1,11 @@
-# Compiler investigation — Module 29: Public API Evolution
+# Module 29 Investigations — Public API Evolution
 
-[Compiler-investigation method](../README.md) · [Module chapter](../../course-book/module-29-public-api-evolution/index.md)
+[Chapter](../../course-book/module-29-public-api-evolution/index.md) · [Workbook](../../course-book/module-29-public-api-evolution/workbook.md) · [Course investigation method](../README.md)
 
-This set tests whether the model from Module 29 survives contact with small, adversarial programs. Predict each specimen without opening the machine-readable manifest or the module solutions.
+> **Prediction question:** How can a public trait-based API evolve when downstream crates may both call it and implement it?
 
-| Specimen | Question to resolve before compiling |
-|---|---|
-| [`01-required-method-addition.rs`](01-required-method-addition.rs) | Which compile-time or runtime rule decides the behavior of **required method addition**, and what evidence would distinguish the closest competing explanation? |
-| [`02-default-method-collision.rs`](02-default-method-collision.rs) | Which compile-time or runtime rule decides the behavior of **default method collision**, and what evidence would distinguish the closest competing explanation? |
-| [`03-new-supertrait-obligation.rs`](03-new-supertrait-obligation.rs) | Which compile-time or runtime rule decides the behavior of **new supertrait obligation**, and what evidence would distinguish the closest competing explanation? |
-| [`04-blanket-impl-downstream-conflict.rs`](04-blanket-impl-downstream-conflict.rs) | Which compile-time or runtime rule decides the behavior of **blanket impl downstream conflict**, and what evidence would distinguish the closest competing explanation? |
-| [`05-sealed-compatibility-surface.rs`](05-sealed-compatibility-surface.rs) | Which compile-time or runtime rule decides the behavior of **sealed compatibility surface**, and what evidence would distinguish the closest competing explanation? |
-| [`06-nonexhaustive-matching.rs`](06-nonexhaustive-matching.rs) | Which compile-time or runtime rule decides the behavior of **nonexhaustive matching**, and what evidence would distinguish the closest competing explanation? |
-| [`07-version-adapter.rs`](07-version-adapter.rs) | Which compile-time or runtime rule decides the behavior of **version adapter**, and what evidence would distinguish the closest competing explanation? |
-| [`08-strengthened-bound.rs`](08-strengthened-bound.rs) | Which compile-time or runtime rule decides the behavior of **strengthened bound**, and what evidence would distinguish the closest competing explanation? |
+Before invoking a compiler or runner, draw a **compatibility matrix** and classify the expected result. The prediction must identify the earliest decisive phase or event and show why the result follows from **Classify public trait changes by downstream source-compatibility risk**. Diagnostic wording may vary; the causal relationship may not.
 
-## Work through the set
+After observing Module 29 — Public API Evolution, preserve two repairs. The first is the smallest change that keeps the product requirement. The second is a tempting change that compiles, runs, or quiets the tool by erasing information, weakening a bound, changing ownership, hiding a failure, or narrowing the public contract. Explain precisely why the second repair is unacceptable here.
 
-For each file, draw or write the smallest model that can decide it: types and expression results, owners and loans, trait obligations, iterator state, macro phase, raw-memory obligations, or operating-system boundary state. Then classify the outcome and name the first causal rule.
-
-Compile only after the prediction is complete. A correct pass/fail guess with the wrong cause is not a successful investigation. When several errors appear, identify which one would remain after secondary errors were removed.
-
-## Repair and transfer
-
-Repair one rejecting or behaviorally defective specimen without deleting the requirement it was designed to express. Preserve the original product need while changing only the mechanism that violated it.
-
-Next, alter one assumption—ownership mode, lifetime source, trait bound, adapter order, macro input, or boundary condition. Predict the result before compiling.
-
-Finish by stating how the same rule constrains the module laboratory or cumulative capstone. This connects an isolated diagnostic to a real design decision.
+Finish by creating a new specimen that changes one relationship while keeping every incidental detail stable. Predict whether that variation changes parsing, name resolution, type checking, trait solving, borrow checking, build execution, runtime behavior, schedule behavior, or only architectural quality.

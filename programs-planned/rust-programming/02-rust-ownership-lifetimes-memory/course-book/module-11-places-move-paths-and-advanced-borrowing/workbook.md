@@ -1,8 +1,17 @@
 # Workbook — Module 11: Places, Move Paths, and Advanced Borrowing
 
-[Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-borrow-surgery/README.md) · [Memory Workspace guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Places, Move Paths, and Advanced Borrowing** without relying on surface syntax. Keep the module question in view: *Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Places, Move Paths, and Advanced Borrowing** has become a usable model rather than remembered vocabulary. Its governing question is: *Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?* Preserve your first prediction and record decisive facts in a **place and move-path map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 10 — Integration and Independent Change that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?**
+3. Draw the smallest **place and move-path map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -26,7 +35,6 @@ python3 ../tools/run_compiler_labs.py 02-rust-ownership-lifetimes-memory
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A payment prototype stores accounts in a vector. Its transfer method was made to compile by cloning both accounts, mutating the clones, then writing them back.
 
@@ -99,7 +107,6 @@ Explain why `Rc<RefCell<Account>>` would compile but be a worse topology for thi
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 Complete these before the independent lab.
 
 ### 1. Place classification
@@ -151,11 +158,18 @@ Review six supplied method signatures and replace whole-object `&mut self` recei
 
 Take a small clone-heavy program and classify each clone as required duplication, snapshot, counted-handle clone, or workaround. Remove every workaround clone.
 
+### Interleaved reasoning pass
 
+1. For **Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the place and move-path map.
+2. For **Model loans over places and explain when fields, indices, slices, and method receivers can or cannot be borrowed disjointly**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the place and move-path map.
+3. For **Use reborrowing, non-lexical lifetime shortening, two-phase borrowing, and split APIs without relying on folklore**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the place and move-path map.
+4. For **Sequence validation and mutation so failure does not expose prohibited partial state**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the place and move-path map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Places, Move Paths, and Advanced Borrowing** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 Implement the package in `labs/module-01-borrow-surgery/starter` without reading the solution.
 
@@ -225,6 +239,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-01-borrow-surgery](../../labs/module-01-borrow-surgery/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Borrow Surgery**, record:
+
+- the public behavior that demonstrates **Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -234,7 +260,6 @@ The executable starter and reference implementation are in [module-01-borrow-sur
 - Use reborrowing, non-lexical lifetime shortening, two-phase borrowing, and split APIs without relying on folklore.
 - Sequence validation and mutation so failure does not expose prohibited partial state.
 - Repair ownership conflicts by changing topology or phases before considering Clone, RefCell, or unsafe code.
-
 
 The first `memory-workspace` increment builds its internal arena.
 
@@ -284,11 +309,13 @@ Arena removal must not hold a mutable reference to a slot while also mutating th
 
 Do not expose slots or generation mutation publicly. The handle is proof-carrying identity, not direct access.
 
-
-
 ### Capstone defense
 
 Diagnose a composite-store transfer whose lookup and mutation overlap, then derive a failure-atomic split-borrow implementation.
+
+### Capstone invariant trace
+
+For the Module 11 Memory Workspace increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -298,11 +325,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations.
-- Model loans over places and explain when fields, indices, slices, and method receivers can or cannot be borrowed disjointly.
-- Use reborrowing, non-lexical lifetime shortening, two-phase borrowing, and split APIs without relying on folklore.
-- Sequence validation and mutation so failure does not expose prohibited partial state.
-- Repair ownership conflicts by changing topology or phases before considering Clone, RefCell, or unsafe code.
+Without reopening the chapter, reconstruct the outcomes for **Module 11: Places, Move Paths, and Advanced Borrowing**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -325,9 +348,17 @@ Practical check: implement `two_mut` and the rebalance core from memory in 35 mi
 
 ### Transfer defense
 
-Diagnose a composite-store transfer whose lookup and mutation overlap, then derive a failure-atomic split-borrow implementation.
+Transfer **Module 11: Places, Move Paths, and Advanced Borrowing** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 11: Places, Move Paths, and Advanced Borrowing** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
 
 Answer without compiling, then verify.
 
@@ -354,3 +385,7 @@ Answer without compiling, then verify.
 #### Transfer task
 
 Implement a bidirectional inventory transfer over a slice. Add quantity overflow checks, equal-bin rejection, and an audit record prepared before writes. Submit the place/loan table before code.
+
+### Closed-book defense
+
+In five minutes, answer “Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?” using the **place and move-path map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Memory Workspace. A list of APIs without the deciding relationship is incomplete.

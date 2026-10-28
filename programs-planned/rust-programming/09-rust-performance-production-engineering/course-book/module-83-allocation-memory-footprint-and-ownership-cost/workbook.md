@@ -1,8 +1,17 @@
-# Module 83 Workbook — Allocation, Memory Footprint, and Ownership Cost
+# Workbook — Module 83: Allocation, Memory Footprint, and Ownership Cost
 
-[Chapter](index.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-03-allocation-budgeted-batch-parser/README.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook treats memory as a lifecycle, not a `size_of` value. For each design, distinguish inline representation, heap allocation, reserved capacity, live payload, shared backing storage, temporary peak, and retention duration.
+This workbook tests whether **Allocation, Memory Footprint, and Ownership Cost** has become a usable model rather than remembered vocabulary. Its governing question is: *Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?* Preserve your first prediction and record decisive facts in a **allocation ledger**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 82 — CPU Profiling, Cost Models, and Hot-Path Optimization that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?**
+3. Draw the smallest **allocation ledger** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -86,9 +95,32 @@ Design an experiment that distinguishes allocation churn, retained memory, and t
 
 Choose one large reusable buffer or shared backing allocation from a real program. Write its normal size, legal maximum, owner, borrowers, reuse frequency, high-water behavior, and release trigger. Then define a retention policy with a steady-state budget and an exceptional-burst policy. Include the observation that would prove the policy too aggressive—such as renewed allocation churn—and the observation that would prove it too permissive—such as peak capacity remaining live after recovery.
 
+### Interleaved reasoning pass
+
+1. For **Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the allocation ledger.
+2. For **Trace ownership operations that allocate, clone, reallocate, promote, or retain data**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the allocation ledger.
+3. For **Explain when borrowing reduces work and when it only complicates lifetimes without changing allocation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the allocation ledger.
+4. For **Design capacity policies from observed size distributions instead of guessing large defaults**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the allocation ledger.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Allocation, Memory Footprint, and Ownership Cost** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build the [Allocation-Budgeted Batch Parser](../../labs/module-03-allocation-budgeted-batch-parser/README.md). Validate total input bytes and record count before allocating the output vector. Parse each line into a borrowed form, then promote only the key. Preserve physical line numbers and exact error categories. Explain why pre-counting lines is acceptable here and where it could become duplicated work worth measuring.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Allocation-Budgeted Batch Parser**, record:
+
+- the public behavior that demonstrates **Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -104,6 +136,10 @@ Add a memory ledger and enforce configuration relationships before startup. Boun
 - per-connection buffer capacity.
 
 Measure retained memory after a boundary burst and decide when buffers shrink or are dropped. Document which counters are exact product state and which memory values are target observations.
+
+### Capstone invariant trace
+
+For the Module 83 MetricRail increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -124,3 +160,6 @@ For one MetricRail ingest followed by one snapshot, classify every significant a
 
 A memory change is acceptable only when peak resident behavior, retained state after quiescence, allocation count, and semantic output have all been reconsidered. Report both logical bytes and container capacity where they differ. A lower allocation count does not justify a cache that grows without a workload-derived limit, and a smaller object does not prove a smaller process if it increases fragmentation or duplicates data elsewhere.
 
+### Closed-book defense
+
+In five minutes, answer “Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?” using the **allocation ledger**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside MetricRail. A list of APIs without the deciding relationship is incomplete.

@@ -1,9 +1,11 @@
-# 47 — Custom Derive Macros and Structural Generation
+# Module 47 — Custom Derive Macros and Structural Generation
 
-**Course 5, day 7 · Module 47 of 90**  
-`████████████████░░░░` **47/90**
+**Course 5 · Day 7 · Module 47 of 100**
+`████████████░░░░░░░░░░░░░` **47/100**
 
-[← Module 46: Procedural Macro Execution and TokenStream Engineering](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 48: Attribute Macros and Item Transformation →](../module-48-attribute-macros-and-item-transformation/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-field-names-derive/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 46: Procedural Macro Execution and TokenStream Engineering](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md) · [Module 48: Attribute Macros and Item Transformation →](../module-48-attribute-macros-and-item-transformation/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 Module 46 established the procedural execution boundary and token pipeline. A custom derive is the narrowest structured procedural form: the source type already exists, and the macro adds implementations or metadata without replacing the declaration. That constraint makes derives the right place to learn `syn::DeriveInput`, data-shape inspection, helper attributes, generic preservation, and generated bounds.
 
 Attribute macros and custom DSLs come later because they own more syntax and can transform more aggressively.
+
+### Prerequisite bridge
+
+Module 46 established **Procedural Macro Execution and TokenStream Engineering**. Before continuing, verify that you can build a raw token inspector that exposes lexical structure without pretending to perform type analysis. This module preserves that capability and adds the ability to parse `deriveinput` and distinguish structs, enums, and unions. Module 48, **Attribute Macros and Item Transformation**, will rely on both when it asks: *How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?*
+
+### Scope boundary
+
+This module owns the reasoning for **custom derive macros and structural generation** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -334,6 +344,24 @@ A complete derive suite includes:
 
 Unit-test parsing helpers and normalized field models. Use compile fixtures for item-shape and generated-code evidence.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For parse `DeriveInput` and distinguish structs, enums, and unions, construct one positive and one causal negative example. Mark the first decisive fact in the **derive expansion ledger** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For support only documented item shapes and reject others at useful spans, construct one positive and one causal negative example. Mark the first decisive fact in the **derive expansion ledger** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For inspect named, unnamed, and unit fields without losing source order, construct one positive and one causal negative example. Mark the first decisive fact in the **derive expansion ledger** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For parse derive helper attributes and reject unknown or duplicate options, construct one positive and one causal negative example. Mark the first decisive fact in the **derive expansion ledger** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge’s `CommandArgs` derive uses the struct fields as the source of truth for command-line flags.
@@ -401,7 +429,4 @@ Do not continue if the derive drops generics, ignores unknown attributes, or rec
 
 ## Continue
 
-1. Complete the [Module 47 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 47 — Field Names Derive](../../labs/module-07-field-names-derive/README.md) from its public contract.
-3. Apply the Module 47 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 48 — Attribute Macros and Item Transformation](../module-48-attribute-macros-and-item-transformation/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

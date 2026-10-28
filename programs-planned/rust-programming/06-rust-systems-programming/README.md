@@ -2,45 +2,78 @@
 
 ## Bytes, Operating-System Boundaries, Unsafe Abstractions, and FFI
 
-Cross external boundaries without losing the guarantees built in the first five courses: define representations, track resources, isolate unsafe obligations, and expose safe interfaces with claims no stronger than the platform evidence.
+Course 6 connects Rust to hostile bytes, filesystems, native paths, child processes, raw storage, allocators, C callers, callbacks, and foreign resources. Unsafe Rust appears only after the safe product contract and proof boundary are explicit.
 
-This directory is one ten-day course in the [ninety-module Rust program](../README.md). The [course book](course-book/index.md) is the primary learning path. The labs isolate one mechanism at a time, compiler specimens train causal prediction, and **FrameVault** tests whether the ten mechanisms can coexist in one product.
+> **Governing question:** What does each external boundary promise, which facts can Rust verify, which facts require a manual proof, and how does a safe interface contain those obligations?
 
-## Begin here
+## Entry point
 
-1. Read the [course overview](course-book/index.md).
-2. Follow the [ten-day study plan](course-book/study-plan.md).
-3. Work through each module in order: chapter, workbook, lab, capstone increment, then solutions.
-4. Use the [course reference](course-book/reference.md) for recall after learning the derivation.
-5. Finish with the [independent final review](course-book/final-review.md).
+You should be able to model ownership and cleanup, design public traits and errors, isolate effects, understand generated code, and maintain deterministic formats and tests.
 
-## Course outcome
+The immediate prerequisite is [Course 5: Rust Metaprogramming](../05-rust-metaprogramming/course-book/index.md). Entering mid-program is reasonable only when you can complete the previous course’s final review and one independent construction without following its solution.
 
-By the end, you can specify and defend binary formats, durable file transitions, native path and process boundaries, unsafe invariants, manual allocation, C ABI contracts, and foreign-resource lifecycles behind safe Rust interfaces.
+## Ten-day route
 
-## Practice surfaces
+| Day | Module | Capability added | Independent laboratory |
+|---:|---|---|---|
+| 1 | [51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing](course-book/module-51-binary-data-contracts/index.md) | Define a binary format as a versioned contract rather than a sequence of convenient writes | [Checked Frame Codec](labs/module-01-checked-frame-codec/README.md) |
+| 2 | [52 — Files, Durability, and Transactional Replacement](course-book/module-52-files-durability-and-transactional-replacement/index.md) | Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability | [Atomic Archive Store](labs/module-02-atomic-archive-store/README.md) |
+| 3 | [53 — Paths, Names, and Platform Boundaries](course-book/module-53-paths-names-and-platform-boundaries/index.md) | Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text | [Sandboxed Extraction Paths](labs/module-03-sandboxed-extraction-paths/README.md) |
+| 4 | [54 — Processes, Environments, and Standard Streams](course-book/module-54-processes-environments-and-standard-streams/index.md) | Construct commands from a program plus arguments, not an interpolated shell line | [Bounded Process Capture](labs/module-04-bounded-process-capture/README.md) |
+| 5 | [55 — Unsafe Rust as a Proof Boundary](course-book/module-55-unsafe-rust-and-safety-proofs/index.md) | Name the operations Rust requires an unsafe context to perform | [Unsafe Slice Kernel](labs/module-05-unsafe-slice-kernel/README.md) |
+| 6 | [56 — Raw Pointers, Provenance, and Uninitialized Memory](course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) | Distinguish raw pointers from references and explain why conversion does not transfer ownership | [Panic-Safe Batch Builder](labs/module-06-panic-safe-batch-builder/README.md) |
+| 7 | [57 — Manual Allocation and Owning Unsafe Abstractions](course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) | Construct and validate `Layout` values without unchecked size arithmetic | [Aligned Byte Buffer](labs/module-07-aligned-byte-buffer/README.md) |
+| 8 | [58 — C FFI: ABI, Strings, Pointers, and Error Boundaries](course-book/module-58-c-ffi-abi-strings-and-error-boundaries/index.md) | Distinguish ABI compatibility from semantic validity and ownership | [C ABI Line Validator](labs/module-08-c-abi-archive-validator/README.md) |
+| 9 | [59 — Foreign Resources, Callbacks, and Wrapper Architecture](course-book/module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) | Separate raw bindings, checked unsafe shims, and safe domain wrappers | [Opaque Foreign Session](labs/module-09-opaque-foreign-session/README.md) |
+| 10 | [60 — Integrated Systems Design, Testing, and Audit](course-book/module-60-integrated-systems-design-and-audit/index.md) | Draw one boundary map from external bytes to final effects and back to foreign callers | [Systems Boundary Audit](labs/module-10-systems-boundary-audit/README.md) |
 
-```text
-course-book/    authoritative chapters, workbooks, solutions, capstone guide, reference
-labs/           ten independent products with starter and reference implementation
-compiler-labs/  isolated compile, runtime, and design-review investigations
-capstone/       complete FrameVault implementation and tests
-```
+The route is cumulative. Day 1 establishes this course’s vocabulary and Day 10 requires an architectural change that preserves all earlier guarantees.
 
-## Verification commands
+## Working method
 
-From this directory:
+Write the external representation, validity checks, resource states, unsafe obligations, cleanup, and platform assumptions before crossing the boundary. Use the module-specific reasoning record named in each chapter. Freeze predictions before compiling, preserve causal diagnostics, and compare the lab reference only after recording your own design.
+
+## Capstone — FrameVault
+
+FrameVault is a versioned binary archive with checked parsing, transactional replacement, extraction policy, process capture, one manual allocation owner, and a C ABI with opaque sessions and callback rules.
+
+The [engineering guide](course-book/capstone.md) supplies the ten integration steps. The executable [capstone directory](capstone/README.md) contains the product and tests. Each increment must name the changed invariant, the component that owns it, state after failure, and the earlier guarantee that must remain unchanged.
+
+## Scope
+
+The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible.
+
+Course 7 introduces legal schedules: values and resources now move among threads, synchronization carries visibility, and termination becomes a first-class product property.
+
+## Exit standard
+
+Complete this independent construction:
+
+> Build a checked packet archive with transactional output, one justified unsafe storage abstraction or a written rejection of it, and a stateless C validation boundary.
+
+Then complete this capstone extension:
+
+> Add a bounded archive index to FrameVault while preserving format compatibility, path policy, failure atomicity, allocator safety, and C ABI ownership.
+
+The next step is [Course 7: Rust Concurrency and Parallelism](../07-rust-concurrency-parallelism/course-book/index.md).
+
+## Reading and execution routes
+
+- [Course book](course-book/index.md)
+- [Ten-day study plan](course-book/study-plan.md)
+- [Course reference](course-book/reference.md)
+- [Final review](course-book/final-review.md)
+- [Compiler and design investigations](compiler-labs/README.md)
+- [Laboratories](labs/)
 
 ```bash
-make audit
-make links
-make compiler-labs   # requires Rust/Cargo
-make test            # requires Rust/Cargo
-make starters        # requires Rust/Cargo
-make docs            # requires MkDocs
+make static-proof
+make compiler-labs
+make check
+make test
+make starters
+make docs
 make proof
 ```
 
-The commands support learning; they do not replace the explanation and transfer work in the course book.
-
-[Open the course book](course-book/index.md) · [Return to the program start](../README.md)
+Static inspection and compilation answer different questions. The strongest completion route uses the pinned toolchain, executes tests and investigations, renders the book, and preserves the resulting evidence with the code under review.

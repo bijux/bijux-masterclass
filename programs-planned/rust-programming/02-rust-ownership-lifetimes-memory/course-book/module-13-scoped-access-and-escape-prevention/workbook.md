@@ -1,8 +1,17 @@
 # Workbook — Module 13: Scoped Access and Escape Prevention
 
-[Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-03-scoped-visitors/README.md) · [Memory Workspace guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Scoped Access and Escape Prevention** without relying on surface syntax. Keep the module question in view: *Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Scoped Access and Escape Prevention** has become a usable model rather than remembered vocabulary. Its governing question is: *Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?* Preserve your first prediction and record decisive facts in a **scope and escape table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 12 — Lifetime Relationships and Borrowed APIs that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?**
+3. Draw the smallest **scope and escape table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -26,7 +35,6 @@ python3 ../tools/run_compiler_labs.py 02-rust-ownership-lifetimes-memory
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A tokenizer was designed to reuse one internal `String`, but its author wanted an iterator of `&str`. After borrow errors appeared, the implementation was changed to clone every token and leak the strings so they could be returned as `'static`.
 
@@ -106,7 +114,6 @@ The lesson is not that callback APIs are always superior. It is that ownership r
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 ### Exercise 1 — Quantifier translation
 
 Translate each signature into precise prose:
@@ -167,11 +174,18 @@ Review a callback API that uses `for<'a>` even though it passes an owned `String
 
 Design `Workspace::visit_matches` so match views cannot escape. Compare it with `Workspace::matches`, which returns a normal iterator borrowing immutable documents. Specify when each is appropriate.
 
+### Interleaved reasoning pass
 
+1. For **Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the scope and escape table.
+2. For **Read and design for<'a> higher-ranked callback bounds as universal quantification over borrow duration**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the scope and escape table.
+3. For **Account for closure capture and Fn, FnMut, and FnOnce requirements at scoped boundaries**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the scope and escape table.
+4. For **Use callbacks and scoped APIs to prevent temporary references or brands from escaping**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the scope and escape table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Scoped Access and Escape Prevention** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Product
 
@@ -233,6 +247,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-03-scoped-visitors](../../labs/module-03-scoped-visitors/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Scoped Visitors**, record:
+
+- the public behavior that demonstrates **Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -242,7 +268,6 @@ The executable starter and reference implementation are in [module-03-scoped-vis
 - Account for closure capture and Fn, FnMut, and FnOnce requirements at scoped boundaries.
 - Use callbacks and scoped APIs to prevent temporary references or brands from escaping.
 - Recognize self-reference pressure and choose indices, owned state, callbacks, or later pinning only when justified.
-
 
 Extend `memory-workspace` with search operations that distinguish transient observation from durable evidence.
 
@@ -277,11 +302,13 @@ Any later mutation must use `DocumentHandle` plus a validated byte range, not a 
 
 Explain why the workspace offers both APIs. If both implementations use immutable stable backing data and the visitor adds no retention boundary, remove the visitor. The capstone must not retain complexity merely because the module taught it.
 
-
-
 ### Capstone defense
 
 Design a scratch-buffer decoder that lends temporary output to arbitrary callbacks but cannot return a reference into the scratch allocation.
+
+### Capstone invariant trace
+
+For the Module 13 Memory Workspace increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -291,11 +318,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation.
-- Read and design for<'a> higher-ranked callback bounds as universal quantification over borrow duration.
-- Account for closure capture and Fn, FnMut, and FnOnce requirements at scoped boundaries.
-- Use callbacks and scoped APIs to prevent temporary references or brands from escaping.
-- Recognize self-reference pressure and choose indices, owned state, callbacks, or later pinning only when justified.
+Without reopening the chapter, reconstruct the outcomes for **Module 13: Scoped Access and Escape Prevention**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -316,9 +339,17 @@ The module is incomplete if you can reproduce `for<'a>` syntax but cannot explai
 
 ### Transfer defense
 
-Design a scratch-buffer decoder that lends temporary output to arbitrary callbacks but cannot return a reference into the scratch allocation.
+Transfer **Module 13: Scoped Access and Escape Prevention** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 13: Scoped Access and Escape Prevention** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
 
 1. Read `for<'a> FnOnce(&'a T) -> R` aloud.
 2. Who chooses `'a`?
@@ -343,3 +374,7 @@ The callback must work for every callee-chosen lifetime. Results independent of 
 #### Transfer task
 
 Build `with_rows` over a temporary parsed row vector whose cells borrow external CSV text. Return an owned aggregate and, in a separate API, permit copying one external cell reference. Explain both lifetime layers.
+
+### Closed-book defense
+
+In five minutes, answer “Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?” using the **scope and escape table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Memory Workspace. A list of APIs without the deciding relationship is incomplete.

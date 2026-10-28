@@ -20,6 +20,59 @@ foreign callers and callbacks
 
 The capstone succeeds only when each arrow is explicit. “Rust is safe,” “rename is atomic,” “the path is sanitized,” or “the pointer was checked” are not acceptable explanations. You must state which facts were checked, which remain assumptions, and which properties are deliberately not claimed.
 
+## How this capstone completes the course
+
+FrameVault is a versioned binary archive with checked parsing, transactional replacement, extraction policy, process capture, one manual allocation owner, and a C ABI with opaque sessions and callback rules.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; FrameVault proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | No hostile length, offset, count, or path component is trusted before bounded validation. |
+| 2 | File replacement distinguishes pre-commit failure, visible commit, and durability evidence. |
+| 3 | Native paths and portable archive names remain separate types and threat models. |
+| 4 | Every unsafe operation is justified by a local invariant reachable from the safe facade. |
+| 5 | Manual allocation records the exact layout used for allocation and deallocation. |
+| 6 | C declarations, Rust ABI declarations, nullability, panic policy, and ownership agree. |
+
+For each FrameVault change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 51 | Binary Data Contracts: Bytes, Endianness, and Checked Parsing | Define a binary format as a versioned contract rather than a sequence of convenient writes | [Checked Frame Codec](../labs/module-01-checked-frame-codec/README.md) |
+| 52 | Files, Durability, and Transactional Replacement | Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability | [Atomic Archive Store](../labs/module-02-atomic-archive-store/README.md) |
+| 53 | Paths, Names, and Platform Boundaries | Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text | [Sandboxed Extraction Paths](../labs/module-03-sandboxed-extraction-paths/README.md) |
+| 54 | Processes, Environments, and Standard Streams | Construct commands from a program plus arguments, not an interpolated shell line | [Bounded Process Capture](../labs/module-04-bounded-process-capture/README.md) |
+| 55 | Unsafe Rust as a Proof Boundary | Name the operations Rust requires an unsafe context to perform | [Unsafe Slice Kernel](../labs/module-05-unsafe-slice-kernel/README.md) |
+| 56 | Raw Pointers, Provenance, and Uninitialized Memory | Distinguish raw pointers from references and explain why conversion does not transfer ownership | [Panic-Safe Batch Builder](../labs/module-06-panic-safe-batch-builder/README.md) |
+| 57 | Manual Allocation and Owning Unsafe Abstractions | Construct and validate `Layout` values without unchecked size arithmetic | [Aligned Byte Buffer](../labs/module-07-aligned-byte-buffer/README.md) |
+| 58 | C FFI: ABI, Strings, Pointers, and Error Boundaries | Distinguish ABI compatibility from semantic validity and ownership | [C ABI Line Validator](../labs/module-08-c-abi-archive-validator/README.md) |
+| 59 | Foreign Resources, Callbacks, and Wrapper Architecture | Separate raw bindings, checked unsafe shims, and safe domain wrappers | [Opaque Foreign Session](../labs/module-09-opaque-foreign-session/README.md) |
+| 60 | Integrated Systems Design, Testing, and Audit | Draw one boundary map from external bytes to final effects and back to foreign callers | [Systems Boundary Audit](../labs/module-10-systems-boundary-audit/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **whole-system boundary dossier** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. FrameVault ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## Product boundary
 
 FrameVault supports these commands:

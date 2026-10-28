@@ -1,8 +1,17 @@
 # Workbook — Module 59: Foreign Resources, Callbacks, and Wrapper Architecture
 
-[Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-09-opaque-foreign-session/README.md) · [FrameVault guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether the chapter has become an operational model. Freeze answers before compiling or reading the reference implementation. A correct result without the governing reason is incomplete.
+This workbook tests whether **Foreign Resources, Callbacks, and Wrapper Architecture** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations?* Preserve your first prediction and record decisive facts in a **foreign liveness graph**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 58 — C FFI: ABI, Strings, Pointers, and Error Boundaries that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations?**
+3. Draw the smallest **foreign liveness graph** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -16,43 +25,43 @@ Record: **compile status or runtime category**, **governing contract**, **first 
 
 A borrowed descriptor is wrapped with `from_raw_fd` as owned. What can happen?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 2**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 3
 
 A callback stores the entry-name pointer after return. Is the name still live?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 3**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 4
 
 The callback frees the session during enumeration. Which pointer becomes invalid?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 4**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 5
 
 A close error is handled by panicking in `Drop`. What failure can compound?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 5**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 6
 
 The foreign function fails and `errno` is read after another call. Is the value reliable?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 6**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 7
 
 An opaque pointer is copied by C. Is copying the address itself forbidden?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 7**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 8
 
 A raw-pointer wrapper is manually marked `Sync`. What proof is required?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 8**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ## Part 2 — Diagnose and repair
 
@@ -107,6 +116,17 @@ Transfer the architecture to an OS file descriptor accepted by a foreign library
 
 Required evidence: Prefer borrowing and identify the exact point where raw form is needed.
 
+### Interleaved reasoning pass
+
+1. For **Separate raw bindings, checked unsafe shims, and safe domain wrappers**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the foreign liveness graph.
+2. For **Represent owned and borrowed foreign handles as different Rust types**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the foreign liveness graph.
+3. For **Pair acquisition with exactly one release and define destructor failure policy**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the foreign liveness graph.
+4. For **Design context-pointer callbacks with explicit lifetime, reentrancy, and retention rules**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the foreign liveness graph.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Foreign Resources, Callbacks, and Wrapper Architecture** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Opaque Foreign Session](../../labs/module-09-opaque-foreign-session/README.md) from the starter. Freeze the public boundary and adversarial cases before opening the solution. Produce the evidence required by the lab:
@@ -119,9 +139,25 @@ Build [Opaque Foreign Session](../../labs/module-09-opaque-foreign-session/READM
 
 Also identify one feature deliberately excluded because it would enlarge the trust, portability, concurrency, or unsafe proof surface.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Opaque Foreign Session**, record:
+
+- the public behavior that demonstrates **Separate raw bindings, checked unsafe shims, and safe domain wrappers**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Implement the matching increment from the [capstone engineering guide](../capstone.md). Add one regression test that fails if this module’s central contract is removed.
+
+### Capstone invariant trace
+
+For the Module 59 FrameVault increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -137,3 +173,7 @@ End by naming the strongest honest claim after success and one claim the impleme
 ### Independent transfer
 
 Wrap an owned Rust counter as an opaque foreign session. Provide open, get, checked update, synchronous visit callback, and free. Initialize the output session pointer to null before allocation. Define whether null free is allowed, whether callbacks may reenter or free the session, and whether callback pointers may be retained. Test complete lifecycle, overflow, early callback stop, and null rules. Identify the exact call after which the foreign pointer becomes unusable.
+
+### Closed-book defense
+
+In five minutes, answer “How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations?” using the **foreign liveness graph**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside FrameVault. A list of APIs without the deciding relationship is incomplete.

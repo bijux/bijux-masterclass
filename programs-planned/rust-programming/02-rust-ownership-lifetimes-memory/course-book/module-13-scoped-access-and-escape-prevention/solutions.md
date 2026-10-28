@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 13: Scoped Access and Escape Prevention
+# Reasoned Solutions — Module 13: Scoped Access and Escape Prevention
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-03-scoped-visitors/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Scoped Access and Escape Prevention**, not to substitute for an attempt. The decisive question is: *Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 13: Scoped Access and Escape Prevention**. Compare the reasoning against this question: *Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -125,9 +125,7 @@ An owned `String` contains no borrowed lifetime to quantify. `for<'a> FnMut(Stri
 
 Design a scratch-buffer decoder that lends temporary output to arbitrary callbacks but cannot return a reference into the scratch allocation.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-03-scoped-visitors/solution`](../../labs/module-03-scoped-visitors/solution). Before reading it, write down:
 
@@ -148,3 +146,42 @@ For **Scoped Access and Escape Prevention**, compare the contract, invariant, fa
 - Recognize self-reference pressure and choose indices, owned state, callbacks, or later pinning only when justified.
 
 A complete explanation of **Scoped Access and Escape Prevention** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?
+
+Build a **scope and escape table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Read and design for<'a> higher-ranked callback bounds as universal quantification over borrow duration.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Account for closure capture and Fn, FnMut, and FnOnce requirements at scoped boundaries.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use callbacks and scoped APIs to prevent temporary references or brands from escaping.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Recognize self-reference pressure and choose indices, owned state, callbacks, or later pinning only when justified.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the scope and escape table.
+
+### Laboratory transfer review
+
+For [Scoped Visitors](../../labs/module-03-scoped-visitors/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 13 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Scoped Access and Escape Prevention**, which relationship decides this question: “Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

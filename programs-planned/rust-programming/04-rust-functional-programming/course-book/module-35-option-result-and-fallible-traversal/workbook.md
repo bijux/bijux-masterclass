@@ -1,8 +1,17 @@
 # Workbook — Module 35: Option, Result, and Fallible Traversal
 
-[Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-resilient-import/README.md) · [LedgerFlow guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Option, Result, and Fallible Traversal** without relying on surface syntax. Keep the module question in view: *Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Option, Result, and Fallible Traversal** has become a usable model rather than remembered vocabulary. Its governing question is: *Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?* Preserve your first prediction and record decisive facts in a **failure-policy matrix**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 34 — Folds, Scans, and Short-Circuiting that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?**
+3. Draw the smallest **failure-policy matrix** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -93,7 +102,16 @@ A parser currently uses `map_err(|e| e.to_string())` at every stage. Replace thi
 
 Rewrite a dense chain that trims a field, treats empty as missing, parses a present number, applies a range check, emits a warning for a deprecated value, and accumulates diagnostics. Explain where combinators stop helping.
 
+### Interleaved reasoning pass
 
+1. For **Compose optional and fallible transformations while preserving ownership and error meaning**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the failure-policy matrix.
+2. For **Use `transpose`, `flatten`, and `collect` to change container shape deliberately**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the failure-policy matrix.
+3. For **Distinguish fail-fast traversal from diagnostic accumulation and implement both honestly**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the failure-policy matrix.
+4. For **Choose eager and lazy defaults with awareness of evaluation and side effects**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the failure-policy matrix.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Option, Result, and Fallible Traversal** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -165,6 +183,18 @@ Explain why `collect::<Result<Vec<_>, _>>()` is deliberately fail-fast, why `fil
 
 The executable starter and reference implementation are in [module-05-resilient-import](../../labs/module-05-resilient-import/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Resilient Import**, record:
+
+- the public behavior that demonstrates **Compose optional and fallible transformations while preserving ownership and error meaning**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Day 5 separates forms of absence and failure that are easy to collapse into `None`, strings, or silent filtering. LedgerFlow must distinguish at least optional input, row rejection, nonfatal warning, duplicate identity, illegal state transition, and operational I/O failure.
@@ -217,6 +247,10 @@ Do not use `flatten` to erase errors.
 
 Define whether the first or later duplicate is authoritative, whether both source locations are reported, and whether a duplicate prevents ledger reduction. Add a fixture with three appearances of the same ID. Diagnostics must contain enough information to reconstruct the conflict.
 
+### Capstone invariant trace
+
+For the Module 35 LedgerFlow increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Do not advance because the calendar day ended. Advance when all hard evidence is present.
@@ -254,3 +288,7 @@ Design a configuration importer with required fields, optional fields, warnings,
 ### Spaced review
 
 Repeat questions 2, 4, 7, and 10 after 24 hours. Repeat the reconstruction after seven days with a different domain.
+
+### Closed-book defense
+
+In five minutes, answer “Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?” using the **failure-policy matrix**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside LedgerFlow. A list of APIs without the deciding relationship is incomplete.

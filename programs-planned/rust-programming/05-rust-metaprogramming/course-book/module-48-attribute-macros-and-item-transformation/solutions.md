@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 48: Attribute Macros and Item Transformation
+# Reasoned Solutions — Module 48: Attribute Macros and Item Transformation
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-08-checked-handler-attribute/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare byte-for-byte preservation of unrelated item properties, causal rejection of unsupported signatures, generated metadata naming, runtime behavior remaining ordinary Rust. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 48: Attribute Macros and Item Transformation**. Compare the reasoning against this question: *How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ Use a deterministic transformation such as upper snake case plus a reserved suff
 
 Attribute macros receive and replace items in expansion order; one macro may see the output of another rather than the original item. Generated names and validation assumptions can interact. Public documentation should state supported composition or reject unsupported combinations rather than assuming commutativity.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-08-checked-handler-attribute/solution`](../../labs/module-08-checked-handler-attribute/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - how generated companion names avoid collisions;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?
+
+Build a **attribute preservation table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Parse attribute arguments independently from the attached item.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Validate supported item kinds and function signatures.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Preserve visibility, attributes, generics, ABI, safety, asyncness, and body when the macro does not own them.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Decide whether to preserve, augment, wrap, or replace an item.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Generate companion metadata and wrappers with collision-resistant names.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Parse attribute arguments independently from the attached item.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the attribute preservation table.
+
+### Laboratory transfer review
+
+For [Checked Handler Attribute](../../labs/module-08-checked-handler-attribute/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 48 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Attribute Macros and Item Transformation**, which relationship decides this question: “How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

@@ -1,8 +1,11 @@
 # Module 93 — GATs, Higher-Ranked Bounds, and Lending Interfaces
 
-**93/100** · Course 10 · Module 93 of 100
+**Course 10 · Day 3 · Module 93 of 100**
+`███████████████████████░░` **93/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-lending-table/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 92: Advanced Trait Solving: Goals, Projections, and Type Equality](../module-92-advanced-trait-solving-goals-projections-and-type-equality/index.md) · [Module 94: Const Generics, Witness Types, and Compile-Time Invariants →](../module-94-const-generics-witness-types-and-compile-time-invariants/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Ordinary iterator items do not borrow freshly from the iterator in a way that ca
 Course 2 established lifetime algebra and Course 3 established associated families. This module combines them so one trait can describe a family of views indexed by each borrow.
 
 Course 2 taught lifetime relationships and Course 3 taught associated types. GATs combine them: an implementation selects a family of types indexed by a borrow created later. That power changes the consumer protocol. A lent item is not just a cheaper owned item; it may prevent the next call until the current view is released.
+
+### Prerequisite bridge
+
+Module 92 established **Advanced Trait Solving: Goals, Projections, and Type Equality**. Before continuing, verify that you can design generic pipelines whose error and intermediate types remain precise rather than prematurely erased. This module preserves that capability and adds the ability to distinguish one associated type from a lifetime-indexed family of associated types. Module 94, **Const Generics, Witness Types, and Compile-Time Invariants**, will rely on both when it asks: *Which numeric and state facts belong in types, which remain runtime data, and how do you avoid turning a library into an unusable type-level calculator?*
+
+### Scope boundary
+
+This module owns the reasoning for **gats, higher-ranked bounds, and lending interfaces** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -135,6 +146,24 @@ GATs can encode that a view is valid only for the borrow that produced it. They 
 
 Use lending when the product benefits from ephemeral views and sequential access. If callers routinely need to retain many items, an ordinary iterator of owned or independently borrowed items may be the more honest design.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish one associated type from a lifetime-indexed family of associated types, construct one positive and one causal negative example. Mark the first decisive fact in the **lifetime family map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For design a lending cursor whose returned view cannot outlive the borrow that produced it, construct one positive and one causal negative example. Mark the first decisive fact in the **lifetime family map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For read `for<'a>` as universal quantification chosen by the caller rather than a long concrete lifetime, construct one positive and one causal negative example. Mark the first decisive fact in the **lifetime family map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For identify when a bound accidentally requires a view for one specific lifetime instead of every usable borrow, construct one positive and one causal negative example. Mark the first decisive fact in the **lifetime family map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Treat each call to `next` as a temporary exclusive loan of the cursor. Predict which returned row may be retained and why calling `to_owned` changes the next operation’s legality.
@@ -216,7 +245,4 @@ Use the GAT and HRTB references to verify syntax and required bounds. Keep the c
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Lending Table](../../labs/module-03-lending-table/README.md).
-3. Apply Module 93 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 94 — Const Generics, Witness Types, and Compile-Time Invariants](../module-94-const-generics-witness-types-and-compile-time-invariants/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

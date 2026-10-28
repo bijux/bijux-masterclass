@@ -1,9 +1,11 @@
-# 05 — Structs, Enums, Methods, and Pattern Matching
+# Module 05 — Structs, Enums, Methods, and Pattern Matching
 
-**Course 1, day 5 · Module 5 of 90**  
-`██░░░░░░░░░░░░░░░░░░` **5/90**
+**Course 1 · Day 5 · Module 5 of 100**
+`█░░░░░░░░░░░░░░░░░░░░░░░░` **5/100**
 
-[← Module 4: Borrowing, References, Slices, and Strings](../module-04-borrowing-references-slices-and-strings/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 6: Collections, Iterators, and Closures →](../module-06-collections-iterators-and-closures/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-state-machine/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 4: Borrowing, References, Slices, and Strings](../module-04-borrowing-references-slices-and-strings/index.md) · [Module 6: Collections, Iterators, and Closures →](../module-06-collections-iterators-and-closures/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Ownership tells you who controls a value; domain modeling tells you what values may exist. Structs and enums now replace tuples, strings, and flag combinations with explicit states. Pattern matching becomes the bridge between representation and behavior, making invalid cases visible at compile time rather than hiding them in convention.
+
+### Prerequisite bridge
+
+Module 4 established **Borrowing, References, Slices, and Strings**. Before continuing, verify that you can return borrowed views only when provenance remains valid and explain the source of every returned reference. This module preserves that capability and adds the ability to choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity. Module 6, **Collections, Iterators, and Closures**, will rely on both when it asks: *Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow?*
+
+### Scope boundary
+
+This module owns the reasoning for **structs, enums, methods, and pattern matching** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -795,7 +805,7 @@ fn start(board: &mut TaskBoard, id: TaskId) -> bool {
 }
 ```
 
-The pattern must match for execution to continue. The `else` branch must diverge: it returns, breaks, continues, or panics. In course production code, return a typed error rather than `bool` once error design is introduced.
+The pattern must match for execution to continue. The `else` branch must diverge: it returns, breaks, continues, or panics. In capstoneion code, return a typed error rather than `bool` once error design is introduced.
 
 This form keeps the successful path unindented.
 
@@ -986,6 +996,24 @@ For three states and three target states, there are nine pairs. A rigorous test 
 
 This matrix is executable specification. When the graph changes, the table must change intentionally.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity, construct one positive and one causal negative example. Mark the first decisive fact in the **state model** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For place invariants at constructors and methods while keeping representation private where external mutation would bypass rules, construct one positive and one causal negative example. Mark the first decisive fact in the **state model** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use exhaustive pattern matching to expose every state and transition, construct one positive and one causal negative example. Mark the first decisive fact in the **state model** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For represent absence with Option and distinguish it from malformed input or failed operations, construct one positive and one causal negative example. Mark the first decisive fact in the **state model** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Replace stringly records with `Task`, `TaskId`, `Priority`, `Status`, and `Command`. The state graph should make contradictory combinations unrepresentable. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -1016,11 +1044,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Enums and Pattern Matching](https://doc.rust-lang.org/book/ch06-00-enums.html)
 - [Rust Reference: Patterns](https://doc.rust-lang.org/reference/patterns.html)
 
-[← Module 4](../../../01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 6 →](../../../01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md)
+[← Module 4](../../../01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 6 →](../../../01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md)
 
 ## Continue
 
-1. Complete the [Module 5 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 5 — Typed Workflow State Machine](../../labs/module-05-state-machine/README.md) from its public contract.
-3. Apply the Module 5 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 6 — Collections, Iterators, and Closures](../module-06-collections-iterators-and-closures/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

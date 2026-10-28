@@ -1,8 +1,17 @@
 # Workbook — Module 15: Box, Deref, Dynamically Sized Types, and Cow
 
-[Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-boxed-expressions/README.md) · [Memory Workspace guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Box, Deref, Dynamically Sized Types, and Cow** without relying on surface syntax. Keep the module question in view: *When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Box, Deref, Dynamically Sized Types, and Cow** has become a usable model rather than remembered vocabulary. Its governing question is: *When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?* Preserve your first prediction and record decisive facts in a **indirection model**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 14 — RAII, Drop, Unwinding, and Failure Atomicity that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?**
+3. Draw the smallest **indirection model** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -26,7 +35,6 @@ python3 ../tools/run_compiler_labs.py 02-rust-ownership-lifetimes-memory
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A parser represents every string, number, vector, and node as `Box<...>`. Public methods accept `&Box<T>`, clones are used to traverse, and a `NonEmptyName` implements `DerefMut<Target = String>`.
 
@@ -59,7 +67,6 @@ Draw allocation topology before and after. Count allocations for a seven-node bi
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 1. Repair three infinitely sized recursive types by placing minimal indirection.
 2. Compare `Box<Node>` children with one `Box<(Node, Node)>` and state allocation/traversal differences.
 3. Refactor functions accepting `&Box<String>` to the weakest useful borrowed target.
@@ -68,14 +75,21 @@ Attempt every required exercise and commit the attempt before opening `exercise-
 6. Convert `Vec<T>` to `Box<[T]>`, prove length remains, and explain capacity semantics.
 7. Implement a normalizer returning `Cow<'_, str>` with a truly allocation-free borrowed branch.
 8. Audit a caller that immediately uses `into_owned`; decide whether `Cow` remains justified.
-9. Build iterative and recursive evaluators for a boxed expression tree; consider depth failure.
+9. Build iterative and recursive reviewers for a boxed expression tree; consider depth failure.
 10. Decide whether capstone immutable snapshots should use `String`, `Box<str>`, or `Rc<str>` before Module 16.
 
+### Interleaved reasoning pass
 
+1. For **Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the indirection model.
+2. For **Explain Deref, deref coercion, method lookup, and why custom Deref is not ordinary inheritance**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the indirection model.
+3. For **Reason about sized and dynamically sized types, fat pointers, metadata, unsizing, boxed slices, and boxed strings**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the indirection model.
+4. For **Use Cow only when the common path can borrow and a well-defined transformation sometimes requires ownership**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the indirection model.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Box, Deref, Dynamically Sized Types, and Cow** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 Build a typed arithmetic expression tree with minimal recursive indirection.
 
@@ -148,6 +162,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-05-boxed-expressions](../../labs/module-05-boxed-expressions/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Boxed Expression Tree**, record:
+
+- the public behavior that demonstrates **Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -157,7 +183,6 @@ The executable starter and reference implementation are in [module-05-boxed-expr
 - Reason about sized and dynamically sized types, fat pointers, metadata, unsizing, boxed slices, and boxed strings.
 - Use Cow only when the common path can borrow and a well-defined transformation sometimes requires ownership.
 - Choose among inline ownership, Box, Rc, handles, arenas, and borrowed views from topology and cost.
-
 
 Add immutable document snapshots.
 
@@ -169,11 +194,13 @@ Add a normalizer returning `Cow<'_, str>` for search queries. It must borrow an 
 
 The next module evaluates whether multiple consumers should share one snapshot through `Rc<DocumentSnapshot>` or receive independent copies.
 
-
-
 ### Capstone defense
 
 Redesign an expression tree and text-normalization API, showing which allocations are necessary and which are conditional.
+
+### Capstone invariant trace
+
+For the Module 15 Memory Workspace increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -183,11 +210,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership.
-- Explain Deref, deref coercion, method lookup, and why custom Deref is not ordinary inheritance.
-- Reason about sized and dynamically sized types, fat pointers, metadata, unsizing, boxed slices, and boxed strings.
-- Use Cow only when the common path can borrow and a well-defined transformation sometimes requires ownership.
-- Choose among inline ownership, Box, Rc, handles, arenas, and borrowed views from topology and cost.
+Without reopening the chapter, reconstruct the outcomes for **Module 15: Box, Deref, Dynamically Sized Types, and Cow**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -204,9 +227,17 @@ For each outcome, write a claim, one example, one non-example, and one limitatio
 
 ### Transfer defense
 
-Redesign an expression tree and text-normalization API, showing which allocations are necessary and which are conditional.
+Transfer **Module 15: Box, Deref, Dynamically Sized Types, and Cow** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 15: Box, Deref, Dynamically Sized Types, and Cow** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
 
 1. Why is a directly recursive enum infinitely sized?
 2. How can `Vec<Node>` break recursion without `Box<Node>` per child?
@@ -231,3 +262,7 @@ Indirection gives recursive owners a finite representation. `Vec` itself owns in
 #### Transfer task
 
 Design a pattern AST that borrows source tokens, supports one plugin-owned matcher, and can be converted to a source-independent owned form. Compare allocation topologies for `Vec<Node>` arena versus boxes.
+
+### Closed-book defense
+
+In five minutes, answer “When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?” using the **indirection model**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Memory Workspace. A list of APIs without the deciding relationship is incomplete.

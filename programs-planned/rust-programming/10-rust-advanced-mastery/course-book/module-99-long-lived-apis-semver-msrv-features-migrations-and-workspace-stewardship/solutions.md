@@ -1,8 +1,8 @@
-# Module 99 Solutions — Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship
+# Reasoned Solutions — Module 99: Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-versioned-sdk/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 99: Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship**. Compare the reasoning against this question: *How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the compatibility and migration matrix: the decisive 
 
 **Principled repair.** Read old data, transform into a stable model, encode and verify a separate candidate, then replace according to the documented file contract.
 
-A strong answer updates the compatibility and migration matrix and includes a negative case that fails for the original cause.
+The negative case should reintroduce **In-place migration** while preserving the surrounding requirement. The compatibility and migration matrix must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — Deprecation without destination
 
@@ -40,7 +40,7 @@ A strong answer updates the compatibility and migration matrix and includes a ne
 
 **Principled repair.** Name the replacement, semantic differences, adapter or migration, and removal policy.
 
-A strong answer updates the compatibility and migration matrix and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Deprecation without destination** while preserving the surrounding requirement. The compatibility and migration matrix must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Workspace head as downstream proof
 
@@ -48,7 +48,7 @@ A strong answer updates the compatibility and migration matrix and includes a ne
 
 **Principled repair.** Add downstream caller/implementor fixtures, feature matrices, MSRV execution, and old-data fixtures.
 
-A strong answer updates the compatibility and migration matrix and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Workspace head as downstream proof** while preserving the surrounding requirement. The compatibility and migration matrix must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Analyze a new enum variant and trait method acro
 
 The decisive acceptance criterion is: Each audience receives a separate compatibility judgment.
 
-Evaluate the result through the compatibility and migration matrix; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Audience matrix**, apply the compatibility and migration matrix to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Feature redesign
 
@@ -66,7 +66,7 @@ The construction should answer: Convert mutually exclusive mode features into ad
 
 The decisive acceptance criterion is: Feature unification cannot silently disable existing semantics.
 
-Evaluate the result through the compatibility and migration matrix; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Feature redesign**, apply the compatibility and migration matrix to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Candidate migration
 
@@ -74,7 +74,7 @@ The construction should answer: Implement V1-to-V2 migration with source preserv
 
 The decisive acceptance criterion is: Malformed source and invalid candidate leave authoritative data unchanged.
 
-Evaluate the result through the compatibility and migration matrix; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Candidate migration**, apply the compatibility and migration matrix to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Release evidence
 
@@ -82,12 +82,11 @@ The construction should answer: Define exact MSRV/feature/data fixtures for a re
 
 The decisive acceptance criterion is: Manifest declarations are backed by executable routes.
 
-Evaluate the result through the compatibility and migration matrix; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Release evidence**, apply the compatibility and migration matrix to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — shipping AXIOM02 without abandoning AXIOM01
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the compatibility
 Classify a proposed change separately for source callers, implementors, feature unification, minimum toolchain, persistent bytes, and release artifacts.
 
 The defense passes when it reconstructs the compatibility and migration matrix from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data?
+
+Build a **compatibility and migration matrix**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Define and test an MSRV policy without confusing the manifest declaration with actual verification.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Design additive Cargo features that do not change unrelated semantics or create unsupported combinations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Version persistent formats and implement deterministic, failure-atomic migrations with preserved fixtures.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Use deprecation, adapters, extension traits, sealed traits, and non-exhaustive models according to extension ownership.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the compatibility and migration matrix.
+
+### Reference implementation comparison
+
+For [Versioned SDK](../../labs/module-09-versioned-sdk/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 99 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship**, which relationship decides this question: “How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 70: Integrated Concurrent Architecture, Testing, and Audit
+# Reasoned Solutions — Module 70: Integrated Concurrent Architecture, Testing, and Audit
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the BatchWeave guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-concurrent-verifier/README.md) · [BatchWeave guide](../capstone.md)
 
-The final module is evaluated by consistency across boundaries. A locally correct queue or atomic counter is insufficient if shutdown loses identities, reporting starts before join, or resource claims ignore payload size. The strongest design makes final authority and open claims explicit.
-
-The answers below are reasoning models, not scripts to imitate. A different implementation can be stronger when it proves the same contract more directly. Compare ownership, synchronization, progress, failure, and determinism—not only surface syntax.
+Use these notes only after preserving your prediction and repair for **Module 70: Integrated Concurrent Architecture, Testing, and Audit**. Compare the reasoning against this question: *How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -81,3 +79,42 @@ The completed capstone should tell one story from manifest line to rendered line
 A successful defense reconstructs all ledgers, proves termination and exactly-one outcomes, and distinguishes result messages, disconnect, joins, metrics, and final reconciliation. It states that data-race freedom and deterministic output are established, while throughput optimality, platform fairness, and lock-free performance remain for later measurement.
 
 A strong defense states what is guaranteed for every allowed schedule, what is merely likely on one machine, and what the design intentionally leaves unspecified.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?
+
+Build a **concurrent architecture dossier**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and CLI boundaries.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Maintain ownership, synchronization, liveness, failure, determinism, and resource ledgers together.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Prove boundedness for jobs, payloads, queue slots, workers, result messages, report threads, and output storage.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Derive exactly one terminal outcome per manifest job under success, domain failure, panic, cancellation, and submission interruption.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Separate live advisory metrics from authoritative post-join summaries.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and CLI boundaries.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the concurrent architecture dossier.
+
+### Reference implementation comparison
+
+For [Concurrent Verifier](../../labs/module-10-concurrent-verifier/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In BatchWeave, Module 70 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Integrated Concurrent Architecture, Testing, and Audit**, which relationship decides this question: “How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to BatchWeave?

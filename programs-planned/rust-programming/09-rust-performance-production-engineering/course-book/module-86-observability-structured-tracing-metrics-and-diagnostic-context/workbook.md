@@ -1,8 +1,17 @@
-# Module 86 Workbook — Observability: Structured Tracing, Metrics, and Diagnostic Context
+# Workbook — Module 86: Observability: Structured Tracing, Metrics, and Diagnostic Context
 
-[Chapter](index.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-06-structured-observability-harness/README.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
 
-Observability begins with operator questions, not logging calls. For every signal, identify its consumer, semantic authority, cardinality, retention, cost, and privacy policy.
+This workbook tests whether **Observability: Structured Tracing, Metrics, and Diagnostic Context** has become a usable model rather than remembered vocabulary. Its governing question is: *What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?* Preserve your first prediction and record decisive facts in a **signal dictionary**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 85 — Runtime Efficiency: Contention, Queueing, Batching, and Async Load that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?**
+3. Draw the smallest **signal dictionary** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -82,15 +91,42 @@ Invent one incident timeline containing overload, a malformed request, and a bro
 
 Assign a per-request telemetry budget for the normal path and a per-minute budget for exceptional events. Estimate spans, events, fields, bytes, and label series. Decide what is always emitted, sampled, aggregated, or dropped under telemetry backpressure. The application’s correctness path must not become unbounded merely because the diagnostic sink is slow.
 
+### Interleaved reasoning pass
+
+1. For **Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the signal dictionary.
+2. For **Design stable event names and fields that preserve causal context across async and threaded work**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the signal dictionary.
+3. For **Choose metric types and label sets without creating unbounded cardinality**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the signal dictionary.
+4. For **Distinguish live advisory telemetry from authoritative product state**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the signal dictionary.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Observability: Structured Tracing, Metrics, and Diagnostic Context** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build the [Structured Observability Harness](../../labs/module-06-structured-observability-harness/README.md). Use a typed `Outcome`, stable event fields, a secret wrapper with redacted `Debug`, and bounded outcome metrics. Tests must prove that secret content is absent from debug/event output and that every outcome maps to one stable label.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Structured Observability Harness**, record:
+
+- the public behavior that demonstrates **Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
 Introduce a stable tracing schema and metrics contract. The service must expose enough information to distinguish malformed input, overload, store-capacity exhaustion, broker closure, timeout, and internal failure. Payload, tenant, metric, request ID, and raw error text must not become metric labels. Health must report broker/store failure rather than silently defaulting to zero.
 
 Write `OBSERVABILITY.md` as an operator guide: questions first, queries/signals second, expected actions third.
+
+### Capstone invariant trace
+
+For the Module 86 MetricRail increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -111,3 +147,6 @@ Assume operators report that one tenant’s snapshots became slow while aggregat
 
 Instrumentation is accepted only when it answers a named operational question and has bounded cost. Every metric needs a unit, event definition, aggregation rule, and cardinality policy. Every span must have a lifecycle that matches the work it describes. Logs are not a substitute for authoritative counters, and a dashboard is not proof that the underlying events are semantically correct.
 
+### Closed-book defense
+
+In five minutes, answer “What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?” using the **signal dictionary**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside MetricRail. A list of APIs without the deciding relationship is incomplete.

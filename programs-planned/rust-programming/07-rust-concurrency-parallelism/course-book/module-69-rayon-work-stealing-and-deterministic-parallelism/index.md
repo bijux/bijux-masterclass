@@ -1,8 +1,11 @@
-# Module 69: Rayon, Work Stealing, and Deterministic Parallelism
+# Module 69 — Rayon, Work Stealing, and Deterministic Parallelism
 
-**Course 7, day 9 · Module 69 of 90**  
+**Course 7 · Day 9 · Module 69 of 100**
+`█████████████████░░░░░░░░` **69/100**
 
-**69/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-parallel-histogram/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync](../module-68-lock-free-protocols-reclamation-and-unsafe-send-sync/index.md) · [Module 70: Integrated Concurrent Architecture, Testing, and Audit →](../module-70-integrated-concurrent-architecture-testing-and-audit/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Modules 61–68 exposed low-level thread topology, blocking coordination, livene
 The abstraction removes explicit queue code; it does not remove semantic obligations. Parallel closures must satisfy ownership bounds. Reduction operators need identities and associativity. Side effects cannot rely on traversal order. Tiny tasks can cost more to schedule than they save. Failures may be discovered in different orders. This module teaches Rayon as an algebra and scheduling boundary, not a `.par_iter()` performance switch.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 68 established **Lock-Free Protocols, Reclamation, and Unsafe Send/Sync**. Before continuing, verify that you can reject a lock-free structure when the product requires mpmc blocking backpressure, dynamic reclamation, or simpler auditability. This module preserves that capability and adds the ability to distinguish task parallelism, data parallelism, and a long-lived message-driven worker service;. Module 70, **Integrated Concurrent Architecture, Testing, and Audit**, will rely on both when it asks: *How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?*
+
+### Scope boundary
+
+This module owns the reasoning for **rayon, work stealing, and deterministic parallelism** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -94,6 +105,24 @@ Do not create a new pool per tiny request. Pool construction is a resource decis
 Use manual queues when work arrives through a protocol, requires bounded backpressure, explicit cancellation wakeups, long-lived worker state, or lifecycle events. Use Rayon when a finite collection or recursive computation can be decomposed into largely pure tasks and combined algebraically.
 
 BatchWeave uses both: manual workers execute heterogeneous manifest jobs under bounded queue and failure policy; Rayon computes the final pure report histogram over a complete outcome slice. One mechanism does not need to dominate the architecture.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish task parallelism, data parallelism, and a long-lived message-driven worker service, construct one positive and one causal negative example. Mark the first decisive fact in the **work-partition and reduction map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For explain work stealing without relying on worker identity or execution order, construct one positive and one causal negative example. Mark the first decisive fact in the **work-partition and reduction map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For derive closure `Send` and captured-state `Sync` requirements from parallel execution, construct one positive and one causal negative example. Mark the first decisive fact in the **work-partition and reduction map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For track item ownership and ordering through indexed parallel iterators, construct one positive and one causal negative example. Mark the first decisive fact in the **work-partition and reduction map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -190,4 +219,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Parallel Histogram](../../labs/module-09-parallel-histogram/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 70 — Integrated Concurrent Architecture, Testing, and Audit](../module-70-integrated-concurrent-architecture-testing-and-audit/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

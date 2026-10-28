@@ -1,106 +1,112 @@
-# Rust Programming — Courses 1–9
+# Rust Programming — One Hundred Modules, Ten Courses
 
-This repository is one **ninety-module learning path**, not nine adjacent surveys. Each course raises the level of responsibility while preserving the reasoning habits built before it:
+This is one cumulative Rust curriculum, not ten disconnected surveys. It begins with ordinary typed programs and ends with the ability to review, evolve, and defend a long-lived Rust system. Each course keeps the obligations established before it and adds one new level of responsibility.
 
 ```text
 values and control
         ↓
 resources and memory
         ↓
-contracts and architecture
+contracts and architectural variation
         ↓
-dataflow and effects
+dataflow, fallibility, and effects
         ↓
-syntax and compile-time authority
+compile-time syntax and authority
         ↓
-external boundaries and systems proofs
+bytes, operating systems, unsafe code, and FFI
         ↓
-concurrent schedules and parallel work
+threads, synchronization, and parallel work
         ↓
-asynchronous lifecycles and network protocols
+futures, network protocols, and service lifecycles
         ↓
-measured performance and production operation
+measurement, security, delivery, and operation
+        ↓
+compiler reasoning, soundness, compatibility, and change
 ```
 
-The course books are the primary product. Each authoritative chapter builds one mental model before asking you to use it. Workbooks test prediction, causal repair, construction, transfer, and defense. Labs isolate one mechanism. Compiler and design investigations train precise diagnosis. Capstones force ten mechanisms to coexist in one complete product.
+The course books are the primary material. A module chapter develops one mental model; its workbook turns that model into prediction, repair, construction, transfer, and explanation. The independent lab isolates the mechanism. The course capstone forces ten mechanisms to coexist in one product without hiding their interactions.
 
-## Begin
+## Start here
 
-1. Read [How to study this program](START_HERE.md).
-2. Learn the shared [Rust reasoning model](REASONING_MODEL.md).
-3. Inspect the [ninety-module course map](COURSE_MAP.md).
-4. Use the [skill map](SKILL_MAP.md) to see how each course changes design responsibility.
-5. Track actual completion in [PROGRESS.md].
+1. Read [How to study the program](START_HERE.md).
+2. Learn the shared [reasoning model](REASONING_MODEL.md).
+3. Inspect the [one-hundred-module map](COURSE_MAP.md).
+4. Use the [skill map](SKILL_MAP.md) to see the entry and exit standard for every course.
+5. Track completed work in [PROGRESS.md].
+6. Keep the [glossary](GLOSSARY.md) and [source notes](SOURCE_NOTES.md) beside the course book.
 
-## The nine-course sequence
+## The ten-course path
 
-| Course | Course book | You finish able to… | Capstone |
+| Course | Course book | Governing question | Capstone |
 |---:|---|---|---|
-| 1 | [Rust Foundations](01-rust-foundations/course-book/index.md) | Read Rust as a typed language, make ownership visible, model valid states, handle failure explicitly, and finish a complete tested program. | **Taskboard** |
-| 2 | [Ownership, Lifetimes, and Memory](02-rust-ownership-lifetimes-memory/course-book/index.md) | Design borrowed APIs, cleanup protocols, shared graphs, interior mutability, representation claims, variance, and pinning from explicit memory relationships. | **Memory Workspace** |
-| 3 | [Traits, Generics, and Architectural Design](03-rust-traits-generics-architectural-design/course-book/index.md) | Define lawful contracts, choose static or dynamic polymorphism, compose behavior, encode protocols, and evolve public APIs. | **Review Engine** |
-| 4 | [Functional Rust](04-rust-functional-programming/course-book/index.md) | Make callable capability, laziness, traversal, failure, accumulation, structural sharing, and effects explicit enough to reason about composition and cost. | **LedgerFlow** |
-| 5 | [Rust Metaprogramming](05-rust-metaprogramming/course-book/index.md) | Use generation only where one checked declaration should own several Rust surfaces or validated build data, while keeping expansion understandable as ordinary Rust. | **CommandForge** |
-| 6 | [Rust Systems Programming](06-rust-systems-programming/course-book/index.md) | Cross byte, filesystem, process, allocator, unsafe, ABI, callback, and foreign-resource boundaries without losing earlier guarantees. | **FrameVault** |
-| 7 | [Rust Concurrency and Parallelism](07-rust-concurrency-parallelism/course-book/index.md) | Design bounded threaded and data-parallel work whose synchronization, liveness, failure, and final meaning remain explicit across legal schedules. | **BatchWeave** |
-| 8 | [Rust Async and Networked Services](08-rust-async-networked-services/course-book/index.md) | Derive future state machines, own Tokio task lifecycles, frame hostile streams, design versioned protocols, enforce capacity, preserve cancellation safety, and build resilient services. | **JobWire** |
-| 9 | [Rust Performance and Production Engineering](09-rust-performance-production-engineering/course-book/index.md) | Define falsifiable performance contracts, profile causally, budget memory and data movement, observe and harden services, control overload, secure the supply chain, and ship traceable operable artifacts. | **MetricRail** |
+| 1 | [Rust Foundations](01-rust-foundations/course-book/index.md) | How do Rust’s types, ownership rules, state models, and error boundaries combine into a complete program you can explain end to end? | **Taskboard** |
+| 2 | [Ownership, Lifetimes, and Memory](02-rust-ownership-lifetimes-memory/course-book/index.md) | How do places, loans, lifetimes, destruction, shared liveness, representation, and address stability determine whether a memory design is valid? | **Memory Workspace** |
+| 3 | [Traits, Generics, and Architectural Design](03-rust-traits-generics-architectural-design/course-book/index.md) | How should a Rust architecture represent shared behavior, type relationships, runtime variation, protocol states, and downstream extension without importing an inheritance model? | **Review Engine** |
+| 4 | [Functional Rust](04-rust-functional-programming/course-book/index.md) | How can Rust make capture, traversal, cardinality, ordering, failure, accumulation, structural sharing, effects, and cost visible in one dataflow? | **LedgerFlow** |
+| 5 | [Rust Metaprogramming](05-rust-metaprogramming/course-book/index.md) | Which facts deserve one compile-time source of truth, which generation mechanism is the least powerful adequate choice, and how can expanded code remain diagnosable ordinary Rust? | **CommandForge** |
+| 6 | [Rust Systems Programming](06-rust-systems-programming/course-book/index.md) | What does each external boundary promise, which facts can Rust verify, which facts require a manual proof, and how does a safe interface contain those obligations? | **FrameVault** |
+| 7 | [Rust Concurrency and Parallelism](07-rust-concurrency-parallelism/course-book/index.md) | Which facts remain true across every legal thread schedule, and what ownership, synchronization, progress, failure, and normalization arguments make those facts reviewable? | **BatchWeave** |
+| 8 | [Rust Async and Networked Services](08-rust-async-networked-services/course-book/index.md) | How do suspension, wakeup, task ownership, framing, protocol state, capacity, cancellation, retry, and shutdown remain explicit when peers and timing are only partly observable? | **JobWire** |
+| 9 | [Rust Performance and Production Engineering](09-rust-performance-production-engineering/course-book/index.md) | Which measurements, resource bounds, signals, security controls, artifact records, and operating policies make a Rust system defensible under representative load? | **MetricRail** |
+| 10 | [Advanced Rust Mastery](10-rust-advanced-mastery/course-book/index.md) | How do you design and evolve a Rust system whose type relationships, unsafe boundaries, compiler behavior, compatibility promises, verification evidence, and operating limits survive independent change? | **AxiomStore** |
 
-## One course, ten dense days
+## The capstone ladder
 
-Each course occupies ten focused study days across two calendar weeks. One module is one full day:
+The capstones are deliberately different. They are not ten versions of the same command-line application.
+
+| Course | Product | Architectural step |
+|---:|---|---|
+| 1 | **Taskboard** | Complete safe-Rust program with typed state, errors, persistence, tests, and a library/binary boundary |
+| 2 | **Memory Workspace** | Borrowed views, generational identity, staged mutation, shared snapshots, caches, and memory accounting |
+| 3 | **Review Engine** | Static and dynamic polymorphism, adapters, typestate, law tests, and public evolution |
+| 4 | **LedgerFlow** | Fallible dataflow, deterministic reduction, structural sharing, lazy queries, and effect isolation |
+| 5 | **CommandForge** | Declarative and procedural generation with one authority per generated fact |
+| 6 | **FrameVault** | Checked binary formats, transactional files, manual allocation, C ABI, and foreign ownership |
+| 7 | **BatchWeave** | Bounded thread work, backpressure, panic containment, cancellation, and deterministic reconciliation |
+| 8 | **JobWire** | Framed network protocol, async task tree, admission, idempotency, retry, and graceful shutdown |
+| 9 | **MetricRail** | Representative measurement, observability, overload policy, threat modeling, traceable releases, and operations |
+| 10 | **AxiomStore** | Compiler-shaped reasoning, advanced type relationships, unsafe review, compatibility, verification, and long-lived change |
+
+## What completion means
+
+A checked box is not the final standard. For every module you should be able to:
+
+1. state the governing relationship in plain language;
+2. predict the decisive compiler, runtime, build, platform, or schedule consequence;
+3. repair a broken design without deleting the difficult requirement;
+4. build the independent lab from its contract;
+5. apply the mechanism to the capstone while preserving earlier invariants;
+6. transfer the idea to a different domain and defend the trade-off.
+
+For every course, complete the final review and one independent change that is not described step by step. The program is finished only when you can enter unfamiliar Rust code, locate its authorities and proof boundaries, change it without accidental regression, and state what your evidence does not establish.
+
+## Study shape
+
+Each course is designed as ten dense study days over two calendar weeks. One module occupies one full day. The normal route is:
 
 ```text
 chapter
    ↓
 closed-book prediction
    ↓
-causal repair
+causal diagnosis and repair
    ↓
 focused construction
    ↓
 independent laboratory
    ↓
-capstone transfer
+capstone integration
    ↓
 reconstruction and defense
 ```
 
-Advance only when you can explain the decisive rule and transfer it to a different problem. A passing test suite proves selected behavior, not understanding. An explanation without working code proves vocabulary, not engineering skill. The program requires both.
+Use the study plan inside each course for the day-by-day sequence. Take the midpoint recovery day seriously: ownership, lifetime, synchronization, and protocol models consolidate through retrieval and reconstruction, not by adding another stack of pages.
 
-## What changes in Course 9
+## Toolchain
 
-Course 8 ends with a correct, bounded asynchronous service. Course 9 asks whether its production claims are true.
+The release uses Rust 2024 Edition and pins Rust 1.97.1 so the examples, diagnostics, and dependency surfaces do not drift during study. Most courses use only the standard library. Courses that require real ecosystem mechanisms pin their dependencies exactly and explain why each dependency exists.
 
-Ten permanent questions are added:
-
-1. **Claim:** what user-visible behavior or resource property is being asserted?
-2. **Workload:** which input distribution, scale, skew, and environment does the claim cover?
-3. **Measurement:** where does observation begin and end, and what noise or bias remains?
-4. **Cost:** which CPU, allocation, copying, waiting, contention, or system-call mechanism dominates?
-5. **Boundedness:** what limits memory, queues, labels, retries, output, and retained state?
-6. **Observability:** which signal answers the operator’s question, and is it authoritative or advisory?
-7. **Reliability:** how do admission, retry, degradation, and recovery preserve useful work?
-8. **Security:** which assets, boundaries, dependencies, secrets, and privileges can be abused?
-9. **Artifact:** which source, lockfile, toolchain, profile, target, and features produced the binary?
-10. **Operation:** what capacity, rollout, rollback, runbook, and incident-learning evidence supports deployment?
-
-These questions extend rather than replace ownership, memory, architecture, concurrency, and protocol reasoning.
-
-## Toolchain and dependencies
-
-The program uses Rust 2024 Edition and pins Rust 1.97.1.
-
-- Course 5 pins the procedural-macro ecosystem used to build real derives and DSLs.
-- Course 7 pins Rayon for data-parallel work.
-- Course 8 pins Tokio, Tokio Util, Bytes, Futures Util, Hyper, Hyper Util, and HTTP Body Util.
-- Course 9 pins Criterion, Bytes, Tokio, Tracing, and Tracing Subscriber for benchmarking, shared buffers, service execution, structured diagnostics, and production surfaces.
-
-Exact pins make the teaching release reproducible enough to discuss specific APIs. They do not turn third-party behavior into Rust language guarantees.
-
-See [Source notes](SOURCE_NOTES.md) for primary contracts.
-
-## Repository commands
+Common repository routes:
 
 ```bash
 make audit
@@ -115,4 +121,4 @@ make docs
 make proof
 ```
 
-`make proof` is the strongest included route. It requires the pinned Rust toolchain and MkDocs.
+`make proof` is the strongest included route. It requires the pinned Rust toolchain and MkDocs. Static checks are useful, but they never substitute for compilation, tests, rendered documentation, or technical review.

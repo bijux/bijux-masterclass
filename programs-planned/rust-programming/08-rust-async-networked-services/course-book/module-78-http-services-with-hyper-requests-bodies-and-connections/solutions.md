@@ -1,8 +1,8 @@
 # Reasoned Solutions — Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the JobWire guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-08-hyper-health-surface/README.md) · [JobWire guide](../capstone.md)
 
-The governing correction is that an HTTP library does not own application policy. Transport, connection, body, route, and domain state remain separate contracts.
+Use these notes only after preserving your prediction and repair for **Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections**. Compare the reasoning against this question: *How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -34,3 +34,42 @@ JobWire’s HTTP service reads one operational snapshot. It does not enqueue sta
 ## Part 6 — Reconstruction and defense
 
 A complete defense can point to each layer and its owner. It distinguishes application response errors from connection failure, bounds body retention, states health semantics precisely, and prevents a network writer from retaining core application resources.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate?
+
+Build a **HTTP boundary map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish accepted transport, HTTP connection future, request future, body stream, and application service.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Serve HTTP/1 connections with Hyper over Tokio I/O.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Construct stable response body types and status codes.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Route by method and path without mixing broker logic into transport code.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Bound request bodies before retaining them.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish accepted transport, HTTP connection future, request future, body stream, and application service.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the HTTP boundary map.
+
+### Reference implementation comparison
+
+For [Hyper Health Surface](../../labs/module-08-hyper-health-surface/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In JobWire, Module 78 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **HTTP Services with Hyper: Requests, Bodies, and Connections**, which relationship decides this question: “How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to JobWire?

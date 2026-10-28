@@ -1,8 +1,8 @@
-# Module 93 Solutions — GATs, Higher-Ranked Bounds, and Lending Interfaces
+# Reasoned Solutions — Module 93: GATs, Higher-Ranked Bounds, and Lending Interfaces
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-03-lending-table/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 93: GATs, Higher-Ranked Bounds, and Lending Interfaces**. Compare the reasoning against this question: *How can an API return views tied to each borrow of `self` without pretending that every yielded value has one fixed lifetime?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the quantifier-and-borrow map: the decisive relations
 
 **Principled repair.** Separate source lifetime from method-borrow lifetime through the GAT family. Let reborrowing shorten the source reference for each call.
 
-A strong answer updates the quantifier-and-borrow map and includes a negative case that fails for the original cause.
+The negative case should reintroduce **One lifetime for source and method borrow** while preserving the surrounding requirement. The quantifier-and-borrow map must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — GAT added to avoid all allocation
 
@@ -40,7 +40,7 @@ A strong answer updates the quantifier-and-borrow map and includes a negative ca
 
 **Principled repair.** Use owned rows or an ordinary iterator over independent source slices. A lending protocol that conflicts with dominant use is not a win.
 
-A strong answer updates the quantifier-and-borrow map and includes a negative case that fails for the original cause.
+The negative case should reintroduce **GAT added to avoid all allocation** while preserving the surrounding requirement. The quantifier-and-borrow map must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Escaping scoped view
 
@@ -48,7 +48,7 @@ A strong answer updates the quantifier-and-borrow map and includes a negative ca
 
 **Principled repair.** Return an owned conversion or a result independent of the temporary lifetime. HRTBs guarantee scoped capability, not lifetime extension.
 
-A strong answer updates the quantifier-and-borrow map and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Escaping scoped view** while preserving the surrounding requirement. The quantifier-and-borrow map must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Translate four prose requirements into ordinary 
 
 The decisive acceptance criterion is: Each answer states who chooses the lifetime and what must outlive it.
 
-Evaluate the result through the quantifier-and-borrow map; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Quantifier translation**, apply the quantifier-and-borrow map to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Lending cursor
 
@@ -66,7 +66,7 @@ The construction should answer: Implement a cursor over temporary row scratch st
 
 The decisive acceptance criterion is: A compile-fail example proves retained views block the next call.
 
-Evaluate the result through the quantifier-and-borrow map; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Lending cursor**, apply the quantifier-and-borrow map to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Coexisting views redesign
 
@@ -74,7 +74,7 @@ The construction should answer: Change the requirement so two rows must coexist 
 
 The decisive acceptance criterion is: The chosen ownership or stable-source model permits coexistence without unsound lifetime widening.
 
-Evaluate the result through the quantifier-and-borrow map; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Coexisting views redesign**, apply the quantifier-and-borrow map to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Owned boundary
 
@@ -82,12 +82,11 @@ The construction should answer: Add a deliberate `to_owned` transition at the po
 
 The decisive acceptance criterion is: Lifetimes do not spread into the storage and policy layers.
 
-Evaluate the result through the quantifier-and-borrow map; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Owned boundary**, apply the quantifier-and-borrow map to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **GATs, Higher-Ranked Bounds, and Lending Interfaces** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — a lending cursor and a retained index
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the quantifier-an
 Read each lifetime quantifier in plain language, explain why source lifetime and method-borrow lifetime differ, and decide whether the lending protocol matches the consumer’s retention needs.
 
 The defense passes when it reconstructs the quantifier-and-borrow map from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How can an API return views tied to each borrow of `self` without pretending that every yielded value has one fixed lifetime?
+
+Build a **lifetime family map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish one associated type from a lifetime-indexed family of associated types.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Design a lending cursor whose returned view cannot outlive the borrow that produced it.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Read `for<'a>` as universal quantification chosen by the caller rather than a long concrete lifetime.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Identify when a bound accidentally requires a view for one specific lifetime instead of every usable borrow.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Explain why many GAT-heavy traits are not natural trait-object boundaries.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish one associated type from a lifetime-indexed family of associated types.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the lifetime family map.
+
+### Reference implementation comparison
+
+For [Lending Table](../../labs/module-03-lending-table/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 93 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **GATs, Higher-Ranked Bounds, and Lending Interfaces**, which relationship decides this question: “How can an API return views tied to each borrow of `self` without pretending that every yielded value has one fixed lifetime?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

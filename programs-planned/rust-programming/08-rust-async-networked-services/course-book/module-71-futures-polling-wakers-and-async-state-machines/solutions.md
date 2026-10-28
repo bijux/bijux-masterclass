@@ -1,8 +1,8 @@
 # Reasoned Solutions — Module 71: Futures, Polling, Wakers, and Async State Machines
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the JobWire guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-one-shot-signal/README.md) · [JobWire guide](../capstone.md)
 
-The central correction is that async syntax does not create autonomous execution. It creates state that an executor advances cooperatively. Every correct answer connects stored state, wake source, poll result, and destruction behavior.
+Use these notes only after preserving your prediction and repair for **Module 71: Futures, Polling, Wakers, and Async State Machines**. Compare the reasoning against this question: *What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -60,3 +60,42 @@ The JobWire ledger should reveal two important facts before code exists. First, 
 ## Part 6 — Reconstruction and defense
 
 A complete defense says that `poll` is a cooperative attempt, `Pending` carries a wake obligation, and the waker schedules rather than stores application events. It identifies values retained across await, states that pinning protects movement-sensitive future state, and explains cancellation as destruction at an arbitrary incomplete state. The strongest answer always names external effects that destructors cannot roll back.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled?
+
+Build a **future state and wake-source table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Explain why a future is inert until polled.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Read the `Future::poll` contract and distinguish completion from scheduling.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **State what `Context` and `Waker` permit without treating wake as a stored event count.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Identify busy polling caused by unconditional self-waking.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Derive the state stored across suspension points in an `async fn`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Explain why a future is inert until polled.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the future state and wake-source table.
+
+### Reference implementation comparison
+
+For [One-Shot Signal](../../labs/module-01-one-shot-signal/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In JobWire, Module 71 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Futures, Polling, Wakers, and Async State Machines**, which relationship decides this question: “What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to JobWire?

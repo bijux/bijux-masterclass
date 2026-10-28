@@ -1,9 +1,11 @@
-# 46 — Procedural Macro Execution and TokenStream Engineering
+# Module 46 — Procedural Macro Execution and TokenStream Engineering
 
-**Course 5, day 6 · Module 46 of 90**  
-`███████████████░░░░░` **46/90**
+**Course 5 · Day 6 · Module 46 of 100**
+`████████████░░░░░░░░░░░░░` **46/100**
 
-[← Module 45: Macro Diagnostics, Testing, and Public API Design](../module-45-macro-diagnostics-testing-and-public-api-design/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 47: Custom Derive Macros and Structural Generation →](../module-47-custom-derive-macros-and-structural-generation/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-token-stream-inspector/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 45: Macro Diagnostics, Testing, and Public API Design](../module-45-macro-diagnostics-testing-and-public-api-design/index.md) · [Module 47: Custom Derive Macros and Structural Generation →](../module-47-custom-derive-macros-and-structural-generation/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 The first five days established conservative mechanism choice, declarative grammar, recursive parsing, path discipline, diagnostics, and public testing. Procedural macros now enter as compiler-executed Rust programs with a broader parsing and validation surface. Without the earlier discipline, their power encourages exactly the wrong design: a large hidden compiler inside every derive or attribute.
 
 Module 46 stays close to the raw `proc_macro` API. You will see the token boundary before `syn` and `quote` make it convenient.
+
+### Prerequisite bridge
+
+Module 45 established **Macro Diagnostics, Testing, and Public API Design**. Before continuing, verify that you can write diagnostics that identify the violated contract and the smallest repair. This module preserves that capability and adds the ability to explain when and how a procedural macro executes. Module 47, **Custom Derive Macros and Structural Generation**, will rely on both when it asks: *How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?*
+
+### Scope boundary
+
+This module owns the reasoning for **procedural macro execution and tokenstream engineering** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -305,6 +315,24 @@ A derive inspecting structs and enums may need the default `derive`, `parsing`, 
 
 Do not claim a macro is “zero cost” because runtime code is unchanged. Build time, dependency graph, cache invalidation, diagnostics, and editor responsiveness are real costs.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For explain when and how a procedural macro executes, construct one positive and one causal negative example. Mark the first decisive fact in the **token-stream phase map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish `TokenStream`, `TokenTree`, `Group`, `Ident`, `Punct`, `Literal`, and `Span`, construct one positive and one causal negative example. Mark the first decisive fact in the **token-stream phase map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For avoid treating token text as a fully resolved Rust AST, construct one positive and one causal negative example. Mark the first decisive fact in the **token-stream phase map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For emit deterministic tokens and source-local diagnostics, construct one positive and one causal negative example. Mark the first decisive fact in the **token-stream phase map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge introduces its `commandforge-macros` crate in this module. The first implementation is intentionally small:
@@ -356,7 +384,4 @@ Do not continue if your proc macro is one large function converting the input to
 
 ## Continue
 
-1. Complete the [Module 46 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 46 — TokenStream Inspector](../../labs/module-06-token-stream-inspector/README.md) from its public contract.
-3. Apply the Module 46 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 47 — Custom Derive Macros and Structural Generation](../module-47-custom-derive-macros-and-structural-generation/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

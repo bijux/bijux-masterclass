@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 05: Structs, Enums, Methods, and Pattern Matching
+# Reasoned Solutions — Module 05: Structs, Enums, Methods, and Pattern Matching
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-05-state-machine/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Structs, Enums, Methods, and Pattern Matching**, not to substitute for an attempt. The decisive question is: *How can the type system make valid states representable and contradictory states difficult or impossible to construct?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 5: Structs, Enums, Methods, and Pattern Matching**. Compare the reasoning against this question: *How can the type system make valid states representable and contradictory states difficult or impossible to construct?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -366,9 +366,7 @@ The redesign removes queued-with-worker, failed-without-error, successful-withou
 
 Convert a contradictory multi-flag workflow into one authoritative enum and prove that illegal combinations are no longer constructible.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-05-state-machine/solution`](../../labs/module-05-state-machine/solution). Before reading it, write down:
 
@@ -389,3 +387,42 @@ For **Structs, Enums, Methods, and Pattern Matching**, compare the contract, inv
 - Replace Boolean-flag and stringly typed state with an explicit state machine and tested legal transitions.
 
 A complete explanation of **Structs, Enums, Methods, and Pattern Matching** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How can the type system make valid states representable and contradictory states difficult or impossible to construct?
+
+Build a **state model**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Place invariants at constructors and methods while keeping representation private where external mutation would bypass rules.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use exhaustive pattern matching to expose every state and transition.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Represent absence with Option and distinguish it from malformed input or failed operations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Replace Boolean-flag and stringly typed state with an explicit state machine and tested legal transitions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the state model.
+
+### Laboratory transfer review
+
+For [Typed Workflow State Machine](../../labs/module-05-state-machine/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 5 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Structs, Enums, Methods, and Pattern Matching**, which relationship decides this question: “How can the type system make valid states representable and contradictory states difficult or impossible to construct?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

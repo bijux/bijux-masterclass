@@ -1,12 +1,17 @@
 # Workbook — Module 45: Macro Diagnostics, Testing, and Public API Design
 
-[Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-diagnostic-enum-macro/README.md) · [CommandForge guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Macro Diagnostics, Testing, and Public API Design** as an engineering mechanism rather than repeat its syntax. The governing question is:
+This workbook tests whether **Macro Diagnostics, Testing, and Public API Design** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you prove that a macro accepts the intended language, rejects misuse for the intended reason, and remains an evolvable public API?* Preserve your first prediction and record decisive facts in a **diagnostic contract**. A repair succeeds only when it keeps the difficult product requirement visible.
 
-> How do you prove that a macro accepts the intended language, rejects misuse for the intended reason, and remains an evolvable public API?
+## Retrieval warm-up
 
-Classify every case as invocation-grammar rejection, explicit macro semantic rejection, generated-name or type failure, or runtime failure. Record where the primary diagnostic should point and which secondary compiler messages are merely consequences.
+Before compiling or running anything:
+
+1. Restate the invariant from Module 44 — Hygiene, Scope, Paths, and Cross-Crate Macros that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you prove that a macro accepts the intended language, rejects misuse for the intended reason, and remains an evolvable public API?**
+3. Draw the smallest **diagnostic contract** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -81,6 +86,17 @@ Choose which of these deserve exact snapshots: full `syn` debug AST, normalized 
 
 For every answer that proposes a macro, add a one-sentence rejection criterion: what simpler condition would make ordinary Rust preferable?
 
+### Interleaved reasoning pass
+
+1. For **Treat invocation grammar and generated Rust as two related public APIs**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the diagnostic contract.
+2. For **Design negative cases that fail for one intended cause**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the diagnostic contract.
+3. For **Distinguish matcher errors, deliberate `compile_error!`, generated-code errors, and runtime failures**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the diagnostic contract.
+4. For **Test expansion behavior without depending on unstable textual formatting**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the diagnostic contract.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Macro Diagnostics, Testing, and Public API Design** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 ### Product: Diagnostic Enum Macro
@@ -102,11 +118,27 @@ Before implementation, complete this module-specific design record:
 
 Build the smallest valid **diagnostic causality and compatibility** surface first. Add one accepted case, one rejection owned by this mechanism, and one case that expands successfully before ordinary Rust rejects a later obligation. Compare with the reference only after those three phase boundaries are protected by tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Diagnostic Enum Macro**, record:
+
+- the public behavior that demonstrates **Treat invocation grammar and generated Rust as two related public APIs**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Specify CommandForge’s compile-pass, compile-fail, runtime, and deterministic-output matrix. Stable diagnostic codes and messages are generated by one declarative declaration; malformed catalog entries and handler signatures receive targeted compile-time errors.
 
 The capstone increment must leave a visible design record: one diagram or table, one positive test, one negative test, and one statement of what this mechanism deliberately does **not** own.
+
+### Capstone invariant trace
+
+For the Module 45 CommandForge increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -141,3 +173,7 @@ Before advancing, defend these module-specific points:
 - which errors the macro should emit directly
 - which errors should remain ordinary Rust type errors
 - how diagnostic and grammar changes affect versioning
+
+### Closed-book defense
+
+In five minutes, answer “How do you prove that a macro accepts the intended language, rejects misuse for the intended reason, and remains an evolvable public API?” using the **diagnostic contract**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside CommandForge. A list of APIs without the deciding relationship is incomplete.

@@ -1,8 +1,11 @@
-# Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing
+# Module 79 — Network Failure, Idempotency, Retries, and Deterministic Testing
 
-**Course 8, day 9 · Module 79 of 90**
+**Course 8 · Day 9 · Module 79 of 100**
+`████████████████████░░░░░` **79/100**
 
-**79/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-idempotent-retry-client/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections](../module-78-http-services-with-hyper-requests-bodies-and-connections/index.md) · [Module 80: Integrated Async Service Architecture, Testing, and Audit →](../module-80-integrated-async-service-architecture-testing-and-audit/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ A bounded, cancellation-aware service can still duplicate work. The client sends
 This is not primarily a socket problem. It is a distributed-knowledge problem. The client and server observe different events. Course 8 resolves it with an application protocol: an idempotency key, request fingerprint, authoritative server record, bounded retention, and retry policy derived from failure class and overall deadline.
 
 Testing this behavior requires control over time and I/O. Real sleeps and “try several times” tests are weak because they depend on scheduler and machine speed. Deterministic async tests use paused time, scripted peers, explicit gates, and exact assertions about attempt count, commit count, and terminal result.
+
+### Prerequisite bridge
+
+Module 78 established **HTTP Services with Hyper: Requests, Bodies, and Connections**. Before continuing, verify that you can test routing as pure request/response behavior separately from socket tests. This module preserves that capability and adds the ability to classify failures by phase, scope, retryability, and commit ambiguity;. Module 80, **Integrated Async Service Architecture, Testing, and Audit**, will rely on both when it asks: *Can the complete service be explained as one coherent set of lifecycle, protocol, capacity, cancellation, failure, compatibility, and operational contracts rather than as a pile of async APIs?*
+
+### Scope boundary
+
+This module owns the reasoning for **network failure, idempotency, retries, and deterministic testing** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -200,6 +211,24 @@ retained records <= configured maximum
 
 A test that only observes “eventually succeeded” can pass despite duplicate side effects.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For classify failures by phase, scope, retryability, and commit ambiguity, construct one positive and one causal negative example. Mark the first decisive fact in the **retry and commit matrix** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish idempotent operation semantics from retrying an HTTP or TCP request, construct one positive and one causal negative example. Mark the first decisive fact in the **retry and commit matrix** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For design idempotency keys with scope, fingerprint, in-progress state, terminal result, and retention, construct one positive and one causal negative example. Mark the first decisive fact in the **retry and commit matrix** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For reject key reuse with different request content, construct one positive and one causal negative example. Mark the first decisive fact in the **retry and commit matrix** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The retry loop below is generic over the attempt function and deterministic jitter source:
@@ -289,4 +318,4 @@ Continue only when you can explain:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Idempotent Retry Client](../../labs/module-09-idempotent-retry-client/README.md), and add the ninth [JobWire increment](../capstone.md#increment-9-resolve-ambiguous-failure). Then continue to [Module 80](../module-80-integrated-async-service-architecture-testing-and-audit/index.md).
+Continue to [Module 80 — Integrated Async Service Architecture, Testing, and Audit](../module-80-integrated-async-service-architecture-testing-and-audit/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

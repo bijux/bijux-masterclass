@@ -1,6 +1,8 @@
-# Module 82 Solutions — CPU Profiling, Cost Models, and Hot-Path Optimization
+# Reasoned Solutions — Module 82: CPU Profiling, Cost Models, and Hot-Path Optimization
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-profile-guided-query-engine/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 82: CPU Profiling, Cost Models, and Hot-Path Optimization**. Compare the reasoning against this question: *Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Profile reasoning
 
@@ -95,3 +97,42 @@ Hot-series ingestion may be dominated by lookup and counter updates; unique-seri
 ## Part 6 — Defense
 
 Inclusive cost includes descendants; exclusive cost belongs to the function’s own instructions. Cheap functions dominate through call count. Scaling constrains whether fixed, linear, superlinear, or threshold effects are plausible. The profiled binary must match the artifact whose behavior is being improved. Instrumentation is useful for exact phases, state tags, and operations too short or rare for sampling. Attribution requires one causal change, stable workload, semantic oracle, and before/after evidence. A cache can reduce CPU while consuming memory and invalidation capacity. The complete chain is workload → shipped profile → hypothesis → isolated change → local measurement → end-to-end measurement → semantic and resource revalidation → decision record.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase?
+
+Build a **profile and cost model**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Read call stacks and flame graphs without confusing inclusive cost with exclusive cost.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Separate algorithmic work from parsing, allocation, hashing, formatting, synchronization, and system calls.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Form a cost hypothesis that predicts how runtime changes with input size and distribution.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Design a focused experiment that can falsify the hypothesis.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the profile and cost model.
+
+### Reference implementation comparison
+
+For [Profile-Guided Query Engine](../../labs/module-02-profile-guided-query-engine/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 82 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **CPU Profiling, Cost Models, and Hot-Path Optimization**, which relationship decides this question: “Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

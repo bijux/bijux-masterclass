@@ -1,8 +1,17 @@
-# Module 81 Workbook — Performance Contracts, Workloads, and Benchmark Design
+# Workbook — Module 81: Performance Contracts, Workloads, and Benchmark Design
 
-[Chapter](index.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-benchmark-integrity-clinic/README.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook trains experimental judgment. For every timing claim, write the operation, workload, environment, metric, and correctness oracle before you run anything. Record predictions in ink or in a committed note; do not edit them after seeing the result.
+This workbook tests whether **Performance Contracts, Workloads, and Benchmark Design** has become a usable model rather than remembered vocabulary. Its governing question is: *What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?* Preserve your first prediction and record decisive facts in a **performance claim and workload record**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 80 — Integrated Async Service Architecture, Testing, and Audit that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?**
+3. Draw the smallest **performance claim and workload record** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -22,7 +31,7 @@ A service change reduces median ingestion latency from 180 μs to 150 μs, incre
 
 ### 4. A three-percent CI gate
 
-A team proposes failing CI whenever a microbenchmark is 3% slower than yesterday. Predict the false-positive and false-negative modes. What evidence would be needed before a hard gate becomes defensible?
+A team proposes failing CI whenever a microbenchmark is 3% slower than yesterday. Predict the false-positive and false-negative modes. What evidence would be needed before a non-negotiable requirement becomes defensible?
 
 ### 5. Representative skew
 
@@ -100,6 +109,17 @@ State what each can conclude and what it cannot conclude.
 
 Assume a candidate is 11% faster in a microbenchmark, unchanged end to end, and uses 19% more retained memory. Write a release recommendation. Include the decision owner, uncertainty, and next experiment.
 
+### Interleaved reasoning pass
+
+1. For **Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the performance claim and workload record.
+2. For **Separate latency, throughput, utilization, memory footprint, startup cost, binary size, and tail behavior instead of combining them into one score**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the performance claim and workload record.
+3. For **Design microbenchmarks that exclude setup and validation costs unless those costs belong to the product operation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the performance claim and workload record.
+4. For **Choose warm-up, sample, batching, parameterization, and baseline policy deliberately**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the performance claim and workload record.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Performance Contracts, Workloads, and Benchmark Design** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build the [Benchmark Integrity Clinic](../../labs/module-01-benchmark-integrity-clinic/README.md). Before looking at its reference implementation:
@@ -113,6 +133,18 @@ Build the [Benchmark Integrity Clinic](../../labs/module-01-benchmark-integrity-
 
 Your report must include the exact code revision, workload name, bytes processed, result, elapsed time, and a paragraph explaining what the observation cannot establish.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Benchmark Integrity Clinic**, record:
+
+- the public behavior that demonstrates **Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Create `PERFORMANCE_CHARTER.md` for MetricRail and add benchmark fixtures for line parsing, batch ingestion, snapshot rendering, and end-to-end TCP ingestion. Define:
@@ -125,6 +157,10 @@ Create `PERFORMANCE_CHARTER.md` for MetricRail and add benchmark fixtures for li
 - the policy for recording a baseline without making noisy CI timing a unit-test assertion.
 
 No production optimization is allowed in this increment. The product of Module 81 is trustworthy experimental infrastructure.
+
+### Capstone invariant trace
+
+For the Module 81 MetricRail increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -140,3 +176,7 @@ Without notes, answer:
 8. Name one result you would refuse to publish and explain why.
 
 Continue only when you can design the experiment before seeing the number.
+
+### Closed-book defense
+
+In five minutes, answer “What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?” using the **performance claim and workload record**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside MetricRail. A list of APIs without the deciding relationship is incomplete.

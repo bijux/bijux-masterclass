@@ -1,8 +1,17 @@
-# Module 92 Workbook — Advanced Trait Solving: Goals, Projections, and Type Equality
+# Workbook — Module 92: Advanced Trait Solving: Goals, Projections, and Type Equality
 
-[Chapter](index.md) · [AxiomStore guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-02-projection-driven-pipeline/README.md) · [AxiomStore guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook turns the chapter’s **trait-goal graph** into evidence. Write predictions before compiling or running anything. Preserve the stated product requirement during repair; a green build obtained by deleting the difficult relationship is not a solution.
+This workbook tests whether **Advanced Trait Solving: Goals, Projections, and Type Equality** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal?* Preserve your first prediction and record decisive facts in a **trait-goal and projection graph**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 91 — Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal?**
+3. Draw the smallest **trait-goal and projection graph** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -44,7 +53,7 @@ A reusable pipeline converts every stage error to `String` to make composition e
 
 Required direction: Preserve a typed sum such as `ChainError<A::Error, B::Error>` and translate once at the application boundary that owns recovery policy.
 
-Submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the trait-goal graph changes.
+For **Repair 2 — String-erased stage errors**, submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the trait-goal graph changes.
 
 ### Repair 3 — Bound accumulation
 
@@ -52,7 +61,7 @@ A generic helper has ten bounds added one by one until it compiles.
 
 Required direction: Remove all bounds, inspect each operation, and restore only the goals actually introduced by the body. Split the helper if one signature is carrying unrelated proof domains.
 
-Submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the trait-goal graph changes.
+For **Repair 3 — Bound accumulation**, submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the trait-goal graph changes.
 
 ## Part 3 — Focused exercises
 
@@ -82,8 +91,7 @@ Completion standard: The final implementation ownership is legal and architectur
 
 ### Cross-course transfer
 
-Choose one artifact from Courses 1–9 and reassess it through **Advanced Trait Solving: Goals, Projections, and Type Equality**. Reconstruct its current invariant owner, then decide whether the trait-goal graph reveals a genuine defect. A justified no-change decision is valid when the advanced mechanism would add proof or compatibility cost without removing a real invalid state.
-
+Choose one artifact from Courses 1–10 and reassess it through **Advanced Trait Solving: Goals, Projections, and Type Equality**. Reconstruct its current invariant owner, then decide whether the trait-goal graph reveals a genuine defect. A justified no-change decision is valid when the advanced mechanism would add proof or compatibility cost without removing a real invalid state.
 
 ### Applied case study — projected errors in a storage pipeline
 
@@ -93,6 +101,17 @@ Write the trait goals required to compose the three stages. Separate normalizati
 
 Your answer must preserve error provenance. Explain how the outer pipeline can expose a sum error without forcing unrelated stages to share one error family. Finally, construct one negative example in which the decoder and validator are both individually valid but cannot compose, and state what compiler evidence would prove the mismatch.
 
+### Interleaved reasoning pass
+
+1. For **Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the trait-goal and projection graph.
+2. For **Distinguish proving that a trait is implemented from normalizing an associated type selected by that implementation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the trait-goal and projection graph.
+3. For **Choose associated types, generic parameters, and helper traits according to who selects each type relationship**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the trait-goal and projection graph.
+4. For **Express equality between associated outputs without forcing unrelated callers to name implementation details**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the trait-goal and projection graph.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Advanced Trait Solving: Goals, Projections, and Type Equality** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Projection-Driven Pipeline](../../labs/module-02-projection-driven-pipeline/README.md) from its `starter/` package.
@@ -100,6 +119,18 @@ Build [Projection-Driven Pipeline](../../labs/module-02-projection-driven-pipeli
 Build a three-stage pipeline whose associated input, output, and error families connect only at the assembly boundary. Mismatched composition must be rejected before execution.
 
 Before implementation, freeze Projection-Driven Pipeline’s public behavior and the trait-goal graph. After implementation, complete its transfer task in a domain with different ownership, version, capacity, extension, or failure policy; renaming types does not demonstrate transfer.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Projection-Driven Pipeline**, record:
+
+- the public behavior that demonstrates **Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -111,6 +142,10 @@ Update AxiomStore’s trait-goal graph before code. Record the changed invariant
 
 Before leaving the module, revisit the trait goal you initially expected the compiler to infer. Write the projection or equality that was actually missing, identify the downstream operation that required it, and remove one bound that turned out to be unrelated. Record one case that remains intentionally unsupported so the resulting trait surface does not imply a broader family of compositions than you proved.
 
+### Capstone invariant trace
+
+For the Module 92 AxiomStore increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Normalize one nested projection aloud, identify the owner of every type choice, and explain why a more generic signature can admit nonsense rather than improve reuse.
@@ -118,3 +153,7 @@ Normalize one nested projection aloud, identify the owner of every type choice, 
 Finish without notes by reconstructing the trait-goal graph. Name the requirement, the simpler design, the decisive rejected construction, the state after failure, and the evidence that could falsify your claim. End by stating one condition under which this mechanism should be removed.
 
 The defense is complete only when another reader can reproduce the reasoning behind Projection-Driven Pipeline and the AxiomStore increment without seeing your final implementation.
+
+### Closed-book defense
+
+In five minutes, answer “How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal?” using the **trait-goal and projection graph**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside AxiomStore. A list of APIs without the deciding relationship is incomplete.

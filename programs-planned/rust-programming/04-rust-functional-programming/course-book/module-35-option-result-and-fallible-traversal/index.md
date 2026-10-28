@@ -1,9 +1,11 @@
-# 35 — Option, Result, and Fallible Traversal
+# Module 35 — Option, Result, and Fallible Traversal
 
-**Course 4, day 5 · Module 35 of 90**  
-`████████████░░░░░░░░` **35/90**
+**Course 4 · Day 5 · Module 35 of 100**
+`█████████░░░░░░░░░░░░░░░░` **35/100**
 
-[← Module 34: Folds, Scans, and Short-Circuiting](../module-34-folds-scans-and-short-circuiting/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 36: Custom Iterators and Collection Protocols →](../module-36-custom-iterators-and-collection-protocols/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-resilient-import/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 34: Folds, Scans, and Short-Circuiting](../module-34-folds-scans-and-short-circuiting/index.md) · [Module 36: Custom Iterators and Collection Protocols →](../module-36-custom-iterators-and-collection-protocols/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 A pipeline over valid values is incomplete when parsing or validation can fail. `Option` and `Result` now become traversal policies: skip, stop, recover, default, or collect diagnostics. The essential decision is not which combinator is shortest but what information the product is allowed to lose.
+
+### Prerequisite bridge
+
+Module 34 established **Folds, Scans, and Short-Circuiting**. Before continuing, verify that you can use `controlflow` for domain-specific early exit without inventing an error. This module preserves that capability and adds the ability to compose optional and fallible transformations while preserving ownership and error meaning. Module 36, **Custom Iterators and Collection Protocols**, will rely on both when it asks: *What laws must a custom traversal obey, and who owns the collection when iteration begins?*
+
+### Scope boundary
+
+This module owns the reasoning for **option, result, and fallible traversal** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -87,7 +97,7 @@ assert!(name.is_some());
 - `map_err`: error value changes, success remains.
 - `or_else`: error chooses a recovery computation.
 
-### Decision rule
+### Decision rule — Combinator names are control flow
 
 Use combinators when each step has one clear branch responsibility. Switch to `match` when several branches interact, when context must be assembled from both sides, or when the chain obscures evaluation order.
 
@@ -146,7 +156,7 @@ These are not interchangeable.
 
 `None` might mean not configured, not found, filtered out, end of input, or invalid-but-discarded. Combining different meanings into nested options is a signal to introduce a domain type.
 
-### Decision rule
+### Decision rule — Preserve semantic layers
 
 Use `flatten` and `transpose` when the resulting shape accurately states the control semantics. Do not remove layers merely because nested types look inconvenient.
 
@@ -199,7 +209,7 @@ let result: Result<(), Error> = records.iter().map(validate_record).collect();
 
 An explicit `try_for_each` may communicate intent more directly.
 
-### Decision rule
+### Decision rule — collect::<Result<(), E>>()
 
 Use result collection when the product contract is “all values or the first error.” Do not describe it as error accumulation or partial import.
 
@@ -269,7 +279,7 @@ Do not overload `Result` if success and diagnostics must coexist.
 
 Accumulating errors can expose more feedback but may perform more work and hold more memory. It may also be unsafe when later validation depends on secrets or expensive resources. Choose from the product contract.
 
-### Decision rule
+### Decision rule — Product policy
 
 Use fail-fast `Result` for all-or-nothing construction and diagnostic accumulation for batch review or partial acceptance. Represent their difference in the return type and test cross-record phases.
 
@@ -317,7 +327,7 @@ These collapse the container into a plain value. The eager default in `map_or` i
 
 `map_or_else` is useful when an optional value falls back to a fallible operation by returning `Result` from both closures. Keep the resulting nested shapes readable; an explicit match may be better.
 
-### Decision rule
+### Decision rule — Recovery can be fallible
 
 Choose eager or lazy forms based on evaluation semantics. Use defaults only when the domain defines them. Record fallback effects and failure timing in the four-flow ledger.
 
@@ -367,7 +377,7 @@ A function that returns successful records while writing errors to stderr has sp
 
 `unwrap` inside a mapping closure moves failure out of the type and into process termination. Use panic only for genuine unrecoverable invariant violations, not ordinary input.
 
-### Decision rule
+### Decision rule — Panics are not a combinator strategy
 
 Draw the failure path alongside the data path. Every conversion from `Result` to `Option`, string, default, log message, or panic must have a product justification.
 
@@ -418,7 +428,7 @@ A long chain can hide where ownership moves, which errors are transformed, and w
 
 Use a combinator when it names the branch operation directly. Use `?` for linear success-path construction. Use `match` when multiple branches interact or when evaluation order must be obvious.
 
-### Decision rule
+### Decision rule — Review heuristic
 
 Select control syntax from error topology, not stylistic identity. A functional Rust programmer is fluent in all three and refuses to erase diagnostics for chain aesthetics.
 
@@ -466,6 +476,24 @@ Traverses every line and returns accepted values plus diagnostics. The product c
 
 `filter_map(|line| parse_line(line).ok())` is rejected because malformed lines disappear and the caller cannot distinguish valid omission from corruption.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For compose optional and fallible transformations while preserving ownership and error meaning, construct one positive and one causal negative example. Mark the first decisive fact in the **failure-policy matrix** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For use `transpose`, `flatten`, and `collect` to change container shape deliberately, construct one positive and one causal negative example. Mark the first decisive fact in the **failure-policy matrix** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For distinguish fail-fast traversal from diagnostic accumulation and implement both honestly, construct one positive and one causal negative example. Mark the first decisive fact in the **failure-policy matrix** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For choose eager and lazy defaults with awareness of evaluation and side effects, construct one positive and one causal negative example. Mark the first decisive fact in the **failure-policy matrix** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **LedgerFlow**, a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports. Separate row-local diagnostics, fatal stream failures, warnings, and duplicate policy. Preserve physical source order when diagnostics from multiple phases are combined. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -496,11 +524,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Result](https://doc.rust-lang.org/std/result/enum.Result.html)
 - [FromIterator for Result](https://doc.rust-lang.org/std/result/enum.Result.html#impl-FromIterator%3CResult%3CA,+E%3E%3E-for-Result%3CV,+E%3E)
 
-[← Module 34](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 36 →](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md)
+[← Module 34](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 36 →](../../../04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md)
 
 ## Continue
 
-1. Complete the [Module 35 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 35 — Resilient Import](../../labs/module-05-resilient-import/README.md) from its public contract.
-3. Apply the Module 35 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 36 — Custom Iterators and Collection Protocols](../module-36-custom-iterators-and-collection-protocols/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

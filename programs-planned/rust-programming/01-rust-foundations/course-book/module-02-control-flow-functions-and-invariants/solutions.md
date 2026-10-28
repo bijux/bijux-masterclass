@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 02: Control Flow, Functions, and Invariants
+# Reasoned Solutions — Module 02: Control Flow, Functions, and Invariants
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-control-flow-policy/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Control Flow, Functions, and Invariants**, not to substitute for an attempt. The decisive question is: *How can control flow make every path, boundary, and loop invariant visible enough to test and review?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 2: Control Flow, Functions, and Invariants**. Compare the reasoning against this question: *How can control flow make every path, boundary, and loop invariant visible enough to test and review?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -250,9 +250,7 @@ The essential proof is that each helper has boundary tests and `main` contains n
 
 Review a policy engine, identify its invariant and termination argument, then replace one nested branch structure with total typed logic.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-02-control-flow-policy/solution`](../../labs/module-02-control-flow-policy/solution). Before reading it, write down:
 
@@ -273,3 +271,42 @@ For **Control Flow, Functions, and Invariants**, compare the contract, invariant
 - Test control-flow boundaries systematically, including invalid domains, empty inputs, and off-by-one edges.
 
 A complete explanation of **Control Flow, Functions, and Invariants** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How can control flow make every path, boundary, and loop invariant visible enough to test and review?
+
+Build a **control-flow table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Select for, while, or loop from termination knowledge and data shape, then state the loop invariant and variant.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Design functions with explicit preconditions, postconditions, total behavior, and guard clauses.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Decompose stateful logic without creating flag soup, hidden fallthrough, or duplicated policy.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Test control-flow boundaries systematically, including invalid domains, empty inputs, and off-by-one edges.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the control-flow table.
+
+### Laboratory transfer review
+
+For [Control-Flow Policy Engine](../../labs/module-02-control-flow-policy/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 2 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Control Flow, Functions, and Invariants**, which relationship decides this question: “How can control flow make every path, boundary, and loop invariant visible enough to test and review?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

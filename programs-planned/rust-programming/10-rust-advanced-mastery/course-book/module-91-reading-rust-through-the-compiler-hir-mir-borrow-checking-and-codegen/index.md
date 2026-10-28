@@ -1,8 +1,11 @@
 # Module 91 — Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen
 
-**91/100** · Course 10 · Module 91 of 100
+**Course 10 · Day 1 · Module 91 of 100**
+`███████████████████████░░` **91/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-compiler-evidence-notebook/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 90: Production Readiness, Capacity Planning, Rollouts, and Incident Learning](../../../09-rust-performance-production-engineering/course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md) · [Module 92: Advanced Trait Solving: Goals, Projections, and Type Equality →](../module-92-advanced-trait-solving-goals-projections-and-type-equality/index.md)
 
 ## The question
 
@@ -10,11 +13,19 @@
 
 ## Why this comes now
 
-The first nine courses taught you to reason from source-level contracts. Advanced work requires one additional discipline: knowing when the source syntax is no longer the best level of explanation. Method calls are resolved, patterns are lowered, implicit borrows are inserted, control flow is made explicit, drops are scheduled, and generic code is instantiated before machine code exists. A compiler-shaped explanation does not mean memorizing rustc internals. It means choosing the representation that exposes the decisive fact without inventing folklore about what “the compiler probably does.”
+The first ten courses taught you to reason from source-level contracts. Advanced work requires one additional discipline: knowing when the source syntax is no longer the best level of explanation. Method calls are resolved, patterns are lowered, implicit borrows are inserted, control flow is made explicit, drops are scheduled, and generic code is instantiated before machine code exists. A compiler-shaped explanation does not mean memorizing rustc internals. It means choosing the representation that exposes the decisive fact without inventing folklore about what “the compiler probably does.”
 
 Course 1 supplied ownership and control-flow vocabulary; Course 2 supplied drop and lifetime reasoning; Courses 6 and 9 taught proof boundaries and artifact-scoped observations. This module joins those habits into one compiler-facing investigation method.
 
 Course 10 begins by changing the reader’s debugging habit. Earlier courses could usually be explained directly from source contracts. Here, the same source may hide receiver adjustments, temporary scopes, lowered control flow, drop edges, and generic instantiations. The aim is not to memorize rustc internals. It is to select the earliest representation that can answer the question and to stop the conclusion exactly where that evidence stops.
+
+### Prerequisite bridge
+
+Module 90 established **Production Readiness, Capacity Planning, Rollouts, and Incident Learning**. Before continuing, verify that you can turn incidents and near misses into corrected models, tests, limits, and architecture rather than blame or one-off patches. This module preserves that capability and adds the ability to separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases. Module 92, **Advanced Trait Solving: Goals, Projections, and Type Equality**, will rely on both when it asks: *How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal?*
+
+### Scope boundary
+
+This module owns the reasoning for **reading rust through the compiler: hir, mir, borrow checking, and codegen** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -119,6 +130,24 @@ Rustc can reveal why a particular program is accepted, rejected, or lowered in a
 
 The mature habit is to explain from the **earliest decisive layer**. Starting too high produces folklore; starting too low buries the governing contract in implementation detail. A compiler dump is evidence, not curriculum magic and not a permanent public format.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases, construct one positive and one causal negative example. Mark the first decisive fact in the **compiler-phase record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For translate source constructs into a control-flow and place-oriented model suitable for borrow, move, and drop reasoning, construct one positive and one causal negative example. Mark the first decisive fact in the **compiler-phase record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For identify when an observation is a language guarantee, a compiler implementation detail, or generated machine-code evidence, construct one positive and one causal negative example. Mark the first decisive fact in the **compiler-phase record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use compiler diagnostics, expanded code, MIR-oriented reasoning, and assembly inspection without treating any single view as the complete semantics, construct one positive and one causal negative example. Mark the first decisive fact in the **compiler-phase record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Read the program twice. First predict ownership and destruction only from Rust semantics. Then lower it into three control-flow paths—`Ok`, `Err`, and cleanup—and account for both `Probe` values. Only after that should you run it and compare the printed order with the semantic prediction.
@@ -202,7 +231,4 @@ Use the Reference and rustc development guide as maps, not as stable serializati
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Compiler Evidence Notebook](../../labs/module-01-compiler-evidence-notebook/README.md).
-3. Apply Module 91 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 92 — Advanced Trait Solving: Goals, Projections, and Type Equality](../module-92-advanced-trait-solving-goals-projections-and-type-equality/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

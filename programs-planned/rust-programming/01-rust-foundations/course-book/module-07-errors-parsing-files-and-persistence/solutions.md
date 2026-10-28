@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 07: Errors, Parsing, Files, and Persistence
+# Reasoned Solutions — Module 07: Errors, Parsing, Files, and Persistence
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-07-record-codec/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Errors, Parsing, Files, and Persistence**, not to substitute for an attempt. The decisive question is: *Which failures are part of the product contract, where are they detected, and what state is visible after failure?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 7: Errors, Parsing, Files, and Persistence**. Compare the reasoning against this question: *Which failures are part of the product contract, where are they detected, and what state is visible after failure?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -286,9 +286,7 @@ A solution is weaker than the reference when it erases operation context, mutate
 
 Audit a loader that silently drops malformed records and a saver that overclaims atomicity; repair both contracts and tests.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-07-record-codec/solution`](../../labs/module-07-record-codec/solution). Before reading it, write down:
 
@@ -309,3 +307,42 @@ For **Errors, Parsing, Files, and Persistence**, compare the contract, invariant
 - State the exact persistence guarantee of a temporary-file-and-rename protocol, including what it does not guarantee across platforms, crashes, and concurrent writers.
 
 A complete explanation of **Errors, Parsing, Files, and Persistence** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which failures are part of the product contract, where are they detected, and what state is visible after failure?
+
+Build a **error map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Design typed errors with context and source preservation rather than flattening failures into strings.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Parse untrusted text transactionally by tokenizing, converting, validating, and only then committing state.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Build generic buffered reader and writer boundaries that preserve precise line-level diagnostics and source errors.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **State the exact persistence guarantee of a temporary-file-and-rename protocol, including what it does not guarantee across platforms, crashes, and concurrent writers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the error map.
+
+### Laboratory transfer review
+
+For [Versioned Record Codec](../../labs/module-07-record-codec/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 7 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Errors, Parsing, Files, and Persistence**, which relationship decides this question: “Which failures are part of the product contract, where are they detected, and what state is visible after failure?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

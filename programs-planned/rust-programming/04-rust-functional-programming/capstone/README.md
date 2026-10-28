@@ -1,6 +1,43 @@
 # LedgerFlow
 
-This directory contains the executable capstone for Course 4. The reader-facing design and ten-step learning route are in the [capstone chapter](../course-book/capstone.md).
+## Course role
+
+LedgerFlow parses append-only ledger events, preserves diagnostics and source order, reduces valid events into deterministic state, retains an immutable audit history, exposes borrowed queries, and keeps filesystem and terminal effects outside the core.
+
+LedgerFlow is not a showcase of ten independent features. It is the place where the course’s mechanisms must coexist without creating a second owner for state, validation, order, failure, compatibility, or resource policy.
+
+## Invariants carried through the product
+
+- Every pipeline stage states item type, ownership, cardinality, order, and failure policy.
+- Rejected rows preserve physical source evidence without corrupting accepted state.
+- Reductions maintain a named accumulator invariant after every accepted event.
+- Structural sharing preserves old audit versions without accidental mutable aliases.
+- Pure analysis decides effects; the outer shell performs them in a deterministic order.
+- Optimization claims distinguish laziness, allocation, copying, and retention honestly.
+
+## Module-to-product map
+
+| Module | Mechanism added | Acceptance criterion |
+|---:|---|---|
+| 31 | Closures, Capture, and Callable Contracts | Distinguish function items, function pointers, and anonymous closure types |
+| 32 | The Iterator Model | Explain the distinct roles of `IntoIterator`, `Iterator`, adapters, and consumers |
+| 33 | Iterator Algebra and Pipeline Shape | Derive the item type and cardinality effect of common iterator adapters |
+| 34 | Folds, Scans, and Short-Circuiting | Design a fold accumulator with a precise prefix invariant |
+| 35 | Option, Result, and Fallible Traversal | Compose optional and fallible transformations while preserving ownership and error meaning |
+| 36 | Custom Iterators and Collection Protocols | Implement a correct custom `Iterator` by defining state and exhaustion behavior |
+| 37 | Recursive Data and Structural Sharing | Define recursive algebraic data with the appropriate indirection |
+| 38 | Functional Core and Effect Isolation | Separate deterministic domain decisions from filesystem, time, environment, and terminal effects |
+| 39 | Combinator Laws and Cost Models | Design domain combinators that preserve type and error meaning |
+| 40 | Functional Architecture Synthesis | Produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries |
+
+## Reading route
+
+1. Read the LedgerFlow contract and non-goals in the [engineering guide](../course-book/capstone.md).
+2. Locate the type or component that owns each invariant above.
+3. Run the baseline tests and one end-to-end demonstration before changing code.
+4. Implement only the current module increment and its adversarial test.
+5. Trace success, rejection, partial failure, cleanup, order, and capacity through the public surface.
+6. Re-run the complete course route, then explain which claims remain conditioned on a compiler, target, scheduler, peer, workload, or operating system.
 
 LedgerFlow is the Course 4 capstone: a deterministic, standard-library-only command-line analyzer for append-only ledger events.
 

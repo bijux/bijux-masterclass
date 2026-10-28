@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 59: Foreign Resources, Callbacks, and Wrapper Architecture
+# Reasoned Solutions — Module 59: Foreign Resources, Callbacks, and Wrapper Architecture
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-opaque-foreign-session/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 59: Foreign Resources, Callbacks, and Wrapper Architecture**. Compare the reasoning against this question: *How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -129,3 +127,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can trace who owns a handle after every call, prevent borrowed and owned wrappers from being confused, define callback retention and reentrancy rules, and explain exactly why an opaque pointer can be reconstructed only once.
 
 Then perform this destructive regression check: exercise open, accessor, callback early stop, and free; then document why a second free or callback-retained view is outside the safe contract even if one test run appears harmless. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations?
+
+Build a **foreign liveness graph**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Separate raw bindings, checked unsafe shims, and safe domain wrappers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Represent owned and borrowed foreign handles as different Rust types.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Pair acquisition with exactly one release and define destructor failure policy.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design context-pointer callbacks with explicit lifetime, reentrancy, and retention rules.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Use `OwnedFd`/`BorrowedFd` or owned/borrowed handles where platform APIs expose them.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Separate raw bindings, checked unsafe shims, and safe domain wrappers.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the foreign liveness graph.
+
+### Reference implementation comparison
+
+For [Opaque Foreign Session](../../labs/module-09-opaque-foreign-session/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 59 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Foreign Resources, Callbacks, and Wrapper Architecture**, which relationship decides this question: “How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

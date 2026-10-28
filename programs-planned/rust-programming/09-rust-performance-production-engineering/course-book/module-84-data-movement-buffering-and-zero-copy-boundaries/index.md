@@ -1,8 +1,11 @@
 # Module 84 — Data Movement, Buffering, and Zero-Copy Boundaries
 
-**84/90** · Course 9 · Module 84 of 90
+**Course 9 · Day 4 · Module 84 of 100**
+`█████████████████████░░░░` **84/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-borrowed-record-window/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 83: Allocation, Memory Footprint, and Ownership Cost](../module-83-allocation-memory-footprint-and-ownership-cost/index.md) · [Module 85: Runtime Efficiency: Contention, Queueing, Batching, and Async Load →](../module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 Module 83 established that ownership and lifetime determine memory cost. Module 84 follows the bytes as they cross buffers and APIs. “Zero copy” is frequently used without a boundary: it may mean no copy after a frame is in userspace, no copy while parsing, or no copy between application components. Those are different claims with different evidence.
 
 The mature objective is not to minimize copy count unconditionally. It is to choose where ownership changes, how long backing storage remains live, and whether a copy reduces coupling, retention, fragmentation, or synchronization enough to be worthwhile.
+
+### Prerequisite bridge
+
+Module 83 established **Allocation, Memory Footprint, and Ownership Cost**. Before continuing, verify that you can set and verify a memory budget that includes steady state, burst behavior, and cleanup. This module preserves that capability and adds the ability to trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers. Module 85, **Runtime Efficiency: Contention, Queueing, Batching, and Async Load**, will rely on both when it asks: *When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?*
+
+### Scope boundary
+
+This module owns the reasoning for **data movement, buffering, and zero-copy boundaries** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -110,6 +121,24 @@ Vectored I/O still permits partial progress and platform limits. The write loop 
 
 Moving an owner is usually handle movement, while shared ownership can be cheap immediately but expensive in retention. Keep both ledgers separate.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers, construct one positive and one causal negative example. Mark the first decisive fact in the **byte journey** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish copying bytes from moving ownership of a buffer handle, construct one positive and one causal negative example. Mark the first decisive fact in the **byte journey** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use slices, `bytes::Bytes`, and split/freeze operations while explaining their retention semantics, construct one positive and one causal negative example. Mark the first decisive fact in the **byte journey** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For choose vectored I/O, scatter/gather, or coalescing from message shape and system-call cost, construct one positive and one causal negative example. Mark the first decisive fact in the **byte journey** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -150,7 +179,7 @@ Suppose snapshot output is represented as a header slice, one slice per row, and
 
 That state machine also affects lifetimes. Every referenced row must remain alive until the final byte is accepted or the operation fails. If the store remains borrowed during the complete network write, a slow client can block updates or retain a large snapshot. Cloning rows before writing releases the store but increases peak memory. Formatting into one bounded buffer makes failure and ownership simple at the cost of a copy.
 
-MetricRail chooses the bounded buffer for the teaching product because the snapshot limit is explicit and the response can be validated before transmission. A vectored or streaming design is a valid later experiment, but its comparison must include partial-write correctness, store-borrow duration, slow-client behavior, and peak retained memory—not only the number of application copies.
+MetricRail chooses the bounded buffer for the course material because the snapshot limit is explicit and the response can be validated before transmission. A vectored or streaming design is a valid later experiment, but its comparison must include partial-write correctness, store-borrow duration, slow-client behavior, and peak retained memory—not only the number of application copies.
 
 ## Practice sequence
 
@@ -184,7 +213,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 84 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Borrowed Record Window laboratory](../../labs/module-04-borrowed-record-window/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 85 — Runtime Efficiency: Contention, Queueing, Batching, and Async Load](../module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

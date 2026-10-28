@@ -1,8 +1,17 @@
-# Module 84 Workbook — Data Movement, Buffering, and Zero-Copy Boundaries
+# Workbook — Module 84: Data Movement, Buffering, and Zero-Copy Boundaries
 
-[Chapter](index.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-04-borrowed-record-window/README.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
 
-A “zero-copy” claim is meaningless until its endpoints are named. This workbook makes you trace bytes from producer to final owner and distinguish payload copies from moves, shared views, metadata copies, kernel transitions, and lifetime retention.
+This workbook tests whether **Data Movement, Buffering, and Zero-Copy Boundaries** has become a usable model rather than remembered vocabulary. Its governing question is: *Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?* Preserve your first prediction and record decisive facts in a **byte journey**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 83 — Allocation, Memory Footprint, and Ownership Cost that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?**
+3. Draw the smallest **byte journey** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -84,15 +93,42 @@ Write pseudocode for completing a vectored write after arbitrary short writes. I
 
 Write one honest zero-copy claim for an in-memory parser and one claim you must refuse for an end-to-end network-to-disk path.
 
+### Interleaved reasoning pass
+
+1. For **Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the byte journey.
+2. For **Distinguish copying bytes from moving ownership of a buffer handle**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the byte journey.
+3. For **Use slices, `bytes::Bytes`, and split/freeze operations while explaining their retention semantics**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the byte journey.
+4. For **Choose vectored I/O, scatter/gather, or coalescing from message shape and system-call cost**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the byte journey.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Data Movement, Buffering, and Zero-Copy Boundaries** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build the [Borrowed Record Window](../../labs/module-04-borrowed-record-window/README.md). The window owns `Bytes`; parsed records borrow from it; selected records can be promoted into compact owned values. Enforce line bounds before parsing, preserve record order, and prove that borrowed records cannot outlive the window. Add a test showing that promotion does not retain the original backing storage.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Borrowed Record Window**, record:
+
+- the public behavior that demonstrates **Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
 Replace line-level `String` ownership with a bounded bytes-first ingestion path. Parsing should borrow transiently. The broker should receive only the compact state required for aggregation. Existing hot series should avoid new identifier allocations. Snapshot rendering should preflight output bounds and choose between direct buffered writing and bounded coalescing from evidence, not style preference.
 
 Document the byte journey and mark every intentional copy. A copy with a clear ownership purpose is not a defect.
+
+### Capstone invariant trace
+
+For the Module 84 MetricRail increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -113,3 +149,6 @@ Trace one input record from the operating-system read buffer through line framin
 
 Do not label an implementation “zero copy” unless you name the exact interval over which bytes are not copied. The review must include fragmentation, buffer compaction, retained backing storage, and worst-case frame size. A borrowed slice that pins a megabyte buffer to preserve a ten-byte field may reduce copying while increasing memory pressure; the complete cost model decides whether the change is an improvement.
 
+### Closed-book defense
+
+In five minutes, answer “Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?” using the **byte journey**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside MetricRail. A list of APIs without the deciding relationship is incomplete.

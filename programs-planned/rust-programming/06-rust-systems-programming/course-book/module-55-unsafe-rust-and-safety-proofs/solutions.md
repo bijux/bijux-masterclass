@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 55: Unsafe Rust as a Proof Boundary
+# Reasoned Solutions — Module 55: Unsafe Rust as a Proof Boundary
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-05-unsafe-slice-kernel/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 55: Unsafe Rust as a Proof Boundary**. Compare the reasoning against this question: *What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -121,3 +119,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can write a line-by-line safety argument, decide whether the caller or implementation owns each proof, and reject an unsafe abstraction whose private invariant, panic path, or destructor has not been analyzed.
 
 Then perform this destructive regression check: delete one precondition check while keeping the unsafe operation and show that the safety ledger, not just a happy-path test, identifies the missing proof. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable?
+
+Build a **unsafe obligation ledger**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Name the operations Rust requires an unsafe context to perform.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish compiler permission from semantic safety and undefined behavior.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Write safety preconditions, internal invariants, and postconditions before an unsafe block.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Keep unsafe operations inside narrow private modules with safe public APIs.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Use `unsafe fn`, unsafe traits, and unsafe attributes only when their contracts require caller or implementor proof.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Name the operations Rust requires an unsafe context to perform.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the unsafe obligation ledger.
+
+### Reference implementation comparison
+
+For [Unsafe Slice Kernel](../../labs/module-05-unsafe-slice-kernel/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 55 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Unsafe Rust as a Proof Boundary**, which relationship decides this question: “What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

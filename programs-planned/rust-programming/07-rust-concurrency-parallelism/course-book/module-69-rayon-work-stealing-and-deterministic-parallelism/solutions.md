@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 69: Rayon, Work Stealing, and Deterministic Parallelism
+# Reasoned Solutions — Module 69: Rayon, Work Stealing, and Deterministic Parallelism
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the BatchWeave guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-parallel-histogram/README.md) · [BatchWeave guide](../capstone.md)
 
-Rayon removes scheduler plumbing, not semantic proof. Strong solutions preserve item identity, use owned local accumulators, state reduction laws, isolate effects, and make pool and cutoff policy explicit. “It uses all cores” is not a correctness or performance argument.
-
-The answers below are reasoning models, not scripts to imitate. A different implementation can be stronger when it proves the same contract more directly. Compare ownership, synchronization, progress, failure, and determinism—not only surface syntax.
+Use these notes only after preserving your prediction and repair for **Module 69: Rayon, Work Stealing, and Deterministic Parallelism**. Compare the reasoning against this question: *How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -79,3 +77,42 @@ The Rayon stage begins after BatchWeave has one immutable terminal outcome per j
 The defense should explain work stealing, indexed order, closure bounds, reduction laws, fallible selection, and granularity. It should clearly state which stage remains manual because its lifecycle and backpressure cannot be represented as a pure collection reduction.
 
 A strong defense states what is guaranteed for every allowed schedule, what is merely likely on one machine, and what the design intentionally leaves unspecified.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?
+
+Build a **work-partition and reduction map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish task parallelism, data parallelism, and a long-lived message-driven worker service.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Explain work stealing without relying on worker identity or execution order.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Derive closure `Send` and captured-state `Sync` requirements from parallel execution.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Track item ownership and ordering through indexed parallel iterators.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **State identity and associativity laws for `fold`, `reduce`, and grouped aggregation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish task parallelism, data parallelism, and a long-lived message-driven worker service.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the work-partition and reduction map.
+
+### Reference implementation comparison
+
+For [Parallel Histogram](../../labs/module-09-parallel-histogram/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In BatchWeave, Module 69 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Rayon, Work Stealing, and Deterministic Parallelism**, which relationship decides this question: “How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to BatchWeave?

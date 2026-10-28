@@ -1,6 +1,8 @@
-# Module 88 Solutions — Security and Supply-Chain Engineering
+# Reasoned Solutions — Module 88: Security and Supply-Chain Engineering
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-08-attack-surface-and-supply-chain-audit/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 88: Security and Supply-Chain Engineering**. Compare the reasoning against this question: *Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Threat reasoning
 
@@ -75,3 +77,42 @@ The threat model should state whether MetricRail is single-tenant or where autho
 ## Part 6 — Defense
 
 Memory safety does not provide authorization, availability, confidentiality policy, dependency trust, or correct business identity. Validation checks form; authentication checks identity; authorization checks permission. Bounds precede resource commitment. Signals can leak or amplify data. Build scripts execute with build privileges. Direct pins do not describe the full graph or features. Prevention lowers likelihood, detection shortens discovery, and recovery limits duration. Residual risk should be documented when the system cannot fully control an upstream/kernel/network boundary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions?
+
+Build a **threat and dependency dossier**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Connect validation, authentication, authorization, confidentiality, integrity, and availability to specific boundaries.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Enforce size, time, concurrency, recursion, and decompression limits before expensive work.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design secret handling and diagnostic redaction as lifecycle contracts.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Audit direct and transitive dependencies, features, build scripts, licenses, advisories, and provenance.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the threat and dependency dossier.
+
+### Reference implementation comparison
+
+For [Attack Surface and Supply-Chain Audit](../../labs/module-08-attack-surface-and-supply-chain-audit/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 88 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Security and Supply-Chain Engineering**, which relationship decides this question: “Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

@@ -1,8 +1,17 @@
 # Workbook — Module 70: Integrated Concurrent Architecture, Testing, and Audit
 
-[Return to the chapter](index.md) · [Open the BatchWeave engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-10-concurrent-verifier/README.md) · [BatchWeave guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether the chapter has become an operational model. Freeze predictions, protocol diagrams, and invariants before compiling. Concurrency is unusually forgiving of explanations written after observing one successful run; that is exactly why the reasoning record must come first.
+This workbook tests whether **Integrated Concurrent Architecture, Testing, and Audit** has become a usable model rather than remembered vocabulary. Its governing question is: *How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?* Preserve your first prediction and record decisive facts in a **concurrent architecture dossier**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 69 — Rayon, Work Stealing, and Deterministic Parallelism that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?**
+3. Draw the smallest **concurrent architecture dossier** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -105,6 +114,17 @@ Impact-analyze a retry feature.
 
 Required evidence: Separate job identity from attempt identity, bound attempts, update cancellation, metrics, output, and final invariant.
 
+### Interleaved reasoning pass
+
+1. For **Construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and CLI boundaries**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the concurrent architecture dossier.
+2. For **Maintain ownership, synchronization, liveness, failure, determinism, and resource ledgers together**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the concurrent architecture dossier.
+3. For **Prove boundedness for jobs, payloads, queue slots, workers, result messages, report threads, and output storage**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the concurrent architecture dossier.
+4. For **Derive exactly one terminal outcome per manifest job under success, domain failure, panic, cancellation, and submission interruption**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the concurrent architecture dossier.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Integrated Concurrent Architecture, Testing, and Audit** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Concurrent Verifier](../../labs/module-10-concurrent-verifier/README.md) from the starter. Before opening the solution, produce:
@@ -116,6 +136,18 @@ Build [Concurrent Verifier](../../labs/module-10-concurrent-verifier/README.md) 
 - deterministic report equality across worker counts and schedules;
 
 Your submission must also identify one schedule that the implementation handles correctly and one product claim it deliberately does not make.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Concurrent Verifier**, record:
+
+- the public behavior that demonstrates **Construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and CLI boundaries**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -131,6 +163,10 @@ Required capstone evidence:
 
 Add at least one regression test that fails if this module's governing contract is removed. Tests that merely sleep and hope for a schedule do not count as causal evidence.
 
+### Capstone invariant trace
+
+For the Module 70 BatchWeave increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Answer without the chapter:
@@ -144,3 +180,7 @@ Answer without the chapter:
 ### Independent transfer
 
 Add bounded retries for domain failures to BatchWeave. Each job may have at most three attempts with deterministic attempt numbering. Update the manifest model if policy is configurable, queue capacity reasoning, cancellation checkpoints, result messages, live metrics, final outcome model, report ordering, and tests. Preserve exactly one final job outcome while retaining a complete attempt history. Defend why retries do not duplicate irreversible effects.
+
+### Closed-book defense
+
+In five minutes, answer “How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?” using the **concurrent architecture dossier**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside BatchWeave. A list of APIs without the deciding relationship is incomplete.

@@ -1,30 +1,11 @@
-# Compiler investigation — Module 50: Build Scripts and Compile-Time Architecture
+# Module 50 Investigations — Build Scripts, Generated Code, and Compile-Time Architecture
 
-[Compiler-investigation method](../README.md) · [Module chapter](../../course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md)
+[Chapter](../../course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md) · [Workbook](../../course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/workbook.md) · [Course investigation method](../README.md)
 
-This set tests whether the model from Module 50 survives contact with small, adversarial programs. Predict each specimen without opening the machine-readable manifest or the module solutions.
+> **Prediction question:** How do you integrate macros and build generation into a deterministic architecture with one source of truth and no overlapping authority?
 
-| Specimen | Question to resolve before compiling |
-|---|---|
-| [`case-01/`](case-01) | Which compile-time or runtime rule decides the behavior of **a build script may generate Rust under OUT_DIR**, and what evidence would distinguish the closest competing explanation? |
-| [`case-02/`](case-02) | Which compile-time or runtime rule decides the behavior of **build input validation may stop compilation before crate compilation**, and what evidence would distinguish the closest competing explanation? |
-| [`case-03/`](case-03) | Which compile-time or runtime rule decides the behavior of **rerun-if-changed can declare the precise external input**, and what evidence would distinguish the closest competing explanation? |
-| [`case-04/`](case-04) | Which compile-time or runtime rule decides the behavior of **include paths must name a file actually generated in OUT_DIR**, and what evidence would distinguish the closest competing explanation? |
-| [`case-05/`](case-05) | Which compile-time or runtime rule decides the behavior of **generated output can preserve deterministic sorted order**, and what evidence would distinguish the closest competing explanation? |
-| [`case-06/`](case-06) | Which compile-time or runtime rule decides the behavior of **build scripts should reject malformed checked input**, and what evidence would distinguish the closest competing explanation? |
-| [`case-07/`](case-07) | Which compile-time or runtime rule decides the behavior of **build scripts may expose compile-time constants through included Rust**, and what evidence would distinguish the closest competing explanation? |
-| [`case-08/`](case-08) | Which compile-time or runtime rule decides the behavior of **a build script process failure prevents package compilation**, and what evidence would distinguish the closest competing explanation? |
+Before invoking a compiler or runner, draw a **generation authority and reproducibility record** and classify the expected result. The prediction must identify the earliest decisive phase or event and show why the result follows from **Explain the Cargo build-script lifecycle and communication protocol**. Diagnostic wording may vary; the causal relationship may not.
 
-## Work through the set
+After observing Module 50 — Build Scripts, Generated Code, and Compile-Time Architecture, preserve two repairs. The first is the smallest change that keeps the product requirement. The second is a tempting change that compiles, runs, or quiets the tool by erasing information, weakening a bound, changing ownership, hiding a failure, or narrowing the public contract. Explain precisely why the second repair is unacceptable here.
 
-For each file, draw or write the smallest model that can decide it: types and expression results, owners and loans, trait obligations, iterator state, macro phase, raw-memory obligations, or operating-system boundary state. Then classify the outcome and name the first causal rule.
-
-Compile only after the prediction is complete. A correct pass/fail guess with the wrong cause is not a successful investigation. When several errors appear, identify which one would remain after secondary errors were removed.
-
-## Repair and transfer
-
-Repair one rejecting or behaviorally defective specimen without deleting the requirement it was designed to express. Preserve the original product need while changing only the mechanism that violated it.
-
-Next, alter one assumption—ownership mode, lifetime source, trait bound, adapter order, macro input, or boundary condition. Predict the result before compiling.
-
-Finish by stating how the same rule constrains the module laboratory or cumulative capstone. This connects an isolated diagnostic to a real design decision.
+Finish by creating a new specimen that changes one relationship while keeping every incidental detail stable. Predict whether that variation changes parsing, name resolution, type checking, trait solving, borrow checking, build execution, runtime behavior, schedule behavior, or only architectural quality.

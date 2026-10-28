@@ -2,6 +2,59 @@
 
 The capstone supports the course-book. It exists to force cross-layer transfer after each mechanism has been understood in isolation.
 
+## How this capstone completes the course
+
+Review Engine evaluates submissions against ordered policies. Generic source and reporting ports, a heterogeneous rule registry, coherence-safe adapters, typestate construction, and deterministic results make the choice of variation mechanism visible.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; Review Engine proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | Every trait states a behavioral contract and its unencoded laws have contract tests. |
+| 2 | Generic source and reporter boundaries preserve precise associated type families. |
+| 3 | Dynamic rule order is runtime data and remains deterministic after type erasure. |
+| 4 | Coherence-safe adapters own their local implementation rights explicitly. |
+| 5 | Typestate removes incomplete engine construction from the callable API. |
+| 6 | Public evolution accounts separately for downstream callers and implementors. |
+
+For each Review Engine change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 21 | Traits as Behavioral Contracts | Define a trait whose methods express a coherent behavioral contract | [Contract Boundaries](../labs/module-01-contract-boundaries/README.md) |
+| 22 | Associated Types and Type Families | Choose between generic parameters and associated types from relationship cardinality | [Associated Families](../labs/module-02-associated-families/README.md) |
+| 23 | Coherence and Implementation Ownership | Predict whether an implementation satisfies coherence and orphan rules | [Coherence Adapters](../labs/module-03-coherence-adapters/README.md) |
+| 24 | Static Polymorphism and Opaque Types | Design generic functions and types with the weakest sufficient bounds | [Static Pipeline](../labs/module-04-static-pipeline/README.md) |
+| 25 | Trait Objects and Dynamic Polymorphism | Derive whether a trait is dyn-compatible and repair it without erasing its meaning | [Dynamic Command Bus](../labs/module-05-dynamic-command-bus/README.md) |
+| 26 | Composition and OOP-Style Design Without Inheritance | Model encapsulation, substitution, and delegation without class inheritance | [Composed Renderer](../labs/module-06-composed-renderer/README.md) |
+| 27 | Typestate and Capability-Oriented APIs | Encode a finite protocol with marker states and consuming transitions | [Typestate Publication](../labs/module-07-typestate-publication/README.md) |
+| 28 | Boundary Traits and Adapters | Design extension traits, closure adapters, and conversion boundaries with precise contracts | [Boundary Ports](../labs/module-08-boundary-ports/README.md) |
+| 29 | Public API Evolution | Classify public trait changes by downstream source-compatibility risk | [Evolvable SDK](../labs/module-09-evolvable-sdk/README.md) |
+| 30 | Architectural Synthesis | Map axes of variation before selecting polymorphism mechanisms | [Inspection Platform](../labs/module-10-inspection-platform/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **architecture decision record** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. Review Engine ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## Product
 
 **Review Engine** is a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction.

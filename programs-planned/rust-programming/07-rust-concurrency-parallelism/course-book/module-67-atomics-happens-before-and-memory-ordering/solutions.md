@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 67: Atomics, Happens-Before, and Memory Ordering
+# Reasoned Solutions — Module 67: Atomics, Happens-Before, and Memory Ordering
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the BatchWeave guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-07-atomic-progress/README.md) · [BatchWeave guide](../capstone.md)
 
-Atomic orderings are conclusions of a visibility proof. Strong answers name the ordinary data being published, the exact atomic value observed, and the transitive happens-before path. Counters that publish nothing should not inherit stronger ordering by superstition.
-
-The answers below are reasoning models, not scripts to imitate. A different implementation can be stronger when it proves the same contract more directly. Compare ownership, synchronization, progress, failure, and determinism—not only surface syntax.
+Use these notes only after preserving your prediction and repair for **Module 67: Atomics, Happens-Before, and Memory Ordering**. Compare the reasoning against this question: *Which fact does an atomic operation publish, which earlier writes become visible because of it, and what is the weakest ordering that proves the required relationship?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -79,3 +77,42 @@ BatchWeave’s final report must ignore live metric races and count the authorit
 A complete defense identifies atomicity, publication, and product invariants separately. It can draw the release/acquire edge, state CAS linearization and failure ordering, and explain why relaxed telemetry is honest. It also names ABA and overflow assumptions rather than relying on practical improbability.
 
 A strong defense states what is guaranteed for every allowed schedule, what is merely likely on one machine, and what the design intentionally leaves unspecified.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which fact does an atomic operation publish, which earlier writes become visible because of it, and what is the weakest ordering that proves the required relationship?
+
+Build a **happens-before graph**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Separate atomicity of one location from visibility of other memory.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Reason with sequenced-before, synchronizes-with, and happens-before relations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use relaxed atomics for independent counters whose exact snapshots are advisory.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Derive release/acquire publication when one atomic state makes ordinary writes visible.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Select valid success and failure orderings for compare-exchange loops.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Separate atomicity of one location from visibility of other memory.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the happens-before graph.
+
+### Reference implementation comparison
+
+For [Atomic Progress](../../labs/module-07-atomic-progress/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In BatchWeave, Module 67 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Atomics, Happens-Before, and Memory Ordering**, which relationship decides this question: “Which fact does an atomic operation publish, which earlier writes become visible because of it, and what is the weakest ordering that proves the required relationship?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to BatchWeave?

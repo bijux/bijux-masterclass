@@ -1,9 +1,11 @@
-# 33 — Iterator Algebra and Pipeline Shape
+# Module 33 — Iterator Algebra and Pipeline Shape
 
-**Course 4, day 3 · Module 33 of 90**  
-`███████████░░░░░░░░░` **33/90**
+**Course 4 · Day 3 · Module 33 of 100**
+`████████░░░░░░░░░░░░░░░░░` **33/100**
 
-[← Module 32: The Iterator Model](../module-32-the-iterator-model/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 34: Folds, Scans, and Short-Circuiting →](../module-34-folds-scans-and-short-circuiting/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-record-shaping-pipeline/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 32: The Iterator Model](../module-32-the-iterator-model/index.md) · [Module 34: Folds, Scans, and Short-Circuiting →](../module-34-folds-scans-and-short-circuiting/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Once the pull model is clear, adapters can be composed without treating a chain as decorative syntax. You track item type, cardinality, ordering, borrowing, allocation, and stopping behavior stage by stage. Pipeline readability is judged by whether those changes remain visible.
+
+### Prerequisite bridge
+
+Module 32 established **The Iterator Model**. Before continuing, verify that you can treat `size_hint`, `exactsizeiterator`, and `fusediterator` as contracts rather than optimization decoration. This module preserves that capability and adds the ability to derive the item type and cardinality effect of common iterator adapters. Module 34, **Folds, Scans, and Short-Circuiting**, will rely on both when it asks: *What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?*
+
+### Scope boundary
+
+This module owns the reasoning for **iterator algebra and pipeline shape** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -90,7 +100,7 @@ But if rejection reasons matter, return a result or a richer enum.
 
 The source may still be pulled multiple times before the outer iterator yields because filtered items are consumed and discarded.
 
-### Decision rule
+### Decision rule — Algebra table
 
 Choose from the product meaning: transform every item, select original items, or perform an explicitly optional transformation. Never use `filter_map(Result::ok)` as a generic way to make errors disappear.
 
@@ -148,7 +158,7 @@ Returning references into a temporary inner value does not work because the owne
 
 Use whichever communicates the domain. `flat_map` emphasizes one-to-many transformation. Separate `map` and `flatten` can expose an important intermediate nested structure for debugging or reuse.
 
-### Decision rule
+### Decision rule — map(...).flatten()` or `flat_map(...)
 
 Use flattening only when removing one level of iterable structure is the intended semantic operation. Audit whether `Option` or `Result` information is being discarded and state the zero-to-many growth explicitly.
 
@@ -210,7 +220,7 @@ This traverses once but materializes two targets. Keep pairs together when posit
 
 `zip` pairs by position, not by key. A relational join requires a key-indexing or merge algorithm and explicit duplicate policy. Calling `zip` a join hides incorrect semantics.
 
-### Decision rule
+### Decision rule — Pairing is not joining
 
 Use `chain` for ordered concatenation, `zip` for positional pairing under an explicit truncation or equal-length policy, and `enumerate` at the stage whose positions you intend to expose.
 
@@ -266,7 +276,7 @@ Test:
 - boundary in the middle;
 - behavior of the underlying iterator after partial consumption.
 
-### Decision rule
+### Decision rule — Boundary tests
 
 Use prefix and suffix adapters only when the data has ordered boundary semantics. Account for whether the boundary item is consumed, discarded, yielded, or converted into `None`.
 
@@ -324,7 +334,7 @@ Even diagnostic output can affect timing, ordering with other streams, or tests.
 
 For stable instrumentation, a narrow observer callback may be clearer than scattered `inspect` calls, especially if the product explicitly documents best-effort event observation. Its call-count and failure policy must still be specified.
 
-### Decision rule
+### Decision rule — Named instrumentation boundary
 
 Use `inspect` only when deleting it preserves product semantics. If the effect must happen, move it into the effect flow and return or handle failure explicitly.
 
@@ -385,7 +395,7 @@ Bounds support reasoning about termination and collection capacity, but not exac
 
 Switching from `iter` to `into_iter` changes item ownership and may make returned references impossible or cloning unnecessary. A stage table that omits ownership is incomplete Rust reasoning.
 
-### Decision rule
+### Decision rule — Ownership flow is part of type algebra
 
 For nontrivial pipelines, derive five properties per stage: item type, cardinality, order, ownership, and stopping. Add failure and effects when present. Only then compress into fluent syntax.
 
@@ -450,7 +460,7 @@ A reusable helper that makes its own body elegant may produce lifetimes or opaqu
 
 Some teams limit chain length; others prefer one operation per line. Mechanical limits cannot replace semantic review. A seven-stage chain of uniform transformations may be clearer than a three-stage chain containing nested error and effect logic.
 
-### Decision rule
+### Decision rule — The three-line rule is not a law
 
 Name stable domain operations, accumulators, and phase boundaries. Keep adapter chains linear in meaning. When a reader must mentally execute branches, mutations, and failure recovery inside closures, expand the code.
 
@@ -485,6 +495,24 @@ Moving `enumerate` after `filter_map` renumbers present payloads and loses origi
 
 `flat_map(|text| text.parse::<u64>())` uses `Result` as zero-or-one iteration and discards errors. It is rejected for imports.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For derive the item type and cardinality effect of common iterator adapters, construct one positive and one causal negative example. Mark the first decisive fact in the **pipeline shape table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For choose correctly among `filter`, `map`, `filter_map`, `flatten`, and `flat_map`, construct one positive and one causal negative example. Mark the first decisive fact in the **pipeline shape table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For reason about order and truncation in `chain`, `zip`, `take`, and stopping adapters, construct one positive and one causal negative example. Mark the first decisive fact in the **pipeline shape table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use `inspect` for observation without embedding required effects into a transformation, construct one positive and one causal negative example. Mark the first decisive fact in the **pipeline shape table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **LedgerFlow**, a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports. Build the ordered event-shaping pipeline and document each stage's item type, cardinality, order, borrowing, and allocation behavior. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -514,11 +542,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator adapters](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [std::iter](https://doc.rust-lang.org/std/iter/)
 
-[← Module 32](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 34 →](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md)
+[← Module 32](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 34 →](../../../04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md)
 
 ## Continue
 
-1. Complete the [Module 33 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 33 — Record-Shaping Pipeline](../../labs/module-03-record-shaping-pipeline/README.md) from its public contract.
-3. Apply the Module 33 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 34 — Folds, Scans, and Short-Circuiting](../module-34-folds-scans-and-short-circuiting/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,8 +1,11 @@
 # Module 100 — Architectural Synthesis: Building and Defending a Long-Lived Rust System
 
-**100/100** · Course 10 · Module 100 of 100
+**Course 10 · Day 10 · Module 100 of 100**
+`█████████████████████████` **100/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-architecture-council/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 99: Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship](../module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ The final module introduces no mechanism merely for novelty. It asks you to choo
 Modules 91–99 added no independent destination; they prepared one architecture council. The final module asks you to retain only the mechanisms that own real invariants and to defend their combined cost.
 
 The final module is not a parade of advanced features. It is a selection exercise. AxiomStore must remain understandable after GATs, const bounds, erasure, unsafe storage, format evolution, and verification are combined. The architecture is mature only when every mechanism owns one requirement, every claim has evidence, and several sophisticated alternatives are deliberately rejected.
+
+### Prerequisite bridge
+
+Module 99 established **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship**. Before beginning the final module, verify that you can govern a multi-crate workspace through dependency direction, shared policy, release order, and compatibility evidence. This module preserves that capability and adds the ability to construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy; the final architecture defense must demonstrate both under an unseen change.
+
+### Scope boundary
+
+This module owns the reasoning for **architectural synthesis: building and defending a long-lived rust system** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -144,6 +155,24 @@ No compiler, test suite, model, or review can decide the product’s values for 
 
 The final standard is not complexity. It is **defensible restraint**: a reader can locate each rule, predict each failure, understand each unsafe assumption, migrate old data, and change one version without rediscovering hidden authority.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy, construct one positive and one causal negative example. Mark the first decisive fact in the **architecture defense record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For choose static, dynamic, enum, const-generic, borrowing, owned, generated, concurrent, async, and unsafe mechanisms only where their proof benefit exceeds complexity, construct one positive and one causal negative example. Mark the first decisive fact in the **architecture defense record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For review dependency direction, public surface, failure taxonomy, resource bounds, and deterministic behavior as one architecture, construct one positive and one causal negative example. Mark the first decisive fact in the **architecture defense record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For perform a threat, compatibility, verification, and production-readiness review without confusing those evidence categories, construct one positive and one causal negative example. Mark the first decisive fact in the **architecture defense record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Use the decision-record example as a miniature architecture council. A decision is incomplete until it names the requirement, chosen mechanism, rejected alternative, proof owner, compatibility effect, and residual risk. Apply the same standard to every AxiomStore mechanism.
@@ -227,7 +256,4 @@ The final references are intentionally distributed across the Reference, Cargo d
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Architecture Council](../../labs/module-10-architecture-council/README.md).
-3. Apply Module 100 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Finish the Course 10 final review and the independent AXIOM02 change. The program is complete only when another competent Rust reader can reproduce your invariant map, compatibility decision, unsafe argument, verification limits, and migration reasoning without seeing your implementation first.

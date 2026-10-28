@@ -1,9 +1,11 @@
-# 14 — RAII, Drop, Unwinding, and Failure Atomicity
+# Module 14 — RAII, Drop, Unwinding, and Failure Atomicity
 
-**Course 2, day 4 · Module 14 of 90**  
-`█████░░░░░░░░░░░░░░░` **14/90**
+**Course 2 · Day 4 · Module 14 of 100**
+`████░░░░░░░░░░░░░░░░░░░░░` **14/100**
 
-[← Module 13: Scoped Access and Escape Prevention](../module-13-scoped-access-and-escape-prevention/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 15: Box, Deref, Dynamically Sized Types, and Cow →](../module-15-box-deref-dynamically-sized-types-and-cow/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-resource-pool/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 13: Scoped Access and Escape Prevention](../module-13-scoped-access-and-escape-prevention/index.md) · [Module 15: Box, Deref, Dynamically Sized Types, and Cow →](../module-15-box-deref-dynamically-sized-types-and-cow/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Borrowing governs access while values live; RAII governs what happens when ownership ends. This module connects destruction order, guards, explicit commit, unwind behavior, and failure atomicity. It is the point where ownership becomes a protocol for reliable cleanup rather than only a restriction on aliasing.
+
+### Prerequisite bridge
+
+Module 13 established **Scoped Access and Escape Prevention**. Before continuing, verify that you can recognize self-reference pressure and choose indices, owned state, callbacks, or later pinning only when justified. This module preserves that capability and adds the ability to derive local, field, tuple, temporary, and scope destruction order from documented rules. Module 15, **Box, Deref, Dynamically Sized Types, and Cow**, will rely on both when it asks: *When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?*
+
+### Scope boundary
+
+This module owns the reasoning for **raii, drop, unwinding, and failure atomicity** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -657,6 +667,24 @@ Do not assert unspecified order among hash-map entries. Test semantic restored v
 
 For purely in-memory configuration, the strongest API may avoid mutation entirely: clone a small configuration, apply overrides to the clone, and pass `&Config` to the operation. This is semantic duplication because two configurations coexist. RAII is useful when a shared resource truly must be restored, not when immutable value passing solves the domain.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For derive local, field, tuple, temporary, and scope destruction order from documented rules, construct one positive and one causal negative example. Mark the first decisive fact in the **destruction trace** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For design RAII guards whose ownership encodes exactly one cleanup or release obligation, construct one positive and one causal negative example. Mark the first decisive fact in the **destruction trace** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use Option::take, mem::replace, staged candidates, and consuming transitions while preserving valid states, construct one positive and one causal negative example. Mark the first decisive fact in the **destruction trace** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For distinguish no-throw, basic, and strong in-memory failure guarantees from crash durability, construct one positive and one causal negative example. Mark the first decisive fact in the **destruction trace** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Add staged edit sessions whose owned candidate state can be committed or abandoned. A failed commit must preserve the documented state without relying on fallible destructors. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -687,11 +715,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [std::mem](https://doc.rust-lang.org/std/mem/)
 - [std::panic](https://doc.rust-lang.org/std/panic/)
 
-[← Module 13](../../../02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 15 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md)
+[← Module 13](../../../02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 15 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md)
 
 ## Continue
 
-1. Complete the [Module 14 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 14 — RAII Resource Pool](../../labs/module-04-resource-pool/README.md) from its public contract.
-3. Apply the Module 14 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 15 — Box, Deref, Dynamically Sized Types, and Cow](../module-15-box-deref-dynamically-sized-types-and-cow/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

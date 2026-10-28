@@ -1,8 +1,11 @@
-# Module 74: TCP, UDP, DNS, and Connection Lifecycles
+# Module 74 — TCP, UDP, DNS, and Connection Lifecycles
 
-**Course 8, day 4 · Module 74 of 90**
+**Course 8 · Day 4 · Module 74 of 100**
+`██████████████████░░░░░░░` **74/100**
 
-**74/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-deadline-echo-service/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 73: Async I/O, Buffers, Streams, and Framing](../module-73-async-io-buffers-streams-and-framing/index.md) · [Module 75: Protocol State Machines, Versioning, and Defensive Parsing →](../module-75-protocol-state-machines-versioning-and-defensive-parsing/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 Module 73 established that a byte stream does not contain application messages until a codec frames it. The next step is to own the transport itself. A listener can accept faster than the service can process. DNS can delay before a socket exists. TCP can close one direction while the other remains usable. A write can succeed locally while the peer later rejects the data. UDP preserves datagram boundaries but does not guarantee delivery, order, uniqueness, or connection state.
 
 Network APIs are easy to call and easy to overinterpret. “Connected” does not mean authenticated. “Write completed” does not mean the peer committed the request. “Peer address” does not mean durable identity. “Timeout” does not undo transport or application effects. This module gives each transport event a precise place in the lifecycle.
+
+### Prerequisite bridge
+
+Module 73 established **Async I/O, Buffers, Streams, and Framing**. Before continuing, verify that you can analyze cancellation during read and write operations. This module preserves that capability and adds the ability to distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close;. Module 75, **Protocol State Machines, Versioning, and Defensive Parsing**, will rely on both when it asks: *Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope?*
+
+### Scope boundary
+
+This module owns the reasoning for **tcp, udp, dns, and connection lifecycles** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -163,6 +174,24 @@ For every connection state, record:
 
 A connection is not finished merely because its read loop returns. Writer ownership, child tasks, broker waiters, and permit release must also terminate.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close, construct one positive and one causal negative example. Mark the first decisive fact in the **connection lifecycle map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For acquire connection admission before spawning unbounded tasks, construct one positive and one causal negative example. Mark the first decisive fact in the **connection lifecycle map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For explain the limits of socket backlog as application backpressure, construct one positive and one causal negative example. Mark the first decisive fact in the **connection lifecycle map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For model DNS resolution and multi-address connection attempts under one deadline, construct one positive and one causal negative example. Mark the first decisive fact in the **connection lifecycle map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 A bounded echo service illustrates admission, task ownership, and deadlines. It is not a production protocol, but its lifecycle is explicit.
@@ -286,4 +315,4 @@ Continue only when you can explain:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Deadline Echo Service](../../labs/module-04-deadline-echo-service/README.md), and add the fourth [JobWire increment](../capstone.md#increment-4-own-the-connection-lifecycle). Then continue to [Module 75](../module-75-protocol-state-machines-versioning-and-defensive-parsing/index.md).
+Continue to [Module 75 — Protocol State Machines, Versioning, and Defensive Parsing](../module-75-protocol-state-machines-versioning-and-defensive-parsing/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

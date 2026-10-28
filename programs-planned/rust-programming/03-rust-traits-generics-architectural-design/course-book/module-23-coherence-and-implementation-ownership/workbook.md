@@ -1,8 +1,17 @@
 # Workbook — Module 23: Coherence and Implementation Ownership
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-03-coherence-adapters/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Coherence and Implementation Ownership** without relying on surface syntax. Keep the module question in view: *Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Coherence and Implementation Ownership** has become a usable model rather than remembered vocabulary. Its governing question is: *Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?* Preserve your first prediction and record decisive facts in a **coherence ownership map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 22 — Associated Types and Type Families that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?**
+3. Draw the smallest **coherence ownership map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -85,6 +94,17 @@ Create an extension trait for `[Record]` with one domain-specific query. Keep th
 
 For every `impl` in one laboratory or capstone module, record the trait owner, type owner, implementation owner, and whether a blanket implementation could overlap with a plausible future type. Redesign one relationship whose ownership is unclear.
 
+### Interleaved reasoning pass
+
+1. For **Predict whether an implementation satisfies coherence and orphan rules**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the coherence ownership map.
+2. For **Detect overlapping blanket implementations and downstream compatibility hazards**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the coherence ownership map.
+3. For **Use a newtype to establish local implementation ownership**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the coherence ownership map.
+4. For **Design sealed and extension traits deliberately**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the coherence ownership map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Coherence and Implementation Ownership** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Integrate two foreign-style model types with two local formatting and validation contracts.
@@ -100,6 +120,18 @@ Requirements:
 
 The executable starter and reference implementation are in [module-03-coherence-adapters](../../labs/module-03-coherence-adapters/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Coherence Adapters**, record:
+
+- the public behavior that demonstrates **Predict whether an implementation satisfies coherence and orphan rules**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Create local rule types and local `Rule`/`RuleFactory` traits. Use a newtype to adapt a closure into a rule instead of attempting to implement a foreign callable trait for a foreign closure type.
@@ -112,6 +144,10 @@ Decide explicitly:
 - how built-in rule identifiers avoid collisions.
 
 Record the implementation-ownership map.
+
+### Capstone invariant trace
+
+For the Module 23 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -129,3 +165,7 @@ Oral prompt: **“What implementation space does this API consume today, and who
 ### Independent transfer
 
 A foreign timestamp type must participate in a foreign formatting trait, and downstream crates also need local formatting policy. Produce a coherence-safe design using a local type or local trait. Include conversion cost, discoverability, implementation ownership, and the future extension space you intentionally preserve.
+
+### Closed-book defense
+
+In five minutes, answer “Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?” using the **coherence ownership map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

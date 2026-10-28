@@ -1,8 +1,17 @@
 # Workbook — Module 36: Custom Iterators and Collection Protocols
 
-[Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-06-custom-cursors/README.md) · [LedgerFlow guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Custom Iterators and Collection Protocols** without relying on surface syntax. Keep the module question in view: *What laws must a custom traversal obey, and who owns the collection when iteration begins?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Custom Iterators and Collection Protocols** has become a usable model rather than remembered vocabulary. Its governing question is: *What laws must a custom traversal obey, and who owns the collection when iteration begins?* Preserve your first prediction and record decisive facts in a **collection protocol map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 35 — Option, Result, and Fallible Traversal that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What laws must a custom traversal obey, and who owns the collection when iteration begins?**
+3. Draw the smallest **collection protocol map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -89,7 +98,16 @@ For a custom adapter that yields every third upstream item, derive a truthful lo
 
 Implement or review an adapter that stops after the first predicate failure. State whether it may be fused and whether the failing item is consumed.
 
+### Interleaved reasoning pass
 
+1. For **Implement a correct custom `Iterator` by defining state and exhaustion behavior**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the collection protocol map.
+2. For **Provide owned, shared, and mutable `IntoIterator` implementations only where their semantics are useful**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the collection protocol map.
+3. For **Implement `FromIterator` and `Extend` for a domain collection with explicit invariant policy**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the collection protocol map.
+4. For **Implement stronger iterator traits only when every required law holds**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the collection protocol map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Custom Iterators and Collection Protocols** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -149,6 +167,18 @@ Every marker trait must be defended as a semantic promise. Explain why a truthfu
 
 The executable starter and reference implementation are in [module-06-custom-cursors](../../labs/module-06-custom-cursors/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Custom Cursors**, record:
+
+- the public behavior that demonstrates **Implement a correct custom `Iterator` by defining state and exhaustion behavior**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Day 6 replaces ad hoc traversal with domain-specific iterator types only where those types clarify a stable public operation. The objective is not to implement every iterator trait. It is to implement the **smallest truthful protocol** and prove its laws.
@@ -203,6 +233,10 @@ Implement the same view once with a standard adapter chain. Decide whether the c
 
 If none applies, retain the adapter chain and document the rejected custom type.
 
+### Capstone invariant trace
+
+For the Module 36 LedgerFlow increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Do not advance because the calendar day ended. Advance when all hard evidence is present.
@@ -240,3 +274,7 @@ Create a calendar-range iterator that skips excluded dates without exposing muta
 ### Spaced review
 
 Repeat questions 2, 4, 7, and 10 after 24 hours. Repeat the reconstruction after seven days with a different domain.
+
+### Closed-book defense
+
+In five minutes, answer “What laws must a custom traversal obey, and who owns the collection when iteration begins?” using the **collection protocol map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside LedgerFlow. A list of APIs without the deciding relationship is incomplete.

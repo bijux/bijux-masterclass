@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 14: RAII, Drop, Unwinding, and Failure Atomicity
+# Reasoned Solutions — Module 14: RAII, Drop, Unwinding, and Failure Atomicity
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-resource-pool/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **RAII, Drop, Unwinding, and Failure Atomicity**, not to substitute for an attempt. The decisive question is: *Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 14: RAII, Drop, Unwinding, and Failure Atomicity**. Compare the reasoning against this question: *Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -115,9 +115,7 @@ Handle/revision sessions permit the workspace borrow to end after session creati
 
 Review a boolean transaction guard, redesign it as an ownership protocol, and specify its exact unwind and explicit-finish guarantees.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-04-resource-pool/solution`](../../labs/module-04-resource-pool/solution). Before reading it, write down:
 
@@ -138,3 +136,42 @@ For **RAII, Drop, Unwinding, and Failure Atomicity**, compare the contract, inva
 - State when destructors may not run or cannot report failure, including abort, process exit, leaks, and power loss.
 
 A complete explanation of **RAII, Drop, Unwinding, and Failure Atomicity** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?
+
+Build a **destruction trace**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Derive local, field, tuple, temporary, and scope destruction order from documented rules.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Design RAII guards whose ownership encodes exactly one cleanup or release obligation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use Option::take, mem::replace, staged candidates, and consuming transitions while preserving valid states.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Distinguish no-throw, basic, and strong in-memory failure guarantees from crash durability.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **State when destructors may not run or cannot report failure, including abort, process exit, leaks, and power loss.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Derive local, field, tuple, temporary, and scope destruction order from documented rules.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the destruction trace.
+
+### Laboratory transfer review
+
+For [RAII Resource Pool](../../labs/module-04-resource-pool/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 14 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **RAII, Drop, Unwinding, and Failure Atomicity**, which relationship decides this question: “Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

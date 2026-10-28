@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 09: Crates, Modules, Public APIs, Tests, and Documentation
+# Reasoned Solutions — Module 09: Crates, Modules, Public APIs, Tests, and Documentation
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-library-boundaries/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Crates, Modules, Public APIs, Tests, and Documentation**, not to substitute for an attempt. The decisive question is: *Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 9: Crates, Modules, Public APIs, Tests, and Documentation**. Compare the reasoning against this question: *Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -194,9 +194,7 @@ A smaller source tree is not automatically cleaner, and a larger one is not auto
 
 Reduce an over-public monolithic CLI to a library with explicit boundaries and build one test at each relevant evidence layer.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-09-library-boundaries/solution`](../../labs/module-09-library-boundaries/solution). Before reading it, write down:
 
@@ -217,3 +215,42 @@ For **Crates, Modules, Public APIs, Tests, and Documentation**, compare the cont
 - Separate a thin effectful binary shell from a testable library core.
 
 A complete explanation of **Crates, Modules, Public APIs, Tests, and Documentation** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?
+
+Build a **module and API map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Design private representation and a minimal public API that preserves invariants.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Choose unit, integration, process, fixture, and documentation tests from the contract under proof.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Write rustdoc examples that teach and execute, and maintain a deliberate warning/lint policy.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Separate a thin effectful binary shell from a testable library core.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the module and API map.
+
+### Laboratory transfer review
+
+For [Library Boundary Refactor](../../labs/module-09-library-boundaries/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 9 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Crates, Modules, Public APIs, Tests, and Documentation**, which relationship decides this question: “Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

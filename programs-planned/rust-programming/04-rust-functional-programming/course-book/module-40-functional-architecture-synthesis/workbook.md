@@ -1,8 +1,17 @@
 # Workbook — Module 40: Functional Architecture Synthesis
 
-[Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-10-route-analysis-engine/README.md) · [LedgerFlow guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Functional Architecture Synthesis** without relying on surface syntax. Keep the module question in view: *How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Functional Architecture Synthesis** has become a usable model rather than remembered vocabulary. Its governing question is: *How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?* Preserve your first prediction and record decisive facts in a **whole-pipeline architecture map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 39 — Combinator Laws and Cost Models that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?**
+3. Draw the smallest **whole-pipeline architecture map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -92,7 +101,16 @@ Write three rejection records: boxing every iterator, collecting after every sta
 
 Identify what Course 5 may automate with macros and what must remain conceptually explicit after metaprogramming.
 
+### Interleaved reasoning pass
 
+1. For **Produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the whole-pipeline architecture map.
+2. For **Integrate closures, iterators, folds, error traversal, custom protocols, and effect isolation coherently**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the whole-pipeline architecture map.
+3. For **Refactor between loops and combinators without changing observable behavior**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the whole-pipeline architecture map.
+4. For **Implement an unseen feature across parser, transformation core, reducer, report, CLI, and tests**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the whole-pipeline architecture map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Functional Architecture Synthesis** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -173,6 +191,18 @@ Submit the transformation map, parser visitation tests, reducer trace, determini
 
 The executable starter and reference implementation are in [module-10-route-analysis-engine](../../labs/module-10-route-analysis-engine/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Route Analysis Engine**, record:
+
+- the public behavior that demonstrates **Produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Day 10 is not a feature roundup. It is the proof that you can reason across callable contracts, iterator state, fallible traversal, reducers, persistent structure, effect boundaries, laws, and materialization choices without following a tutorial sequence.
@@ -251,6 +281,10 @@ Without opening the implementation, explain:
 - which combinator laws are conditional;
 - which cost claims are observations versus contracts.
 
+### Capstone invariant trace
+
+For the Module 40 LedgerFlow increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Do not advance because the calendar day ended. Advance when all hard evidence is present.
@@ -288,3 +322,7 @@ Add a cross-account transfer event with two-sided validation and failure-atomic 
 ### Spaced review
 
 Repeat questions 2, 4, 7, and 10 after 24 hours. Repeat the reconstruction after seven days with a different domain.
+
+### Closed-book defense
+
+In five minutes, answer “How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system?” using the **whole-pipeline architecture map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside LedgerFlow. A list of APIs without the deciding relationship is incomplete.

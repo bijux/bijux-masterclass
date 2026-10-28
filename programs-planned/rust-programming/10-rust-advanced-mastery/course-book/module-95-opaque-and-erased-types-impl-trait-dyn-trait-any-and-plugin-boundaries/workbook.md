@@ -1,8 +1,17 @@
-# Module 95 Workbook — Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries
+# Workbook — Module 95: Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries
 
-[Chapter](index.md) · [AxiomStore guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-erased-validator-registry/README.md) · [AxiomStore guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook turns the chapter’s **erasure ledger** into evidence. Write predictions before compiling or running anything. Preserve the stated product requirement during repair; a green build obtained by deleting the difficult relationship is not a solution.
+This workbook tests whether **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries** has become a usable model rather than remembered vocabulary. Its governing question is: *When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary?* Preserve your first prediction and record decisive facts in a **open and erased variation map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 94 — Const Generics, Witness Types, and Compile-Time Invariants that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary?**
+3. Draw the smallest **open and erased variation map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -20,7 +29,7 @@ A trait used as `dyn Codec` adds `fn decode<T>(&self, bytes: &[u8]) -> T`. Predi
 
 ### Prediction 3 — Ownership choice
 
-A validator registry owns policies for its entire lifetime but never shares them across threads. Compare `Box<dyn Validator>` and `Arc<dyn Validator>`. 
+A validator registry owns policies for its entire lifetime but never shares them across threads. Compare `Box<dyn Validator>` and `Arc<dyn Validator>`.
 
 ### Prediction 4 — Any as protocol
 
@@ -44,7 +53,7 @@ An application must accept third-party validators but models them as a public ex
 
 Required direction: Use a dyn-compatible trait registry or another open extension boundary; the enum gives extension authority to the defining crate.
 
-Submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the erasure ledger changes.
+For **Repair 2 — Enum used for open plugins**, submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the erasure ledger changes.
 
 ### Repair 3 — Arc selected by habit
 
@@ -52,7 +61,7 @@ Every dynamic component is stored in `Arc` even though ownership is unique.
 
 Required direction: Choose ownership from liveness and sharing first. Dynamic dispatch works through borrowed or boxed values too.
 
-Submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the erasure ledger changes.
+For **Repair 3 — Arc selected by habit**, submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the erasure ledger changes.
 
 ## Part 3 — Focused exercises
 
@@ -82,8 +91,7 @@ Completion standard: The result documents why it is not a behavioral plugin inte
 
 ### Cross-course transfer
 
-Choose one artifact from Courses 1–9 and reassess it through **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries**. Reconstruct its current invariant owner, then decide whether the erasure ledger reveals a genuine defect. A justified no-change decision is valid when the advanced mechanism would add proof or compatibility cost without removing a real invalid state.
-
+Choose one artifact from Courses 1–10 and reassess it through **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries**. Reconstruct its current invariant owner, then decide whether the erasure ledger reveals a genuine defect. A justified no-change decision is valid when the advanced mechanism would add proof or compatibility cost without removing a real invalid state.
 
 ### Applied case study — preserving a stable plugin boundary
 
@@ -93,6 +101,17 @@ Produce a variation map. Identify which variation is closed, which is open, who 
 
 Define the one place where `Any` would be justified, if any, and require a typed method to remain the normal path. Finally, discuss public API evolution: what additions to the object-safe trait would break third-party implementors or dyn compatibility, and what adapter or versioning strategy preserves extension room.
 
+### Interleaved reasoning pass
+
+1. For **Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the open and erased variation map.
+2. For **Derive dyn-compatibility requirements from the operations available through erased receivers**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the open and erased variation map.
+3. For **Choose borrowed, boxed, reference-counted, or inline-erased ownership according to registry and lifetime requirements**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the open and erased variation map.
+4. For **Use enums for closed variation and trait objects for open runtime extension without confusing the two evolution models**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the open and erased variation map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Erased Validator Registry](../../labs/module-05-erased-validator-registry/README.md) from its `starter/` package.
@@ -100,6 +119,18 @@ Build [Erased Validator Registry](../../labs/module-05-erased-validator-registry
 Build an ordered validator registry with stable identity, duplicate rejection, typed failure context, and runtime heterogeneous policies over one owned record type.
 
 Before implementation, freeze Erased Validator Registry’s public behavior and the erasure ledger. After implementation, complete its transfer task in a domain with different ownership, version, capacity, extension, or failure policy; renaming types does not demonstrate transfer.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Erased Validator Registry**, record:
+
+- the public behavior that demonstrates **Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -111,6 +142,10 @@ Update AxiomStore’s erasure ledger before code. Record the changed invariant o
 
 Before leaving the module, revisit one boundary where you first chose erasure. State the concrete information lost, the runtime failure newly possible, and the caller who benefits from openness. Then revisit one boundary kept static or closed. Record the future requirement that would justify changing that decision rather than treating trait objects as the default form of extensibility.
 
+### Capstone invariant trace
+
+For the Module 95 AxiomStore increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 For an unseen extension request, choose generic, opaque, enum, trait object, or `Any` by stating what identity and operations survive, who may extend the set, and where mismatch occurs.
@@ -118,3 +153,7 @@ For an unseen extension request, choose generic, opaque, enum, trait object, or 
 Finish without notes by reconstructing the erasure ledger. Name the requirement, the simpler design, the decisive rejected construction, the state after failure, and the evidence that could falsify your claim. End by stating one condition under which this mechanism should be removed.
 
 The defense is complete only when another reader can reproduce the reasoning behind Erased Validator Registry and the AxiomStore increment without seeing your final implementation.
+
+### Closed-book defense
+
+In five minutes, answer “When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary?” using the **open and erased variation map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside AxiomStore. A list of APIs without the deciding relationship is incomplete.

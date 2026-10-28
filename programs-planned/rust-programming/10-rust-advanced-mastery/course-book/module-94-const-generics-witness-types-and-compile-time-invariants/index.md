@@ -1,8 +1,11 @@
 # Module 94 — Const Generics, Witness Types, and Compile-Time Invariants
 
-**94/100** · Course 10 · Module 94 of 100
+**Course 10 · Day 4 · Module 94 of 100**
+`████████████████████████░` **94/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-bounded-matrix/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 93: GATs, Higher-Ranked Bounds, and Lending Interfaces](../module-93-gats-higher-ranked-bounds-and-lending-interfaces/index.md) · [Module 95: Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries →](../module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Rust can parameterize types by constants, allowing array dimensions, inline capa
 Course 1 used arrays and newtypes; Course 6 distinguished representation from runtime policy; Course 9 measured code-size cost. This module decides which numeric facts deserve type identity.
 
 Const generics are useful when a value changes type-level composition or storage, not merely because the value is known. This module forces a three-way split: facts encoded in type identity, facts validated once and carried by a witness, and policies that must remain runtime data. The quality of the design depends more on that split than on the number of const parameters.
+
+### Prerequisite bridge
+
+Module 93 established **GATs, Higher-Ranked Bounds, and Lending Interfaces**. Before continuing, verify that you can choose between lending, ownership transfer, callback-based access, and copied values according to retention needs. This module preserves that capability and adds the ability to use const parameters when a numeric fact changes representation, layout, or legal composition. Module 95, **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries**, will rely on both when it asks: *When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary?*
+
+### Scope boundary
+
+This module owns the reasoning for **const generics, witness types, and compile-time invariants** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -136,6 +147,24 @@ Const generics can reject incompatible shapes and make selected capacities part 
 
 A mature design uses type-level numbers sparingly. If callers do not need to compose on the number, a checked runtime value is usually easier to evolve and cheaper to instantiate.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For use const parameters when a numeric fact changes representation, layout, or legal composition, construct one positive and one causal negative example. Mark the first decisive fact in the **const witness proof** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For construct witness types only through checked functions and preserve their proof through private fields, construct one positive and one causal negative example. Mark the first decisive fact in the **const witness proof** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For distinguish compile-time capacity from runtime length and enforce both without off-by-one ambiguity, construct one positive and one causal negative example. Mark the first decisive fact in the **const witness proof** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design APIs that compose equal dimensions while rejecting mismatched shapes before execution, construct one positive and one causal negative example. Mark the first decisive fact in the **const witness proof** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Read `BoundedIndex<N>` as a proof object: construction validates `value < N`, and the private field prevents forgery. Then inspect `Matrix<T, R, C>` and identify which shape relationships are enforced by method signatures and which arithmetic facts remain runtime concerns.
@@ -214,7 +243,4 @@ Const-generic syntax evolves, so verify exact stable expression rules against th
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Bounded Matrix](../../labs/module-04-bounded-matrix/README.md).
-3. Apply Module 94 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 95 — Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries](../module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

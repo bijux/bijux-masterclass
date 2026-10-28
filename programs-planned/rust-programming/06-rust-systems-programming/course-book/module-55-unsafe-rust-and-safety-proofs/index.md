@@ -1,9 +1,11 @@
-# 55 — Unsafe Rust as a Proof Boundary
+# Module 55 — Unsafe Rust as a Proof Boundary
 
-**Course 6, day 5 · Module 55 of 90**  
-`██████████████████░░` **55/90**
+**Course 6 · Day 5 · Module 55 of 100**
+`██████████████░░░░░░░░░░░` **55/100**
 
-[← Module 54: Processes, Environments, and Standard Streams](../module-54-processes-environments-and-standard-streams/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 56: Raw Pointers, Provenance, and Uninitialized Memory →](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-unsafe-slice-kernel/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 54: Processes, Environments, and Standard Streams](../module-54-processes-environments-and-standard-streams/index.md) · [Module 56: Raw Pointers, Provenance, and Uninitialized Memory →](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 The first four modules deliberately solved systems problems with safe Rust. That ordering matters. `unsafe` is not a badge of low-level seriousness and it does not make code faster by itself. It is a mechanism for expressing a proof the compiler cannot complete. Module 55 introduces the proof discipline before raw pointers and allocators create more ways to be wrong.
+
+### Prerequisite bridge
+
+Module 54 established **Processes, Environments, and Standard Streams**. Before continuing, verify that you can represent exit status without assuming every termination has a portable integer code. This module preserves that capability and adds the ability to name the operations rust requires an unsafe context to perform. Module 56, **Raw Pointers, Provenance, and Uninitialized Memory**, will rely on both when it asks: *How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation?*
+
+### Scope boundary
+
+This module owns the reasoning for **unsafe rust as a proof boundary** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -217,6 +227,24 @@ A safe archive parser that returns the wrong entry name has a logic error. It ma
 
 Do not use “safe” to mean correct, secure, or panic-free. It means the language’s memory and type safety obligations are upheld. Course 6 maintains separate ledgers for memory safety, product correctness, and threat policy.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For name the operations Rust requires an unsafe context to perform, construct one positive and one causal negative example. Mark the first decisive fact in the **unsafe obligation ledger** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish compiler permission from semantic safety and undefined behavior, construct one positive and one causal negative example. Mark the first decisive fact in the **unsafe obligation ledger** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For write safety preconditions, internal invariants, and postconditions before an unsafe block, construct one positive and one causal negative example. Mark the first decisive fact in the **unsafe obligation ledger** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For keep unsafe operations inside narrow private modules with safe public APIs, construct one positive and one causal negative example. Mark the first decisive fact in the **unsafe obligation ledger** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault creates an `unsafe_core` boundary. Before implementation, it contains a safety dossier: every unsafe operation, its preconditions, the type invariant that proves them, panic behavior, zero-length behavior, and destruction path. The first kernel is a checked two-index mutable borrow used only as a focused exercise; the capstone later adds an owned aligned byte allocation.
@@ -240,7 +268,4 @@ You are ready when you can write a line-by-line safety argument, decide whether 
 
 ## Continue
 
-1. Complete the [Module 55 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 55 — Unsafe Slice Kernel](../../labs/module-05-unsafe-slice-kernel/README.md) from its public contract.
-3. Apply the Module 55 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 56 — Raw Pointers, Provenance, and Uninitialized Memory](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

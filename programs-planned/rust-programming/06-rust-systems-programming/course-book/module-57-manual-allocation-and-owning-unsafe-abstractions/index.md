@@ -1,9 +1,11 @@
-# 57 — Manual Allocation and Owning Unsafe Abstractions
+# Module 57 — Manual Allocation and Owning Unsafe Abstractions
 
-**Course 6, day 7 · Module 57 of 90**  
-`███████████████████░` **57/90**
+**Course 6 · Day 7 · Module 57 of 100**
+`██████████████░░░░░░░░░░░` **57/100**
 
-[← Module 56: Raw Pointers, Provenance, and Uninitialized Memory](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries →](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-aligned-byte-buffer/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 56: Raw Pointers, Provenance, and Uninitialized Memory](../module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) · [Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries →](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Raw pointers become useful only when an abstraction owns their entire lifecycle. Module 57 assembles allocation, layout, initialization, and destruction into a small `AlignedBytes` type. It deliberately does not build a generic `Vec<T>` clone: generic growth, element moves, zero-sized types, variance, and panic safety are a larger proof surface. The point is to learn how to choose the smallest unsafe abstraction that solves a measured requirement.
+
+### Prerequisite bridge
+
+Module 56 established **Raw Pointers, Provenance, and Uninitialized Memory**. Before continuing, verify that you can use `nonnull` as a non-null raw pointer component, not as proof of validity or ownership. This module preserves that capability and adds the ability to construct and validate `layout` values without unchecked size arithmetic. Module 58, **C FFI: ABI, Strings, Pointers, and Error Boundaries**, will rely on both when it asks: *How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides?*
+
+### Scope boundary
+
+This module owns the reasoning for **manual allocation and owning unsafe abstractions** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -235,6 +245,24 @@ The reference implementation needs only three unsafe operations:
 
 No raw arithmetic, reallocation, typed pointer cast, manual trait implementation, or partial element drop is required. This is the deletion test applied to unsafe code.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For construct and validate `Layout` values without unchecked size arithmetic, construct one positive and one causal negative example. Mark the first decisive fact in the **allocator layout record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish allocation capacity from initialized logical length, construct one positive and one causal negative example. Mark the first decisive fact in the **allocator layout record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For handle zero-length allocations without passing an invalid layout to the allocator, construct one positive and one causal negative example. Mark the first decisive fact in the **allocator layout record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For pair every successful allocation with exactly one matching deallocation layout, construct one positive and one causal negative example. Mark the first decisive fact in the **allocator layout record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault adds `AlignedBytes`, a fixed-length zero-initialized byte owner with validated power-of-two alignment, explicit zero-length state, borrowed slice access, and exact deallocation. The file loader may choose it for staging an archive of known bounded size. The parser still receives an ordinary `&[u8]`, so unsafe storage does not leak into format logic.
@@ -258,7 +286,4 @@ You are ready when you can state the owner invariant for every constructor and d
 
 ## Continue
 
-1. Complete the [Module 57 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 57 — Aligned Byte Buffer](../../labs/module-07-aligned-byte-buffer/README.md) from its public contract.
-3. Apply the Module 57 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 58 — C FFI: ABI, Strings, Pointers, and Error Boundaries](../module-58-c-ffi-abi-strings-and-error-boundaries/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,6 +1,14 @@
-# Laboratory 9 — Versioned SDK
+# Laboratory 99 — Versioned SDK
 
-[Course 10](../../README.md) · [Common laboratory method](../../../START_HERE.md#laboratory-method)
+**Course 10 · Module 99: Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship**
+
+[Chapter](../../course-book/module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/index.md) · [Workbook](../../course-book/module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/workbook.md) · [AxiomStore guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship**: How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data? The product must make **Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **compatibility and migration matrix** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -41,6 +49,45 @@ Design V3 as an additive optional integration. Produce a matrix covering callers
 
 Inspect `solution/` after your strict parser and fixtures pass. The reference is a minimal migration sketch; your final lab should be more explicit about duplicate fields, canonical newlines, and feature checks. Compare compatibility obligations rather than line count.
 
-### Completion standard
+### Mechanism-specific completion standard
 
 You can ship a new stored form without reinterpreting old bytes, name every affected audience, and prove that failed migration preserves the source. “It compiles for me” is not a compatibility argument.
+
+## Design record
+
+Before implementation, complete this record for **Versioned SDK**:
+
+| Question | Required answer |
+|---|---|
+| Module decision | How does **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship** answer its governing question in this product? |
+| Authority | Which type or component decides the main rule? |
+| Valid states | Which states may be observed through the public API? |
+| Rejection | What exact input or transition is refused, and what remains unchanged? |
+| Ownership | Who owns every resource before, during, and after the decisive operation? |
+| Order and bounds | Which sequence, capacity, lifetime, or compatibility limit is promised? |
+| Evidence | Which test, compiler case, model, trace, or review could falsify the claim? |
+
+Use the **compatibility and migration matrix** to answer the table. Then add at least three adversarial cases: one at the smallest boundary, one at the largest accepted or rejected boundary, and one that leaves partial work before failure. For each, state the final observable state before running the test.
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Versioned SDK**.
+2. Draw the smallest **compatibility and migration matrix** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to AxiomStore so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Whole-laboratory completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data.
+- Define and test an MSRV policy without confusing the manifest declaration with actual verification.
+- Design additive Cargo features that do not change unrelated semantics or create unsupported combinations.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 99 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **compatibility and migration matrix**. Defend why your design is simpler than one plausible alternative under the new requirements.

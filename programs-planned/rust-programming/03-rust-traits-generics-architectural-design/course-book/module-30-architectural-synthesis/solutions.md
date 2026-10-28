@@ -1,72 +1,72 @@
-# Reasoned solutions — Module 30: Architectural Synthesis
+# Reasoned Solutions — Module 30: Architectural Synthesis
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-inspection-platform/README.md) · [Review Engine guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Architectural Synthesis**, not to substitute for an attempt. The decisive question is: *Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 30: Architectural Synthesis**. Compare the reasoning against this question: *Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
 ### 1. `01-hybrid-dispatch.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Hybrid dispatch.
-- **Causal explanation:** The specimen compiles because hybrid dispatch.
+- **Governing rule:** A design may keep stable outer boundaries generic while storing runtime-variable behavior behind trait objects.
+- **Causal explanation:** `run` monomorphizes the `Source` boundary for `M` and iterates a heterogeneous slice of `Box<dyn R>` for rules, using each dispatch mechanism where its variation is real.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Erase every boundary for uniform appearance.
 
 ### 2. `02-hybrid-associated-type-mismatch.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Hybrid associated type mismatch.
-- **Causal explanation:** The compiler rejects the specimen because hybrid associated type mismatch.
+- **Governing rule:** An associated-type equality at an engine boundary is a real requirement that every source implementation must satisfy.
+- **Causal explanation:** `run` requires `S<Item = u8>`, but `X::Item` is `String`; the mismatch is rejected before the engine can index or return an assumed byte.
 - **Principled repair:** Constrain the associated type at the engine boundary.
 - **Weak repair to reject:** Convert arbitrary items to strings.
 
 ### 3. `03-registry-dyn-compatibility.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Registry dyn compatibility.
-- **Causal explanation:** The compiler rejects the specimen because registry dyn compatibility.
+- **Governing rule:** A runtime registry requires a dyn-compatible execution trait whose methods have fixed erased signatures.
+- **Causal explanation:** `Rule::run<T>` is generic over a caller-selected type, so `Box<dyn Rule>` cannot form a finite vtable entry for that method. Static construction and dynamic execution must be separated.
 - **Principled repair:** Split static construction from dyn execution.
 - **Weak repair to reject:** Make all input String.
 
 ### 4. `04-builder-state-gate.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Builder state gate.
-- **Causal explanation:** The compiler rejects the specimen because builder state gate.
+- **Governing rule:** A typestate builder may expose `build` only after every required component is represented in its type parameters.
+- **Causal explanation:** `B::new()` is still `B<M, M>`; the only `build` implementation belongs to `B<P<S>, P<u8>>`, so the incomplete architecture cannot be constructed.
 - **Principled repair:** Complete the typestate transition.
 - **Weak repair to reject:** Add a runtime panic in build.
 
 ### 5. `05-coherence-adapter-need.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Coherence adapter need.
-- **Causal explanation:** The compiler rejects the specimen because coherence adapter need.
+- **Governing rule:** A foreign trait cannot be implemented directly for a foreign collection type; a local semantic adapter must own the relationship.
+- **Causal explanation:** Both `Display` and `Vec<String>` are foreign, so this crate lacks coherence authority. A local newtype can provide formatting without claiming a global meaning for all vectors.
 - **Principled repair:** Introduce a local adapter newtype.
 - **Weak repair to reject:** Use a type alias.
 
 ### 6. `06-opaque-report-view.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Opaque report view.
-- **Causal explanation:** The specimen compiles because opaque report view.
+- **Governing rule:** An opaque iterator return can hide the concrete adapter chain while preserving a borrowed item type and static dispatch.
+- **Causal explanation:** `errors` always returns one concrete filtering iterator over `&u8`; callers see only `Iterator<Item = &u8>` and cannot depend on the internal chain.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Box the iterator without runtime need.
 
 ### 7. `07-object-lifetime-in-registry.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Object lifetime in registry.
-- **Causal explanation:** The compiler rejects the specimen because object lifetime in registry.
+- **Governing rule:** A storage boundary requiring `T: 'static` rejects values that contain references to shorter-lived local data.
+- **Causal explanation:** `B(&s)` borrows the local `String`, so it cannot satisfy the registry’s `'static` requirement. The registry must carry a lifetime or own the referenced data.
 - **Principled repair:** Give the registry an explicit lifetime or own the data.
 - **Weak repair to reject:** Leak the borrowed string.
 
 ### 8. `08-sealed-integrated-extension.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Sealed integrated extension.
-- **Causal explanation:** The compiler rejects the specimen because sealed integrated extension.
+- **Governing rule:** A sealed built-in marker intentionally prevents downstream types from joining the privileged built-in set while a separate open trait may remain extensible.
+- **Causal explanation:** `Mine` can implement the open `Rule` contract, but it cannot satisfy the private prerequisite behind `BuiltIn`; the attempted privileged extension is therefore rejected.
 - **Principled repair:** Implement the open execution trait or use a supported factory.
 - **Weak repair to reject:** Expose sealing internals publicly.
 
@@ -96,7 +96,7 @@ The new domain proves transfer only when names, inputs, and failure modes differ
 
 Begin with the product's sources of variation. Rust mechanisms follow. A convincing defense includes rejected alternatives and explains what future change each chosen boundary makes easy or difficult.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-10-inspection-platform/solution`](../../labs/module-10-inspection-platform/solution). Before reading it, write down:
 
@@ -117,3 +117,42 @@ For **Architectural Synthesis**, compare the contract, invariant, failure behavi
 - Defend the selected architecture and identify a credible alternative.
 
 A complete explanation of **Architectural Synthesis** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?
+
+Build a **architecture decision record**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Map axes of variation before selecting polymorphism mechanisms.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Combine static and dynamic dispatch without duplicating domain semantics.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Review an architecture for coherence, dyn compatibility, state validity, and evolution.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Implement an unseen cross-cutting feature while preserving public contracts.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Defend the selected architecture and identify a credible alternative.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Map axes of variation before selecting polymorphism mechanisms.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the architecture decision record.
+
+### Laboratory transfer review
+
+For [Inspection Platform](../../labs/module-10-inspection-platform/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Review Engine, Module 30 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Architectural Synthesis**, which relationship decides this question: “Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Review Engine?

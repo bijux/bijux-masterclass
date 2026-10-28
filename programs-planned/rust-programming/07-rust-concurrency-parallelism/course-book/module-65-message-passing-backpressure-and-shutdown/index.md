@@ -1,8 +1,11 @@
-# Module 65: Message Passing, Backpressure, and Shutdown
+# Module 65 — Message Passing, Backpressure, and Shutdown
 
-**Course 7, day 5 · Module 65 of 90**  
+**Course 7 · Day 5 · Module 65 of 100**
+`████████████████░░░░░░░░░` **65/100**
 
-**65/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-bounded-map-pipeline/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 64: Coordination: Condvars, Barriers, and Phase Protocols](../module-64-coordination-condvars-barriers-and-phase-protocols/index.md) · [Module 66: Liveness: Deadlock, Cancellation, and Recovery →](../module-66-liveness-deadlock-cancellation-and-recovery/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Locks let several threads coordinate access to one state. Channels provide a dif
 This module develops message passing as a typed protocol. The message enum, topology, capacity, sender ownership, receiver ownership, and shutdown rule must agree. A channel is not an architecture until those facts are written.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 64 established **Coordination: Condvars, Barriers, and Phase Protocols**. Before continuing, verify that you can test coordination through causal handshakes rather than sleep-based scheduling assumptions. This module preserves that capability and adds the ability to model channel operations as ownership transfer rather than shared access;. Module 66, **Liveness: Deadlock, Cancellation, and Recovery**, will rely on both when it asks: *Why can every blocked operation eventually continue or terminate, and what happens when cancellation, panic, or partial infrastructure failure interrupts the normal path?*
+
+### Scope boundary
+
+This module owns the reasoning for **message passing, backpressure, and shutdown** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -132,6 +143,24 @@ A finite channel-based operation needs a complete sequence. One common form is:
 
 Cancellation may reorder these actions, but every endpoint and handle still needs one owner and one terminal transition. The shutdown proof should work when zero jobs exist, the first job fails, the queue fills, or one worker panics.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For model channel operations as ownership transfer rather than shared access, construct one positive and one causal negative example. Mark the first decisive fact in the **channel topology** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For choose bounded, zero-capacity, or unbounded channels from an explicit resource and latency policy, construct one positive and one causal negative example. Mark the first decisive fact in the **channel topology** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For draw sender/receiver topology and identify which endpoints are clonable, construct one positive and one causal negative example. Mark the first decisive fact in the **channel topology** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For state whether disconnect is normal completion, cancellation, or infrastructure failure, construct one positive and one causal negative example. Mark the first decisive fact in the **channel topology** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 This small mapper creates one bounded channel per worker because the standard receiver is not clonable. Results carry stable indices, and every sender plus handle has a visible shutdown point:
@@ -230,4 +259,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Bounded Map Pipeline](../../labs/module-05-bounded-map-pipeline/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 66 — Liveness: Deadlock, Cancellation, and Recovery](../module-66-liveness-deadlock-cancellation-and-recovery/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

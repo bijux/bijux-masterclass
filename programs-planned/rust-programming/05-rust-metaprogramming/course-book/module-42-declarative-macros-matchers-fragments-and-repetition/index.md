@@ -1,9 +1,11 @@
-# 42 — Declarative Macros: Matchers, Fragments, and Repetition
+# Module 42 — Declarative Macros: Matchers, Fragments, and Repetition
 
-**Course 5, day 2 · Module 42 of 90**  
-`██████████████░░░░░░` **42/90**
+**Course 5 · Day 2 · Module 42 of 100**
+`██████████░░░░░░░░░░░░░░░` **42/100**
 
-[← Module 41: Metaprogramming Boundaries and the Expansion Model](../module-41-metaprogramming-boundaries-and-expansion-model/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 43: Recursive Macro Parsing and Token-Tree Techniques →](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-typed-map-macro/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 41: Metaprogramming Boundaries and the Expansion Model](../module-41-metaprogramming-boundaries-and-expansion-model/index.md) · [Module 43: Recursive Macro Parsing and Token-Tree Techniques →](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 Module 41 established that generation needs a source-of-truth argument and an ordinary-Rust reference. The first implementation mechanism is `macro_rules!` because it is integrated into the language, dependency-free, and intentionally limited. Its limitations are pedagogically useful: you must think in token patterns, fragment categories, repetition shape, and expansion position rather than pretending to inspect arbitrary Rust semantics.
 
 Before recursive parsing, hygiene, or procedural macros, you need exact control over the declarative core.
+
+### Prerequisite bridge
+
+Module 41 established **Metaprogramming Boundaries and the Expansion Model**. Before continuing, verify that you can apply a deletion test before accepting a generator into a production design. This module preserves that capability and adds the ability to read a matcher as a grammar rather than as textual substitution. Module 43, **Recursive Macro Parsing and Token-Tree Techniques**, will rely on both when it asks: *How can a declarative macro process a nontrivial token language with explicit parser state, guaranteed progress, and bounded complexity?*
+
+### Scope boundary
+
+This module owns the reasoning for **declarative macros: matchers, fragments, and repetition** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -362,6 +372,24 @@ Move toward a procedural macro when several of these become true:
 
 Declarative macros are excellent when their limits align with the language. Do not measure success by how far you can push those limits.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For read a matcher as a grammar rather than as textual substitution, construct one positive and one causal negative example. Mark the first decisive fact in the **matcher and fragment trace** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For choose fragment specifiers according to the accepted public language, construct one positive and one causal negative example. Mark the first decisive fact in the **matcher and fragment trace** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For design unambiguous separators, delimiters, optional clauses, and cardinality, construct one positive and one causal negative example. Mark the first decisive fact in the **matcher and fragment trace** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For keep matcher and transcriber repetition at compatible nesting depths, construct one positive and one causal negative example. Mark the first decisive fact in the **matcher and fragment trace** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge’s first generated layer is a declarative diagnostic catalog. The invocation will eventually own a variant, numeric code, and message:
@@ -426,7 +454,4 @@ Do not continue if your debugging method is to change `expr` to `tt`, add catch-
 
 ## Continue
 
-1. Complete the [Module 42 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 42 — Typed Map Macro](../../labs/module-02-typed-map-macro/README.md) from its public contract.
-3. Apply the Module 42 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 43 — Recursive Macro Parsing and Token-Tree Techniques](../module-43-recursive-macro-parsing-and-token-tree-techniques/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

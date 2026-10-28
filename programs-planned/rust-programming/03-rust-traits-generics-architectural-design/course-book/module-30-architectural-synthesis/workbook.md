@@ -1,8 +1,17 @@
 # Workbook — Module 30: Architectural Synthesis
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-10-inspection-platform/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Architectural Synthesis** without relying on surface syntax. Keep the module question in view: *Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Architectural Synthesis** has become a usable model rather than remembered vocabulary. Its governing question is: *Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?* Preserve your first prediction and record decisive facts in a **architecture decision record**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 29 — Public API Evolution that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?**
+3. Draw the smallest **architecture decision record** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -80,6 +89,17 @@ Implement a small inspection platform from a fresh crate using the same reasonin
 
 Prepare a ten-minute explanation beginning with product variation rather than Rust features. For every trait, state its law and extension policy. For every generic, state the relationship it preserves. For every trait object, state what is erased and why. For every typestate parameter, state which illegal operation disappears.
 
+### Interleaved reasoning pass
+
+1. For **Map axes of variation before selecting polymorphism mechanisms**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the architecture decision record.
+2. For **Combine static and dynamic dispatch without duplicating domain semantics**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the architecture decision record.
+3. For **Review an architecture for coherence, dyn compatibility, state validity, and evolution**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the architecture decision record.
+4. For **Implement an unseen cross-cutting feature while preserving public contracts**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the architecture decision record.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Architectural Synthesis** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build a separate miniature inspection platform from a product brief only.
@@ -99,6 +119,18 @@ The domain must differ from Review Engine. Copying names and structure without r
 
 The executable starter and reference implementation are in [module-10-inspection-platform](../../labs/module-10-inspection-platform/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Inspection Platform**, record:
+
+- the public behavior that demonstrates **Map axes of variation before selecting polymorphism mechanisms**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Complete all commands, tests, documentation, and deterministic reports. Then implement the unseen feature supplied by the practical assessment, such as rule explanations, warning-only policies, or a new reporter family.
@@ -115,6 +147,10 @@ You must update:
 
 Passing code without updated reasoning evidence is incomplete.
 
+### Capstone invariant trace
+
+For the Module 30 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Final prompt: **“Show the architecture as a set of decisions. For each trait, explain why it is not an enum, ordinary function, or concrete type.”**
@@ -129,3 +165,7 @@ Final prompt: **“Show the architecture as a set of decisions. For each trait, 
 ### Independent transfer
 
 Redesign Review Engine for one unseen requirement: policy groups with “all”, “any”, and “at least N” semantics. Produce a variation map before code. Decide what remains concrete, what becomes recursive data, whether dynamic rules still belong, how errors compose, and which public contracts change.
+
+### Closed-book defense
+
+In five minutes, answer “Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?” using the **architecture decision record**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

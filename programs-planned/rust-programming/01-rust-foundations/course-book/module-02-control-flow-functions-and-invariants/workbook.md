@@ -1,8 +1,17 @@
 # Workbook — Module 02: Control Flow, Functions, and Invariants
 
-[Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-02-control-flow-policy/README.md) · [Taskboard guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Control Flow, Functions, and Invariants** without relying on surface syntax. Keep the module question in view: *How can control flow make every path, boundary, and loop invariant visible enough to test and review?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Control Flow, Functions, and Invariants** has become a usable model rather than remembered vocabulary. Its governing question is: *How can control flow make every path, boundary, and loop invariant visible enough to test and review?* Preserve your first prediction and record decisive facts in a **control-flow table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 1 — Compilation, Expressions, and Types that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How can control flow make every path, boundary, and loop invariant visible enough to test and review?**
+3. Draw the smallest **control-flow table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -24,7 +33,6 @@ python3 ../tools/run_compiler_labs.py 01-rust-foundations
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 The following simulator has both compile errors and behavioral defects:
 
@@ -121,7 +129,6 @@ Module 5 repair: make invalid state text unrepresentable with `enum Status`.
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 ### Exercise 1 — Boundary classifier
 
 Implement `severity_name(u8) -> Option<&'static str>` for valid range 0–10: low 0–3, normal 4–7, high 8–10, `None` above 10. Test every boundary.
@@ -168,11 +175,18 @@ Implement `simulate(initial_state, operations) -> (String, usize, usize)`. Rejec
 
 Given a 60-line `main` that validates, classifies, simulates, and prints, extract pure functions. Submit before/after responsibility maps and prove behavior with tests.
 
+### Interleaved reasoning pass
 
+1. For **Treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the control-flow table.
+2. For **Select for, while, or loop from termination knowledge and data shape, then state the loop invariant and variant**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the control-flow table.
+3. For **Design functions with explicit preconditions, postconditions, total behavior, and guard clauses**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the control-flow table.
+4. For **Decompose stateful logic without creating flag soup, hidden fallthrough, or duplicated policy**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the control-flow table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Control Flow, Functions, and Invariants** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Product contract
 
@@ -244,6 +258,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-02-control-flow-policy](../../labs/module-02-control-flow-policy/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Control-Flow Policy Engine**, record:
+
+- the public behavior that demonstrates **Treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -253,7 +279,6 @@ The executable starter and reference implementation are in [module-02-control-fl
 - Design functions with explicit preconditions, postconditions, total behavior, and guard clauses.
 - Decompose stateful logic without creating flag soup, hidden fallthrough, or duplicated policy.
 - Test control-flow boundaries systematically, including invalid domains, empty inputs, and off-by-one edges.
-
 
 Extend the capstone without parsing real process arguments yet.
 
@@ -301,11 +326,13 @@ Answer:
 
 The capstone's final code does not retain these exact temporary functions. Keep the commit history: it should show a later typed refactor replacing rather than layering over string state. A learning capstone should preserve evidence of improved representation.
 
-
-
 ### Capstone defense
 
 Review a policy engine, identify its invariant and termination argument, then replace one nested branch structure with total typed logic.
+
+### Capstone invariant trace
+
+For the Module 2 Taskboard increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -315,11 +342,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Treat if and loop constructs as typed expressions and prove branch agreement and loop result behavior.
-- Select for, while, or loop from termination knowledge and data shape, then state the loop invariant and variant.
-- Design functions with explicit preconditions, postconditions, total behavior, and guard clauses.
-- Decompose stateful logic without creating flag soup, hidden fallthrough, or duplicated policy.
-- Test control-flow boundaries systematically, including invalid domains, empty inputs, and off-by-one edges.
+Without reopening the chapter, reconstruct the outcomes for **Module 02: Control Flow, Functions, and Invariants**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -350,6 +373,18 @@ Then write a table-driven test for transition policy with exactly three accepted
 
 ### Transfer defense
 
-Review a policy engine, identify its invariant and termination argument, then replace one nested branch structure with total typed logic.
+Transfer **Module 02: Control Flow, Functions, and Invariants** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 02: Control Flow, Functions, and Invariants** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
+
+### Closed-book defense
+
+In five minutes, answer “How can control flow make every path, boundary, and loop invariant visible enough to test and review?” using the **control-flow table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Taskboard. A list of APIs without the deciding relationship is incomplete.

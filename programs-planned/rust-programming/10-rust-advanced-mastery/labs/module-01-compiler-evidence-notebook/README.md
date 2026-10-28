@@ -1,6 +1,14 @@
-# Laboratory 1 — Compiler Evidence Notebook
+# Laboratory 91 — Compiler Evidence Notebook
 
-[Course 10](../../README.md) · [Common laboratory method](../../../START_HERE.md#laboratory-method)
+**Course 10 · Module 91: Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen**
+
+[Chapter](../../course-book/module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/index.md) · [Workbook](../../course-book/module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/workbook.md) · [AxiomStore guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen**: When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result? The product must make **Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **compiler-phase record** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -40,6 +48,29 @@ Add a closure-capture case and a partial-move case. The closure case must distin
 
 Work from `starter/` until your classification table and drop experiments pass. Then inspect `solution/`. Compare the **boundaries of each conclusion**, not enum names. Record one place where your notebook is stricter and one place where the reference communicates uncertainty more clearly.
 
-### Completion standard
+### Mechanism-specific completion standard
 
 Another reader should be able to take an unfamiliar compiler message, reduce it to a causal specimen, identify the earliest deciding phase, and state what must still be tested or measured elsewhere. If the notebook encourages claims stronger than the evidence, the laboratory is incomplete.
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Compiler Evidence Notebook**.
+2. Draw the smallest **compiler-phase record** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to AxiomStore so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Whole-laboratory completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases.
+- Translate source constructs into a control-flow and place-oriented model suitable for borrow, move, and drop reasoning.
+- Identify when an observation is a language guarantee, a compiler implementation detail, or generated machine-code evidence.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 91 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **compiler-phase record**. Defend why your design is simpler than one plausible alternative under the new requirements.

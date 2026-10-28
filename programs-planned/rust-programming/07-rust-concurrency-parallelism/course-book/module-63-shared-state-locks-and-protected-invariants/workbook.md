@@ -1,8 +1,17 @@
 # Workbook — Module 63: Shared State: Locks and Protected Invariants
 
-[Return to the chapter](index.md) · [Open the BatchWeave engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-03-protected-inventory/README.md) · [BatchWeave guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether the chapter has become an operational model. Freeze predictions, protocol diagrams, and invariants before compiling. Concurrency is unusually forgiving of explanations written after observing one successful run; that is exactly why the reasoning record must come first.
+This workbook tests whether **Shared State: Locks and Protected Invariants** has become a usable model rather than remembered vocabulary. Its governing question is: *Which exact invariant does a lock protect, how small can the protected transition be, and what state remains valid after contention or panic?* Preserve your first prediction and record decisive facts in a **protected-invariant table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 62 — Structured Threads: Scopes, Joins, and Panic Boundaries that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which exact invariant does a lock protect, how small can the protected transition be, and what state remains valid after contention or panic?**
+3. Draw the smallest **protected-invariant table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -105,6 +114,17 @@ Write a barrier-coordinated invariant test for concurrent inventory reservations
 
 Required evidence: Do not assert which thread wins; assert capacity and exactly one successful reservation when supply is one.
 
+### Interleaved reasoning pass
+
+1. For **Name the state invariant protected by each `Mutex` or `RwLock` rather than treating the primitive as a generic thread-safety wrapper**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the protected-invariant table.
+2. For **Distinguish shared liveness supplied by `Arc` from exclusion supplied by a lock**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the protected-invariant table.
+3. For **Keep guard scope limited to the smallest complete state transition**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the protected-invariant table.
+4. For **Avoid performing user callbacks, channel sends, file I/O, or expensive computation while holding a guard**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the protected-invariant table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Shared State: Locks and Protected Invariants** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Protected Inventory](../../labs/module-03-protected-inventory/README.md) from the starter. Before opening the solution, produce:
@@ -116,6 +136,18 @@ Build [Protected Inventory](../../labs/module-03-protected-inventory/README.md) 
 - a demonstration that logging or callbacks occur after guard release;
 
 Your submission must also identify one schedule that the implementation handles correctly and one product claim it deliberately does not make.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Protected Inventory**, record:
+
+- the public behavior that demonstrates **Name the state invariant protected by each `Mutex` or `RwLock` rather than treating the primitive as a generic thread-safety wrapper**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -130,6 +162,10 @@ Required capstone evidence:
 
 Add at least one regression test that fails if this module's governing contract is removed. Tests that merely sleep and hope for a schedule do not count as causal evidence.
 
+### Capstone invariant trace
+
+For the Module 63 BatchWeave increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Answer without the chapter:
@@ -143,3 +179,7 @@ Answer without the chapter:
 ### Independent transfer
 
 Design a seat-allocation service where one booking may reserve adjacent seats atomically. Start with one lock over the seating map, then propose a finer design. For the finer design, write the complete lock order, explain how adjacency is checked without exposing a partial booking, and decide whether the extra concurrency is worth the proof cost.
+
+### Closed-book defense
+
+In five minutes, answer “Which exact invariant does a lock protect, how small can the protected transition be, and what state remains valid after contention or panic?” using the **protected-invariant table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside BatchWeave. A list of APIs without the deciding relationship is incomplete.

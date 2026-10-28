@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 08: Generics, Traits, Conversions, and Lifetime Basics
+# Reasoned Solutions — Module 08: Generics, Traits, Conversions, and Lifetime Basics
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-08-traits-and-lifetimes/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Generics, Traits, Conversions, and Lifetime Basics**, not to substitute for an attempt. The decisive question is: *What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 8: Generics, Traits, Conversions, and Lifetime Basics**. Compare the reasoning against this question: *What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -251,9 +251,7 @@ A reference answer is not superior merely because it is more generic. Prefer the
 
 Refactor a concrete file codec into a BufRead/Write boundary and derive the lifetime of a borrowed selector without overconstraining unrelated inputs.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-08-traits-and-lifetimes/solution`](../../labs/module-08-traits-and-lifetimes/solution). Before reading it, write down:
 
@@ -274,3 +272,42 @@ For **Generics, Traits, Conversions, and Lifetime Basics**, compare the contract
 - Choose ownership instead of adding lifetime parameters when values must be retained independently.
 
 A complete explanation of **Generics, Traits, Conversions, and Lifetime Basics** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose?
+
+Build a **trait and lifetime contract**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Write generic functions and types whose bounds correspond to operations actually performed.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Define and implement small traits as behavioral contracts without abstraction theater.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use Display, Error, From, FromStr, Read, BufRead, and Write at natural boundaries.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Derive ordinary lifetime annotations from input-output provenance and distinguish annotation from lifetime extension.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Choose ownership instead of adding lifetime parameters when values must be retained independently.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Write generic functions and types whose bounds correspond to operations actually performed.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the trait and lifetime contract.
+
+### Laboratory transfer review
+
+For [Trait and Lifetime Boundary](../../labs/module-08-traits-and-lifetimes/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 8 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Generics, Traits, Conversions, and Lifetime Basics**, which relationship decides this question: “What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

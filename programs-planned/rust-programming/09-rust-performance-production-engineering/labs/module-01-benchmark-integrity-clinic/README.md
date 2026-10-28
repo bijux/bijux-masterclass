@@ -1,6 +1,14 @@
-# Laboratory 1 — Benchmark Integrity Clinic
+# Laboratory 81 — Benchmark Integrity Clinic
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 81 chapter](../../course-book/module-81-performance-contracts-workloads-and-benchmark-design/index.md)
+**Course 9 · Module 81: Performance Contracts, Workloads, and Benchmark Design**
+
+[Chapter](../../course-book/module-81-performance-contracts-workloads-and-benchmark-design/index.md) · [Workbook](../../course-book/module-81-performance-contracts-workloads-and-benchmark-design/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Performance Contracts, Workloads, and Benchmark Design**: What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception? The product must make **Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **performance claim and workload record** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -63,3 +71,25 @@ Submit one compact benchmark report containing the benchmark question, hardware 
 
 The report must also name one source of systematic bias that repetition cannot remove—for example a different allocator configuration, stale build artifact, changing corpus, or benchmark setup included on only one side. State how the design prevents or detects it.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Benchmark Integrity Clinic**.
+2. Draw the smallest **performance claim and workload record** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle.
+- Separate latency, throughput, utilization, memory footprint, startup cost, binary size, and tail behavior instead of combining them into one score.
+- Design microbenchmarks that exclude setup and validation costs unless those costs belong to the product operation.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 81 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **performance claim and workload record**. Defend why your design is simpler than one plausible alternative under the new requirements.

@@ -1,6 +1,43 @@
 # Memory Workspace
 
-This directory contains the executable capstone for Course 2. The reader-facing design and ten-step learning route are in the [capstone chapter](../course-book/capstone.md).
+## Course role
+
+Memory Workspace is a single-threaded document workspace with generational handles, borrowed views, staged edits, snapshots, weak observers, caches, and explicit memory accounting. Every feature exists to make an ownership or lifetime relationship observable.
+
+Memory Workspace is not a showcase of ten independent features. It is the place where the course’s mechanisms must coexist without creating a second owner for state, validation, order, failure, compatibility, or resource policy.
+
+## Invariants carried through the product
+
+- A document handle is valid only when both slot and generation match.
+- Borrowed views never outlive the workspace or snapshot that owns their bytes.
+- An edit commits only against the revision it was prepared from.
+- Strong snapshots own liveness; weak observers never keep data alive.
+- Cache validity is tied to revision and runtime borrows never escape their operation.
+- Memory reports name their inclusions and exclusions instead of claiming exact heap truth.
+
+## Module-to-product map
+
+| Module | Mechanism added | Acceptance criterion |
+|---:|---|---|
+| 11 | Places, Move Paths, and Advanced Borrowing | Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations |
+| 12 | Lifetime Relationships and Borrowed APIs | Translate lifetime syntax into constraints among borrows rather than durations attached to values |
+| 13 | Scoped Access and Escape Prevention | Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation |
+| 14 | RAII, Drop, Unwinding, and Failure Atomicity | Derive local, field, tuple, temporary, and scope destruction order from documented rules |
+| 15 | Box, Deref, Dynamically Sized Types, and Cow | Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership |
+| 16 | Rc, Weak, and Ownership Graphs | Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts |
+| 17 | Interior Mutability and Runtime Borrows | Explain UnsafeCell as the primitive behind interior mutability while remaining within safe APIs |
+| 18 | Memory Representation, Validity, and Layout | Separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation |
+| 19 | Subtyping, Variance, PhantomData, and Drop Checking | State lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally |
+| 20 | Pinning and Address-Sensitive Design | Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants |
+
+## Reading route
+
+1. Read the Memory Workspace contract and non-goals in the [engineering guide](../course-book/capstone.md).
+2. Locate the type or component that owns each invariant above.
+3. Run the baseline tests and one end-to-end demonstration before changing code.
+4. Implement only the current module increment and its adversarial test.
+5. Trace success, rejection, partial failure, cleanup, order, and capacity through the public surface.
+6. Re-run the complete course route, then explain which claims remain conditioned on a compiler, target, scheduler, peer, workload, or operating system.
 
 `memory-workspace` is the complete capstone for **Rust Ownership, Lifetimes, and Memory**. It is a single-threaded in-memory document workspace designed to make ownership topology observable.
 

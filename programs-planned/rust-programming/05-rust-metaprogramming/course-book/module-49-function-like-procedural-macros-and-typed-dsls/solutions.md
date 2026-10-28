@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 49: Function-Like Procedural Macros and Typed DSLs
+# Reasoned Solutions — Module 49: Function-Like Procedural Macros and Typed DSLs
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-route-table-dsl/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare separation of parse and semantic errors, diagnostics carrying both declarations for duplicates, one normalized representation driving all output, generated code small enough to inspect. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 49: Function-Like Procedural Macros and Typed DSLs**. Compare the reasoning against this question: *How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ Source order is usually best when authors intentionally order help and dispatch 
 
 The DSL can require syntactic paths and cross-entry uniqueness. Rust should resolve those paths, check visibility, confirm descriptor types, and verify handler/argument compatibility through generated typed expressions. Reimplementing type checking from token spelling is brittle.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-09-route-table-dsl/solution`](../../labs/module-09-route-table-dsl/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - what size or volatility would make a data file preferable;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?
+
+Build a **DSL syntax-to-model map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Design a bounded custom grammar with explicit compatibility space.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Implement `syn::parse::Parse` for syntax nodes rather than splitting strings.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Separate syntax AST, semantic validation, normalized model, and generation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Detect duplicates and cross-entry conflicts with useful multi-span errors.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Preserve source order or define canonical order deliberately.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Design a bounded custom grammar with explicit compatibility space.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the DSL syntax-to-model map.
+
+### Laboratory transfer review
+
+For [Route Table DSL](../../labs/module-09-route-table-dsl/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 49 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Function-Like Procedural Macros and Typed DSLs**, which relationship decides this question: “How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

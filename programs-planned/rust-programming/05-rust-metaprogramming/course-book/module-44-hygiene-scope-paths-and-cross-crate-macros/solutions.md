@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros
+# Reasoned Solutions — Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-exported-registry-macro/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare successful use from a renamed downstream dependency, independence from caller imports, privacy of helpers reached through `$crate`, absence of accidental capture or namespace pollution. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros**. Compare the reasoning against this question: *Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ Declarative hygiene protects many local identifiers, but generated public names 
 
 The fixture should be a separate Cargo package with the dependency aliased in `Cargo.toml`, invoke the macro through the alias, define a local type with the same short name as the support type, avoid importing helper items, and call from a nested module. Passing this fixture proves more than an in-crate unit test.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-04-exported-registry-macro/solution`](../../labs/module-04-exported-registry-macro/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - what downstream test proves the macro is actually portable;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?
+
+Build a **hygiene and path map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Use `$crate` for defining-crate references in exported `macro_rules!` expansions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Preserve invocation-site identifiers supplied by callers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Avoid accidental dependence on caller imports or prelude contents.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Design visibility so generated code can legally reach helper items.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the hygiene and path map.
+
+### Laboratory transfer review
+
+For [Exported Registry Macro](../../labs/module-04-exported-registry-macro/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 44 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Hygiene, Scope, Paths, and Cross-Crate Macros**, which relationship decides this question: “Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

@@ -1,8 +1,8 @@
 # Reasoned Solutions — Module 75: Protocol State Machines, Versioning, and Defensive Parsing
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the JobWire guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-05-negotiated-command-protocol/README.md) · [JobWire guide](../capstone.md)
 
-The governing correction is that transport success does not imply protocol legality. Each layer validates a different claim and determines a different error scope.
+Use these notes only after preserving your prediction and repair for **Module 75: Protocol State Machines, Versioning, and Defensive Parsing**. Compare the reasoning against this question: *Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -36,3 +36,42 @@ JobWire V1 should remain sequential per connection to keep response ordering and
 ## Part 6 — Reconstruction and defense
 
 A complete defense separates framing, encoding, syntax, semantics, state, and application commit. It explains that version selects rules, request IDs correlate, idempotency keys stabilize effects, and continuation after error is safe only when both peers retain the same framing and state interpretation.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope?
+
+Build a **protocol transition table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Design an explicit connection-state machine with typed transitions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Distinguish connection-fatal errors from request-local rejections.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Negotiate protocol versions before accepting ordinary commands.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Define canonical message rendering and strict parsing.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the protocol transition table.
+
+### Reference implementation comparison
+
+For [Negotiated Command Protocol](../../labs/module-05-negotiated-command-protocol/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In JobWire, Module 75 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Protocol State Machines, Versioning, and Defensive Parsing**, which relationship decides this question: “Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to JobWire?

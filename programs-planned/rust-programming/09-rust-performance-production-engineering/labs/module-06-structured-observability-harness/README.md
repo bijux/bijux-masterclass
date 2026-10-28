@@ -1,6 +1,14 @@
-# Laboratory 6 — Structured Observability Harness
+# Laboratory 86 — Structured Observability Harness
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 86 chapter](../../course-book/module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md)
+**Course 9 · Module 86: Observability: Structured Tracing, Metrics, and Diagnostic Context**
+
+[Chapter](../../course-book/module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md) · [Workbook](../../course-book/module-86-observability-structured-tracing-metrics-and-diagnostic-context/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Observability: Structured Tracing, Metrics, and Diagnostic Context**: What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally? The product must make **Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **signal dictionary** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -66,3 +74,25 @@ Add tests or a capture harness proving that success, invalid input, capacity rej
 
 Measure the instrumentation path under disabled, human-readable, and structured-output configurations. Record event volume, bytes emitted, and any measurable latency change under the same workload. Then break the subscriber or output sink deliberately and state whether application work continues, blocks, or fails. The chosen behavior must be explicit. Diagnostic generation may be lossy under a declared policy, but it may not create unbounded memory growth or silently alter domain results.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Structured Observability Harness**.
+2. Draw the smallest **signal dictionary** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer.
+- Design stable event names and fields that preserve causal context across async and threaded work.
+- Choose metric types and label sets without creating unbounded cardinality.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 86 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **signal dictionary**. Defend why your design is simpler than one plausible alternative under the new requirements.

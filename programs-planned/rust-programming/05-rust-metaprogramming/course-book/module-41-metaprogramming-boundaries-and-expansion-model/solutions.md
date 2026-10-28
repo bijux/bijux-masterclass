@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 41: Metaprogramming Boundaries and the Expansion Model
+# Reasoned Solutions — Module 41: Metaprogramming Boundaries and the Expansion Model
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-decision-table-generator/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare whether generation eliminates a real competing authority, whether the ordinary-Rust reference remains simpler for small inputs, whether each validation rule lives in the earliest honest phase, whether runtime policy remains outside the macro. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 41: Metaprogramming Boundaries and the Expansion Model**. Compare the reasoning against this question: *Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ They belong respectively to syntax parsing, procedural semantic validation, name
 
 Command names and cross-command uniqueness belong to the catalog DSL; handler signature belongs to the attached function plus attribute validation; argument fields belong to the ordinary struct plus derive helper attributes; diagnostic variants/codes/messages belong to the declarative diagnostic declaration; external exit codes belong to the checked TSV consumed by `build.rs`. No fact should be independently declared by two mechanisms.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-01-decision-table-generator/solution`](../../labs/module-01-decision-table-generator/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - what change would make the macro unnecessary;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?
+
+Build a **mechanism-selection record**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Separate runtime abstraction from compile-time generation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Identify the source of truth and generated surface of a proposed macro.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Explain expansion as a staged production of ordinary Rust tokens.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Distinguish matcher, parser, name-resolution, type-checking, build, and runtime failures.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Choose among ordinary Rust, `macro_rules!`, a derive, an attribute, a function-like procedural macro, and a build script.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Separate runtime abstraction from compile-time generation.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the mechanism-selection record.
+
+### Laboratory transfer review
+
+For [Decision Table Generator](../../labs/module-01-decision-table-generator/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 41 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Metaprogramming Boundaries and the Expansion Model**, which relationship decides this question: “Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

@@ -1,9 +1,11 @@
-# 45 — Macro Diagnostics, Testing, and Public API Design
+# Module 45 — Macro Diagnostics, Testing, and Public API Design
 
-**Course 5, day 5 · Module 45 of 90**  
-`███████████████░░░░░` **45/90**
+**Course 5 · Day 5 · Module 45 of 100**
+`███████████░░░░░░░░░░░░░░` **45/100**
 
-[← Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 46: Procedural Macro Execution and TokenStream Engineering →](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-diagnostic-enum-macro/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md) · [Module 46: Procedural Macro Execution and TokenStream Engineering →](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 A macro is not complete when one valid example expands. Modules 42–44 established grammar, recursion, paths, and visibility. Module 45 turns those mechanisms into a public contract with evidence for success, failure, runtime behavior, downstream use, and future change.
 
 This module is the midpoint of the course because procedural macros amplify every issue discussed here. A parser with excellent spans is still a weak API if its accepted language, generated surface, or compatibility policy is undefined.
+
+### Prerequisite bridge
+
+Module 44 established **Hygiene, Scope, Paths, and Cross-Crate Macros**. Before continuing, verify that you can explain why procedural macros require a different path strategy from `$crate`. This module preserves that capability and adds the ability to treat invocation grammar and generated rust as two related public apis. Module 46, **Procedural Macro Execution and TokenStream Engineering**, will rely on both when it asks: *What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?*
+
+### Scope boundary
+
+This module owns the reasoning for **macro diagnostics, testing, and public api design** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -360,6 +370,24 @@ A macro page should include:
 
 Examples alone are not a grammar. “Works like this” leaves callers guessing about omitted cases.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For treat invocation grammar and generated Rust as two related public APIs, construct one positive and one causal negative example. Mark the first decisive fact in the **diagnostic contract** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For design negative cases that fail for one intended cause, construct one positive and one causal negative example. Mark the first decisive fact in the **diagnostic contract** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For distinguish matcher errors, deliberate `compile_error!`, generated-code errors, and runtime failures, construct one positive and one causal negative example. Mark the first decisive fact in the **diagnostic contract** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For test expansion behavior without depending on unstable textual formatting, construct one positive and one causal negative example. Mark the first decisive fact in the **diagnostic contract** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge’s diagnostic catalog becomes a public-quality declarative macro in this module.
@@ -414,7 +442,4 @@ Do not continue if your test strategy is only “the crate builds” or if negat
 
 ## Continue
 
-1. Complete the [Module 45 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 45 — Diagnostic Enum Macro](../../labs/module-05-diagnostic-enum-macro/README.md) from its public contract.
-3. Apply the Module 45 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 46 — Procedural Macro Execution and TokenStream Engineering](../module-46-procedural-macro-execution-and-tokenstream-engineering/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

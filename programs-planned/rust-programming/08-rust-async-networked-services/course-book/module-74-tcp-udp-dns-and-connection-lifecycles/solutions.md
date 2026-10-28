@@ -1,8 +1,8 @@
 # Reasoned Solutions — Module 74: TCP, UDP, DNS, and Connection Lifecycles
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the JobWire guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-deadline-echo-service/README.md) · [JobWire guide](../capstone.md)
 
-The governing correction is that transport events are evidence with limited scope. Accept is not admission policy, write is not commit, address is not identity, and timeout is not rollback.
+Use these notes only after preserving your prediction and repair for **Module 74: TCP, UDP, DNS, and Connection Lifecycles**. Compare the reasoning against this question: *What lifecycle does each network transport actually provide, and where should connection admission, name resolution, deadlines, half-close, datagram loss, and peer identity be represented?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -36,3 +36,42 @@ JobWire’s listener owns the accept loop, while a connection set owns child tas
 ## Part 6 — Reconstruction and defense
 
 A complete defense names the transport guarantee precisely and then names the missing application guarantee. It distinguishes capacity before and after accept, directional EOF, overall deadline propagation, UDP datagram semantics, and the single lifecycle owner that coordinates split I/O halves.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What lifecycle does each network transport actually provide, and where should connection admission, name resolution, deadlines, half-close, datagram loss, and peer identity be represented?
+
+Build a **connection lifecycle map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Acquire connection admission before spawning unbounded tasks.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Explain the limits of socket backlog as application backpressure.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Model DNS resolution and multi-address connection attempts under one deadline.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Distinguish TCP ordered bytes from application request completion.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the connection lifecycle map.
+
+### Reference implementation comparison
+
+For [Deadline Echo Service](../../labs/module-04-deadline-echo-service/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In JobWire, Module 74 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **TCP, UDP, DNS, and Connection Lifecycles**, which relationship decides this question: “What lifecycle does each network transport actually provide, and where should connection admission, name resolution, deadlines, half-close, datagram loss, and peer identity be represented?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to JobWire?

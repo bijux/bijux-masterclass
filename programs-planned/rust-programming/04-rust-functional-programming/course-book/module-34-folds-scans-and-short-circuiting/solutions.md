@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 34: Folds, Scans, and Short-Circuiting
+# Reasoned Solutions — Module 34: Folds, Scans, and Short-Circuiting
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-streaming-metrics/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Folds, Scans, and Short-Circuiting**, not to substitute for an attempt. The decisive question is: *What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 34: Folds, Scans, and Short-Circuiting**. Compare the reasoning against this question: *What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ The closure carries `(index, total)` in `Continue`; when the updated total reach
 
 Keep domain state and recoverable diagnostics in a coherent core accumulator if they share one traversal contract. Replace audit text with structured audit entries. Remove progress output and timing from the core; the shell can observe batches or execute a returned plan. If timing must surround the whole operation, it needs no per-item accumulator field. One pass can remain, but the accumulator now has one explainable invariant instead of mixing domain state and effects.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-04-streaming-metrics/solution`](../../labs/module-04-streaming-metrics/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **Folds, Scans, and Short-Circuiting**, compare the contract, invariant, fai
 - Use `ControlFlow` for domain-specific early exit without inventing an error.
 
 A complete explanation of **Folds, Scans, and Short-Circuiting** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?
+
+Build a **accumulator invariant**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Design a fold accumulator with a precise prefix invariant.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish `fold`, `reduce`, `sum`, `product`, and explicit loops by semantics rather than style.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use `scan` when evolving state must also yield an output stream.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use `try_fold` and `try_for_each` for fallible short-circuiting traversal.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Use `ControlFlow` for domain-specific early exit without inventing an error.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Design a fold accumulator with a precise prefix invariant.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the accumulator invariant.
+
+### Laboratory transfer review
+
+For [Streaming Metrics](../../labs/module-04-streaming-metrics/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 34 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Folds, Scans, and Short-Circuiting**, which relationship decides this question: “What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

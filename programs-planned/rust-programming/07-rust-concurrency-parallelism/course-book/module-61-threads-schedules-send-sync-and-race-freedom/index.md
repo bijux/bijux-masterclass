@@ -1,8 +1,11 @@
-# Module 61: Threads, Schedules, Send, Sync, and Race Freedom
+# Module 61 — Threads, Schedules, Send, Sync, and Race Freedom
 
-**Course 7, day 1 · Module 61 of 90**  
+**Course 7 · Day 1 · Module 61 of 100**
+`███████████████░░░░░░░░░░` **61/100**
 
-**61/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-thread-handoff-matrix/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 60: Integrated Systems Design, Testing, and Audit](../../../06-rust-systems-programming/course-book/module-60-integrated-systems-design-and-audit/index.md) · [Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries →](../module-62-structured-threads-scopes-joins-and-panic-boundaries/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Courses 1–6 taught you to follow one value through ownership, borrowing, clean
 Rust begins the concurrency story with a powerful negative guarantee: safe code cannot contain a data race. That guarantee is foundational, not complete. Two threads can update separate atomic values without a data race and still violate a quota. They can wait on locks in opposite order and deadlock. They can race to publish a result so that either valid result wins. They can produce the right collection in a different order on every run. This module builds the vocabulary that prevents “it compiles” from becoming a false proof of concurrent correctness.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 60 established **Integrated Systems Design, Testing, and Audit**. Before continuing, verify that you can defend exclusions and future-course boundaries rather than pretending to solve every systems problem. This module preserves that capability and adds the ability to distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions;. Module 62, **Structured Threads: Scopes, Joins, and Panic Boundaries**, will rely on both when it asks: *How can borrowed data, thread lifetime, completion, and panic handling be enclosed by one parent operation rather than leaked into the rest of the program?*
+
+### Scope boundary
+
+This module owns the reasoning for **threads, schedules, send, sync, and race freedom** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -132,6 +143,24 @@ Before writing a spawn loop, record one row per shared or transferred value:
 
 The ledger exposes vague phrases such as “workers share the data.” It also reveals when a value is unnecessarily shared rather than partitioned and moved.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions, construct one positive and one causal negative example. Mark the first decisive fact in the **thread ownership map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For derive whether an owned value may move into a thread from its `Send` obligation, construct one positive and one causal negative example. Mark the first decisive fact in the **thread ownership map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For derive whether a shared reference may cross a thread boundary from the referent’s `Sync` obligation, construct one positive and one causal negative example. Mark the first decisive fact in the **thread ownership map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For explain why `Arc<T>` provides shared ownership but not automatic mutation safety, construct one positive and one causal negative example. Mark the first decisive fact in the **thread ownership map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The following function gives each worker exclusive ownership of one payload and uses join results as the publication boundary. Completion order is free; output order is stable because each result carries its source index.
@@ -217,4 +246,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Thread Handoff Matrix](../../labs/module-01-thread-handoff-matrix/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 62 — Structured Threads: Scopes, Joins, and Panic Boundaries](../module-62-structured-threads-scopes-joins-and-panic-boundaries/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

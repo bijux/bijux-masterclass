@@ -1,8 +1,17 @@
-# Module 90 Workbook — Production Readiness, Capacity Planning, Rollouts, and Incident Learning
+# Workbook — Module 90: Production Readiness, Capacity Planning, Rollouts, and Incident Learning
 
-[Chapter](index.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-10-production-readiness-review/README.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
 
-The final module asks whether the evidence is sufficient to expose a real system to real load. “Tests pass” is necessary but far from sufficient. Readiness combines current evidence, capacity headroom, observable failure, practiced rollback, and a plan for learning from incidents.
+This workbook tests whether **Production Readiness, Capacity Planning, Rollouts, and Incident Learning** has become a usable model rather than remembered vocabulary. Its governing question is: *What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?* Preserve your first prediction and record decisive facts in a **production decision record**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 89 — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?**
+3. Draw the smallest **production decision record** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -74,9 +83,32 @@ Create a change-to-evidence matrix. Rows should include parser semantics, depend
 
 Write a one-page launch decision with four sections: supported claim, current evidence, explicit blockers or accepted risks, and rollback authority. The memorandum must name the exact artifact digest and configuration. Avoid adjectives such as “robust” or “production-grade” unless each is replaced by a measurable property and a scope. End with the first signal that would trigger rollback and the person or role authorized to make that decision.
 
+### Interleaved reasoning pass
+
+1. For **Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the production decision record.
+2. For **Derive initial capacity and headroom from measured service demand, resource use, and burst policy**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the production decision record.
+3. For **Distinguish load test, stress test, soak test, fault test, compatibility test, and rollback rehearsal**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the production decision record.
+4. For **Design canary, staged, blue/green, or shadow rollout policies with objective promotion and rollback criteria**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the production decision record.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Production Readiness, Capacity Planning, Rollouts, and Incident Learning** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build the [Production Readiness Review](../../labs/module-10-production-readiness-review/README.md). The review consumes current evidence for performance, reliability, observability, security, rollback, and incident practice. Duplicate, missing, stale, or failed evidence blocks deployment. Capacity arithmetic is checked, and the decision explains every blocker rather than returning one boolean.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Production Readiness Review**, record:
+
+- the public behavior that demonstrates **Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -94,6 +126,10 @@ Finish MetricRail as an operated product:
 - final architecture and limitations record.
 
 Run the final review against the exact source revision and artifact. A green decision is not permanent; material changes invalidate related evidence.
+
+### Capstone invariant trace
+
+For the Module 90 MetricRail increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -114,3 +150,6 @@ Given a projected peak of 18,000 records per second, a measured sustainable rate
 
 The final decision must connect product behavior to an operator action. Every alert needs an owner and runbook; every capacity claim needs a workload and environment; every rollout needs a stop condition and rollback path; every incident drill needs evidence that terminal work was accounted for. Readiness is a current, bounded claim about a named artifact in a named environment—not a permanent label attached to a repository.
 
+### Closed-book defense
+
+In five minutes, answer “What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?” using the **production decision record**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside MetricRail. A list of APIs without the deciding relationship is incomplete.

@@ -1,8 +1,17 @@
 # Workbook — Module 05: Structs, Enums, Methods, and Pattern Matching
 
-[Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-state-machine/README.md) · [Taskboard guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Structs, Enums, Methods, and Pattern Matching** without relying on surface syntax. Keep the module question in view: *How can the type system make valid states representable and contradictory states difficult or impossible to construct?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Structs, Enums, Methods, and Pattern Matching** has become a usable model rather than remembered vocabulary. Its governing question is: *How can the type system make valid states representable and contradictory states difficult or impossible to construct?* Preserve your first prediction and record decisive facts in a **state model**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 4 — Borrowing, References, Slices, and Strings that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How can the type system make valid states representable and contradictory states difficult or impossible to construct?**
+3. Draw the smallest **state model** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -24,7 +33,6 @@ python3 ../tools/run_compiler_labs.py 01-rust-foundations
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 ### Defective model
 
@@ -137,7 +145,6 @@ Then identify the invariant boundary for each fact:
 ### Access protocol
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
-
 
 Complete every exercise before reading the answer file. Each solution must include tests and a short representation argument, not only code.
 
@@ -278,11 +285,18 @@ For every exercise submit:
 - the exact `cargo test` result;
 - any compiler diagnostic that changed the design.
 
+### Interleaved reasoning pass
 
+1. For **Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the state model.
+2. For **Place invariants at constructors and methods while keeping representation private where external mutation would bypass rules**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the state model.
+3. For **Use exhaustive pattern matching to expose every state and transition**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the state model.
+4. For **Represent absence with Option and distinguish it from malformed input or failed operations**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the state model.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Structs, Enums, Methods, and Pattern Matching** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Objective
 
@@ -414,6 +428,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-05-state-machine](../../labs/module-05-state-machine/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Typed Workflow State Machine**, record:
+
+- the public behavior that demonstrates **Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -423,7 +449,6 @@ The executable starter and reference implementation are in [module-05-state-mach
 - Use exhaustive pattern matching to expose every state and transition.
 - Represent absence with Option and distinguish it from malformed input or failed operations.
 - Replace Boolean-flag and stringly typed state with an explicit state machine and tested legal transitions.
-
 
 ### Starting point
 
@@ -534,11 +559,13 @@ Add a capstone architecture note answering:
 
 Run the capstone model tests and the whole workspace. The step fails review if arbitrary status assignment remains possible, even if all current tests pass.
 
-
-
 ### Capstone defense
 
 Convert a contradictory multi-flag workflow into one authoritative enum and prove that illegal combinations are no longer constructible.
+
+### Capstone invariant trace
+
+For the Module 5 Taskboard increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -548,11 +575,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Choose structs, tuple structs, newtypes, enums, and associated data from domain shape rather than language familiarity.
-- Place invariants at constructors and methods while keeping representation private where external mutation would bypass rules.
-- Use exhaustive pattern matching to expose every state and transition.
-- Represent absence with Option and distinguish it from malformed input or failed operations.
-- Replace Boolean-flag and stringly typed state with an explicit state machine and tested legal transitions.
+Without reopening the chapter, reconstruct the outcomes for **Module 05: Structs, Enums, Methods, and Pattern Matching**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -634,6 +657,18 @@ Failure on the transition or ownership sections requires targeted repair before 
 
 ### Transfer defense
 
-Convert a contradictory multi-flag workflow into one authoritative enum and prove that illegal combinations are no longer constructible.
+Transfer **Module 05: Structs, Enums, Methods, and Pattern Matching** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 05: Structs, Enums, Methods, and Pattern Matching** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
+
+### Closed-book defense
+
+In five minutes, answer “How can the type system make valid states representable and contradictory states difficult or impossible to construct?” using the **state model**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Taskboard. A list of APIs without the deciding relationship is incomplete.

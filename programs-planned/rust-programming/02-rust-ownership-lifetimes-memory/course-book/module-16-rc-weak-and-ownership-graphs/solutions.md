@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 16: Rc, Weak, and Ownership Graphs
+# Reasoned Solutions — Module 16: Rc, Weak, and Ownership Graphs
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-06-rc-weak-graph/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Rc, Weak, and Ownership Graphs**, not to substitute for an attempt. The decisive question is: *Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 16: Rc, Weak, and Ownership Graphs**. Compare the reasoning against this question: *Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -86,9 +86,7 @@ Use these explanations to review your reasoning about **Rc, Weak, and Ownership 
 
 Audit a parent/child/observer graph, choose strong and weak edges, and prove teardown and bounded retention with tests.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-06-rc-weak-graph/solution`](../../labs/module-06-rc-weak-graph/solution). Before reading it, write down:
 
@@ -109,3 +107,42 @@ For **Rc, Weak, and Ownership Graphs**, compare the contract, invariant, failure
 - Bound retained shared state through explicit eviction or retention policy instead of assuming reference counting is collection.
 
 A complete explanation of **Rc, Weak, and Ownership Graphs** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?
+
+Build a **liveness graph**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Use Rc::clone, downgrade, upgrade, strong_count, weak_count, get_mut, and make_mut with their exact preconditions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Prevent strong cycles by assigning ownership direction and weak observers/backlinks deliberately.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Distinguish value equality, allocation identity, runtime handles, and liveness observations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Bound retained shared state through explicit eviction or retention policy instead of assuming reference counting is collection.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the liveness graph.
+
+### Laboratory transfer review
+
+For [Shared Ownership Graph](../../labs/module-06-rc-weak-graph/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 16 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Rc, Weak, and Ownership Graphs**, which relationship decides this question: “Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

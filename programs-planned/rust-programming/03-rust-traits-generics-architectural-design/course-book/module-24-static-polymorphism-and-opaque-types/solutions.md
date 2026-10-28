@@ -1,72 +1,72 @@
-# Reasoned solutions — Module 24: Static Polymorphism and Opaque Types
+# Reasoned Solutions — Module 24: Static Polymorphism and Opaque Types
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-static-pipeline/README.md) · [Review Engine guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Static Polymorphism and Opaque Types**, not to substitute for an attempt. The decisive question is: *When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 24: Static Polymorphism and Opaque Types**. Compare the reasoning against this question: *When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
 ### 1. `01-method-specific-bound.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Method-specific bound.
-- **Causal explanation:** The compiler rejects the specimen because method-specific bound.
+- **Governing rule:** A method body may use formatting only when the method or enclosing implementation constrains the field type with the required formatting trait.
+- **Causal explanation:** `format!("{}", self.0)` requires `T: Display`, but the unconstrained implementation promises `show` for every `T`; generic checking therefore rejects the body.
 - **Principled repair:** Put the bound on the method or a separate impl block.
 - **Weak repair to reject:** Put every possible bound on the struct.
 
 ### 2. `02-narrow-impl-bound.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Narrow impl bound.
-- **Causal explanation:** The specimen compiles because narrow impl bound.
+- **Governing rule:** Bounds can be placed on only the methods or implementation blocks that require them, leaving unrelated capabilities available to more types.
+- **Causal explanation:** `first` is available for every `Pair<T>`, while `max` is available only when `T: PartialOrd`; the `i32` pair satisfies the narrower comparison contract.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Constrain the entire struct.
 
 ### 3. `03-independent-impl-trait-arguments.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Independent impl Trait arguments.
-- **Causal explanation:** The specimen compiles because independent impl Trait arguments.
+- **Governing rule:** Separate argument-position `impl Trait` occurrences denote independent hidden type parameters unless the signature explicitly ties them together.
+- **Causal explanation:** `a` and `b` need only implement `Display`; one may be an integer and the other a string slice because no equality relation is declared between their concrete types.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Assume the types are equal in the body.
 
 ### 4. `04-named-generic-equality.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Named generic equality.
-- **Causal explanation:** The compiler rejects the specimen because named generic equality.
+- **Governing rule:** Reusing one named type parameter for two arguments requires both arguments to have exactly the same concrete type.
+- **Causal explanation:** `show<T>(_: T, _: T)` cannot choose one `T` that is simultaneously `u8` and `u16`; independent parameters are needed when equality is not part of the contract.
 - **Principled repair:** Use separate type parameters when equality is unnecessary.
 - **Weak repair to reject:** Convert both values to String regardless of semantics.
 
 ### 5. `05-opaque-branch-mismatch.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Opaque branch mismatch.
-- **Causal explanation:** The compiler rejects the specimen because opaque branch mismatch.
+- **Governing rule:** Every return path of one return-position `impl Trait` function must produce the same hidden concrete type.
+- **Causal explanation:** The `if` branches produce `u8` and `&str`. Both implement `Display`, but the opaque return denotes one concrete type, not a run-time union of all implementors.
 - **Principled repair:** Use an enum, trait object, or one unified concrete adapter.
 - **Weak repair to reject:** Return formatted strings solely to erase differences.
 
 ### 6. `06-opaque-static-dispatch.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Opaque static dispatch.
-- **Causal explanation:** The specimen compiles because opaque static dispatch.
+- **Governing rule:** A return-position `impl Trait` hides a single concrete return type from callers while preserving its stated capabilities for static dispatch.
+- **Causal explanation:** The function always returns the same array iterator type and promises `Iterator<Item = u8>`, so callers may use iterator methods without learning the concrete name.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Expose a long concrete iterator type publicly.
 
 ### 7. `07-opaque-capability-limit.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Opaque capability limit.
-- **Causal explanation:** The compiler rejects the specimen because opaque capability limit.
+- **Governing rule:** Callers of an opaque return may rely only on bounds named in the public return type.
+- **Causal explanation:** Although the hidden value happens to be a `String`, the signature promises only `Display`; `clone` is therefore unavailable until `Clone` becomes an intentional part of the contract.
 - **Principled repair:** Add a justified Clone bound or avoid requiring it.
 - **Weak repair to reject:** Downcast the opaque value.
 
 ### 8. `08-generic-type-transition.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Generic type transition.
-- **Causal explanation:** The specimen compiles because generic type transition.
+- **Governing rule:** A consuming generic method may return the same structure instantiated with a different type parameter.
+- **Causal explanation:** `map` owns the original pair, preserves its first field, and returns `P<A, C>`; the annotated result exactly matches the new `C = &str` state.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Hide all strategy changes behind dynamic dispatch.
 
@@ -96,7 +96,7 @@ The language-level design is statically typed for each concrete instantiation. C
 
 Sources and reporters are good generic outer boundaries when one engine execution uses one concrete source and reporter. The rule registry is not, because it must contain several concrete rule types together. A good signature map makes this asymmetry explicit rather than forcing one mechanism everywhere.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-04-static-pipeline/solution`](../../labs/module-04-static-pipeline/solution). Before reading it, write down:
 
@@ -117,3 +117,42 @@ For **Static Polymorphism and Opaque Types**, compare the contract, invariant, f
 - Control generic API complexity through boundary placement.
 
 A complete explanation of **Static Polymorphism and Opaque Types** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?
+
+Build a **static-dispatch map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Design generic functions and types with the weakest sufficient bounds.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish argument-position and return-position `impl Trait`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Explain monomorphization without promising optimization outcomes.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Choose static dispatch when concrete type identity carries useful guarantees.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Control generic API complexity through boundary placement.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Design generic functions and types with the weakest sufficient bounds.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the static-dispatch map.
+
+### Laboratory transfer review
+
+For [Static Pipeline](../../labs/module-04-static-pipeline/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Review Engine, Module 24 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Static Polymorphism and Opaque Types**, which relationship decides this question: “When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Review Engine?

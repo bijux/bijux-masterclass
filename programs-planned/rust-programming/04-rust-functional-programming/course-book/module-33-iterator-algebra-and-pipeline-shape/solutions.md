@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 33: Iterator Algebra and Pipeline Shape
+# Reasoned Solutions — Module 33: Iterator Algebra and Pipeline Shape
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-03-record-shaping-pipeline/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Iterator Algebra and Pipeline Shape**, not to substitute for an attempt. The decisive question is: *How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 33: Iterator Algebra and Pipeline Shape**. Compare the reasoning against this question: *How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ Attach the physical position before any filtering: `rows.iter().enumerate()`. Af
 
 Parsing through filtering and expansion can usually remain lazy if downstream consumes once. Sorting requires materialization because global order needs all items. A good split is `normalized_rows`, `parsed_rows`, `accepted_events`, then `let mut events: Vec<_> = accepted_events.collect(); events.sort_by_key(...);`, followed by a rendering iterator or explicit loop. The materialization boundary is justified by the algorithm, not by type inconvenience.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-03-record-shaping-pipeline/solution`](../../labs/module-03-record-shaping-pipeline/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **Iterator Algebra and Pipeline Shape**, compare the contract, invariant, fa
 - Refactor long chains into named semantic stages without forcing premature collection.
 
 A complete explanation of **Iterator Algebra and Pipeline Shape** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?
+
+Build a **pipeline shape table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Derive the item type and cardinality effect of common iterator adapters.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Choose correctly among `filter`, `map`, `filter_map`, `flatten`, and `flat_map`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Reason about order and truncation in `chain`, `zip`, `take`, and stopping adapters.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use `inspect` for observation without embedding required effects into a transformation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Refactor long chains into named semantic stages without forcing premature collection.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Derive the item type and cardinality effect of common iterator adapters.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the pipeline shape table.
+
+### Laboratory transfer review
+
+For [Record-Shaping Pipeline](../../labs/module-03-record-shaping-pipeline/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 33 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Iterator Algebra and Pipeline Shape**, which relationship decides this question: “How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

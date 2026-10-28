@@ -1,6 +1,17 @@
 # Workbook — Module 73: Async I/O, Buffers, Streams, and Framing
 
-[Return to the chapter](index.md) · [Open the solutions](solutions.md) · [Open the JobWire guide](../capstone.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-03-bounded-length-codec/README.md) · [JobWire guide](../capstone.md) · [Solutions](solutions.md)
+
+This workbook tests whether **Async I/O, Buffers, Streams, and Framing** has become a usable model rather than remembered vocabulary. Its governing question is: *How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning?* Preserve your first prediction and record decisive facts in a **buffer and frame ledger**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 72 — Tokio Runtimes, Tasks, and Structured Async Lifecycles that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning?**
+3. Draw the smallest **buffer and frame ledger** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -41,6 +52,17 @@ Analyze `next`, `send`, `flush`, and `close` on a framed transport. State what c
 
 Create a design that converts a large receive buffer into small `Bytes` payloads. Add a policy that copies small long-lived values when retention would pin an excessive allocation.
 
+### Interleaved reasoning pass
+
+1. For **Distinguish readiness from transfer completion**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the buffer and frame ledger.
+2. For **Handle partial reads and partial writes without message-boundary assumptions**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the buffer and frame ledger.
+3. For **Explain the contracts of `AsyncRead`, `AsyncWrite`, `AsyncBufRead`, `Stream`, and `Sink`**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the buffer and frame ledger.
+4. For **Use `Bytes` and `BytesMut` to separate shared immutable payloads from mutable receive buffers**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the buffer and frame ledger.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Async I/O, Buffers, Streams, and Framing** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Bounded Length Codec](../../labs/module-03-bounded-length-codec/README.md). Required evidence includes:
@@ -54,11 +76,27 @@ Build [Bounded Length Codec](../../labs/module-03-bounded-length-codec/README.md
 - canonical round trips;
 - a written cancellation policy for interrupted output.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Bounded Length Codec**, record:
+
+- the public behavior that demonstrates **Distinguish readiness from transfer completion**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Add JobWire’s `LengthCodec` and a pure text-message parser above it. Frame payloads are UTF-8 and have a configured maximum. The codec must not know command names. The parser must not read sockets. Add chunk-invariance tests that feed the same transcript under many partitions.
 
 State the maximum memory retained per connection before a broker request is accepted.
+
+### Capstone invariant trace
+
+For the Module 73 JobWire increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -72,3 +110,7 @@ State the maximum memory retained per connection before a broker request is acce
 ### Independent transfer
 
 Design a newline-delimited codec for log lines with a 32 KiB maximum. Decide how to handle `\r\n`, an unterminated final line at EOF, invalid UTF-8, and a peer that sends no newline. Compare its trade-offs with length-prefix framing.
+
+### Closed-book defense
+
+In five minutes, answer “How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning?” using the **buffer and frame ledger**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside JobWire. A list of APIs without the deciding relationship is incomplete.

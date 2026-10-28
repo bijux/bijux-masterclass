@@ -1,8 +1,11 @@
-# Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown
+# Module 77 — Cancellation Safety, Deadlines, and Graceful Shutdown
 
-**Course 8, day 7 · Module 77 of 90**
+**Course 8 · Day 7 · Module 77 of 100**
+`███████████████████░░░░░░` **77/100**
 
-**77/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-graceful-task-tree/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 76: Backpressure, Admission Control, and Fair Work Distribution](../module-76-backpressure-admission-control-and-fair-work-distribution/index.md) · [Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections →](../module-78-http-services-with-hyper-requests-bodies-and-connections/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Modules 71–76 created a service that can suspend, own tasks, frame messages, m
 Rust safely drops the future’s owned fields. That does not make the operation semantically cancellation safe. A channel receive may be abandoned before removing an item, while a partially written frame may already have changed the peer’s input. A broker request may commit after the connection times out. A mutex-protected candidate may roll back by drop, while an external payment cannot.
 
 Graceful shutdown is the system-wide form of the same problem. It must stop new commitments, notify all descendants, drain allowed work, impose a finite grace period, abort leftovers, and join every task. “Cancel the token and return” is not a complete shutdown protocol.
+
+### Prerequisite bridge
+
+Module 76 established **Backpressure, Admission Control, and Fair Work Distribution**. Before continuing, verify that you can test saturation deterministically. This module preserves that capability and adds the ability to derive cancellation behavior from future-owned state and external side effects;. Module 78, **HTTP Services with Hyper: Requests, Bodies, and Connections**, will rely on both when it asks: *How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate?*
+
+### Scope boundary
+
+This module owns the reasoning for **cancellation safety, deadlines, and graceful shutdown** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -173,6 +184,24 @@ Use a notification or channel to prove the operation reached a specific pre-comm
 
 Real sleeps are poor positioning tools. Paused time and explicit gates make the test causal.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For derive cancellation behavior from future-owned state and external side effects, construct one positive and one causal negative example. Mark the first decisive fact in the **cancellation and shutdown trace** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For interpret `tokio::select!` as dropping nonselected branch futures, construct one positive and one causal negative example. Mark the first decisive fact in the **cancellation and shutdown trace** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For distinguish cancellation safety from memory safety, construct one positive and one causal negative example. Mark the first decisive fact in the **cancellation and shutdown trace** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For define an application commit point and recover ambiguous outcomes, construct one positive and one causal negative example. Mark the first decisive fact in the **cancellation and shutdown trace** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 A generic task-tree shutdown helper can make phases visible:
@@ -259,4 +288,4 @@ Continue only when you can explain:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Graceful Task Tree](../../labs/module-07-graceful-task-tree/README.md), and add the seventh [JobWire increment](../capstone.md#increment-7-make-cancellation-and-shutdown-explicit). Then continue to [Module 78](../module-78-http-services-with-hyper-requests-bodies-and-connections/index.md).
+Continue to [Module 78 — HTTP Services with Hyper: Requests, Bodies, and Connections](../module-78-http-services-with-hyper-requests-bodies-and-connections/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

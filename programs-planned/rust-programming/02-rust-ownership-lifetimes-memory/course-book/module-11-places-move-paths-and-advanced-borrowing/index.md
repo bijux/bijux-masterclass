@@ -1,9 +1,11 @@
-# 11 — Places, Move Paths, and Advanced Borrowing
+# Module 11 — Places, Move Paths, and Advanced Borrowing
 
-**Course 2, day 1 · Module 11 of 90**  
-`████░░░░░░░░░░░░░░░░` **11/90**
+**Course 2 · Day 1 · Module 11 of 100**
+`███░░░░░░░░░░░░░░░░░░░░░░` **11/100**
 
-[← Module 10: Integration and Independent Change](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 12: Lifetime Relationships and Borrowed APIs →](../module-12-lifetime-relationships-and-borrowed-apis/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-borrow-surgery/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 10: Integration and Independent Change](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [Module 12: Lifetime Relationships and Borrowed APIs →](../module-12-lifetime-relationships-and-borrowed-apis/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Course 1 treated a value as the unit of ownership. Advanced APIs often borrow or move only a field, an index, or a projection, so Course 2 begins by refining the unit of analysis from values to places and move paths. This precision eliminates many clone-based workarounds before lifetime notation becomes more demanding.
+
+### Prerequisite bridge
+
+Module 10 established **Integration and Independent Change**. Before continuing, verify that you can defend design choices, rejected alternatives, known limitations, and verification boundaries with concrete evidence. This module preserves that capability and adds the ability to distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations. Module 12, **Lifetime Relationships and Borrowed APIs**, will rely on both when it asks: *What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?*
+
+### Scope boundary
+
+This module owns the reasoning for **places, move paths, and advanced borrowing** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -920,6 +930,24 @@ A method `SeatMap::move_reservation(&mut self, ...)` is correct because the oper
 
 The borrow checker did not obstruct a known-safe operation. It required the program to represent the missing facts: non-aliasing, phase separation, and a single infallible ownership transfer.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations, construct one positive and one causal negative example. Mark the first decisive fact in the **place and move-path map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For model loans over places and explain when fields, indices, slices, and method receivers can or cannot be borrowed disjointly, construct one positive and one causal negative example. Mark the first decisive fact in the **place and move-path map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use reborrowing, non-lexical lifetime shortening, two-phase borrowing, and split APIs without relying on folklore, construct one positive and one causal negative example. Mark the first decisive fact in the **place and move-path map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For sequence validation and mutation so failure does not expose prohibited partial state, construct one positive and one causal negative example. Mark the first decisive fact in the **place and move-path map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Represent workspace slots with generational handles and keep mutable access narrower than the whole workspace. Stale identity and current ownership are separate concerns. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -949,11 +977,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Place expressions](https://doc.rust-lang.org/reference/expressions.html#place-expressions-and-value-expressions)
 - [Rust Reference: Borrow expressions](https://doc.rust-lang.org/reference/expressions/operator-expr.html#borrow-operators)
 
-[← Module 10](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 12 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md)
+[← Module 10](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 12 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md)
 
 ## Continue
 
-1. Complete the [Module 11 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 11 — Borrow Surgery](../../labs/module-01-borrow-surgery/README.md) from its public contract.
-3. Apply the Module 11 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 12 — Lifetime Relationships and Borrowed APIs](../module-12-lifetime-relationships-and-borrowed-apis/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

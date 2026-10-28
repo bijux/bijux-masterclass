@@ -1,4 +1,43 @@
-# Course 2 reference — Ownership, Lifetimes, and Memory
+# Course 2 Reference Desk — Ownership, Lifetimes, and Memory
+
+Use this page while designing or reviewing. It is a decision aid, not a replacement for the module explanations.
+
+## Governing question
+
+> How do places, loans, lifetimes, destruction, shared liveness, representation, and address stability determine whether a memory design is valid?
+
+## Working record
+
+Keep a place and move-path map, loan graph, lifetime relation, destruction trace, liveness graph, representation table, and pinning contract. A design is not ready when the record still contains unnamed owners, contradictory states, implicit failure, accidental order, unbounded accumulation, or a claim with no matching evidence.
+
+## Decision rules
+
+| Decision | Rule |
+|---|---|
+| Borrow relation | Name the owner and prove every returned reference originates from data that remains alive. |
+| Cleanup protocol | Assign every resource acquisition exactly one cleanup owner and trace unwind paths. |
+| Shared liveness | Use strong edges for ownership and weak edges for observation or back-links. |
+| Interior mutability | Use runtime loans only when the call graph and reentrancy policy are explicit. |
+| Pinning | Use pinning only when the pointee has a genuine address-sensitive invariant after pinning. |
+
+## Module quick reference
+
+| Module | Mechanism | Minimum usable outcome |
+|---:|---|---|
+| 11 | Places, Move Paths, and Advanced Borrowing | Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations |
+| 12 | Lifetime Relationships and Borrowed APIs | Translate lifetime syntax into constraints among borrows rather than durations attached to values |
+| 13 | Scoped Access and Escape Prevention | Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation |
+| 14 | RAII, Drop, Unwinding, and Failure Atomicity | Derive local, field, tuple, temporary, and scope destruction order from documented rules |
+| 15 | Box, Deref, Dynamically Sized Types, and Cow | Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership |
+| 16 | Rc, Weak, and Ownership Graphs | Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts |
+| 17 | Interior Mutability and Runtime Borrows | Explain UnsafeCell as the primitive behind interior mutability while remaining within safe APIs |
+| 18 | Memory Representation, Validity, and Layout | Separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation |
+| 19 | Subtyping, Variance, PhantomData, and Drop Checking | State lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally |
+| 20 | Pinning and Address-Sensitive Design | Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants |
+
+## Claim boundary
+
+Separate language guarantees, library contracts, product policy, target observations, and measured artifact facts. When an exact API or version detail matters, follow the primary source from [Source Notes](../../SOURCE_NOTES.md).
 
 This reference compresses the resource-topology tools used in Modules 11–20.
 

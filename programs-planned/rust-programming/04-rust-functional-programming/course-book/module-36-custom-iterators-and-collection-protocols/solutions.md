@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 36: Custom Iterators and Collection Protocols
+# Reasoned Solutions — Module 36: Custom Iterators and Collection Protocols
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-06-custom-cursors/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Custom Iterators and Collection Protocols**, not to substitute for an attempt. The decisive question is: *What laws must a custom traversal obey, and who owns the collection when iteration begins?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 36: Custom Iterators and Collection Protocols**. Compare the reasoning against this question: *What laws must a custom traversal obey, and who owns the collection when iteration begins?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ Without additional knowledge, at least `lower / 3` complete groups are guarantee
 
 The adapter owns upstream iterator, predicate, and a `done` flag. On each `next`, it pulls one item; if predicate passes, yield it. If predicate fails, set `done` and return `None`. The failing item is consumed. Because `done` prevents future upstream calls, the adapter is fused regardless of whether upstream is fused. If the product must preserve the failing item, this adapter is the wrong protocol; use peeking or a splitter that returns the remainder.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-06-custom-cursors/solution`](../../labs/module-06-custom-cursors/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **Custom Iterators and Collection Protocols**, compare the contract, invaria
 - Design `size_hint` as a truthful bound and not as an unsupported performance promise.
 
 A complete explanation of **Custom Iterators and Collection Protocols** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What laws must a custom traversal obey, and who owns the collection when iteration begins?
+
+Build a **collection protocol map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Implement a correct custom `Iterator` by defining state and exhaustion behavior.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Provide owned, shared, and mutable `IntoIterator` implementations only where their semantics are useful.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Implement `FromIterator` and `Extend` for a domain collection with explicit invariant policy.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Implement stronger iterator traits only when every required law holds.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Design `size_hint` as a truthful bound and not as an unsupported performance promise.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Implement a correct custom `Iterator` by defining state and exhaustion behavior.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the collection protocol map.
+
+### Laboratory transfer review
+
+For [Custom Cursors](../../labs/module-06-custom-cursors/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 36 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Custom Iterators and Collection Protocols**, which relationship decides this question: “What laws must a custom traversal obey, and who owns the collection when iteration begins?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

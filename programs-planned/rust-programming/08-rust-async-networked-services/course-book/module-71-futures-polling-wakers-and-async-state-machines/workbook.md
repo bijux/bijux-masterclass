@@ -1,8 +1,17 @@
 # Workbook — Module 71: Futures, Polling, Wakers, and Async State Machines
 
-[Return to the chapter](index.md) · [Open the solutions](solutions.md) · [Open the JobWire guide](../capstone.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-one-shot-signal/README.md) · [JobWire guide](../capstone.md) · [Solutions](solutions.md)
 
-Freeze every prediction before compiling or running code. For async questions, identify the state before the poll, the event required for progress, and the effect of dropping the future.
+This workbook tests whether **Futures, Polling, Wakers, and Async State Machines** has become a usable model rather than remembered vocabulary. Its governing question is: *What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled?* Preserve your first prediction and record decisive facts in a **future state and wake-source table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 70 — Integrated Concurrent Architecture, Testing, and Audit that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled?**
+3. Draw the smallest **future state and wake-source table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -58,6 +67,17 @@ Analyze an operation that reserves an ID, writes a request, and waits for a resp
 
 Design a test waker that records wake calls. Poll a one-shot receiver with one waker, then a second distinct waker. Complete the signal and prove only the current task is scheduled.
 
+### Interleaved reasoning pass
+
+1. For **Explain why a future is inert until polled**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the future state and wake-source table.
+2. For **Read the `Future::poll` contract and distinguish completion from scheduling**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the future state and wake-source table.
+3. For **State what `Context` and `Waker` permit without treating wake as a stored event count**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the future state and wake-source table.
+4. For **Identify busy polling caused by unconditional self-waking**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the future state and wake-source table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Futures, Polling, Wakers, and Async State Machines** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [One-Shot Signal](../../labs/module-01-one-shot-signal/README.md). Before opening the solution, provide:
@@ -67,6 +87,18 @@ Build [One-Shot Signal](../../labs/module-01-one-shot-signal/README.md). Before 
 - tests for completion before polling, polling before completion, waker replacement, receiver cancellation, and producer cancellation;
 - an explanation of why the implementation does not wake while holding its mutex;
 - one explicit non-goal, such as multi-producer support.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **One-Shot Signal**, record:
+
+- the public behavior that demonstrates **Explain why a future is inert until polled**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -79,6 +111,10 @@ accepted → framed → negotiating → ready → awaiting broker → responding
 For each state, list owned values, awaited event, wake source, external effects, and drop behavior. Do not write the TCP server yet. The purpose is to freeze the lifecycle vocabulary before runtime APIs appear.
 
 Add one testable assertion to the capstone design: after a connection task is dropped, no broker reply sender owned only by that task may keep a request waiter alive indefinitely.
+
+### Capstone invariant trace
+
+For the Module 71 JobWire increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -94,3 +130,7 @@ Answer without the chapter:
 ### Independent transfer
 
 Design a future that becomes ready when either a producer supplies a value or a cancellation flag is set. Specify precedence when both are visible, waker storage, producer/drop behavior, and repeated-poll behavior. Do not implement it until the state table is internally consistent.
+
+### Closed-book defense
+
+In five minutes, answer “What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled?” using the **future state and wake-source table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside JobWire. A list of APIs without the deciding relationship is incomplete.

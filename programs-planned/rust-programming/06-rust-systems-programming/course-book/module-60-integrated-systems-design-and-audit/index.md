@@ -1,9 +1,11 @@
-# 60 — Integrated Systems Design, Testing, and Audit
+# Module 60 — Integrated Systems Design, Testing, and Audit
 
-**Course 6, day 10 · Module 60 of 90**  
-`████████████████████` **60/90**
+**Course 6 · Day 10 · Module 60 of 100**
+`███████████████░░░░░░░░░░` **60/100**
 
-[← Module 59: Foreign Resources, Callbacks, and Wrapper Architecture](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Program progress](../../../PROGRESS.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-systems-boundary-audit/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 59: Foreign Resources, Callbacks, and Wrapper Architecture](../module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) · [Module 61: Threads, Schedules, Send, Sync, and Race Freedom →](../../../07-rust-concurrency-parallelism/course-book/module-61-threads-schedules-send-sync-and-race-freedom/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 The final module does not add another low-level trick. It integrates the ten-day system and asks whether every external input, resource transition, unsafe claim, and foreign contract has a visible owner. FrameVault becomes the test case, but the review method transfers to databases, media tools, runtimes, storage engines, and language bindings.
+
+### Prerequisite bridge
+
+Module 59 established **Foreign Resources, Callbacks, and Wrapper Architecture**. Before continuing, verify that you can expose opaque rust-owned sessions to c without leaking rust layout. This module preserves that capability and adds the ability to draw one boundary map from external bytes to final effects and back to foreign callers. Module 61, **Threads, Schedules, Send, Sync, and Race Freedom**, will rely on both when it asks: *What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?*
+
+### Scope boundary
+
+This module owns the reasoning for **integrated systems design, testing, and audit** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -246,6 +256,24 @@ A useful final assessment is to add an optional comment entry kind without weake
 
 This change crosses representation, model, CLI, and foreign surfaces. It tests whether the architecture is understood rather than copied.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For draw one boundary map from external bytes to final effects and back to foreign callers, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-system boundary dossier** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For build a threat model that separates malformed input, hostile namespaces, untrusted processes, allocation pressure, and invalid foreign callers, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-system boundary dossier** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use layered tests, dynamic tools, cross-target checks, and failure injection as complementary evidence, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-system boundary dossier** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For audit unsafe code through invariants and call graphs rather than counting blocks, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-system boundary dossier** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault is completed as a library, CLI, and C-compatible library. The final increment adds golden-format fixtures, exhaustive truncation tests, path-adversary tests, deterministic self-child process capture, aligned-buffer tests, ABI session tests, a safety dossier, a compatibility table, and a demonstration script. The CLI supports create, list, verify, extract, capture, help, and version.
@@ -269,7 +297,4 @@ You are ready to complete Course 6 when you can defend FrameVault boundary by bo
 
 ## Continue
 
-1. Complete the [Module 60 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 60 — Systems Boundary Audit](../../labs/module-10-systems-boundary-audit/README.md) from its public contract.
-3. Apply the Module 60 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 61 — Threads, Schedules, Send, Sync, and Race Freedom](../../../07-rust-concurrency-parallelism/course-book/module-61-threads-schedules-send-sync-and-race-freedom/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

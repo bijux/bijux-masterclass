@@ -1,9 +1,11 @@
-# 20 — Pinning and Address-Sensitive Design
+# Module 20 — Pinning and Address-Sensitive Design
 
-**Course 2, day 10 · Module 20 of 90**  
-`███████░░░░░░░░░░░░░` **20/90**
+**Course 2 · Day 10 · Module 20 of 100**
+`█████░░░░░░░░░░░░░░░░░░░░` **20/100**
 
-[← Module 19: Subtyping, Variance, PhantomData, and Drop Checking](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 21: Traits as Behavioral Contracts →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-pinned-tracker/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 19: Subtyping, Variance, PhantomData, and Drop Checking](../module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [Module 21: Traits as Behavioral Contracts →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Pinning is last because it is frequently reached for before the problem is understood. Only after move semantics, indirection, destruction, representation, and variance are stable can address sensitivity be recognized honestly. The module teaches the contract, the projection hazards, and—equally important—the designs that avoid pinning entirely.
+
+### Prerequisite bridge
+
+Module 19 established **Subtyping, Variance, PhantomData, and Drop Checking**. Before continuing, verify that you can use higher-ranked generative brands to prevent cross-scope identity mixing and explain why generations remain necessary for slot reuse. This module preserves that capability and adds the ability to distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants. Module 21, **Traits as Behavioral Contracts**, will rely on both when it asks: *What behavior truly belongs in a shared contract, and which laws must every implementation preserve?*
+
+### Scope boundary
+
+This module owns the reasoning for **pinning and address-sensitive design** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -503,6 +513,24 @@ The address token becomes irrelevant as destruction begins. No external system c
 
 The capstone uses handles and offsets, so pinning is rejected. If logical identity suffices, a pinned tracker is unnecessary. You must be able to remove `Pin` from designs without address-sensitive state.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants, construct one positive and one causal negative example. Mark the first decisive fact in the **pinning contract** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For explain Pin<P> as a contract on the pointee mediated by a pointer, not as a magical immovable allocation, construct one positive and one causal negative example. Mark the first decisive fact in the **pinning contract** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use Unpin and PhantomPinned correctly and construct pinned values without exposing moves after invariant activation, construct one positive and one causal negative example. Mark the first decisive fact in the **pinning contract** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For reason about structural pinning, field projection, the drop guarantee, and why unsafe projection requires proof beyond compiler acceptance, construct one positive and one causal negative example. Mark the first decisive fact in the **pinning contract** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Conduct an address-sensitivity review and reject pinning unless an invariant truly depends on stable location. Defend the simpler architecture when handles and indirection suffice. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -533,11 +561,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Pin](https://doc.rust-lang.org/std/pin/struct.Pin.html)
 - [Unpin](https://doc.rust-lang.org/std/marker/trait.Unpin.html)
 
-[← Module 19](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 21 →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
+[← Module 19](../../../02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 21 →](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
 
 ## Continue
 
-1. Complete the [Module 20 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 20 — Pinned Tracker](../../labs/module-10-pinned-tracker/README.md) from its public contract.
-3. Apply the Module 20 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 21 — Traits as Behavioral Contracts](../../../03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

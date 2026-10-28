@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 12: Lifetime Relationships and Borrowed APIs
+# Reasoned Solutions — Module 12: Lifetime Relationships and Borrowed APIs
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-zero-copy-records/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Lifetime Relationships and Borrowed APIs**, not to substitute for an attempt. The decisive question is: *What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 12: Lifetime Relationships and Borrowed APIs**. Compare the reasoning against this question: *What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -115,9 +115,7 @@ Remove names used only once in inputs and no outputs; elision can handle them. R
 
 Repair a parser whose single lifetime unnecessarily couples source input to scratch state, then decide which results should borrow and which should own.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-02-zero-copy-records/solution`](../../labs/module-02-zero-copy-records/solution). Before reading it, write down:
 
@@ -138,3 +136,42 @@ For **Lifetime Relationships and Borrowed APIs**, compare the contract, invarian
 - Reject unnecessary lifetime coupling and choose owned output when retention must outlive input borrowing.
 
 A complete explanation of **Lifetime Relationships and Borrowed APIs** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?
+
+Build a **lifetime constraint graph**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Translate lifetime syntax into constraints among borrows rather than durations attached to values.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Derive elision and explicit relationships for one-source and multiple-source APIs.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use lifetime shortening and subtyping in ordinary covariant borrowed views without extending provenance.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design structs and enums containing references while accounting for temporary and drop scopes.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Reject unnecessary lifetime coupling and choose owned output when retention must outlive input borrowing.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Translate lifetime syntax into constraints among borrows rather than durations attached to values.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the lifetime constraint graph.
+
+### Laboratory transfer review
+
+For [Zero-Copy Records](../../labs/module-02-zero-copy-records/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 12 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Lifetime Relationships and Borrowed APIs**, which relationship decides this question: “What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

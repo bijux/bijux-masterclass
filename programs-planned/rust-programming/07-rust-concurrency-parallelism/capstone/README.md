@@ -1,5 +1,44 @@
 # BatchWeave
 
+## Course role
+
+BatchWeave runs a bounded manifest through a fixed worker group, records one terminal outcome for every accepted job, contains panic and cancellation, uses advisory atomics honestly, and renders final results in source order.
+
+BatchWeave is not a showcase of ten independent features. It is the place where the course’s mechanisms must coexist without creating a second owner for state, validation, order, failure, compatibility, or resource policy.
+
+## Invariants carried through the product
+
+- Every accepted job receives exactly one terminal outcome.
+- Workers, endpoints, queues, permits, and joins have explicit owners.
+- Every accumulation point has a finite capacity and a named admission authority.
+- Panic, cancellation, disconnect, and domain failure remain distinguishable.
+- Liveness claims are supported by wait predicates, shutdown events, and complete joins.
+- Final meaning is normalized independently of schedule-dependent completion order.
+
+## Module-to-product map
+
+| Module | Mechanism added | Acceptance criterion |
+|---:|---|---|
+| 61 | Threads, Schedules, Send, Sync, and Race Freedom | Distinguish concurrency, parallelism, scheduling, interleaving, data races, and broader race conditions |
+| 62 | Structured Threads: Scopes, Joins, and Panic Boundaries | Explain the real meaning of a `T: 'static` bound and why owned values can satisfy it |
+| 63 | Shared State: Locks and Protected Invariants | Name the state invariant protected by each `Mutex` or `RwLock` rather than treating the primitive as a generic thread-safety wrapper |
+| 64 | Coordination: Condvars, Barriers, and Phase Protocols | Write every condition-variable wait as a predicate loop over mutex-protected state |
+| 65 | Message Passing, Backpressure, and Shutdown | Model channel operations as ownership transfer rather than shared access |
+| 66 | Liveness: Deadlock, Cancellation, and Recovery | Distinguish deadlock, starvation, livelock, priority inversion, and slow work |
+| 67 | Atomics, Happens-Before, and Memory Ordering | Separate atomicity of one location from visibility of other memory |
+| 68 | Lock-Free Protocols, Reclamation, and Unsafe Send/Sync | Distinguish obstruction-free, lock-free, and wait-free progress claims from ordinary nonblocking API behavior |
+| 69 | Rayon, Work Stealing, and Deterministic Parallelism | Distinguish task parallelism, data parallelism, and a long-lived message-driven worker service |
+| 70 | Integrated Concurrent Architecture, Testing, and Audit | Construct one architecture diagram connecting coordinator, queue, workers, result channel, metrics, report pool, and CLI boundaries |
+
+## Reading route
+
+1. Read the BatchWeave contract and non-goals in the [engineering guide](../course-book/capstone.md).
+2. Locate the type or component that owns each invariant above.
+3. Run the baseline tests and one end-to-end demonstration before changing code.
+4. Implement only the current module increment and its adversarial test.
+5. Trace success, rejection, partial failure, cleanup, order, and capacity through the public surface.
+6. Re-run the complete course route, then explain which claims remain conditioned on a compiler, target, scheduler, peer, workload, or operating system.
+
 BatchWeave is the cumulative product for **Rust Concurrency and Parallelism**. It runs a bounded manifest of CPU-oriented jobs through a fixed worker group, records one terminal outcome for every accepted input row, and renders the final report in manifest order rather than completion order.
 
 It exists to make concurrent product obligations visible. The interesting part is not that several threads run. The interesting part is that ownership, capacity, shutdown, failure, panic, visibility, ordering, and reporting all have explicit contracts.

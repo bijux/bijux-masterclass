@@ -1,9 +1,11 @@
-# 15 — Box, Deref, Dynamically Sized Types, and Cow
+# Module 15 — Box, Deref, Dynamically Sized Types, and Cow
 
-**Course 2, day 5 · Module 15 of 90**  
-`█████░░░░░░░░░░░░░░░` **15/90**
+**Course 2 · Day 5 · Module 15 of 100**
+`████░░░░░░░░░░░░░░░░░░░░░` **15/100**
 
-[← Module 14: RAII, Drop, Unwinding, and Failure Atomicity](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 16: Rc, Weak, and Ownership Graphs →](../module-16-rc-weak-and-ownership-graphs/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-boxed-expressions/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 14: RAII, Drop, Unwinding, and Failure Atomicity](../module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [Module 16: Rc, Weak, and Ownership Graphs →](../module-16-rc-weak-and-ownership-graphs/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Recursive values, dynamically sized data, and conditional allocation require indirection, but indirection is not one undifferentiated trick. `Box`, dereference coercion, DST metadata, and `Cow` are studied together because each changes where ownership lives while preserving a different access contract.
+
+### Prerequisite bridge
+
+Module 14 established **RAII, Drop, Unwinding, and Failure Atomicity**. Before continuing, verify that you can state when destructors may not run or cannot report failure, including abort, process exit, leaks, and power loss. This module preserves that capability and adds the ability to use box for exclusive heap-owned indirection and recursive finite-size representation without equating box with shared ownership. Module 16, **Rc, Weak, and Ownership Graphs**, will rely on both when it asks: *Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?*
+
+### Scope boundary
+
+This module owns the reasoning for **box, deref, dynamically sized types, and cow** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -549,6 +559,24 @@ A method can call `to_mut` on `Cow` only when a transformation is required. Borr
 
 Dropping the root recursively drops boxes and predicate owners. Deep adversarial trees can overflow the call stack during recursive traversal/destruction; a production parser may enforce depth or use iterative arenas. Memory safety does not imply unbounded-depth robustness.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership, construct one positive and one causal negative example. Mark the first decisive fact in the **indirection model** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For explain Deref, deref coercion, method lookup, and why custom Deref is not ordinary inheritance, construct one positive and one causal negative example. Mark the first decisive fact in the **indirection model** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For reason about sized and dynamically sized types, fat pointers, metadata, unsizing, boxed slices, and boxed strings, construct one positive and one causal negative example. Mark the first decisive fact in the **indirection model** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use Cow only when the common path can borrow and a well-defined transformation sometimes requires ownership, construct one positive and one causal negative example. Mark the first decisive fact in the **indirection model** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Introduce immutable snapshots and conditional query ownership. Use `Box` or `Cow` only where the product needs indirection or conditional allocation. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -579,11 +607,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [std::ops::Deref](https://doc.rust-lang.org/std/ops/trait.Deref.html)
 - [std::borrow::Cow](https://doc.rust-lang.org/std/borrow/enum.Cow.html)
 
-[← Module 14](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 16 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md)
+[← Module 14](../../../02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 16 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md)
 
 ## Continue
 
-1. Complete the [Module 15 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 15 — Boxed Expression Tree](../../labs/module-05-boxed-expressions/README.md) from its public contract.
-3. Apply the Module 15 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 16 — Rc, Weak, and Ownership Graphs](../module-16-rc-weak-and-ownership-graphs/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

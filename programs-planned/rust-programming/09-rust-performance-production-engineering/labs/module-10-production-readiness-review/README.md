@@ -1,6 +1,14 @@
-# Laboratory 10 — Production Readiness Review
+# Laboratory 90 — Production Readiness Review
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 90 chapter](../../course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md)
+**Course 9 · Module 90: Production Readiness, Capacity Planning, Rollouts, and Incident Learning**
+
+[Chapter](../../course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md) · [Workbook](../../course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Production Readiness, Capacity Planning, Rollouts, and Incident Learning**: What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design? The product must make **Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **production decision record** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -87,3 +95,25 @@ Have another reader challenge the recommendation using one changed assumption: t
 
 State the narrowest truthful readiness claim you can make. It must name the artifact, environment, workload envelope, evidence date, known exclusions, and rollback condition. Rephrase any universal language such as “production ready” into a bounded statement that another operator can verify or falsify.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Production Readiness Review**.
+2. Draw the smallest **production decision record** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery.
+- Derive initial capacity and headroom from measured service demand, resource use, and burst policy.
+- Distinguish load test, stress test, soak test, fault test, compatibility test, and rollback rehearsal.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 90 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **production decision record**. Defend why your design is simpler than one plausible alternative under the new requirements.

@@ -1,6 +1,14 @@
 # Laboratory 55 — Unsafe Slice Kernel
 
-This is the independent product for **Course 6, Module 55: Unsafe Rust as a Proof Boundary**. Read the [module chapter](../../course-book/module-55-unsafe-rust-and-safety-proofs/index.md) and complete its [workbook](../../course-book/module-55-unsafe-rust-and-safety-proofs/workbook.md) before consulting the reference implementation.
+**Course 6 · Module 55: Unsafe Rust as a Proof Boundary**
+
+[Chapter](../../course-book/module-55-unsafe-rust-and-safety-proofs/index.md) · [Workbook](../../course-book/module-55-unsafe-rust-and-safety-proofs/workbook.md) · [FrameVault guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Unsafe Rust as a Proof Boundary**: What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable? The product must make **Name the operations Rust requires an unsafe context to perform** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **unsafe obligation ledger** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -14,7 +22,7 @@ By the end, the answer must be visible in the public API, failure behavior, adve
 
 Build a safe API that returns two distinct mutable elements from one slice. First implement a safe reference version with `split_at_mut`, then implement a narrow raw-pointer kernel and prove that both expose the same behavior.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 This lab introduces unsafe code only after a complete safe behavioral specification exists. The kernel is small enough that every unchecked load can be mapped to a length, alignment, initialization, and aliasing fact. The design succeeds when ordinary callers cannot violate those facts through the safe wrapper, not when the unsafe loop merely passes sample tests.
 
@@ -66,7 +74,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Wo
 
 The laboratory is complete when the tests and documented failure paths pass, and you can answer this question without the chapter:
 
-> What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable?
+For **Laboratory 55 — Unsafe Slice Kernel**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -76,3 +84,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Unsafe Slice Kernel**.
+2. Draw the smallest **unsafe obligation ledger** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to FrameVault so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Name the operations Rust requires an unsafe context to perform.
+- Distinguish compiler permission from semantic safety and undefined behavior.
+- Write safety preconditions, internal invariants, and postconditions before an unsafe block.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 55 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **unsafe obligation ledger**. Defend why your design is simpler than one plausible alternative under the new requirements.

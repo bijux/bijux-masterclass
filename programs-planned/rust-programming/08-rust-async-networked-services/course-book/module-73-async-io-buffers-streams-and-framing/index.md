@@ -1,8 +1,11 @@
-# Module 73: Async I/O, Buffers, Streams, and Framing
+# Module 73 — Async I/O, Buffers, Streams, and Framing
 
-**Course 8, day 3 · Module 73 of 90**
+**Course 8 · Day 3 · Module 73 of 100**
+`██████████████████░░░░░░░` **73/100**
 
-**73/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-bounded-length-codec/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles](../module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/index.md) · [Module 74: TCP, UDP, DNS, and Connection Lifecycles →](../module-74-tcp-udp-dns-and-connection-lifecycles/index.md)
 
 ## The question
 
@@ -21,6 +24,14 @@ readiness → byte transfer → buffer state → frame extraction → protocol p
 ```
 
 Each layer has a different error model and cancellation consequence.
+
+### Prerequisite bridge
+
+Module 72 established **Tokio Runtimes, Tasks, and Structured Async Lifecycles**. Before continuing, verify that you can construct a phased task nursery that observes every terminal outcome. This module preserves that capability and adds the ability to distinguish readiness from transfer completion;. Module 74, **TCP, UDP, DNS, and Connection Lifecycles**, will rely on both when it asks: *What lifecycle does each network transport actually provide, and where should connection admission, name resolution, deadlines, half-close, datagram loss, and peer identity be represented?*
+
+### Scope boundary
+
+This module owns the reasoning for **async i/o, buffers, streams, and framing** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -165,6 +176,24 @@ If a protocol has one canonical encoder, equal logical messages produce equal by
 
 For text inside binary frames, state the text encoding and normalization policy. A length prefix counts bytes, not Unicode scalar values or displayed characters.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish readiness from transfer completion, construct one positive and one causal negative example. Mark the first decisive fact in the **buffer and frame ledger** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For handle partial reads and partial writes without message-boundary assumptions, construct one positive and one causal negative example. Mark the first decisive fact in the **buffer and frame ledger** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For explain the contracts of `AsyncRead`, `AsyncWrite`, `AsyncBufRead`, `Stream`, and `Sink`, construct one positive and one causal negative example. Mark the first decisive fact in the **buffer and frame ledger** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use `Bytes` and `BytesMut` to separate shared immutable payloads from mutable receive buffers, construct one positive and one causal negative example. Mark the first decisive fact in the **buffer and frame ledger** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 A bounded codec can be concise because its invariants are explicit:
@@ -273,4 +302,4 @@ Continue only when you can explain:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Bounded Length Codec](../../labs/module-03-bounded-length-codec/README.md), and add the third [JobWire increment](../capstone.md#increment-3-establish-bounded-framing). Then continue to [Module 74](../module-74-tcp-udp-dns-and-connection-lifecycles/index.md).
+Continue to [Module 74 — TCP, UDP, DNS, and Connection Lifecycles](../module-74-tcp-udp-dns-and-connection-lifecycles/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,6 +1,14 @@
-# Laboratory 2 — Profile-Guided Query Engine
+# Laboratory 82 — Profile-Guided Query Engine
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 82 chapter](../../course-book/module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md)
+**Course 9 · Module 82: CPU Profiling, Cost Models, and Hot-Path Optimization**
+
+[Chapter](../../course-book/module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md) · [Workbook](../../course-book/module-82-cpu-profiling-cost-models-and-hot-path-optimization/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **CPU Profiling, Cost Models, and Hot-Path Optimization**: Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase? The product must make **Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **profile and cost model** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -73,3 +81,25 @@ Finish with an optimization decision. State whether to keep the index, make it o
 
 Run the same query sequence through the oracle and indexed implementation after every corpus mutation. Compare stable document IDs, source ordering, and result multiplicity before comparing counters. Include a workload where the index is predictably worse because construction dominates, and a repeated selective workload where it should reduce candidate verification. The final report must state the measured crossover and the assumptions that would move it; do not turn one corpus into a universal performance claim.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Profile-Guided Query Engine**.
+2. Draw the smallest **profile and cost model** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked.
+- Read call stacks and flame graphs without confusing inclusive cost with exclusive cost.
+- Separate algorithmic work from parsing, allocation, hashing, formatting, synchronization, and system calls.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 82 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **profile and cost model**. Defend why your design is simpler than one plausible alternative under the new requirements.

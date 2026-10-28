@@ -1,8 +1,17 @@
 # Workbook — Module 18: Memory Representation, Validity, and Layout
 
-[Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-08-layout-observatory/README.md) · [Memory Workspace guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Memory Representation, Validity, and Layout** without relying on surface syntax. Keep the module question in view: *Is a claim a language guarantee, a standard-library contract, a target-conditioned fact, a current observation, or an unsupported assumption?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Memory Representation, Validity, and Layout** has become a usable model rather than remembered vocabulary. Its governing question is: *Is a claim a language guarantee, a standard-library contract, a target-conditioned fact, a current observation, or an unsupported assumption?* Preserve your first prediction and record decisive facts in a **representation table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 17 — Interior Mutability and Runtime Borrows that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Is a claim a language guarantee, a standard-library contract, a target-conditioned fact, a current observation, or an unsupported assumption?**
+3. Draw the smallest **representation table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -27,7 +36,6 @@ python3 ../tools/run_compiler_labs.py 02-rust-ownership-lifetimes-memory
 
 ## Part 2 — Diagnose and repair
 
-
 A program writes `size_of::<Header>()` bytes copied from a Rust struct and later reads them back as the same type. It uses default representation, contains a `String`, assumes little endian, and treats an enum discriminant as one byte.
 
 ### Defects
@@ -49,7 +57,6 @@ Design an explicit versioned codec with fixed integer encodings, length-prefixed
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 1. Build a guarantee ledger for ten size/alignment claims on your target.
 2. Calculate a `repr(C)` struct's expected padding from target primitive alignments and verify.
 3. Observe default-layout field addresses without asserting source order as portable.
@@ -61,11 +68,18 @@ Attempt every required exercise and commit the attempt before opening `exercise-
 9. Replace a memory-copy serializer with explicit encoding.
 10. Create a capstone memory report with approximation labels and shared-allocation deduplication.
 
+### Interleaved reasoning pass
 
+1. For **Separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the representation table.
+2. For **Reason about size, alignment, padding, field non-overlap, repr(Rust), repr(C), and repr(transparent) without overclaiming offsets**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the representation table.
+3. For **Explain thin and wide pointers, metadata, slices, str, trait-object previews, and unsized tails**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the representation table.
+4. For **Classify enum discriminant and niche claims by documented guarantees rather than pattern extrapolation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the representation table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Memory Representation, Validity, and Layout** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 Build a safe executable/library that records layout observations while refusing to present them as universal guarantees.
 
@@ -144,6 +158,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-08-layout-observatory](../../labs/module-08-layout-observatory/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Layout Observatory**, record:
+
+- the public behavior that demonstrates **Separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -153,7 +179,6 @@ The executable starter and reference implementation are in [module-08-layout-obs
 - Explain thin and wide pointers, metadata, slices, str, trait-object previews, and unsized tails.
 - Classify enum discriminant and niche claims by documented guarantees rather than pattern extrapolation.
 - Build memory reports that distinguish inline size, length, capacity, shared allocation deduplication, allocator overhead, and exclusions.
-
 
 Add `Workspace::memory_report()` and a CLI command that reports:
 
@@ -167,11 +192,13 @@ Add `Workspace::memory_report()` and a CLI command that reports:
 
 Do not use pointer addresses as persistent identifiers. Do not serialize raw values. Label every exact size as observed on the current target/toolchain. Tests verify arithmetic consistency and shared-snapshot deduplication, not universal byte constants.
 
-
-
 ### Capstone defense
 
 Review a binary protocol that writes Rust values directly; replace layout assumptions with an explicit codec and evidence taxonomy.
+
+### Capstone invariant trace
+
+For the Module 18 Memory Workspace increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -181,11 +208,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation.
-- Reason about size, alignment, padding, field non-overlap, repr(Rust), repr(C), and repr(transparent) without overclaiming offsets.
-- Explain thin and wide pointers, metadata, slices, str, trait-object previews, and unsized tails.
-- Classify enum discriminant and niche claims by documented guarantees rather than pattern extrapolation.
-- Build memory reports that distinguish inline size, length, capacity, shared allocation deduplication, allocator overhead, and exclusions.
+Without reopening the chapter, reconstruct the outcomes for **Module 18: Memory Representation, Validity, and Layout**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -202,9 +225,17 @@ For each outcome, write a claim, one example, one non-example, and one limitatio
 
 ### Transfer defense
 
-Review a binary protocol that writes Rust values directly; replace layout assumptions with an explicit codec and evidence taxonomy.
+Transfer **Module 18: Memory Representation, Validity, and Layout** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 18: Memory Representation, Validity, and Layout** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
 
 Complete the first two sections without notes. Compile observation programs only after recording predictions. The target is not memorizing sizes; it is classifying claims and refusing to derive stronger contracts from weaker evidence.
 
@@ -424,3 +455,7 @@ A passing response must demonstrate all of the following:
 - every external boundary has an explicit encoding;
 - target observations include target/toolchain context;
 - performance claims require measurement and do not follow from size alone.
+
+### Closed-book defense
+
+In five minutes, answer “Is a claim a language guarantee, a standard-library contract, a target-conditioned fact, a current observation, or an unsupported assumption?” using the **representation table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Memory Workspace. A list of APIs without the deciding relationship is incomplete.

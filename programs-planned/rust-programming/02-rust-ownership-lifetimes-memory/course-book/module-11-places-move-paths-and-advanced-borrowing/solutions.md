@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 11: Places, Move Paths, and Advanced Borrowing
+# Reasoned Solutions — Module 11: Places, Move Paths, and Advanced Borrowing
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-borrow-surgery/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Places, Move Paths, and Advanced Borrowing**, not to substitute for an attempt. The decisive question is: *Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 11: Places, Move Paths, and Advanced Borrowing**. Compare the reasoning against this question: *Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -152,9 +152,7 @@ A valid solution removes clones whose only purpose is to retain access across a 
 
 Diagnose a composite-store transfer whose lookup and mutation overlap, then derive a failure-atomic split-borrow implementation.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-01-borrow-surgery/solution`](../../labs/module-01-borrow-surgery/solution). Before reading it, write down:
 
@@ -175,3 +173,42 @@ For **Places, Move Paths, and Advanced Borrowing**, compare the contract, invari
 - Repair ownership conflicts by changing topology or phases before considering Clone, RefCell, or unsafe code.
 
 A complete explanation of **Places, Move Paths, and Advanced Borrowing** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?
+
+Build a **place and move-path map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Model loans over places and explain when fields, indices, slices, and method receivers can or cannot be borrowed disjointly.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use reborrowing, non-lexical lifetime shortening, two-phase borrowing, and split APIs without relying on folklore.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Sequence validation and mutation so failure does not expose prohibited partial state.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Repair ownership conflicts by changing topology or phases before considering Clone, RefCell, or unsafe code.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the place and move-path map.
+
+### Laboratory transfer review
+
+For [Borrow Surgery](../../labs/module-01-borrow-surgery/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 11 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Places, Move Paths, and Advanced Borrowing**, which relationship decides this question: “Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

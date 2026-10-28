@@ -1,6 +1,14 @@
-# Laboratory 3 — Allocation-Budgeted Batch Parser
+# Laboratory 83 — Allocation-Budgeted Batch Parser
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 83 chapter](../../course-book/module-83-allocation-memory-footprint-and-ownership-cost/index.md)
+**Course 9 · Module 83: Allocation, Memory Footprint, and Ownership Cost**
+
+[Chapter](../../course-book/module-83-allocation-memory-footprint-and-ownership-cost/index.md) · [Workbook](../../course-book/module-83-allocation-memory-footprint-and-ownership-cost/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Allocation, Memory Footprint, and Ownership Cost**: Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost? The product must make **Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **allocation ledger** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -69,3 +77,25 @@ Perform one ownership change at a time. For each change, state which allocation 
 
 Force the parser to encounter an overlong field after several valid rows, a malformed numeric field near the input limit, and many rejected rows whose diagnostics would otherwise retain large excerpts. Verify that accepted records remain valid, rejected data does not leak into retained storage, and diagnostic memory is itself bounded. Explain whether the parser offers all-or-nothing batch semantics or row-local acceptance, and ensure the memory accounting follows that declared policy.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Allocation-Budgeted Batch Parser**.
+2. Draw the smallest **allocation ledger** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count.
+- Trace ownership operations that allocate, clone, reallocate, promote, or retain data.
+- Explain when borrowing reduces work and when it only complicates lifetimes without changing allocation.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 83 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **allocation ledger**. Defend why your design is simpler than one plausible alternative under the new requirements.

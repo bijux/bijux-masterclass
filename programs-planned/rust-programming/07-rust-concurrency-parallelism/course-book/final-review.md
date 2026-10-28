@@ -1,77 +1,95 @@
-# Final review — Rust Concurrency and Parallelism
+# Course 7 Final Review — Rust Concurrency and Parallelism
 
-This review is closed-book until the final comparison. It tests whether you can reason about unfamiliar concurrency rather than repeat the architecture of BatchWeave.
+Begin every part from a blank page. You may use your code and the records you created, but do not follow the chapters line by line. The purpose is to expose whether the model can be reconstructed and transferred.
 
-## Part 1 — Model reconstruction
+## Part 1 — Reconstruct the ten questions
 
-1. Define data race, race condition, deadlock, starvation, and nondeterminism without using any library type names.
-2. Explain `Send` and `Sync` through ownership and shared references. Give one type that is neither and one synchronized alternative.
-3. Draw the lifetime boundary created by `thread::scope` and explain why it permits borrowed captures without turning them into `'static` references.
-4. State the invariant protected by a mutex in one of your labs. Explain why protecting “the data” is too vague.
-5. Write the condition-variable loop from memory and explain every step.
-6. Define a bounded channel protocol with normal completion, receiver loss, cancellation, and worker panic.
-7. Draw a wait-for graph for two transfers that lock accounts in opposite orders.
-8. Derive one release/acquire publication relation. Name the non-atomic writes it publishes.
-9. Explain why a compare-exchange loop may retry even when no other thread changed the value.
-10. State the safety argument for one slot in the SPSC ring.
-11. State the algebraic requirements of a parallel reduction.
-12. Explain why completion order and output order are separate product choices.
+For each question, supply a smallest working example, a causal negative example, the earliest decisive phase or event, a requirement-preserving repair, and one limit on the evidence you would use.
 
-## Part 2 — Unseen diagnosis
+61. **Threads, Schedules, Send, Sync, and Race Freedom** — What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?
+62. **Structured Threads: Scopes, Joins, and Panic Boundaries** — How can borrowed data, thread lifetime, completion, and panic handling be enclosed by one parent operation rather than leaked into the rest of the program?
+63. **Shared State: Locks and Protected Invariants** — Which exact invariant does a lock protect, how small can the protected transition be, and what state remains valid after contention or panic?
+64. **Coordination: Condvars, Barriers, and Phase Protocols** — How do threads wait for a state predicate or phase transition without polling, lost wakeups, or treating notification itself as truth?
+65. **Message Passing, Backpressure, and Shutdown** — Which values cross ownership boundaries, how is capacity bounded, and which explicit protocol event proves that every sender, receiver, and worker can terminate?
+66. **Liveness: Deadlock, Cancellation, and Recovery** — Why can every blocked operation eventually continue or terminate, and what happens when cancellation, panic, or partial infrastructure failure interrupts the normal path?
+67. **Atomics, Happens-Before, and Memory Ordering** — Which fact does an atomic operation publish, which earlier writes become visible because of it, and what is the weakest ordering that proves the required relationship?
+68. **Lock-Free Protocols, Reclamation, and Unsafe Send/Sync** — What proof permits shared raw storage to be accessed without a lock, and where do role confusion, ABA, destruction, or memory reclamation invalidate a locally plausible algorithm?
+69. **Rayon, Work Stealing, and Deterministic Parallelism** — How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?
+70. **Integrated Concurrent Architecture, Testing, and Audit** — How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?
 
-You receive a service with these properties:
+API names without the governing relationship do not answer this part.
 
-- requests enter an unbounded channel;
-- eight detached workers share an `Arc<Mutex<HashMap<...>>>`;
-- each worker holds the mutex while performing file I/O;
-- a shutdown flag uses `Relaxed` loads and stores;
-- the main thread returns after sending a stop message to only one worker;
-- reports are printed as workers finish;
-- tests use sleeps and assert that the last line belongs to the final request.
+## Part 2 — Independent construction
 
-Produce:
+Build this product without copying a course domain:
 
-1. an ownership and join map;
-2. a capacity and backpressure analysis;
-3. the protected invariant and guard-scope repair;
-4. a shutdown protocol for all workers;
-5. an ordering argument for the flag or a reason to remove it;
-6. a deterministic rendering design;
-7. tests that assert protocol events instead of timing.
+> Build a bounded concurrent verifier with a fixed worker group, explicit failure policy, cancellation, panic containment, complete join accounting, and deterministic final reconstruction.
 
-## Part 3 — Independent construction
+Before implementation, write:
 
-Build a bounded concurrent directory verifier. It accepts a list of paths, a worker count, and a queue capacity. Each worker computes a byte count and FNV-1a checksum for one file. Requirements:
+```text
+product promise and non-goals
+owners and authorities
+valid and invalid states
+success transition
+failure, cleanup, and retry state
+order and capacity
+external assumptions
+public API
+verification plan
+three rejected designs
+```
 
-- no shell or async runtime;
-- every submitted path has exactly one final outcome;
-- the queue is bounded;
-- every worker is joined;
-- cancellation stops new file work but still terminates all workers;
-- a worker panic becomes a typed outcome;
-- final output follows input order;
-- progress counters are monotonic and documented as approximate or snapshot-consistent;
-- tests do not depend on sleeps for correctness;
-- malformed paths and I/O failures do not poison unrelated results.
+After implementation, preserve six traces: ordinary success, malformed input, rejected state, partial work before failure, cleanup, and one compatibility, platform, scheduler, workload, or peer edge relevant to this course.
 
-Then add one cross-cutting feature: a maximum total byte budget. Decide whether the budget is reserved before reading, charged after reading, or enforced through another mechanism. Explain races around the boundary and test exact-limit behavior.
+## Part 3 — Capstone change
 
-## Part 4 — Architecture defense
+Apply this change to BatchWeave:
 
-Defend these decisions orally or in writing:
+> Add bounded retry to BatchWeave while preserving one terminal outcome per source job, fail-fast semantics, queue bounds, and deterministic final reporting.
 
-- Why is the work queue blocking rather than lock-free?
-- Why are results sent rather than written under one shared lock?
-- Why is output reordered after execution?
-- Which atomics use `Relaxed`, and why is that sufficient?
-- Which cancellation observation must synchronize other memory, if any?
-- What happens if a worker panics while holding a lock?
-- What is bounded: queued jobs, active jobs, retained results, memory, or all of them?
-- Where would Rayon simplify the system, and where would it hide required lifecycle control?
-- Which claim cannot be proven by tests alone?
+Do not introduce a second source of truth for validation, state, ordering, storage, protocol, scheduling, generation, measurement, or compatibility. Revise the authority map first when the change does not fit the current architecture.
 
-## Passing standard
+Review the change through:
 
-A passing result includes working code and a causal model. You have not passed if your explanation relies on “Rust makes it safe,” “SeqCst is safest,” “channels prevent races,” or “Rayon handles everything.” Those phrases omit the product-level obligations this course exists to teach.
+1. public behavior;
+2. owner of the new invariant;
+3. state after each failure point;
+4. ownership and cleanup;
+5. ordering and resource bounds;
+6. compatibility or format consequences;
+7. independent tests and their limits;
+8. the simpler design you rejected.
 
-[Return to the course overview](index.md) · [Open BatchWeave](capstone.md)
+## Part 4 — Cross-course preservation
+
+Select one guarantee from Course 6 — Rust Systems Programming and prove that the new construction does not regress it.
+
+Trace one requirement from input to internal state, effect, output, and test. If Course 7 introduces a stronger mechanism, explain why the earlier simpler design is no longer sufficient rather than assuming that greater abstraction is automatically better.
+
+## Part 5 — Diagnosis sprint
+
+Choose three unfamiliar cases from the course: one valid, one rejected by an early decisive phase, and one that compiles or runs while violating the product contract. Freeze the prediction, use a **concurrent architecture dossier**, observe the result, and explain every mismatch between prediction and evidence.
+
+## Part 6 — Oral defense
+
+- **Module 61 — Threads, Schedules, Send, Sync, and Race Freedom:** answer “What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 62 — Structured Threads: Scopes, Joins, and Panic Boundaries:** answer “How can borrowed data, thread lifetime, completion, and panic handling be enclosed by one parent operation rather than leaked into the rest of the program?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 63 — Shared State: Locks and Protected Invariants:** answer “Which exact invariant does a lock protect, how small can the protected transition be, and what state remains valid after contention or panic?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 64 — Coordination: Condvars, Barriers, and Phase Protocols:** answer “How do threads wait for a state predicate or phase transition without polling, lost wakeups, or treating notification itself as truth?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 65 — Message Passing, Backpressure, and Shutdown:** answer “Which values cross ownership boundaries, how is capacity bounded, and which explicit protocol event proves that every sender, receiver, and worker can terminate?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 66 — Liveness: Deadlock, Cancellation, and Recovery:** answer “Why can every blocked operation eventually continue or terminate, and what happens when cancellation, panic, or partial infrastructure failure interrupts the normal path?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 67 — Atomics, Happens-Before, and Memory Ordering:** answer “Which fact does an atomic operation publish, which earlier writes become visible because of it, and what is the weakest ordering that proves the required relationship?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 68 — Lock-Free Protocols, Reclamation, and Unsafe Send/Sync:** answer “What proof permits shared raw storage to be accessed without a lock, and where do role confusion, ABA, destruction, or memory reclamation invalidate a locally plausible algorithm?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 69 — Rayon, Work Stealing, and Deterministic Parallelism:** answer “How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+- **Module 70 — Integrated Concurrent Architecture, Testing, and Audit:** answer “How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable?” using one positive trace, one causal negative trace, one principled repair, one rejected shortcut, and one case where a simpler mechanism is sufficient.
+
+End with a fifteen-minute defense of BatchWeave: product and non-goals, ownership and authority, main invariant, failure model, ordering and bounds, one difficult proof boundary, one rejected shortcut, evidence limits, and the handoff to the next course.
+
+## Completion standard
+
+Course 7 — Rust Concurrency and Parallelism is complete when another competent Rust reader can reproduce the product behavior and causal explanation from your public contract, tests, and reasoning records. You must be able to say which claims are guaranteed by Rust, supplied by a library, chosen by the product, conditioned on a target or peer, or merely observed for one artifact and workload.
+
+## Seven-day retention check
+
+Without opening the course, redraw the ten-module chain and the core **concurrent architecture dossier**. Rebuild one small example in a new domain. Revisit only the relationships you cannot recover, then repeat the reconstruction rather than rereading the answer passively.

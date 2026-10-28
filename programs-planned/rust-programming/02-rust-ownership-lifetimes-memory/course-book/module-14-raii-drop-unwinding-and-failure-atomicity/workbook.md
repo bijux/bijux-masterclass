@@ -1,8 +1,17 @@
 # Workbook — Module 14: RAII, Drop, Unwinding, and Failure Atomicity
 
-[Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-04-resource-pool/README.md) · [Memory Workspace guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **RAII, Drop, Unwinding, and Failure Atomicity** without relying on surface syntax. Keep the module question in view: *Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **RAII, Drop, Unwinding, and Failure Atomicity** has become a usable model rather than remembered vocabulary. Its governing question is: *Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?* Preserve your first prediction and record decisive facts in a **destruction trace**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 13 — Scoped Access and Escape Prevention that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?**
+3. Draw the smallest **destruction trace** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -26,7 +35,6 @@ python3 ../tools/run_compiler_labs.py 02-rust-ownership-lifetimes-memory
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A document editor uses three booleans:
 
@@ -72,7 +80,6 @@ The repair must answer these through types and method signatures, not comments o
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 ### Exercise 1 — Destruction trace
 
 Predict exact drop order for nested locals, tuple fields, struct fields, a shadowed binding, and an early return. Verify with a `Trace` type.
@@ -113,11 +120,18 @@ Find every operation in a destructor that could panic, including indexing and fo
 
 Choose borrow-held or handle/revision edit sessions for `memory-workspace`. Defend isolation, conflict, and leaked-session behavior.
 
+### Interleaved reasoning pass
 
+1. For **Derive local, field, tuple, temporary, and scope destruction order from documented rules**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the destruction trace.
+2. For **Design RAII guards whose ownership encodes exactly one cleanup or release obligation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the destruction trace.
+3. For **Use Option::take, mem::replace, staged candidates, and consuming transitions while preserving valid states**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the destruction trace.
+4. For **Distinguish no-throw, basic, and strong in-memory failure guarantees from crash durability**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the destruction trace.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **RAII, Drop, Unwinding, and Failure Atomicity** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Product
 
@@ -183,6 +197,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-04-resource-pool](../../labs/module-04-resource-pool/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **RAII Resource Pool**, record:
+
+- the public behavior that demonstrates **Derive local, field, tuple, temporary, and scope destruction order from documented rules**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -192,7 +218,6 @@ The executable starter and reference implementation are in [module-04-resource-p
 - Use Option::take, mem::replace, staged candidates, and consuming transitions while preserving valid states.
 - Distinguish no-throw, basic, and strong in-memory failure guarantees from crash durability.
 - State when destructors may not run or cannot report failure, including abort, process exit, leaks, and power loss.
-
 
 Add an owned `EditSession` to `memory-workspace`.
 
@@ -233,11 +258,13 @@ Run a user-supplied transformation against the working copy before commit. A pan
 
 The owned session itself is RAII: uncommitted working allocations are reclaimed and cannot affect live state. `Drop` should be implemented only when a protocol action beyond ordinary field destruction is necessary.
 
-
-
 ### Capstone defense
 
 Review a boolean transaction guard, redesign it as an ownership protocol, and specify its exact unwind and explicit-finish guarantees.
+
+### Capstone invariant trace
+
+For the Module 14 Memory Workspace increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -247,11 +274,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Derive local, field, tuple, temporary, and scope destruction order from documented rules.
-- Design RAII guards whose ownership encodes exactly one cleanup or release obligation.
-- Use Option::take, mem::replace, staged candidates, and consuming transitions while preserving valid states.
-- Distinguish no-throw, basic, and strong in-memory failure guarantees from crash durability.
-- State when destructors may not run or cannot report failure, including abort, process exit, leaks, and power loss.
+Without reopening the chapter, reconstruct the outcomes for **Module 14: RAII, Drop, Unwinding, and Failure Atomicity**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -272,9 +295,17 @@ At this point, you treat destruction as a protocol with explicit limits, not as 
 
 ### Transfer defense
 
-Review a boolean transaction guard, redesign it as an ownership protocol, and specify its exact unwind and explicit-finish guarantees.
+Transfer **Module 14: RAII, Drop, Unwinding, and Failure Atomicity** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 14: RAII, Drop, Unwinding, and Failure Atomicity** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
 
 1. What does RAII bind to value lifetime?
 2. Why can ordinary ownership provide RAII without custom `Drop`?
@@ -299,3 +330,7 @@ RAII ties acquisition/release obligations to owned values. A staged edit already
 #### Transfer task
 
 Implement a directory-like current-context guard over an in-memory path stack. Add commit, rollback, panic tests, nested guards, and a written leak limitation.
+
+### Closed-book defense
+
+In five minutes, answer “Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?” using the **destruction trace**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Memory Workspace. A list of APIs without the deciding relationship is incomplete.

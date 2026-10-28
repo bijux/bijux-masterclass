@@ -1,6 +1,14 @@
 # Laboratory 80 — Async Service Audit
 
-This is the independent product for **Course 8, Module 80**. Read the [module chapter](../../course-book/module-80-integrated-async-service-architecture-testing-and-audit/index.md) and complete its [workbook](../../course-book/module-80-integrated-async-service-architecture-testing-and-audit/workbook.md) before consulting the reference implementation.
+**Course 8 · Module 80: Integrated Async Service Architecture, Testing, and Audit**
+
+[Chapter](../../course-book/module-80-integrated-async-service-architecture-testing-and-audit/index.md) · [Workbook](../../course-book/module-80-integrated-async-service-architecture-testing-and-audit/workbook.md) · [JobWire guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Integrated Async Service Architecture, Testing, and Audit**: Can the complete service be explained as one coherent set of lifecycle, protocol, capacity, cancellation, failure, compatibility, and operational contracts rather than as a pile of async APIs? The product must make **Construct a complete async service dossier** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **async service dossier** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -12,7 +20,7 @@ The completed product must make the answer visible in its types, lifecycle, test
 
 Build a compact in-memory notification service with bounded submissions, one dispatcher task, idempotent message keys, a status snapshot, and graceful shutdown. Then produce all nine Course 8 ledgers and inject failures at three mechanism intersections.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 The final lab tests transfer. It is not a smaller copy of JobWire and does not require sockets. The challenge is to prove that the same reasoning models apply to a new service with different domain state.
 
@@ -82,7 +90,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Be
 
 The laboratory is complete when its tests pass and you can answer the governing question without the chapter:
 
-> How can a complete async service be reviewed through authorities, bounds, commit points, cancellation paths, tests, and explicit non-guarantees?
+For **Laboratory 80 — Async Service Audit**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -92,3 +100,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Async Service Audit**.
+2. Draw the smallest **async service dossier** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to JobWire so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Construct a complete async service dossier.
+- Trace one request from accepted socket through terminal response and cleanup.
+- Identify the authoritative owner of protocol, broker, idempotency, metrics, and shutdown state.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 80 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **async service dossier**. Defend why your design is simpler than one plausible alternative under the new requirements.

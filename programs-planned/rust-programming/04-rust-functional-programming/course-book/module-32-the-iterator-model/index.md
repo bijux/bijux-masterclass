@@ -1,9 +1,11 @@
-# 32 — The Iterator Model
+# Module 32 — The Iterator Model
 
-**Course 4, day 2 · Module 32 of 90**  
-`███████████░░░░░░░░░` **32/90**
+**Course 4 · Day 2 · Module 32 of 100**
+`████████░░░░░░░░░░░░░░░░░` **32/100**
 
-[← Module 31: Closures, Capture, and Callable Contracts](../module-31-closures-capture-and-callable-contracts/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 33: Iterator Algebra and Pipeline Shape →](../module-33-iterator-algebra-and-pipeline-shape/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-lazy-log-query/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 31: Closures, Capture, and Callable Contracts](../module-31-closures-capture-and-callable-contracts/index.md) · [Module 33: Iterator Algebra and Pipeline Shape →](../module-33-iterator-algebra-and-pipeline-shape/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 An iterator is not a collection and not a precomputed sequence. It is a stateful pull protocol whose work occurs on demand. This module isolates that protocol so later adapter chains can be traced in terms of source ownership, `next` calls, exhaustion, and side-effect timing.
+
+### Prerequisite bridge
+
+Module 31 established **Closures, Capture, and Callable Contracts**. Before continuing, verify that you can select among generic callables, `impl fn*`, and boxed callable trait objects from real storage and dispatch requirements. This module preserves that capability and adds the ability to explain the distinct roles of `intoiterator`, `iterator`, adapters, and consumers. Module 33, **Iterator Algebra and Pipeline Shape**, will rely on both when it asks: *How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?*
+
+### Scope boundary
+
+This module owns the reasoning for **the iterator model** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -93,7 +103,7 @@ These are independent contracts. Do not implement all three mechanically. For ex
 
 Methods named `iter` and `iter_mut` are conventional inherent methods. The language-level integration point for `for` and generic iterable APIs is `IntoIterator`.
 
-### Decision rule
+### Decision rule — iter()` is not the universal meaning of iteration
 
 Accept `IntoIterator` when you need one complete traversal and want callers to choose owned or borrowed input. Accept or return `Iterator` when iterator state, laziness, partial consumption, or adapter composition is part of the contract.
 
@@ -151,7 +161,7 @@ A custom iterator should update state in an order that preserves its exhaustion 
 
 When a chain is confusing, assign it to a mutable variable and call `next` manually. Record source position, closure calls, yielded value, and remaining state. This converts a declarative-looking chain back into a concrete transition system.
 
-### Decision rule
+### Decision rule — Debugging with explicit pulls
 
 Treat every iterator as a mutable machine whose public operation is “produce the next item or report no item now.” Derive adapter behavior by nesting those machines, not by assuming a bulk collection transformation.
 
@@ -214,7 +224,7 @@ let collected: Vec<_> = evens.collect();
 
 Materializing earlier can end the borrow, but it allocates and changes the API. Prefer scoping the iterator tightly when that is the real need.
 
-### Decision rule
+### Decision rule — Borrow duration and laziness
 
 For every lazy pipeline, identify its consumers and ask how far each may traverse. Effects, borrows, failures, and cost occur when the consumer pulls, not when the adapter chain is merely constructed.
 
@@ -280,7 +290,7 @@ fn normalize_all(values: Vec<String>) -> Vec<String> {
 
 The function’s signature communicates consumption. Cloning every element to preserve an unused source would be weaker design.
 
-### Decision rule
+### Decision rule — Consuming iteration can avoid cloning
 
 Choose the iteration mode from postconditions: must the source remain usable, may elements change, or should ownership transfer? Then derive item and closure types. Do not start with `.iter()` by habit.
 
@@ -340,7 +350,7 @@ where
 
 This function consumes the zero. Rename or redesign if callers would assume otherwise.
 
-### Decision rule
+### Decision rule — Partial consumers as APIs
 
 Use `by_ref` when partial consumption and resumption are explicit product behavior. Use `peekable` when one-item lookahead must not consume. Record boundary-item semantics in tests.
 
@@ -395,7 +405,7 @@ Useful law tests include:
 
 Exact size may permit preallocation, but it does not guarantee a specific allocation strategy or speedup in a particular build. State the contract, then benchmark performance claims in Course 9.
 
-### Decision rule
+### Decision rule — Cost claims remain separate
 
 Expose only the strongest contract you can prove for every legal state. Stronger iterator traits exist for callers, not for decoration.
 
@@ -481,7 +491,7 @@ let amounts = valid.map(|event| event.amount);
 
 Here the comment exposes a dangerous policy. Better code might preserve errors instead.
 
-### Decision rule
+### Decision rule — Avoid “one expression” as a goal
 
 Use a chain for a linear, reviewable transformation; a loop for interacting control flow; and a named iterator when a lazy semantic view deserves reuse. Readability is a property of the domain contract, not expression length.
 
@@ -529,6 +539,24 @@ The closure is called four times and `found` is `Some(12)`. The infinite source 
 
 “`map` processes all values” is false. “`map` is free” is also false. It defines lazy work driven by a consumer.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For explain the distinct roles of `IntoIterator`, `Iterator`, adapters, and consumers, construct one positive and one causal negative example. Mark the first decisive fact in the **iterator state trace** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For trace the state changes caused by repeated calls to `next`, construct one positive and one causal negative example. Mark the first decisive fact in the **iterator state trace** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For predict whether an iteration path borrows, mutably borrows, or consumes its source, construct one positive and one causal negative example. Mark the first decisive fact in the **iterator state trace** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use `by_ref`, `peekable`, and fused boundaries without losing track of consumed items, construct one positive and one causal negative example. Mark the first decisive fact in the **iterator state trace** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **LedgerFlow**, a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports. Expose lazy borrowed event queries and trace when parsing, filtering, and inspection actually occur. Avoid collecting merely to make a borrow problem disappear. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -559,11 +587,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 - [IntoIterator](https://doc.rust-lang.org/std/iter/trait.IntoIterator.html)
 
-[← Module 31](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 33 →](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md)
+[← Module 31](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 33 →](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md)
 
 ## Continue
 
-1. Complete the [Module 32 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 32 — Lazy Log Query](../../labs/module-02-lazy-log-query/README.md) from its public contract.
-3. Apply the Module 32 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 33 — Iterator Algebra and Pipeline Shape](../module-33-iterator-algebra-and-pipeline-shape/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

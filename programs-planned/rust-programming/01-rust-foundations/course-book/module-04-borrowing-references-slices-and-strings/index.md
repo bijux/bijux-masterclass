@@ -1,9 +1,11 @@
-# 04 — Borrowing, References, Slices, and Strings
+# Module 04 — Borrowing, References, Slices, and Strings
 
-**Course 1, day 4 · Module 4 of 90**  
-`█░░░░░░░░░░░░░░░░░░░` **4/90**
+**Course 1 · Day 4 · Module 4 of 100**
+`█░░░░░░░░░░░░░░░░░░░░░░░░` **4/100**
 
-[← Module 3: Ownership, Moves, Copying, and Destruction](../module-03-ownership-moves-copying-and-destruction/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 5: Structs, Enums, Methods, and Pattern Matching →](../module-05-structs-enums-methods-and-pattern-matching/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-borrowed-catalog/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 3: Ownership, Moves, Copying, and Destruction](../module-03-ownership-moves-copying-and-destruction/index.md) · [Module 5: Structs, Enums, Methods, and Pattern Matching →](../module-05-structs-enums-methods-and-pattern-matching/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Moving every value would make useful APIs clumsy. Borrowing introduces temporary access without transferring destruction responsibility, but only after ownership itself is stable. Slices then show why a borrowed view can be more expressive than a borrowed container and why string APIs must respect UTF-8 rather than pretend text is an array of characters.
+
+### Prerequisite bridge
+
+Module 3 established **Ownership, Moves, Copying, and Destruction**. Before continuing, verify that you can audit clone-heavy code and remove symptom-fixing duplication while preserving the product contract. This module preserves that capability and adds the ability to model shared and mutable references as permissions constrained by aliasing and validity. Module 5, **Structs, Enums, Methods, and Pattern Matching**, will rely on both when it asks: *How can the type system make valid states representable and contradictory states difficult or impossible to construct?*
+
+### Scope boundary
+
+This module owns the reasoning for **borrowing, references, slices, and strings** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -697,6 +707,24 @@ Does callee need ownership after return?
 
 A long borrow often exists because the code retains a reference after extracting a small fact. Prefer computing the needed `bool`, index, identifier, or count inside a narrow scope and carrying that copied fact into the next phase. This is not a workaround: it replaces broad capability over an object with the exact information the later operation needs. Do not apply the pattern when later code genuinely needs to mutate or inspect the same object; in that case redesign the phases or use a suitable collection API.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For model shared and mutable references as permissions constrained by aliasing and validity, construct one positive and one causal negative example. Mark the first decisive fact in the **borrow map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For shorten borrow scopes, reborrow correctly, and split disjoint data instead of cloning or over-owning, construct one positive and one causal negative example. Mark the first decisive fact in the **borrow map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For design slice-based APIs and distinguish String, str, &String, and &str by ownership and representation, construct one positive and one causal negative example. Mark the first decisive fact in the **borrow map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For handle UTF-8 text without assuming character indexing or byte-boundary equivalence, construct one positive and one causal negative example. Mark the first decisive fact in the **borrow map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Refactor read operations to borrow the board and updates to use one narrow mutable path. The signatures should make inspection, mutation, and ownership transfer visibly different. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -726,11 +754,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: References and Borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
 - [The Rust Book: Slices](https://doc.rust-lang.org/book/ch04-03-slices.html)
 
-[← Module 3](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 5 →](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md)
+[← Module 3](../../../01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 5 →](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md)
 
 ## Continue
 
-1. Complete the [Module 4 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 4 — Borrowed Catalog](../../labs/module-04-borrowed-catalog/README.md) from its public contract.
-3. Apply the Module 4 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 5 — Structs, Enums, Methods, and Pattern Matching](../module-05-structs-enums-methods-and-pattern-matching/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

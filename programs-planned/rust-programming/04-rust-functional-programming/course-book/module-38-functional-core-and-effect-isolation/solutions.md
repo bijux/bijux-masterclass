@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 38: Functional Core and Effect Isolation
+# Reasoned Solutions — Module 38: Functional Core and Effect Isolation
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-08-deterministic-batch-runner/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Functional Core and Effect Isolation**, not to substitute for an attempt. The decisive question is: *Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 38: Functional Core and Effect Isolation**. Compare the reasoning against this question: *Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ Replay is idempotent only if stable event identities are recognized and duplicat
 
 Core tests cover parsing, ordering, diagnostics, reduction, queries, report structure, and exit classification with in-memory values. Property/law tests can cover determinism and idempotence on bounded domains. CLI process tests cover argument parsing, file-not-found behavior, stdout versus stderr, exit status, and exact byte rendering. A small number of integration tests prove wiring; they should not duplicate every domain case already proven in the core.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-08-deterministic-batch-runner/solution`](../../labs/module-08-deterministic-batch-runner/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **Functional Core and Effect Isolation**, compare the contract, invariant, f
 - Test the core with values and test the shell with focused boundary evidence.
 
 A complete explanation of **Functional Core and Effect Isolation** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?
+
+Build a **effect boundary map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Separate deterministic domain decisions from filesystem, time, environment, and terminal effects.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Inject small effect capabilities through parameters, closures, or narrow traits without building a framework.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Represent intended effects as data when plan-then-execute improves safety or testability.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design idempotent and replayable boundaries where the domain permits them.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Test the core with values and test the shell with focused boundary evidence.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Separate deterministic domain decisions from filesystem, time, environment, and terminal effects.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the effect boundary map.
+
+### Laboratory transfer review
+
+For [Deterministic Batch Runner](../../labs/module-08-deterministic-batch-runner/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 38 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Functional Core and Effect Isolation**, which relationship decides this question: “Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

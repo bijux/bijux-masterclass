@@ -1,6 +1,8 @@
-# Module 84 Solutions — Data Movement, Buffering, and Zero-Copy Boundaries
+# Reasoned Solutions — Module 84: Data Movement, Buffering, and Zero-Copy Boundaries
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-04-borrowed-record-window/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 84: Data Movement, Buffering, and Zero-Copy Boundaries**. Compare the reasoning against this question: *Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Byte-journey reasoning
 
@@ -84,3 +86,42 @@ The critical boundary is frame-to-aggregate state. Borrow during framing and val
 ## Part 6 — Defense
 
 A vector move transfers its handle. Shared views can retain their full backing allocation. Borrowed fields become owned when they cross the owner’s lifetime or task boundary. Partial writes require slice/offset state. Shared mutable buffers can add synchronization and prevent parallelism. Userspace claims do not erase kernel or durable-storage boundaries. Larger buffers and batches increase peak memory and retry/failure scope. A compact durable copy is correct when it breaks an oversized or unstable lifetime dependency.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?
+
+Build a **byte journey**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish copying bytes from moving ownership of a buffer handle.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use slices, `bytes::Bytes`, and split/freeze operations while explaining their retention semantics.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Choose vectored I/O, scatter/gather, or coalescing from message shape and system-call cost.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Recognize when zero-copy parsing is incompatible with queueing, mutation, or independent retention.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the byte journey.
+
+### Reference implementation comparison
+
+For [Borrowed Record Window](../../labs/module-04-borrowed-record-window/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 84 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Data Movement, Buffering, and Zero-Copy Boundaries**, which relationship decides this question: “Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

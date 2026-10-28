@@ -1,6 +1,14 @@
 # Laboratory 52 — Atomic Archive Store
 
-This is the independent product for **Course 6, Module 52: Files, Durability, and Transactional Replacement**. Read the [module chapter](../../course-book/module-52-files-durability-and-transactional-replacement/index.md) and complete its [workbook](../../course-book/module-52-files-durability-and-transactional-replacement/workbook.md) before consulting the reference implementation.
+**Course 6 · Module 52: Files, Durability, and Transactional Replacement**
+
+[Chapter](../../course-book/module-52-files-durability-and-transactional-replacement/index.md) · [Workbook](../../course-book/module-52-files-durability-and-transactional-replacement/workbook.md) · [FrameVault guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Files, Durability, and Transactional Replacement**: What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state? The product must make **Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **durability timeline** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -14,7 +22,7 @@ By the end, the answer must be visible in the public API, failure behavior, adve
 
 Build a file replacement component that preserves the previous valid destination until a complete staged file has been written, flushed, synchronized, and renamed.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 This lab isolates one persistence transaction so the commit point cannot hide behind an archive model. The difficult part is not calling `write_all`; it is reporting what remains visible and what may be durable after each failure. Build the state machine before reading the reference and keep pre-commit failure separate from post-commit synchronization failure.
 
@@ -65,7 +73,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Wo
 
 The laboratory is complete when the tests and documented failure paths pass, and you can answer this question without the chapter:
 
-> What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state?
+For **Laboratory 52 — Atomic Archive Store**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -75,3 +83,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Atomic Archive Store**.
+2. Draw the smallest **durability timeline** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to FrameVault so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability.
+- Handle short reads and writes through the `Read` and `Write` contracts.
+- Use `OpenOptions` to make creation and truncation policy explicit.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 52 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **durability timeline**. Defend why your design is simpler than one plausible alternative under the new requirements.

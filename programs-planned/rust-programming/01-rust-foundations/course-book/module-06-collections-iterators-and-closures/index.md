@@ -1,9 +1,11 @@
-# 06 — Collections, Iterators, and Closures
+# Module 06 — Collections, Iterators, and Closures
 
-**Course 1, day 6 · Module 6 of 90**  
-`██░░░░░░░░░░░░░░░░░░` **6/90**
+**Course 1 · Day 6 · Module 6 of 100**
+`██░░░░░░░░░░░░░░░░░░░░░░░` **6/100**
 
-[← Module 5: Structs, Enums, Methods, and Pattern Matching](../module-05-structs-enums-methods-and-pattern-matching/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 7: Errors, Parsing, Files, and Persistence →](../module-07-errors-parsing-files-and-persistence/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-in-memory-board/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 5: Structs, Enums, Methods, and Pattern Matching](../module-05-structs-enums-methods-and-pattern-matching/index.md) · [Module 7: Errors, Parsing, Files, and Persistence →](../module-07-errors-parsing-files-and-persistence/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 A useful program holds many values and processes them repeatedly. Collections therefore arrive after the element model is typed, and iterators arrive only after borrowed, mutable, and consuming access are distinguishable. Closures are introduced narrowly as behavior passed into collection operations; Course 4 later studies their full dataflow role.
+
+### Prerequisite bridge
+
+Module 5 established **Structs, Enums, Methods, and Pattern Matching**. Before continuing, verify that you can replace boolean-flag and stringly typed state with an explicit state machine and tested legal transitions. This module preserves that capability and adds the ability to use vec, slices, and hashmap with explicit length, capacity, invalidation, lookup, and ordering assumptions. Module 7, **Errors, Parsing, Files, and Persistence**, will rely on both when it asks: *Which failures are part of the product contract, where are they detected, and what state is visible after failure?*
+
+### Scope boundary
+
+This module owns the reasoning for **collections, iterators, and closures** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -530,7 +540,7 @@ for status in ["todo", "doing", "done"] {
 }
 ```
 
-In course production library code, prefer an explicit match or a method rather than routine `unwrap`; the example uses `unwrap_or`, which supplies a normal default rather than asserting success.
+In capstoneion library code, prefer an explicit match or a method rather than routine `unwrap`; the example uses `unwrap_or`, which supplies a normal default rather than asserting success.
 
 Alternatively:
 
@@ -990,6 +1000,24 @@ Before accepting a collection algorithm, answer:
 6. Is output ordering explicit?
 7. Are tests checking behavior rather than incidental implementation?
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For use Vec, slices, and HashMap with explicit length, capacity, invalidation, lookup, and ordering assumptions, construct one positive and one causal negative example. Mark the first decisive fact in the **collection and iteration trace** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For derive item ownership for iter, iter_mut, into_iter, and for-loop desugaring contexts, construct one positive and one causal negative example. Mark the first decisive fact in the **collection and iteration trace** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use closures and core iterator adapters while keeping transformations readable and cost-aware, construct one positive and one causal negative example. Mark the first decisive fact in the **collection and iteration trace** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For avoid mutation-during-iteration hazards by staging keys, splitting phases, or selecting a different operation, construct one positive and one causal negative example. Mark the first decisive fact in the **collection and iteration trace** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Implement board operations, deterministic listing, filtering, search, and statistics. For each traversal, state whether it borrows, mutates, or consumes the collection. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -1020,11 +1048,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Closures and Iterators](https://doc.rust-lang.org/book/ch13-00-functional-features.html)
 - [Iterator documentation](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 
-[← Module 5](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 7 →](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md)
+[← Module 5](../../../01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 7 →](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md)
 
 ## Continue
 
-1. Complete the [Module 6 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 6 — In-Memory Task Board](../../labs/module-06-in-memory-board/README.md) from its public contract.
-3. Apply the Module 6 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 7 — Errors, Parsing, Files, and Persistence](../module-07-errors-parsing-files-and-persistence/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

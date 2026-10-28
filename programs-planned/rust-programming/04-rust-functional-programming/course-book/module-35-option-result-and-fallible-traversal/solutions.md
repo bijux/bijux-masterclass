@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 35: Option, Result, and Fallible Traversal
+# Reasoned Solutions — Module 35: Option, Result, and Fallible Traversal
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-05-resilient-import/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Option, Result, and Fallible Traversal**, not to substitute for an attempt. The decisive question is: *Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 35: Option, Result, and Fallible Traversal**. Compare the reasoning against this question: *Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ Define variants such as `InvalidAmount { line, text, source: ParseIntError }` or
 
 Small shape changes can remain compositional: trim, convert empty to `None`, then `map(parse).transpose()`. Once one accepted value may coexist with warnings and range errors must join an accumulation channel, an explicit `match` or row-inspection function is clearer. It names every outcome and prevents `and_then` nesting from hiding whether a branch stops, skips, warns, or rejects.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-05-resilient-import/solution`](../../labs/module-05-resilient-import/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **Option, Result, and Fallible Traversal**, compare the contract, invariant,
 - Stop combinator chains when explicit control flow communicates the error topology more clearly.
 
 A complete explanation of **Option, Result, and Fallible Traversal** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?
+
+Build a **failure-policy matrix**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Compose optional and fallible transformations while preserving ownership and error meaning.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Use `transpose`, `flatten`, and `collect` to change container shape deliberately.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Distinguish fail-fast traversal from diagnostic accumulation and implement both honestly.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Choose eager and lazy defaults with awareness of evaluation and side effects.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Stop combinator chains when explicit control flow communicates the error topology more clearly.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Compose optional and fallible transformations while preserving ownership and error meaning.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the failure-policy matrix.
+
+### Laboratory transfer review
+
+For [Resilient Import](../../labs/module-05-resilient-import/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 35 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Option, Result, and Fallible Traversal**, which relationship decides this question: “Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

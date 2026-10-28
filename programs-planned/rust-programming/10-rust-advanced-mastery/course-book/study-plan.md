@@ -1,109 +1,177 @@
-# Ten-Day Study Plan — Rust Advanced Mastery
+# Course 10 Study Plan — Advanced Rust Mastery
 
-This course occupies ten focused days across two calendar weeks. The first five days establish compiler, trait, lifetime, const, and erasure reasoning. The second five days review unsafe abstractions, connect source to machine artifacts, build layered verification, govern evolution, and defend the final architecture.
+Ten dense study days fit into two calendar weeks. The goal is not to maximize reading time; it is to make **How do you design and evolve a Rust system whose type relationships, unsafe boundaries, compiler behavior, compatibility promises, verification evidence, and operating limits survive independent change?** answerable through construction and explanation.
 
-Use an eight-to-ten-hour day with real breaks. The goal is not maximum page throughput. The goal is one independently reconstructable proof boundary per day.
+## Daily rhythm
 
-## Day 1 — Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen
+Use a **architecture defense record** across the course. Each day begins by reconstructing yesterday’s decisive relationship and ends by tracing one capstone invariant. Preserve the first prediction, the observed result, the principled repair, and the shortcut you rejected.
 
-**Morning.** Read [Module 91](module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/index.md) and construct the compiler evidence ledger before compiling examples. Complete the frozen prediction section.
+## Day 1 — Module 91: Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen
 
-**Afternoon.** Build [Compiler Evidence Notebook](../labs/module-01-compiler-evidence-notebook/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+**Question:** When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result?
 
-**Evening.** Apply the Module 91 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+**Retrieval:** Without notes, restate the invariant carried from Module 90 — Production Readiness, Capacity Planning, Rollouts, and Incident Learning. Mark the point where that earlier guarantee could be weakened today.
 
-**Stop condition.** Do not advance until you can choose the earliest decisive compiler phase for a method-resolution, borrow, drop, and code-generation question, and can state what each observation leaves unknown.
+**Chapter:** Read [Module 91](./module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/index.md) with a **compiler-phase record** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-## Day 2 — Advanced Trait Solving: Goals, Projections, and Type Equality
+**Workbook:** Complete the [workbook](./module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/workbook.md) before observation. The day’s minimum result is: **Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases.** Keep one positive case and one causal negative case.
 
-**Morning.** Read [Module 92](module-92-advanced-trait-solving-goals-projections-and-type-equality/index.md) and construct the trait-goal graph before compiling examples. Complete the frozen prediction section.
+**Laboratory:** Build [Compiler Evidence Notebook](../labs/module-01-compiler-evidence-notebook/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-**Afternoon.** Build [Projection-Driven Pipeline](../labs/module-02-projection-driven-pipeline/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+**Capstone:** Apply Module 91 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-**Evening.** Apply the Module 92 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+**Exit:** Explain this capability without notes: **Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases.** End with one simpler design that would be preferable under a narrower requirement.
 
-**Stop condition.** Do not advance until you can draw a trait-goal graph, normalize an associated-type projection, locate the missing equality, and remove at least one unnecessary bound from a working API.
+## Day 2 — Module 92: Advanced Trait Solving: Goals, Projections, and Type Equality
 
-## Day 3 — GATs, Higher-Ranked Bounds, and Lending Interfaces
+**Question:** How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal?
 
-**Morning.** Read [Module 93](module-93-gats-higher-ranked-bounds-and-lending-interfaces/index.md) and construct the lifetime quantifier map before compiling examples. Complete the frozen prediction section.
+**Retrieval:** Without notes, restate the invariant carried from Module 91 — Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen. Mark the point where that earlier guarantee could be weakened today.
 
-**Afternoon.** Build [Lending Table](../labs/module-03-lending-table/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+**Chapter:** Read [Module 92](./module-92-advanced-trait-solving-goals-projections-and-type-equality/index.md) with a **trait-goal and projection graph** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Evening.** Apply the Module 93 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+**Workbook:** Complete the [workbook](./module-92-advanced-trait-solving-goals-projections-and-type-equality/workbook.md) before observation. The day’s minimum result is: **Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints.** Keep one positive case and one causal negative case.
 
-**Stop condition.** Do not advance until you can say who chooses every lifetime in a GAT or higher-ranked bound, prove why a lent view cannot escape, and identify the exact boundary where retained data must become owned.
+**Laboratory:** Build [Projection-Driven Pipeline](../labs/module-02-projection-driven-pipeline/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-## Day 4 — Const Generics, Witness Types, and Compile-Time Invariants
+**Capstone:** Apply Module 92 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-**Morning.** Read [Module 94](module-94-const-generics-witness-types-and-compile-time-invariants/index.md) and construct the compile-time/runtime invariant table before compiling examples. Complete the frozen prediction section.
+**Exit:** Explain this capability without notes: **Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints.** End with one simpler design that would be preferable under a narrower requirement.
 
-**Afternoon.** Build [Bounded Matrix](../labs/module-04-bounded-matrix/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+## Day 3 — Module 93: GATs, Higher-Ranked Bounds, and Lending Interfaces
 
-**Evening.** Apply the Module 94 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+**Question:** How can an API return views tied to each borrow of `self` without pretending that every yielded value has one fixed lifetime?
 
-**Stop condition.** Do not advance until you can separate compile-time shape from runtime quantity, construct witnesses only through checked paths, and explain when a runtime value is simpler than another const parameter.
+**Retrieval:** Without notes, restate the invariant carried from Module 92 — Advanced Trait Solving: Goals, Projections, and Type Equality. Mark the point where that earlier guarantee could be weakened today.
 
-## Day 5 — Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries
+**Chapter:** Read [Module 93](./module-93-gats-higher-ranked-bounds-and-lending-interfaces/index.md) with a **lifetime family map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Morning.** Read [Module 95](module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/index.md) and construct the variation and erasure map before compiling examples. Complete the frozen prediction section.
+**Workbook:** Complete the [workbook](./module-93-gats-higher-ranked-bounds-and-lending-interfaces/workbook.md) before observation. The day’s minimum result is: **Distinguish one associated type from a lifetime-indexed family of associated types.** Keep one positive case and one causal negative case.
 
-**Afternoon.** Build [Erased Validator Registry](../labs/module-05-erased-validator-registry/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+**Laboratory:** Build [Lending Table](../labs/module-03-lending-table/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-**Evening.** Apply the Module 95 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+**Capstone:** Apply Module 93 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-**Stop condition.** Do not advance until you can choose among enums, generics, `impl Trait`, trait objects, and `Any` from the extension requirement, and can name the information erased at each boundary.
+**Exit:** Explain this capability without notes: **Distinguish one associated type from a lifetime-indexed family of associated types.** End with one simpler design that would be preferable under a narrower requirement.
 
-## Day 6 — Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits
+## Day 4 — Module 94: Const Generics, Witness Types, and Compile-Time Invariants
 
-**Morning.** Read [Module 96](module-96-auditing-unsafe-abstractions-validity-provenance-drop-panic-and-auto-traits/index.md) and construct the unsafe abstraction safety dossier before compiling examples. Complete the frozen prediction section.
+**Question:** Which numeric and state facts belong in types, which remain runtime data, and how do you avoid turning a library into an unusable type-level calculator?
 
-**Afternoon.** Build [Audited Inline Batch](../labs/module-06-inline-batch/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+**Retrieval:** Without notes, restate the invariant carried from Module 93 — GATs, Higher-Ranked Bounds, and Lending Interfaces. Mark the point where that earlier guarantee could be weakened today.
 
-**Evening.** Apply the Module 96 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+**Chapter:** Read [Module 94](./module-94-const-generics-witness-types-and-compile-time-invariants/index.md) with a **const witness proof** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Stop condition.** Do not advance until you can review `InlineBatch` from every safe entry point, reconstruct the initialized-prefix and drop proof, and decide whether the safe `Vec` alternative should replace it.
+**Workbook:** Complete the [workbook](./module-94-const-generics-witness-types-and-compile-time-invariants/workbook.md) before observation. The day’s minimum result is: **Use const parameters when a numeric fact changes representation, layout, or legal composition.** Keep one positive case and one causal negative case.
 
-## Day 7 — From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size
+**Laboratory:** Build [Bounded Matrix](../labs/module-04-bounded-matrix/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-**Morning.** Read [Module 97](module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/index.md) and construct the source-to-artifact observation record before compiling examples. Complete the frozen prediction section.
+**Capstone:** Apply Module 94 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-**Afternoon.** Build [Dispatch Observatory](../labs/module-07-dispatch-observatory/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+**Exit:** Explain this capability without notes: **Use const parameters when a numeric fact changes representation, layout, or legal composition.** End with one simpler design that would be preferable under a narrower requirement.
 
-**Evening.** Apply the Module 97 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+## Day 5 — Module 95: Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries
 
-**Stop condition.** Do not advance until you can distinguish semantic dispatch guarantees from artifact observations, compare static, enum, and dynamic paths fairly, and scope every size or assembly claim to one build.
+**Question:** When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary?
 
-## Day 8 — Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration
+**Retrieval:** Without notes, restate the invariant carried from Module 94 — Const Generics, Witness Types, and Compile-Time Invariants. Mark the point where that earlier guarantee could be weakened today.
 
-**Morning.** Read [Module 98](module-98-verification-beyond-examples-compile-fail-property-model-fuzz-miri-and-concurrency-exploration/index.md) and construct the claim-to-evidence verification matrix before compiling examples. Complete the frozen prediction section.
+**Chapter:** Read [Module 95](./module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/index.md) with a **open and erased variation map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Afternoon.** Build [Model-Checked Log](../labs/module-08-model-checked-log/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+**Workbook:** Complete the [workbook](./module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/workbook.md) before observation. The day’s minimum result is: **Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type.** Keep one positive case and one causal negative case.
 
-**Evening.** Apply the Module 98 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+**Laboratory:** Build [Erased Validator Registry](../labs/module-05-erased-validator-registry/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-**Stop condition.** Do not advance until each important claim has a primary falsification method, causal negative space, an independent oracle where possible, and an explicit statement of what passing evidence cannot establish.
+**Capstone:** Apply Module 95 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-## Day 9 — Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship
+**Exit:** Explain this capability without notes: **Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type.** End with one simpler design that would be preferable under a narrower requirement.
 
-**Morning.** Read [Module 99](module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/index.md) and construct the compatibility and migration matrix before compiling examples. Complete the frozen prediction section.
+## Midpoint reconstruction
 
-**Afternoon.** Build [Versioned SDK](../labs/module-09-versioned-sdk/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+Do not add a sixth topic on the recovery day. Reconstruct **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen, Advanced Trait Solving: Goals, Projections, and Type Equality, GATs, Higher-Ranked Bounds, and Lending Interfaces, Const Generics, Witness Types, and Compile-Time Invariants, Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries** as one dependency chain, rerun the two investigations that changed your model most, and describe the current AxiomStore state from an empty page. Repair incomplete work, then take a real break; consolidation is part of the course rather than unused time.
 
-**Evening.** Apply the Module 99 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+## Day 6 — Module 96: Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits
 
-**Stop condition.** Do not advance until you can name all compatibility stakeholders, read a feature/MSRV matrix, preserve immutable old-format fixtures, and design migration so failed conversion does not become partial adoption.
+**Question:** What exact proof makes a safe API implemented with unsafe code sound across every constructor, method, failure path, destructor, and thread-safety claim?
 
-## Day 10 — Architectural Synthesis: Building and Defending a Long-Lived Rust System
+**Retrieval:** Without notes, restate the invariant carried from Module 95 — Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries. Mark the point where that earlier guarantee could be weakened today.
 
-**Morning.** Read [Module 100](module-100-architectural-synthesis-building-and-defending-a-long-lived-rust-system/index.md) and construct the architecture defense dossier before compiling examples. Complete the frozen prediction section.
+**Chapter:** Read [Module 96](./module-96-auditing-unsafe-abstractions-validity-provenance-drop-panic-and-auto-traits/index.md) with a **unsafe state-and-operation dossier** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Afternoon.** Build [Architecture Council](../labs/module-10-architecture-council/README.md). Start with the public contract and adversarial case, not with the reference implementation.
+**Workbook:** Complete the [workbook](./module-96-auditing-unsafe-abstractions-validity-provenance-drop-panic-and-auto-traits/workbook.md) before observation. The day’s minimum result is: **Write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation.** Keep one positive case and one causal negative case.
 
-**Evening.** Apply the Module 100 AxiomStore increment, update the architecture and verification records, then reconstruct the module question without notes.
+**Laboratory:** Build [Inline Batch](../labs/module-06-inline-batch/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-**Stop condition.** Finish only when the AXIOM02 extension fits the existing invariant map, the unsafe and compatibility dossiers are current, and you can remove an unjustified advanced mechanism without destabilizing the product.
+**Capstone:** Apply Module 96 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-## Weekend repair
+**Exit:** Explain this capability without notes: **Write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation.** End with one simpler design that would be preferable under a narrower requirement.
 
-After Day 5, rebuild the variation map from memory and re-run the first five laboratories without consulting solutions. After Day 10, perform the full architecture defense on a fresh checkout and implement one additional small compatibility change of your own.
+## Day 7 — Module 97: From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size
+
+**Question:** How do type-level architecture and compiler decisions become concrete symbols, call paths, layouts, and artifact size—and which observations are stable enough to guide design?
+
+**Retrieval:** Without notes, restate the invariant carried from Module 96 — Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits. Mark the point where that earlier guarantee could be weakened today.
+
+**Chapter:** Read [Module 97](./module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/index.md) with a **source-to-artifact observation** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
+
+**Workbook:** Complete the [workbook](./module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/workbook.md) before observation. The day’s minimum result is: **Explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication.** Keep one positive case and one causal negative case.
+
+**Laboratory:** Build [Dispatch Observatory](../labs/module-07-dispatch-observatory/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
+
+**Capstone:** Apply Module 97 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
+
+**Exit:** Explain this capability without notes: **Explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication.** End with one simpler design that would be preferable under a narrower requirement.
+
+## Day 8 — Module 98: Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration
+
+**Question:** Which verification technique can falsify which kind of Rust claim, and how do you combine them without pretending that test volume equals proof?
+
+**Retrieval:** Without notes, restate the invariant carried from Module 97 — From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size. Mark the point where that earlier guarantee could be weakened today.
+
+**Chapter:** Read [Module 98](./module-98-verification-beyond-examples-compile-fail-property-model-fuzz-miri-and-concurrency-exploration/index.md) with a **verification claim matrix** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
+
+**Workbook:** Complete the [workbook](./module-98-verification-beyond-examples-compile-fail-property-model-fuzz-miri-and-concurrency-exploration/workbook.md) before observation. The day’s minimum result is: **Classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims.** Keep one positive case and one causal negative case.
+
+**Laboratory:** Build [Model-Checked Log](../labs/module-08-model-checked-log/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
+
+**Capstone:** Apply Module 98 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
+
+**Exit:** Explain this capability without notes: **Classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims.** End with one simpler design that would be preferable under a narrower requirement.
+
+## Day 9 — Module 99: Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship
+
+**Question:** How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data?
+
+**Retrieval:** Without notes, restate the invariant carried from Module 98 — Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration. Mark the point where that earlier guarantee could be weakened today.
+
+**Chapter:** Read [Module 99](./module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/index.md) with a **compatibility and migration matrix** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
+
+**Workbook:** Complete the [workbook](./module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/workbook.md) before observation. The day’s minimum result is: **Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data.** Keep one positive case and one causal negative case.
+
+**Laboratory:** Build [Versioned SDK](../labs/module-09-versioned-sdk/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
+
+**Capstone:** Apply Module 99 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
+
+**Exit:** Explain this capability without notes: **Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data.** End with one simpler design that would be preferable under a narrower requirement.
+
+## Day 10 — Module 100: Architectural Synthesis: Building and Defending a Long-Lived Rust System
+
+**Question:** Can you turn ten courses of mechanisms into one restrained architecture whose guarantees, unsafe core, verification evidence, compatibility policy, and operating limits can survive independent review?
+
+**Retrieval:** Without notes, restate the invariant carried from Module 99 — Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship. Mark the point where that earlier guarantee could be weakened today.
+
+**Chapter:** Read [Module 100](./module-100-architectural-synthesis-building-and-defending-a-long-lived-rust-system/index.md) with a **architecture defense record** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
+
+**Workbook:** Complete the [workbook](./module-100-architectural-synthesis-building-and-defending-a-long-lived-rust-system/workbook.md) before observation. The day’s minimum result is: **Construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy.** Keep one positive case and one causal negative case.
+
+**Laboratory:** Build [Architecture Council](../labs/module-10-architecture-council/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
+
+**Capstone:** Apply Module 100 in the [AxiomStore guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
+
+**Exit:** Explain this capability without notes: **Construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy.** End with one simpler design that would be preferable under a narrower requirement.
+
+## Final integration
+
+After Day 10, complete the [final review](final-review.md), run the strongest available course route, and implement this unseen capstone change: **Implement the AXIOM02 format extension without creating a parallel validation or persistence architecture, and defend every compatibility and unsafe consequence.**
+
+Seven days later, rebuild the ten-module sequence and the core **architecture defense record** without the book. Write a fresh example for every relationship you cannot recover. Re-reading a solution without recreating the model does not count as retained learning.

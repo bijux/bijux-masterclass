@@ -1,6 +1,14 @@
 # Laboratory 54 — Bounded Process Capture
 
-This is the independent product for **Course 6, Module 54: Processes, Environments, and Standard Streams**. Read the [module chapter](../../course-book/module-54-processes-environments-and-standard-streams/index.md) and complete its [workbook](../../course-book/module-54-processes-environments-and-standard-streams/workbook.md) before consulting the reference implementation.
+**Course 6 · Module 54: Processes, Environments, and Standard Streams**
+
+[Chapter](../../course-book/module-54-processes-environments-and-standard-streams/index.md) · [Workbook](../../course-book/module-54-processes-environments-and-standard-streams/workbook.md) · [FrameVault guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Processes, Environments, and Standard Streams**: How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result? The product must make **Construct commands from a program plus arguments, not an interpolated shell line** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **process boundary contract** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -14,7 +22,7 @@ By the end, the answer must be visible in the public API, failure behavior, adve
 
 Build a structured process request and finite-output capture adapter. Program, arguments, working directory, and environment changes remain separate OS strings. Output remains bytes and nonzero status remains structured.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 This lab makes process invocation a structured protocol: executable identity, argument boundaries, environment policy, working directory, lifecycle, status, stdout bytes, and stderr bytes. It deliberately avoids a shell so quoting folklore cannot substitute for an argument vector. The size policy must also distinguish accepted stored output from peak memory consumed by `Command::output`.
 
@@ -66,7 +74,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Wo
 
 The laboratory is complete when the tests and documented failure paths pass, and you can answer this question without the chapter:
 
-> How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result?
+For **Laboratory 54 — Bounded Process Capture**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -76,3 +84,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Bounded Process Capture**.
+2. Draw the smallest **process boundary contract** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to FrameVault so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Construct commands from a program plus arguments, not an interpolated shell line.
+- Control environment inheritance and current-directory policy explicitly.
+- Distinguish `status`, `output`, `spawn`, `wait`, `try_wait`, and `wait_with_output`.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 54 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **process boundary contract**. Defend why your design is simpler than one plausible alternative under the new requirements.

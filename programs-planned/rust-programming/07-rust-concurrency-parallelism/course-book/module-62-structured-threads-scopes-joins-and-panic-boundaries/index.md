@@ -1,8 +1,11 @@
-# Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries
+# Module 62 — Structured Threads: Scopes, Joins, and Panic Boundaries
 
-**Course 7, day 2 · Module 62 of 90**  
+**Course 7 · Day 2 · Module 62 of 100**
+`████████████████░░░░░░░░░` **62/100**
 
-**62/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-scoped-slice-analysis/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 61: Threads, Schedules, Send, Sync, and Race Freedom](../module-61-threads-schedules-send-sync-and-race-freedom/index.md) · [Module 63: Shared State: Locks and Protected Invariants →](../module-63-shared-state-locks-and-protected-invariants/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Module 61 used owned values because ordinary spawned threads may outlive the sta
 The important lesson is not “scoped threads remove `'static`.” It is structured concurrency: child lifetime, cancellation decisions, joins, and panic observation remain inside the lexical operation that created the children. This module also corrects a common misunderstanding of `'static`: it is a bound on references contained by a value, not a promise that the value itself lives forever.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 61 established **Threads, Schedules, Send, Sync, and Race Freedom**. Before continuing, verify that you can recognize race conditions that contain no data race, including check-then-act and winner-selection protocols. This module preserves that capability and adds the ability to explain the real meaning of a `t: 'static` bound and why owned values can satisfy it;. Module 63, **Shared State: Locks and Protected Invariants**, will rely on both when it asks: *Which exact invariant does a lock protect, how small can the protected transition be, and what state remains valid after contention or panic?*
+
+### Scope boundary
+
+This module owns the reasoning for **structured threads: scopes, joins, and panic boundaries** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -107,6 +118,24 @@ Prefer returning owned summaries for most parallel work. Borrowed results are us
 Use owned `spawn` when work is independent, may outlive a local operation, or belongs to a long-lived service. Use scoped threads when finite children need temporary access to enclosing data and explicit low-level thread control. Use Rayon when the computation is naturally divisible data-parallel work and work-stealing scheduling is more important than per-thread protocol control.
 
 The mechanism is selected by lifetime, topology, and failure semantics—not by which API avoids a clone in the smallest example.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For explain the real meaning of a `T: 'static` bound and why owned values can satisfy it, construct one positive and one causal negative example. Mark the first decisive fact in the **join and panic tree** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For use `thread::scope` to borrow immutable and disjoint mutable data safely, construct one positive and one causal negative example. Mark the first decisive fact in the **join and panic tree** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For partition mutable state before spawning rather than attempt to prove disjointness after overlap exists, construct one positive and one causal negative example. Mark the first decisive fact in the **join and panic tree** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For treat a scope as a lifecycle boundary, not merely a lifetime workaround, construct one positive and one causal negative example. Mark the first decisive fact in the **join and panic tree** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -216,4 +245,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Scoped Slice Analysis](../../labs/module-02-scoped-slice-analysis/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 63 — Shared State: Locks and Protected Invariants](../module-63-shared-state-locks-and-protected-invariants/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

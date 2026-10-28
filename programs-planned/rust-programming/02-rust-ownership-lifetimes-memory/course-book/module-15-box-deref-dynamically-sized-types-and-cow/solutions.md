@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 15: Box, Deref, Dynamically Sized Types, and Cow
+# Reasoned Solutions — Module 15: Box, Deref, Dynamically Sized Types, and Cow
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-05-boxed-expressions/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Box, Deref, Dynamically Sized Types, and Cow**, not to substitute for an attempt. The decisive question is: *When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 15: Box, Deref, Dynamically Sized Types, and Cow**. Compare the reasoning against this question: *When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -86,9 +86,7 @@ Use these explanations to review your reasoning about **Box, Deref, Dynamically 
 
 Redesign an expression tree and text-normalization API, showing which allocations are necessary and which are conditional.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-05-boxed-expressions/solution`](../../labs/module-05-boxed-expressions/solution). Before reading it, write down:
 
@@ -109,3 +107,42 @@ For **Box, Deref, Dynamically Sized Types, and Cow**, compare the contract, inva
 - Choose among inline ownership, Box, Rc, handles, arenas, and borrowed views from topology and cost.
 
 A complete explanation of **Box, Deref, Dynamically Sized Types, and Cow** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?
+
+Build a **indirection model**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Explain Deref, deref coercion, method lookup, and why custom Deref is not ordinary inheritance.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Reason about sized and dynamically sized types, fat pointers, metadata, unsizing, boxed slices, and boxed strings.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use Cow only when the common path can borrow and a well-defined transformation sometimes requires ownership.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Choose among inline ownership, Box, Rc, handles, arenas, and borrowed views from topology and cost.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the indirection model.
+
+### Laboratory transfer review
+
+For [Boxed Expression Tree](../../labs/module-05-boxed-expressions/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 15 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Box, Deref, Dynamically Sized Types, and Cow**, which relationship decides this question: “When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

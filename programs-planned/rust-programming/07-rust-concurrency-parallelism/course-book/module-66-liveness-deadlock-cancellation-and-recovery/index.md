@@ -1,8 +1,11 @@
-# Module 66: Liveness: Deadlock, Cancellation, and Recovery
+# Module 66 — Liveness: Deadlock, Cancellation, and Recovery
 
-**Course 7, day 6 · Module 66 of 90**  
+**Course 7 · Day 6 · Module 66 of 100**
+`████████████████░░░░░░░░░` **66/100**
 
-**66/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-cancellable-worker-group/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 65: Message Passing, Backpressure, and Shutdown](../module-65-message-passing-backpressure-and-shutdown/index.md) · [Module 67: Atomics, Happens-Before, and Memory Ordering →](../module-67-atomics-happens-before-and-memory-ordering/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ The first five modules established safe ownership, structured lifetime, protecte
 This module gives concrete methods: wait-for graphs for deadlock, progress classes for waiting operations, cancellation wake paths, idempotent shutdown, panic containment, and terminal accounting. It also corrects a recurring design mistake: a cancellation flag is only information. A thread blocked on a condition variable or channel needs an event that makes it re-evaluate that information.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 65 established **Message Passing, Backpressure, and Shutdown**. Before continuing, verify that you can prove shutdown by accounting for every sender clone, receiver, queued message, and worker join. This module preserves that capability and adds the ability to distinguish deadlock, starvation, livelock, priority inversion, and slow work;. Module 67, **Atomics, Happens-Before, and Memory Ordering**, will rely on both when it asks: *Which fact does an atomic operation publish, which earlier writes become visible because of it, and what is the weakest ordering that proves the required relationship?*
+
+### Scope boundary
+
+This module owns the reasoning for **liveness: deadlock, cancellation, and recovery** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -114,6 +125,24 @@ For a finite worker engine, a useful proof is:
 - reconciliation terminates over a finite indexed vector.
 
 This is stronger than “workers exit when the channel closes” because it covers every obligation and failure path.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish deadlock, starvation, livelock, priority inversion, and slow work, construct one positive and one causal negative example. Mark the first decisive fact in the **wait-for and shutdown graph** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For construct a wait-for graph over locks, channels, joins, barriers, and conditions, construct one positive and one causal negative example. Mark the first decisive fact in the **wait-for and shutdown graph** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For state a global lock order and identify operations that violate it, construct one positive and one causal negative example. Mark the first decisive fact in the **wait-for and shutdown graph** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design cancellation as state plus a wake mechanism plus an observation point, construct one positive and one causal negative example. Mark the first decisive fact in the **wait-for and shutdown graph** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -219,4 +248,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Cancellable Worker Group](../../labs/module-06-cancellable-worker-group/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 67 — Atomics, Happens-Before, and Memory Ordering](../module-67-atomics-happens-before-and-memory-ordering/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

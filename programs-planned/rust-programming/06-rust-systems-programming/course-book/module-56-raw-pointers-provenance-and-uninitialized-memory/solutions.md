@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 56: Raw Pointers, Provenance, and Uninitialized Memory
+# Reasoned Solutions — Module 56: Raw Pointers, Provenance, and Uninitialized Memory
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-06-panic-safe-batch-builder/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 56: Raw Pointers, Provenance, and Uninitialized Memory**. Compare the reasoning against this question: *How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -132,3 +130,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can trace allocation identity, range, alignment, initialization, aliasing, and lifetime independently; build a partially initialized array with correct cleanup; and explain why `NonNull` is not a validity proof.
 
 Then perform this destructive regression check: force construction to panic at every prefix length and verify that each initialized element is dropped exactly once while uninitialized slots are never dropped. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation?
+
+Build a **initialization and provenance map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish raw pointers from references and explain why conversion does not transfer ownership.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Use raw borrow operators when creating a reference would itself be invalid.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Derive pointer arithmetic from one allocation and checked element counts.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use `MaybeUninit` to represent storage that is not yet a valid `T`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Construct and clean up partially initialized sequences without leaks or invalid drops.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish raw pointers from references and explain why conversion does not transfer ownership.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the initialization and provenance map.
+
+### Reference implementation comparison
+
+For [Panic-Safe Batch Builder](../../labs/module-06-panic-safe-batch-builder/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 56 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Raw Pointers, Provenance, and Uninitialized Memory**, which relationship decides this question: “How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

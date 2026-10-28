@@ -1,4 +1,43 @@
-# Course 5 reference — Rust Metaprogramming
+# Course 5 Reference Desk — Rust Metaprogramming
+
+Use this page while designing or reviewing. It is a decision aid, not a replacement for the module explanations.
+
+## Governing question
+
+> Which facts deserve one compile-time source of truth, which generation mechanism is the least powerful adequate choice, and how can expanded code remain diagnosable ordinary Rust?
+
+## Working record
+
+Keep a authority map, accepted grammar, token and repetition trace, hygiene/path map, expansion ledger, diagnostic contract, phase map, generated-surface inventory, and reproducibility record. A design is not ready when the record still contains unnamed owners, contradictory states, implicit failure, accidental order, unbounded accumulation, or a claim with no matching evidence.
+
+## Decision rules
+
+| Decision | Rule |
+|---|---|
+| Mechanism choice | Prefer ordinary Rust; use the least powerful generation mechanism that owns one real source of truth. |
+| Grammar | Define accepted and rejected syntax before writing matcher arms or parser code. |
+| Hygiene | Make definition-site and invocation-site names deliberate, especially across crates. |
+| Diagnostic | Treat invalid syntax and unsupported structures as part of the public macro contract. |
+| Generation | Normalize validated input before emitting deterministic ordinary Rust. |
+
+## Module quick reference
+
+| Module | Mechanism | Minimum usable outcome |
+|---:|---|---|
+| 41 | Metaprogramming Boundaries and the Expansion Model | Separate runtime abstraction from compile-time generation |
+| 42 | Declarative Macros: Matchers, Fragments, and Repetition | Read a matcher as a grammar rather than as textual substitution |
+| 43 | Recursive Macro Parsing and Token-Tree Techniques | Model recursive macro rules as parser states and transitions |
+| 44 | Hygiene, Scope, Paths, and Cross-Crate Macros | Distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros |
+| 45 | Macro Diagnostics, Testing, and Public API Design | Treat invocation grammar and generated Rust as two related public APIs |
+| 46 | Procedural Macro Execution and TokenStream Engineering | Explain when and how a procedural macro executes |
+| 47 | Custom Derive Macros and Structural Generation | Parse `DeriveInput` and distinguish structs, enums, and unions |
+| 48 | Attribute Macros and Item Transformation | Parse attribute arguments independently from the attached item |
+| 49 | Function-Like Procedural Macros and Typed DSLs | Design a bounded custom grammar with explicit compatibility space |
+| 50 | Build Scripts, Generated Code, and Compile-Time Architecture | Explain the Cargo build-script lifecycle and communication protocol |
+
+## Claim boundary
+
+Separate language guarantees, library contracts, product policy, target observations, and measured artifact facts. When an exact API or version detail matters, follow the primary source from [Source Notes](../../SOURCE_NOTES.md).
 
 ## Mechanism ladder
 

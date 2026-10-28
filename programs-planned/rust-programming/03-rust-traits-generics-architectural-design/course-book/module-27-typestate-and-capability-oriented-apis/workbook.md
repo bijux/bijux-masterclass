@@ -1,8 +1,17 @@
 # Workbook — Module 27: Typestate and Capability-Oriented APIs
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-07-typestate-publication/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Typestate and Capability-Oriented APIs** without relying on surface syntax. Keep the module question in view: *Which illegal operations can be removed from the API by representing protocol state and authority in types?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Typestate and Capability-Oriented APIs** has become a usable model rather than remembered vocabulary. Its governing question is: *Which illegal operations can be removed from the API by representing protocol state and authority in types?* Preserve your first prediction and record decisive facts in a **typestate transition graph**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 26 — Composition and OOP-Style Design Without Inheritance that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which illegal operations can be removed from the API by representing protocol state and authority in types?**
+3. Draw the smallest **typestate transition graph** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -98,6 +107,17 @@ For each design, count the public state combinations, show the type returned by 
 
 Then add a single-use `DeployPermit` capability. Decide whether possession of the permit, a role enum, or a Boolean flag should authorize deployment. Your answer must cover construction authority, duplication, storage, serialization, and auditability. Finally, erase the builder state into a non-generic runtime client and explain why the protocol proof remains valid after erasure.
 
+### Interleaved reasoning pass
+
+1. For **Encode a finite protocol with marker states and consuming transitions**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the typestate transition graph.
+2. For **Decide which invalid operations deserve compile-time prevention**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the typestate transition graph.
+3. For **Prevent construction of forbidden states through visibility and sealed state markers**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the typestate transition graph.
+4. For **Erase typestate at a dynamic boundary without corrupting invariants**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the typestate transition graph.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Typestate and Capability-Oriented APIs** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Implement `Draft -> Reviewed -> Published` with state-specific evidence.
@@ -114,11 +134,27 @@ Requirements:
 
 The executable starter and reference implementation are in [module-07-typestate-publication](../../labs/module-07-typestate-publication/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Typestate Publication**, record:
+
+- the public behavior that demonstrates **Encode a finite protocol with marker states and consuming transitions**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Implement typestate construction for source, reporter, and validated policy. `build` and `run` must be unavailable until all required components exist.
 
 Keep policy-file parse errors at runtime. Do not encode optional report settings as independent type parameters. The final engine type should expose meaningful `S` and `R`, not construction markers.
+
+### Capstone invariant trace
+
+For the Module 27 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -136,3 +172,7 @@ Oral prompt: **“Which invalid operation became impossible, and which invalid c
 ### Independent transfer
 
 Model a three-stage import protocol in which configuration, validation, and commit occur in order. Preserve the configured value on validation failure, prevent commit before validation, and explain which environmental failures must remain runtime `Result` values rather than type states.
+
+### Closed-book defense
+
+In five minutes, answer “Which illegal operations can be removed from the API by representing protocol state and authority in types?” using the **typestate transition graph**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

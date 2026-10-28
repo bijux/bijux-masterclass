@@ -1,6 +1,14 @@
-# Laboratory 7 — Overload Control Simulator
+# Laboratory 87 — Overload Control Simulator
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 87 chapter](../../course-book/module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md)
+**Course 9 · Module 87: Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation**
+
+[Chapter](../../course-book/module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md) · [Workbook](../../course-book/module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation**: How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope? The product must make **Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **SLO and overload policy** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -86,3 +94,25 @@ Your final policy must distinguish rejection before commitment from failure afte
 
 After each overload scenario, return offered load to a sustainable level and measure queue drain, latency recovery, rejection recovery, and any retry aftershock. A protective policy is incomplete if it survives overload but requires a restart to recover. Test hysteresis or recovery thresholds where applicable, and verify that retained failure state, open permits, and retry timers all converge to the declared quiescent condition.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Overload Control Simulator**.
+2. Draw the smallest **SLO and overload policy** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous.
+- Derive admission and shedding policies from protected resources and customer-visible priorities.
+- Build retries around idempotency, one deadline budget, bounded attempts, and retryable classifications.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 87 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **SLO and overload policy**. Defend why your design is simpler than one plausible alternative under the new requirements.

@@ -1,37 +1,29 @@
-# Compiler and boundary investigations
+# Course 7 Compiler and Design Investigations
 
-These eighty cases train causal prediction before you rely on a compiler message or observed schedule. They are not a substitute for the module workbooks. Use the workbook first, record your prediction, then run the isolated case.
-
-## Outcome categories
-
-```text
-compile-pass  the source should type-check successfully
-compile-fail  the source should be rejected for the recorded cause
-run-pass      compilation and execution should both satisfy the contract
-run-fail      compilation succeeds and execution demonstrates a recorded failure
-manual-review compilation is not the decisive proof; inspect the design contract
-```
-
-Course 7 currently contains forty `compile-pass` and forty `compile-fail` cases. Modules 61–68 and 70 use direct `rustc` cases. Module 69 uses Cargo fixtures because Rayon is an external crate and the dependency boundary is part of the exercise.
+These investigations train causal prediction. They are not quizzes about memorizing diagnostic wording. Each specimen isolates one language, runtime, build, schedule, or design relationship from Rust Concurrency and Parallelism.
 
 ## Method
 
-For each case, write down:
+1. Read the specimen without compiling.
+2. Classify the expected result: compile pass, compile fail, run pass, run fail, or manual design review.
+3. Draw the smallest thread ownership map, protected-invariant table, wait-for graph, predicate/wakeup record, channel topology, shutdown tree, happens-before graph, atomic state machine, work-partition map, and deterministic reconciliation table capable of deciding it.
+4. State the intended cause and the earliest decisive phase or event.
+5. Compile or run only after the prediction is fixed.
+6. Apply the smallest principled repair.
+7. Record one tempting repair that weakens the product contract.
 
-1. whether it should compile;
-2. the first line whose type or lifetime contract decides the result;
-3. whether the issue concerns ownership transfer, shared-reference capability, guard lifetime, endpoint ownership, atomic type use, unsafe auto-trait claims, or parallel trait bounds;
-4. the smallest repair that preserves the product requirement;
-5. one repair that may compile but weakens lifecycle, determinism, capacity, or safety.
+A correct pass/fail guess with the wrong cause is not a successful investigation. When several diagnostics appear, identify which one would remain after unrelated mistakes were removed.
 
-Then run:
+Run every course specimen with:
 
 ```bash
 make compiler-labs
 ```
 
-The runner reads `manifest.json`, checks each declared outcome, and isolates Cargo fixtures from one another. A negative case passes only when compilation fails. During review, compare the actual diagnostic with `intended_cause`; an unrelated syntax or import error does not prove the target rule.
+or run only this course from the program root:
 
-## What these cases do not prove
+```bash
+python3 tools/run_compiler_labs.py 07-rust-concurrency-parallelism
+```
 
-Successful compilation does not prove freedom from deadlock, starvation, schedule-dependent output, incomplete shutdown, weak cancellation, or incorrect atomic ordering. Several modules therefore pair compiler cases with runtime protocols in their workbooks and laboratories. The case metadata records the boundary honestly instead of calling every concurrency defect a compiler failure.
+Direct `rustc` cases compile into temporary directories. Cargo fixtures use isolated target directories. Negative cases are successful only when they fail for the intended relationship, not merely because the file contains some unrelated error.

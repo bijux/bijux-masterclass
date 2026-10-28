@@ -1,8 +1,8 @@
 # Reasoned Solutions — Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the JobWire guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-task-nursery/README.md) · [JobWire guide](../capstone.md)
 
-The governing correction is that spawning is ownership transfer, not syntactic concurrency. A task is complete only when its owner has accounted for its result, panic or cancellation, and cleanup.
+Use these notes only after preserving your prediction and repair for **Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles**. Compare the reasoning against this question: *Once futures are understood as poll-driven state machines, how should a runtime own, schedule, observe, cancel, and finish the tasks that execute them?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -40,3 +40,42 @@ JobWire’s supervisor should treat an unexpected broker exit as fatal because t
 ## Part 6 — Reconstruction and defense
 
 A complete defense says that spawn gives the runtime an independently owned future; the application retains lifecycle ownership through a handle or set. Detach means “continue without this owner.” Abort means “request drop at a yield boundary.” Complete shutdown requires terminal observation. Blocking isolation protects runtime workers but still needs bounded admission and cooperative design where hard cancellation matters.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Once futures are understood as poll-driven state machines, how should a runtime own, schedule, observe, cancel, and finish the tasks that execute them?
+
+Build a **task ownership tree**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish a runtime, worker thread, task, future, reactor, and blocking pool.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Explain the `Send + 'static` requirements of ordinary multi-threaded task spawning.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Derive when a task should borrow through an enclosing async scope versus own cloned or moved data.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use `JoinHandle` and `JoinSet` as explicit result, panic, cancellation, and cleanup obligations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Distinguish dropping a join handle from aborting the task.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish a runtime, worker thread, task, future, reactor, and blocking pool.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the task ownership tree.
+
+### Reference implementation comparison
+
+For [Task Nursery](../../labs/module-02-task-nursery/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In JobWire, Module 72 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Tokio Runtimes, Tasks, and Structured Async Lifecycles**, which relationship decides this question: “Once futures are understood as poll-driven state machines, how should a runtime own, schedule, observe, cancel, and finish the tasks that execute them?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to JobWire?

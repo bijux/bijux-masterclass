@@ -1,8 +1,17 @@
 # Workbook — Module 21: Traits as Behavioral Contracts
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-contract-boundaries/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Traits as Behavioral Contracts** without relying on surface syntax. Keep the module question in view: *What behavior truly belongs in a shared contract, and which laws must every implementation preserve?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Traits as Behavioral Contracts** has become a usable model rather than remembered vocabulary. Its governing question is: *What behavior truly belongs in a shared contract, and which laws must every implementation preserve?* Preserve your first prediction and record decisive facts in a **trait-law table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 20 — Pinning and Address-Sensitive Design that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What behavior truly belongs in a shared contract, and which laws must every implementation preserve?**
+3. Draw the smallest **trait-law table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -95,6 +104,17 @@ Explain when UFCS is only disambiguation and when it reveals an important contra
 
 Choose one public trait from a project you know. Rewrite its documentation as a contract containing: purpose, required behavior, receiver semantics, laws, failure behavior, and one non-goal. If the trait has only one implementation and no plausible substitution point, argue whether an inherent API would be better.
 
+### Interleaved reasoning pass
+
+1. For **Define a trait whose methods express a coherent behavioral contract**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the trait-law table.
+2. For **Distinguish inherent behavior, free functions, and trait behavior**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the trait-law table.
+3. For **Apply bounds, `where` clauses, default methods, supertraits, and UFCS correctly**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the trait-law table.
+4. For **Detect traits that merely rename data access or create false substitutability**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the trait-law table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Traits as Behavioral Contracts** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build a small pricing library for `Book`, `CourseLicense`, and `SupportPlan`.
@@ -122,6 +142,18 @@ See `labs/module-01-contract-boundaries/README.md` for the executable contract.
 
 The executable starter and reference implementation are in [module-01-contract-boundaries](../../labs/module-01-contract-boundaries/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Contract Boundaries**, record:
+
+- the public behavior that demonstrates **Define a trait whose methods express a coherent behavioral contract**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Create the first concrete rules without trait objects:
@@ -142,6 +174,10 @@ The initial contract must define:
 - which methods must remain dyn-compatible for Module 25.
 
 Do not build the registry yet. The Day 1 evidence is the contract and its laws.
+
+### Capstone invariant trace
+
+For the Module 21 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -166,3 +202,7 @@ The oral prompt is: **“Show one place where adding a trait made the program wo
 ### Independent transfer
 
 Design a contract for a storage-independent audit sink in a different domain. First write the concrete two-implementation version. Introduce a trait only if the implementations share one coherent law. Submit the receiver choice, required core, derived defaults, law tests, and one reason an enum or ordinary function might still be better.
+
+### Closed-book defense
+
+In five minutes, answer “What behavior truly belongs in a shared contract, and which laws must every implementation preserve?” using the **trait-law table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

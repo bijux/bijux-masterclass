@@ -1,8 +1,8 @@
 # Reasoned Solutions — Module 73: Async I/O, Buffers, Streams, and Framing
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the JobWire guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-03-bounded-length-codec/README.md) · [JobWire guide](../capstone.md)
 
-The central correction is that transport chunks have no application meaning. Meaning begins only after bounded framing and protocol parsing.
+Use these notes only after preserving your prediction and repair for **Module 73: Async I/O, Buffers, Streams, and Framing**. Compare the reasoning against this question: *How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -38,3 +38,42 @@ JobWire’s codec should accept and emit bytes only. A separate parser validates
 ## Part 6 — Reconstruction and defense
 
 A complete defense states that I/O readiness permits another attempt, while transfer counts are authoritative. Framing accumulates arbitrary chunks into bounded messages. Protocol parsing assigns meaning only after framing. Cancellation analysis follows buffered state and externally visible prefixes rather than assuming `await` is transactional.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning?
+
+Build a **buffer and frame ledger**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish readiness from transfer completion.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Handle partial reads and partial writes without message-boundary assumptions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Explain the contracts of `AsyncRead`, `AsyncWrite`, `AsyncBufRead`, `Stream`, and `Sink`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use `Bytes` and `BytesMut` to separate shared immutable payloads from mutable receive buffers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Design a decoder that preserves incomplete input and extracts multiple complete frames.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish readiness from transfer completion.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the buffer and frame ledger.
+
+### Reference implementation comparison
+
+For [Bounded Length Codec](../../labs/module-03-bounded-length-codec/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In JobWire, Module 73 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Async I/O, Buffers, Streams, and Framing**, which relationship decides this question: “How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to JobWire?

@@ -1,8 +1,8 @@
-# Module 96 Solutions — Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits
+# Reasoned Solutions — Module 96: Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-06-inline-batch/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 96: Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits**. Compare the reasoning against this question: *What exact proof makes a safe API implemented with unsafe code sound across every constructor, method, failure path, destructor, and thread-safety claim?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the soundness dossier: the decisive relationship must
 
 **Principled repair.** Capacity proves allocated slot existence, not initialization. Cite `index < len` and the transition that wrote the value before publishing `len`.
 
-A strong answer updates the soundness dossier and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Safety comment cites capacity** while preserving the surrounding requirement. The soundness dossier must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — Manual Send/Sync impl
 
@@ -40,7 +40,7 @@ A strong answer updates the soundness dossier and includes a negative case that 
 
 **Principled repair.** Remove the impls unless a complete race/aliasing proof requires and supports them. Let fields and `T` determine auto traits.
 
-A strong answer updates the soundness dossier and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Manual Send/Sync impl** while preserving the surrounding requirement. The soundness dossier must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Only happy-path drop test
 
@@ -48,7 +48,7 @@ A strong answer updates the soundness dossier and includes a negative case that 
 
 **Principled repair.** Add state-transition and destructor-counting coverage plus Miri for executed unsafe paths when available.
 
-A strong answer updates the soundness dossier and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Only happy-path drop test** while preserving the surrounding requirement. The soundness dossier must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Enumerate all legal `len`/slot states and transi
 
 The decisive acceptance criterion is: Every unsafe operation cites a reachable state and exact initialized range.
 
-Evaluate the result through the soundness dossier; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Invariant state machine**, apply the soundness dossier to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Exact-drop harness
 
@@ -66,7 +66,7 @@ The construction should answer: Use a counter type through push, pop, clear, and
 
 The decisive acceptance criterion is: Every constructed value is dropped exactly once unless deliberately leaked.
 
-Evaluate the result through the soundness dossier; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Exact-drop harness**, apply the soundness dossier to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Zero/ZST audit
 
@@ -74,7 +74,7 @@ The construction should answer: Test zero capacity and zero-sized values.
 
 The decisive acceptance criterion is: No proof relies on nonzero allocation size or unique addresses for ZSTs.
 
-Evaluate the result through the soundness dossier; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Zero/ZST audit**, apply the soundness dossier to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Safe oracle comparison
 
@@ -82,12 +82,11 @@ The construction should answer: Implement the same API with `Vec<T>` and compare
 
 The decisive acceptance criterion is: The unsafe version has identical public semantics for the explored domain.
 
-Evaluate the result through the soundness dossier; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Safe oracle comparison**, apply the soundness dossier to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — auditing panic in partially initialized storage
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the soundness dos
 Review the abstraction from safe constructor through every method and destructor. Explain why local pointer plausibility, a passing test suite, or a clean Miri run is insufficient alone.
 
 The defense passes when it reconstructs the soundness dossier from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What exact proof makes a safe API implemented with unsafe code sound across every constructor, method, failure path, destructor, and thread-safety claim?
+
+Build a **unsafe state-and-operation dossier**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Separate Rust validity from application invariants and explain which violations can create undefined behavior.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Trace pointer provenance, allocation identity, alignment, initialization, aliasing, and lifetime as independent obligations.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Audit normal return, recoverable error, panic, partial initialization, move, and drop paths for exactly-once cleanup.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Derive whether `Send` and `Sync` should be inherited, prevented, or manually asserted for an unsafe abstraction.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the unsafe state-and-operation dossier.
+
+### Reference implementation comparison
+
+For [Inline Batch](../../labs/module-06-inline-batch/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 96 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits**, which relationship decides this question: “What exact proof makes a safe API implemented with unsafe code sound across every constructor, method, failure path, destructor, and thread-safety claim?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

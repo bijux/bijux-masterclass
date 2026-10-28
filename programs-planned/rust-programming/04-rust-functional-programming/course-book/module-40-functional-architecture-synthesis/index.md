@@ -1,9 +1,11 @@
-# 40 — Functional Architecture Synthesis
+# Module 40 — Functional Architecture Synthesis
 
-**Course 4, day 10 · Module 40 of 90**  
-`█████████████░░░░░░░` **40/90**
+**Course 4 · Day 10 · Module 40 of 100**
+`██████████░░░░░░░░░░░░░░░` **40/100**
 
-[← Module 39: Combinator Laws and Cost Models](../module-39-combinator-laws-and-cost-models/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 41: Metaprogramming Boundaries and the Expansion Model →](../../../05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-route-analysis-engine/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 39: Combinator Laws and Cost Models](../module-39-combinator-laws-and-cost-models/index.md) · [Module 41: Metaprogramming Boundaries and the Expansion Model →](../../../05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 The final module removes the last local boundary. Closures, lazy traversal, fallible parsing, reductions, structural sharing, reporting, and effects must form one readable system. An unseen requirement tests whether you can revise the dataflow without destroying determinism or hiding failure.
+
+### Prerequisite bridge
+
+Module 39 established **Combinator Laws and Cost Models**. Before continuing, verify that you can reject combinator designs that hide control flow, destroy diagnostics, or produce unusable types. This module preserves that capability and adds the ability to produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries. Module 41, **Metaprogramming Boundaries and the Expansion Model**, will rely on both when it asks: *Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?*
+
+### Scope boundary
+
+This module owns the reasoning for **functional architecture synthesis** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -104,7 +114,7 @@ Tests should distinguish:
 
 A parser that reads files, a validator that prints, or a renderer that mutates domain state violates separation. Merge stages only when the combined contract remains coherent.
 
-### Decision rule
+### Decision rule — Stage leakage
 
 Write stage contracts in types and prose before implementation. If a stage requires several unrelated failure policies or effects, split it.
 
@@ -132,7 +142,7 @@ A lazy borrowed query cannot outlive its report. A persistent snapshot may keep 
 
 Normalize before laws that assume canonical data. Validate before state reduction. Materialize before sorting. Render after deterministic ordering. Execute effects after the core result is complete enough to justify them.
 
-### Decision rule
+### Decision rule — Phase ordering
 
 Use each mechanism at the pressure it solves. Review cross-stage ownership and failure interactions, especially where laziness or stored closures extend lifetimes.
 
@@ -170,7 +180,7 @@ During refactoring, run old and new implementations on generated small inputs an
 
 A semantically equivalent rewrite may allocate or traverse differently. Record cost changes separately and measure before claiming improvement.
 
-### Decision rule
+### Decision rule — Cost changes
 
 Define observable equivalence before refactoring. Use differential tests and preserve failure, effect, and consumption semantics—not just final happy-path values.
 
@@ -205,7 +215,7 @@ It should not require changing event reduction if the query is read-only.
 
 Do not add query-specific fields to core state unless they represent stable domain data. Derived indexes may be justified for performance later, but first implement correct semantics.
 
-### Decision rule
+### Decision rule — Prevent feature leakage
 
 Treat unseen work as a contract change across named stages. Do not begin by searching for an adapter that resembles the feature.
 
@@ -254,7 +264,7 @@ A review should challenge both correctness and unnecessary cleverness.
 - Does a custom combinator earn its vocabulary?
 - Can future courses add parallel or async execution without breaking semantics?
 
-### Decision rule
+### Decision rule — Public API
 
 Approve architecture only when a reader can trace all four flows and the abstraction count is proportional to real variation and reuse.
 
@@ -316,6 +326,24 @@ The feature must not change accepted event order, balance calculation, fail-fast
 
 A precomputed rejection index was rejected because correctness and API shape can be proved without it. Course 9 may benchmark if repeated queries justify indexing.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-pipeline architecture map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For integrate closures, iterators, folds, error traversal, custom protocols, and effect isolation coherently, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-pipeline architecture map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For refactor between loops and combinators without changing observable behavior, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-pipeline architecture map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For implement an unseen feature across parser, transformation core, reducer, report, CLI, and tests, construct one positive and one causal negative example. Mark the first decisive fact in the **whole-pipeline architecture map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **LedgerFlow**, a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports. Add an unseen cross-cutting analysis or reporting requirement while preserving deterministic output, audit history, and explicit failure. Defend the revised dataflow end to end. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -345,11 +373,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Closures and Iterators](https://doc.rust-lang.org/book/ch13-00-functional-features.html)
 - [Iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
 
-[← Module 39](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md) · [ninety-module map](../../../COURSE_MAP.md)
+[← Module 39](../../../04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md) · [one-hundred-module map](../../../COURSE_MAP.md)
 
 ## Continue
 
-1. Complete the [Module 40 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 40 — Route Analysis Engine](../../labs/module-10-route-analysis-engine/README.md) from its public contract.
-3. Apply the Module 40 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 41 — Metaprogramming Boundaries and the Expansion Model](../../../05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

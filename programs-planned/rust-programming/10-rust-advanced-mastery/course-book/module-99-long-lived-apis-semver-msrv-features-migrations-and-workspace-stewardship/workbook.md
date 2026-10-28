@@ -1,8 +1,17 @@
-# Module 99 Workbook — Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship
+# Workbook — Module 99: Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship
 
-[Chapter](index.md) · [AxiomStore guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-09-versioned-sdk/README.md) · [AxiomStore guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook turns the chapter’s **compatibility and migration matrix** into evidence. Write predictions before compiling or running anything. Preserve the stated product requirement during repair; a green build obtained by deleting the difficult relationship is not a solution.
+This workbook tests whether **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data?* Preserve your first prediction and record decisive facts in a **compatibility and migration matrix**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 98 — Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data?**
+3. Draw the smallest **compatibility and migration matrix** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -44,7 +53,7 @@ An API is marked deprecated with only “will be removed.”
 
 Required direction: Name the replacement, semantic differences, adapter or migration, and removal policy.
 
-Submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the compatibility and migration matrix changes.
+For **Repair 2 — Deprecation without destination**, submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the compatibility and migration matrix changes.
 
 ### Repair 3 — Workspace head as downstream proof
 
@@ -52,7 +61,7 @@ The project treats its own workspace compilation as SemVer validation.
 
 Required direction: Add downstream caller/implementor fixtures, feature matrices, MSRV execution, and old-data fixtures.
 
-Submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the compatibility and migration matrix changes.
+For **Repair 3 — Workspace head as downstream proof**, submit the corrected boundary plus one causal negative case. In the explanation, show exactly how the compatibility and migration matrix changes.
 
 ## Part 3 — Focused exercises
 
@@ -82,8 +91,7 @@ Completion standard: Manifest declarations are backed by executable routes.
 
 ### Cross-course transfer
 
-Choose one artifact from Courses 1–9 and reassess it through **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship**. Reconstruct its current invariant owner, then decide whether the compatibility and migration matrix reveals a genuine defect. A justified no-change decision is valid when the advanced mechanism would add proof or compatibility cost without removing a real invalid state.
-
+Choose one artifact from Courses 1–10 and reassess it through **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship**. Reconstruct its current invariant owner, then decide whether the compatibility and migration matrix reveals a genuine defect. A justified no-change decision is valid when the advanced mechanism would add proof or compatibility cost without removing a real invalid state.
 
 ### Applied case study — shipping AXIOM02 without abandoning AXIOM01
 
@@ -93,6 +101,17 @@ Prepare a compatibility matrix with rows for source callers, downstream implemen
 
 Then propose a release sequence that keeps migration failure from destroying the source. Include golden fixtures, dual-read behavior, canonical new writes, deprecation policy, feature checks, and artifact identity. Finish by identifying one change that appears additive in Rust source but is semver-risky because it changes inference, coherence, dyn compatibility, or feature unification.
 
+### Interleaved reasoning pass
+
+1. For **Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the compatibility and migration matrix.
+2. For **Define and test an MSRV policy without confusing the manifest declaration with actual verification**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the compatibility and migration matrix.
+3. For **Design additive Cargo features that do not change unrelated semantics or create unsupported combinations**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the compatibility and migration matrix.
+4. For **Version persistent formats and implement deterministic, failure-atomic migrations with preserved fixtures**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the compatibility and migration matrix.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Versioned SDK](../../labs/module-09-versioned-sdk/README.md) from its `starter/` package.
@@ -100,6 +119,18 @@ Build [Versioned SDK](../../labs/module-09-versioned-sdk/README.md) from its `st
 Build a V1/V2 SDK with strict decoders, candidate-first migration, compatibility fixtures, and an explicit policy for old readers, new writers, and unknown versions.
 
 Before implementation, freeze Versioned SDK’s public behavior and the compatibility and migration matrix. After implementation, complete its transfer task in a domain with different ownership, version, capacity, extension, or failure policy; renaming types does not demonstrate transfer.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Versioned SDK**, record:
+
+- the public behavior that demonstrates **Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -111,6 +142,10 @@ Update AxiomStore’s compatibility and migration matrix before code. Record the
 
 Before leaving the module, select one change that looked source-compatible but threatened a different stakeholder: implementors, feature combinations, MSRV users, stored data, generated code, or operational scripts. Record the fixture or downstream check that exposes the break. Then name one compatibility promise the library deliberately does not make and ensure the documentation does not imply it.
 
+### Capstone invariant trace
+
+For the Module 99 AxiomStore increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Classify a proposed change separately for source callers, implementors, feature unification, minimum toolchain, persistent bytes, and release artifacts.
@@ -118,3 +153,7 @@ Classify a proposed change separately for source callers, implementors, feature 
 Finish without notes by reconstructing the compatibility and migration matrix. Name the requirement, the simpler design, the decisive rejected construction, the state after failure, and the evidence that could falsify your claim. End by stating one condition under which this mechanism should be removed.
 
 The defense is complete only when another reader can reproduce the reasoning behind Versioned SDK and the AxiomStore increment without seeing your final implementation.
+
+### Closed-book defense
+
+In five minutes, answer “How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data?” using the **compatibility and migration matrix**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside AxiomStore. A list of APIs without the deciding relationship is incomplete.

@@ -1,8 +1,11 @@
-# Module 67: Atomics, Happens-Before, and Memory Ordering
+# Module 67 — Atomics, Happens-Before, and Memory Ordering
 
-**Course 7, day 7 · Module 67 of 90**  
+**Course 7 · Day 7 · Module 67 of 100**
+`█████████████████░░░░░░░░` **67/100**
 
-**67/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [BatchWeave guide](../capstone.md)
+[Program](../../../README.md) · [Course 7](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-atomic-progress/README.md) · [BatchWeave guide](../capstone.md)
+
+[← Module 66: Liveness: Deadlock, Cancellation, and Recovery](../module-66-liveness-deadlock-cancellation-and-recovery/index.md) · [Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync →](../module-68-lock-free-protocols-reclamation-and-unsafe-send-sync/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Locks and channels package synchronization into higher-level protocols. Atomics 
 The right starting point is not a table saying “Relaxed is fast, SeqCst is safe.” It is the happens-before relation required by the product. Some atomics are independent statistics and need only atomicity. Others publish ordinary memory and require a release/acquire edge. Compare-exchange loops need a linearization point and separate success/failure ordering. This module teaches those derivations before Module 68 places atomics around unsafely shared storage.
 
 This module is not complete when you can name the primitive. It is complete when you can state the ownership transfer, the synchronization edge, the progress argument, the failure behavior, and the schedule-dependent facts that remain intentionally unspecified.
+
+### Prerequisite bridge
+
+Module 66 established **Liveness: Deadlock, Cancellation, and Recovery**. Before continuing, verify that you can write event-driven liveness tests and bounded test timeouts without mistaking timeout for the production protocol. This module preserves that capability and adds the ability to separate atomicity of one location from visibility of other memory;. Module 68, **Lock-Free Protocols, Reclamation, and Unsafe Send/Sync**, will rely on both when it asks: *What proof permits shared raw storage to be accessed without a lock, and where do role confusion, ABA, destruction, or memory reclamation invalidate a locally plausible algorithm?*
+
+### Scope boundary
+
+This module owns the reasoning for **atomics, happens-before, and memory ordering** inside Course 7. The course uses operating-system threads and Rayon. Async runtimes, sockets, network protocols, and async cancellation remain Course 8 topics. Lock-free code is taught as a proof exercise, not as a default replacement for locks and channels. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -111,6 +122,24 @@ Document:
 | 3 | cancelled | CAS | status | Relaxed when queue close carries wake | none |
 
 Also state overflow and reuse. A `usize` sequence counter eventually wraps. If equality distinguishes generations, wraparound can resurrect stale observations unless the product bounds reuse or uses a wider/tagged model.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate atomicity of one location from visibility of other memory, construct one positive and one causal negative example. Mark the first decisive fact in the **happens-before graph** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For reason with sequenced-before, synchronizes-with, and happens-before relations, construct one positive and one causal negative example. Mark the first decisive fact in the **happens-before graph** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use relaxed atomics for independent counters whose exact snapshots are advisory, construct one positive and one causal negative example. Mark the first decisive fact in the **happens-before graph** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For derive release/acquire publication when one atomic state makes ordinary writes visible, construct one positive and one causal negative example. Mark the first decisive fact in the **happens-before graph** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -228,4 +257,4 @@ The course book is self-contained. These references are for checking the exact l
 
 ## Continue
 
-[Open the workbook](workbook.md) · [Open Atomic Progress](../../labs/module-07-atomic-progress/README.md) · [Open the BatchWeave increment](../capstone.md) · [Review the reasoned solutions](solutions.md)
+Continue to [Module 68 — Lock-Free Protocols, Reclamation, and Unsafe Send/Sync](../module-68-lock-free-protocols-reclamation-and-unsafe-send-sync/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

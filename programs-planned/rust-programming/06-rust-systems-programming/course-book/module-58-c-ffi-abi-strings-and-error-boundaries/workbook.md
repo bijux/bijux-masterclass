@@ -1,8 +1,17 @@
 # Workbook — Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries
 
-[Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-08-c-abi-archive-validator/README.md) · [FrameVault guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether the chapter has become an operational model. Freeze answers before compiling or reading the reference implementation. A correct result without the governing reason is incomplete.
+This workbook tests whether **C FFI: ABI, Strings, Pointers, and Error Boundaries** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides?* Preserve your first prediction and record decisive facts in a **ABI table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 57 — Manual Allocation and Owning Unsafe Abstractions that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides?**
+3. Draw the smallest **ABI table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -16,43 +25,43 @@ Record: **compile status or runtime category**, **governing contract**, **first 
 
 A non-null pointer is passed with length 100. Can Rust prove 100 readable bytes exist?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 2**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 3
 
 `CStr::from_ptr` receives a nonterminated buffer. What may happen?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 3**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 4
 
 C frees a `CString::into_raw` pointer with its own `free`. Is that generally valid?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 4**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 5
 
 A Rust panic reaches a C caller. Is it a stable error code?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 5**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 6
 
 A `repr(C)` struct has an uninitialized output field on error. May C read it?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 6**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 7
 
 The export uses `#[no_mangle]` in Edition 2024. What syntax is expected?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 7**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 8
 
 A callback stores a pointer to a temporary entry name. What contract was violated?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 8**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ## Part 2 — Diagnose and repair
 
@@ -107,6 +116,17 @@ Transfer the method to a C function that fills an output array.
 
 Required evidence: Define capacity, written count, initialization, and ownership on every status.
 
+### Interleaved reasoning pass
+
+1. For **Distinguish ABI compatibility from semantic validity and ownership**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the ABI table.
+2. For **Declare imported functions through `unsafe extern "C"` and document each call contract**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the ABI table.
+3. For **Export C symbols with stable names and `repr(C)` data structures**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the ABI table.
+4. For **Use pointer-plus-length for arbitrary bytes and `CStr`/`CString` for NUL-terminated text**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the ABI table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **C FFI: ABI, Strings, Pointers, and Error Boundaries** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [C ABI Line Validator](../../labs/module-08-c-abi-archive-validator/README.md) from the starter. Freeze the public boundary and adversarial cases before opening the solution. Produce the evidence required by the lab:
@@ -119,9 +139,25 @@ Build [C ABI Line Validator](../../labs/module-08-c-abi-archive-validator/README
 
 Also identify one feature deliberately excluded because it would enlarge the trust, portability, concurrency, or unsafe proof surface.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **C ABI Line Validator**, record:
+
+- the public behavior that demonstrates **Distinguish ABI compatibility from semantic validity and ownership**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Implement the matching increment from the [capstone engineering guide](../capstone.md). Add one regression test that fails if this module’s central contract is removed.
+
+### Capstone invariant trace
+
+For the Module 58 FrameVault increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -137,3 +173,7 @@ End by naming the strongest honest claim after success and one claim the impleme
 ### Independent transfer
 
 Specify a C function that validates a borrowed record and writes a fixed-layout report. First write the C header. Then write the Rust export with a null/zero matrix, output initialization rule, integer statuses, `#[unsafe(no_mangle)]`, explicit unsafe blocks, and panic containment. Test null output, null/zero input, null/nonzero input, malformed bytes, valid bytes, and a report offset. Explain which invalid raw pointers cannot be safely tested because merely passing them violates the caller contract.
+
+### Closed-book defense
+
+In five minutes, answer “How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides?” using the **ABI table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside FrameVault. A list of APIs without the deciding relationship is incomplete.

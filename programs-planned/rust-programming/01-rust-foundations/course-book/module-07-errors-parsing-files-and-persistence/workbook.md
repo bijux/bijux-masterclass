@@ -1,8 +1,17 @@
 # Workbook — Module 07: Errors, Parsing, Files, and Persistence
 
-[Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-07-record-codec/README.md) · [Taskboard guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Errors, Parsing, Files, and Persistence** without relying on surface syntax. Keep the module question in view: *Which failures are part of the product contract, where are they detected, and what state is visible after failure?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Errors, Parsing, Files, and Persistence** has become a usable model rather than remembered vocabulary. Its governing question is: *Which failures are part of the product contract, where are they detected, and what state is visible after failure?* Preserve your first prediction and record decisive facts in a **error map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 6 — Collections, Iterators, and Closures that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which failures are part of the product contract, where are they detected, and what state is visible after failure?**
+3. Draw the smallest **error map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -24,7 +33,6 @@ python3 ../tools/run_compiler_labs.py 01-rust-foundations
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A junior implementation appears convenient:
 
@@ -111,7 +119,6 @@ After repair, answer:
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 Attempt every exercise before reading the answers. Each solution requires tests for at least one success path and every named failure class.
 
 ### 1. Classify ten conditions
@@ -168,11 +175,18 @@ Design and implement a same-directory temporary-file save. Document every failur
 
 Audit the capstone. Produce a table containing operation, success proof, error variants, preserved context, mutation timing, recovery owner, and tests. Identify one error distinction the CLI intentionally presents with the same exit status but retains internally.
 
+### Interleaved reasoning pass
 
+1. For **Distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the error map.
+2. For **Design typed errors with context and source preservation rather than flattening failures into strings**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the error map.
+3. For **Parse untrusted text transactionally by tokenizing, converting, validating, and only then committing state**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the error map.
+4. For **Build generic buffered reader and writer boundaries that preserve precise line-level diagnostics and source errors**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the error map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Errors, Parsing, Files, and Persistence** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Purpose
 
@@ -294,6 +308,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-07-record-codec](../../labs/module-07-record-codec/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Versioned Record Codec**, record:
+
+- the public behavior that demonstrates **Distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -303,7 +329,6 @@ The executable starter and reference implementation are in [module-07-record-cod
 - Parse untrusted text transactionally by tokenizing, converting, validating, and only then committing state.
 - Build generic buffered reader and writer boundaries that preserve precise line-level diagnostics and source errors.
 - State the exact persistence guarantee of a temporary-file-and-rename protocol, including what it does not guarantee across platforms, crashes, and concurrent writers.
-
 
 ### Objective
 
@@ -380,11 +405,13 @@ For `list`, `search`, and `stats`, do not rewrite storage.
 ### Capstone: Review questions
 Before moving to Module 8, trace one malformed file from `File::open` through the line decoder, aggregate validator, application error, CLI rendering, and exit status. Identify every ownership transfer and every retained context field.
 
-
-
 ### Capstone defense
 
 Audit a loader that silently drops malformed records and a saver that overclaims atomicity; repair both contracts and tests.
+
+### Capstone invariant trace
+
+For the Module 7 Taskboard increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -394,11 +421,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Distinguish absence, recoverable failure, invariant violation, process failure, and ordinary values.
-- Design typed errors with context and source preservation rather than flattening failures into strings.
-- Parse untrusted text transactionally by tokenizing, converting, validating, and only then committing state.
-- Build generic buffered reader and writer boundaries that preserve precise line-level diagnostics and source errors.
-- State the exact persistence guarantee of a temporary-file-and-rename protocol, including what it does not guarantee across platforms, crashes, and concurrent writers.
+Without reopening the chapter, reconstruct the outcomes for **Module 07: Errors, Parsing, Files, and Persistence**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -475,6 +498,18 @@ Failure on transactional mutation or missing-file policy requires repeating the 
 
 ### Transfer defense
 
-Audit a loader that silently drops malformed records and a saver that overclaims atomicity; repair both contracts and tests.
+Transfer **Module 07: Errors, Parsing, Files, and Persistence** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 07: Errors, Parsing, Files, and Persistence** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
+
+### Closed-book defense
+
+In five minutes, answer “Which failures are part of the product contract, where are they detected, and what state is visible after failure?” using the **error map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Taskboard. A list of APIs without the deciding relationship is incomplete.

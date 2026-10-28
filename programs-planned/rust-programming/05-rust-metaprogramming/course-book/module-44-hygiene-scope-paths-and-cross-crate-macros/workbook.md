@@ -1,12 +1,17 @@
 # Workbook — Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros
 
-[Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-04-exported-registry-macro/README.md) · [CommandForge guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Hygiene, Scope, Paths, and Cross-Crate Macros** as an engineering mechanism rather than repeat its syntax. The governing question is:
+This workbook tests whether **Hygiene, Scope, Paths, and Cross-Crate Macros** has become a usable model rather than remembered vocabulary. Its governing question is: *Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?* Preserve your first prediction and record decisive facts in a **hygiene and path map**. A repair succeeds only when it keeps the difficult product requirement visible.
 
-> Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?
+## Retrieval warm-up
 
-For each expansion, mark every identifier as definition-crate-owned, invocation-site-supplied, or generated-local. Then predict resolution after dependency renaming, caller shadowing, and nested-module invocation.
+Before compiling or running anything:
+
+1. Restate the invariant from Module 43 — Recursive Macro Parsing and Token-Tree Techniques that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?**
+3. Draw the smallest **hygiene and path map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -81,6 +86,17 @@ Describe a fixture that proves an exported macro survives dependency renaming, m
 
 For every answer that proposes a macro, add a one-sentence rejection criterion: what simpler condition would make ordinary Rust preferable?
 
+### Interleaved reasoning pass
+
+1. For **Distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the hygiene and path map.
+2. For **Use `$crate` for defining-crate references in exported `macro_rules!` expansions**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the hygiene and path map.
+3. For **Preserve invocation-site identifiers supplied by callers**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the hygiene and path map.
+4. For **Avoid accidental dependence on caller imports or prelude contents**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the hygiene and path map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Hygiene, Scope, Paths, and Cross-Crate Macros** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 ### Product: Exported Registry Macro
@@ -102,11 +118,27 @@ Before implementation, complete this module-specific design record:
 
 Build the smallest valid **hygiene and cross-crate resolution** surface first. Add one accepted case, one rejection owned by this mechanism, and one case that expands successfully before ordinary Rust rejects a later obligation. Compare with the reference only after those three phase boundaries are protected by tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Exported Registry Macro**, record:
+
+- the public behavior that demonstrates **Distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Define the public path strategy for CommandForge’s generated code. The proc-macro crate must emit absolute standard-library paths and a stable runtime-crate path. Add `extern crate self as commandforge;` so the same path works inside the runtime crate.
 
 The capstone increment must leave a visible design record: one diagram or table, one positive test, one negative test, and one statement of what this mechanism deliberately does **not** own.
+
+### Capstone invariant trace
+
+For the Module 44 CommandForge increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -140,3 +172,7 @@ Before advancing, defend these module-specific points:
 - which names intentionally resolve at the call site
 - how visibility differs from path resolution
 - what downstream test proves the macro is actually portable
+
+### Closed-book defense
+
+In five minutes, answer “Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?” using the **hygiene and path map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside CommandForge. A list of APIs without the deciding relationship is incomplete.

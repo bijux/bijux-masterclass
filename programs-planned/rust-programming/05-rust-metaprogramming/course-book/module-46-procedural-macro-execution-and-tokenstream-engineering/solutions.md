@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 46: Procedural Macro Execution and TokenStream Engineering
+# Reasoned Solutions — Module 46: Procedural Macro Execution and TokenStream Engineering
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-06-token-stream-inspector/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare whether joint punctuation is observed correctly, whether token text is not mistaken for type information, whether output is deterministic, whether span claims are limited to supported behavior. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 46: Procedural Macro Execution and TokenStream Engineering**. Compare the reasoning against this question: *What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ It executes during compilation with compiler-process access to files, environmen
 
 Hash-map iteration, filesystem enumeration, environment-dependent paths, and timestamps can vary. Sort semantic entries, validate and order directory inputs explicitly, avoid embedding machine paths, and exclude wall-clock data unless it is a declared input. Determinism reduces rebuild noise and makes testing meaningful.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-06-token-stream-inspector/solution`](../../labs/module-06-token-stream-inspector/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - which effects would make expansion non-reproducible;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?
+
+Build a **token-stream phase map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Explain when and how a procedural macro executes.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish `TokenStream`, `TokenTree`, `Group`, `Ident`, `Punct`, `Literal`, and `Span`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Avoid treating token text as a fully resolved Rust AST.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Emit deterministic tokens and source-local diagnostics.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Separate parsing, validation, normalization, and generation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Explain when and how a procedural macro executes.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the token-stream phase map.
+
+### Laboratory transfer review
+
+For [TokenStream Inspector](../../labs/module-06-token-stream-inspector/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 46 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Procedural Macro Execution and TokenStream Engineering**, which relationship decides this question: “What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

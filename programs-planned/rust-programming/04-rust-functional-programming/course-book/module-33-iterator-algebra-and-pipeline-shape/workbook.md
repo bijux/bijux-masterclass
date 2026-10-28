@@ -1,8 +1,17 @@
 # Workbook — Module 33: Iterator Algebra and Pipeline Shape
 
-[Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-03-record-shaping-pipeline/README.md) · [LedgerFlow guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Iterator Algebra and Pipeline Shape** without relying on surface syntax. Keep the module question in view: *How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Iterator Algebra and Pipeline Shape** has become a usable model rather than remembered vocabulary. Its governing question is: *How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?* Preserve your first prediction and record decisive facts in a **pipeline shape table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 32 — The Iterator Model that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?**
+3. Draw the smallest **pipeline shape table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -98,7 +107,16 @@ A pipeline uses `inspect(|row| audit_file.write_all(...))` to satisfy a legal au
 
 Take a chain with parsing, normalization, filtering, expansion, sorting, and rendering. Identify where laziness must end and split it into semantic stages without collecting after every adapter.
 
+### Interleaved reasoning pass
 
+1. For **Derive the item type and cardinality effect of common iterator adapters**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the pipeline shape table.
+2. For **Choose correctly among `filter`, `map`, `filter_map`, `flatten`, and `flat_map`**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the pipeline shape table.
+3. For **Reason about order and truncation in `chain`, `zip`, `take`, and stopping adapters**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the pipeline shape table.
+4. For **Use `inspect` for observation without embedding required effects into a transformation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the pipeline shape table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Iterator Algebra and Pipeline Shape** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -154,6 +172,18 @@ Chain an optional alias stream after primary labels. Every yielded pair must car
 Explain why optional payload absence is not a parse error, why an iterator chain can compile while changing identity semantics, and why `zip` is a mechanism rather than a validation policy. Be able to replace the pipeline with a loop and show that both implementations preserve the same stage contract.
 
 The executable starter and reference implementation are in [module-03-record-shaping-pipeline](../../labs/module-03-record-shaping-pipeline/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Record-Shaping Pipeline**, record:
+
+- the public behavior that demonstrates **Derive the item type and cardinality effect of common iterator adapters**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -219,6 +249,10 @@ Add fixtures for:
 - two collections of unequal length presented to any pairing operation;
 - a valid row after an invalid row, proving later evidence is not erased in accumulation mode.
 
+### Capstone invariant trace
+
+For the Module 33 LedgerFlow increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Do not advance because the calendar day ended. Advance when all hard evidence is present.
@@ -256,3 +290,7 @@ Transform nested invoice lines into a stable flat report without losing source a
 ### Spaced review
 
 Repeat questions 2, 4, 7, and 10 after 24 hours. Repeat the reconstruction after seven days with a different domain.
+
+### Closed-book defense
+
+In five minutes, answer “How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline?” using the **pipeline shape table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside LedgerFlow. A list of APIs without the deciding relationship is incomplete.

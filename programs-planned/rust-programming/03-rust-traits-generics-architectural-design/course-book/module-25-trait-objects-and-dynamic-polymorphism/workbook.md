@@ -1,8 +1,17 @@
 # Workbook — Module 25: Trait Objects and Dynamic Polymorphism
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-dynamic-command-bus/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Trait Objects and Dynamic Polymorphism** without relying on surface syntax. Keep the module question in view: *When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Trait Objects and Dynamic Polymorphism** has become a usable model rather than remembered vocabulary. Its governing question is: *When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?* Preserve your first prediction and record decisive facts in a **dynamic-dispatch map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 24 — Static Polymorphism and Opaque Types that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?**
+3. Draw the smallest **dynamic-dispatch map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -84,11 +93,22 @@ Design a rule object that borrows configuration text. Write the explicit object 
 
 ### Enum or trait object?
 
-A policy currently has four closed rule variants. Compare an enum-based evaluator with a trait-object registry under these future scenarios: adding variants only in the same crate, loading third-party plugins, exhaustive reporting per variant, and serializing configuration. Produce a decision table.
+A policy currently has four closed rule variants. Compare an enum-based reviewer with a trait-object registry under these future scenarios: adding variants only in the same crate, loading third-party plugins, exhaustive reporting per variant, and serializing configuration. Produce a decision table.
 
 : registry defense
 
 For Review Engine, document the exact point at which concrete rule types are erased, the operations still available afterward, and the information that cannot be recovered without an explicit downcasting design. Add one test proving deterministic registration order.
+
+### Interleaved reasoning pass
+
+1. For **Derive whether a trait is dyn-compatible and repair it without erasing its meaning**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the dynamic-dispatch map.
+2. For **Use borrowed and owned trait objects with correct object lifetimes**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the dynamic-dispatch map.
+3. For **Build a heterogeneous runtime collection behind one behavioral interface**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the dynamic-dispatch map.
+4. For **Compare enum, generic, and trait-object designs against explicit change scenarios**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the dynamic-dispatch map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Trait Objects and Dynamic Polymorphism** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -106,6 +126,18 @@ Requirements:
 
 The executable starter and reference implementation are in [module-05-dynamic-command-bus](../../labs/module-05-dynamic-command-bus/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Dynamic Command Bus**, record:
+
+- the public behavior that demonstrates **Derive whether a trait is dyn-compatible and repair it without erasing its meaning**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Replace the homogeneous rule set with `Vec<Box<dyn Rule>>`. Keep `Source` and `Reporter` generic.
@@ -118,6 +150,10 @@ Acceptance points:
 - no downcasting is used for identity;
 - borrowed rules can be expressed where useful without forcing all rules to `'static`;
 - a policy parser constructs concrete built-ins and erases only after validation.
+
+### Capstone invariant trace
+
+For the Module 25 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -135,3 +171,7 @@ Oral prompt: **“What information did this trait object erase, and what evidenc
 ### Independent transfer
 
 Design a runtime-loaded validation registry for three unrelated validators. Then redesign the same closed set as an enum and as a generic pipeline. State which changes each version supports, which operations remain exhaustive, what is erased, and why the selected boundary deserves runtime dispatch.
+
+### Closed-book defense
+
+In five minutes, answer “When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?” using the **dynamic-dispatch map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

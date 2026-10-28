@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 20: Pinning and Address-Sensitive Design
+# Reasoned Solutions — Module 20: Pinning and Address-Sensitive Design
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-pinned-tracker/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Pinning and Address-Sensitive Design**, not to substitute for an attempt. The decisive question is: *What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 20: Pinning and Address-Sensitive Design**. Compare the reasoning against this question: *What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -86,9 +86,7 @@ Use these explanations to review your reasoning about **Pinning and Address-Sens
 
 Audit a proposed self-referential cache, decide whether pinning is necessary, and either derive the full contract or redesign it away.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-10-pinned-tracker/solution`](../../labs/module-10-pinned-tracker/solution). Before reading it, write down:
 
@@ -109,3 +107,42 @@ For **Pinning and Address-Sensitive Design**, compare the contract, invariant, f
 - Prefer handles, indices, owned indirection, scoped callbacks, or redesigned state when they eliminate self-reference or address dependence.
 
 A complete explanation of **Pinning and Address-Sensitive Design** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?
+
+Build a **pinning contract**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Explain Pin<P> as a contract on the pointee mediated by a pointer, not as a magical immovable allocation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use Unpin and PhantomPinned correctly and construct pinned values without exposing moves after invariant activation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Reason about structural pinning, field projection, the drop guarantee, and why unsafe projection requires proof beyond compiler acceptance.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Prefer handles, indices, owned indirection, scoped callbacks, or redesigned state when they eliminate self-reference or address dependence.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the pinning contract.
+
+### Laboratory transfer review
+
+For [Pinned Tracker](../../labs/module-10-pinned-tracker/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 20 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Pinning and Address-Sensitive Design**, which relationship decides this question: “What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

@@ -1,316 +1,177 @@
-# Course 3 study plan — Traits, Generics, and Architectural Design
+# Course 3 Study Plan — Traits, Generics, and Architectural Design
 
-This plan turns ten chapters into ten days of deliberate practice. A day is complete only when the model, independent laboratory, and Review Engine increment agree. If the lab passes while the explanation remains vague, repair the model before moving on.
+Ten dense study days fit into two calendar weeks. The goal is not to maximize reading time; it is to make **How should a Rust architecture represent shared behavior, type relationships, runtime variation, protocol states, and downstream extension without importing an inheritance model?** answerable through construction and explanation.
 
 ## Daily rhythm
 
-| Time | Work | Required output |
-|---|---|---|
-| 08:30–09:00 | closed-book reconstruction | one page of the previous mechanism from memory |
-| 09:00–11:00 | authoritative chapter and typed examples | annotated model and changed-assumption predictions |
-| 11:15–12:30 | compiler or boundary specimens | frozen predictions and causal comparison |
-| 13:30–15:00 | repair and focused construction | smallest principled repair plus rejected shortcut |
-| 15:15–17:30 | independent laboratory | working behavior, adversarial tests, design record |
-| 18:30–20:00 | Review Engine increment | integrated change and regression evidence |
-| 20:00–20:30 | explanation and retrieval | invariant, decisive rule, failure state, transfer case |
+Use a **architecture decision record** across the course. Each day begins by reconstructing yesterday’s decisive relationship and ends by tracing one capstone invariant. Preserve the first prediction, the observed result, the principled repair, and the shortcut you rejected.
 
-Take real breaks. Dense work is not continuous screen time. The weekend between Days 5 and 6 is for repair, reconstruction, and rest rather than new material.
+## Day 1 — Module 21: Traits as Behavioral Contracts
 
-## Day 1 — Traits as Behavioral Contracts
+**Question:** What behavior truly belongs in a shared contract, and which laws must every implementation preserve?
 
-**Governing question:** What behavior truly belongs in a shared contract, and which laws must every implementation preserve?
+**Retrieval:** Without notes, restate the invariant carried from Module 20 — Pinning and Address-Sensitive Design. Mark the point where that earlier guarantee could be weakened today.
 
-### Morning: derive the model
+**Chapter:** Read [Module 21](./module-21-traits-as-behavioral-contracts/index.md) with a **trait-law table** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Read [Module 21](module-21-traits-as-behavioral-contracts/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Workbook:** Complete the [workbook](./module-21-traits-as-behavioral-contracts/workbook.md) before observation. The day’s minimum result is: **Define a trait whose methods express a coherent behavioral contract.** Keep one positive case and one causal negative case.
 
-### Midday: predict and repair
+**Laboratory:** Build [Contract Boundaries](../labs/module-01-contract-boundaries/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Complete the [workbook](module-21-traits-as-behavioral-contracts/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+**Capstone:** Apply Module 21 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Afternoon: isolate the mechanism
+**Exit:** Explain this capability without notes: **Define a trait whose methods express a coherent behavioral contract.** End with one simpler design that would be preferable under a narrower requirement.
 
-Build [Laboratory 21 — Contract Boundaries](../labs/module-01-contract-boundaries/README.md). Build a small pricing library for `Book`, `CourseLicense`, and `SupportPlan`.
+## Day 2 — Module 22: Associated Types and Type Families
 
-### Evening: integrate the course product
+**Question:** When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?
 
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Define the Review Engine's source, rule, and reporter contracts with behavioral laws. Separate required methods from defaults and identify what tests must enforce. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
+**Retrieval:** Without notes, restate the invariant carried from Module 21 — Traits as Behavioral Contracts. Mark the point where that earlier guarantee could be weakened today.
 
-### End-of-day proof
+**Chapter:** Read [Module 22](./module-22-associated-types-and-type-families/index.md) with a **associated-type relationship map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Workbook:** Complete the [workbook](./module-22-associated-types-and-type-families/workbook.md) before observation. The day’s minimum result is: **Choose between generic parameters and associated types from relationship cardinality.** Keep one positive case and one causal negative case.
 
-- answer the module question—“What behavior truly belongs in a shared contract, and which laws must every implementation preserve?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Define a trait whose methods express a coherent behavioral contract;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
+**Laboratory:** Build [Associated Families](../labs/module-02-associated-families/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-## Day 2 — Associated Types and Type Families
+**Capstone:** Apply Module 22 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-**Governing question:** When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?
+**Exit:** Explain this capability without notes: **Choose between generic parameters and associated types from relationship cardinality.** End with one simpler design that would be preferable under a narrower requirement.
 
-### Morning: derive the model
+## Day 3 — Module 23: Coherence and Implementation Ownership
 
-Read [Module 22](module-22-associated-types-and-type-families/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Question:** Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?
 
-### Midday: predict and repair
+**Retrieval:** Without notes, restate the invariant carried from Module 22 — Associated Types and Type Families. Mark the point where that earlier guarantee could be weakened today.
 
-Complete the [workbook](module-22-associated-types-and-type-families/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+**Chapter:** Read [Module 23](./module-23-coherence-and-implementation-ownership/index.md) with a **coherence ownership map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-### Afternoon: isolate the mechanism
+**Workbook:** Complete the [workbook](./module-23-coherence-and-implementation-ownership/workbook.md) before observation. The day’s minimum result is: **Predict whether an implementation satisfies coherence and orphan rules.** Keep one positive case and one causal negative case.
 
-Build [Laboratory 22 — Associated Families](../labs/module-02-associated-families/README.md). Implement a source whose implementation chooses its row and error families, then add a borrowed row-view family indexed by the borrow lifetime. Demonstrate which invalid type combinations an independently selectable generic API would permit.
+**Laboratory:** Build [Coherence Adapters](../labs/module-03-coherence-adapters/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-### Evening: integrate the course product
+**Capstone:** Apply Module 23 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Attach item, output, and error families to the implementations that choose them. Use associated types where callers should not select arbitrary combinations. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
+**Exit:** Explain this capability without notes: **Predict whether an implementation satisfies coherence and orphan rules.** End with one simpler design that would be preferable under a narrower requirement.
 
-### End-of-day proof
+## Day 4 — Module 24: Static Polymorphism and Opaque Types
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Question:** When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?
 
-- answer the module question—“When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Choose between generic parameters and associated types from relationship cardinality;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
+**Retrieval:** Without notes, restate the invariant carried from Module 23 — Coherence and Implementation Ownership. Mark the point where that earlier guarantee could be weakened today.
 
-## Day 3 — Coherence and Implementation Ownership
+**Chapter:** Read [Module 24](./module-24-static-polymorphism-and-opaque-types/index.md) with a **static-dispatch map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Governing question:** Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?
+**Workbook:** Complete the [workbook](./module-24-static-polymorphism-and-opaque-types/workbook.md) before observation. The day’s minimum result is: **Design generic functions and types with the weakest sufficient bounds.** Keep one positive case and one causal negative case.
 
-### Morning: derive the model
+**Laboratory:** Build [Static Pipeline](../labs/module-04-static-pipeline/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Read [Module 23](module-23-coherence-and-implementation-ownership/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Capstone:** Apply Module 24 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Midday: predict and repair
+**Exit:** Explain this capability without notes: **Design generic functions and types with the weakest sufficient bounds.** End with one simpler design that would be preferable under a narrower requirement.
 
-Complete the [workbook](module-23-coherence-and-implementation-ownership/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+## Day 5 — Module 25: Trait Objects and Dynamic Polymorphism
 
-### Afternoon: isolate the mechanism
+**Question:** When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?
 
-Build [Laboratory 23 — Coherence Adapters](../labs/module-03-coherence-adapters/README.md). Integrate two foreign-style model types with two local formatting and validation contracts.
+**Retrieval:** Without notes, restate the invariant carried from Module 24 — Static Polymorphism and Opaque Types. Mark the point where that earlier guarantee could be weakened today.
 
-### Evening: integrate the course product
+**Chapter:** Read [Module 25](./module-25-trait-objects-and-dynamic-polymorphism/index.md) with a **dynamic-dispatch map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Add local adapters, closure-backed rules, and sealed built-in markers without violating coherence. Record which crate owns every implementation relationship. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
+**Workbook:** Complete the [workbook](./module-25-trait-objects-and-dynamic-polymorphism/workbook.md) before observation. The day’s minimum result is: **Derive whether a trait is dyn-compatible and repair it without erasing its meaning.** Keep one positive case and one causal negative case.
 
-### End-of-day proof
+**Laboratory:** Build [Dynamic Command Bus](../labs/module-05-dynamic-command-bus/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Capstone:** Apply Module 25 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-- answer the module question—“Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Predict whether an implementation satisfies coherence and orphan rules;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
+**Exit:** Explain this capability without notes: **Derive whether a trait is dyn-compatible and repair it without erasing its meaning.** End with one simpler design that would be preferable under a narrower requirement.
 
-## Day 4 — Static Polymorphism and Opaque Types
+## Midpoint reconstruction
 
-**Governing question:** When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?
+Do not add a sixth topic on the recovery day. Reconstruct **Traits as Behavioral Contracts, Associated Types and Type Families, Coherence and Implementation Ownership, Static Polymorphism and Opaque Types, Trait Objects and Dynamic Polymorphism** as one dependency chain, rerun the two investigations that changed your model most, and describe the current Review Engine state from an empty page. Repair incomplete work, then take a real break; consolidation is part of the course rather than unused time.
 
-### Morning: derive the model
+## Day 6 — Module 26: Composition and OOP-Style Design Without Inheritance
 
-Read [Module 24](module-24-static-polymorphism-and-opaque-types/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Question:** How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?
 
-### Midday: predict and repair
+**Retrieval:** Without notes, restate the invariant carried from Module 25 — Trait Objects and Dynamic Polymorphism. Mark the point where that earlier guarantee could be weakened today.
 
-Complete the [workbook](module-24-static-polymorphism-and-opaque-types/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+**Chapter:** Read [Module 26](./module-26-composition-and-oop-style-design-without-inheritance/index.md) with a **composition diagram** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-### Afternoon: isolate the mechanism
+**Workbook:** Complete the [workbook](./module-26-composition-and-oop-style-design-without-inheritance/workbook.md) before observation. The day’s minimum result is: **Model encapsulation, substitution, and delegation without class inheritance.** Keep one positive case and one causal negative case.
 
-Build [Laboratory 24 — Static Pipeline](../labs/module-04-static-pipeline/README.md). Build a statically composed validation pipeline whose source code selects concrete validator types.
+**Laboratory:** Build [Composed Renderer](../labs/module-06-composed-renderer/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-### Evening: integrate the course product
+**Capstone:** Apply Module 26 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Keep source and reporter boundaries statically dispatched, using the weakest sufficient bounds and opaque types only where concrete names would leak irrelevant detail. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
+**Exit:** Explain this capability without notes: **Model encapsulation, substitution, and delegation without class inheritance.** End with one simpler design that would be preferable under a narrower requirement.
 
-### End-of-day proof
+## Day 7 — Module 27: Typestate and Capability-Oriented APIs
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Question:** Which illegal operations can be removed from the API by representing protocol state and authority in types?
 
-- answer the module question—“When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Design generic functions and types with the weakest sufficient bounds;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
+**Retrieval:** Without notes, restate the invariant carried from Module 26 — Composition and OOP-Style Design Without Inheritance. Mark the point where that earlier guarantee could be weakened today.
 
-## Day 5 — Trait Objects and Dynamic Polymorphism
+**Chapter:** Read [Module 27](./module-27-typestate-and-capability-oriented-apis/index.md) with a **typestate transition graph** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Governing question:** When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?
+**Workbook:** Complete the [workbook](./module-27-typestate-and-capability-oriented-apis/workbook.md) before observation. The day’s minimum result is: **Encode a finite protocol with marker states and consuming transitions.** Keep one positive case and one causal negative case.
 
-### Morning: derive the model
+**Laboratory:** Build [Typestate Publication](../labs/module-07-typestate-publication/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Read [Module 25](module-25-trait-objects-and-dynamic-polymorphism/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Capstone:** Apply Module 27 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Midday: predict and repair
+**Exit:** Explain this capability without notes: **Encode a finite protocol with marker states and consuming transitions.** End with one simpler design that would be preferable under a narrower requirement.
 
-Complete the [workbook](module-25-trait-objects-and-dynamic-polymorphism/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+## Day 8 — Module 28: Boundary Traits and Adapters
 
-### Afternoon: isolate the mechanism
+**Question:** How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?
 
-Build [Laboratory 25 — Dynamic Command Bus](../labs/module-05-dynamic-command-bus/README.md). Build a command bus that owns heterogeneous command handlers behind a dyn-compatible interface.
+**Retrieval:** Without notes, restate the invariant carried from Module 27 — Typestate and Capability-Oriented APIs. Mark the point where that earlier guarantee could be weakened today.
 
-### Evening: integrate the course product
+**Chapter:** Read [Module 28](./module-28-boundary-traits-and-adapters/index.md) with a **adapter boundary map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Introduce the ordered heterogeneous rule registry with `Box<dyn Rule>`. Document what is erased, why runtime heterogeneity is required, and how object lifetimes are owned. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
+**Workbook:** Complete the [workbook](./module-28-boundary-traits-and-adapters/workbook.md) before observation. The day’s minimum result is: **Design extension traits, closure adapters, and conversion boundaries with precise contracts.** Keep one positive case and one causal negative case.
 
-### End-of-day proof
+**Laboratory:** Build [Boundary Ports](../labs/module-08-boundary-ports/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Capstone:** Apply Module 28 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-- answer the module question—“When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Derive whether a trait is dyn-compatible and repair it without erasing its meaning;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
+**Exit:** Explain this capability without notes: **Design extension traits, closure adapters, and conversion boundaries with precise contracts.** End with one simpler design that would be preferable under a narrower requirement.
 
-## Day 6 — Composition and OOP-Style Design Without Inheritance
+## Day 9 — Module 29: Public API Evolution
 
-**Governing question:** How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?
+**Question:** How can a public trait-based API evolve when downstream crates may both call it and implement it?
 
-### Morning: derive the model
+**Retrieval:** Without notes, restate the invariant carried from Module 28 — Boundary Traits and Adapters. Mark the point where that earlier guarantee could be weakened today.
 
-Read [Module 26](module-26-composition-and-oop-style-design-without-inheritance/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Chapter:** Read [Module 29](./module-29-public-api-evolution/index.md) with a **compatibility matrix** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-### Midday: predict and repair
+**Workbook:** Complete the [workbook](./module-29-public-api-evolution/workbook.md) before observation. The day’s minimum result is: **Classify public trait changes by downstream source-compatibility risk.** Keep one positive case and one causal negative case.
 
-Complete the [workbook](module-26-composition-and-oop-style-design-without-inheritance/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+**Laboratory:** Build [Evolvable SDK](../labs/module-09-evolvable-sdk/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-### Afternoon: isolate the mechanism
+**Capstone:** Apply Module 29 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-Build [Laboratory 26 — Composed Renderer](../labs/module-06-composed-renderer/README.md). Build a report-rendering system with two base formats and two optional wrappers.
+**Exit:** Explain this capability without notes: **Classify public trait changes by downstream source-compatibility risk.** End with one simpler design that would be preferable under a narrower requirement.
 
-### Evening: integrate the course product
+## Day 10 — Module 30: Architectural Synthesis
 
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Compose parsing, policy, evaluation, and reporting through owned components and adapters. Do not invent an inheritance hierarchy for responsibilities that can be delegated. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
+**Question:** Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?
 
-### End-of-day proof
+**Retrieval:** Without notes, restate the invariant carried from Module 29 — Public API Evolution. Mark the point where that earlier guarantee could be weakened today.
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Chapter:** Read [Module 30](./module-30-architectural-synthesis/index.md) with a **architecture decision record** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-- answer the module question—“How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Model encapsulation, substitution, and delegation without class inheritance;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
+**Workbook:** Complete the [workbook](./module-30-architectural-synthesis/workbook.md) before observation. The day’s minimum result is: **Map axes of variation before selecting polymorphism mechanisms.** Keep one positive case and one causal negative case.
 
-## Day 7 — Typestate and Capability-Oriented APIs
+**Laboratory:** Build [Inspection Platform](../labs/module-10-inspection-platform/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-**Governing question:** Which illegal operations can be removed from the API by representing protocol state and authority in types?
+**Capstone:** Apply Module 30 in the [Review Engine guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Morning: derive the model
+**Exit:** Explain this capability without notes: **Map axes of variation before selecting polymorphism mechanisms.** End with one simpler design that would be preferable under a narrower requirement.
 
-Read [Module 27](module-27-typestate-and-capability-oriented-apis/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+## Final integration
 
-### Midday: predict and repair
+After Day 10, complete the [final review](final-review.md), run the strongest available course route, and implement this unseen capstone change: **Add a versioned rule capability to Review Engine while preserving source compatibility, deterministic rule order, and a clear static-versus-dynamic boundary.**
 
-Complete the [workbook](module-27-typestate-and-capability-oriented-apis/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
-
-### Afternoon: isolate the mechanism
-
-Build [Laboratory 27 — Typestate Publication](../labs/module-07-typestate-publication/README.md). Implement `Draft -> Reviewed -> Published` with state-specific evidence.
-
-### Evening: integrate the course product
-
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Build the engine through typestate so execution is unavailable until source, policy, and reporter are present. Keep the state machinery out of the finished engine's public behavior. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
-
-### End-of-day proof
-
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
-
-- answer the module question—“Which illegal operations can be removed from the API by representing protocol state and authority in types?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Encode a finite protocol with marker states and consuming transitions;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
-
-## Day 8 — Boundary Traits and Adapters
-
-**Governing question:** How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?
-
-### Morning: derive the model
-
-Read [Module 28](module-28-boundary-traits-and-adapters/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
-
-### Midday: predict and repair
-
-Complete the [workbook](module-28-boundary-traits-and-adapters/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
-
-### Afternoon: isolate the mechanism
-
-Build [Laboratory 28 — Boundary Ports](../labs/module-08-boundary-ports/README.md). Build a small inspection service with a domain core independent from input and output mechanisms.
-
-### Evening: integrate the course product
-
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Add narrow ports, production adapters, fakes, and conversion boundaries. Each trait must correspond to a real substitution need rather than a desire to mock everything. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
-
-### End-of-day proof
-
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
-
-- answer the module question—“How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Design extension traits, closure adapters, and conversion boundaries with precise contracts;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
-
-## Day 9 — Public API Evolution
-
-**Governing question:** How can a public trait-based API evolve when downstream crates may both call it and implement it?
-
-### Morning: derive the model
-
-Read [Module 29](module-29-public-api-evolution/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
-
-### Midday: predict and repair
-
-Complete the [workbook](module-29-public-api-evolution/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
-
-### Afternoon: isolate the mechanism
-
-Build [Laboratory 29 — Evolvable SDK](../labs/module-09-evolvable-sdk/README.md). Start from a small public plugin contract and evolve it through two versions.
-
-### Evening: integrate the course product
-
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Review the public extension surface from both downstream perspectives: callers and implementors. Preserve evolution room with sealing, non-exhaustive data, and compatibility tests. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
-
-### End-of-day proof
-
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
-
-- answer the module question—“How can a public trait-based API evolve when downstream crates may both call it and implement it?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Classify public trait changes by downstream source-compatibility risk;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
-
-## Day 10 — Architectural Synthesis
-
-**Governing question:** Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?
-
-### Morning: derive the model
-
-Read [Module 30](module-30-architectural-synthesis/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
-
-### Midday: predict and repair
-
-Complete the [workbook](module-30-architectural-synthesis/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
-
-### Afternoon: isolate the mechanism
-
-Build [Laboratory 30 — Inspection Platform](../labs/module-10-inspection-platform/README.md). Build a separate miniature inspection platform from a product brief only.
-
-### Evening: integrate the course product
-
-The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Implement an unseen Review Engine extension and update the variation map first. Defend why each boundary uses an enum, generic, trait object, closure, or concrete type. The exact implementation task is in the workbook; the full product contract is in the capstone guide.
-
-### End-of-day proof
-
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
-
-- answer the module question—“Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition?”—without reading the chapter;
-- demonstrate this outcome on a fresh example: Map axes of variation before selecting polymorphism mechanisms;
-- repair the debugging case while preserving its product requirement;
-- complete the laboratory transfer variant and explain the decisive design choice;
-
-
-## Mid-course reconstruction
-
-After Day 5, rebuild the five-module dependency chain without notes. Select the two compiler specimens that changed your model most, rerun them, and explain why the wrong prediction was plausible. Repair every incomplete lab before opening Day 6; later mechanisms assume that the earlier contract is stable.
-
-## Final consolidation
-
-After Day 10, use the [course reference](reference.md) to compress the material, not to relearn it. Complete the [final review](final-review.md) from an empty directory. Then defend Review Engine by tracing one successful operation and one adversarial failure through every layer touched by the course.
+Seven days later, rebuild the ten-module sequence and the core **architecture decision record** without the book. Write a fresh example for every relationship you cannot recover. Re-reading a solution without recreating the model does not count as retained learning.

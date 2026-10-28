@@ -1,8 +1,11 @@
 # Module 88 — Security and Supply-Chain Engineering
 
-**88/90** · Course 9 · Module 88 of 90
+**Course 9 · Day 8 · Module 88 of 100**
+`██████████████████████░░░` **88/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-attack-surface-and-supply-chain-audit/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 87: Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation](../module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md) · [Module 89: Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases →](../module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 Performance and reliability mechanisms create attack surfaces: parsers allocate, queues retain work, observability stores data, build scripts execute, dependencies expand trust, and operational endpoints reveal state. Rust removes many memory-safety failure modes, but it does not decide authorization, resource limits, secret handling, dependency trust, or deployment privilege.
 
 Module 88 treats security as a system property that spans source, build, artifact, runtime, and operations. Threat modeling is used to prioritize controls, not to produce a ceremonial list.
+
+### Prerequisite bridge
+
+Module 87 established **Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation**. Before continuing, verify that you can test recovery, hysteresis, retry amplification, cold restart, and partial dependency loss. This module preserves that capability and adds the ability to identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a rust service. Module 89, **Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases**, will rely on both when it asks: *How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?*
+
+### Scope boundary
+
+This module owns the reasoning for **security and supply-chain engineering** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -111,6 +122,24 @@ Popularity is not dependency review. Inspect features, transitive crates, build 
 
 Broad CI or runtime credentials convert one compromise into a larger blast radius. Give each stage only the capabilities it needs.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service, construct one positive and one causal negative example. Mark the first decisive fact in the **threat and dependency dossier** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For connect validation, authentication, authorization, confidentiality, integrity, and availability to specific boundaries, construct one positive and one causal negative example. Mark the first decisive fact in the **threat and dependency dossier** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For enforce size, time, concurrency, recursion, and decompression limits before expensive work, construct one positive and one causal negative example. Mark the first decisive fact in the **threat and dependency dossier** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design secret handling and diagnostic redaction as lifecycle contracts, construct one positive and one causal negative example. Mark the first decisive fact in the **threat and dependency dossier** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -197,7 +226,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 88 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Attack Surface and Supply-Chain Audit laboratory](../../labs/module-08-attack-surface-and-supply-chain-audit/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 89 — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases](../module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

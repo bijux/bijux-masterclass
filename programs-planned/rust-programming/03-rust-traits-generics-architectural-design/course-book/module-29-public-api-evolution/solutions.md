@@ -1,72 +1,72 @@
-# Reasoned solutions — Module 29: Public API Evolution
+# Reasoned Solutions — Module 29: Public API Evolution
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-evolvable-sdk/README.md) · [Review Engine guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Public API Evolution**, not to substitute for an attempt. The decisive question is: *How can a public trait-based API evolve when downstream crates may both call it and implement it?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 29: Public API Evolution**. Compare the reasoning against this question: *How can a public trait-based API evolve when downstream crates may both call it and implement it?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
 ### 1. `01-required-method-addition.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Required method addition.
-- **Causal explanation:** The compiler rejects the specimen because required method addition.
+- **Governing rule:** Adding a required method to a public trait invalidates existing implementations that cannot supply the new item.
+- **Causal explanation:** `Old` implements the previous `run` contract but omits the newly required `id`; the compiler exposes the downstream implementation break immediately.
 - **Principled repair:** Use a major version, defensible default, or new trait.
 - **Weak repair to reject:** Add a meaningless empty implementation.
 
 ### 2. `02-default-method-collision.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Default method collision.
-- **Causal explanation:** The compiler rejects the specimen because default method collision.
+- **Governing rule:** When two imported traits provide the same applicable method name, receiver syntax becomes ambiguous even if both methods have defaults.
+- **Causal explanation:** `X` implements both `A` and `B`; `X.name()` does not select which default is intended, so qualification or a redesigned extension surface is required.
 - **Principled repair:** Use qualification or redesign names/extensions.
 - **Weak repair to reject:** Rely on import order.
 
 ### 3. `03-new-supertrait-obligation.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** New supertrait obligation.
-- **Causal explanation:** The compiler rejects the specimen because new supertrait obligation.
+- **Governing rule:** Adding a supertrait strengthens the implementation contract for every existing implementor.
+- **Causal explanation:** `P: Id` now requires `Old` to implement `Id` before its `P` implementation is valid; this is a downstream breaking change, not a free refactor.
 - **Principled repair:** Make a major change or separate extension trait.
 - **Weak repair to reject:** Add false prerequisite implementations.
 
 ### 4. `04-blanket-impl-downstream-conflict.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Blanket impl downstream conflict.
-- **Causal explanation:** The compiler rejects the specimen because blanket impl downstream conflict.
+- **Governing rule:** A new blanket implementation can overlap with a downstream explicit implementation for a type that satisfies the blanket bound.
+- **Causal explanation:** `Local: Display` makes the blanket `impl<T: Display> P for T` apply, while the explicit `impl P for Local` claims the same pair; coherence rejects the conflict.
 - **Principled repair:** Use an adapter newtype or avoid the blanket impl.
 - **Weak repair to reject:** Delete downstream semantics.
 
 ### 5. `05-sealed-compatibility-surface.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Sealed compatibility surface.
-- **Causal explanation:** The specimen compiles because sealed compatibility surface.
+- **Governing rule:** A sealed trait limits the set of implementors, allowing the defining crate to evolve implementation obligations without breaking third-party implementations.
+- **Causal explanation:** Only `api` can satisfy the private prerequisite for `T`; `X` is an authorized implementor and downstream crates are consumers rather than uncontrolled implementors.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Promise downstream implementation accidentally.
 
 ### 6. `06-nonexhaustive-matching.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Nonexhaustive matching.
-- **Causal explanation:** The compiler rejects the specimen because nonexhaustive matching.
+- **Governing rule:** A non-exhaustive public enum requires downstream matches to include a fallback for variants that may be added later.
+- **Causal explanation:** `std::io::ErrorKind` is non-exhaustive; matching only two known variants would make downstream code source-incompatible with future additions, so a wildcard or equivalent fallback is mandatory.
 - **Principled repair:** Add a documented fallback.
 - **Weak repair to reject:** Assume no variants will be added.
 
 ### 7. `07-version-adapter.rs`
 
 - **Outcome:** `compile-pass`
-- **Governing rule:** Version adapter.
-- **Causal explanation:** The specimen compiles because version adapter.
+- **Governing rule:** An adapter can preserve an old contract while presenting a newer interface with added metadata or failure structure.
+- **Causal explanation:** `A<T>` delegates `V1::run`, supplies the new identifier, and lifts the infallible old result into `Result`, allowing old behavior to participate in the V2 boundary.
 - **Principled repair:** No repair required.
 - **Weak repair to reject:** Pretend a required V2 semantic can be defaulted.
 
 ### 8. `08-strengthened-bound.rs`
 
 - **Outcome:** `compile-fail`
-- **Governing rule:** Strengthened bound.
-- **Causal explanation:** The compiler rejects the specimen because strengthened bound.
+- **Governing rule:** Adding a trait bound excludes callers whose types previously satisfied the public function signature.
+- **Causal explanation:** `use_it` now requires `Clone`, but `NotClone` lacks that capability; the call demonstrates the source break caused by strengthening a generic requirement.
 - **Principled repair:** Treat the stronger requirement as breaking or move it to the specific method.
 - **Weak repair to reject:** Implement meaningless Clone solely for compatibility.
 
@@ -104,7 +104,7 @@ A sealed companion trait can attach richer metadata to crate-controlled built-in
 
 The release evidence must compile fixture crates representing both roles. Main-crate tests cannot reveal orphan/coherence conflicts, downstream method ambiguity, missing required methods, or a raised MSRV. A credible migration example shows how an existing external implementation continues, adapts, or opts into the new contract, and states which behavior is preserved versus approximated.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-09-evolvable-sdk/solution`](../../labs/module-09-evolvable-sdk/solution). Before reading it, write down:
 
@@ -125,3 +125,42 @@ For **Public API Evolution**, compare the contract, invariant, failure behavior,
 - Produce a semver hazard register and migration plan.
 
 A complete explanation of **Public API Evolution** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How can a public trait-based API evolve when downstream crates may both call it and implement it?
+
+Build a **compatibility matrix**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Classify public trait changes by downstream source-compatibility risk.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Design default methods and extension points without accidental semantic promises.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use sealing, non-exhaustive data, adapters, and versioned traits appropriately.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Test compile-time and behavioral compatibility claims.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Produce a semver hazard register and migration plan.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Classify public trait changes by downstream source-compatibility risk.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the compatibility matrix.
+
+### Laboratory transfer review
+
+For [Evolvable SDK](../../labs/module-09-evolvable-sdk/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Review Engine, Module 29 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Public API Evolution**, which relationship decides this question: “How can a public trait-based API evolve when downstream crates may both call it and implement it?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Review Engine?

@@ -1,9 +1,11 @@
-# 53 — Paths, Names, and Platform Boundaries
+# Module 53 — Paths, Names, and Platform Boundaries
 
-**Course 6, day 3 · Module 53 of 90**  
-`██████████████████░░` **53/90**
+**Course 6 · Day 3 · Module 53 of 100**
+`█████████████░░░░░░░░░░░░` **53/100**
 
-[← Module 52: Files, Durability, and Transactional Replacement](../module-52-files-durability-and-transactional-replacement/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 54: Processes, Environments, and Standard Streams →](../module-54-processes-environments-and-standard-streams/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-sandboxed-extraction-paths/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 52: Files, Durability, and Transactional Replacement](../module-52-files-durability-and-transactional-replacement/index.md) · [Module 54: Processes, Environments, and Standard Streams →](../module-54-processes-environments-and-standard-streams/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Binary archives use portable logical names; operating systems use native path representations and resolution rules. Treating those two domains as one `String` creates corruption, traversal vulnerabilities, and platform bugs. Module 53 gives path handling its own model before process execution and FFI add more platform boundaries.
+
+### Prerequisite bridge
+
+Module 52 established **Files, Durability, and Transactional Replacement**. Before continuing, verify that you can preserve the previous valid file when encoding or writing fails. This module preserves that capability and adds the ability to distinguish portable logical names, `path`, `pathbuf`, `osstr`, and display text. Module 54, **Processes, Environments, and Standard Streams**, will rely on both when it asks: *How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result?*
+
+### Scope boundary
+
+This module owns the reasoning for **paths, names, and platform boundaries** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -180,6 +190,24 @@ PackError::NameNotPortable {
 
 Never serialize `OsStr::as_encoded_bytes` as a cross-machine archive name. Its encoding is intentionally unspecified and only safe for constrained same-version, same-target reconstruction rules.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text, construct one positive and one causal negative example. Mark the first decisive fact in the **path threat model** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For validate archive-relative paths by components rather than substring tests, construct one positive and one causal negative example. Mark the first decisive fact in the **path threat model** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For explain why lexical checks, canonicalization, and race-free resolution solve different problems, construct one positive and one causal negative example. Mark the first decisive fact in the **path threat model** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For distinguish metadata that follows links from metadata about the link itself, construct one positive and one causal negative example. Mark the first decisive fact in the **path threat model** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault adds a `LogicalPath` type for archive names and a path-policy module for packing and extraction. Extraction rejects absolute forms, empty components, `.` and `..`, NUL, excessive length, and any existing symlink component in its controlled destination tree. Host-path conversion rejects non-UTF-8 components with a typed error; diagnostics preserve the original `PathBuf`.
@@ -203,7 +231,4 @@ You are ready when you can explain why a validated relative name is not by itsel
 
 ## Continue
 
-1. Complete the [Module 53 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 53 — Sandboxed Extraction Paths](../../labs/module-03-sandboxed-extraction-paths/README.md) from its public contract.
-3. Apply the Module 53 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 54 — Processes, Environments, and Standard Streams](../module-54-processes-environments-and-standard-streams/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

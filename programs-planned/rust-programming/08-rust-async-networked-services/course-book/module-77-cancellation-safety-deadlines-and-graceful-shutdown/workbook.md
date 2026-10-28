@@ -1,6 +1,17 @@
 # Workbook — Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown
 
-[Return to the chapter](index.md) · [Open the solutions](solutions.md) · [Open the JobWire guide](../capstone.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-07-graceful-task-tree/README.md) · [JobWire guide](../capstone.md) · [Solutions](solutions.md)
+
+This workbook tests whether **Cancellation Safety, Deadlines, and Graceful Shutdown** has become a usable model rather than remembered vocabulary. Its governing question is: *When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state?* Preserve your first prediction and record decisive facts in a **cancellation and shutdown trace**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 76 — Backpressure, Admission Control, and Fair Work Distribution that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state?**
+3. Draw the smallest **cancellation and shutdown trace** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -41,6 +52,17 @@ Implement stop-admission, signal, drain, abort, and join phases for a `JoinSet`.
 
 Submit cooperative and noncooperative blocking jobs. Explain what async shutdown can and cannot guarantee.
 
+### Interleaved reasoning pass
+
+1. For **Derive cancellation behavior from future-owned state and external side effects**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the cancellation and shutdown trace.
+2. For **Interpret `tokio::select!` as dropping nonselected branch futures**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the cancellation and shutdown trace.
+3. For **Distinguish cancellation safety from memory safety**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the cancellation and shutdown trace.
+4. For **Define an application commit point and recover ambiguous outcomes**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the cancellation and shutdown trace.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Cancellation Safety, Deadlines, and Graceful Shutdown** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Graceful Task Tree](../../labs/module-07-graceful-task-tree/README.md). Required evidence:
@@ -53,9 +75,25 @@ Build [Graceful Task Tree](../../labs/module-07-graceful-task-tree/README.md). R
 - exact terminal outcome counts;
 - no task or permit surviving return.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Graceful Task Tree**, record:
+
+- the public behavior that demonstrates **Derive cancellation behavior from future-owned state and external side effects**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Add JobWire’s shutdown controller. Define ordering among TCP listener, HTTP listener, connection tasks, broker admission, jobs, and final broker exit. Add tests for idle connection, active pre-commit request, committed job, stuck task, and repeated shutdown signal.
+
+### Capstone invariant trace
+
+For the Module 77 JobWire increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -69,3 +107,7 @@ Add JobWire’s shutdown controller. Define ordering among TCP listener, HTTP li
 ### Independent transfer
 
 Design shutdown for an async file-upload service. Files may be partially written and metadata commits are idempotent. State which files are deleted, resumed, finalized, or retained after each cancellation point.
+
+### Closed-book defense
+
+In five minutes, answer “When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state?” using the **cancellation and shutdown trace**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside JobWire. A list of APIs without the deciding relationship is incomplete.

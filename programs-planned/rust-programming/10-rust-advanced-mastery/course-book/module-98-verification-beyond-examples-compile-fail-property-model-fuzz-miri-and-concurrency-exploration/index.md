@@ -1,8 +1,11 @@
 # Module 98 — Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration
 
-**98/100** · Course 10 · Module 98 of 100
+**Course 10 · Day 8 · Module 98 of 100**
+`████████████████████████░` **98/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-model-checked-log/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 97: From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size](../module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/index.md) · [Module 99: Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship →](../module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/index.md)
 
 ## The question
 
@@ -10,11 +13,19 @@
 
 ## Why this comes now
 
-The first nine courses used unit, integration, compile-fail, deterministic schedule, and adversarial tests. Advanced mastery requires matching each claim to a verification instrument. Type-level misuse needs negative compilation evidence. Algebraic behavior needs property tests. Finite protocols can be explored as state machines. Parsers need malformed corpora and fuzzing. Unsafe code benefits from Miri on executed paths. Concurrency protocols need systematic schedule exploration where possible. None of these methods proves everything; together they create a layered argument whose gaps are visible.
+The first ten courses used unit, integration, compile-fail, deterministic schedule, and adversarial tests. Advanced mastery requires matching each claim to a verification instrument. Type-level misuse needs negative compilation evidence. Algebraic behavior needs property tests. Finite protocols can be explored as state machines. Parsers need malformed corpora and fuzzing. Unsafe code benefits from Miri on executed paths. Concurrency protocols need systematic schedule exploration where possible. None of these methods proves everything; together they create a layered argument whose gaps are visible.
 
 Every earlier course used tests, but different claims need different falsification methods. This module organizes compile-time, runtime, state, unsafe, concurrency, compatibility, and performance evidence into one matrix.
 
 A large test suite can still leave the most important property unexamined. Module 98 starts from claims, not tools. It assigns each claim to evidence with an appropriate failure model: the compiler for rejected API space, properties for broad input relations, models for transitions, fuzzing for hostile syntax, Miri for executed unsafe behavior, and concurrency exploration for schedules.
+
+### Prerequisite bridge
+
+Module 97 established **From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size**. Before continuing, verify that you can record a code-generation claim with source revision, toolchain, target, profile, features, and measurement method. This module preserves that capability and adds the ability to classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims. Module 99, **Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship**, will rely on both when it asks: *How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data?*
+
+### Scope boundary
+
+This module owns the reasoning for **verification beyond examples: compile-fail, property, model, fuzz, miri, and concurrency exploration** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -137,6 +148,24 @@ No single tool proves the whole system. Compile-fail tests establish rejection o
 
 A verification portfolio is strong because its limitations overlap less, not because its test count is high. Honest blank cells in the matrix are better than a universal “verified” label.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims, construct one positive and one causal negative example. Mark the first decisive fact in the **verification claim matrix** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For select compile-fail tests, examples, properties, model exploration, fuzzing, Miri, schedule exploration, or benchmarks according to the claim, construct one positive and one causal negative example. Mark the first decisive fact in the **verification claim matrix** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For write generators and shrinkable models that preserve domain validity while reaching boundary and failure states, construct one positive and one causal negative example. Mark the first decisive fact in the **verification claim matrix** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For construct a small reference model and compare implementation traces after every operation rather than only final output, construct one positive and one causal negative example. Mark the first decisive fact in the **verification claim matrix** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Treat the log engine and the `BTreeMap` model as two independent transition systems. Enumerate short operation sequences, compare after every prefix, and make a mismatch report include the minimal sequence that produced it.
@@ -217,7 +246,4 @@ Verification tools change quickly. Record exact versions, flags, targets, seeds,
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Model-Checked Log](../../labs/module-08-model-checked-log/README.md).
-3. Apply Module 98 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 99 — Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship](../module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

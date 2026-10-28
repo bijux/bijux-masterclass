@@ -1,9 +1,11 @@
-# 25 — Trait Objects and Dynamic Polymorphism
+# Module 25 — Trait Objects and Dynamic Polymorphism
 
-**Course 3, day 5 · Module 25 of 90**  
-`████████░░░░░░░░░░░░` **25/90**
+**Course 3 · Day 5 · Module 25 of 100**
+`██████░░░░░░░░░░░░░░░░░░░` **25/100**
 
-[← Module 24: Static Polymorphism and Opaque Types](../module-24-static-polymorphism-and-opaque-types/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 26: Composition and OOP-Style Design Without Inheritance →](../module-26-composition-and-oop-style-design-without-inheritance/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-dynamic-command-bus/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 24: Static Polymorphism and Opaque Types](../module-24-static-polymorphism-and-opaque-types/index.md) · [Module 26: Composition and OOP-Style Design Without Inheritance →](../module-26-composition-and-oop-style-design-without-inheritance/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Static dispatch cannot represent every runtime extension point. Trait objects now introduce deliberate type erasure, heterogeneous storage, object lifetimes, and dyn compatibility. Because the static alternative is already understood, you can justify erasure instead of using `Box<dyn Trait>` by reflex.
+
+### Prerequisite bridge
+
+Module 24 established **Static Polymorphism and Opaque Types**. Before continuing, verify that you can control generic api complexity through boundary placement. This module preserves that capability and adds the ability to derive whether a trait is dyn-compatible and repair it without erasing its meaning. Module 26, **Composition and OOP-Style Design Without Inheritance**, will rely on both when it asks: *How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance?*
+
+### Scope boundary
+
+This module owns the reasoning for **trait objects and dynamic polymorphism** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -444,6 +454,24 @@ trait RuleFactory {
 
 The executor has one concrete input type and output sink, so the core is dyn-compatible. Factories handle typed construction behind their own dynamic or closed registry. A generic `TypedRule` helper may retain associated configuration for built-ins without entering the object surface.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For derive whether a trait is dyn-compatible and repair it without erasing its meaning, construct one positive and one causal negative example. Mark the first decisive fact in the **dynamic-dispatch map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For use borrowed and owned trait objects with correct object lifetimes, construct one positive and one causal negative example. Mark the first decisive fact in the **dynamic-dispatch map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For build a heterogeneous runtime collection behind one behavioral interface, construct one positive and one causal negative example. Mark the first decisive fact in the **dynamic-dispatch map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For compare enum, generic, and trait-object designs against explicit change scenarios, construct one positive and one causal negative example. Mark the first decisive fact in the **dynamic-dispatch map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Introduce the ordered heterogeneous rule registry with `Box<dyn Rule>`. Document what is erased, why runtime heterogeneity is required, and how object lifetimes are owned. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -473,11 +501,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
 - [Rust Reference: Dyn compatibility](https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility)
 
-[← Module 24](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 26 →](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md)
+[← Module 24](../../../03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 26 →](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md)
 
 ## Continue
 
-1. Complete the [Module 25 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 25 — Dynamic Command Bus](../../labs/module-05-dynamic-command-bus/README.md) from its public contract.
-3. Apply the Module 25 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 26 — Composition and OOP-Style Design Without Inheritance](../module-26-composition-and-oop-style-design-without-inheritance/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -2,67 +2,98 @@
 
 ## Bytes, Operating-System Boundaries, Unsafe Abstractions, and FFI
 
-Cross external boundaries without losing the guarantees built in the first five courses: define representations, track resources, isolate unsafe obligations, and expose safe interfaces with claims no stronger than the platform evidence.
+## The promise
 
-## Why this course exists
+Course 6 connects Rust to hostile bytes, filesystems, native paths, child processes, raw storage, allocators, C callers, callbacks, and foreign resources. Unsafe Rust appears only after the safe product contract and proof boundary are explicit.
 
-Earlier courses mostly begin after a valid Rust value exists. Systems work begins before that point and continues after Rust has delegated work to a filesystem, process, allocator, or foreign caller. Every boundary introduces facts the compiler cannot establish alone: byte order, path interpretation, short I/O, durability, pointer validity, allocation layout, ABI agreement, callback lifetime, and external behavior. This course turns those facts into explicit representations, state machines, safety contracts, and narrow safe interfaces.
+> **Governing question:** What does each external boundary promise, which facts can Rust verify, which facts require a manual proof, and how does a safe interface contain those obligations?
 
-## Before you begin
+Course 5 established disciplined compile-time authority. Course 6 carries the same one-owner rule across external boundaries: bytes, filesystems, native paths, child processes, manual storage, C callers, and foreign resources. Safe APIs remain the product surface; unsafe code is a contained proof obligation, not a design style.
 
-Courses 1–5, including exact ownership and lifetime reasoning, RAII, representation claims, trait-based architecture, explicit effect boundaries, deterministic generation, and causal testing.
+## Before Day 1
 
-Keep a representation table, resource-state machine, boundary ledger, unsafe safety ledger, and ABI contract beside the code. The record changes shape as the course advances, but its purpose is constant: make the decisive relationship visible before syntax hides it.
+You should be able to model ownership and cleanup, design public traits and errors, isolate effects, understand generated code, and maintain deterministic formats and tests.
 
-## What you will be able to do
+From a blank page, sketch one earlier product or a comparable program. Mark an owner, a valid and invalid state, a failure path, cleanup, and a public promise. Repair any relationship you cannot explain before adding this course’s mechanisms.
 
-- Define a versioned binary format before implementation, including widths, endianness, limits, canonical encoding, unknown-value policy, and trailing-data policy.
-- Decode hostile bytes with checked ranges and checked arithmetic before allocation, reference creation, UTF-8 construction, or cursor advancement.
-- Distinguish corruption detection from authentication and structural decoding from domain validation.
-- Handle short reads and writes and distinguish write completion, flush, file synchronization, rename visibility, directory synchronization, and honest durability claims.
-- Design failure-atomic same-directory replacement with explicit pre-commit and post-commit failure states and cleanup ownership.
-- Keep portable logical names distinct from native `Path`/`OsStr` values, reject traversal by components, and state the limits of pathname preflight under races.
-- Launch child programs from an executable plus argument vector, control environment and working-directory policy, preserve byte streams and status, and avoid shell interpolation.
-- Define an unsafe boundary by exact operations, preconditions, establishing code, validity duration, panic behavior, cleanup, and safe-caller protection.
-- Manipulate raw pointers and `MaybeUninit` while tracking allocation origin, range, alignment, initialization, aliasing, provenance, and lifetime separately.
-- Build panic-safe partial initialization with a guard that destroys exactly the initialized prefix and never treats uninitialized storage as a live value.
-- Construct one owning manual-allocation abstraction whose empty state, layout, slice exposure, movement, failure, and deallocation are correct.
-- Match Rust and C declarations across ABI, widths, representation, nullability, strings, output initialization, status codes, and panic containment.
-- Wrap opaque foreign resources with exactly-once ownership transfer, synchronous borrowing, callback lifetime rules, reentrancy limits, and explicit release.
-- Classify each success claim as language guarantee, library contract, target-conditioned behavior, operating-system result, foreign obligation, or unclaimed property.
-- Audit an integrated systems product across representation, bounds, filesystem state, paths, process lifecycle, unsafe invariants, allocation, ABI, compatibility, and adversarial tests.
+## Outcomes
 
-## What this course deliberately leaves for later
+- Define a binary format as a versioned contract rather than a sequence of convenient writes.
+- Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability.
+- Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text.
+- Construct commands from a program plus arguments, not an interpolated shell line.
+- Name the operations Rust requires an unsafe context to perform.
+- Distinguish raw pointers from references and explain why conversion does not transfer ownership.
+- Construct and validate `Layout` values without unchecked size arithmetic.
+- Distinguish ABI compatibility from semantic validity and ownership.
+- Separate raw bindings, checked unsafe shims, and safe domain wrappers.
+- Draw one boundary map from external bytes to final effects and back to foreign callers.
+- Integrate all ten mechanisms in FrameVault without creating competing authorities.
+- Complete and defend an unseen change using a whole-system boundary dossier.
 
-The course is single-threaded and synchronous. Atomics, shared-memory concurrency, parallel work scheduling, asynchronous I/O, networking, and production profiling are reserved for Courses 7–9.
+## The ten-day line
 
-## Ten-day route
+| Day | Module | Governing question | Capability that must become visible | Laboratory |
+|---:|---|---|---|---|
+| 1 | [51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing](./module-51-binary-data-contracts/index.md) | How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning? | **Define a binary format as a versioned contract rather than a sequence of convenient writes.** | [Checked Frame Codec](../labs/module-01-checked-frame-codec/README.md) |
+| 2 | [52 — Files, Durability, and Transactional Replacement](./module-52-files-durability-and-transactional-replacement/index.md) | What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state? | **Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability.** | [Atomic Archive Store](../labs/module-02-atomic-archive-store/README.md) |
+| 3 | [53 — Paths, Names, and Platform Boundaries](./module-53-paths-names-and-platform-boundaries/index.md) | How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable? | **Distinguish portable logical names, `Path`, `PathBuf`, `OsStr`, and display text.** | [Sandboxed Extraction Paths](../labs/module-03-sandboxed-extraction-paths/README.md) |
+| 4 | [54 — Processes, Environments, and Standard Streams](./module-54-processes-environments-and-standard-streams/index.md) | How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result? | **Construct commands from a program plus arguments, not an interpolated shell line.** | [Bounded Process Capture](../labs/module-04-bounded-process-capture/README.md) |
+| 5 | [55 — Unsafe Rust as a Proof Boundary](./module-55-unsafe-rust-and-safety-proofs/index.md) | What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable? | **Name the operations Rust requires an unsafe context to perform.** | [Unsafe Slice Kernel](../labs/module-05-unsafe-slice-kernel/README.md) |
+| 6 | [56 — Raw Pointers, Provenance, and Uninitialized Memory](./module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) | How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation? | **Distinguish raw pointers from references and explain why conversion does not transfer ownership.** | [Panic-Safe Batch Builder](../labs/module-06-panic-safe-batch-builder/README.md) |
+| 7 | [57 — Manual Allocation and Owning Unsafe Abstractions](./module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) | How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state? | **Construct and validate `Layout` values without unchecked size arithmetic.** | [Aligned Byte Buffer](../labs/module-07-aligned-byte-buffer/README.md) |
+| 8 | [58 — C FFI: ABI, Strings, Pointers, and Error Boundaries](./module-58-c-ffi-abi-strings-and-error-boundaries/index.md) | How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides? | **Distinguish ABI compatibility from semantic validity and ownership.** | [C ABI Line Validator](../labs/module-08-c-abi-archive-validator/README.md) |
+| 9 | [59 — Foreign Resources, Callbacks, and Wrapper Architecture](./module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) | How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations? | **Separate raw bindings, checked unsafe shims, and safe domain wrappers.** | [Opaque Foreign Session](../labs/module-09-opaque-foreign-session/README.md) |
+| 10 | [60 — Integrated Systems Design, Testing, and Audit](./module-60-integrated-systems-design-and-audit/index.md) | How do you prove a systems product across binary formats, files, paths, processes, unsafe code, allocation, and FFI without letting one boundary invalidate another? | **Draw one boundary map from external bytes to final effects and back to foreign callers.** | [Systems Boundary Audit](../labs/module-10-systems-boundary-audit/README.md) |
 
-1. [Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing](module-51-binary-data-contracts/index.md) — How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?
-2. [Module 52: Files, Durability, and Transactional Replacement](module-52-files-durability-and-transactional-replacement/index.md) — What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state?
-3. [Module 53: Paths, Names, and Platform Boundaries](module-53-paths-names-and-platform-boundaries/index.md) — How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable?
-4. [Module 54: Processes, Environments, and Standard Streams](module-54-processes-environments-and-standard-streams/index.md) — How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result?
-5. [Module 55: Unsafe Rust as a Proof Boundary](module-55-unsafe-rust-and-safety-proofs/index.md) — What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable?
-6. [Module 56: Raw Pointers, Provenance, and Uninitialized Memory](module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) — How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation?
-7. [Module 57: Manual Allocation and Owning Unsafe Abstractions](module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) — How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state?
-8. [Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries](module-58-c-ffi-abi-strings-and-error-boundaries/index.md) — How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides?
-9. [Module 59: Foreign Resources, Callbacks, and Wrapper Architecture](module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) — How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations?
-10. [Module 60: Integrated Systems Design, Testing, and Audit](module-60-integrated-systems-design-and-audit/index.md) — How do you prove a systems product across binary formats, files, paths, processes, unsafe code, allocation, and FFI without letting one boundary invalidate another?
+The table is a dependency chain, not a menu. A later module may use an earlier mechanism but may not silently weaken its ownership, failure, ordering, capacity, safety, compatibility, or evidence contract.
 
-## How the learning surfaces fit
+## Decision rules
 
-The chapter is the authoritative explanation. The workbook exposes the model you actually hold through prediction, repair, construction, transfer, and defense. The independent lab removes accumulated capstone complexity so one mechanism remains visible. The capstone increment then asks that mechanism to coexist with every earlier decision.
+| Decision | Rule used throughout this course |
+|---|---|
+| Bytes | Check ranges and arithmetic before conversion or allocation. |
+| File commit | Separate candidate construction, visibility, replacement, and durability. |
+| Unsafe | Write the safety preconditions before the unsafe operation and expose a safe interface that enforces them. |
+| Allocation | Store the exact layout and initialized-state facts needed for cleanup. |
+| FFI | Specify representation, nullability, ownership, failure, panic, callback retention, and thread rules on both sides. |
 
-The cumulative product is **FrameVault**: a versioned archive, transactional store, path policy, child-process capture system, aligned storage owner, C ABI, and opaque foreign-session API with an explicit safety and compatibility dossier. Do not read the complete implementation before attempting the corresponding increment; the value of the capstone is the sequence of design decisions, not possession of the finished source.
+Use these rules during prediction and review. When a rule does not decide the case, write the missing product requirement instead of selecting an API by habit.
 
-Use the [compiler investigations](../compiler-labs/README.md), the [ten-day study plan](study-plan.md), the [FrameVault engineering guide](capstone.md), the [course reference](reference.md), and the [independent final review](final-review.md).
+## The reasoning record
 
-## Completion standard
+The ten module-specific records culminate in a **whole-system boundary dossier**. Write the external representation, validity checks, resource states, unsafe obligations, cleanup, and platform assumptions before crossing the boundary. Keep the record small enough to inspect but complete enough to expose the first unsupported assumption.
 
-The course is complete when you can satisfy the public behavior, explain the decisive rule without notes, repair a misleading implementation without weakening its requirement, and transfer the mechanism to the final independent product. A passing test suite without a causal model is incomplete; a persuasive explanation without working evidence is also incomplete.
+## Scope and handoff
 
-## Course handoff
+The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible.
 
-Continue with [Course 7 — Rust Concurrency and Parallelism](../../07-rust-concurrency-parallelism/course-book/index.md), where every ownership, cleanup, unsafe, and external-boundary claim must remain valid under simultaneous execution.
+Course 7 introduces legal schedules: values and resources now move among threads, synchronization carries visibility, and termination becomes a first-class product property.
 
-[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)
+## Capstone — FrameVault
+
+FrameVault is a versioned binary archive with checked parsing, transactional replacement, extraction policy, process capture, one manual allocation owner, and a C ABI with opaque sessions and callback rules.
+
+Open the [engineering guide](capstone.md) before Day 1 so the final architecture is visible. Implement only the current increment. The independent laboratory remains separate so that the mechanism can be learned without hiding behind accumulated capstone code.
+
+## Completion
+
+The course is complete when you can build and defend:
+
+> Build a checked packet archive with transactional output, one justified unsafe storage abstraction or a written rejection of it, and a stateless C validation boundary.
+
+and then change the capstone under this constraint:
+
+> Add a bounded archive index to FrameVault while preserving format compatibility, path policy, failure atomicity, allocator safety, and C ABI ownership.
+
+A passing test suite is necessary. It is not sufficient unless you can explain why the tests are capable of falsifying the claim and which target-, scheduler-, workload-, peer-, or policy-dependent facts remain outside them.
+
+## Continue
+
+- [Ten-day plan](study-plan.md)
+- [Module 51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing](./module-51-binary-data-contracts/index.md)
+- [FrameVault engineering guide](capstone.md)
+- [Course reference](reference.md)
+- [Final review](final-review.md)
+- [Compiler and design investigations](../compiler-labs/README.md)
+- [Independent laboratories](../labs/)

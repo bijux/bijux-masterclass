@@ -1,8 +1,17 @@
 # Workbook — Module 20: Pinning and Address-Sensitive Design
 
-[Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-10-pinned-tracker/README.md) · [Memory Workspace guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Pinning and Address-Sensitive Design** without relying on surface syntax. Keep the module question in view: *What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Pinning and Address-Sensitive Design** has become a usable model rather than remembered vocabulary. Its governing question is: *What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?* Preserve your first prediction and record decisive facts in a **pinning contract**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 19 — Subtyping, Variance, PhantomData, and Drop Checking that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?**
+3. Draw the smallest **pinning contract** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -27,7 +36,6 @@ python3 ../tools/run_compiler_labs.py 02-rust-ownership-lifetimes-memory
 
 ## Part 2 — Diagnose and repair
 
-
 A type pins an outer struct and stores a raw pointer into its `String` buffer. A safe method calls `push_str`, which can reallocate the buffer. The author argues that `Pin<Box<Outer>>` keeps everything at one address.
 
 ### Diagnosis
@@ -47,7 +55,6 @@ Pinning the outer `Outer` allocation stabilizes the location of its fields, incl
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 1. For ten move operations, distinguish semantic ownership transfer from likely pointee relocation and state which matters to validity.
 2. Build a `!Unpin` value with `PhantomPinned`, then pin it safely with `Box::pin` and `pin!`.
 3. Compare `Pin<&T>`, `Pin<&mut T>`, and `Pin<Box<T>>` by ownership and access.
@@ -59,11 +66,18 @@ Attempt every required exercise and commit the attempt before opening `exercise-
 9. Replace a self-reference with ranges/handles and remove pinning.
 10. Complete the full capstone design defense and independent change.
 
+### Interleaved reasoning pass
 
+1. For **Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the pinning contract.
+2. For **Explain Pin<P> as a contract on the pointee mediated by a pointer, not as a magical immovable allocation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the pinning contract.
+3. For **Use Unpin and PhantomPinned correctly and construct pinned values without exposing moves after invariant activation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the pinning contract.
+4. For **Reason about structural pinning, field projection, the drop guarantee, and why unsafe projection requires proof beyond compiler acceptance**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the pinning contract.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Pinning and Address-Sensitive Design** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 Build an address-sensitive tracker that can be initialized only after pinning and can then report whether every observation occurs at its initialized address. The implementation remains entirely safe Rust.
 
@@ -117,6 +131,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-10-pinned-tracker](../../labs/module-10-pinned-tracker/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Pinned Tracker**, record:
+
+- the public behavior that demonstrates **Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -126,7 +152,6 @@ The executable starter and reference implementation are in [module-10-pinned-tra
 - Use Unpin and PhantomPinned correctly and construct pinned values without exposing moves after invariant activation.
 - Reason about structural pinning, field projection, the drop guarantee, and why unsafe projection requires proof beyond compiler acceptance.
 - Prefer handles, indices, owned indirection, scoped callbacks, or redesigned state when they eliminate self-reference or address dependence.
-
 
 Complete the library and CLI, then perform an independent cross-cutting change.
 
@@ -168,11 +193,13 @@ Add document labels/tags from a behavioral specification only. The change must c
 ### Final checks
 Run the full proof route, submit ownership graph, lifetime ledger, destruction trace, guarantee ledger, variance trace, and pinning non-use decision. Defend one bug found by each artifact.
 
-
-
 ### Capstone defense
 
 Audit a proposed self-referential cache, decide whether pinning is necessary, and either derive the full contract or redesign it away.
+
+### Capstone invariant trace
+
+For the Module 20 Memory Workspace increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -182,11 +209,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants.
-- Explain Pin<P> as a contract on the pointee mediated by a pointer, not as a magical immovable allocation.
-- Use Unpin and PhantomPinned correctly and construct pinned values without exposing moves after invariant activation.
-- Reason about structural pinning, field projection, the drop guarantee, and why unsafe projection requires proof beyond compiler acceptance.
-- Prefer handles, indices, owned indirection, scoped callbacks, or redesigned state when they eliminate self-reference or address dependence.
+Without reopening the chapter, reconstruct the outcomes for **Module 20: Pinning and Address-Sensitive Design**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -212,9 +235,17 @@ Completion requires executable correctness and a coherent explanation of the des
 
 ### Transfer defense
 
-Audit a proposed self-referential cache, decide whether pinning is necessary, and either derive the full contract or redesign it away.
+Transfer **Module 20: Pinning and Address-Sensitive Design** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 20: Pinning and Address-Sensitive Design** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
 
 1. Distinguish semantic and mechanical move.
 2. What contract does `Pin<P>` add?
@@ -239,3 +270,7 @@ Ownership transfer and byte relocation differ. `Pin` restricts safe access accor
 #### Transfer task
 
 Write two architecture decisions: one for a callback registration that truly needs pinning, and one for a parser that replaces self-references with byte offsets. Compare initialization, mutation, and teardown obligations.
+
+### Closed-book defense
+
+In five minutes, answer “What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?” using the **pinning contract**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Memory Workspace. A list of APIs without the deciding relationship is incomplete.

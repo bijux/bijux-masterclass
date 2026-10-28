@@ -1,9 +1,11 @@
-# 24 — Static Polymorphism and Opaque Types
+# Module 24 — Static Polymorphism and Opaque Types
 
-**Course 3, day 4 · Module 24 of 90**  
-`████████░░░░░░░░░░░░` **24/90**
+**Course 3 · Day 4 · Module 24 of 100**
+`██████░░░░░░░░░░░░░░░░░░░` **24/100**
 
-[← Module 23: Coherence and Implementation Ownership](../module-23-coherence-and-implementation-ownership/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 25: Trait Objects and Dynamic Polymorphism →](../module-25-trait-objects-and-dynamic-polymorphism/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-static-pipeline/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 23: Coherence and Implementation Ownership](../module-23-coherence-and-implementation-ownership/index.md) · [Module 25: Trait Objects and Dynamic Polymorphism →](../module-25-trait-objects-and-dynamic-polymorphism/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 With legal implementations in place, static polymorphism can be designed deliberately. Generic parameters, precise bounds, monomorphization, and opaque return types are studied as one family: the concrete type remains known to the compiler even when an API chooses not to name it publicly.
+
+### Prerequisite bridge
+
+Module 23 established **Coherence and Implementation Ownership**. Before continuing, verify that you can produce an implementation-ownership map for a public api. This module preserves that capability and adds the ability to design generic functions and types with the weakest sufficient bounds. Module 25, **Trait Objects and Dynamic Polymorphism**, will rely on both when it asks: *When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable?*
+
+### Scope boundary
+
+This module owns the reasoning for **static polymorphism and opaque types** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -403,6 +413,24 @@ Introducing `Vec<Box<dyn Validator>>` would support runtime heterogeneity the pr
 
 When a policy file later chooses an arbitrary list of built-in rule kinds, the requirement changes. That is the point at which dynamic dispatch becomes justified—not before.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For design generic functions and types with the weakest sufficient bounds, construct one positive and one causal negative example. Mark the first decisive fact in the **static-dispatch map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish argument-position and return-position `impl Trait`, construct one positive and one causal negative example. Mark the first decisive fact in the **static-dispatch map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For explain monomorphization without promising optimization outcomes, construct one positive and one causal negative example. Mark the first decisive fact in the **static-dispatch map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For choose static dispatch when concrete type identity carries useful guarantees, construct one positive and one causal negative example. Mark the first decisive fact in the **static-dispatch map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Keep source and reporter boundaries statically dispatched, using the weakest sufficient bounds and opaque types only where concrete names would leak irrelevant detail. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -432,11 +460,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: impl Trait](https://doc.rust-lang.org/reference/types/impl-trait.html)
 - [Rust Compiler Development Guide: Monomorphization](https://rustc-dev-guide.rust-lang.org/backend/monomorph.html)
 
-[← Module 23](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 25 →](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md)
+[← Module 23](../../../03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 25 →](../../../03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md)
 
 ## Continue
 
-1. Complete the [Module 24 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 24 — Static Pipeline](../../labs/module-04-static-pipeline/README.md) from its public contract.
-3. Apply the Module 24 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 25 — Trait Objects and Dynamic Polymorphism](../module-25-trait-objects-and-dynamic-polymorphism/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

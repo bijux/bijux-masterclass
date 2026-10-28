@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync
+# Reasoned Solutions — Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the BatchWeave guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-08-spsc-ring/README.md) · [BatchWeave guide](../capstone.md)
 
-The purpose of the SPSC lab is to expose the theorem behind a safe lock-free-looking API. Strong solutions minimize topology, keep unsafe kernels private, connect initialization to index state, and refuse generalization whose reclamation or progress proof has not been supplied.
-
-The answers below are reasoning models, not scripts to imitate. A different implementation can be stronger when it proves the same contract more directly. Compare ownership, synchronization, progress, failure, and determinism—not only surface syntax.
+Use these notes only after preserving your prediction and repair for **Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync**. Compare the reasoning against this question: *What proof permits shared raw storage to be accessed without a lock, and where do role confusion, ABA, destruction, or memory reclamation invalidate a locally plausible algorithm?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -79,3 +77,42 @@ The correct capstone contribution is a rejection record. BatchWeave’s lock-bas
 The defense must state progress class precisely, derive slot ownership and publication, justify unsafe `Sync`, and account for drop. It should explain ABA and reclamation rather than claiming they are solved. The strongest design may be the decision not to deploy the lock-free structure.
 
 A strong defense states what is guaranteed for every allowed schedule, what is merely likely on one machine, and what the design intentionally leaves unspecified.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What proof permits shared raw storage to be accessed without a lock, and where do role confusion, ABA, destruction, or memory reclamation invalidate a locally plausible algorithm?
+
+Build a **atomic state machine**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish obstruction-free, lock-free, and wait-free progress claims from ordinary nonblocking API behavior.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Explain why `UnsafeCell` is necessary for mutation through shared references and why it removes automatic `Sync`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use `MaybeUninit<T>` to represent slots whose initialization state is governed by a concurrent protocol.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Justify unsafe `Send` or `Sync` implementations from exclusive role ownership and atomic publication.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Derive the SPSC ring’s empty/full conditions, slot ownership, and release/acquire edges.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish obstruction-free, lock-free, and wait-free progress claims from ordinary nonblocking API behavior.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the atomic state machine.
+
+### Reference implementation comparison
+
+For [Bounded SPSC Ring](../../labs/module-08-spsc-ring/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In BatchWeave, Module 68 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Lock-Free Protocols, Reclamation, and Unsafe Send/Sync**, which relationship decides this question: “What proof permits shared raw storage to be accessed without a lock, and where do role confusion, ABA, destruction, or memory reclamation invalidate a locally plausible algorithm?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to BatchWeave?

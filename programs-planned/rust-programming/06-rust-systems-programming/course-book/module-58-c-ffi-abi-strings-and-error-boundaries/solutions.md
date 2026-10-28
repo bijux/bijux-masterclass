@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries
+# Reasoned Solutions — Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-08-c-abi-archive-validator/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 58: C FFI: ABI, Strings, Pointers, and Error Boundaries**. Compare the reasoning against this question: *How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -122,3 +120,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can write the C header and Rust signature together, enumerate every pointer and ownership precondition, distinguish detectable invalid arguments from unverifiable pointer validity, and guarantee that ordinary Rust errors and panics do not leak through the ABI.
 
 Then perform this destructive regression check: call the boundary with null-plus-zero input, null output, invalid UTF-8, and a valid buffer, and inspect the report state on every return. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides?
+
+Build a **ABI table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish ABI compatibility from semantic validity and ownership.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Declare imported functions through `unsafe extern "C"` and document each call contract.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Export C symbols with stable names and `repr(C)` data structures.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use pointer-plus-length for arbitrary bytes and `CStr`/`CString` for NUL-terminated text.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Prevent Rust panics from crossing non-unwinding foreign boundaries.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish ABI compatibility from semantic validity and ownership.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the ABI table.
+
+### Reference implementation comparison
+
+For [C ABI Line Validator](../../labs/module-08-c-abi-archive-validator/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 58 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **C FFI: ABI, Strings, Pointers, and Error Boundaries**, which relationship decides this question: “How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

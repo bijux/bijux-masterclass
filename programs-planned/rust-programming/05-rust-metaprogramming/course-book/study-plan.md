@@ -1,316 +1,177 @@
-# Course 5 study plan — Rust Metaprogramming
+# Course 5 Study Plan — Rust Metaprogramming
 
-This plan turns ten chapters into ten days of deliberate practice. A day is complete only when the model, independent laboratory, and CommandForge increment agree. If the lab passes while the explanation remains vague, repair the model before moving on.
+Ten dense study days fit into two calendar weeks. The goal is not to maximize reading time; it is to make **Which facts deserve one compile-time source of truth, which generation mechanism is the least powerful adequate choice, and how can expanded code remain diagnosable ordinary Rust?** answerable through construction and explanation.
 
 ## Daily rhythm
 
-| Time | Work | Required output |
-|---|---|---|
-| 08:30–09:00 | closed-book reconstruction | one page of the previous mechanism from memory |
-| 09:00–11:00 | authoritative chapter and typed examples | annotated model and changed-assumption predictions |
-| 11:15–12:30 | compiler or boundary specimens | frozen predictions and causal comparison |
-| 13:30–15:00 | repair and focused construction | smallest principled repair plus rejected shortcut |
-| 15:15–17:30 | independent laboratory | working behavior, adversarial tests, design record |
-| 18:30–20:00 | CommandForge increment | integrated change and regression evidence |
-| 20:00–20:30 | explanation and retrieval | invariant, decisive rule, failure state, transfer case |
+Use a **generation authority and reproducibility record** across the course. Each day begins by reconstructing yesterday’s decisive relationship and ends by tracing one capstone invariant. Preserve the first prediction, the observed result, the principled repair, and the shortcut you rejected.
 
-Take real breaks. Dense work is not continuous screen time. The weekend between Days 5 and 6 is for repair, reconstruction, and rest rather than new material.
+## Day 1 — Module 41: Metaprogramming Boundaries and the Expansion Model
 
-## Day 1 — Metaprogramming Boundaries and the Expansion Model
+**Question:** Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?
 
-**Governing question:** Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?
+**Retrieval:** Without notes, restate the invariant carried from Module 40 — Functional Architecture Synthesis. Mark the point where that earlier guarantee could be weakened today.
 
-### Morning: derive the model
+**Chapter:** Read [Module 41](./module-41-metaprogramming-boundaries-and-expansion-model/index.md) with a **mechanism-selection record** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Read [Module 41](module-41-metaprogramming-boundaries-and-expansion-model/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Workbook:** Complete the [workbook](./module-41-metaprogramming-boundaries-and-expansion-model/workbook.md) before observation. The day’s minimum result is: **Separate runtime abstraction from compile-time generation.** Keep one positive case and one causal negative case.
 
-### Midday: predict and repair
+**Laboratory:** Build [Decision Table Generator](../labs/module-01-decision-table-generator/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Complete the [workbook](module-41-metaprogramming-boundaries-and-expansion-model/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+**Capstone:** Apply Module 41 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Afternoon: isolate the mechanism
+**Exit:** Explain this capability without notes: **Separate runtime abstraction from compile-time generation.** End with one simpler design that would be preferable under a narrower requirement.
 
-Build [Laboratory 41 — Decision Table Generator](../labs/module-01-decision-table-generator/README.md). Build a small mechanism-selection library for a design review. The product receives a concrete requirement and returns the least powerful mechanism that can honestly own it: ordinary Rust, `macro_rules!`, custom derive, attribute macro, function-like procedural macro, or build script.
+## Day 2 — Module 42: Declarative Macros: Matchers, Fragments, and Repetition
 
-### Evening: integrate the course product
+**Question:** How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?
 
-CommandForge begins with an ordinary handwritten command registry. Before adding generation, write the reference behavior, identify the single authoritative declaration, list every surface that would be generated, and assign each possible failure to the earliest phase that can know it.
+**Retrieval:** Without notes, restate the invariant carried from Module 41 — Metaprogramming Boundaries and the Expansion Model. Mark the point where that earlier guarantee could be weakened today.
 
-### End-of-day proof
+**Chapter:** Read [Module 42](./module-42-declarative-macros-matchers-fragments-and-repetition/index.md) with a **matcher and fragment trace** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Workbook:** Complete the [workbook](./module-42-declarative-macros-matchers-fragments-and-repetition/workbook.md) before observation. The day’s minimum result is: **Read a matcher as a grammar rather than as textual substitution.** Keep one positive case and one causal negative case.
 
-- an ordinary-Rust reference design;
-- a precise source of truth;
-- a generated-surface list;
-- a phase-aware failure table;
+**Laboratory:** Build [Typed Map Macro](../labs/module-02-typed-map-macro/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-## Day 2 — Declarative Macros: Matchers, Fragments, and Repetition
+**Capstone:** Apply Module 42 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-**Governing question:** How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?
+**Exit:** Explain this capability without notes: **Read a matcher as a grammar rather than as textual substitution.** End with one simpler design that would be preferable under a narrower requirement.
 
-### Morning: derive the model
+## Day 3 — Module 43: Recursive Macro Parsing and Token-Tree Techniques
 
-Read [Module 42](module-42-declarative-macros-matchers-fragments-and-repetition/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Question:** How can a declarative macro process a nontrivial token language with explicit parser state, guaranteed progress, and bounded complexity?
 
-### Midday: predict and repair
+**Retrieval:** Without notes, restate the invariant carried from Module 42 — Declarative Macros: Matchers, Fragments, and Repetition. Mark the point where that earlier guarantee could be weakened today.
 
-Complete the [workbook](module-42-declarative-macros-matchers-fragments-and-repetition/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+**Chapter:** Read [Module 43](./module-43-recursive-macro-parsing-and-token-tree-techniques/index.md) with a **recursive grammar state** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-### Afternoon: isolate the mechanism
+**Workbook:** Complete the [workbook](./module-43-recursive-macro-parsing-and-token-tree-techniques/workbook.md) before observation. The day’s minimum result is: **Model recursive macro rules as parser states and transitions.** Keep one positive case and one causal negative case.
 
-Build [Laboratory 42 — Typed Map Macro](../labs/module-02-typed-map-macro/README.md). Implement an expression macro that constructs a typed `BTreeMap`, accepts an empty or repeated entry list, evaluates every key and value exactly once in source order, and documents the duplicate-key policy.
+**Laboratory:** Build [State Machine DSL](../labs/module-03-state-machine-dsl/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-### Evening: integrate the course product
+**Capstone:** Apply Module 43 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-CommandForge’s first generated layer is a declarative diagnostic catalog. One invocation now owns each diagnostic variant, numeric code, and message; the expansion must preserve declaration order and produce both forward and reverse lookup without duplicating the table.
+**Exit:** Explain this capability without notes: **Model recursive macro rules as parser states and transitions.** End with one simpler design that would be preferable under a narrower requirement.
 
-### End-of-day proof
+## Day 4 — Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Question:** Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?
 
-- its grammar and cardinality;
-- the role of every separator;
-- the fragment class of every metavariable;
-- the repetition depth of every capture;
+**Retrieval:** Without notes, restate the invariant carried from Module 43 — Recursive Macro Parsing and Token-Tree Techniques. Mark the point where that earlier guarantee could be weakened today.
 
-## Day 3 — Recursive Macro Parsing and Token-Tree Techniques
+**Chapter:** Read [Module 44](./module-44-hygiene-scope-paths-and-cross-crate-macros/index.md) with a **hygiene and path map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Governing question:** How can a declarative macro process a nontrivial token language with explicit parser state, guaranteed progress, and bounded complexity?
+**Workbook:** Complete the [workbook](./module-44-hygiene-scope-paths-and-cross-crate-macros/workbook.md) before observation. The day’s minimum result is: **Distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros.** Keep one positive case and one causal negative case.
 
-### Morning: derive the model
+**Laboratory:** Build [Exported Registry Macro](../labs/module-04-exported-registry-macro/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Read [Module 43](module-43-recursive-macro-parsing-and-token-tree-techniques/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Capstone:** Apply Module 44 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Midday: predict and repair
+**Exit:** Explain this capability without notes: **Distinguish textual scope, path-based scope, and expansion-site lookup for declarative macros.** End with one simpler design that would be preferable under a narrower requirement.
 
-Complete the [workbook](module-43-recursive-macro-parsing-and-token-tree-techniques/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+## Day 5 — Module 45: Macro Diagnostics, Testing, and Public API Design
 
-### Afternoon: isolate the mechanism
+**Question:** How do you prove that a macro accepts the intended language, rejects misuse for the intended reason, and remains an evolvable public API?
 
-Build [Laboratory 43 — State Machine DSL](../labs/module-03-state-machine-dsl/README.md). Define a bounded declarative grammar for states and transitions, implement recursive internal rules with a visible accumulator and decreasing token measure, and reject malformed tails at the first token that cannot continue the grammar.
+**Retrieval:** Without notes, restate the invariant carried from Module 44 — Hygiene, Scope, Paths, and Cross-Crate Macros. Mark the point where that earlier guarantee could be weakened today.
 
-### Evening: integrate the course product
+**Chapter:** Read [Module 45](./module-45-macro-diagnostics-testing-and-public-api-design/index.md) with a **diagnostic contract** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-CommandForge does not need recursive `macro_rules!` parsing for its final command catalog; Module 49 will use a typed procedural DSL because duplicate detection and cross-entry diagnostics are required. That rejection is itself part of the capstone.
+**Workbook:** Complete the [workbook](./module-45-macro-diagnostics-testing-and-public-api-design/workbook.md) before observation. The day’s minimum result is: **Treat invocation grammar and generated Rust as two related public APIs.** Keep one positive case and one causal negative case.
 
-### End-of-day proof
+**Laboratory:** Build [Diagnostic Enum Macro](../labs/module-05-diagnostic-enum-macro/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Capstone:** Apply Module 45 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-- a finite set of parser states;
-- a public grammar and internal state grammar;
-- a decreasing measure;
-- a base case;
+**Exit:** Explain this capability without notes: **Treat invocation grammar and generated Rust as two related public APIs.** End with one simpler design that would be preferable under a narrower requirement.
 
-## Day 4 — Hygiene, Scope, Paths, and Cross-Crate Macros
+## Midpoint reconstruction
 
-**Governing question:** Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?
+Do not add a sixth topic on the recovery day. Reconstruct **Metaprogramming Boundaries and the Expansion Model, Declarative Macros: Matchers, Fragments, and Repetition, Recursive Macro Parsing and Token-Tree Techniques, Hygiene, Scope, Paths, and Cross-Crate Macros, Macro Diagnostics, Testing, and Public API Design** as one dependency chain, rerun the two investigations that changed your model most, and describe the current CommandForge state from an empty page. Repair incomplete work, then take a real break; consolidation is part of the course rather than unused time.
 
-### Morning: derive the model
+## Day 6 — Module 46: Procedural Macro Execution and TokenStream Engineering
 
-Read [Module 44](module-44-hygiene-scope-paths-and-cross-crate-macros/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Question:** What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?
 
-### Midday: predict and repair
+**Retrieval:** Without notes, restate the invariant carried from Module 45 — Macro Diagnostics, Testing, and Public API Design. Mark the point where that earlier guarantee could be weakened today.
 
-Complete the [workbook](module-44-hygiene-scope-paths-and-cross-crate-macros/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+**Chapter:** Read [Module 46](./module-46-procedural-macro-execution-and-tokenstream-engineering/index.md) with a **token-stream phase map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-### Afternoon: isolate the mechanism
+**Workbook:** Complete the [workbook](./module-46-procedural-macro-execution-and-tokenstream-engineering/workbook.md) before observation. The day’s minimum result is: **Explain when and how a procedural macro executes.** Keep one positive case and one causal negative case.
 
-Build [Laboratory 44 — Exported Registry Macro](../labs/module-04-exported-registry-macro/README.md). Create a library macro that downstream crates use to declare a static registry. Prove it under dependency renaming, nested modules, shadowing of helper names, empty input, and the defining crate’s visibility rules.
+**Laboratory:** Build [TokenStream Inspector](../labs/module-06-token-stream-inspector/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-### Evening: integrate the course product
+**Capstone:** Apply Module 46 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-CommandForge’s declarative diagnostic macro will expand inside the `commandforge` runtime crate. It uses `$crate` for the generated support table type and standard absolute paths for formatting traits where appropriate. Later procedural macros will be re-exported from the runtime crate and generate paths through `::commandforge` under a documented integrated-crate assumption.
+**Exit:** Explain this capability without notes: **Explain when and how a procedural macro executes.** End with one simpler design that would be preferable under a narrower requirement.
 
-### End-of-day proof
+## Day 7 — Module 47: Custom Derive Macros and Structural Generation
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Question:** How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?
 
-- where it originates;
-- where it resolves;
-- whether dependency renaming affects it;
-- whether privacy permits access;
+**Retrieval:** Without notes, restate the invariant carried from Module 46 — Procedural Macro Execution and TokenStream Engineering. Mark the point where that earlier guarantee could be weakened today.
 
-## Day 5 — Macro Diagnostics, Testing, and Public API Design
+**Chapter:** Read [Module 47](./module-47-custom-derive-macros-and-structural-generation/index.md) with a **derive expansion ledger** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-**Governing question:** How do you prove that a macro accepts the intended language, rejects misuse for the intended reason, and remains an evolvable public API?
+**Workbook:** Complete the [workbook](./module-47-custom-derive-macros-and-structural-generation/workbook.md) before observation. The day’s minimum result is: **Parse `DeriveInput` and distinguish structs, enums, and unions.** Keep one positive case and one causal negative case.
 
-### Morning: derive the model
+**Laboratory:** Build [Field Names Derive](../labs/module-07-field-names-derive/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Read [Module 45](module-45-macro-diagnostics-testing-and-public-api-design/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Capstone:** Apply Module 47 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Midday: predict and repair
+**Exit:** Explain this capability without notes: **Parse `DeriveInput` and distinguish structs, enums, and unions.** End with one simpler design that would be preferable under a narrower requirement.
 
-Complete the [workbook](module-45-macro-diagnostics-testing-and-public-api-design/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+## Day 8 — Module 48: Attribute Macros and Item Transformation
 
-### Afternoon: isolate the mechanism
+**Question:** How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?
 
-Build [Laboratory 45 — Diagnostic Enum Macro](../labs/module-05-diagnostic-enum-macro/README.md). Generate a typed diagnostic catalog from one declaration, including stable codes, messages, deterministic iteration, reverse lookup, and targeted rejection of duplicate or malformed entries.
+**Retrieval:** Without notes, restate the invariant carried from Module 47 — Custom Derive Macros and Structural Generation. Mark the point where that earlier guarantee could be weakened today.
 
-### Evening: integrate the course product
+**Chapter:** Read [Module 48](./module-48-attribute-macros-and-item-transformation/index.md) with a **attribute preservation table** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-CommandForge’s diagnostic catalog becomes a public-quality declarative macro in this module.
+**Workbook:** Complete the [workbook](./module-48-attribute-macros-and-item-transformation/workbook.md) before observation. The day’s minimum result is: **Parse attribute arguments independently from the attached item.** Keep one positive case and one causal negative case.
 
-### End-of-day proof
+**Laboratory:** Build [Checked Handler Attribute](../labs/module-08-checked-handler-attribute/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Capstone:** Apply Module 48 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-- the complete accepted grammar;
-- the generated public API;
-- each important invalid form and its causal phase;
-- runtime evaluation and ordering;
+**Exit:** Explain this capability without notes: **Parse attribute arguments independently from the attached item.** End with one simpler design that would be preferable under a narrower requirement.
 
-## Day 6 — Procedural Macro Execution and TokenStream Engineering
+## Day 9 — Module 49: Function-Like Procedural Macros and Typed DSLs
 
-**Governing question:** What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled?
+**Question:** How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?
 
-### Morning: derive the model
+**Retrieval:** Without notes, restate the invariant carried from Module 48 — Attribute Macros and Item Transformation. Mark the point where that earlier guarantee could be weakened today.
 
-Read [Module 46](module-46-procedural-macro-execution-and-tokenstream-engineering/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+**Chapter:** Read [Module 49](./module-49-function-like-procedural-macros-and-typed-dsls/index.md) with a **DSL syntax-to-model map** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-### Midday: predict and repair
+**Workbook:** Complete the [workbook](./module-49-function-like-procedural-macros-and-typed-dsls/workbook.md) before observation. The day’s minimum result is: **Design a bounded custom grammar with explicit compatibility space.** Keep one positive case and one causal negative case.
 
-Complete the [workbook](module-46-procedural-macro-execution-and-tokenstream-engineering/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
+**Laboratory:** Build [Route Table DSL](../labs/module-09-route-table-dsl/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-### Afternoon: isolate the mechanism
+**Capstone:** Apply Module 49 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-Build [Laboratory 46 — TokenStream Inspector](../labs/module-06-token-stream-inspector/README.md). Implement a function-like procedural macro that renders groups, delimiters, identifiers, literals, punctuation, and joint spacing deterministically without pretending token text has already been name-resolved or type-checked.
+**Exit:** Explain this capability without notes: **Design a bounded custom grammar with explicit compatibility space.** End with one simpler design that would be preferable under a narrower requirement.
 
-### Evening: integrate the course product
+## Day 10 — Module 50: Build Scripts, Generated Code, and Compile-Time Architecture
 
-CommandForge introduces its `commandforge-macros` crate with the smallest useful procedural boundary: parse a narrow input, preserve caller spans, emit deterministic tokens, and convert every malformed form into compiler input rather than panicking inside the macro process.
+**Question:** How do you integrate macros and build generation into a deterministic architecture with one source of truth and no overlapping authority?
 
-### End-of-day proof
+**Retrieval:** Without notes, restate the invariant carried from Module 49 — Function-Like Procedural Macros and Typed DSLs. Mark the point where that earlier guarantee could be weakened today.
 
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
+**Chapter:** Read [Module 50](./module-50-build-scripts-generated-code-and-compile-time-architecture/index.md) with a **generation authority and reproducibility record** beside it. Type the central examples, change one assumption, and predict the earliest compiler, runtime, build, platform, schedule, or review consequence.
 
-- when the macro executes;
-- what token structure it receives;
-- what spans can and cannot establish;
-- why token text is not a resolved AST;
+**Workbook:** Complete the [workbook](./module-50-build-scripts-generated-code-and-compile-time-architecture/workbook.md) before observation. The day’s minimum result is: **Explain the Cargo build-script lifecycle and communication protocol.** Keep one positive case and one causal negative case.
 
-## Day 7 — Custom Derive Macros and Structural Generation
+**Laboratory:** Build [Generated Code Build](../labs/module-10-generated-code-build/README.md) from `starter/`. Add the adversarial case before the architecture-changing repair, then complete the unrelated transfer task.
 
-**Governing question:** How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?
+**Capstone:** Apply Module 50 in the [CommandForge guide](capstone.md). Record the owner of the changed fact, state after failure, any order or capacity promise, and the earlier invariant that remains intact.
 
-### Morning: derive the model
+**Exit:** Explain this capability without notes: **Explain the Cargo build-script lifecycle and communication protocol.** End with one simpler design that would be preferable under a narrower requirement.
 
-Read [Module 47](module-47-custom-derive-macros-and-structural-generation/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
+## Final integration
 
-### Midday: predict and repair
+After Day 10, complete the [final review](final-review.md), run the strongest available course route, and implement this unseen capstone change: **Add a new CommandForge field policy and command kind, tracing the change through grammar, semantic validation, expansion, runtime behavior, tests, and compatibility.**
 
-Complete the [workbook](module-47-custom-derive-macros-and-structural-generation/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
-
-### Afternoon: isolate the mechanism
-
-Build [Laboratory 47 — Field Names Derive](../labs/module-07-field-names-derive/README.md). Implement a custom derive that exposes named-field metadata, preserves lifetimes, type and const parameters, and where clauses, supports a documented helper-attribute grammar, and rejects unsupported item shapes deliberately.
-
-### Evening: integrate the course product
-
-CommandForge’s `CommandArgs` derive uses the struct fields as the source of truth for command-line flags.
-
-### End-of-day proof
-
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
-
-- exactly which item shapes the derive accepts;
-- what structural facts it can know;
-- which semantic facts remain for type checking;
-- how helper attributes are parsed and validated;
-
-## Day 8 — Attribute Macros and Item Transformation
-
-**Governing question:** How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own?
-
-### Morning: derive the model
-
-Read [Module 48](module-48-attribute-macros-and-item-transformation/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
-
-### Midday: predict and repair
-
-Complete the [workbook](module-48-attribute-macros-and-item-transformation/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
-
-### Afternoon: isolate the mechanism
-
-Build [Laboratory 48 — Checked Handler Attribute](../labs/module-08-checked-handler-attribute/README.md). Implement an attribute that validates the supported function signature, preserves unrelated visibility and attributes, emits typed companion metadata with collision-resistant names, and reports malformed arguments at the authored span.
-
-### Evening: integrate the course product
-
-CommandForge’s handler functions remain ordinary domain code. The attribute owns only signature validation, metadata, and the invocation adapter; arithmetic, text normalization, limits, and domain failures stay in testable runtime functions.
-
-### End-of-day proof
-
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
-
-- which transformation mode the attribute uses;
-- which item kinds and signatures it supports;
-- which original surfaces are preserved or rejected;
-- which generated names and visibility are introduced;
-
-## Day 9 — Function-Like Procedural Macros and Typed DSLs
-
-**Governing question:** How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust?
-
-### Morning: derive the model
-
-Read [Module 49](module-49-function-like-procedural-macros-and-typed-dsls/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
-
-### Midday: predict and repair
-
-Complete the [workbook](module-49-function-like-procedural-macros-and-typed-dsls/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
-
-### Afternoon: isolate the mechanism
-
-Build [Laboratory 49 — Route Table DSL](../labs/module-09-route-table-dsl/README.md). Parse a written route grammar into an AST, detect duplicate method/path pairs with both declaration spans, normalize a validated model, and generate deterministic typed lookup code as a separate final phase.
-
-### Evening: integrate the course product
-
-CommandForge’s command catalog now uses a typed function-like DSL. The parser owns syntax, semantic validation owns duplicate command names and cross-entry relationships, and generation renders only the already validated normalized catalog.
-
-### End-of-day proof
-
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
-
-- a written grammar;
-- syntax AST types;
-- semantic invariants;
-- a normalized model;
-
-## Day 10 — Build Scripts, Generated Code, and Compile-Time Architecture
-
-**Governing question:** How do you integrate macros and build generation into a deterministic architecture with one source of truth and no overlapping authority?
-
-### Morning: derive the model
-
-Read [Module 50](module-50-build-scripts-generated-code-and-compile-time-architecture/index.md). Reconstruct the central example in a new file, then change one assumption that affects this module’s decisive relationship. Write the prediction before compiling and record the earliest phase that can establish the result.
-
-### Midday: predict and repair
-
-Complete the [workbook](module-50-build-scripts-generated-code-and-compile-time-architecture/workbook.md). Preserve the product requirement during every repair. Keep the smallest counterexample that exposed a wrong model; it becomes part of the final explanation rather than disposable scratch work.
-
-### Afternoon: isolate the mechanism
-
-Build [Laboratory 50 — Generated Code Build](../labs/module-10-generated-code-build/README.md). Read `schema/commands.tsv` during compilation, validate it, and generate typed Rust under Cargo’s `OUT_DIR`. The checked-in table is the only owner of command name, numeric code, and help text.
-
-### Evening: integrate the course product
-
-The final CommandForge increment completes the exit-code generator and then performs the full architecture review.
-
-### End-of-day proof
-
-Do not advance merely because the code passes. Close the chapter and produce the following without notes:
-
-- every source of truth;
-- every generated surface;
-- every compile-time dependency;
-- every environmental input;
-
-
-## Mid-course reconstruction
-
-After Day 5, rebuild the five-module dependency chain without notes. Select the two compiler specimens that changed your model most, rerun them, and explain why the wrong prediction was plausible. Repair every incomplete lab before opening Day 6; later mechanisms assume that the earlier contract is stable.
-
-## Final consolidation
-
-After Day 10, use the [course reference](reference.md) to compress the material, not to relearn it. Complete the [final review](final-review.md) from an empty directory. Then defend CommandForge by tracing one successful operation and one adversarial failure through every layer touched by the course.
+Seven days later, rebuild the ten-module sequence and the core **generation authority and reproducibility record** without the book. Write a fresh example for every relationship you cannot recover. Re-reading a solution without recreating the model does not count as retained learning.

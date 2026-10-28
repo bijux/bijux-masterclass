@@ -1,9 +1,11 @@
-# 50 — Build Scripts, Generated Code, and Compile-Time Architecture
+# Module 50 — Build Scripts, Generated Code, and Compile-Time Architecture
 
-**Course 5, day 10 · Module 50 of 90**  
-`█████████████████░░░` **50/90**
+**Course 5 · Day 10 · Module 50 of 100**
+`████████████░░░░░░░░░░░░░` **50/100**
 
-[← Module 49: Function-Like Procedural Macros and Typed DSLs](../module-49-function-like-procedural-macros-and-typed-dsls/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing →](../../../06-rust-systems-programming/course-book/module-51-binary-data-contracts/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-generated-code-build/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 49: Function-Like Procedural Macros and Typed DSLs](../module-49-function-like-procedural-macros-and-typed-dsls/index.md) · [Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing →](../../../06-rust-systems-programming/course-book/module-51-binary-data-contracts/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 Modules 41–49 built every stable macro form from a conservative selection model: declarative patterns, recursion, paths, diagnostics, raw procedural tokens, derives, attributes, and typed DSLs. One source remains outside Rust syntax: checked external data. Cargo build scripts can validate and translate that data before compiling the package.
 
 The final module is not “another generator.” It is an architecture review. Every compile-time layer must own one distinct relationship, declare its inputs, produce deterministic output, and survive an attempt to delete it.
+
+### Prerequisite bridge
+
+Module 49 established **Function-Like Procedural Macros and Typed DSLs**. Before continuing, verify that you can decide when a dsl should instead be runtime data or a build-time file. This module preserves that capability and adds the ability to explain the cargo build-script lifecycle and communication protocol. Module 51, **Binary Data Contracts: Bytes, Endianness, and Checked Parsing**, will rely on both when it asks: *How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?*
+
+### Scope boundary
+
+This module owns the reasoning for **build scripts, generated code, and compile-time architecture** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -357,6 +367,24 @@ At minimum:
 - ensure output does not depend on local timezone or locale;
 - confirm a read-only source tree still works because output stays in `OUT_DIR`.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For explain the Cargo build-script lifecycle and communication protocol, construct one positive and one causal negative example. Mark the first decisive fact in the **generation authority and reproducibility record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For read host and target configuration correctly, construct one positive and one causal negative example. Mark the first decisive fact in the **generation authority and reproducibility record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For declare rebuild inputs with `cargo::rerun-if-changed` and `cargo::rerun-if-env-changed`, construct one positive and one causal negative example. Mark the first decisive fact in the **generation authority and reproducibility record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For write generated files only under `OUT_DIR`, construct one positive and one causal negative example. Mark the first decisive fact in the **generation authority and reproducibility record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The final CommandForge increment completes the exit-code generator and then performs the full architecture review.
@@ -423,7 +451,4 @@ The final standard is not “I can write macros.” It is:
 
 ## Continue
 
-1. Complete the [Module 50 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 50 — Generated Code Build](../../labs/module-10-generated-code-build/README.md) from its public contract.
-3. Apply the Module 50 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing](../../../06-rust-systems-programming/course-book/module-51-binary-data-contracts/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

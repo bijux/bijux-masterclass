@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 01: Compilation, Expressions, and Types
+# Reasoned Solutions — Module 01: Compilation, Expressions, and Types
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-measurement-report/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Compilation, Expressions, and Types**, not to substitute for an attempt. The decisive question is: *How does Rust turn source text into a typed program, and what type and value does every expression produce?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 1: Compilation, Expressions, and Types**. Compare the reasoning against this question: *How does Rust turn source text into a typed program, and what type and value does every expression produce?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -236,9 +236,7 @@ No code answer replaces running the commands. If Clippy recommends a change, wri
 
 Given an unfamiliar package with several targets, explain what Cargo will build, predict the types of its key expressions, and repair one warning without changing behavior.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-01-measurement-report/solution`](../../labs/module-01-measurement-report/solution). Before reading it, write down:
 
@@ -259,3 +257,42 @@ For **Compilation, Expressions, and Types**, compare the contract, invariant, fa
 - Build and verify a small library-plus-binary package with pure calculation separated from rendering.
 
 A complete explanation of **Compilation, Expressions, and Types** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How does Rust turn source text into a typed program, and what type and value does every expression produce?
+
+Build a **type trace**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project”.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Derive the type and value of blocks, branches, tuples, arrays, function bodies, and semicolon-sensitive expressions before compiling.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Choose numeric types and conversions from domain constraints, including overflow and floating-point limitations, rather than from habit.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use compiler diagnostics, tests, rustfmt, Clippy, and rustdoc as separate evidence channels and explain what each channel does not prove.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Build and verify a small library-plus-binary package with pure calculation separated from rendering.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish package, crate, target, module, compiler, Cargo, profile, and artifact without collapsing them into “the project”.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the type trace.
+
+### Laboratory transfer review
+
+For [Measurement Report](../../labs/module-01-measurement-report/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 1 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Compilation, Expressions, and Types**, which relationship decides this question: “How does Rust turn source text into a typed program, and what type and value does every expression produce?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

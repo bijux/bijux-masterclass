@@ -1,28 +1,11 @@
-# Compiler investigation — Module 9: Crates, Modules, Public APIs, Tests, and Documentation
+# Module 9 Investigations — Crates, Modules, Public APIs, Tests, and Documentation
 
-[Compiler-investigation method](../README.md) · [Module chapter](../../course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md)
+[Chapter](../../course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md) · [Workbook](../../course-book/module-09-crates-modules-public-apis-tests-and-documentation/workbook.md) · [Course investigation method](../README.md)
 
-This set tests whether the model from Module 9 survives contact with small, adversarial programs. Predict each specimen without opening the machine-readable manifest or the module solutions.
+> **Prediction question:** Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?
 
-| Specimen | Question to resolve before compiling |
-|---|---|
-| [`01-private-library-item.rs`](01-private-library-item.rs) | Which compile-time or runtime rule decides the behavior of **private library item**, and what evidence would distinguish the closest competing explanation? |
-| [`02-public-type-private-field.rs`](02-public-type-private-field.rs) | Which compile-time or runtime rule decides the behavior of **public type private field**, and what evidence would distinguish the closest competing explanation? |
-| [`03-reexport-path.rs`](03-reexport-path.rs) | Which compile-time or runtime rule decides the behavior of **reexport path**, and what evidence would distinguish the closest competing explanation? |
-| [`04-integration-crate-root.rs`](04-integration-crate-root.rs) | Which compile-time or runtime rule decides the behavior of **integration crate root**, and what evidence would distinguish the closest competing explanation? |
-| [`05-doctest-question-mark-context.rs`](05-doctest-question-mark-context.rs) | Which compile-time or runtime rule decides the behavior of **doctest question mark context**, and what evidence would distinguish the closest competing explanation? |
-| [`06-public-field-invariant-hole.rs`](06-public-field-invariant-hole.rs) | Which compile-time or runtime rule decides the behavior of **public field invariant hole**, and what evidence would distinguish the closest competing explanation? |
+Before invoking a compiler or runner, draw a **module and API map** and classify the expected result. The prediction must identify the earliest decisive phase or event and show why the result follows from **Distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type**. Diagnostic wording may vary; the causal relationship may not.
 
-## Work through the set
+After observing Module 9 — Crates, Modules, Public APIs, Tests, and Documentation, preserve two repairs. The first is the smallest change that keeps the product requirement. The second is a tempting change that compiles, runs, or quiets the tool by erasing information, weakening a bound, changing ownership, hiding a failure, or narrowing the public contract. Explain precisely why the second repair is unacceptable here.
 
-For each file, draw or write the smallest model that can decide it: types and expression results, owners and loans, trait obligations, iterator state, macro phase, raw-memory obligations, or operating-system boundary state. Then classify the outcome and name the first causal rule.
-
-Compile only after the prediction is complete. A correct pass/fail guess with the wrong cause is not a successful investigation. When several errors appear, identify which one would remain after secondary errors were removed.
-
-## Repair and transfer
-
-Repair one rejecting or behaviorally defective specimen without deleting the requirement it was designed to express. Preserve the original product need while changing only the mechanism that violated it.
-
-Next, alter one assumption—ownership mode, lifetime source, trait bound, adapter order, macro input, or boundary condition. Predict the result before compiling.
-
-Finish by stating how the same rule constrains the module laboratory or cumulative capstone. This connects an isolated diagnostic to a real design decision.
+Finish by creating a new specimen that changes one relationship while keeping every incidental detail stable. Predict whether that variation changes parsing, name resolution, type checking, trait solving, borrow checking, build execution, runtime behavior, schedule behavior, or only architectural quality.

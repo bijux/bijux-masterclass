@@ -1,8 +1,8 @@
-# Module 98 Solutions — Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration
+# Reasoned Solutions — Module 98: Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-08-model-checked-log/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 98: Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration**. Compare the reasoning against this question: *Which verification technique can falsify which kind of Rust claim, and how do you combine them without pretending that test volume equals proof?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the claim-to-evidence matrix: the decisive relationsh
 
 **Principled repair.** Build a claim matrix and identify uncovered negative API, migration, unsafe, and artifact properties.
 
-A strong answer updates the claim-to-evidence matrix and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Test-count dashboard** while preserving the surrounding requirement. The claim-to-evidence matrix must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — Unbounded fuzz target
 
@@ -40,7 +40,7 @@ A strong answer updates the claim-to-evidence matrix and includes a negative cas
 
 **Principled repair.** Validate lengths before allocation and cap input, depth, operations, time, and retained corpus.
 
-A strong answer updates the claim-to-evidence matrix and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Unbounded fuzz target** while preserving the surrounding requirement. The claim-to-evidence matrix must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Only final-state comparison
 
@@ -48,7 +48,7 @@ A strong answer updates the claim-to-evidence matrix and includes a negative cas
 
 **Principled repair.** Compare after every prefix so the minimal divergence is visible and later operations cannot accidentally converge.
 
-A strong answer updates the claim-to-evidence matrix and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Only final-state comparison** while preserving the surrounding requirement. The claim-to-evidence matrix must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Protect view escape, retained lending item, and 
 
 The decisive acceptance criterion is: Each case fails for one intended cause and records the decisive rule.
 
-Evaluate the result through the claim-to-evidence matrix; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Compile-fail suite**, apply the claim-to-evidence matrix to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Property generator
 
@@ -66,7 +66,7 @@ The construction should answer: Generate bounded valid and invalid records for c
 
 The decisive acceptance criterion is: Boundary values, Unicode, duplicates, and malformed lengths are represented.
 
-Evaluate the result through the claim-to-evidence matrix; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Property generator**, apply the claim-to-evidence matrix to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Transition explorer
 
@@ -74,7 +74,7 @@ The construction should answer: Enumerate short transaction sequences against an
 
 The decisive acceptance criterion is: Failures report a minimal sequence and intermediate state.
 
-Evaluate the result through the claim-to-evidence matrix; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Transition explorer**, apply the claim-to-evidence matrix to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Unsafe evidence map
 
@@ -82,12 +82,11 @@ The construction should answer: Map `InlineBatch` claims to review, destructor t
 
 The decisive acceptance criterion is: Every evidence form states its scope and residual risk.
 
-Evaluate the result through the claim-to-evidence matrix; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Unsafe evidence map**, apply the claim-to-evidence matrix to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — closing a verification gap
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the claim-to-evid
 Given an unseen claim, choose a verification method by its failure model and state what a passing result cannot establish.
 
 The defense passes when it reconstructs the claim-to-evidence matrix from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which verification technique can falsify which kind of Rust claim, and how do you combine them without pretending that test volume equals proof?
+
+Build a **verification claim matrix**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Select compile-fail tests, examples, properties, model exploration, fuzzing, Miri, schedule exploration, or benchmarks according to the claim.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Write generators and shrinkable models that preserve domain validity while reaching boundary and failure states.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Construct a small reference model and compare implementation traces after every operation rather than only final output.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Interpret a clean tool run as evidence for executed cases rather than universal proof.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the verification claim matrix.
+
+### Reference implementation comparison
+
+For [Model-Checked Log](../../labs/module-08-model-checked-log/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 98 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration**, which relationship decides this question: “Which verification technique can falsify which kind of Rust claim, and how do you combine them without pretending that test volume equals proof?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

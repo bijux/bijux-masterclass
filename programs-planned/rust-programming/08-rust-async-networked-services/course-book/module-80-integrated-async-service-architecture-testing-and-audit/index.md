@@ -1,8 +1,11 @@
-# Module 80: Integrated Async Service Architecture, Testing, and Audit
+# Module 80 — Integrated Async Service Architecture, Testing, and Audit
 
-**Course 8, day 10 · Module 80 of 90**
+**Course 8 · Day 10 · Module 80 of 100**
+`████████████████████░░░░░` **80/100**
 
-**80/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-async-service-audit/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing](../module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md) · [Module 81: Performance Contracts, Workloads, and Benchmark Design →](../../../09-rust-performance-production-engineering/course-book/module-81-performance-contracts-workloads-and-benchmark-design/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ A network service can have individually reasonable parts and still fail where th
 The final module is therefore not another feature. It is integration and adversarial review. You will produce a service dossier that names every authority, state transition, bound, deadline, commit point, failure scope, shutdown phase, and compatibility claim. Then tests attack the joins between mechanisms.
 
 This is also the point where architectural restraint matters. Not every service needs a custom future, multiplexed protocol, dynamic task graph, retry loop, HTTP API, and multiple background workers. JobWire includes them because the course must exercise the mechanisms. A production design should remove mechanisms not justified by its product contract.
+
+### Prerequisite bridge
+
+Module 79 established **Network Failure, Idempotency, Retries, and Deterministic Testing**. Before continuing, verify that you can script connect, partial response, disconnect, retry, and duplicate scenarios causally. This module preserves that capability and adds the ability to construct a complete async service dossier;. Module 81, **Performance Contracts, Workloads, and Benchmark Design**, will rely on both when it asks: *What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?*
+
+### Scope boundary
+
+This module owns the reasoning for **integrated async service architecture, testing, and audit** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -247,6 +258,24 @@ A good architecture defense does not enumerate libraries. It says:
 
 Libraries are evidence that mechanisms exist. The design is the relationship among them.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For construct a complete async service dossier, construct one positive and one causal negative example. Mark the first decisive fact in the **async service dossier** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For trace one request from accepted socket through terminal response and cleanup, construct one positive and one causal negative example. Mark the first decisive fact in the **async service dossier** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For identify the authoritative owner of protocol, broker, idempotency, metrics, and shutdown state, construct one positive and one causal negative example. Mark the first decisive fact in the **async service dossier** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For calculate end-to-end resource bounds and expose assumptions, construct one positive and one causal negative example. Mark the first decisive fact in the **async service dossier** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 A service dossier can be represented as data and validated in tests. This small type forces every configured limit to be nonzero and estimates retained payload bytes without pretending to count runtime overhead.
@@ -344,4 +373,4 @@ Course 8 is complete only when you can:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Async Service Audit](../../labs/module-10-async-service-audit/README.md), finish the [JobWire capstone](../capstone.md), and complete the [final review](../final-review.md). Course 9 continues with profiling, benchmarking, observability, security, packaging, CI, and production release engineering.
+Continue to [Module 81 — Performance Contracts, Workloads, and Benchmark Design](../../../09-rust-performance-production-engineering/course-book/module-81-performance-contracts-workloads-and-benchmark-design/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

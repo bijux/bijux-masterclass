@@ -1,9 +1,11 @@
-# 56 — Raw Pointers, Provenance, and Uninitialized Memory
+# Module 56 — Raw Pointers, Provenance, and Uninitialized Memory
 
-**Course 6, day 6 · Module 56 of 90**  
-`███████████████████░` **56/90**
+**Course 6 · Day 6 · Module 56 of 100**
+`██████████████░░░░░░░░░░░` **56/100**
 
-[← Module 55: Unsafe Rust as a Proof Boundary](../module-55-unsafe-rust-and-safety-proofs/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 57: Manual Allocation and Owning Unsafe Abstractions →](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-panic-safe-batch-builder/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 55: Unsafe Rust as a Proof Boundary](../module-55-unsafe-rust-and-safety-proofs/index.md) · [Module 57: Manual Allocation and Owning Unsafe Abstractions →](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Module 55 established the proof method. This module supplies the raw operations that require it. The aim is not to memorize pointer methods. It is to track allocation identity, byte range, alignment, initialization state, aliasing permission, and lifetime as separate dimensions. Conservative reasoning is preferred where the formal memory model remains subtle.
+
+### Prerequisite bridge
+
+Module 55 established **Unsafe Rust as a Proof Boundary**. Before continuing, verify that you can review unsafe code through explicit claims rather than intuition or successful tests. This module preserves that capability and adds the ability to distinguish raw pointers from references and explain why conversion does not transfer ownership. Module 57, **Manual Allocation and Owning Unsafe Abstractions**, will rely on both when it asks: *How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state?*
+
+### Scope boundary
+
+This module owns the reasoning for **raw pointers, provenance, and uninitialized memory** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -196,6 +206,24 @@ Until a specific API says otherwise:
 
 This conservative discipline is more portable than reasoning from numeric addresses. Hardware may treat two integers as ordinary addresses while the language optimizer tracks stronger object identity.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish raw pointers from references and explain why conversion does not transfer ownership, construct one positive and one causal negative example. Mark the first decisive fact in the **initialization and provenance map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For use raw borrow operators when creating a reference would itself be invalid, construct one positive and one causal negative example. Mark the first decisive fact in the **initialization and provenance map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For derive pointer arithmetic from one allocation and checked element counts, construct one positive and one causal negative example. Mark the first decisive fact in the **initialization and provenance map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use `MaybeUninit` to represent storage that is not yet a valid `T`, construct one positive and one causal negative example. Mark the first decisive fact in the **initialization and provenance map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault uses `MaybeUninit` first in an independent batch-construction lab. The capstone’s parser remains safe. The unsafe core gains carefully bounded helpers only where they improve an owning storage abstraction; no raw typed reads are used to decode the archive format.
@@ -219,7 +247,4 @@ You are ready when you can trace allocation identity, range, alignment, initiali
 
 ## Continue
 
-1. Complete the [Module 56 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 56 — Panic-Safe Batch Builder](../../labs/module-06-panic-safe-batch-builder/README.md) from its public contract.
-3. Apply the Module 56 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 57 — Manual Allocation and Owning Unsafe Abstractions](../module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,9 +1,11 @@
-# 43 — Recursive Macro Parsing and Token-Tree Techniques
+# Module 43 — Recursive Macro Parsing and Token-Tree Techniques
 
-**Course 5, day 3 · Module 43 of 90**  
-`██████████████░░░░░░` **43/90**
+**Course 5 · Day 3 · Module 43 of 100**
+`███████████░░░░░░░░░░░░░░` **43/100**
 
-[← Module 42: Declarative Macros: Matchers, Fragments, and Repetition](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md) · [Course 5 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros →](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md)
+[Program](../../../README.md) · [Course 5](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-03-state-machine-dsl/README.md) · [CommandForge guide](../capstone.md)
+
+[← Module 42: Declarative Macros: Matchers, Fragments, and Repetition](../module-42-declarative-macros-matchers-fragments-and-repetition/index.md) · [Module 44: Hygiene, Scope, Paths, and Cross-Crate Macros →](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md)
 
 ## The question
 
@@ -14,6 +16,14 @@
 Module 42 treated one matcher as a grammar and one repetition as a structured sequence. Some useful declarative languages need state: an optional section changes what may follow, tokens must be accumulated before emission, or entries are consumed one at a time. `macro_rules!` can model those cases through recursive expansion.
 
 Recursion is also where declarative metaprogramming becomes dangerous. A token-tree muncher can hide nontermination, duplicate work, poor errors, and an accidental language no one can maintain. This module therefore teaches recursive parsing together with a migration rule: knowing when to stop using it is part of mastery.
+
+### Prerequisite bridge
+
+Module 42 established **Declarative Macros: Matchers, Fragments, and Repetition**. Before continuing, verify that you can decide when a declarative grammar has become too complex for `macro_rules!`. This module preserves that capability and adds the ability to model recursive macro rules as parser states and transitions. Module 44, **Hygiene, Scope, Paths, and Cross-Crate Macros**, will rely on both when it asks: *Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming?*
+
+### Scope boundary
+
+This module owns the reasoning for **recursive macro parsing and token-tree techniques** inside Course 5. The course generates ordinary Rust but does not make macros the default abstraction. It avoids using generation for runtime policy, postpones low-level unsafe implementation, and treats third-party procedural-macro crates as compiler-phase dependencies with explicit version and reproducibility implications. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -340,6 +350,24 @@ Move to a function-like procedural macro when you need:
 
 Do not wait until the recursive macro is unreadable. Migrate when the model becomes clearer as ordinary parser code.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For model recursive macro rules as parser states and transitions, construct one positive and one causal negative example. Mark the first decisive fact in the **recursive grammar state** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For prove that each recursive step consumes input or reaches a base case, construct one positive and one causal negative example. Mark the first decisive fact in the **recursive grammar state** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use internal arms and accumulators without exposing implementation syntax, construct one positive and one causal negative example. Mark the first decisive fact in the **recursive grammar state** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For distinguish token-tree recursion from arbitrary semantic parsing, construct one positive and one causal negative example. Mark the first decisive fact in the **recursive grammar state** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 CommandForge does not need recursive `macro_rules!` parsing for its final command catalog; Module 49 will use a typed procedural DSL because duplicate detection and cross-entry diagnostics are required. That rejection is itself part of the capstone.
@@ -388,7 +416,4 @@ Do not continue if recursion is “working” only because the input is tiny, th
 
 ## Continue
 
-1. Complete the [Module 43 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 43 — State Machine DSL](../../labs/module-03-state-machine-dsl/README.md) from its public contract.
-3. Apply the Module 43 increment in the [CommandForge engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 44 — Hygiene, Scope, Paths, and Cross-Crate Macros](../module-44-hygiene-scope-paths-and-cross-crate-macros/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

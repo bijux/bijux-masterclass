@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 31: Closures, Capture, and Callable Contracts
+# Reasoned Solutions — Module 31: Closures, Capture, and Callable Contracts
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-closure-policy-matrix/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Closures, Capture, and Callable Contracts**, not to substitute for an attempt. The decisive question is: *What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 31: Closures, Capture, and Callable Contracts**. Compare the reasoning against this question: *What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -112,9 +112,7 @@ The static version should be `Policy<N, S>` with bounds on the methods that invo
 
 Use an owned or mutably borrowed event ledger captured by the callbacks. The normalizer appends `normalize:<id>`, the scorer appends `score:<id>`, and the fallback appends `fallback`. After evaluation assert the exact sequence for multiple items and assert absence of `fallback`. A separate missing-value case should prove exactly one fallback call. This is stronger than output-only testing because a defective implementation could produce the same result while evaluating callbacks twice, in the wrong order, or eagerly.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-01-closure-policy-matrix/solution`](../../labs/module-01-closure-policy-matrix/solution). Before reading it, write down:
 
@@ -135,3 +133,42 @@ For **Closures, Capture, and Callable Contracts**, compare the contract, invaria
 - Select among generic callables, `impl Fn*`, and boxed callable trait objects from real storage and dispatch requirements.
 
 A complete explanation of **Closures, Capture, and Callable Contracts** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?
+
+Build a **closure capture map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish function items, function pointers, and anonymous closure types.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Predict closure capture mode and the resulting `Fn`, `FnMut`, and `FnOnce` capabilities.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Choose the weakest callable bound that exactly matches an API’s invocation contract.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use `move` deliberately without assuming that every move closure is `FnOnce`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Select among generic callables, `impl Fn*`, and boxed callable trait objects from real storage and dispatch requirements.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish function items, function pointers, and anonymous closure types.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the closure capture map.
+
+### Laboratory transfer review
+
+For [Closure Policy Matrix](../../labs/module-01-closure-policy-matrix/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 31 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Closures, Capture, and Callable Contracts**, which relationship decides this question: “What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

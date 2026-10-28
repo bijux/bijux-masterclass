@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 57: Manual Allocation and Owning Unsafe Abstractions
+# Reasoned Solutions — Module 57: Manual Allocation and Owning Unsafe Abstractions
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-07-aligned-byte-buffer/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 57: Manual Allocation and Owning Unsafe Abstractions**. Compare the reasoning against this question: *How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -120,3 +118,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can state the owner invariant for every constructor and destructor state, explain why a byte-specific fixed allocation is smaller than a generic vector, and show that every unsafe block follows from private fields and ordinary borrows.
 
 Then perform this destructive regression check: test zero length, invalid alignment, several valid alignments, mutation, movement, and destruction; then remove stored alignment and explain why correct drop can no longer be proved. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state?
+
+Build a **allocator layout record**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Construct and validate `Layout` values without unchecked size arithmetic.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Distinguish allocation capacity from initialized logical length.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Handle zero-length allocations without passing an invalid layout to the allocator.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Pair every successful allocation with exactly one matching deallocation layout.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Design `Drop` and construction failure so no state leaks or double-frees.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Construct and validate `Layout` values without unchecked size arithmetic.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the allocator layout record.
+
+### Reference implementation comparison
+
+For [Aligned Byte Buffer](../../labs/module-07-aligned-byte-buffer/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 57 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Manual Allocation and Owning Unsafe Abstractions**, which relationship decides this question: “How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

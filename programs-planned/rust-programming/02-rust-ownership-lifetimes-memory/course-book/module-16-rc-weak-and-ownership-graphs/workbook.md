@@ -1,8 +1,17 @@
 # Workbook — Module 16: Rc, Weak, and Ownership Graphs
 
-[Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-06-rc-weak-graph/README.md) · [Memory Workspace guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Rc, Weak, and Ownership Graphs** without relying on surface syntax. Keep the module question in view: *Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Rc, Weak, and Ownership Graphs** has become a usable model rather than remembered vocabulary. Its governing question is: *Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?* Preserve your first prediction and record decisive facts in a **liveness graph**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 15 — Box, Deref, Dynamically Sized Types, and Cow that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?**
+3. Draw the smallest **liveness graph** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -26,7 +35,6 @@ python3 ../tools/run_compiler_labs.py 02-rust-ownership-lifetimes-memory
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A mutable graph stores every node as `Rc<RefCell<Node>>`. Parent and child fields are all strong. Public functions clone wrappers freely, hold mutable borrow guards across callbacks, compare node addresses as IDs, and use strong counts as deletion criteria.
 
@@ -57,7 +65,6 @@ Refactor one chosen product model, draw ownership and observation graphs, write 
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 1. Trace strong/weak counts and destruction through a sequence of clones, downgrades, drops, and upgrades.
 2. Distinguish owner clone from deep clone in API names and tests.
 3. Build a tree with strong children and weak parents; prove the entire tree reclaims after root drop.
@@ -69,11 +76,18 @@ Attempt every required exercise and commit the attempt before opening `exercise-
 9. Review every function taking `&Rc<T>` and weaken it to `&T` where wrapper operations are absent.
 10. Select strong or weak snapshot watchers in the capstone and defend liveness behavior.
 
+### Interleaved reasoning pass
 
+1. For **Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the liveness graph.
+2. For **Use Rc::clone, downgrade, upgrade, strong_count, weak_count, get_mut, and make_mut with their exact preconditions**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the liveness graph.
+3. For **Prevent strong cycles by assigning ownership direction and weak observers/backlinks deliberately**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the liveness graph.
+4. For **Distinguish value equality, allocation identity, runtime handles, and liveness observations**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the liveness graph.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Rc, Weak, and Ownership Graphs** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 Build an immutable/shared project tree with strong child ownership, weak parent backlinks, and weak external observers.
 
@@ -141,6 +155,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-06-rc-weak-graph](../../labs/module-06-rc-weak-graph/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Shared Ownership Graph**, record:
+
+- the public behavior that demonstrates **Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -150,7 +176,6 @@ The executable starter and reference implementation are in [module-06-rc-weak-gr
 - Prevent strong cycles by assigning ownership direction and weak observers/backlinks deliberately.
 - Distinguish value equality, allocation identity, runtime handles, and liveness observations.
 - Bound retained shared state through explicit eviction or retention policy instead of assuming reference counting is collection.
-
 
 Change `DocumentSnapshot` retention from independent deep copies to explicit shared ownership where appropriate.
 
@@ -176,11 +201,13 @@ Remove the cache entry and drop all returned strong owners. A weak watcher must 
 
 Do not wrap live documents in `Rc<RefCell<_>>`; their centralized generational storage remains the mutation authority.
 
-
-
 ### Capstone defense
 
 Audit a parent/child/observer graph, choose strong and weak edges, and prove teardown and bounded retention with tests.
+
+### Capstone invariant trace
+
+For the Module 16 Memory Workspace increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -190,11 +217,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts.
-- Use Rc::clone, downgrade, upgrade, strong_count, weak_count, get_mut, and make_mut with their exact preconditions.
-- Prevent strong cycles by assigning ownership direction and weak observers/backlinks deliberately.
-- Distinguish value equality, allocation identity, runtime handles, and liveness observations.
-- Bound retained shared state through explicit eviction or retention policy instead of assuming reference counting is collection.
+Without reopening the chapter, reconstruct the outcomes for **Module 16: Rc, Weak, and Ownership Graphs**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -211,9 +234,17 @@ For each outcome, write a claim, one example, one non-example, and one limitatio
 
 ### Transfer defense
 
-Audit a parent/child/observer graph, choose strong and weak edges, and prove teardown and bounded retention with tests.
+Transfer **Module 16: Rc, Weak, and Ownership Graphs** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 16: Rc, Weak, and Ownership Graphs** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
 
 1. What event drops an `Rc` payload?
 2. What remains while weak references exist?
@@ -238,3 +269,7 @@ Payload drops at zero strong count; weak values can remain but cannot upgrade. C
 #### Transfer task
 
 Model a dependency DAG with one central owner and handles, then model the same liveness with `Rc`. Compare deletion, cycle prevention, serialization, and mutation evidence.
+
+### Closed-book defense
+
+In five minutes, answer “Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?” using the **liveness graph**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Memory Workspace. A list of APIs without the deciding relationship is incomplete.

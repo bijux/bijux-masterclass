@@ -1,12 +1,17 @@
 # Workbook — Module 47: Custom Derive Macros and Structural Generation
 
-[Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-07-field-names-derive/README.md) · [CommandForge guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Custom Derive Macros and Structural Generation** as an engineering mechanism rather than repeat its syntax. The governing question is:
+This workbook tests whether **Custom Derive Macros and Structural Generation** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?* Preserve your first prediction and record decisive facts in a **derive expansion ledger**. A repair succeeds only when it keeps the difficult product requirement visible.
 
-> How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?
+## Retrieval warm-up
 
-For each derive fixture, classify the input shape, declaration generics, where clause, field policy, and generated implementation header. Predict unsupported shapes and duplicate attributes before considering the generated body.
+Before compiling or running anything:
+
+1. Restate the invariant from Module 46 — Procedural Macro Execution and TokenStream Engineering that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?**
+3. Draw the smallest **derive expansion ledger** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -81,6 +86,17 @@ Why should unsupported union input produce `syn::Error` rather than panic or an 
 
 For every answer that proposes a macro, add a one-sentence rejection criterion: what simpler condition would make ordinary Rust preferable?
 
+### Interleaved reasoning pass
+
+1. For **Parse `DeriveInput` and distinguish structs, enums, and unions**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the derive expansion ledger.
+2. For **Support only documented item shapes and reject others at useful spans**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the derive expansion ledger.
+3. For **Inspect named, unnamed, and unit fields without losing source order**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the derive expansion ledger.
+4. For **Parse derive helper attributes and reject unknown or duplicate options**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the derive expansion ledger.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Custom Derive Macros and Structural Generation** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 ### Product: Field Names Derive
@@ -102,11 +118,27 @@ Before implementation, complete this module-specific design record:
 
 Build the smallest valid **derive structure and generic preservation** surface first. Add one accepted case, one rejection owned by this mechanism, and one case that expands successfully before ordinary Rust rejects a later obligation. Compare with the reference only after those three phase boundaries are protected by tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Field Names Derive**, record:
+
+- the public behavior that demonstrates **Parse `DeriveInput` and distinguish structs, enums, and unions**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Implement `CommandArgs` derive for named structs. Preserve generics, parse field helper attributes, distinguish required fields from syntactic `Option<T>`, generate deterministic usage, and let `FromStr` bounds be checked by Rust.
 
 The capstone increment must leave a visible design record: one diagram or table, one positive test, one negative test, and one statement of what this mechanism deliberately does **not** own.
+
+### Capstone invariant trace
+
+For the Module 47 CommandForge increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -142,3 +174,7 @@ Before advancing, defend these module-specific points:
 - how `split_for_impl` preserves the source declaration
 - why skipped fields must not acquire bounds
 - which helper-attribute change would be breaking
+
+### Closed-book defense
+
+In five minutes, answer “How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking?” using the **derive expansion ledger**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside CommandForge. A list of APIs without the deciding relationship is incomplete.

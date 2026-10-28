@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 52: Files, Durability, and Transactional Replacement
+# Reasoned Solutions — Module 52: Files, Durability, and Transactional Replacement
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-atomic-archive-store/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 52: Files, Durability, and Transactional Replacement**. Compare the reasoning against this question: *What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -133,3 +131,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready when you can name the commit point, distinguish buffering from synchronization, explain why the old file survives every pre-commit failure, and qualify every portability claim about rename and durability.
 
 Then perform this destructive regression check: inject a failure before and after the rename and verify that the destination-state assertions distinguish the two sides of the commit point. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state?
+
+Build a **durability timeline**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Handle short reads and writes through the `Read` and `Write` contracts.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use `OpenOptions` to make creation and truncation policy explicit.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design a same-directory temporary-file replacement with cleanup on failure.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **State the portability limits of `rename`, file locking, and durable replacement.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish read, write, flush, data synchronization, metadata synchronization, and directory-entry durability.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the durability timeline.
+
+### Reference implementation comparison
+
+For [Atomic Archive Store](../../labs/module-02-atomic-archive-store/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 52 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Files, Durability, and Transactional Replacement**, which relationship decides this question: “What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

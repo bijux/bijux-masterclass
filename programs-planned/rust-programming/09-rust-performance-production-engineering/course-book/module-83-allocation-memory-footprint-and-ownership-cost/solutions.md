@@ -1,6 +1,8 @@
-# Module 83 Solutions — Allocation, Memory Footprint, and Ownership Cost
+# Reasoned Solutions — Module 83: Allocation, Memory Footprint, and Ownership Cost
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-03-allocation-budgeted-batch-parser/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 83: Allocation, Memory Footprint, and Ownership Cost**. Compare the reasoning against this question: *Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Ledger reasoning
 
@@ -102,3 +104,42 @@ Startup must reject internally inconsistent limits. Every queue or retained map 
 ## Part 6 — Defense
 
 `size_of` sees only the vector handle. Allocation count, allocated bytes, live bytes, and retained capacity answer different questions. Removing a clone can extend a large owner’s lifetime. `Arc::clone` copies no payload but changes liveness and uses atomic counting. Borrow validity comes from the owner. Compact promotion prevents small slices retaining large frames. A budget includes all bounded concurrent owners plus measured allowances and checked arithmetic. A deliberate allocation is correct when it establishes a compact durable ownership boundary and allows a larger transient buffer to be released.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?
+
+Build a **allocation ledger**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Trace ownership operations that allocate, clone, reallocate, promote, or retain data.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Explain when borrowing reduces work and when it only complicates lifetimes without changing allocation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design capacity policies from observed size distributions instead of guessing large defaults.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Use arenas, interning, small-value representations, or reuse only when their lifecycle matches the product.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the allocation ledger.
+
+### Reference implementation comparison
+
+For [Allocation-Budgeted Batch Parser](../../labs/module-03-allocation-budgeted-batch-parser/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 83 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Allocation, Memory Footprint, and Ownership Cost**, which relationship decides this question: “Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

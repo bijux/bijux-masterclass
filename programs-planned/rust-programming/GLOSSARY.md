@@ -1,4 +1,4 @@
-# Program glossary
+# Rust Programming Glossary
 
 This glossary gives the program’s working meanings. Each module derives the terms in context; use this page for recall.
 
@@ -313,3 +313,64 @@ A limited rollout population used to evaluate a new artifact under real conditio
 ### Rollback rehearsal
 
 An executed test of restoring the previous compatible artifact and configuration, rather than an untested written intention.
+
+
+### Trait goal
+
+A proposition the trait solver must establish, such as whether a type implements a trait or whether an associated-type projection equals a required type.
+
+### Projection
+
+Selection of an associated item through a trait relationship, such as `<T as Iterator>::Item`. Normalizing a projection is a separate obligation from merely proving that the trait is implemented.
+
+### Generic associated type
+
+An associated type that is itself parameterized, commonly by a lifetime. It can describe a family such as the view type returned for each temporary borrow of a source.
+
+### Higher-ranked trait bound
+
+A bound such as `for<'a> Fn(&'a T)` that requires an implementation to work for every fresh lifetime chosen by the caller, rather than for one lifetime selected outside the bound.
+
+### Opaque type
+
+A concrete type hidden behind `impl Trait`. The defining scope chooses one hidden concrete type while callers rely only on the stated trait contract.
+
+### Type erasure
+
+Replacement of a concrete type with a uniform runtime representation and interface, commonly a trait object. Erasure changes what can be known statically and often introduces runtime dispatch and ownership decisions.
+
+### Witness type
+
+A type or value constructible only after a condition has been checked, used to carry proof of that condition into later APIs.
+
+### Monomorphization
+
+Compilation of generic code for specific type or const arguments. It enables static dispatch and optimization but can increase compile time and code size.
+
+### HIR
+
+The compiler’s High-level Intermediate Representation after parsing and lowering, used for many name and type-oriented analyses. Exact details are compiler implementation facts, not stable language syntax.
+
+### MIR
+
+The Mid-level Intermediate Representation used for control-flow, move, borrow, drop, optimization, and code-generation-related analyses. MIR is a useful compiler model, but its exact form is not a stable public language contract.
+
+### Miri
+
+An interpreter for Rust MIR that can detect many forms of undefined behavior in executed paths. A passing run is valuable evidence for those paths and models, not a proof that all unsafe behavior is sound.
+
+### MSRV
+
+Minimum Supported Rust Version: the oldest Rust compiler version a package promises to support. It is a public compatibility policy and should be tested explicitly.
+
+### SemVer
+
+Semantic Versioning. In a Rust library, compatibility review includes source, behavior, trait implementations, inference, features, MSRV, and sometimes stored data—not only function signatures.
+
+### Sound abstraction
+
+A safe API whose every permitted use preserves Rust’s validity and aliasing requirements even though its implementation may contain unsafe operations.
+
+### Architecture decision record
+
+A concise record of the requirement, chosen mechanism, rejected alternatives, proof owner, compatibility effect, and remaining risk.

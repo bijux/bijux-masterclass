@@ -1,9 +1,11 @@
-# 54 — Processes, Environments, and Standard Streams
+# Module 54 — Processes, Environments, and Standard Streams
 
-**Course 6, day 4 · Module 54 of 90**  
-`██████████████████░░` **54/90**
+**Course 6 · Day 4 · Module 54 of 100**
+`██████████████░░░░░░░░░░░` **54/100**
 
-[← Module 53: Paths, Names, and Platform Boundaries](../module-53-paths-names-and-platform-boundaries/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 55: Unsafe Rust as a Proof Boundary →](../module-55-unsafe-rust-and-safety-proofs/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-bounded-process-capture/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 53: Paths, Names, and Platform Boundaries](../module-53-paths-names-and-platform-boundaries/index.md) · [Module 55: Unsafe Rust as a Proof Boundary →](../module-55-unsafe-rust-and-safety-proofs/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Files and paths establish the external namespace. Process creation adds another system boundary: program selection, argument encoding, environment inheritance, current directory, standard streams, lifecycle, and exit status. Module 54 keeps command construction structured and treats output as bytes. Concurrency is still a later course; this module uses high-level process operations and explains where complex streaming requires concurrent I/O.
+
+### Prerequisite bridge
+
+Module 53 established **Paths, Names, and Platform Boundaries**. Before continuing, verify that you can document when a cross-platform implementation deliberately rejects a native name. This module preserves that capability and adds the ability to construct commands from a program plus arguments, not an interpolated shell line. Module 55, **Unsafe Rust as a Proof Boundary**, will rely on both when it asks: *What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable?*
+
+### Scope boundary
+
+This module owns the reasoning for **processes, environments, and standard streams** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -170,6 +180,24 @@ Cross-platform process tests should avoid assuming `echo`, `sh`, `cmd`, or `true
 
 The hidden mode is not part of the public CLI documentation. It is still ordinary product code and must validate its inputs without panic.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For construct commands from a program plus arguments, not an interpolated shell line, construct one positive and one causal negative example. Mark the first decisive fact in the **process boundary contract** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For control environment inheritance and current-directory policy explicitly, construct one positive and one causal negative example. Mark the first decisive fact in the **process boundary contract** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For distinguish `status`, `output`, `spawn`, `wait`, `try_wait`, and `wait_with_output`, construct one positive and one causal negative example. Mark the first decisive fact in the **process boundary contract** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For treat stdout and stderr as independent byte streams, construct one positive and one causal negative example. Mark the first decisive fact in the **process boundary contract** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault adds a command-capture record. `capture` invokes a program directly through `Command`, closes stdin, captures bounded stdout and stderr, records the supplied program and arguments as UTF-8 only when representable, and stores a portable exit-status model. It rejects captures whose combined output exceeds the configured limit and documents that untrusted long-running commands require later containment work.
@@ -193,7 +221,4 @@ You are ready when you can derive process behavior from the chosen `Command` met
 
 ## Continue
 
-1. Complete the [Module 54 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 54 — Bounded Process Capture](../../labs/module-04-bounded-process-capture/README.md) from its public contract.
-3. Apply the Module 54 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 55 — Unsafe Rust as a Proof Boundary](../module-55-unsafe-rust-and-safety-proofs/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

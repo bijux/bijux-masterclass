@@ -1,9 +1,11 @@
-# 30 — Architectural Synthesis
+# Module 30 — Architectural Synthesis
 
-**Course 3, day 10 · Module 30 of 90**  
-`██████████░░░░░░░░░░` **30/90**
+**Course 3 · Day 10 · Module 30 of 100**
+`████████░░░░░░░░░░░░░░░░░` **30/100**
 
-[← Module 29: Public API Evolution](../module-29-public-api-evolution/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 31: Closures, Capture, and Callable Contracts →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-10-inspection-platform/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 29: Public API Evolution](../module-29-public-api-evolution/index.md) · [Module 31: Closures, Capture, and Callable Contracts →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 The architectural course concludes by putting all variation mechanisms on one decision table. Enums, generics, trait objects, closures, functions, and ordinary composition solve different problems. The final task is to choose a hybrid architecture and defend each boundary under a changed requirement.
+
+### Prerequisite bridge
+
+Module 29 established **Public API Evolution**. Before continuing, verify that you can produce a semver hazard register and migration plan. This module preserves that capability and adds the ability to map axes of variation before selecting polymorphism mechanisms. Module 31, **Closures, Capture, and Callable Contracts**, will rely on both when it asks: *What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?*
+
+### Scope boundary
+
+This module owns the reasoning for **architectural synthesis** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -357,6 +367,24 @@ Review Engine receives a proposal to make every collaborator a `Box<dyn Trait>` 
 
 The resulting mixed architecture is smaller and more extensible where extension is real.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For map axes of variation before selecting polymorphism mechanisms, construct one positive and one causal negative example. Mark the first decisive fact in the **architecture decision record** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For combine static and dynamic dispatch without duplicating domain semantics, construct one positive and one causal negative example. Mark the first decisive fact in the **architecture decision record** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For review an architecture for coherence, dyn compatibility, state validity, and evolution, construct one positive and one causal negative example. Mark the first decisive fact in the **architecture decision record** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For implement an unseen cross-cutting feature while preserving public contracts, construct one positive and one causal negative example. Mark the first decisive fact in the **architecture decision record** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Implement an unseen Review Engine extension and update the variation map first. Defend why each boundary uses an enum, generic, trait object, closure, or concrete type. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -387,11 +415,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-[← Module 29](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 31 →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
+[← Module 29](../../../03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 31 →](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
 
 ## Continue
 
-1. Complete the [Module 30 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 30 — Inspection Platform](../../labs/module-10-inspection-platform/README.md) from its public contract.
-3. Apply the Module 30 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 31 — Closures, Capture, and Callable Contracts](../../../04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,8 +1,17 @@
 # Workbook — Module 39: Combinator Laws and Cost Models
 
-[Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-09-combinator-contracts/README.md) · [LedgerFlow guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Combinator Laws and Cost Models** without relying on surface syntax. Keep the module question in view: *What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Combinator Laws and Cost Models** has become a usable model rather than remembered vocabulary. Its governing question is: *What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?* Preserve your first prediction and record decisive facts in a **law and counterexample table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 38 — Functional Core and Effect Isolation that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?**
+3. Draw the smallest **law and counterexample table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -78,7 +87,16 @@ Compare three ways to normalize and filter records: one lazy chain, collect afte
 
 A function returns a deeply nested `impl Iterator<Item=Result<...>>` with six closure layers, mutable diagnostic capture, and branch-specific boxing. Refactor toward readable stage contracts.
 
+### Interleaved reasoning pass
 
+1. For **Design domain combinators that preserve type and error meaning**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the law and counterexample table.
+2. For **State and test laws such as identity, idempotence, order preservation, and partition consistency where they truly apply**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the law and counterexample table.
+3. For **Reason about closure capture, allocation, cloning, and materialization costs without claiming unmeasured optimization**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the law and counterexample table.
+4. For **Choose lazy or eager return types based on lifetime, API, and reuse constraints**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the law and counterexample table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Combinator Laws and Cost Models** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -139,6 +157,18 @@ Do not add a combinator merely because it can be written generically. Reject:
 Submit all dossiers, call-order tests, the bounded law test, the stateful counterexample, and the lazy/eager ownership comparison. Defend one combinator you kept and one you deliberately removed. Explain what future evidence would be required before promoting this small module into a stable public library.
 
 The executable starter and reference implementation are in [module-09-combinator-contracts](../../labs/module-09-combinator-contracts/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Combinator Contracts**, record:
+
+- the public behavior that demonstrates **Design domain combinators that preserve type and error meaning**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -206,6 +236,10 @@ This is not benchmark evidence. Avoid “zero cost,” “faster,” or “optim
 
 Combinators that operate on fallible stages must preserve structured error types and useful context. Reject designs that convert every error to `String`, drop diagnostics with `filter_map`, or make partial success indistinguishable from complete success.
 
+### Capstone invariant trace
+
+For the Module 39 LedgerFlow increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Do not advance because the calendar day ended. Advance when all hard evidence is present.
@@ -243,3 +277,7 @@ Create reusable query combinators for a document search domain, including one fa
 ### Spaced review
 
 Repeat questions 2, 4, 7, and 10 after 24 hours. Repeat the reconstruction after seven days with a different domain.
+
+### Closed-book defense
+
+In five minutes, answer “What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?” using the **law and counterexample table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside LedgerFlow. A list of APIs without the deciding relationship is incomplete.

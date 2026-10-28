@@ -1,12 +1,17 @@
 # Workbook — Module 42: Declarative Macros: Matchers, Fragments, and Repetition
 
-[Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-02-typed-map-macro/README.md) · [CommandForge guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Declarative Macros: Matchers, Fragments, and Repetition** as an engineering mechanism rather than repeat its syntax. The governing question is:
+This workbook tests whether **Declarative Macros: Matchers, Fragments, and Repetition** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?* Preserve your first prediction and record decisive facts in a **matcher and fragment trace**. A repair succeeds only when it keeps the difficult product requirement visible.
 
-> How do you design a macro_rules! invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?
+## Retrieval warm-up
 
-For each specimen, freeze the accepted token grammar, fragment category, repetition depth, expansion position, and evaluation count. When a case fails, identify whether the matcher rejected the invocation or the expanded ordinary Rust was rejected later.
+Before compiling or running anything:
+
+1. Restate the invariant from Module 41 — Metaprogramming Boundaries and the Expansion Model that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?**
+3. Draw the smallest **matcher and fragment trace** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -81,6 +86,17 @@ Design rules that accept one or more entries with an optional trailing comma wit
 
 For every answer that proposes a macro, add a one-sentence rejection criterion: what simpler condition would make ordinary Rust preferable?
 
+### Interleaved reasoning pass
+
+1. For **Read a matcher as a grammar rather than as textual substitution**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the matcher and fragment trace.
+2. For **Choose fragment specifiers according to the accepted public language**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the matcher and fragment trace.
+3. For **Design unambiguous separators, delimiters, optional clauses, and cardinality**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the matcher and fragment trace.
+4. For **Keep matcher and transcriber repetition at compatible nesting depths**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the matcher and fragment trace.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Declarative Macros: Matchers, Fragments, and Repetition** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 ### Product: Typed Map Macro
@@ -102,11 +118,27 @@ Before implementation, complete this module-specific design record:
 
 Build the smallest valid **matcher grammar and evaluation semantics** surface first. Add one accepted case, one rejection owned by this mechanism, and one case that expands successfully before ordinary Rust rejects a later obligation. Compare with the reference only after those three phase boundaries are protected by tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Typed Map Macro**, record:
+
+- the public behavior that demonstrates **Read a matcher as a grammar rather than as textual substitution**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Implement the declarative diagnostic catalog. One declaration must generate the enum, stable code lookup, message lookup, reverse lookup, and deterministic `ALL` table. Audit every metavariable’s fragment kind and repetition depth.
 
 The capstone increment must leave a visible design record: one diagram or table, one positive test, one negative test, and one statement of what this mechanism deliberately does **not** own.
+
+### Capstone invariant trace
+
+For the Module 42 CommandForge increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -142,3 +174,7 @@ Before advancing, defend these module-specific points:
 - how matcher repetition corresponds to transcriber repetition
 - where caller expressions move or borrow
 - which punctuation is now part of the public API
+
+### Closed-book defense
+
+In five minutes, answer “How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?” using the **matcher and fragment trace**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside CommandForge. A list of APIs without the deciding relationship is incomplete.

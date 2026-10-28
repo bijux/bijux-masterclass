@@ -1,5 +1,58 @@
 # AxiomStore Engineering Guide
 
+## How this capstone completes the course
+
+AxiomStore is a versioned embedded record engine with lending views, const bounds, runtime validators, one private initialized-prefix abstraction, deterministic storage, migrations, compatibility fixtures, and a claim-specific verification matrix.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; AxiomStore proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | Every advanced abstraction begins with a proof obligation rather than a feature preference. |
+| 2 | Generic and lending APIs state the exact type, lifetime, and equality relationships callers may rely on. |
+| 3 | Const parameters encode only invariants supported by stable Rust and by the product representation. |
+| 4 | Unsafe inline storage maintains one initialized-prefix invariant through movement, failure, and drop. |
+| 5 | Verification evidence is matched to claim class and never promoted beyond the paths or model it covers. |
+| 6 | Format versions, MSRV, features, provider capabilities, migration, and deprecation remain explicit compatibility contracts. |
+
+For each AxiomStore change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 91 | Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen | Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases | [Compiler Evidence Notebook](../labs/module-01-compiler-evidence-notebook/README.md) |
+| 92 | Advanced Trait Solving: Goals, Projections, and Type Equality | Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints | [Projection-Driven Pipeline](../labs/module-02-projection-driven-pipeline/README.md) |
+| 93 | GATs, Higher-Ranked Bounds, and Lending Interfaces | Distinguish one associated type from a lifetime-indexed family of associated types | [Lending Table](../labs/module-03-lending-table/README.md) |
+| 94 | Const Generics, Witness Types, and Compile-Time Invariants | Use const parameters when a numeric fact changes representation, layout, or legal composition | [Bounded Matrix](../labs/module-04-bounded-matrix/README.md) |
+| 95 | Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries | Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type | [Erased Validator Registry](../labs/module-05-erased-validator-registry/README.md) |
+| 96 | Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits | Write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation | [Inline Batch](../labs/module-06-inline-batch/README.md) |
+| 97 | From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size | Explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication | [Dispatch Observatory](../labs/module-07-dispatch-observatory/README.md) |
+| 98 | Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration | Classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims | [Model-Checked Log](../labs/module-08-model-checked-log/README.md) |
+| 99 | Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship | Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data | [Versioned SDK](../labs/module-09-versioned-sdk/README.md) |
+| 100 | Architectural Synthesis: Building and Defending a Long-Lived Rust System | Construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy | [Architecture Council](../labs/module-10-architecture-council/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **architecture defense record** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. AxiomStore ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## A versioned embedded record engine
 
 AxiomStore is the final cumulative capstone of the ten-course program. It is intentionally smaller than a database and deeper than a demonstration. The product stores key/value records in a deterministic versioned archive, exposes borrowed read views, applies runtime validation policy, stages bounded transactions, migrates legacy data, and provides a CLI. Its architecture exists to make advanced Rust proof obligations visible.

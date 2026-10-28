@@ -1,6 +1,8 @@
-# Module 90 Solutions — Production Readiness, Capacity Planning, Rollouts, and Incident Learning
+# Reasoned Solutions — Module 90: Production Readiness, Capacity Planning, Rollouts, and Incident Learning
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-production-readiness-review/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 90: Production Readiness, Capacity Planning, Rollouts, and Incident Learning**. Compare the reasoning against this question: *What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Readiness reasoning
 
@@ -87,3 +89,42 @@ Every readiness artifact must match the final source, lockfile, profile, target,
 ## Part 6 — Defense
 
 Maximum throughput sits at or beyond unstable operation; safe capacity includes headroom and all resources. Saturation/recovery reveals shedding and whether the system returns to normal. Separating rollout dimensions improves attribution and rollback. Rollback is credible only after rehearsal with exact artifacts/state. Evidence stales when its bound inputs change. Symptom-first runbooks match operator knowledge. Incidents become learning when models, limits, tests, signals, or procedures change. The strongest honest claim is that MetricRail is a bounded, measured, diagnosable reference service under its declared workloads and environments—not that it is universally fast, secure, or production-ready for every deployment.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?
+
+Build a **production decision record**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Derive initial capacity and headroom from measured service demand, resource use, and burst policy.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Distinguish load test, stress test, soak test, fault test, compatibility test, and rollback rehearsal.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Design canary, staged, blue/green, or shadow rollout policies with objective promotion and rollback criteria.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Define configuration ownership, safe defaults, validation, dynamic-change policy, and auditability.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the production decision record.
+
+### Reference implementation comparison
+
+For [Production Readiness Review](../../labs/module-10-production-readiness-review/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 90 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Production Readiness, Capacity Planning, Rollouts, and Incident Learning**, which relationship decides this question: “What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

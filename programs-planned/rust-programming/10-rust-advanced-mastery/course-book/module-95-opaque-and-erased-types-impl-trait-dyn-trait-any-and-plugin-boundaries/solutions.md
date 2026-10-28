@@ -1,8 +1,8 @@
-# Module 95 Solutions — Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries
+# Reasoned Solutions — Module 95: Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-05-erased-validator-registry/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 95: Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries**. Compare the reasoning against this question: *When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the erasure ledger: the decisive relationship must be
 
 **Principled repair.** Keep the codec static/GAT-based and erase only runtime validator policy. Variation axes need not share one mechanism.
 
-A strong answer updates the erasure ledger and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Erasing the lending codec** while preserving the surrounding requirement. The erasure ledger must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — Enum used for open plugins
 
@@ -40,7 +40,7 @@ A strong answer updates the erasure ledger and includes a negative case that fai
 
 **Principled repair.** Use a dyn-compatible trait registry or another open extension boundary; the enum gives extension authority to the defining crate.
 
-A strong answer updates the erasure ledger and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Enum used for open plugins** while preserving the surrounding requirement. The erasure ledger must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Arc selected by habit
 
@@ -48,7 +48,7 @@ A strong answer updates the erasure ledger and includes a negative case that fai
 
 **Principled repair.** Choose ownership from liveness and sharing first. Dynamic dispatch works through borrowed or boxed values too.
 
-A strong answer updates the erasure ledger and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Arc selected by habit** while preserving the surrounding requirement. The erasure ledger must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Repair two opaque iterator branches with an enum
 
 The decisive acceptance criterion is: The comparison identifies retained information, allocation, and API cost.
 
-Evaluate the result through the erasure ledger; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Opaque unification**, apply the erasure ledger to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Dyn audit
 
@@ -66,7 +66,7 @@ The construction should answer: Audit a trait containing associated types, gener
 
 The decisive acceptance criterion is: Every object-usable and object-excluded method is justified.
 
-Evaluate the result through the erasure ledger; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Dyn audit**, apply the erasure ledger to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Closed/open pair
 
@@ -74,7 +74,7 @@ The construction should answer: Implement the same semantic operations with an e
 
 The decisive acceptance criterion is: Tests share one oracle; extension authority differs explicitly.
 
-Evaluate the result through the erasure ledger; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Closed/open pair**, apply the erasure ledger to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Typed context
 
@@ -82,12 +82,11 @@ The construction should answer: Build a small `Any` context with duplicate and m
 
 The decisive acceptance criterion is: The result documents why it is not a behavioral plugin interface.
 
-Evaluate the result through the erasure ledger; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Typed context**, apply the erasure ledger to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — preserving a stable plugin boundary
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the erasure ledge
 For an unseen extension request, choose generic, opaque, enum, trait object, or `Any` by stating what identity and operations survive, who may extend the set, and where mismatch occurs.
 
 The defense passes when it reconstructs the erasure ledger from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary?
+
+Build a **open and erased variation map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Derive dyn-compatibility requirements from the operations available through erased receivers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Choose borrowed, boxed, reference-counted, or inline-erased ownership according to registry and lifetime requirements.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use enums for closed variation and trait objects for open runtime extension without confusing the two evolution models.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Treat `Any` downcasting as an explicit escape hatch with a documented authority and failure policy.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the open and erased variation map.
+
+### Reference implementation comparison
+
+For [Erased Validator Registry](../../labs/module-05-erased-validator-registry/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 95 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries**, which relationship decides this question: “When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 50: Build Scripts, Generated Code, and Compile-Time Architecture
+# Reasoned Solutions — Module 50: Build Scripts, Generated Code, and Compile-Time Architecture
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-generated-code-build/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare rebuild on every authoritative input change, deterministic output independent of hash-map order or timestamps, line-aware malformed-input errors, no checked-in copy competing with `OUT_DIR` output. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 50: Build Scripts, Generated Code, and Compile-Time Architecture**. Compare the reasoning against this question: *How do you integrate macros and build generation into a deterministic architecture with one source of truth and no overlapping authority?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ Declare the directory or exact files as inputs, collect paths, normalize them, s
 
 The DSL may reference handler metadata but must not redeclare handler signatures or argument fields. The build script may generate exit-code constants but must not assign diagnostic codes already owned by the diagnostic macro. References are allowed; independent declarations of the same fact are not.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-10-generated-code-build/solution`](../../labs/module-10-generated-code-build/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - which generated interface must remain stable for downstream Rust;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you integrate macros and build generation into a deterministic architecture with one source of truth and no overlapping authority?
+
+Build a **generation authority and reproducibility record**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Explain the Cargo build-script lifecycle and communication protocol.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Read host and target configuration correctly.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Declare rebuild inputs with `cargo::rerun-if-changed` and `cargo::rerun-if-env-changed`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Write generated files only under `OUT_DIR`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Validate external data before emitting Rust.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Explain the Cargo build-script lifecycle and communication protocol.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the generation authority and reproducibility record.
+
+### Laboratory transfer review
+
+For [Generated Code Build](../../labs/module-10-generated-code-build/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 50 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Build Scripts, Generated Code, and Compile-Time Architecture**, which relationship decides this question: “How do you integrate macros and build generation into a deterministic architecture with one source of truth and no overlapping authority?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

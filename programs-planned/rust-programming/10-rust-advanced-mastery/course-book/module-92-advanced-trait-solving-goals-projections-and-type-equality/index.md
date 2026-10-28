@@ -1,8 +1,11 @@
 # Module 92 — Advanced Trait Solving: Goals, Projections, and Type Equality
 
-**92/100** · Course 10 · Module 92 of 100
+**Course 10 · Day 2 · Module 92 of 100**
+`███████████████████████░░` **92/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-02-projection-driven-pipeline/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 91: Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen](../module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/index.md) · [Module 93: GATs, Higher-Ranked Bounds, and Lending Interfaces →](../module-93-gats-higher-ranked-bounds-and-lending-interfaces/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Course 3 introduced traits as behavioral contracts and associated types as imple
 Course 3 supplied trait contracts and associated types. Course 5 showed that compiler phases matter. This module deepens both by making each generic error a proof-goal graph rather than a sequence of guessed bounds.
 
 This module turns trait errors from a sequence of compiler appeasement steps into explicit proof search. The key move is to stop reading a diagnostic as one giant sentence. Break it into implementation goals, projection normalization, equality, and well-formedness. Once the graph is visible, the correct boundary for a bound or associated-type equality usually becomes obvious.
+
+### Prerequisite bridge
+
+Module 91 established **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen**. Before continuing, verify that you can construct a compiler-evidence notebook that records the question, representation, observation, and justified conclusion. This module preserves that capability and adds the ability to rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints. Module 93, **GATs, Higher-Ranked Bounds, and Lending Interfaces**, will rely on both when it asks: *How can an API return views tied to each borrow of `self` without pretending that every yielded value has one fixed lifetime?*
+
+### Scope boundary
+
+This module owns the reasoning for **advanced trait solving: goals, projections, and type equality** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -142,6 +153,24 @@ The trait solver can establish that a set of goals follows from the visible impl
 
 Treat compiler ambiguity as information: the program has not assigned enough authority to select one legal relationship. The repair should clarify ownership of the choice, not merely overwhelm inference with annotations.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints, construct one positive and one causal negative example. Mark the first decisive fact in the **trait-goal and projection graph** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish proving that a trait is implemented from normalizing an associated type selected by that implementation, construct one positive and one causal negative example. Mark the first decisive fact in the **trait-goal and projection graph** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For choose associated types, generic parameters, and helper traits according to who selects each type relationship, construct one positive and one causal negative example. Mark the first decisive fact in the **trait-goal and projection graph** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For express equality between associated outputs without forcing unrelated callers to name implementation details, construct one positive and one causal negative example. Mark the first decisive fact in the **trait-goal and projection graph** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Before compiling `Chain`, write the complete goal graph. Pay special attention to the moment when `A::Output` is equated with `B::Input`; that equality is the reason the second call is legal, not an incidental compiler inference.
@@ -226,7 +255,4 @@ When consulting trait-solver material, separate stable language behavior from ru
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Projection-Driven Pipeline](../../labs/module-02-projection-driven-pipeline/README.md).
-3. Apply Module 92 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 93 — GATs, Higher-Ranked Bounds, and Lending Interfaces](../module-93-gats-higher-ranked-bounds-and-lending-interfaces/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

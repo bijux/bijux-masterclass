@@ -1,6 +1,14 @@
 # Laboratory 66 — Cancellable Worker Group
 
-This is the independent product for **Course 7, Module 66**. Read the [module chapter](../../course-book/module-66-liveness-deadlock-cancellation-and-recovery/index.md) and complete its [workbook](../../course-book/module-66-liveness-deadlock-cancellation-and-recovery/workbook.md) before consulting the reference implementation.
+**Course 7 · Module 66: Liveness: Deadlock, Cancellation, and Recovery**
+
+[Chapter](../../course-book/module-66-liveness-deadlock-cancellation-and-recovery/index.md) · [Workbook](../../course-book/module-66-liveness-deadlock-cancellation-and-recovery/workbook.md) · [BatchWeave guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Liveness: Deadlock, Cancellation, and Recovery**: Why can every blocked operation eventually continue or terminate, and what happens when cancellation, panic, or partial infrastructure failure interrupts the normal path? The product must make **Distinguish deadlock, starvation, livelock, priority inversion, and slow work** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **wait-for and shutdown graph** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -12,7 +20,7 @@ By the end, the answer must be visible in the public API, protocol diagram, fail
 
 Build a bounded worker group over source-ordered indexed text tasks. Worker count, queue capacity, task count, and cumulative text bytes all have explicit product limits. Tasks can succeed, return a domain error, or deliberately panic. Continue mode contains either failure at the job boundary; fail-fast mode closes the queue after the first domain failure or contained panic. Every accepted task ends as completed, failed, panicked, or cancelled.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 The product combines the first five mechanisms and evaluates liveness directly. Cancellation must be durable state and a wake event; panic containment must remain outside queue invariants.
 
@@ -70,7 +78,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Wo
 
 The laboratory is complete when the tests and documented failure paths pass, and you can answer the governing question without the chapter:
 
-> How does cancellation wake blocked work, contain panic, preserve accepted-job identity, and terminate every worker exactly once?
+For **Laboratory 66 — Cancellable Worker Group**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -80,3 +88,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Cancellable Worker Group**.
+2. Draw the smallest **wait-for and shutdown graph** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to BatchWeave so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Distinguish deadlock, starvation, livelock, priority inversion, and slow work.
+- Construct a wait-for graph over locks, channels, joins, barriers, and conditions.
+- State a global lock order and identify operations that violate it.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 66 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **wait-for and shutdown graph**. Defend why your design is simpler than one plausible alternative under the new requirements.

@@ -1,30 +1,11 @@
-# Compiler investigation — Module 51: Binary Data Contracts
+# Module 51 Investigations — Binary Data Contracts: Bytes, Endianness, and Checked Parsing
 
-[Compiler-investigation method](../README.md) · [Module chapter](../../course-book/module-51-binary-data-contracts/index.md)
+[Chapter](../../course-book/module-51-binary-data-contracts/index.md) · [Workbook](../../course-book/module-51-binary-data-contracts/workbook.md) · [Course investigation method](../README.md)
 
-This set tests whether the model from Module 51 survives contact with small, adversarial programs. Predict each specimen without opening the machine-readable manifest or the module solutions.
+> **Prediction question:** How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?
 
-| Specimen | Question to resolve before compiling |
-|---|---|
-| [`case-01.rs`](case-01.rs) | Which compile-time or runtime rule decides the behavior of **little-endian decoding requires an exact-width byte array**, and what evidence would distinguish the closest competing explanation? |
-| [`case-02.rs`](case-02.rs) | Which compile-time or runtime rule decides the behavior of **checked slicing can precede fixed-width conversion**, and what evidence would distinguish the closest competing explanation? |
-| [`case-03.rs`](case-03.rs) | Which compile-time or runtime rule decides the behavior of **UTF-8 validation is a fallible boundary**, and what evidence would distinguish the closest competing explanation? |
-| [`case-04.rs`](case-04.rs) | Which compile-time or runtime rule decides the behavior of **wire integers require checked host conversion**, and what evidence would distinguish the closest competing explanation? |
-| [`case-05.rs`](case-05.rs) | Which compile-time or runtime rule decides the behavior of **slice ranges do not produce owned fixed-size arrays**, and what evidence would distinguish the closest competing explanation? |
-| [`case-06.rs`](case-06.rs) | Which compile-time or runtime rule decides the behavior of **fixed-width decoding rejects the wrong array length**, and what evidence would distinguish the closest competing explanation? |
-| [`case-07.rs`](case-07.rs) | Which compile-time or runtime rule decides the behavior of **a borrow cannot outlive its local owner**, and what evidence would distinguish the closest competing explanation? |
-| [`case-08.rs`](case-08.rs) | Which compile-time or runtime rule decides the behavior of **the question-mark operator needs a compatible return type**, and what evidence would distinguish the closest competing explanation? |
+Before invoking a compiler or runner, draw a **binary layout and range proof** and classify the expected result. The prediction must identify the earliest decisive phase or event and show why the result follows from **Define a binary format as a versioned contract rather than a sequence of convenient writes**. Diagnostic wording may vary; the causal relationship may not.
 
-## Work through the set
+After observing Module 51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing, preserve two repairs. The first is the smallest change that keeps the product requirement. The second is a tempting change that compiles, runs, or quiets the tool by erasing information, weakening a bound, changing ownership, hiding a failure, or narrowing the public contract. Explain precisely why the second repair is unacceptable here.
 
-For each file, draw or write the smallest model that can decide it: types and expression results, owners and loans, trait obligations, iterator state, macro phase, raw-memory obligations, or operating-system boundary state. Then classify the outcome and name the first causal rule.
-
-Compile only after the prediction is complete. A correct pass/fail guess with the wrong cause is not a successful investigation. When several errors appear, identify which one would remain after secondary errors were removed.
-
-## Repair and transfer
-
-Repair one rejecting or behaviorally defective specimen without deleting the requirement it was designed to express. Preserve the original product need while changing only the mechanism that violated it.
-
-Next, alter one assumption—ownership mode, lifetime source, trait bound, adapter order, macro input, or boundary condition. Predict the result before compiling.
-
-Finish by stating how the same rule constrains the module laboratory or cumulative capstone. This connects an isolated diagnostic to a real design decision.
+Finish by creating a new specimen that changes one relationship while keeping every incidental detail stable. Predict whether that variation changes parsing, name resolution, type checking, trait solving, borrow checking, build execution, runtime behavior, schedule behavior, or only architectural quality.

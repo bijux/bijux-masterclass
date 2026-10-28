@@ -1,8 +1,11 @@
 # Module 85 — Runtime Efficiency: Contention, Queueing, Batching, and Async Load
 
-**85/90** · Course 9 · Module 85 of 90
+**Course 9 · Day 5 · Module 85 of 100**
+`█████████████████████░░░░` **85/100**
 
-[Course 9 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [MetricRail guide](../capstone.md)
+[Program](../../../README.md) · [Course 9](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-bounded-throughput-tuner/README.md) · [MetricRail guide](../capstone.md)
+
+[← Module 84: Data Movement, Buffering, and Zero-Copy Boundaries](../module-84-data-movement-buffering-and-zero-copy-boundaries/index.md) · [Module 86: Observability: Structured Tracing, Metrics, and Diagnostic Context →](../module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md)
 
 ## The question
 
@@ -13,6 +16,14 @@
 After bytes and allocations are understood, the next production cost is waiting. A handler can remain fast in isolation while users experience long responses because work waits for admission, a queue, a lock, a runtime worker, a batch, or a downstream service. Module 85 makes that hidden residence time visible.
 
 This module also separates concurrency from capacity. More tasks, threads, or connections can increase throughput only until a serialized resource or finite service rate becomes dominant. Beyond that point, extra concurrency stores waiting work and amplifies tail latency.
+
+### Prerequisite bridge
+
+Module 84 established **Data Movement, Buffering, and Zero-Copy Boundaries**. Before continuing, verify that you can test chunking, aliasing, lifetime, and backpressure behavior at data boundaries. This module preserves that capability and adds the ability to separate service time, wait time, queue depth, concurrency, throughput, and utilization. Module 86, **Observability: Structured Tracing, Metrics, and Diagnostic Context**, will rely on both when it asks: *What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?*
+
+### Scope boundary
+
+This module owns the reasoning for **runtime efficiency: contention, queueing, batching, and async load** inside Course 9. The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -110,6 +121,24 @@ Blocking work on async runtime workers delays unrelated I/O and timers. Move it 
 
 Completion throughput omits rejected, cancelled, and retried demand. Report the complete terminal accounting.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate service time, wait time, queue depth, concurrency, throughput, and utilization, construct one positive and one causal negative example. Mark the first decisive fact in the **saturation and queueing curve** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For apply Little’s Law as a consistency check while stating its steady-state assumptions, construct one positive and one causal negative example. Mark the first decisive fact in the **saturation and queueing curve** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For find lock contention, convoying, hot sharding, wake amplification, and blocking-runtime violations, construct one positive and one causal negative example. Mark the first decisive fact in the **saturation and queueing curve** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For design queue, semaphore, and batch capacities from latency and memory budgets, construct one positive and one causal negative example. Mark the first decisive fact in the **saturation and queueing curve** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 ```rust
@@ -191,7 +220,4 @@ These references are for verification and deeper lookup after the chapter’s mo
 
 ## Continue
 
-1. Complete the [Module 85 workbook](workbook.md).
-2. Use the [reasoned solutions](solutions.md) only after writing your own answers.
-3. Build the [Bounded Throughput Tuner laboratory](../../labs/module-05-bounded-throughput-tuner/README.md).
-4. Apply the module to [MetricRail](../capstone.md).
+Continue to [Module 86 — Observability: Structured Tracing, Metrics, and Diagnostic Context](../module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

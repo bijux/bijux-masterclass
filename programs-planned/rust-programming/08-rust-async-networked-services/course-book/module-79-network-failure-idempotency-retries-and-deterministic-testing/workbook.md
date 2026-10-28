@@ -1,6 +1,17 @@
 # Workbook — Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing
 
-[Return to the chapter](index.md) · [Open the solutions](solutions.md) · [Open the JobWire guide](../capstone.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-09-idempotent-retry-client/README.md) · [JobWire guide](../capstone.md) · [Solutions](solutions.md)
+
+This workbook tests whether **Network Failure, Idempotency, Retries, and Deterministic Testing** has become a usable model rather than remembered vocabulary. Its governing question is: *When a network operation fails without revealing whether the remote side committed it, how do idempotency, retry budgets, failure classification, and deterministic tests preserve one semantic outcome?* Preserve your first prediction and record decisive facts in a **retry and commit matrix**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 78 — HTTP Services with Hyper: Requests, Bodies, and Connections that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When a network operation fails without revealing whether the remote side committed it, how do idempotency, retry budgets, failure classification, and deterministic tests preserve one semantic outcome?**
+3. Draw the smallest **retry and commit matrix** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -41,6 +52,17 @@ Test attempt timing, attempt limit, overall deadline, and jitter with Tokio time
 
 Script a server that commits once, closes before response on attempt one, and returns cached success on attempt two. Assert one execution.
 
+### Interleaved reasoning pass
+
+1. For **Classify failures by phase, scope, retryability, and commit ambiguity**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the retry and commit matrix.
+2. For **Distinguish idempotent operation semantics from retrying an HTTP or TCP request**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the retry and commit matrix.
+3. For **Design idempotency keys with scope, fingerprint, in-progress state, terminal result, and retention**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the retry and commit matrix.
+4. For **Reject key reuse with different request content**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the retry and commit matrix.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Network Failure, Idempotency, Retries, and Deterministic Testing** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Idempotent Retry Client](../../labs/module-09-idempotent-retry-client/README.md). Required evidence:
@@ -54,9 +76,25 @@ Build [Idempotent Retry Client](../../labs/module-09-idempotent-retry-client/REA
 - paused-time tests;
 - exact commit and attempt counts.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Idempotent Retry Client**, record:
+
+- the public behavior that demonstrates **Classify failures by phase, scope, retryability, and commit ambiguity**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Add JobWire’s idempotency map and client retry helper. Scope keys to the service process and state that limitation. Keep a bounded terminal cache. Test duplicate while in progress, duplicate after success, duplicate after terminal domain error, conflict, eviction, disconnect after commit, and deadline exhaustion.
+
+### Capstone invariant trace
+
+For the Module 79 JobWire increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -70,3 +108,7 @@ Add JobWire’s idempotency map and client retry helper. Scope keys to the servi
 ### Independent transfer
 
 Design idempotent retry for an email-send service. State whether provider acceptance, actual delivery, and local response are different commits, and what result can honestly be cached.
+
+### Closed-book defense
+
+In five minutes, answer “When a network operation fails without revealing whether the remote side committed it, how do idempotency, retry budgets, failure classification, and deterministic tests preserve one semantic outcome?” using the **retry and commit matrix**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside JobWire. A list of APIs without the deciding relationship is incomplete.

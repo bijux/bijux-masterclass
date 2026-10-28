@@ -1,6 +1,14 @@
-# Laboratory 2 — Projection-Driven Pipeline
+# Laboratory 92 — Projection-Driven Pipeline
 
-[Course 10](../../README.md) · [Common laboratory method](../../../START_HERE.md#laboratory-method)
+**Course 10 · Module 92: Advanced Trait Solving: Goals, Projections, and Type Equality**
+
+[Chapter](../../course-book/module-92-advanced-trait-solving-goals-projections-and-type-equality/index.md) · [Workbook](../../course-book/module-92-advanced-trait-solving-goals-projections-and-type-equality/workbook.md) · [AxiomStore guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Advanced Trait Solving: Goals, Projections, and Type Equality**: How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal? The product must make **Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **trait-goal and projection graph** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -37,6 +45,29 @@ Introduce a branch stage whose result is deliberately one of two types. Redesign
 
 After completing `starter/`, inspect `solution/`. Compare where each implementation places equality constraints, how it preserves errors, and whether it overconstrains standalone stages. Do not copy the reference’s syntax if your own design has a smaller public contract.
 
-### Completion standard
+### Mechanism-specific completion standard
 
 You can derive the required trait goals from a proposed pipeline, predict whether they normalize, and locate the narrowest boundary that owns each equality. A pipeline that merely converts everything to strings has avoided the lesson rather than completed it.
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Projection-Driven Pipeline**.
+2. Draw the smallest **trait-goal and projection graph** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to AxiomStore so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Whole-laboratory completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints.
+- Distinguish proving that a trait is implemented from normalizing an associated type selected by that implementation.
+- Choose associated types, generic parameters, and helper traits according to who selects each type relationship.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 92 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **trait-goal and projection graph**. Defend why your design is simpler than one plausible alternative under the new requirements.

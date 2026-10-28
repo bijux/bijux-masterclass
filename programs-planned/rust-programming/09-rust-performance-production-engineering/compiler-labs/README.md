@@ -1,15 +1,29 @@
 # Course 9 Compiler and Design Investigations
 
-These eighty specimens test the boundary between what the Rust compiler can reject and what production engineering must review separately.
+These investigations train causal prediction. They are not quizzes about memorizing diagnostic wording. Each specimen isolates one language, runtime, build, schedule, or design relationship from Rust Performance and Production Engineering.
 
-The set uses five outcome categories:
+## Method
 
-- `compile-pass` — valid Rust whose type-level claim should compile;
-- `compile-fail` — invalid Rust that should fail for the stated causal reason;
-- `run-pass` — valid Rust with a deterministic runtime assertion;
-- `run-fail` — valid Rust whose deliberate runtime failure demonstrates a boundary;
-- `manual-review` — valid Rust that embodies an operationally weak design the compiler cannot reject.
+1. Read the specimen without compiling.
+2. Classify the expected result: compile pass, compile fail, run pass, run fail, or manual design review.
+3. Draw the smallest performance claim, workload description, benchmark boundary, cost model, allocation ledger, byte journey, saturation curve, signal dictionary, SLO/error-budget policy, threat model, dependency dossier, release manifest, and rollout decision capable of deciding it.
+4. State the intended cause and the earliest decisive phase or event.
+5. Compile or run only after the prediction is fixed.
+6. Apply the smallest principled repair.
+7. Record one tempting repair that weakens the product contract.
 
-Freeze your prediction before running the specimen. For a compile failure, identify the target rule and the smallest requirement-preserving repair. For a manual review, explain why compilation is insufficient: the defect may be an unbounded queue, leaked high-cardinality labels, unstable release metadata, hidden setup cost, weak retry policy, or a security disclosure.
+A correct pass/fail guess with the wrong cause is not a successful investigation. When several diagnostics appear, identify which one would remain after unrelated mistakes were removed.
 
-Run the set through the program-level compiler-lab runner. Direct cases are compiled with warnings denied, so incidental warnings cannot stand in for the intended result.
+Run every course specimen with:
+
+```bash
+make compiler-labs
+```
+
+or run only this course from the program root:
+
+```bash
+python3 tools/run_compiler_labs.py 09-rust-performance-production-engineering
+```
+
+Direct `rustc` cases compile into temporary directories. Cargo fixtures use isolated target directories. Negative cases are successful only when they fail for the intended relationship, not merely because the file contains some unrelated error.

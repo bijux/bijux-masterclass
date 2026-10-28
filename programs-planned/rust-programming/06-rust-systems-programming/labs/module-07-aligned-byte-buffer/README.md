@@ -1,6 +1,14 @@
 # Laboratory 57 — Aligned Byte Buffer
 
-This is the independent product for **Course 6, Module 57: Manual Allocation and Owning Unsafe Abstractions**. Read the [module chapter](../../course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) and complete its [workbook](../../course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/workbook.md) before consulting the reference implementation.
+**Course 6 · Module 57: Manual Allocation and Owning Unsafe Abstractions**
+
+[Chapter](../../course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) · [Workbook](../../course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/workbook.md) · [FrameVault guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Manual Allocation and Owning Unsafe Abstractions**: How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state? The product must make **Construct and validate `Layout` values without unchecked size arithmetic** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **allocator layout record** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -14,7 +22,7 @@ By the end, the answer must be visible in the public API, failure behavior, adve
 
 Build a fixed-length, zero-initialized byte owner using the global allocator. The public API is safe; the implementation owns one exact allocation layout and exposes only slices tied to ordinary borrows.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 This lab turns the allocator's raw pointer and layout pair into one ordinary owner. It teaches that allocation identity, length, requested alignment, initialization, slice access, movement, and deallocation are one invariant—not independent conveniences. Empty values are modeled without calling the allocator while retaining their validated alignment metadata.
 
@@ -66,7 +74,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Wo
 
 The laboratory is complete when the tests and documented failure paths pass, and you can answer this question without the chapter:
 
-> How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state?
+For **Laboratory 57 — Aligned Byte Buffer**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -76,3 +84,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Aligned Byte Buffer**.
+2. Draw the smallest **allocator layout record** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to FrameVault so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Construct and validate `Layout` values without unchecked size arithmetic.
+- Distinguish allocation capacity from initialized logical length.
+- Handle zero-length allocations without passing an invalid layout to the allocator.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 57 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **allocator layout record**. Defend why your design is simpler than one plausible alternative under the new requirements.

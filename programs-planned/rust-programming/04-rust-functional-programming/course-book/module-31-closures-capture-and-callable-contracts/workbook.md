@@ -1,8 +1,17 @@
 # Workbook — Module 31: Closures, Capture, and Callable Contracts
 
-[Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-closure-policy-matrix/README.md) · [LedgerFlow guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Closures, Capture, and Callable Contracts** without relying on surface syntax. Keep the module question in view: *What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Closures, Capture, and Callable Contracts** has become a usable model rather than remembered vocabulary. Its governing question is: *What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?* Preserve your first prediction and record decisive facts in a **closure capture map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 30 — Architectural Synthesis that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?**
+3. Draw the smallest **closure capture map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -114,7 +123,16 @@ Design a policy type that stores one normalizer and one scorer. Then describe th
 
 Write a test strategy that proves a normalizer runs before a scorer for every item, the scorer runs exactly once per item, and a fallback is not called on the successful path. Do not rely only on the final output value.
 
+### Interleaved reasoning pass
 
+1. For **Distinguish function items, function pointers, and anonymous closure types**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the closure capture map.
+2. For **Predict closure capture mode and the resulting `Fn`, `FnMut`, and `FnOnce` capabilities**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the closure capture map.
+3. For **Choose the weakest callable bound that exactly matches an API’s invocation contract**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the closure capture map.
+4. For **Use `move` deliberately without assuming that every move closure is `FnOnce`**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the closure capture map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Closures, Capture, and Callable Contracts** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
 
@@ -122,7 +140,7 @@ This laboratory turns closure capability into observable product behavior. The e
 
 ### Product problem
 
-A job evaluator has three callable boundaries with different invocation rights:
+A job reviewer has three callable boundaries with different invocation rights:
 
 - a fallback factory is optional work and may consume an owned recovery token;
 - a classifier runs once per input and may keep call-local state;
@@ -176,6 +194,18 @@ Be prepared to answer:
 5. Which test proves call count rather than merely output equality?
 
 The executable starter and reference implementation are in [module-01-closure-policy-matrix](../../labs/module-01-closure-policy-matrix/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Closure Policy Matrix**, record:
+
+- the public behavior that demonstrates **Distinguish function items, function pointers, and anonymous closure types**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -251,6 +281,10 @@ Reject these designs in your design note:
 - inserting `move` without a capture audit;
 - hiding classification history inside a globally shared counter.
 
+### Capstone invariant trace
+
+For the Module 31 LedgerFlow increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Do not advance because the calendar day ended. Advance when all hard evidence is present.
@@ -288,3 +322,7 @@ Design a callback boundary for a retrying job runner: one callback observes ever
 ### Spaced review
 
 Repeat questions 2, 4, 7, and 10 after 24 hours. Repeat the reconstruction after seven days with a different domain.
+
+### Closed-book defense
+
+In five minutes, answer “What does a closure capture, which callable traits does it implement, and what invocation contract should an API require?” using the **closure capture map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside LedgerFlow. A list of APIs without the deciding relationship is incomplete.

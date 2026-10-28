@@ -2,6 +2,59 @@
 
 The capstone supports the course-book. It exists to force cross-layer transfer after each mechanism has been understood in isolation.
 
+## How this capstone completes the course
+
+Memory Workspace is a single-threaded document workspace with generational handles, borrowed views, staged edits, snapshots, weak observers, caches, and explicit memory accounting. Every feature exists to make an ownership or lifetime relationship observable.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; Memory Workspace proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | A document handle is valid only when both slot and generation match. |
+| 2 | Borrowed views never outlive the workspace or snapshot that owns their bytes. |
+| 3 | An edit commits only against the revision it was prepared from. |
+| 4 | Strong snapshots own liveness; weak observers never keep data alive. |
+| 5 | Cache validity is tied to revision and runtime borrows never escape their operation. |
+| 6 | Memory reports name their inclusions and exclusions instead of claiming exact heap truth. |
+
+For each Memory Workspace change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 11 | Places, Move Paths, and Advanced Borrowing | Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations | [Borrow Surgery](../labs/module-01-borrow-surgery/README.md) |
+| 12 | Lifetime Relationships and Borrowed APIs | Translate lifetime syntax into constraints among borrows rather than durations attached to values | [Zero-Copy Records](../labs/module-02-zero-copy-records/README.md) |
+| 13 | Scoped Access and Escape Prevention | Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation | [Scoped Visitors](../labs/module-03-scoped-visitors/README.md) |
+| 14 | RAII, Drop, Unwinding, and Failure Atomicity | Derive local, field, tuple, temporary, and scope destruction order from documented rules | [RAII Resource Pool](../labs/module-04-resource-pool/README.md) |
+| 15 | Box, Deref, Dynamically Sized Types, and Cow | Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership | [Boxed Expression Tree](../labs/module-05-boxed-expressions/README.md) |
+| 16 | Rc, Weak, and Ownership Graphs | Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts | [Shared Ownership Graph](../labs/module-06-rc-weak-graph/README.md) |
+| 17 | Interior Mutability and Runtime Borrows | Explain UnsafeCell as the primitive behind interior mutability while remaining within safe APIs | [Revisioned Interior Cache](../labs/module-07-interior-cache/README.md) |
+| 18 | Memory Representation, Validity, and Layout | Separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation | [Layout Observatory](../labs/module-08-layout-observatory/README.md) |
+| 19 | Subtyping, Variance, PhantomData, and Drop Checking | State lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally | [Variance Branding](../labs/module-09-variance-branding/README.md) |
+| 20 | Pinning and Address-Sensitive Design | Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants | [Pinned Tracker](../labs/module-10-pinned-tracker/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **pinning contract** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. Memory Workspace ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## Product
 
 **Memory Workspace** is an in-memory document workspace with handles, snapshots, edit sessions, and caches.

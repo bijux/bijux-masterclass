@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 39: Combinator Laws and Cost Models
+# Reasoned Solutions — Module 39: Combinator Laws and Cost Models
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-combinator-contracts/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Combinator Laws and Cost Models**, not to substitute for an attempt. The decisive question is: *What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 39: Combinator Laws and Cost Models**. Compare the reasoning against this question: *What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ The single chain generally performs one traversal and no intermediate collection
 
 Extract named parsing and validation functions, choose one explicit error policy, and use a small loop or named iterator adaptor where state is substantial. Materialize only at an algorithmic boundary such as sorting. Return a domain result type if callers need diagnostics and values together. The goal is not fewer lines; it is making item type, failure, order, and ownership apparent. Keep combinators where they express simple local transformations.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-09-combinator-contracts/solution`](../../labs/module-09-combinator-contracts/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **Combinator Laws and Cost Models**, compare the contract, invariant, failur
 - Reject combinator designs that hide control flow, destroy diagnostics, or produce unusable types.
 
 A complete explanation of **Combinator Laws and Cost Models** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?
+
+Build a **law and counterexample table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Design domain combinators that preserve type and error meaning.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **State and test laws such as identity, idempotence, order preservation, and partition consistency where they truly apply.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Reason about closure capture, allocation, cloning, and materialization costs without claiming unmeasured optimization.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Choose lazy or eager return types based on lifetime, API, and reuse constraints.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Reject combinator designs that hide control flow, destroy diagnostics, or produce unusable types.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Design domain combinators that preserve type and error meaning.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the law and counterexample table.
+
+### Laboratory transfer review
+
+For [Combinator Contracts](../../labs/module-09-combinator-contracts/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 39 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Combinator Laws and Cost Models**, which relationship decides this question: “What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 32: The Iterator Model
+# Reasoned Solutions — Module 32: The Iterator Model
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the LedgerFlow engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-lazy-log-query/README.md) · [LedgerFlow guide](../capstone.md)
 
-Use these explanations to review your reasoning about **The Iterator Model**, not to substitute for an attempt. The decisive question is: *What state does an iterator own, when does work happen, and what is consumed by each call to next?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 32: The Iterator Model**. Compare the reasoning against this question: *What state does an iterator own, when does work happen, and what is consumed by each call to next?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -96,9 +96,7 @@ After a filter whose predicate outcome is unknown, the lower bound may be zero a
 
 The explicit loop is usually clearer because the control flow contains four different outcomes: skip, stop, accept, and diagnose. A chain can still be appropriate if named stage functions preserve these distinctions, but a dense mixture of `take_while`, `filter_map`, `inspect`, and external mutation obscures stopping and error policy. Select by whether a reader can identify item type, consumption, order, and failure without mentally executing nested closures.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-02-lazy-log-query/solution`](../../labs/module-02-lazy-log-query/solution). Before reading it, write down:
 
@@ -119,3 +117,42 @@ For **The Iterator Model**, compare the contract, invariant, failure behavior, o
 - Treat `size_hint`, `ExactSizeIterator`, and `FusedIterator` as contracts rather than optimization decoration.
 
 A complete explanation of **The Iterator Model** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What state does an iterator own, when does work happen, and what is consumed by each call to next?
+
+Build a **iterator state trace**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Explain the distinct roles of `IntoIterator`, `Iterator`, adapters, and consumers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Trace the state changes caused by repeated calls to `next`.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Predict whether an iteration path borrows, mutably borrows, or consumes its source.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use `by_ref`, `peekable`, and fused boundaries without losing track of consumed items.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Treat `size_hint`, `ExactSizeIterator`, and `FusedIterator` as contracts rather than optimization decoration.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Explain the distinct roles of `IntoIterator`, `Iterator`, adapters, and consumers.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the iterator state trace.
+
+### Laboratory transfer review
+
+For [Lazy Log Query](../../labs/module-02-lazy-log-query/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In LedgerFlow, Module 32 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **The Iterator Model**, which relationship decides this question: “What state does an iterator own, when does work happen, and what is consumed by each call to next?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to LedgerFlow?

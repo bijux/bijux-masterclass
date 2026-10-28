@@ -1,6 +1,8 @@
-# Module 86 Solutions — Observability: Structured Tracing, Metrics, and Diagnostic Context
+# Reasoned Solutions — Module 86: Observability: Structured Tracing, Metrics, and Diagnostic Context
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-06-structured-observability-harness/README.md) · [MetricRail guide](../capstone.md)
+
+Use these notes only after preserving your prediction and repair for **Module 86: Observability: Structured Tracing, Metrics, and Diagnostic Context**. Compare the reasoning against this question: *What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Signal reasoning
 
@@ -90,3 +92,42 @@ MetricRail should distinguish protocol invalidity, store/series capacity, mailbo
 ## Part 6 — Defense
 
 Metrics answer aggregate rate/distribution, traces answer one operation’s path, events capture discrete context, and health answers admission/lifecycle state. High-cardinality labels create unbounded series. Advisory metrics can drift; owned state/task registries are authoritative. Redaction should be default behavior of sensitive types. Liveness is process function; readiness is admission; degradation is limited service; diagnostics explain. Stable schemas use named bounded fields and versioned semantics. Test fields, codes, redaction, and relationships rather than unstable prose. A deliberately omitted signal is correct when its cost, cardinality, or privacy risk exceeds its operational value.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?
+
+Build a **signal dictionary**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Design stable event names and fields that preserve causal context across async and threaded work.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Choose metric types and label sets without creating unbounded cardinality.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Distinguish live advisory telemetry from authoritative product state.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Propagate request, operation, tenant, and retry identities without recording secrets.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the signal dictionary.
+
+### Reference implementation comparison
+
+For [Structured Observability Harness](../../labs/module-06-structured-observability-harness/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 86 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Observability: Structured Tracing, Metrics, and Diagnostic Context**, which relationship decides this question: “What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

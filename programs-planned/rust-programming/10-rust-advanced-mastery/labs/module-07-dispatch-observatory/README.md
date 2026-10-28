@@ -1,6 +1,14 @@
-# Laboratory 7 — Dispatch Observatory
+# Laboratory 97 — Dispatch Observatory
 
-[Course 10](../../README.md) · [Common laboratory method](../../../START_HERE.md#laboratory-method)
+**Course 10 · Module 97: From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size**
+
+[Chapter](../../course-book/module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/index.md) · [Workbook](../../course-book/module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/workbook.md) · [AxiomStore guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size**: How do type-level architecture and compiler decisions become concrete symbols, call paths, layouts, and artifact size—and which observations are stable enough to guide design? The product must make **Explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **source-to-artifact observation** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -49,6 +57,29 @@ Repeat the observatory with a larger scorer whose implementation dominates call 
 
 Inspect `solution/` after your parity suite is complete. The reference is intentionally small and provides no credible performance result by itself. Compare semantic boundaries and extension authority; retain your own measurement dossier.
 
-### Completion standard
+### Mechanism-specific completion standard
 
 You can choose dispatch from openness and caller requirements, establish parity before measurement, and label every size or speed conclusion with its artifact scope. A benchmark table without a variation map is incomplete.
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Dispatch Observatory**.
+2. Draw the smallest **source-to-artifact observation** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to AxiomStore so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Whole-laboratory completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication.
+- Compare static dispatch, enum dispatch, and trait-object dispatch through behavior, extension model, call shape, and measured artifact cost.
+- Inspect symbols, section sizes, assembly, and layout observations for one pinned target and profile without claiming portability.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 97 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **source-to-artifact observation**. Defend why your design is simpler than one plausible alternative under the new requirements.

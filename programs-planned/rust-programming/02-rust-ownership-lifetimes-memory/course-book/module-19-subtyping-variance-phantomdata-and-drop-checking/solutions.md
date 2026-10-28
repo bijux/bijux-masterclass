@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 19: Subtyping, Variance, PhantomData, and Drop Checking
+# Reasoned Solutions — Module 19: Subtyping, Variance, PhantomData, and Drop Checking
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-09-variance-branding/README.md) · [Memory Workspace guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Subtyping, Variance, PhantomData, and Drop Checking**, not to substitute for an attempt. The decisive question is: *When may a longer-lived capability substitute for a shorter requirement, and what semantic relationships must marker types communicate?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 19: Subtyping, Variance, PhantomData, and Drop Checking**. Compare the reasoning against this question: *When may a longer-lived capability substitute for a shorter requirement, and what semantic relationships must marker types communicate?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -86,9 +86,7 @@ Use these explanations to review your reasoning about **Subtyping, Variance, Pha
 
 Derive the variance of an unfamiliar wrapper, choose a marker deliberately, and compare compile-time brands with runtime generational handles.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-09-variance-branding/solution`](../../labs/module-09-variance-branding/solution). Before reading it, write down:
 
@@ -109,3 +107,42 @@ For **Subtyping, Variance, PhantomData, and Drop Checking**, compare the contrac
 - Use higher-ranked generative brands to prevent cross-scope identity mixing and explain why generations remain necessary for slot reuse.
 
 A complete explanation of **Subtyping, Variance, PhantomData, and Drop Checking** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> When may a longer-lived capability substitute for a shorter requirement, and what semantic relationships must marker types communicate?
+
+Build a **variance and substitution table**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **State lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Compose variance through shared references, mutable references, cells, function arguments/results, and generic wrappers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Read outlives bounds and destructor use without claiming owned values are borrowed for the bound lifetime.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Choose PhantomData shapes from ownership, borrowing, variance, auto-trait, and drop-check semantics, while treating current drop-check details as version-sensitive.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Use higher-ranked generative brands to prevent cross-scope identity mixing and explain why generations remain necessary for slot reuse.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **State lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the variance and substitution table.
+
+### Laboratory transfer review
+
+For [Variance Branding](../../labs/module-09-variance-branding/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Memory Workspace, Module 19 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Subtyping, Variance, PhantomData, and Drop Checking**, which relationship decides this question: “When may a longer-lived capability substitute for a shorter requirement, and what semantic relationships must marker types communicate?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Memory Workspace?

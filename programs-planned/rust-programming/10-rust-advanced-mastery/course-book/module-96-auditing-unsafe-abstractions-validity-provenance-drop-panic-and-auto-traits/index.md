@@ -1,8 +1,11 @@
 # Module 96 — Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits
 
-**96/100** · Course 10 · Module 96 of 100
+**Course 10 · Day 6 · Module 96 of 100**
+`████████████████████████░` **96/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-inline-batch/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 95: Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries](../module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/index.md) · [Module 97: From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size →](../module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/index.md)
 
 ## The question
 
@@ -12,9 +15,15 @@
 
 Course 6 introduced unsafe Rust at external and allocation boundaries. Course 10 returns to unsafe code from the reviewer’s perspective. The central skill is not writing a clever pointer operation; it is auditing the complete safe abstraction that makes the operation reachable. Soundness depends on validity, provenance, alignment, initialization, aliasing, lifetime, panic behavior, drop behavior, and auto-trait exposure working together. A local `SAFETY:` comment is useful only when it names facts established elsewhere and those facts remain true on every path.
 
-Course 6 taught how to write narrow unsafe mechanisms. This module changes perspective: you are now the reviewer responsible for the complete safe abstraction and every state from construction through destruction.
+Course 6 taught how to build narrow unsafe mechanisms behind safe interfaces. Course 10 changes the perspective: you are now responsible for the entire abstraction—constructors, state transitions, failure paths, panic, drop, forgetting, and auto traits. A locally plausible pointer operation is irrelevant if any safe entry point can invalidate its preconditions before the next operation.
 
-Course 6 taught how to write small unsafe boundaries. Course 10 raises the standard: review the entire safe abstraction, including constructors, failure paths, drop, forgetting, and auto traits. A locally plausible pointer operation is irrelevant if a safe method can invalidate its preconditions before the next call.
+### Prerequisite bridge
+
+Module 95 established **Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries**. Before continuing, verify that you can compare static, enum, and dynamic designs through semantics, diagnostics, code size, and extension ownership rather than slogans. This module preserves that capability and adds the ability to write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation. Module 97, **From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size**, will rely on both when it asks: *How do type-level architecture and compiler decisions become concrete symbols, call paths, layouts, and artifact size—and which observations are stable enough to guide design?*
+
+### Scope boundary
+
+This module owns the reasoning for **auditing unsafe abstractions: validity, provenance, drop, panic, and auto traits** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -125,6 +134,24 @@ Unsafe Rust allows the implementation to assert obligations the compiler cannot 
 
 If the dossier cannot fit on a few reviewable pages, shrink the abstraction or return to safe storage. The goal is not to demonstrate unsafe expertise but to make the safe surface boring.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation, construct one positive and one causal negative example. Mark the first decisive fact in the **unsafe state-and-operation dossier** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For separate Rust validity from application invariants and explain which violations can create undefined behavior, construct one positive and one causal negative example. Mark the first decisive fact in the **unsafe state-and-operation dossier** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For trace pointer provenance, allocation identity, alignment, initialization, aliasing, and lifetime as independent obligations, construct one positive and one causal negative example. Mark the first decisive fact in the **unsafe state-and-operation dossier** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For audit normal return, recoverable error, panic, partial initialization, move, and drop paths for exactly-once cleanup, construct one positive and one causal negative example. Mark the first decisive fact in the **unsafe state-and-operation dossier** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Treat `InlineBatch<T, N>` as a state machine. Before reading an unsafe line, write the initialized-prefix invariant and the exact transition order for push, pop, clear, and drop. Then test zero capacity and a destructor-counting type.
@@ -220,7 +247,4 @@ Read `MaybeUninit`, pointer, and Rustonomicon material with the current validity
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Audited Inline Batch](../../labs/module-06-inline-batch/README.md).
-3. Apply Module 96 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 97 — From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size](../module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

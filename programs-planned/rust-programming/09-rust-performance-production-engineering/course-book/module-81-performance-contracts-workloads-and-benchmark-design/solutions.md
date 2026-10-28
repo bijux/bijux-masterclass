@@ -1,8 +1,8 @@
-# Module 81 Solutions — Performance Contracts, Workloads, and Benchmark Design
+# Reasoned Solutions — Module 81: Performance Contracts, Workloads, and Benchmark Design
 
-[Workbook](workbook.md) · [Chapter](index.md) · [MetricRail guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-benchmark-integrity-clinic/README.md) · [MetricRail guide](../capstone.md)
 
-These solutions model the reasoning expected from a production engineer. Exact numbers are not canonical; boundaries, preserved semantics, and causal interpretation are.
+Use these notes only after preserving your prediction and repair for **Module 81: Performance Contracts, Workloads, and Benchmark Design**. Compare the reasoning against this question: *What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction reasoning
 
@@ -20,7 +20,7 @@ A batch-oriented internal pipeline with spare deadline budget might accept the c
 
 ### 4. A three-percent CI gate
 
-Ordinary shared CI hosts often vary by more than three percent because of scheduling, frequency scaling, thermal state, neighboring workloads, allocator state, and toolchain changes. The gate will fail good changes and miss real regressions hidden by a favorable run. A defensible hard gate needs a controlled runner, stable workload and profile, repeated samples, a historical noise model, a minimum practical effect size, semantic tests, and a review route for borderline cases. Even then, broad scenario regressions often deserve a report rather than an automatic block.
+Ordinary shared CI hosts often vary by more than three percent because of scheduling, frequency scaling, thermal state, neighboring workloads, allocator state, and toolchain changes. The gate will fail good changes and miss real regressions hidden by a favorable run. A defensible non-negotiable requirement needs a controlled runner, stable workload and profile, repeated samples, a historical noise model, a minimum practical effect size, semantic tests, and a review route for borderline cases. Even then, broad scenario regressions often deserve a report rather than an automatic block.
 
 ### 5. Representative skew
 
@@ -104,3 +104,42 @@ The charter should keep four distinct routes: parser microbenchmarks, batch/aggr
 ## Part 6 — Defense
 
 The five terms are operation, workload, environment, metric, and correctness oracle. Setup belongs inside only when the named product operation pays it. Equal outputs may still differ in accepted input, error semantics, ordering, limits, or resource behavior. The oracle prevents optimization from silently changing those properties. Distributions expose variability and tail paths. Microbenchmarks identify mechanisms, scenarios expose integration costs, and load tests expose saturation. Baselines need source, toolchain, profile, target, lockfile, corpus, parameters, and host conditions. Refuse to publish any result whose boundary or comparison changed after measurements were seen.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?
+
+Build a **performance claim and workload record**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Separate latency, throughput, utilization, memory footprint, startup cost, binary size, and tail behavior instead of combining them into one score.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Design microbenchmarks that exclude setup and validation costs unless those costs belong to the product operation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Choose warm-up, sample, batching, parameterization, and baseline policy deliberately.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Detect dead-code elimination, constant folding, cache-only workloads, allocator contamination, and benchmark-driven semantic drift.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the performance claim and workload record.
+
+### Reference implementation comparison
+
+For [Benchmark Integrity Clinic](../../labs/module-01-benchmark-integrity-clinic/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In MetricRail, Module 81 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Performance Contracts, Workloads, and Benchmark Design**, which relationship decides this question: “What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to MetricRail?

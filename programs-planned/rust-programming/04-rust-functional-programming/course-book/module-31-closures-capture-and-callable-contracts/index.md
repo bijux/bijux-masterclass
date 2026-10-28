@@ -1,9 +1,11 @@
-# 31 — Closures, Capture, and Callable Contracts
+# Module 31 — Closures, Capture, and Callable Contracts
 
-**Course 4, day 1 · Module 31 of 90**  
-`██████████░░░░░░░░░░` **31/90**
+**Course 4 · Day 1 · Module 31 of 100**
+`████████░░░░░░░░░░░░░░░░░` **31/100**
 
-[← Module 30: Architectural Synthesis](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 32: The Iterator Model →](../module-32-the-iterator-model/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-closure-policy-matrix/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 30: Architectural Synthesis](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [Module 32: The Iterator Model →](../module-32-the-iterator-model/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Course 3 treated callable behavior largely through traits and objects. Course 4 begins inside the callable value itself: what a closure captures, whether it mutates or consumes that environment, and how many times a caller may invoke it. This capability model is required before iterator pipelines can be reasoned about honestly.
+
+### Prerequisite bridge
+
+Module 30 established **Architectural Synthesis**. Before continuing, verify that you can defend the selected architecture and identify a credible alternative. This module preserves that capability and adds the ability to distinguish function items, function pointers, and anonymous closure types. Module 32, **The Iterator Model**, will rely on both when it asks: *What state does an iterator own, when does work happen, and what is consumed by each call to next?*
+
+### Scope boundary
+
+This module owns the reasoning for **closures, capture, and callable contracts** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -102,7 +112,7 @@ assert_eq!(apply_twice(3, increment), 5);
 assert_eq!(apply_twice(3, |x| x * 2), 12);
 ```
 
-### Decision rule
+### Decision rule — Function items can be more flexible than pointers
 
 Use a named function when the behavior needs no environment and deserves a stable name. Use a closure when behavior is local or parameterized by nearby values. Accept a generic callable when one concrete callable flows through the call. Use a function pointer only when pointer semantics are intentional. Use a boxed callable only when heterogeneous storage, runtime replacement, or recursive type erasure is a real requirement.
 
@@ -190,7 +200,7 @@ println!("{}", read_len());
 
 The repair is not automatically `move` or `clone`. Ask whether the callable must be stored. Sometimes calling a named helper immediately makes the desired borrow scope obvious.
 
-### Decision rule
+### Decision rule — Hidden lifetime extension
 
 Treat closure capture as dataflow into an anonymous struct. List its fields conceptually. Then derive borrowing, mutability, and lifetime consequences from how the body uses those fields.
 
@@ -292,7 +302,7 @@ Conceptually, the call traits correspond to receiver strengths:
 
 Their direct methods are not ordinary stable syntax for application code, but this receiver model explains why the bounds differ.
 
-### Decision rule
+### Decision rule — Method-call intuition
 
 Count invocations first. Then determine whether the callback must remain callable after each invocation. Choose `FnOnce` for at-most-once, `FnMut` for repeated calls with permitted state mutation, and `Fn` only when repeated calls must not require mutable access to the callable.
 
@@ -375,7 +385,7 @@ A stored non-`move` closure may hold a borrow across a larger region than expect
 
 Cloning the entire environment is not a neutral repair.
 
-### Decision rule
+### Decision rule — Deferred borrows
 
 Use `move` when the callable must own its environment or cross a scope that borrowed captures cannot. Then separately derive the call trait from what invocation does. Record when deferred work and deferred failure occur.
 
@@ -463,7 +473,7 @@ The caller can reuse the same counter or collector across parts.
 
 Returning `impl Fn(A) -> B` hides the concrete closure type but still commits to one concrete type per function body. Different branches cannot return unrelated closure types under one `impl Fn` without additional erasure or restructuring.
 
-### Decision rule
+### Decision rule — Return type and API stability
 
 Write the invocation protocol in prose: maximum call count, whether captured state may change, whether the callable is stored, whether it crosses threads, and whether borrowed captures are permitted. Derive bounds from that protocol only.
 
@@ -561,7 +571,7 @@ type Predicate<T> = Box<dyn Fn(&T) -> bool>;
 
 It does not change ownership, allocation, lifetime, or dispatch semantics. Names are not mechanisms.
 
-### Decision rule
+### Decision rule — Type aliases do not erase generic complexity
 
 Return `impl Fn*` when one hidden concrete callable is enough. Parameterize a struct by `F` when each instance stores one concrete callable. Use `Box<dyn Fn*>` only for true runtime heterogeneity, recursive erasure, or stable binary-facing storage constraints that generic types cannot satisfy.
 
@@ -683,6 +693,24 @@ fn resolve(primary: Option<String>, fallback: Box<dyn Fn() -> String>) -> String
 
 Boxing adds allocation and erasure without heterogeneous storage or runtime replacement. It also requires `Fn`, excluding consuming fallbacks. Generic `FnOnce` is both simpler and more capable.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish function items, function pointers, and anonymous closure types, construct one positive and one causal negative example. Mark the first decisive fact in the **closure capture map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For predict closure capture mode and the resulting `Fn`, `FnMut`, and `FnOnce` capabilities, construct one positive and one causal negative example. Mark the first decisive fact in the **closure capture map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For choose the weakest callable bound that exactly matches an API’s invocation contract, construct one positive and one causal negative example. Mark the first decisive fact in the **closure capture map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use `move` deliberately without assuming that every move closure is `FnOnce`, construct one positive and one causal negative example. Mark the first decisive fact in the **closure capture map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **LedgerFlow**, a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports. Define LedgerFlow callbacks for filtering, mapping, and policy decisions with the weakest callable capability that matches actual invocation and capture behavior. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -713,11 +741,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust Reference: Closure expressions](https://doc.rust-lang.org/reference/expressions/closure-expr.html)
 - [Fn traits](https://doc.rust-lang.org/std/ops/trait.Fn.html)
 
-[← Module 30](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 32 →](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md)
+[← Module 30](../../../03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 32 →](../../../04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md)
 
 ## Continue
 
-1. Complete the [Module 31 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 31 — Closure Policy Matrix](../../labs/module-01-closure-policy-matrix/README.md) from its public contract.
-3. Apply the Module 31 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 32 — The Iterator Model](../module-32-the-iterator-model/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

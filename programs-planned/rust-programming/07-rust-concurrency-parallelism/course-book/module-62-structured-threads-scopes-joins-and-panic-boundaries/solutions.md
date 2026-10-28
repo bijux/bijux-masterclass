@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries
+# Reasoned Solutions — Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the BatchWeave guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-scoped-slice-analysis/README.md) · [BatchWeave guide](../capstone.md)
 
-Scoped threads are not a trick for defeating `'static`. They express that child execution is subordinate to one parent operation. The strongest solutions make borrowed-data lifetime, complete joining, failure classification, and mutation commit policy visible together.
-
-The answers below are reasoning models, not scripts to imitate. A different implementation can be stronger when it proves the same contract more directly. Compare ownership, synchronization, progress, failure, and determinism—not only surface syntax.
+Use these notes only after preserving your prediction and repair for **Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries**. Compare the reasoning against this question: *How can borrowed data, thread lifetime, completion, and panic handling be enclosed by one parent operation rather than leaked into the rest of the program?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction solutions
 
@@ -81,3 +79,42 @@ The inspection stage is deliberately scoped because it borrows a parsed manifest
 The defense should state that `'static` constrains contained references, scopes contain child lifetime, and disjoint mutable work is established through partitioning before spawn. It must also separate lifetime safety from load balance and describe whether errors permit partial mutation. “The compiler accepts it” does not answer the commit policy.
 
 A strong defense states what is guaranteed for every allowed schedule, what is merely likely on one machine, and what the design intentionally leaves unspecified.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How can borrowed data, thread lifetime, completion, and panic handling be enclosed by one parent operation rather than leaked into the rest of the program?
+
+Build a **join and panic tree**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Explain the real meaning of a `T: 'static` bound and why owned values can satisfy it.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Use `thread::scope` to borrow immutable and disjoint mutable data safely.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Partition mutable state before spawning rather than attempt to prove disjointness after overlap exists.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Treat a scope as a lifecycle boundary, not merely a lifetime workaround.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Choose whether to join handles explicitly inside the scope or rely on scope completion and panic propagation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Explain the real meaning of a `T: 'static` bound and why owned values can satisfy it.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the join and panic tree.
+
+### Reference implementation comparison
+
+For [Scoped Slice Analysis](../../labs/module-02-scoped-slice-analysis/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In BatchWeave, Module 62 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Structured Threads: Scopes, Joins, and Panic Boundaries**, which relationship decides this question: “How can borrowed data, thread lifetime, completion, and panic handling be enclosed by one parent operation rather than leaked into the rest of the program?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to BatchWeave?

@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 10: Integration and Independent Change
+# Reasoned Solutions — Module 10: Integration and Independent Change
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-inventory-ledger/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Integration and Independent Change**, not to substitute for an attempt. The decisive question is: *Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 10: Integration and Independent Change**. Compare the reasoning against this question: *Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -128,9 +128,7 @@ Mastery is demonstrated by independent prediction, change, and defense. Referenc
 
 Implement an unseen command across every taskboard layer, add adversarial tests, and explain the ownership and failure model without running the code.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-10-inventory-ledger/solution`](../../labs/module-10-inventory-ledger/solution). Before reading it, write down:
 
@@ -151,3 +149,42 @@ For **Integration and Independent Change**, compare the contract, invariant, fai
 - Defend design choices, rejected alternatives, known limitations, and verification boundaries with concrete evidence.
 
 A complete explanation of **Integration and Independent Change** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?
+
+Build a **whole-program invariant map**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Preserve failure atomicity, deterministic behavior, and public invariants while refactoring across architectural layers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Review unfamiliar Rust for ownership workarounds, swallowed errors, invalid-state models, and missing evidence.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Build a closed-book small program and an independent capstone feature from specification only.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Defend design choices, rejected alternatives, known limitations, and verification boundaries with concrete evidence.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the whole-program invariant map.
+
+### Laboratory transfer review
+
+For [Inventory Ledger](../../labs/module-10-inventory-ledger/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 10 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Integration and Independent Change**, which relationship decides this question: “Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

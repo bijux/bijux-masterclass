@@ -1,171 +1,227 @@
-# Rust Programming Course Map
+# The One-Hundred-Module Course Map
 
-The ninety modules form one sequence. The number identifies the intellectual position, not merely the folder. Each course assumes the prior capstones and reasoning records.
-
-```text
-values → resources → contracts → dataflow → generation
-       → systems boundaries → concurrency → async services
-       → performance and production operation
-```
-
-## Course responsibilities
-
-| Course | Modules | Governing question | Capstone |
-|---:|---:|---|---|
-| 1 | 1–10 | How do values, types, ownership, failure, and program structure form a complete safe Rust program? | **Taskboard** |
-| 2 | 11–20 | How do permissions, provenance, cleanup, sharing, representation, variance, and address sensitivity shape memory-safe APIs? | **Memory Workspace** |
-| 3 | 21–30 | How do types promise lawful behavior, vary statically or dynamically, compose, encode protocols, and evolve? | **Review Engine** |
-| 4 | 31–40 | How do capture, lazy traversal, fallibility, accumulation, structural sharing, effects, and cost form explicit dataflow? | **LedgerFlow** |
-| 5 | 41–50 | Which compile-time declaration should own generated syntax, diagnostics, metadata, and build data? | **CommandForge** |
-| 6 | 51–60 | How do bytes, filesystems, processes, allocation, unsafe code, C ABIs, callbacks, and foreign resources cross safe boundaries? | **FrameVault** |
-| 7 | 61–70 | Which facts remain true across legal thread schedules, synchronization, cancellation, failure, and parallel work distribution? | **BatchWeave** |
-| 8 | 71–80 | How do futures, tasks, framing, protocols, backpressure, deadlines, retries, and shutdown behave with remote peers? | **JobWire** |
-| 9 | 81–90 | How do measurement, performance, memory, observability, reliability, security, release engineering, and operation make the product defensible? | **MetricRail** |
-
-## The ninety modules
-
-Read the sequence vertically. Each module names one governing question and one place where the cumulative capstone must become more mature. The course boundary changes the dominant lens, but earlier ownership, error, cleanup, and boundedness contracts remain active.
+The module numbers are global. Each course occupies ten days and ends with an independent change that requires all ten modules to work together.
 
 ## Course 1 — Rust Foundations
 
-1. [Compilation, Expressions, and Types](01-rust-foundations/course-book/module-01-compilation-expressions-and-types/index.md)
-2. [Control Flow, Functions, and Invariants](01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md)
-3. [Ownership, Moves, Copying, and Destruction](01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md)
-4. [Borrowing, References, Slices, and Strings](01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md)
-5. [Structs, Enums, Methods, and Pattern Matching](01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md)
-6. [Collections, Iterators, and Closures](01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md)
-7. [Errors, Parsing, Files, and Persistence](01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md)
-8. [Generics, Traits, Conversions, and Lifetime Basics](01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md)
-9. [Crates, Modules, Public APIs, Tests, and Documentation](01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md)
-10. [Integration and Independent Change](01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md)
+Course 1 makes ordinary Rust legible. It teaches you to read expressions as typed values, track ownership deliberately, model states with data types, treat failures as part of the interface, and finish a small program whose behavior is protected at several boundaries.
 
-Continue through the **Taskboard** engineering guide before the course final review.
+**Capstone:** Taskboard
+**Handoff:** Course 2 returns to ownership at a deeper level: places, loans, lifetimes, destruction, shared liveness, representation, variance, and pinning.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [1 — Compilation, Expressions, and Types](01-rust-foundations/course-book/module-01-compilation-expressions-and-types/index.md) | How does Rust turn source text into a typed program, and what type and value does every expression produce? | [Measurement Report](01-rust-foundations/labs/module-01-measurement-report/README.md) |
+| [2 — Control Flow, Functions, and Invariants](01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md) | How can control flow make every path, boundary, and loop invariant visible enough to test and review? | [Control-Flow Policy Engine](01-rust-foundations/labs/module-02-control-flow-policy/README.md) |
+| [3 — Ownership, Moves, Copying, and Destruction](01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md) | Who owns each resource after every assignment, call, return, destructure, and scope exit? | [Ownership Intake Pipeline](01-rust-foundations/labs/module-03-ownership-intake/README.md) |
+| [4 — Borrowing, References, Slices, and Strings](01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md) | Which temporary permissions does an operation require, and how narrowly can those permissions be scoped? | [Borrowed Catalog](01-rust-foundations/labs/module-04-borrowed-catalog/README.md) |
+| [5 — Structs, Enums, Methods, and Pattern Matching](01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md) | How can the type system make valid states representable and contradictory states difficult or impossible to construct? | [Typed Workflow State Machine](01-rust-foundations/labs/module-05-state-machine/README.md) |
+| [6 — Collections, Iterators, and Closures](01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md) | Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow? | [In-Memory Task Board](01-rust-foundations/labs/module-06-in-memory-board/README.md) |
+| [7 — Errors, Parsing, Files, and Persistence](01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md) | Which failures are part of the product contract, where are they detected, and what state is visible after failure? | [Versioned Record Codec](01-rust-foundations/labs/module-07-record-codec/README.md) |
+| [8 — Generics, Traits, Conversions, and Lifetime Basics](01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md) | What behavior is genuinely shared, what constraints make it valid, and what borrow relationship must a signature expose? | [Trait and Lifetime Boundary](01-rust-foundations/labs/module-08-traits-and-lifetimes/README.md) |
+| [9 — Crates, Modules, Public APIs, Tests, and Documentation](01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md) | Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary? | [Library Boundary Refactor](01-rust-foundations/labs/module-09-library-boundaries/README.md) |
+| [10 — Integration and Independent Change](01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md) | Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression? | [Inventory Ledger](01-rust-foundations/labs/module-10-inventory-ledger/README.md) |
+
+**Course exit:** Build a small persistent inventory program from a behavioral contract. It must use typed states, contextual errors, deterministic storage, a library/binary split, and tests that protect both successful and failing behavior.
 
 ## Course 2 — Ownership, Lifetimes, and Memory
 
-11. [Places, Move Paths, and Advanced Borrowing](02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md)
-12. [Lifetime Relationships and Borrowed APIs](02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md)
-13. [Scoped Access and Escape Prevention](02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md)
-14. [RAII, Drop, Unwinding, and Failure Atomicity](02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md)
-15. [Box, Deref, Dynamically Sized Types, and Cow](02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md)
-16. [Rc, Weak, and Ownership Graphs](02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md)
-17. [Interior Mutability and Runtime Borrows](02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md)
-18. [Memory Representation, Validity, and Layout](02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md)
-19. [Subtyping, Variance, PhantomData, and Drop Checking](02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md)
-20. [Pinning and Address-Sensitive Design](02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md)
+Course 2 turns the ownership rules from Course 1 into a design language for memory. You learn to derive borrow relationships, reason about cleanup and unwinding, choose smart pointers by liveness topology, use interior mutability without hiding reentrancy hazards, and distinguish semantic guarantees from layout observations.
 
-Continue through the **Memory Workspace** engineering guide before the course final review.
+**Capstone:** Memory Workspace
+**Handoff:** Course 3 asks how several types can promise lawful behavior and how those contracts shape an architecture that can vary and evolve.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [11 — Places, Move Paths, and Advanced Borrowing](02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md) | Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely? | [Borrow Surgery](02-rust-ownership-lifetimes-memory/labs/module-01-borrow-surgery/README.md) |
+| [12 — Lifetime Relationships and Borrowed APIs](02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md) | What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent? | [Zero-Copy Records](02-rust-ownership-lifetimes-memory/labs/module-02-zero-copy-records/README.md) |
+| [13 — Scoped Access and Escape Prevention](02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md) | Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable? | [Scoped Visitors](02-rust-ownership-lifetimes-memory/labs/module-03-scoped-visitors/README.md) |
+| [14 — RAII, Drop, Unwinding, and Failure Atomicity](02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md) | Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic? | [RAII Resource Pool](02-rust-ownership-lifetimes-memory/labs/module-04-resource-pool/README.md) |
+| [15 — Box, Deref, Dynamically Sized Types, and Cow](02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md) | When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally? | [Boxed Expression Tree](02-rust-ownership-lifetimes-memory/labs/module-05-boxed-expressions/README.md) |
+| [16 — Rc, Weak, and Ownership Graphs](02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md) | Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear? | [Shared Ownership Graph](02-rust-ownership-lifetimes-memory/labs/module-06-rc-weak-graph/README.md) |
+| [17 — Interior Mutability and Runtime Borrows](02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md) | Which logically hidden mutation justifies runtime enforcement, and how can guard scope and reentrancy remain controlled? | [Revisioned Interior Cache](02-rust-ownership-lifetimes-memory/labs/module-07-interior-cache/README.md) |
+| [18 — Memory Representation, Validity, and Layout](02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md) | Is a claim a language guarantee, a standard-library contract, a target-conditioned fact, a current observation, or an unsupported assumption? | [Layout Observatory](02-rust-ownership-lifetimes-memory/labs/module-08-layout-observatory/README.md) |
+| [19 — Subtyping, Variance, PhantomData, and Drop Checking](02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) | When may a longer-lived capability substitute for a shorter requirement, and what semantic relationships must marker types communicate? | [Variance Branding](02-rust-ownership-lifetimes-memory/labs/module-09-variance-branding/README.md) |
+| [20 — Pinning and Address-Sensitive Design](02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md) | What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely? | [Pinned Tracker](02-rust-ownership-lifetimes-memory/labs/module-10-pinned-tracker/README.md) |
+
+**Course exit:** Build a revisioned record store with borrowed queries, generational identity, a staged mutation protocol, shared immutable snapshots, and a written liveness and cleanup analysis.
 
 ## Course 3 — Traits, Generics, and Architectural Design
 
-21. [Traits as Behavioral Contracts](03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md)
-22. [Associated Types and Type Families](03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md)
-23. [Coherence and Implementation Ownership](03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md)
-24. [Static Polymorphism and Opaque Types](03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md)
-25. [Trait Objects and Dynamic Polymorphism](03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md)
-26. [Composition and OOP-Style Design Without Inheritance](03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md)
-27. [Typestate and Capability-Oriented APIs](03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md)
-28. [Boundary Traits and Adapters](03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md)
-29. [Public API Evolution](03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md)
-30. [Architectural Synthesis](03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md)
+Course 3 turns traits and generics into architectural tools rather than syntax exercises. It teaches contracts and laws, associated type families, coherence, static and dynamic dispatch, composition, typestate, adapters, and compatibility-aware public APIs.
 
-Continue through the **Review Engine** engineering guide before the course final review.
+**Capstone:** Review Engine
+**Handoff:** Course 4 keeps these contracts but asks how values, failure, demand, and effects compose through closures, iterators, reductions, and persistent transformations.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [21 — Traits as Behavioral Contracts](03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md) | What behavior truly belongs in a shared contract, and which laws must every implementation preserve? | [Contract Boundaries](03-rust-traits-generics-architectural-design/labs/module-01-contract-boundaries/README.md) |
+| [22 — Associated Types and Type Families](03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md) | When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API? | [Associated Families](03-rust-traits-generics-architectural-design/labs/module-02-associated-families/README.md) |
+| [23 — Coherence and Implementation Ownership](03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md) | Which crate owns the right to create an implementation, and how can a public design preserve coherence without giving up adaptation? | [Coherence Adapters](03-rust-traits-generics-architectural-design/labs/module-03-coherence-adapters/README.md) |
+| [24 — Static Polymorphism and Opaque Types](03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md) | When should concrete types remain visible to the compiler, and how can an API hide implementation details without erasing static guarantees? | [Static Pipeline](03-rust-traits-generics-architectural-design/labs/module-04-static-pipeline/README.md) |
+| [25 — Trait Objects and Dynamic Polymorphism](03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md) | When is run-time heterogeneity real, what information does a trait object erase, and what must remain dispatchable? | [Dynamic Command Bus](03-rust-traits-generics-architectural-design/labs/module-05-dynamic-command-bus/README.md) |
+| [26 — Composition and OOP-Style Design Without Inheritance](03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md) | How do you obtain encapsulation, substitution, and reusable behavior through composition rather than inheritance? | [Composed Renderer](03-rust-traits-generics-architectural-design/labs/module-06-composed-renderer/README.md) |
+| [27 — Typestate and Capability-Oriented APIs](03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md) | Which illegal operations can be removed from the API by representing protocol state and authority in types? | [Typestate Publication](03-rust-traits-generics-architectural-design/labs/module-07-typestate-publication/README.md) |
+| [28 — Boundary Traits and Adapters](03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md) | How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model? | [Boundary Ports](03-rust-traits-generics-architectural-design/labs/module-08-boundary-ports/README.md) |
+| [29 — Public API Evolution](03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md) | How can a public trait-based API evolve when downstream crates may both call it and implement it? | [Evolvable SDK](03-rust-traits-generics-architectural-design/labs/module-09-evolvable-sdk/README.md) |
+| [30 — Architectural Synthesis](03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md) | Given a real source of variation, how do you choose among enums, generics, trait objects, closures, functions, and ordinary composition? | [Inspection Platform](03-rust-traits-generics-architectural-design/labs/module-10-inspection-platform/README.md) |
+
+**Course exit:** Build a plugin-capable inspection service with one static pipeline, one dynamic registry, a typestate builder, reusable contract tests, and a written compatibility policy.
 
 ## Course 4 — Functional Rust
 
-31. [Closures, Capture, and Callable Contracts](04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md)
-32. [The Iterator Model](04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md)
-33. [Iterator Algebra and Pipeline Shape](04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md)
-34. [Folds, Scans, and Short-Circuiting](04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md)
-35. [Option, Result, and Fallible Traversal](04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md)
-36. [Custom Iterators and Collection Protocols](04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md)
-37. [Recursive Data and Structural Sharing](04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md)
-38. [Functional Core and Effect Isolation](04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md)
-39. [Combinator Laws and Cost Models](04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md)
-40. [Functional Architecture Synthesis](04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md)
+Course 4 develops a functional style that remains honest about ownership and mutation. You learn to derive closure capabilities, read iterator pipelines as state machines, choose reductions and short-circuiting deliberately, compose fallible traversal, implement custom iteration, and isolate effects around a deterministic core.
 
-Continue through the **LedgerFlow** engineering guide before the course final review.
+**Capstone:** LedgerFlow
+**Handoff:** Course 5 moves repetition and cross-surface consistency to compile time, but only when one declaration genuinely deserves authority over several generated Rust surfaces.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [31 — Closures, Capture, and Callable Contracts](04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md) | What does a closure capture, which callable traits does it implement, and what invocation contract should an API require? | [Closure Policy Matrix](04-rust-functional-programming/labs/module-01-closure-policy-matrix/README.md) |
+| [32 — The Iterator Model](04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md) | What state does an iterator own, when does work happen, and what is consumed by each call to next? | [Lazy Log Query](04-rust-functional-programming/labs/module-02-lazy-log-query/README.md) |
+| [33 — Iterator Algebra and Pipeline Shape](04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md) | How do adapters change item type, cardinality, order, ownership, and stopping behavior across a pipeline? | [Record-Shaping Pipeline](04-rust-functional-programming/labs/module-03-record-shaping-pipeline/README.md) |
+| [34 — Folds, Scans, and Short-Circuiting](04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md) | What invariant does an accumulator maintain, and when should a traversal continue, emit intermediate state, or stop early? | [Streaming Metrics](04-rust-functional-programming/labs/module-04-streaming-metrics/README.md) |
+| [35 — Option, Result, and Fallible Traversal](04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md) | Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default? | [Resilient Import](04-rust-functional-programming/labs/module-05-resilient-import/README.md) |
+| [36 — Custom Iterators and Collection Protocols](04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md) | What laws must a custom traversal obey, and who owns the collection when iteration begins? | [Custom Cursors](04-rust-functional-programming/labs/module-06-custom-cursors/README.md) |
+| [37 — Recursive Data and Structural Sharing](04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md) | How can recursive values be transformed without hiding ownership, rebuilding cost, or structural sharing? | [Persistent History](04-rust-functional-programming/labs/module-07-persistent-history/README.md) |
+| [38 — Functional Core and Effect Isolation](04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md) | Which decisions can remain pure, which effects must occur at the boundary, and what data should cross between them? | [Deterministic Batch Runner](04-rust-functional-programming/labs/module-08-deterministic-batch-runner/README.md) |
+| [39 — Combinator Laws and Cost Models](04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md) | What semantic laws should a combinator preserve, and what can honestly be claimed about evaluation and cost? | [Combinator Contracts](04-rust-functional-programming/labs/module-09-combinator-contracts/README.md) |
+| [40 — Functional Architecture Synthesis](04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md) | How do closure, iterator, error, reduction, structural-sharing, and effect decisions compose into a readable whole system? | [Route Analysis Engine](04-rust-functional-programming/labs/module-10-route-analysis-engine/README.md) |
+
+**Course exit:** Build a deterministic route-analysis engine whose parser, fallible transformation, reductions, persistent history, borrowed queries, and effect shell can be tested independently.
 
 ## Course 5 — Rust Metaprogramming
 
-41. [Metaprogramming Boundaries and the Expansion Model](05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/index.md)
-42. [Declarative Macros: Matchers, Fragments, and Repetition](05-rust-metaprogramming/course-book/module-42-declarative-macros-matchers-fragments-and-repetition/index.md)
-43. [Recursive Macro Parsing and Token-Tree Techniques](05-rust-metaprogramming/course-book/module-43-recursive-macro-parsing-and-token-tree-techniques/index.md)
-44. [Hygiene, Scope, Paths, and Cross-Crate Macros](05-rust-metaprogramming/course-book/module-44-hygiene-scope-paths-and-cross-crate-macros/index.md)
-45. [Macro Diagnostics, Testing, and Public API Design](05-rust-metaprogramming/course-book/module-45-macro-diagnostics-testing-and-public-api-design/index.md)
-46. [Procedural Macro Execution and TokenStream Engineering](05-rust-metaprogramming/course-book/module-46-procedural-macro-execution-and-tokenstream-engineering/index.md)
-47. [Custom Derive Macros and Structural Generation](05-rust-metaprogramming/course-book/module-47-custom-derive-macros-and-structural-generation/index.md)
-48. [Attribute Macros and Item Transformation](05-rust-metaprogramming/course-book/module-48-attribute-macros-and-item-transformation/index.md)
-49. [Function-Like Procedural Macros and Typed DSLs](05-rust-metaprogramming/course-book/module-49-function-like-procedural-macros-and-typed-dsls/index.md)
-50. [Build Scripts, Generated Code, and Compile-Time Architecture](05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md)
+Course 5 treats metaprogramming as language and authority design. It covers declarative grammar, recursive token processing, hygiene, diagnostics, procedural-macro phases, derives, attributes, typed DSLs, and deterministic build generation.
 
-Continue through the **CommandForge** engineering guide before the course final review.
+**Capstone:** CommandForge
+**Handoff:** Course 6 leaves the compiler boundary and crosses external byte, file, process, allocator, ABI, callback, and foreign-resource boundaries.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [41 — Metaprogramming Boundaries and the Expansion Model](05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/index.md) | Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs? | [Decision Table Generator](05-rust-metaprogramming/labs/module-01-decision-table-generator/README.md) |
+| [42 — Declarative Macros: Matchers, Fragments, and Repetition](05-rust-metaprogramming/course-book/module-42-declarative-macros-matchers-fragments-and-repetition/index.md) | How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics? | [Typed Map Macro](05-rust-metaprogramming/labs/module-02-typed-map-macro/README.md) |
+| [43 — Recursive Macro Parsing and Token-Tree Techniques](05-rust-metaprogramming/course-book/module-43-recursive-macro-parsing-and-token-tree-techniques/index.md) | How can a declarative macro process a nontrivial token language with explicit parser state, guaranteed progress, and bounded complexity? | [State Machine DSL](05-rust-metaprogramming/labs/module-03-state-machine-dsl/README.md) |
+| [44 — Hygiene, Scope, Paths, and Cross-Crate Macros](05-rust-metaprogramming/course-book/module-44-hygiene-scope-paths-and-cross-crate-macros/index.md) | Whose names should generated code resolve, and how do you make exported macros survive nesting, imports, and dependency renaming? | [Exported Registry Macro](05-rust-metaprogramming/labs/module-04-exported-registry-macro/README.md) |
+| [45 — Macro Diagnostics, Testing, and Public API Design](05-rust-metaprogramming/course-book/module-45-macro-diagnostics-testing-and-public-api-design/index.md) | How do you prove that a macro accepts the intended language, rejects misuse for the intended reason, and remains an evolvable public API? | [Diagnostic Enum Macro](05-rust-metaprogramming/labs/module-05-diagnostic-enum-macro/README.md) |
+| [46 — Procedural Macro Execution and TokenStream Engineering](05-rust-metaprogramming/course-book/module-46-procedural-macro-execution-and-tokenstream-engineering/index.md) | What does the compiler actually give a procedural macro, what can the macro know, and how should tokens, spans, errors, and effects be handled? | [TokenStream Inspector](05-rust-metaprogramming/labs/module-06-token-stream-inspector/README.md) |
+| [47 — Custom Derive Macros and Structural Generation](05-rust-metaprogramming/course-book/module-47-custom-derive-macros-and-structural-generation/index.md) | How do you inspect a Rust item, preserve its generics and constraints, and generate a lawful implementation without pretending to perform type checking? | [Field Names Derive](05-rust-metaprogramming/labs/module-07-field-names-derive/README.md) |
+| [48 — Attribute Macros and Item Transformation](05-rust-metaprogramming/course-book/module-48-attribute-macros-and-item-transformation/index.md) | How do you validate and transform an attached item while preserving the parts of its public contract that the attribute does not own? | [Checked Handler Attribute](05-rust-metaprogramming/labs/module-08-checked-handler-attribute/README.md) |
+| [49 — Function-Like Procedural Macros and Typed DSLs](05-rust-metaprogramming/course-book/module-49-function-like-procedural-macros-and-typed-dsls/index.md) | How do you turn custom syntax into an AST, validate cross-entry semantics, normalize the model, and generate compact typed Rust? | [Route Table DSL](05-rust-metaprogramming/labs/module-09-route-table-dsl/README.md) |
+| [50 — Build Scripts, Generated Code, and Compile-Time Architecture](05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md) | How do you integrate macros and build generation into a deterministic architecture with one source of truth and no overlapping authority? | [Generated Code Build](05-rust-metaprogramming/labs/module-10-generated-code-build/README.md) |
+
+**Course exit:** Build a small generated command or protocol catalog using at least two distinct macro mechanisms. Every generated fact must have one authority, targeted invalid-input diagnostics, and expansion tests.
 
 ## Course 6 — Rust Systems Programming
 
-51. [Binary Data Contracts: Bytes, Endianness, and Checked Parsing](06-rust-systems-programming/course-book/module-51-binary-data-contracts/index.md)
-52. [Files, Durability, and Transactional Replacement](06-rust-systems-programming/course-book/module-52-files-durability-and-transactional-replacement/index.md)
-53. [Paths, Names, and Platform Boundaries](06-rust-systems-programming/course-book/module-53-paths-names-and-platform-boundaries/index.md)
-54. [Processes, Environments, and Standard Streams](06-rust-systems-programming/course-book/module-54-processes-environments-and-standard-streams/index.md)
-55. [Unsafe Rust as a Proof Boundary](06-rust-systems-programming/course-book/module-55-unsafe-rust-and-safety-proofs/index.md)
-56. [Raw Pointers, Provenance, and Uninitialized Memory](06-rust-systems-programming/course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/index.md)
-57. [Manual Allocation and Owning Unsafe Abstractions](06-rust-systems-programming/course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/index.md)
-58. [C FFI: ABI, Strings, Pointers, and Error Boundaries](06-rust-systems-programming/course-book/module-58-c-ffi-abi-strings-and-error-boundaries/index.md)
-59. [Foreign Resources, Callbacks, and Wrapper Architecture](06-rust-systems-programming/course-book/module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md)
-60. [Integrated Systems Design, Testing, and Audit](06-rust-systems-programming/course-book/module-60-integrated-systems-design-and-audit/index.md)
+Course 6 connects Rust to hostile bytes, filesystems, native paths, child processes, raw storage, allocators, C callers, callbacks, and foreign resources. Unsafe Rust appears only after the safe product contract and proof boundary are explicit.
 
-Continue through the **FrameVault** engineering guide before the course final review.
+**Capstone:** FrameVault
+**Handoff:** Course 7 introduces legal schedules: values and resources now move among threads, synchronization carries visibility, and termination becomes a first-class product property.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing](06-rust-systems-programming/course-book/module-51-binary-data-contracts/index.md) | How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning? | [Checked Frame Codec](06-rust-systems-programming/labs/module-01-checked-frame-codec/README.md) |
+| [52 — Files, Durability, and Transactional Replacement](06-rust-systems-programming/course-book/module-52-files-durability-and-transactional-replacement/index.md) | What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state? | [Atomic Archive Store](06-rust-systems-programming/labs/module-02-atomic-archive-store/README.md) |
+| [53 — Paths, Names, and Platform Boundaries](06-rust-systems-programming/course-book/module-53-paths-names-and-platform-boundaries/index.md) | How do you manipulate host paths without pretending that every operating-system name is UTF-8, every component is harmless, or every lookup remains stable? | [Sandboxed Extraction Paths](06-rust-systems-programming/labs/module-03-sandboxed-extraction-paths/README.md) |
+| [54 — Processes, Environments, and Standard Streams](06-rust-systems-programming/course-book/module-54-processes-environments-and-standard-streams/index.md) | How do you launch another program without turning arguments into shell syntax, leaking ambient state, deadlocking on pipes, or misreporting its result? | [Bounded Process Capture](06-rust-systems-programming/labs/module-04-bounded-process-capture/README.md) |
+| [55 — Unsafe Rust as a Proof Boundary](06-rust-systems-programming/course-book/module-55-unsafe-rust-and-safety-proofs/index.md) | What additional obligation begins when the compiler can no longer prove a memory-safety condition, and how do you make that obligation small, local, and reviewable? | [Unsafe Slice Kernel](06-rust-systems-programming/labs/module-05-unsafe-slice-kernel/README.md) |
+| [56 — Raw Pointers, Provenance, and Uninitialized Memory](06-rust-systems-programming/course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) | How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation? | [Panic-Safe Batch Builder](06-rust-systems-programming/labs/module-06-panic-safe-batch-builder/README.md) |
+| [57 — Manual Allocation and Owning Unsafe Abstractions](06-rust-systems-programming/course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/index.md) | How do you turn a raw allocation into one safe owner whose length, layout, initialization, destruction, and failure behavior remain correct for every state? | [Aligned Byte Buffer](06-rust-systems-programming/labs/module-07-aligned-byte-buffer/README.md) |
+| [58 — C FFI: ABI, Strings, Pointers, and Error Boundaries](06-rust-systems-programming/course-book/module-58-c-ffi-abi-strings-and-error-boundaries/index.md) | How do you cross a C ABI while keeping representation, ownership, nullability, string encoding, failure, and unwinding contracts explicit on both sides? | [C ABI Line Validator](06-rust-systems-programming/labs/module-08-c-abi-archive-validator/README.md) |
+| [59 — Foreign Resources, Callbacks, and Wrapper Architecture](06-rust-systems-programming/course-book/module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md) | How do you wrap a foreign handle so ownership, borrowing, destruction, callbacks, reentrancy, and error channels become ordinary Rust obligations? | [Opaque Foreign Session](06-rust-systems-programming/labs/module-09-opaque-foreign-session/README.md) |
+| [60 — Integrated Systems Design, Testing, and Audit](06-rust-systems-programming/course-book/module-60-integrated-systems-design-and-audit/index.md) | How do you prove a systems product across binary formats, files, paths, processes, unsafe code, allocation, and FFI without letting one boundary invalidate another? | [Systems Boundary Audit](06-rust-systems-programming/labs/module-10-systems-boundary-audit/README.md) |
+
+**Course exit:** Build a checked packet archive with transactional output, one justified unsafe storage abstraction or a written rejection of it, and a stateless C validation boundary.
 
 ## Course 7 — Rust Concurrency and Parallelism
 
-61. [Module 61: Threads, Schedules, Send, Sync, and Race Freedom](07-rust-concurrency-parallelism/course-book/module-61-threads-schedules-send-sync-and-race-freedom/index.md)
-62. [Module 62: Structured Threads: Scopes, Joins, and Panic Boundaries](07-rust-concurrency-parallelism/course-book/module-62-structured-threads-scopes-joins-and-panic-boundaries/index.md)
-63. [Module 63: Shared State: Locks and Protected Invariants](07-rust-concurrency-parallelism/course-book/module-63-shared-state-locks-and-protected-invariants/index.md)
-64. [Module 64: Coordination: Condvars, Barriers, and Phase Protocols](07-rust-concurrency-parallelism/course-book/module-64-coordination-condvars-barriers-and-phase-protocols/index.md)
-65. [Module 65: Message Passing, Backpressure, and Shutdown](07-rust-concurrency-parallelism/course-book/module-65-message-passing-backpressure-and-shutdown/index.md)
-66. [Module 66: Liveness: Deadlock, Cancellation, and Recovery](07-rust-concurrency-parallelism/course-book/module-66-liveness-deadlock-cancellation-and-recovery/index.md)
-67. [Module 67: Atomics, Happens-Before, and Memory Ordering](07-rust-concurrency-parallelism/course-book/module-67-atomics-happens-before-and-memory-ordering/index.md)
-68. [Module 68: Lock-Free Protocols, Reclamation, and Unsafe Send/Sync](07-rust-concurrency-parallelism/course-book/module-68-lock-free-protocols-reclamation-and-unsafe-send-sync/index.md)
-69. [Module 69: Rayon, Work Stealing, and Deterministic Parallelism](07-rust-concurrency-parallelism/course-book/module-69-rayon-work-stealing-and-deterministic-parallelism/index.md)
-70. [Module 70: Integrated Concurrent Architecture, Testing, and Audit](07-rust-concurrency-parallelism/course-book/module-70-integrated-concurrent-architecture-testing-and-audit/index.md)
+Course 7 moves from single-threaded resource correctness to schedule-independent product reasoning. It covers thread transfer, scoped lifetimes, locks and invariants, condition predicates, message passing, liveness, atomics, one narrow lock-free proof, and deterministic parallel reduction.
 
-Continue through the **BatchWeave** engineering guide before the course final review.
+**Capstone:** BatchWeave
+**Handoff:** Course 8 replaces blocking thread stacks with suspended futures and adds network peers, byte-stream framing, protocol state, deadlines, retries, and graceful service shutdown.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [61 — Threads, Schedules, Send, Sync, and Race Freedom](07-rust-concurrency-parallelism/course-book/module-61-threads-schedules-send-sync-and-race-freedom/index.md) | What may cross a thread boundary, what may be shared through a reference, and which correctness problems remain after Rust has ruled out data races? | [Thread Handoff Matrix](07-rust-concurrency-parallelism/labs/module-01-thread-handoff-matrix/README.md) |
+| [62 — Structured Threads: Scopes, Joins, and Panic Boundaries](07-rust-concurrency-parallelism/course-book/module-62-structured-threads-scopes-joins-and-panic-boundaries/index.md) | How can borrowed data, thread lifetime, completion, and panic handling be enclosed by one parent operation rather than leaked into the rest of the program? | [Scoped Slice Analysis](07-rust-concurrency-parallelism/labs/module-02-scoped-slice-analysis/README.md) |
+| [63 — Shared State: Locks and Protected Invariants](07-rust-concurrency-parallelism/course-book/module-63-shared-state-locks-and-protected-invariants/index.md) | Which exact invariant does a lock protect, how small can the protected transition be, and what state remains valid after contention or panic? | [Protected Inventory](07-rust-concurrency-parallelism/labs/module-03-protected-inventory/README.md) |
+| [64 — Coordination: Condvars, Barriers, and Phase Protocols](07-rust-concurrency-parallelism/course-book/module-64-coordination-condvars-barriers-and-phase-protocols/index.md) | How do threads wait for a state predicate or phase transition without polling, lost wakeups, or treating notification itself as truth? | [Phase Gate](07-rust-concurrency-parallelism/labs/module-04-phase-gate/README.md) |
+| [65 — Message Passing, Backpressure, and Shutdown](07-rust-concurrency-parallelism/course-book/module-65-message-passing-backpressure-and-shutdown/index.md) | Which values cross ownership boundaries, how is capacity bounded, and which explicit protocol event proves that every sender, receiver, and worker can terminate? | [Bounded Map Pipeline](07-rust-concurrency-parallelism/labs/module-05-bounded-map-pipeline/README.md) |
+| [66 — Liveness: Deadlock, Cancellation, and Recovery](07-rust-concurrency-parallelism/course-book/module-66-liveness-deadlock-cancellation-and-recovery/index.md) | Why can every blocked operation eventually continue or terminate, and what happens when cancellation, panic, or partial infrastructure failure interrupts the normal path? | [Cancellable Worker Group](07-rust-concurrency-parallelism/labs/module-06-cancellable-worker-group/README.md) |
+| [67 — Atomics, Happens-Before, and Memory Ordering](07-rust-concurrency-parallelism/course-book/module-67-atomics-happens-before-and-memory-ordering/index.md) | Which fact does an atomic operation publish, which earlier writes become visible because of it, and what is the weakest ordering that proves the required relationship? | [Atomic Progress](07-rust-concurrency-parallelism/labs/module-07-atomic-progress/README.md) |
+| [68 — Lock-Free Protocols, Reclamation, and Unsafe Send/Sync](07-rust-concurrency-parallelism/course-book/module-68-lock-free-protocols-reclamation-and-unsafe-send-sync/index.md) | What proof permits shared raw storage to be accessed without a lock, and where do role confusion, ABA, destruction, or memory reclamation invalidate a locally plausible algorithm? | [Bounded SPSC Ring](07-rust-concurrency-parallelism/labs/module-08-spsc-ring/README.md) |
+| [69 — Rayon, Work Stealing, and Deterministic Parallelism](07-rust-concurrency-parallelism/course-book/module-69-rayon-work-stealing-and-deterministic-parallelism/index.md) | How can divisible computation use a work-stealing pool while preserving item meaning, reduction laws, failure policy, result ordering, and a defensible cost model? | [Parallel Histogram](07-rust-concurrency-parallelism/labs/module-09-parallel-histogram/README.md) |
+| [70 — Integrated Concurrent Architecture, Testing, and Audit](07-rust-concurrency-parallelism/course-book/module-70-integrated-concurrent-architecture-testing-and-audit/index.md) | How do ownership, bounded work, synchronization, liveness, panic, cancellation, atomics, deterministic reporting, and test evidence become one product whose strongest claims are reviewable? | [Concurrent Verifier](07-rust-concurrency-parallelism/labs/module-10-concurrent-verifier/README.md) |
+
+**Course exit:** Build a bounded concurrent verifier with a fixed worker group, explicit failure policy, cancellation, panic containment, complete join accounting, and deterministic final reconstruction.
 
 ## Course 8 — Rust Async and Networked Services
 
-71. [Module 71: Futures, Polling, Wakers, and Async State Machines](08-rust-async-networked-services/course-book/module-71-futures-polling-wakers-and-async-state-machines/index.md)
-72. [Module 72: Tokio Runtimes, Tasks, and Structured Async Lifecycles](08-rust-async-networked-services/course-book/module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/index.md)
-73. [Module 73: Async I/O, Buffers, Streams, and Framing](08-rust-async-networked-services/course-book/module-73-async-io-buffers-streams-and-framing/index.md)
-74. [Module 74: TCP, UDP, DNS, and Connection Lifecycles](08-rust-async-networked-services/course-book/module-74-tcp-udp-dns-and-connection-lifecycles/index.md)
-75. [Module 75: Protocol State Machines, Versioning, and Defensive Parsing](08-rust-async-networked-services/course-book/module-75-protocol-state-machines-versioning-and-defensive-parsing/index.md)
-76. [Module 76: Backpressure, Admission Control, and Fair Work Distribution](08-rust-async-networked-services/course-book/module-76-backpressure-admission-control-and-fair-work-distribution/index.md)
-77. [Module 77: Cancellation Safety, Deadlines, and Graceful Shutdown](08-rust-async-networked-services/course-book/module-77-cancellation-safety-deadlines-and-graceful-shutdown/index.md)
-78. [Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections](08-rust-async-networked-services/course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/index.md)
-79. [Module 79: Network Failure, Idempotency, Retries, and Deterministic Testing](08-rust-async-networked-services/course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md)
-80. [Module 80: Integrated Async Service Architecture, Testing, and Audit](08-rust-async-networked-services/course-book/module-80-integrated-async-service-architecture-testing-and-audit/index.md)
+Course 8 begins with the `Future::poll` contract and then builds Tokio task trees, bounded codecs, connection lifecycles, versioned protocols, admission control, cancellation-safe operations, a small Hyper surface, and idempotent retry policy.
 
-Continue through the **JobWire** engineering guide before the course final review.
+**Capstone:** JobWire
+**Handoff:** Course 9 asks whether the service’s performance, memory, reliability, observability, security, artifact, and operational claims are supported by representative evidence.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [71 — Futures, Polling, Wakers, and Async State Machines](08-rust-async-networked-services/course-book/module-71-futures-polling-wakers-and-async-state-machines/index.md) | What exactly is an async computation before a runtime executes it, what must happen when it cannot complete, and what state remains when it is suspended or cancelled? | [One-Shot Signal](08-rust-async-networked-services/labs/module-01-one-shot-signal/README.md) |
+| [72 — Tokio Runtimes, Tasks, and Structured Async Lifecycles](08-rust-async-networked-services/course-book/module-72-tokio-runtimes-tasks-and-structured-async-lifecycles/index.md) | Once futures are understood as poll-driven state machines, how should a runtime own, schedule, observe, cancel, and finish the tasks that execute them? | [Task Nursery](08-rust-async-networked-services/labs/module-02-task-nursery/README.md) |
+| [73 — Async I/O, Buffers, Streams, and Framing](08-rust-async-networked-services/course-book/module-73-async-io-buffers-streams-and-framing/index.md) | How do arbitrary, partial byte transfers become complete bounded messages without confusing readiness, reads, buffers, frames, or protocol meaning? | [Bounded Length Codec](08-rust-async-networked-services/labs/module-03-bounded-length-codec/README.md) |
+| [74 — TCP, UDP, DNS, and Connection Lifecycles](08-rust-async-networked-services/course-book/module-74-tcp-udp-dns-and-connection-lifecycles/index.md) | What lifecycle does each network transport actually provide, and where should connection admission, name resolution, deadlines, half-close, datagram loss, and peer identity be represented? | [Deadline Echo Service](08-rust-async-networked-services/labs/module-04-deadline-echo-service/README.md) |
+| [75 — Protocol State Machines, Versioning, and Defensive Parsing](08-rust-async-networked-services/course-book/module-75-protocol-state-machines-versioning-and-defensive-parsing/index.md) | Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope? | [Negotiated Command Protocol](08-rust-async-networked-services/labs/module-05-negotiated-command-protocol/README.md) |
+| [76 — Backpressure, Admission Control, and Fair Work Distribution](08-rust-async-networked-services/course-book/module-76-backpressure-admission-control-and-fair-work-distribution/index.md) | When demand exceeds service capacity, where may work wait, which bound is authoritative, and how does overload become an explicit product outcome instead of memory growth, latency collapse, or starvation? | [Bounded Relay Broker](08-rust-async-networked-services/labs/module-06-bounded-relay-broker/README.md) |
+| [77 — Cancellation Safety, Deadlines, and Graceful Shutdown](08-rust-async-networked-services/course-book/module-77-cancellation-safety-deadlines-and-graceful-shutdown/index.md) | When an async operation loses a race, exceeds a deadline, or receives shutdown, what state survives, which effects may already have committed, and how does every task reach a terminal joined state? | [Graceful Task Tree](08-rust-async-networked-services/labs/module-07-graceful-task-tree/README.md) |
+| [78 — HTTP Services with Hyper: Requests, Bodies, and Connections](08-rust-async-networked-services/course-book/module-78-http-services-with-hyper-requests-bodies-and-connections/index.md) | How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate? | [Hyper Health Surface](08-rust-async-networked-services/labs/module-08-hyper-health-surface/README.md) |
+| [79 — Network Failure, Idempotency, Retries, and Deterministic Testing](08-rust-async-networked-services/course-book/module-79-network-failure-idempotency-retries-and-deterministic-testing/index.md) | When a network operation fails without revealing whether the remote side committed it, how do idempotency, retry budgets, failure classification, and deterministic tests preserve one semantic outcome? | [Idempotent Retry Client](08-rust-async-networked-services/labs/module-09-idempotent-retry-client/README.md) |
+| [80 — Integrated Async Service Architecture, Testing, and Audit](08-rust-async-networked-services/course-book/module-80-integrated-async-service-architecture-testing-and-audit/index.md) | Can the complete service be explained as one coherent set of lifecycle, protocol, capacity, cancellation, failure, compatibility, and operational contracts rather than as a pile of async APIs? | [Async Service Audit](08-rust-async-networked-services/labs/module-10-async-service-audit/README.md) |
+
+**Course exit:** Build a bounded async command service with a length-delimited protocol, tracked task tree, explicit admission, honest health semantics, cancellation-safe shutdown, and deterministic timeout tests.
 
 ## Course 9 — Rust Performance and Production Engineering
 
-81. [Performance Contracts, Workloads, and Benchmark Design](09-rust-performance-production-engineering/course-book/module-81-performance-contracts-workloads-and-benchmark-design/index.md)
-82. [CPU Profiling, Cost Models, and Hot-Path Optimization](09-rust-performance-production-engineering/course-book/module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md)
-83. [Allocation, Memory Footprint, and Ownership Cost](09-rust-performance-production-engineering/course-book/module-83-allocation-memory-footprint-and-ownership-cost/index.md)
-84. [Data Movement, Buffering, and Zero-Copy Boundaries](09-rust-performance-production-engineering/course-book/module-84-data-movement-buffering-and-zero-copy-boundaries/index.md)
-85. [Runtime Efficiency: Contention, Queueing, Batching, and Async Load](09-rust-performance-production-engineering/course-book/module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md)
-86. [Observability: Structured Tracing, Metrics, and Diagnostic Context](09-rust-performance-production-engineering/course-book/module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md)
-87. [Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation](09-rust-performance-production-engineering/course-book/module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md)
-88. [Security and Supply-Chain Engineering](09-rust-performance-production-engineering/course-book/module-88-security-and-supply-chain-engineering/index.md)
-89. [Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases](09-rust-performance-production-engineering/course-book/module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md)
-90. [Production Readiness, Capacity Planning, Rollouts, and Incident Learning](09-rust-performance-production-engineering/course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md)
+Course 9 converts production claims into falsifiable contracts. It covers benchmark design, profiling, allocation and data movement, saturation and queueing, observability, reliability policy, threat modeling, supply-chain review, Cargo profiles, packaging, rollout, and incident learning.
 
-Continue through the **MetricRail** engineering guide before the course final review.
+**Capstone:** MetricRail
+**Handoff:** Course 10 synthesizes the entire program: advanced type relationships, compiler representations, unsafe review, verification strategy, compatibility, and long-lived architectural change.
 
-## How to read dependencies
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [81 — Performance Contracts, Workloads, and Benchmark Design](09-rust-performance-production-engineering/course-book/module-81-performance-contracts-workloads-and-benchmark-design/index.md) | What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception? | [Benchmark Integrity Clinic](09-rust-performance-production-engineering/labs/module-01-benchmark-integrity-clinic/README.md) |
+| [82 — CPU Profiling, Cost Models, and Hot-Path Optimization](09-rust-performance-production-engineering/course-book/module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md) | Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase? | [Profile-Guided Query Engine](09-rust-performance-production-engineering/labs/module-02-profile-guided-query-engine/README.md) |
+| [83 — Allocation, Memory Footprint, and Ownership Cost](09-rust-performance-production-engineering/course-book/module-83-allocation-memory-footprint-and-ownership-cost/index.md) | Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost? | [Allocation-Budgeted Batch Parser](09-rust-performance-production-engineering/labs/module-03-allocation-budgeted-batch-parser/README.md) |
+| [84 — Data Movement, Buffering, and Zero-Copy Boundaries](09-rust-performance-production-engineering/course-book/module-84-data-movement-buffering-and-zero-copy-boundaries/index.md) | Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost? | [Borrowed Record Window](09-rust-performance-production-engineering/labs/module-04-borrowed-record-window/README.md) |
+| [85 — Runtime Efficiency: Contention, Queueing, Batching, and Async Load](09-rust-performance-production-engineering/course-book/module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md) | When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency? | [Bounded Throughput Tuner](09-rust-performance-production-engineering/labs/module-05-bounded-throughput-tuner/README.md) |
+| [86 — Observability: Structured Tracing, Metrics, and Diagnostic Context](09-rust-performance-production-engineering/course-book/module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md) | What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally? | [Structured Observability Harness](09-rust-performance-production-engineering/labs/module-06-structured-observability-harness/README.md) |
+| [87 — Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation](09-rust-performance-production-engineering/course-book/module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md) | How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope? | [Overload Control Simulator](09-rust-performance-production-engineering/labs/module-07-overload-control-simulator/README.md) |
+| [88 — Security and Supply-Chain Engineering](09-rust-performance-production-engineering/course-book/module-88-security-and-supply-chain-engineering/index.md) | Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions? | [Attack Surface and Supply-Chain Audit](09-rust-performance-production-engineering/labs/module-08-attack-surface-and-supply-chain-audit/README.md) |
+| [89 — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases](09-rust-performance-production-engineering/course-book/module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md) | How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions? | [Release Matrix and Artifact Manifest](09-rust-performance-production-engineering/labs/module-09-release-matrix-and-artifact-manifest/README.md) |
+| [90 — Production Readiness, Capacity Planning, Rollouts, and Incident Learning](09-rust-performance-production-engineering/course-book/module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md) | What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design? | [Production Readiness Review](09-rust-performance-production-engineering/labs/module-10-production-readiness-review/README.md) |
 
-A later course may use an earlier mechanism without reteaching it. When a chapter uses an unfamiliar mechanism, follow the linked prerequisite rather than searching randomly. The progression revisits ideas at higher responsibility:
+**Course exit:** Take a bounded service and produce a complete production dossier: benchmark protocol, profile, memory and byte accounting, load curve, observability map, reliability policy, threat model, release manifest, and go/no-go decision.
 
-- ownership begins as move and borrow behavior, then becomes liveness, architecture, async state, and retained-memory cost;
-- errors begin as `Result`, then become protocol, FFI, concurrency, retry, and service-objective policy;
-- performance begins as algorithmic awareness, then becomes profiling, saturation, artifact configuration, and capacity planning;
-- testing begins as behavior checks, then expands to compiler cases, schedule control, hostile input, load, security, release, and rollback exercises.
+## Course 10 — Advanced Rust Mastery
+
+Course 10 is the synthesis course. It teaches compiler-phase reasoning, advanced trait solving, GATs and HRTBs, const-generic witnesses, opaque and erased types, whole-abstraction unsafe review, source-to-artifact analysis, verification strategy, API and data evolution, and architectural restraint.
+
+**Capstone:** AxiomStore
+**Handoff:** The program ends with independent transfer: you should be able to enter an unfamiliar Rust system, identify its authorities and proof boundaries, make a cross-cutting change, and state what remains uncertain.
+
+| Module | Main question | Independent lab |
+|---:|---|---|
+| [91 — Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen](10-rust-advanced-mastery/course-book/module-91-reading-rust-through-the-compiler-hir-mir-borrow-checking-and-codegen/index.md) | When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result? | [Compiler Evidence Notebook](10-rust-advanced-mastery/labs/module-01-compiler-evidence-notebook/README.md) |
+| [92 — Advanced Trait Solving: Goals, Projections, and Type Equality](10-rust-advanced-mastery/course-book/module-92-advanced-trait-solving-goals-projections-and-type-equality/index.md) | How do you design and debug APIs when the compiler must prove nested trait goals and normalize associated types before ordinary operations become legal? | [Projection-Driven Pipeline](10-rust-advanced-mastery/labs/module-02-projection-driven-pipeline/README.md) |
+| [93 — GATs, Higher-Ranked Bounds, and Lending Interfaces](10-rust-advanced-mastery/course-book/module-93-gats-higher-ranked-bounds-and-lending-interfaces/index.md) | How can an API return views tied to each borrow of `self` without pretending that every yielded value has one fixed lifetime? | [Lending Table](10-rust-advanced-mastery/labs/module-03-lending-table/README.md) |
+| [94 — Const Generics, Witness Types, and Compile-Time Invariants](10-rust-advanced-mastery/course-book/module-94-const-generics-witness-types-and-compile-time-invariants/index.md) | Which numeric and state facts belong in types, which remain runtime data, and how do you avoid turning a library into an unusable type-level calculator? | [Bounded Matrix](10-rust-advanced-mastery/labs/module-04-bounded-matrix/README.md) |
+| [95 — Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries](10-rust-advanced-mastery/course-book/module-95-opaque-and-erased-types-impl-trait-dyn-trait-any-and-plugin-boundaries/index.md) | When should an API hide one concrete type, erase many concrete types behind a contract, or preserve explicit variants—and what information is lost at each boundary? | [Erased Validator Registry](10-rust-advanced-mastery/labs/module-05-erased-validator-registry/README.md) |
+| [96 — Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits](10-rust-advanced-mastery/course-book/module-96-auditing-unsafe-abstractions-validity-provenance-drop-panic-and-auto-traits/index.md) | What exact proof makes a safe API implemented with unsafe code sound across every constructor, method, failure path, destructor, and thread-safety claim? | [Inline Batch](10-rust-advanced-mastery/labs/module-06-inline-batch/README.md) |
+| [97 — From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size](10-rust-advanced-mastery/course-book/module-97-from-source-to-machine-code-monomorphization-dispatch-layout-and-code-size/index.md) | How do type-level architecture and compiler decisions become concrete symbols, call paths, layouts, and artifact size—and which observations are stable enough to guide design? | [Dispatch Observatory](10-rust-advanced-mastery/labs/module-07-dispatch-observatory/README.md) |
+| [98 — Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration](10-rust-advanced-mastery/course-book/module-98-verification-beyond-examples-compile-fail-property-model-fuzz-miri-and-concurrency-exploration/index.md) | Which verification technique can falsify which kind of Rust claim, and how do you combine them without pretending that test volume equals proof? | [Model-Checked Log](10-rust-advanced-mastery/labs/module-08-model-checked-log/README.md) |
+| [99 — Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship](10-rust-advanced-mastery/course-book/module-99-long-lived-apis-semver-msrv-features-migrations-and-workspace-stewardship/index.md) | How do you evolve a Rust library, data format, feature graph, and workspace without silently breaking downstream source, behavior, tools, or stored data? | [Versioned SDK](10-rust-advanced-mastery/labs/module-09-versioned-sdk/README.md) |
+| [100 — Architectural Synthesis: Building and Defending a Long-Lived Rust System](10-rust-advanced-mastery/course-book/module-100-architectural-synthesis-building-and-defending-a-long-lived-rust-system/index.md) | Can you turn ten courses of mechanisms into one restrained architecture whose guarantees, unsafe core, verification evidence, compatibility policy, and operating limits can survive independent review? | [Architecture Council](10-rust-advanced-mastery/labs/module-10-architecture-council/README.md) |
+
+**Course exit:** Build a versioned embedded journal whose borrowed read API, runtime validators, bounded transaction representation, compatibility policy, unsafe-or-safe storage decision, and verification matrix are derived from an invariant ownership map.
+
+## Program completion
+
+The one-hundredth module is not a finish line based on page count. The program is complete when you can enter an unfamiliar Rust system, reconstruct its ownership and authority model, identify the decisive compiler or runtime facts, make one cross-cutting change, preserve compatibility and boundedness, and explain the remaining uncertainty.

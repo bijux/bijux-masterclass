@@ -1,6 +1,14 @@
-# Laboratory 8 — Attack Surface and Supply-Chain Audit
+# Laboratory 88 — Attack Surface and Supply-Chain Audit
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 88 chapter](../../course-book/module-88-security-and-supply-chain-engineering/index.md)
+**Course 9 · Module 88: Security and Supply-Chain Engineering**
+
+[Chapter](../../course-book/module-88-security-and-supply-chain-engineering/index.md) · [Workbook](../../course-book/module-88-security-and-supply-chain-engineering/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Security and Supply-Chain Engineering**: Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions? The product must make **Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **threat and dependency dossier** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -71,3 +79,25 @@ Turn at least three threat-table rows into executable tests or bounded experimen
 
 Which residual risk would cause the greatest real harm despite all implemented controls, and who owns the next mitigation? Support the answer with an attack path and observable evidence. Avoid ranking risks solely by theoretical severity when exploitability, exposure, and detection differ.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Attack Surface and Supply-Chain Audit**.
+2. Draw the smallest **threat and dependency dossier** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service.
+- Connect validation, authentication, authorization, confidentiality, integrity, and availability to specific boundaries.
+- Enforce size, time, concurrency, recursion, and decompression limits before expensive work.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 88 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **threat and dependency dossier**. Defend why your design is simpler than one plausible alternative under the new requirements.

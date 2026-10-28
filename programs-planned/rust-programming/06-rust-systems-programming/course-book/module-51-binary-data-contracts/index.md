@@ -1,9 +1,11 @@
-# 51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing
+# Module 51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing
 
-**Course 6, day 1 · Module 51 of 90**  
-`█████████████████░░░` **51/90**
+**Course 6 · Day 1 · Module 51 of 100**
+`█████████████░░░░░░░░░░░░` **51/100**
 
-[← Module 50: Build Scripts, Generated Code, and Compile-Time Architecture](../../../05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md) · [Course 6 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 52: Files, Durability, and Transactional Replacement →](../module-52-files-durability-and-transactional-replacement/index.md)
+[Program](../../../README.md) · [Course 6](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-01-checked-frame-codec/README.md) · [FrameVault guide](../capstone.md)
+
+[← Module 50: Build Scripts, Generated Code, and Compile-Time Architecture](../../../05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md) · [Module 52: Files, Durability, and Transactional Replacement →](../module-52-files-durability-and-transactional-replacement/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 The first five courses mostly operated after Rust values already existed. Systems work begins earlier. A file, pipe, device, or foreign function does not hand you a valid domain value; it hands you bytes plus a convention. Course 2 taught that bit patterns and Rust validity are not interchangeable. Module 51 turns that memory insight into an engineering method for real binary interfaces. Before touching raw pointers, you must be able to parse hostile bytes safely with ordinary Rust.
+
+### Prerequisite bridge
+
+Module 50 established **Build Scripts, Generated Code, and Compile-Time Architecture**. Before continuing, verify that you can review a multi-generator architecture for duplicate authority, hidden effects, and compatibility risk. This module preserves that capability and adds the ability to define a binary format as a versioned contract rather than a sequence of convenient writes. Module 52, **Files, Durability, and Transactional Replacement**, will rely on both when it asks: *What has actually been promised after a file operation succeeds: bytes written, buffers flushed, data synchronized, a name replaced, or a recoverable durable state?*
+
+### Scope boundary
+
+This module owns the reasoning for **binary data contracts: bytes, endianness, and checked parsing** inside Course 6. The course covers single-threaded systems boundaries and narrow unsafe abstractions. Threads, atomics, async I/O, networking, and production measurement are deferred so each external contract remains visible. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -295,6 +305,24 @@ The error variant and offset are part of the contract. A test that only asserts 
 
 Fuzzing later broadens the search, but the hand-derived matrix proves that you understand the grammar. A fuzzer is not a substitute for knowing where the boundaries are.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For define a binary format as a versioned contract rather than a sequence of convenient writes, construct one positive and one causal negative example. Mark the first decisive fact in the **binary layout and range proof** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For trace byte offsets, item widths, endianness, and length arithmetic before allocating, construct one positive and one causal negative example. Mark the first decisive fact in the **binary layout and range proof** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For build a bounds-first cursor that never advances after failure, construct one positive and one causal negative example. Mark the first decisive fact in the **binary layout and range proof** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For separate structural validity, textual validity, integrity checks, and domain validation, construct one positive and one causal negative example. Mark the first decisive fact in the **binary layout and range proof** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 FrameVault begins with a format module containing the magic bytes, limits, checked cursor, encoder, decoder, checksum, and typed errors. The first increment must round-trip empty archives, text and binary payloads, reject truncation at every byte boundary, reject oversized declarations before allocation, reject unknown flags, and reject trailing bytes.
@@ -317,7 +345,4 @@ You are ready when you can derive every slice boundary and allocation from check
 
 ## Continue
 
-1. Complete the [Module 51 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 51 — Checked Frame Codec](../../labs/module-01-checked-frame-codec/README.md) from its public contract.
-3. Apply the Module 51 increment in the [FrameVault engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 52 — Files, Durability, and Transactional Replacement](../module-52-files-durability-and-transactional-replacement/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

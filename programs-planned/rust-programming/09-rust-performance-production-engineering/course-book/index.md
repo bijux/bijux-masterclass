@@ -1,153 +1,99 @@
-# Rust Performance and Production Engineering
+# Course 9 — Rust Performance and Production Engineering
 
-Course 9 covers Modules 81–90. It begins where a conventional programming course often stops: the system is functionally correct, tested, concurrent, and networked. The remaining work is to make its cost, failure behavior, observability, security posture, artifact identity, and operational envelope explicit.
+## Measurement, Efficiency, Observability, Security, and Delivery
 
-## What this course is about
+## The promise
 
-Production engineering is not a miscellaneous final chapter containing benchmarking, logging, and deployment tips. It is the discipline of turning implementation behavior into claims that can be tested and operated.
+Course 9 converts production claims into falsifiable contracts. It covers benchmark design, profiling, allocation and data movement, saturation and queueing, observability, reliability policy, threat modeling, supply-chain review, Cargo profiles, packaging, rollout, and incident learning.
 
-A production claim must answer:
+> **Governing question:** Which measurements, resource bounds, signals, security controls, artifact records, and operating policies make a Rust system defensible under representative load?
 
-- **What behavior is authoritative?**
-- **Which workload and boundary are being discussed?**
-- **Which resources are bounded?**
-- **Which result is measured rather than guaranteed?**
-- **What happens under overload, dependency failure, malicious input, and partial rollout?**
-- **Which artifact and configuration were actually tested?**
-- **How is a bad change detected, stopped, and reversed?**
+Course 8 established a correct, bounded async service. Course 9 asks whether the service’s performance, memory, reliability, observability, security, release, and operating claims are supported by representative evidence. Correctness remains the oracle; measurement and operations add new evidence rather than replacing it.
 
-The course-book is the primary learning route. Each chapter develops one complete reasoning model, then applies it to a small program and to MetricRail. The workbooks test prediction, diagnosis, independent construction, transfer, and defense. Labs isolate mechanisms so you can see them clearly before they interact in the capstone.
+## Before Day 1
 
-## What you will be able to do
+You should be able to build bounded synchronous and asynchronous systems, state protocol and shutdown guarantees, separate live metrics from authoritative state, and preserve deterministic behavior under concurrency.
 
-After completing the course, you will be able to:
+From a blank page, sketch one earlier product or a comparable program. Mark an owner, a valid and invalid state, a failure path, cleanup, and a public promise. Repair any relationship you cannot explain before adding this course’s mechanisms.
 
-- define performance and production requirements as falsifiable contracts rather than vague aspirations
-- design benchmarks whose workload, boundary, oracle, environment, and statistical interpretation are explicit
-- use profiles and scaling models to identify causal costs before editing hot code
-- quantify allocation frequency, live memory, retained capacity, and ownership-driven lifetime cost
-- trace byte movement and choose deliberate borrow, share, move, or copy boundaries
-- measure saturation, queueing, contention, batching, and asynchronous scheduling under representative load
-- design structured traces, bounded metrics, health semantics, and redaction rules from operational questions
-- connect service-level objectives to admission, retries, degradation, and recovery policy
-- threat-model a Rust service and review dependencies, build scripts, privileges, secrets, and release provenance
-- choose Cargo profiles, feature matrices, targets, packaging, and CI checks as explicit product variants
-- derive capacity and rollout policy from measured resource demand and failure behavior
-- prepare and defend a complete production-readiness review for a specific artifact and workload envelope
+## Outcomes
 
-## Readiness diagnosis
+- Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle.
+- Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked.
+- Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count.
+- Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers.
+- Separate service time, wait time, queue depth, concurrency, throughput, and utilization.
+- Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer.
+- Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous.
+- Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service.
+- Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy.
+- Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery.
+- Integrate all ten mechanisms in MetricRail without creating competing authorities.
+- Complete and defend an unseen change using a production decision record.
 
-Before Module 81, answer these questions without running code:
+## The ten-day line
 
-1. Why can a lower average latency coexist with a worse p99?
-2. Why does `size_of::<Vec<T>>()` not describe the vector’s total memory cost?
-3. When can a borrowed 20-byte slice retain a much larger allocation?
-4. Why can increasing queue capacity lower rejection while worsening reliability?
-5. What is the difference between an event, a span, a metric, and an audit record?
-6. Why can a retry execute an operation twice even after the client observed a timeout?
-7. Which claims about binary layout or operating-system copying are target observations rather than Rust guarantees?
-8. What inputs determine a Cargo artifact?
-9. What is the difference between liveness and readiness?
-10. Why must rollback be rehearsed rather than merely documented?
+| Day | Module | Governing question | Capability that must become visible | Laboratory |
+|---:|---|---|---|---|
+| 1 | [81 — Performance Contracts, Workloads, and Benchmark Design](./module-81-performance-contracts-workloads-and-benchmark-design/index.md) | What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception? | **Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle.** | [Benchmark Integrity Clinic](../labs/module-01-benchmark-integrity-clinic/README.md) |
+| 2 | [82 — CPU Profiling, Cost Models, and Hot-Path Optimization](./module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md) | Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase? | **Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked.** | [Profile-Guided Query Engine](../labs/module-02-profile-guided-query-engine/README.md) |
+| 3 | [83 — Allocation, Memory Footprint, and Ownership Cost](./module-83-allocation-memory-footprint-and-ownership-cost/index.md) | Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost? | **Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count.** | [Allocation-Budgeted Batch Parser](../labs/module-03-allocation-budgeted-batch-parser/README.md) |
+| 4 | [84 — Data Movement, Buffering, and Zero-Copy Boundaries](./module-84-data-movement-buffering-and-zero-copy-boundaries/index.md) | Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost? | **Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers.** | [Borrowed Record Window](../labs/module-04-borrowed-record-window/README.md) |
+| 5 | [85 — Runtime Efficiency: Contention, Queueing, Batching, and Async Load](./module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md) | When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency? | **Separate service time, wait time, queue depth, concurrency, throughput, and utilization.** | [Bounded Throughput Tuner](../labs/module-05-bounded-throughput-tuner/README.md) |
+| 6 | [86 — Observability: Structured Tracing, Metrics, and Diagnostic Context](./module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md) | What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally? | **Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer.** | [Structured Observability Harness](../labs/module-06-structured-observability-harness/README.md) |
+| 7 | [87 — Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation](./module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md) | How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope? | **Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous.** | [Overload Control Simulator](../labs/module-07-overload-control-simulator/README.md) |
+| 8 | [88 — Security and Supply-Chain Engineering](./module-88-security-and-supply-chain-engineering/index.md) | Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions? | **Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service.** | [Attack Surface and Supply-Chain Audit](../labs/module-08-attack-surface-and-supply-chain-audit/README.md) |
+| 9 | [89 — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases](./module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md) | How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions? | **Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy.** | [Release Matrix and Artifact Manifest](../labs/module-09-release-matrix-and-artifact-manifest/README.md) |
+| 10 | [90 — Production Readiness, Capacity Planning, Rollouts, and Incident Learning](./module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md) | What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design? | **Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery.** | [Production Readiness Review](../labs/module-10-production-readiness-review/README.md) |
 
-If several answers are uncertain, revisit the relevant Course 2, 6, 7, and 8 chapters. This course assumes the underlying mechanisms and concentrates on product-level evidence.
+The table is a dependency chain, not a menu. A later module may use an earlier mechanism but may not silently weaken its ownership, failure, ordering, capacity, safety, compatibility, or evidence contract.
 
-## The course narrative
+## Decision rules
 
-### Days 1–3: establish cost truth
+| Decision | Rule used throughout this course |
+|---|---|
+| Claim | State one falsifiable product claim before selecting a benchmark or profiler. |
+| Workload | Record scale, skew, data shape, environment, and exclusions. |
+| Cost | Separate CPU, allocation, copying, waiting, contention, system calls, and retained state. |
+| Signal | Every metric or event answers a named operational question and has a bounded label space. |
+| Release | Connect source, lockfile, toolchain, target, profile, features, artifact digest, rollout, and rollback. |
 
-Modules 81–83 move from benchmark contract to profile to memory lifecycle. The reader learns to reject optimization by intuition. The output is a performance charter, representative corpora, causal profiles, and an allocation ledger.
+Use these rules during prediction and review. When a rule does not decide the case, write the missing product requirement instead of selecting an API by habit.
 
-### Days 4–5: make movement and waiting explicit
+## The reasoning record
 
-Modules 84–85 trace bytes and load through buffers, queues, locks, tasks, batches, and service phases. The output is an honest byte journey and a measured saturation envelope.
+The ten module-specific records culminate in a **production decision record**. Turn each claim into a representative workload or review procedure, preserve correctness, localize cost or risk, and record the trade-off. Keep the record small enough to inspect but complete enough to expose the first unsupported assumption.
 
-### Days 6–8: make operation and risk explicit
+## Scope and handoff
 
-Modules 86–88 design production signals, reliability policies, and security controls. The output is a diagnosable service with bounded labels, typed overload, controlled retries, degraded modes, a threat model, and a dependency policy.
+The course teaches measurement and operational reasoning, not folklore optimization. It does not promise universal performance rankings, complete security proof, or production readiness from one green pipeline. Every conclusion is scoped to a workload, artifact, environment, and time.
 
-### Days 9–10: make delivery and operation explicit
+Course 10 synthesizes the entire program: advanced type relationships, compiler representations, unsafe review, verification strategy, compatibility, and long-lived architectural change.
 
-Modules 89–90 define the artifact, CI matrix, release manifest, installation route, capacity plan, rollout, rollback, runbooks, and incident-learning loop.
+## Capstone — MetricRail
 
-## The claim ledger
+MetricRail is a bounded telemetry aggregator with offline and network paths, representative benchmarks, profiling hooks, memory and byte ledgers, structured tracing, overload policy, security and dependency records, release manifests, runbooks, and rollout exercises.
 
-Maintain one ledger throughout the course:
+Open the [engineering guide](capstone.md) before Day 1 so the final architecture is visible. Implement only the current increment. The independent laboratory remains separate so that the mechanism can be learned without hiding behind accumulated capstone code.
 
-| Claim | Class | Authority | Workload or scope | Bound | Evidence | Owner |
-|---|---|---|---|---|---|---|
-| Snapshot order is stable | semantic | public API | all inputs | n/a | integration tests | library |
-| Ingestion p95 meets target | measured | performance charter | corpus v1, reference host | target only | benchmark report | performance owner |
-| Queue accepts at most 1024 jobs | resource | configuration and queue type | all traffic | 1024 | tests and metrics | service |
-| Token fields never appear in logs | security | event schema | all log paths | no disclosure | redaction tests | observability |
-| Artifact matches source revision | release | manifest | one release | digest | CI output | release owner |
+## Completion
 
-Add or revise rows after every module. If a claim has no authority or evidence, it is an assumption.
+The course is complete when you can build and defend:
 
-## Modules
+> Take a bounded service and produce a complete production dossier: benchmark protocol, profile, memory and byte accounting, load curve, observability map, reliability policy, threat model, release manifest, and go/no-go decision.
 
-81. [Performance Contracts, Workloads, and Benchmark Design](module-81-performance-contracts-workloads-and-benchmark-design/index.md) — What exactly must become faster, under which workload and resource limits, and what experiment would distinguish improvement from noise or self-deception?
-82. [CPU Profiling, Cost Models, and Hot-Path Optimization](module-82-cpu-profiling-cost-models-and-hot-path-optimization/index.md) — Where does execution time actually go, why does it go there, and which change removes the dominant cost without moving it into an unmeasured phase?
-83. [Allocation, Memory Footprint, and Ownership Cost](module-83-allocation-memory-footprint-and-ownership-cost/index.md) — Which bytes are owned, borrowed, reserved, retained, duplicated, or temporarily allocated, and which of those states actually dominate product cost?
-84. [Data Movement, Buffering, and Zero-Copy Boundaries](module-84-data-movement-buffering-and-zero-copy-boundaries/index.md) — Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost?
-85. [Runtime Efficiency: Contention, Queueing, Batching, and Async Load](module-85-runtime-efficiency-contention-queueing-batching-and-async-load/index.md) — When work is correct and bounded, where do contention, waiting, scheduling, queueing, batching, and blocking determine throughput and tail latency?
-86. [Observability: Structured Tracing, Metrics, and Diagnostic Context](module-86-observability-structured-tracing-metrics-and-diagnostic-context/index.md) — What must a running system reveal so that an operator can distinguish load, dependency delay, overload, malformed input, software defect, and expected rejection without reproducing the incident locally?
-87. [Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation](module-87-reliability-under-load-slos-load-shedding-retries-and-degradation/index.md) — How does the service preserve useful work and recover predictably when demand, dependency latency, error rate, or resource pressure exceeds the normal operating envelope?
-88. [Security and Supply-Chain Engineering](module-88-security-and-supply-chain-engineering/index.md) — Which assets, trust boundaries, dependencies, build inputs, and operational capabilities could be abused, and which controls reduce that risk without relying on hidden assumptions?
-89. [Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases](module-89-cargo-profiles-binary-size-packaging-ci-and-reproducible-releases/index.md) — How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?
-90. [Production Readiness, Capacity Planning, Rollouts, and Incident Learning](module-90-production-readiness-capacity-planning-rollouts-and-incident-learning/index.md) — What evidence is sufficient to put this system under real load, how is risk limited during rollout, and how does operational evidence change the next design?
+and then change the capstone under this constraint:
 
-## The independent laboratories
+> Add one high-cardinality MetricRail query while preserving bounded memory, deterministic output, observability cardinality, overload behavior, and artifact traceability.
 
-The ten labs are intentionally different products:
-
-1. Benchmark Integrity Clinic
-2. Profile-Guided Query Engine
-3. Allocation-Budgeted Batch Parser
-4. Borrowed Record Window
-5. Bounded Throughput Tuner
-6. Structured Observability Harness
-7. Overload Control Simulator
-8. Attack Surface and Supply-Chain Audit
-9. Release Matrix and Artifact Manifest
-10. Production Readiness Review
-
-Each lab has a starter and a reference implementation. Use the reference only after your own model, predictions, implementation, and result are written.
-
-## The cumulative capstone
-
-[MetricRail](capstone.md) receives telemetry records:
-
-```text
-tenant<TAB>metric<TAB>timestamp_ms<TAB>value
-```
-
-It aggregates bounded series statistics and offers deterministic snapshots through a CLI and a small TCP service. The product is simple enough for end-to-end reasoning but exposes realistic production concerns:
-
-- skewed and malformed workloads;
-- allocation and key retention;
-- byte framing and buffering;
-- queueing and contention;
-- structured tracing and bounded metrics;
-- overload and degradation;
-- tenant and operator boundaries;
-- exact dependencies and profiles;
-- release manifests;
-- capacity and rollout decisions.
-
-## Completion standard
-
-You have not completed the course merely because MetricRail builds or because a benchmark improved. Completion means you can:
-
-- state the claim and workload before measuring;
-- explain the dominant cost or risk causally;
-- preserve the semantic oracle;
-- show where cost or responsibility moved;
-- classify the result as guarantee, policy, or observation;
-- set explicit resource bounds;
-- produce an installable traceable artifact;
-- defend rollout and recovery behavior.
+A passing test suite is necessary. It is not sufficient unless you can explain why the tests are capable of falsifying the claim and which target-, scheduler-, workload-, peer-, or policy-dependent facts remain outside them.
 
 ## Continue
 
-Use the [ten-day study plan](study-plan.md). Keep the [reference desk](reference.md) nearby for units, formulas, signal types, and release terminology. Do not read the [final review](final-review.md) until you have completed the ten module reconstructions.
+- [Ten-day plan](study-plan.md)
+- [Module 81 — Performance Contracts, Workloads, and Benchmark Design](./module-81-performance-contracts-workloads-and-benchmark-design/index.md)
+- [MetricRail engineering guide](capstone.md)
+- [Course reference](reference.md)
+- [Final review](final-review.md)
+- [Compiler and design investigations](../compiler-labs/README.md)
+- [Independent laboratories](../labs/)

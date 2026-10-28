@@ -1,68 +1,99 @@
 # Course 2 — Ownership, Lifetimes, and Memory
 
-## Provenance, Liveness, Representation, and Address Stability
+## Provenance, Resource Protocols, and Address-Sensitive Design
 
-Deepen ownership until borrowed APIs, cleanup protocols, shared graphs, interior mutation, representation claims, variance, and pinning can be designed from first principles rather than folklore.
+## The promise
 
-## Why this course exists
+Course 2 turns the ownership rules from Course 1 into a design language for memory. You learn to derive borrow relationships, reason about cleanup and unwinding, choose smart pointers by liveness topology, use interior mutability without hiding reentrancy hazards, and distinguish semantic guarantees from layout observations.
 
-Course 1 taught the visible ownership rules needed for ordinary programs. Real libraries expose borrowed views, return resources through guards, share immutable snapshots, cache behind shared references, and sometimes depend on representation or address stability. Those designs fail when lifetimes are treated as annotations to appease the compiler or smart pointers are selected by habit. This course refines the unit of reasoning from a whole value to places, loans, liveness edges, initialization states, and substitution capabilities.
+> **Governing question:** How do places, loans, lifetimes, destruction, shared liveness, representation, and address stability determine whether a memory design is valid?
 
-## Before you begin
+Course 1 established complete safe-Rust programs: typed state, explicit ownership, recoverable failure, deterministic persistence, tests, and a library/binary boundary. Course 2 keeps those guarantees and makes the underlying memory relationships explicit—places, loans, lifetimes, cleanup, shared liveness, representation, and address stability.
 
-Course 1, including confident ownership tracing, borrowing, enums, `Option`/`Result`, collections, foundational traits and lifetimes, modules, and tests.
+## Before Day 1
 
-Keep a place/loan graph, lifetime relationship map, cleanup state machine, and liveness graph beside the code. The record changes shape as the course advances, but its purpose is constant: make the decisive relationship visible before syntax hides it.
+You should be able to build and test a complete safe-Rust program, explain moves and ordinary borrows, use structs and enums, propagate errors, and organize a library and binary.
 
-## What you will be able to do
+From a blank page, sketch one earlier product or a comparable program. Mark an owner, a valid and invalid state, a failure path, cleanup, and a public promise. Repair any relationship you cannot explain before adding this course’s mechanisms.
 
-- Distinguish values from places and trace projections, move paths, partial moves, partial initialization, reborrowing, and later destruction obligations.
-- Model loans over places and explain when fields, indices, slices, and method receivers can or cannot be borrowed disjointly.
-- Translate lifetime syntax into provenance and outlives constraints, derive elision, and keep unrelated lifetimes independent.
-- Design borrowed return types and reference-bearing structures whose relationships are neither under-specified nor unnecessarily coupled.
-- Use higher-ranked callback bounds and scoped APIs when each call needs a fresh lifetime that must not escape.
-- Derive destruction order and encode cleanup, rollback, commit, and failure atomicity through RAII guards and consuming transitions.
-- Choose `Box`, dereference coercion, dynamically sized types, and `Cow` according to representation and ownership rather than as generic indirection tools.
-- Design `Rc`/`Weak` ownership graphs by naming strong liveness roots, observer edges, cycle risks, identity, and teardown behavior.
-- Use `Cell` and `RefCell` only when hidden mutation is justified; keep runtime borrow guards short and prevent reentrant borrow failure.
-- Separate semantic validity, layout guarantees, target-conditioned observations, implementation details, and unsupported representation assumptions.
-- Derive covariance, contravariance, and invariance from capability substitution rather than memorized container lists.
-- Use `PhantomData` to communicate ownership, borrowing, variance, drop checking, and auto-trait relationships accurately.
-- Recognize when an invariant is genuinely address-sensitive, construct and project pinned values safely, and reject ceremonial pinning.
-- Choose runtime generations, static brands, ownership, indirection, or pinning according to the exact identity and validity problem.
-- Defend a memory-oriented API with a provenance map, liveness graph, failure-state analysis, and evidence that matches the strength of each claim.
+## Outcomes
 
-## What this course deliberately leaves for later
+- Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations.
+- Translate lifetime syntax into constraints among borrows rather than durations attached to values.
+- Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation.
+- Derive local, field, tuple, temporary, and scope destruction order from documented rules.
+- Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership.
+- Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts.
+- Explain UnsafeCell as the primitive behind interior mutability while remaining within safe APIs.
+- Separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation.
+- State lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally.
+- Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants.
+- Integrate all ten mechanisms in Memory Workspace without creating competing authorities.
+- Complete and defend an unseen change using a pinning contract.
 
-The course remains primarily safe Rust. It explains representation and address-sensitive contracts but reserves raw pointers, allocation APIs, FFI, and production unsafe abstraction construction for Course 6.
+## The ten-day line
 
-## Ten-day route
+| Day | Module | Governing question | Capability that must become visible | Laboratory |
+|---:|---|---|---|---|
+| 1 | [11 — Places, Move Paths, and Advanced Borrowing](./module-11-places-move-paths-and-advanced-borrowing/index.md) | Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely? | **Distinguish values from places and trace projections, move paths, partial initialization, and later destruction obligations.** | [Borrow Surgery](../labs/module-01-borrow-surgery/README.md) |
+| 2 | [12 — Lifetime Relationships and Borrowed APIs](./module-12-lifetime-relationships-and-borrowed-apis/index.md) | What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent? | **Translate lifetime syntax into constraints among borrows rather than durations attached to values.** | [Zero-Copy Records](../labs/module-02-zero-copy-records/README.md) |
+| 3 | [13 — Scoped Access and Escape Prevention](./module-13-scoped-access-and-escape-prevention/index.md) | Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable? | **Distinguish caller-chosen named lifetimes from fresh lifetimes generated independently for each callback invocation.** | [Scoped Visitors](../labs/module-03-scoped-visitors/README.md) |
+| 4 | [14 — RAII, Drop, Unwinding, and Failure Atomicity](./module-14-raii-drop-unwinding-and-failure-atomicity/index.md) | Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic? | **Derive local, field, tuple, temporary, and scope destruction order from documented rules.** | [RAII Resource Pool](../labs/module-04-resource-pool/README.md) |
+| 5 | [15 — Box, Deref, Dynamically Sized Types, and Cow](./module-15-box-deref-dynamically-sized-types-and-cow/index.md) | When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally? | **Use Box for exclusive heap-owned indirection and recursive finite-size representation without equating Box with shared ownership.** | [Boxed Expression Tree](../labs/module-05-boxed-expressions/README.md) |
+| 6 | [16 — Rc, Weak, and Ownership Graphs](./module-16-rc-weak-and-ownership-graphs/index.md) | Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear? | **Draw strong and weak ownership graphs and derive allocation liveness from roots and reference counts.** | [Shared Ownership Graph](../labs/module-06-rc-weak-graph/README.md) |
+| 7 | [17 — Interior Mutability and Runtime Borrows](./module-17-interior-mutability-and-runtime-borrows/index.md) | Which logically hidden mutation justifies runtime enforcement, and how can guard scope and reentrancy remain controlled? | **Explain UnsafeCell as the primitive behind interior mutability while remaining within safe APIs.** | [Revisioned Interior Cache](../labs/module-07-interior-cache/README.md) |
+| 8 | [18 — Memory Representation, Validity, and Layout](./module-18-memory-representation-validity-and-layout/index.md) | Is a claim a language guarantee, a standard-library contract, a target-conditioned fact, a current observation, or an unsupported assumption? | **Separate semantic value, validity invariant, abstract layout guarantee, ABI promise, and measured observation.** | [Layout Observatory](../labs/module-08-layout-observatory/README.md) |
+| 9 | [19 — Subtyping, Variance, PhantomData, and Drop Checking](./module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) | When may a longer-lived capability substitute for a shorter requirement, and what semantic relationships must marker types communicate? | **State lifetime subtype direction through substitutability and derive covariance, contravariance, and invariance operationally.** | [Variance Branding](../labs/module-09-variance-branding/README.md) |
+| 10 | [20 — Pinning and Address-Sensitive Design](./module-20-pinning-and-address-sensitive-design/index.md) | What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely? | **Distinguish ownership movement from mechanical relocation and identify genuine address-sensitive invariants.** | [Pinned Tracker](../labs/module-10-pinned-tracker/README.md) |
 
-1. [Module 11: Places, Move Paths, and Advanced Borrowing](module-11-places-move-paths-and-advanced-borrowing/index.md) — Which places, projections, move paths, and loans are active at each program point, and how can access be decomposed safely?
-2. [Module 12: Lifetime Relationships and Borrowed APIs](module-12-lifetime-relationships-and-borrowed-apis/index.md) — What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?
-3. [Module 13: Scoped Access and Escape Prevention](module-13-scoped-access-and-escape-prevention/index.md) — Who chooses a lifetime, and how can an API expose temporary access while making escape unrepresentable?
-4. [Module 14: RAII, Drop, Unwinding, and Failure Atomicity](module-14-raii-drop-unwinding-and-failure-atomicity/index.md) — Which value owns each cleanup obligation, when does destruction run, and what state remains after early return, error, or panic?
-5. [Module 15: Box, Deref, Dynamically Sized Types, and Cow](module-15-box-deref-dynamically-sized-types-and-cow/index.md) — When is indirection required by representation or ownership, what metadata travels with a pointer, and when should an API borrow-or-own conditionally?
-6. [Module 16: Rc, Weak, and Ownership Graphs](module-16-rc-weak-and-ownership-graphs/index.md) — Which edges keep allocations alive, which only observe, and how does the graph dismantle when roots disappear?
-7. [Module 17: Interior Mutability and Runtime Borrows](module-17-interior-mutability-and-runtime-borrows/index.md) — Which logically hidden mutation justifies runtime enforcement, and how can guard scope and reentrancy remain controlled?
-8. [Module 18: Memory Representation, Validity, and Layout](module-18-memory-representation-validity-and-layout/index.md) — Is a claim a language guarantee, a standard-library contract, a target-conditioned fact, a current observation, or an unsupported assumption?
-9. [Module 19: Subtyping, Variance, PhantomData, and Drop Checking](module-19-subtyping-variance-phantomdata-and-drop-checking/index.md) — When may a longer-lived capability substitute for a shorter requirement, and what semantic relationships must marker types communicate?
-10. [Module 20: Pinning and Address-Sensitive Design](module-20-pinning-and-address-sensitive-design/index.md) — What invariant becomes invalid after mechanical movement, who promises not to move the value, and can the design avoid address sensitivity entirely?
+The table is a dependency chain, not a menu. A later module may use an earlier mechanism but may not silently weaken its ownership, failure, ordering, capacity, safety, compatibility, or evidence contract.
 
-## How the learning surfaces fit
+## Decision rules
 
-The chapter is the authoritative explanation. The workbook exposes the model you actually hold through prediction, repair, construction, transfer, and defense. The independent lab removes accumulated capstone complexity so one mechanism remains visible. The capstone increment then asks that mechanism to coexist with every earlier decision.
+| Decision | Rule used throughout this course |
+|---|---|
+| Borrow relation | Name the owner and prove every returned reference originates from data that remains alive. |
+| Cleanup protocol | Assign every resource acquisition exactly one cleanup owner and trace unwind paths. |
+| Shared liveness | Use strong edges for ownership and weak edges for observation or back-links. |
+| Interior mutability | Use runtime loans only when the call graph and reentrancy policy are explicit. |
+| Pinning | Use pinning only when the pointee has a genuine address-sensitive invariant after pinning. |
 
-The cumulative product is **Memory Workspace**: an in-memory document workspace with generational handles, borrowed views, revision-checked edits, snapshots, weak observers, caches, and explicit memory claims. Do not read the complete implementation before attempting the corresponding increment; the value of the capstone is the sequence of design decisions, not possession of the finished source.
+Use these rules during prediction and review. When a rule does not decide the case, write the missing product requirement instead of selecting an API by habit.
 
-Use the [compiler investigations](../compiler-labs/README.md), the [ten-day study plan](study-plan.md), the [Memory Workspace engineering guide](capstone.md), the [course reference](reference.md), and the [independent final review](final-review.md).
+## The reasoning record
 
-## Completion standard
+The ten module-specific records culminate in a **pinning contract**. Draw places, loans, outlives relations, destruction, and liveness before selecting a pointer type. Keep the record small enough to inspect but complete enough to expose the first unsupported assumption.
 
-The course is complete when you can satisfy the public behavior, explain the decisive rule without notes, repair a misleading implementation without weakening its requirement, and transfer the mechanism to the final independent product. A passing test suite without a causal model is incomplete; a persuasive explanation without working evidence is also incomplete.
+## Scope and handoff
 
-## Course handoff
+The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities.
 
-Course 3 turns the memory contracts established here into trait contracts, polymorphic boundaries, typestate protocols, and evolvable public architecture.
+Course 3 asks how several types can promise lawful behavior and how those contracts shape an architecture that can vary and evolve.
 
-[Return to the program start](../../README.md) · [Open the ninety-module map](../../COURSE_MAP.md)
+## Capstone — Memory Workspace
+
+Memory Workspace is a single-threaded document workspace with generational handles, borrowed views, staged edits, snapshots, weak observers, caches, and explicit memory accounting. Every feature exists to make an ownership or lifetime relationship observable.
+
+Open the [engineering guide](capstone.md) before Day 1 so the final architecture is visible. Implement only the current increment. The independent laboratory remains separate so that the mechanism can be learned without hiding behind accumulated capstone code.
+
+## Completion
+
+The course is complete when you can build and defend:
+
+> Build a revisioned record store with borrowed queries, generational identity, a staged mutation protocol, shared immutable snapshots, and a written liveness and cleanup analysis.
+
+and then change the capstone under this constraint:
+
+> Add document labels and snapshot comparison to Memory Workspace while preserving stale-handle rejection, bounded retention, and borrowed-view provenance.
+
+A passing test suite is necessary. It is not sufficient unless you can explain why the tests are capable of falsifying the claim and which target-, scheduler-, workload-, peer-, or policy-dependent facts remain outside them.
+
+## Continue
+
+- [Ten-day plan](study-plan.md)
+- [Module 11 — Places, Move Paths, and Advanced Borrowing](./module-11-places-move-paths-and-advanced-borrowing/index.md)
+- [Memory Workspace engineering guide](capstone.md)
+- [Course reference](reference.md)
+- [Final review](final-review.md)
+- [Compiler and design investigations](../compiler-labs/README.md)
+- [Independent laboratories](../labs/)

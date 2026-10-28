@@ -1,6 +1,45 @@
 # AxiomStore
 
-AxiomStore is the cumulative capstone for Course 10, **Rust Advanced Mastery**. It is a deliberately bounded embedded record engine: large enough to expose advanced type, memory, compatibility, and verification obligations, but small enough that one reader can trace every byte and every ownership transition.
+## Course role
+
+AxiomStore is a versioned embedded record engine with lending views, const bounds, runtime validators, one private initialized-prefix abstraction, deterministic storage, migrations, compatibility fixtures, and a claim-specific verification matrix.
+
+AxiomStore is not a showcase of ten independent features. It is the place where the course’s mechanisms must coexist without creating a second owner for state, validation, order, failure, compatibility, or resource policy.
+
+## Invariants carried through the product
+
+- Every advanced abstraction begins with a proof obligation rather than a feature preference.
+- Generic and lending APIs state the exact type, lifetime, and equality relationships callers may rely on.
+- Const parameters encode only invariants supported by stable Rust and by the product representation.
+- Unsafe inline storage maintains one initialized-prefix invariant through movement, failure, and drop.
+- Verification evidence is matched to claim class and never promoted beyond the paths or model it covers.
+- Format versions, MSRV, features, provider capabilities, migration, and deprecation remain explicit compatibility contracts.
+
+## Module-to-product map
+
+| Module | Mechanism added | Acceptance criterion |
+|---:|---|---|
+| 91 | Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen | Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases |
+| 92 | Advanced Trait Solving: Goals, Projections, and Type Equality | Rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints |
+| 93 | GATs, Higher-Ranked Bounds, and Lending Interfaces | Distinguish one associated type from a lifetime-indexed family of associated types |
+| 94 | Const Generics, Witness Types, and Compile-Time Invariants | Use const parameters when a numeric fact changes representation, layout, or legal composition |
+| 95 | Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries | Distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type |
+| 96 | Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits | Write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation |
+| 97 | From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size | Explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication |
+| 98 | Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration | Classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims |
+| 99 | Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship | Analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data |
+| 100 | Architectural Synthesis: Building and Defending a Long-Lived Rust System | Construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy |
+
+## Reading route
+
+1. Read the AxiomStore contract and non-goals in the [engineering guide](../course-book/capstone.md).
+2. Locate the type or component that owns each invariant above.
+3. Run the baseline tests and one end-to-end demonstration before changing code.
+4. Implement only the current module increment and its adversarial test.
+5. Trace success, rejection, partial failure, cleanup, order, and capacity through the public surface.
+6. Re-run the complete course route, then explain which claims remain conditioned on a compiler, target, scheduler, peer, workload, or operating system.
+
+AxiomStore is the cumulative capstone for Course 10, **Advanced Rust Mastery**. It is a deliberately bounded embedded record engine: large enough to expose advanced type, memory, compatibility, and verification obligations, but small enough that one reader can trace every byte and every ownership transition.
 
 The reference implementation uses only the Rust standard library. That restriction is pedagogical, not a claim that production storage engines should avoid mature crates. It keeps the decisive mechanisms visible: a lending codec, const-generic local bounds, runtime policy erasure, private unsafe storage, versioned bytes, candidate-first mutation, and explicit filesystem assumptions.
 

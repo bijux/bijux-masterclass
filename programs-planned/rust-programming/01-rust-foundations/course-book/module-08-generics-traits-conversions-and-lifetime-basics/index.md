@@ -1,9 +1,11 @@
-# 08 — Generics, Traits, Conversions, and Lifetime Basics
+# Module 08 — Generics, Traits, Conversions, and Lifetime Basics
 
-**Course 1, day 8 · Module 8 of 90**  
-`███░░░░░░░░░░░░░░░░░` **8/90**
+**Course 1 · Day 8 · Module 8 of 100**
+`██░░░░░░░░░░░░░░░░░░░░░░░` **8/100**
 
-[← Module 7: Errors, Parsing, Files, and Persistence](../module-07-errors-parsing-files-and-persistence/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 9: Crates, Modules, Public APIs, Tests, and Documentation →](../module-09-crates-modules-public-apis-tests-and-documentation/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-08-traits-and-lifetimes/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 7: Errors, Parsing, Files, and Persistence](../module-07-errors-parsing-files-and-persistence/index.md) · [Module 9: Crates, Modules, Public APIs, Tests, and Documentation →](../module-09-crates-modules-public-apis-tests-and-documentation/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 You have now written several concrete versions of the same shapes: parsing, rendering, comparison, and borrowed selection. Generics and traits are introduced at the point where duplication is real, while foundational lifetimes explain only the reference relationships that signatures must expose. Course 3 will later treat public trait architecture in depth.
+
+### Prerequisite bridge
+
+Module 7 established **Errors, Parsing, Files, and Persistence**. Before continuing, verify that you can state the exact persistence guarantee of a temporary-file-and-rename protocol, including what it does not guarantee across platforms, crashes, and concurrent writers. This module preserves that capability and adds the ability to write generic functions and types whose bounds correspond to operations actually performed. Module 9, **Crates, Modules, Public APIs, Tests, and Documentation**, will rely on both when it asks: *Which surfaces are product contracts, which are implementation details, and what independent evidence protects each boundary?*
+
+### Scope boundary
+
+This module owns the reasoning for **generics, traits, conversions, and lifetime basics** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -826,6 +836,24 @@ For every reference-bearing return or struct, ask:
 - errors own bounded invalid tokens and paths because they may propagate beyond input buffers.
 - storage parsing borrows line fields only during one decode call, then constructs owned domain values.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For write generic functions and types whose bounds correspond to operations actually performed, construct one positive and one causal negative example. Mark the first decisive fact in the **trait and lifetime contract** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For define and implement small traits as behavioral contracts without abstraction theater, construct one positive and one causal negative example. Mark the first decisive fact in the **trait and lifetime contract** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use Display, Error, From, FromStr, Read, BufRead, and Write at natural boundaries, construct one positive and one causal negative example. Mark the first decisive fact in the **trait and lifetime contract** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For derive ordinary lifetime annotations from input-output provenance and distinguish annotation from lifetime extension, construct one positive and one causal negative example. Mark the first decisive fact in the **trait and lifetime contract** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Use standard conversion traits and generic readers and writers where they remove real duplication. Add only the lifetime annotations required by returned borrowed data. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -855,11 +883,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Generics, Traits, and Lifetimes](https://doc.rust-lang.org/book/ch10-00-generics.html)
 - [Rust Reference: Trait bounds](https://doc.rust-lang.org/reference/trait-bounds.html)
 
-[← Module 7](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 9 →](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md)
+[← Module 7](../../../01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 9 →](../../../01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md)
 
 ## Continue
 
-1. Complete the [Module 8 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 8 — Trait and Lifetime Boundary](../../labs/module-08-traits-and-lifetimes/README.md) from its public contract.
-3. Apply the Module 8 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 9 — Crates, Modules, Public APIs, Tests, and Documentation](../module-09-crates-modules-public-apis-tests-and-documentation/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,9 +1,11 @@
-# 36 — Custom Iterators and Collection Protocols
+# Module 36 — Custom Iterators and Collection Protocols
 
-**Course 4, day 6 · Module 36 of 90**  
-`████████████░░░░░░░░` **36/90**
+**Course 4 · Day 6 · Module 36 of 100**
+`█████████░░░░░░░░░░░░░░░░` **36/100**
 
-[← Module 35: Option, Result, and Fallible Traversal](../module-35-option-result-and-fallible-traversal/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 37: Recursive Data and Structural Sharing →](../module-37-recursive-data-and-structural-sharing/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-06-custom-cursors/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 35: Option, Result, and Fallible Traversal](../module-35-option-result-and-fallible-traversal/index.md) · [Module 37: Recursive Data and Structural Sharing →](../module-37-recursive-data-and-structural-sharing/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Built-in adapters cover common shapes, but domain traversal sometimes needs its own state machine. Custom iterators and collection protocols are introduced after adapter algebra so you can implement `next`, exhaustion, size hints, `IntoIterator`, `FromIterator`, and `Extend` without violating caller expectations.
+
+### Prerequisite bridge
+
+Module 35 established **Option, Result, and Fallible Traversal**. Before continuing, verify that you can stop combinator chains when explicit control flow communicates the error topology more clearly. This module preserves that capability and adds the ability to implement a correct custom `iterator` by defining state and exhaustion behavior. Module 37, **Recursive Data and Structural Sharing**, will rely on both when it asks: *How can recursive values be transformed without hiding ownership, rebuilding cost, or structural sharing?*
+
+### Scope boundary
+
+This module owns the reasoning for **custom iterators and collection protocols** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -83,7 +93,7 @@ A borrowed iterator can yield slices when the owner outlives it. An owned iterat
 
 Implement `next` correctly before overriding methods such as `fold` or `nth`. Specialized methods can improve behavior, but each becomes another law surface.
 
-### Decision rule
+### Decision rule — Minimal required method
 
 Write the sequence, state invariant, skip policy, error policy, and exhaustion policy in prose. Then implement `next` as one invariant-preserving transition.
 
@@ -156,7 +166,7 @@ The variable name does not determine the mode. The expression passed to `for` do
 
 Delegating to `slice::Iter` reveals that shared iteration follows current internal order, but does not necessarily expose the underlying vector as a public type. Returning `impl Iterator` from an inherent method can preserve more flexibility than naming the concrete iterator in a public associated type, although `IntoIterator` requires a concrete associated iterator type.
 
-### Decision rule
+### Decision rule — Representation exposure
 
 Implement only the receiver modes that express useful and safe ownership. Shared and owned iteration are common; mutable iteration must be justified against invariants.
 
@@ -217,7 +227,7 @@ let values = iter.collect::<Vec<_>>();
 
 When the domain type is important, `Diagnostics::from_iter(iter)` can sometimes read more clearly.
 
-### Decision rule
+### Decision rule — Collection type inference
 
 Implement `FromIterator` when every sequence of item values has a well-defined, total construction policy for the target. Use an explicit fallible constructor when invariant enforcement can fail.
 
@@ -275,7 +285,7 @@ Targets can implement `Extend<&'a T>` when cloning or copying is an intentional 
 
 `extend` is useful when several independent validation phases contribute to one report. It is weaker when phases must remain distinguishable; separate fields may communicate more.
 
-### Decision rule
+### Decision rule — Phase boundaries
 
 Implement `Extend` only when adding an arbitrary iterable of items is total and preserves the target invariant. Use `try_extend` or phase-specific methods when addition can fail or carries distinct meaning.
 
@@ -320,7 +330,7 @@ For a custom double-ended exact iterator:
 
 `FusedIterator` is a marker, but its lack of methods does not reduce the semantic burden. Generic code may rely on the promise.
 
-### Decision rule
+### Decision rule — Marker implementation without methods
 
 Implement stronger traits only when state makes the law obvious and tests exercise mixed operations. Do not simulate a stronger contract through hidden full collection unless eager materialization is acceptable.
 
@@ -373,7 +383,7 @@ You may derive a lower `size_hint`, but do not claim exactness without proof. Do
 
 A custom type adds vocabulary and public surface. A local `enumerate().filter_map(...)` may be clearer for one call site. Create an adapter when its state machine, laws, and reuse justify a name.
 
-### Decision rule
+### Decision rule — Avoid adapters for one-off policy
 
 A custom adapter should have a stable sequence contract, minimal state, law tests, and a reason standard adapters do not communicate the behavior adequately.
 
@@ -419,7 +429,7 @@ Test repeated `next` after exhaustion for fused implementations. Test that skipp
 
 Reference tests should compare yielded sequences and public contracts, not private fields or exact internal method-call counts unless those counts are documented behavior.
 
-### Decision rule
+### Decision rule — Compare semantics, not implementation
 
 Begin with a conservative truthful hint. Tighten it only after deriving the formula and adding state-by-state law tests. Correctness outranks speculative reservation gains.
 
@@ -442,6 +452,24 @@ Proof obligations:
 ### Rejected marker
 
 Implementing `ExactSizeIterator` because examples happen to show exact counts is rejected; empty-field skipping makes remaining output count unknown without scanning.
+
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For implement a correct custom `Iterator` by defining state and exhaustion behavior, construct one positive and one causal negative example. Mark the first decisive fact in the **collection protocol map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For provide owned, shared, and mutable `IntoIterator` implementations only where their semantics are useful, construct one positive and one causal negative example. Mark the first decisive fact in the **collection protocol map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For implement `FromIterator` and `Extend` for a domain collection with explicit invariant policy, construct one positive and one causal negative example. Mark the first decisive fact in the **collection protocol map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For implement stronger iterator traits only when every required law holds, construct one positive and one causal negative example. Mark the first decisive fact in the **collection protocol map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
 
 ## Use the idea in a complete program
 
@@ -473,11 +501,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [FromIterator](https://doc.rust-lang.org/std/iter/trait.FromIterator.html)
 - [Extend](https://doc.rust-lang.org/std/iter/trait.Extend.html)
 
-[← Module 35](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 37 →](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md)
+[← Module 35](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 37 →](../../../04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md)
 
 ## Continue
 
-1. Complete the [Module 36 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 36 — Custom Cursors](../../labs/module-06-custom-cursors/README.md) from its public contract.
-3. Apply the Module 36 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 37 — Recursive Data and Structural Sharing](../module-37-recursive-data-and-structural-sharing/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

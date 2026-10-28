@@ -1,6 +1,17 @@
 # Workbook — Module 78: HTTP Services with Hyper: Requests, Bodies, and Connections
 
-[Return to the chapter](index.md) · [Open the solutions](solutions.md) · [Open the JobWire guide](../capstone.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-08-hyper-health-surface/README.md) · [JobWire guide](../capstone.md) · [Solutions](solutions.md)
+
+This workbook tests whether **HTTP Services with Hyper: Requests, Bodies, and Connections** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate?* Preserve your first prediction and record decisive facts in a **HTTP boundary map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 77 — Cancellation Safety, Deadlines, and Graceful Shutdown that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate?**
+3. Draw the smallest **HTTP boundary map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -39,6 +50,17 @@ Add a listener, connection semaphore, `JoinSet`, shutdown token, grace period, a
 
 Prove a slow HTTP reader does not retain a broker lock or job permit.
 
+### Interleaved reasoning pass
+
+1. For **Distinguish accepted transport, HTTP connection future, request future, body stream, and application service**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the HTTP boundary map.
+2. For **Serve HTTP/1 connections with Hyper over Tokio I/O**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the HTTP boundary map.
+3. For **Construct stable response body types and status codes**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the HTTP boundary map.
+4. For **Route by method and path without mixing broker logic into transport code**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the HTTP boundary map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **HTTP Services with Hyper: Requests, Bodies, and Connections** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Hyper Health Surface](../../labs/module-08-hyper-health-surface/README.md). Required evidence:
@@ -51,9 +73,25 @@ Build [Hyper Health Surface](../../labs/module-08-hyper-health-surface/README.md
 - bounded admission;
 - graceful shutdown under keep-alive.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Hyper Health Surface**, record:
+
+- the public behavior that demonstrates **Distinguish accepted transport, HTTP connection future, request future, body stream, and application service**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Add JobWire’s `/health` and `/stats` HTTP/1 routes using Hyper. Health must distinguish `starting`, `ready`, `shutting-down`, and `failed`. Stats are advisory and deterministic. The HTTP surface may not submit jobs or share the broker’s saturated work queue.
+
+### Capstone invariant trace
+
+For the Module 78 JobWire increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -67,3 +105,7 @@ Add JobWire’s `/health` and `/stats` HTTP/1 routes using Hyper. Health must di
 ### Independent transfer
 
 Design an HTTP upload route for a 10 MiB maximum file without collecting the whole body. State streaming ownership, temporary storage, cancellation, commit, response, and shutdown behavior.
+
+### Closed-book defense
+
+In five minutes, answer “How do you build a small HTTP service while keeping transport ownership, HTTP connection driving, request-body policy, routing, application state, and health semantics separate?” using the **HTTP boundary map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside JobWire. A list of APIs without the deciding relationship is incomplete.

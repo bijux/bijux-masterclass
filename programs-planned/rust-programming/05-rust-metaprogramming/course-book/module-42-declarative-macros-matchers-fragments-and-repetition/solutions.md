@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 42: Declarative Macros: Matchers, Fragments, and Repetition
+# Reasoned Solutions — Module 42: Declarative Macros: Matchers, Fragments, and Repetition
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-02-typed-map-macro/README.md) · [CommandForge guide](../capstone.md)
 
-Use this file after freezing an independent attempt. In this module, compare exact accepted and rejected syntax, single evaluation of every key and value, source-order preservation, use of `$crate` or fully qualified paths where appropriate. A different implementation is valid only when those contracts survive; matching the reference token-for-token is irrelevant.
+Use these notes only after preserving your prediction and repair for **Module 42: Declarative Macros: Matchers, Fragments, and Repetition**. Compare the reasoning against this question: *How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -122,7 +122,7 @@ Forwarded fragments other than `ident`, `lifetime`, and `tt` are opaque AST frag
 
 Use one repetition such as `$( $key:expr => $value:expr ),+ $(,)?`. The first operator requires at least one entry; the optional final comma is structurally separate. If empty maps are required, use `*` and specify the empty behavior explicitly.
 
-## Laboratory comparison
+## Reference implementation comparison
 
 The reference implementation is in [`labs/module-02-typed-map-macro/solution`](../../labs/module-02-typed-map-macro/solution). Review it in this order:
 
@@ -147,3 +147,42 @@ A strong defense of this module explains:
 - which punctuation is now part of the public API;
 - how the generated ordinary Rust can be inspected and tested without trusting the generator blindly;
 - which simpler non-macro design was considered and why it is insufficient for this exact source-of-truth relationship.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?
+
+Build a **matcher and fragment trace**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Read a matcher as a grammar rather than as textual substitution.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Choose fragment specifiers according to the accepted public language.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Design unambiguous separators, delimiters, optional clauses, and cardinality.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Keep matcher and transcriber repetition at compatible nesting depths.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Preserve caller expression evaluation count and source order.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Read a matcher as a grammar rather than as textual substitution.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the matcher and fragment trace.
+
+### Laboratory transfer review
+
+For [Typed Map Macro](../../labs/module-02-typed-map-macro/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In CommandForge, Module 42 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Declarative Macros: Matchers, Fragments, and Repetition**, which relationship decides this question: “How do you design a `macro_rules!` invocation as a precise grammar while preserving ownership, evaluation order, and expression semantics?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to CommandForge?

@@ -1,9 +1,11 @@
-# 09 — Crates, Modules, Public APIs, Tests, and Documentation
+# Module 09 — Crates, Modules, Public APIs, Tests, and Documentation
 
-**Course 1, day 9 · Module 9 of 90**  
-`███░░░░░░░░░░░░░░░░░` **9/90**
+**Course 1 · Day 9 · Module 9 of 100**
+`██░░░░░░░░░░░░░░░░░░░░░░░` **9/100**
 
-[← Module 8: Generics, Traits, Conversions, and Lifetime Basics](../module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [Course 1 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 10: Integration and Independent Change →](../module-10-integration-and-independent-change/index.md)
+[Program](../../../README.md) · [Course 1](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-library-boundaries/README.md) · [Taskboard guide](../capstone.md)
+
+[← Module 8: Generics, Traits, Conversions, and Lifetime Basics](../module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [Module 10: Integration and Independent Change →](../module-10-integration-and-independent-change/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 A program that works in one file is not yet a maintainable product. Modules, visibility, library boundaries, tests, documentation, and Cargo now turn local correctness into an explicit public contract. This module prepares you to integrate rather than merely accumulate features.
+
+### Prerequisite bridge
+
+Module 8 established **Generics, Traits, Conversions, and Lifetime Basics**. Before continuing, verify that you can choose ownership instead of adding lifetime parameters when values must be retained independently. This module preserves that capability and adds the ability to distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type. Module 10, **Integration and Independent Change**, will rely on both when it asks: *Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?*
+
+### Scope boundary
+
+This module owns the reasoning for **crates, modules, public apis, tests, and documentation** inside Course 1. The course stays in safe Rust and mostly in the standard library. It introduces the ownership, trait, iterator, lifetime, module, and testing vocabulary required by later courses, but it does not yet pursue advanced lifetime algebra, smart-pointer architecture, unsafe code, concurrency, async runtimes, or macro construction. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -658,6 +668,24 @@ A reliable route:
 
 Code tools cannot prove that every module has exercises, answers, labs, links, and no empty instructional surfaces. The course includes Python audits for tree structure, local Markdown links, navigation targets, and Rust policy. These audits complement—never replace—Cargo verification.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For distinguish package, crate, target, and module while organizing code by responsibility rather than one file per type, construct one positive and one causal negative example. Mark the first decisive fact in the **module and API map** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For design private representation and a minimal public API that preserves invariants, construct one positive and one causal negative example. Mark the first decisive fact in the **module and API map** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For choose unit, integration, process, fixture, and documentation tests from the contract under proof, construct one positive and one causal negative example. Mark the first decisive fact in the **module and API map** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For write rustdoc examples that teach and execute, and maintain a deliberate warning/lint policy, construct one positive and one causal negative example. Mark the first decisive fact in the **module and API map** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Taskboard**, a persistent command-line task board. Split reusable logic from the binary, minimize public visibility, and cover the contract with unit, integration, CLI, and documentation tests. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -688,11 +716,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [The Rust Book: Testing](https://doc.rust-lang.org/book/ch11-00-testing.html)
 - [rustdoc Book](https://doc.rust-lang.org/rustdoc/)
 
-[← Module 8](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 10 →](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md)
+[← Module 8](../../../01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 10 →](../../../01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md)
 
 ## Continue
 
-1. Complete the [Module 9 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 9 — Library Boundary Refactor](../../labs/module-09-library-boundaries/README.md) from its public contract.
-3. Apply the Module 9 increment in the [Taskboard engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 10 — Integration and Independent Change](../module-10-integration-and-independent-change/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

@@ -1,6 +1,45 @@
-# Advanced Rust Reference Desk
+# Course 10 Reference Desk — Advanced Rust Mastery
 
-This page is for retrieval after you have completed the derivations. It compresses the ten module records, decision rules, and boundaries. Do not use it as a substitute for the authoritative chapters.
+Use this page while designing or reviewing. It is a decision aid, not a replacement for the module explanations.
+
+## Governing question
+
+> How do you design and evolve a Rust system whose type relationships, unsafe boundaries, compiler behavior, compatibility promises, verification evidence, and operating limits survive independent change?
+
+## Working record
+
+Keep a compiler-phase record, trait-goal graph, lifetime family, witness proof, open/closed variation map, unsafe state-and-operation dossier, source-to-artifact observation, verification claim matrix, compatibility matrix, migration plan, and architecture decision record. A design is not ready when the record still contains unnamed owners, contradictory states, implicit failure, accidental order, unbounded accumulation, or a claim with no matching evidence.
+
+## Decision rules
+
+| Decision | Rule |
+|---|---|
+| Decisive phase | Use the earliest compiler, runtime, platform, or product phase that can establish the fact. |
+| Advanced type | Derive GAT, HRTB, projection, const, or erasure machinery from a concrete relationship. |
+| Unsafe review | Audit from every safe entry point through all states, drops, panics, and auto-trait consequences. |
+| Verification | Map each claim to independent positive and causal negative evidence and state the remaining gap. |
+| Evolution | Preserve callers, implementors, stored data, feature graphs, MSRV, artifacts, and migration paths deliberately. |
+
+## Module quick reference
+
+| Module | Mechanism | Minimum usable outcome |
+|---:|---|---|
+| 91 | Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen | separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases |
+| 92 | Advanced Trait Solving: Goals, Projections, and Type Equality | rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints |
+| 93 | GATs, Higher-Ranked Bounds, and Lending Interfaces | distinguish one associated type from a lifetime-indexed family of associated types |
+| 94 | Const Generics, Witness Types, and Compile-Time Invariants | use const parameters when a numeric fact changes representation, layout, or legal composition |
+| 95 | Opaque and Erased Types: impl Trait, dyn Trait, Any, and Plugin Boundaries | distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type |
+| 96 | Auditing Unsafe Abstractions: Validity, Provenance, Drop, Panic, and Auto Traits | write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation |
+| 97 | From Source to Machine Code: Monomorphization, Dispatch, Layout, and Code Size | explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication |
+| 98 | Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration | classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims |
+| 99 | Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship | analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data |
+| 100 | Architectural Synthesis: Building and Defending a Long-Lived Rust System | construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy |
+
+## Claim boundary
+
+Separate language guarantees, library contracts, product policy, target observations, and measured artifact facts. When an exact API or version detail matters, follow the primary source from [Source Notes](../../SOURCE_NOTES.md).
+
+This page is for retrieval after you have completed the derivations. It compresses the ten module records, decision rules, and boundaries. Do not use it as a substitute for the main chapters.
 
 ## Claim categories
 
@@ -22,7 +61,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** a successful compilation or MIR/assembly observation does not establish runtime correctness, compatibility, or portable cost.
 
 **Fast review:**
 
@@ -39,7 +78,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** rewrite a complex generic error as a small set of trait goals, projection goals, and equality constraints.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** a satisfied trait goal does not prove that the abstraction is useful, coherent under future implementations, or behaviorally lawful.
 
 **Fast review:**
 
@@ -56,7 +95,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** distinguish one associated type from a lifetime-indexed family of associated types.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** a compiling lending signature does not prove that retention, reentrancy, object safety, or caller ergonomics fit the product.
 
 **Fast review:**
 
@@ -73,7 +112,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** use const parameters when a numeric fact changes representation, layout, or legal composition.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** moving a number into a const parameter does not prove that type-level enforcement is worth the API, compile-time, or compatibility cost.
 
 **Fast review:**
 
@@ -90,7 +129,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** distinguish opaque return types from trait objects and explain why different branches of `impl Trait` must share one hidden concrete type.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** successful erasure does not preserve concrete capabilities, exhaustive knowledge, downcast safety, or a stable plugin ABI.
 
 **Fast review:**
 
@@ -107,7 +146,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** write a safety dossier that names representation states, public preconditions, internal invariants, and proof obligations for every unsafe operation.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** local `SAFETY:` comments or one successful Miri run do not close the proof across every safe constructor, panic path, drop path, and auto trait.
 
 **Fast review:**
 
@@ -124,7 +163,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** explain when generic functions are monomorphized and why source-level abstraction does not determine final code duplication.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** symbol count, layout, or one assembly listing is a language guarantee or a representative performance result.
 
 **Fast review:**
 
@@ -141,7 +180,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** classify claims as type-level, functional, algebraic, state-machine, memory-safety, concurrency, compatibility, or performance claims.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** more generated cases prove the claim when the oracle is circular, the state space is truncated, or the relevant boundary is never exercised.
 
 **Fast review:**
 
@@ -158,7 +197,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** a crate that compiles for current examples is semver-compatible for downstream callers, implementors, stored data, features, or the declared MSRV.
 
 **Fast review:**
 
@@ -175,7 +214,7 @@ This page is for retrieval after you have completed the derivations. It compress
 
 **Use when:** construct an invariant map connecting product claims to types, runtime validation, synchronization, unsafe proofs, tests, and operational policy.
 
-**Do not infer:** successful compilation or one tool observation does not establish the complete product, compatibility, safety, or performance claim.
+**Do not infer:** an architecture diagram or green test suite proves that every invariant has one owner, every failure has a terminal state, or every migration is reversible.
 
 **Fast review:**
 

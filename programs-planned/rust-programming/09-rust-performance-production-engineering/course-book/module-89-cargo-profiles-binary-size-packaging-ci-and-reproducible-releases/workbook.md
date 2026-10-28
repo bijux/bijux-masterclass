@@ -1,8 +1,17 @@
-# Module 89 Workbook — Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases
+# Workbook — Module 89: Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases
 
-[Chapter](index.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-09-release-matrix-and-artifact-manifest/README.md) · [MetricRail guide](../capstone.md) · [Solutions](solutions.md)
 
-The release artifact is a product, not a side effect of `cargo build`. This workbook connects source, lockfile, features, profile, target, generated inputs, tests, symbols, package layout, digest, and rollback into one traceable transformation.
+This workbook tests whether **Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases** has become a usable model rather than remembered vocabulary. Its governing question is: *How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?* Preserve your first prediction and record decisive facts in a **release manifest**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 88 — Security and Supply-Chain Engineering that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?**
+3. Draw the smallest **release manifest** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -74,13 +83,40 @@ Define what it means for two release artifacts to be “the same” for your pro
 
 Write the exact files that belong in a MetricRail release package: executable, configuration example/schema, licenses, manifest/digest, operations documentation, and optional symbol artifact. For each file, identify its source of truth and compatibility relationship. List files that must never be copied accidentally, such as local secrets, benchmark corpora with sensitive data, target directories, or developer-specific paths.
 
+### Interleaved reasoning pass
+
+1. For **Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the release manifest.
+2. For **Separate development, test, benchmark, profiling, release, and distribution artifacts**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the release manifest.
+3. For **Measure binary size by section and dependency contribution before applying size flags**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the release manifest.
+4. For **Design feature combinations that do not create untested products or additive surprises**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the release manifest.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build the [Release Matrix and Artifact Manifest](../../labs/module-09-release-matrix-and-artifact-manifest/README.md). Validate target, profile, and allowed feature set. Reject malformed artifact names and digests. Render one deterministic manifest whose order does not depend on hash iteration. Add tests for unsupported products and invalid identity fields.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Release Matrix and Artifact Manifest**, record:
+
+- the public behavior that demonstrates **Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Create `profiling` and `dist` profiles with documented purposes. Add deterministic build metadata from explicit environment/source inputs, not the current clock. Generate and verify a release manifest and digest. Build with `--locked`, package configuration and operations documents, install into a clean directory, run smoke/load/health checks, then rehearse rollback to the retained previous artifact.
+
+### Capstone invariant trace
+
+For the Module 89 MetricRail increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -101,3 +137,6 @@ Define a release matrix containing target triple, Rust toolchain, Cargo profile,
 
 A release is not a directory containing a binary. It is a linked evidence set: immutable source identity, reviewed dependency resolution, exact build inputs, executable test results, artifact digests, compatibility claims, operational documentation, and rollback instructions. A smaller or faster binary is useful only after it remains traceable and compatible with the declared deployment contract.
 
+### Closed-book defense
+
+In five minutes, answer “How is one reviewed source state transformed into a tested, traceable, appropriately optimized artifact that can be installed and reproduced without hidden local assumptions?” using the **release manifest**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside MetricRail. A list of APIs without the deciding relationship is incomplete.

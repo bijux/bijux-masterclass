@@ -1,9 +1,11 @@
-# 17 — Interior Mutability and Runtime Borrows
+# Module 17 — Interior Mutability and Runtime Borrows
 
-**Course 2, day 7 · Module 17 of 90**  
-`██████░░░░░░░░░░░░░░` **17/90**
+**Course 2 · Day 7 · Module 17 of 100**
+`████░░░░░░░░░░░░░░░░░░░░░` **17/100**
 
-[← Module 16: Rc, Weak, and Ownership Graphs](../module-16-rc-weak-and-ownership-graphs/index.md) · [Course 2 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 18: Memory Representation, Validity, and Layout →](../module-18-memory-representation-validity-and-layout/index.md)
+[Program](../../../README.md) · [Course 2](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-interior-cache/README.md) · [Memory Workspace guide](../capstone.md)
+
+[← Module 16: Rc, Weak, and Ownership Graphs](../module-16-rc-weak-and-ownership-graphs/index.md) · [Module 18: Memory Representation, Validity, and Layout →](../module-18-memory-representation-validity-and-layout/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Shared ownership alone does not permit mutation. Interior mutability introduces runtime-checked loans for cases where the public operation is logically read-only but internal state changes. It comes after ownership graphs because `RefCell` without a liveness model easily produces reentrancy failures and tangled authority.
+
+### Prerequisite bridge
+
+Module 16 established **Rc, Weak, and Ownership Graphs**. Before continuing, verify that you can bound retained shared state through explicit eviction or retention policy instead of assuming reference counting is collection. This module preserves that capability and adds the ability to explain unsafecell as the primitive behind interior mutability while remaining within safe apis. Module 18, **Memory Representation, Validity, and Layout**, will rely on both when it asks: *Is a claim a language guarantee, a standard-library contract, a target-conditioned fact, a current observation, or an unsupported assumption?*
+
+### Scope boundary
+
+This module owns the reasoning for **interior mutability and runtime borrows** inside Course 2. The course remains centered on safe public APIs. It explains the memory obligations behind smart pointers, interior mutability, layout, variance, and pinning, but manual allocation, raw-pointer implementation, FFI, threads, and async execution remain later responsibilities. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -604,6 +614,24 @@ If callers need references into data stored inside `RefCell`, return `Ref<'_, T>
 
 Use `try_borrow` only when conflict is an expected state with a meaningful caller response. In this design, conflict indicates an implementation bug, so panicking `borrow` keeps the contract narrow and tests prevent reentrancy.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For explain UnsafeCell as the primitive behind interior mutability while remaining within safe APIs, construct one positive and one causal negative example. Mark the first decisive fact in the **runtime-borrow trace** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For choose Cell for replaceable Copy state and RefCell for single-threaded dynamically checked borrowed state, construct one positive and one causal negative example. Mark the first decisive fact in the **runtime-borrow trace** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For treat Ref and RefMut as runtime loan guards whose scope is part of the API protocol, construct one positive and one causal negative example. Mark the first decisive fact in the **runtime-borrow trace** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For avoid reentrant borrow panics by computing outside guards, shortening scopes, or using try_borrow variants and typed errors, construct one positive and one causal negative example. Mark the first decisive fact in the **runtime-borrow trace** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Memory Workspace**, an in-memory document workspace with handles, snapshots, edit sessions, and caches. Add a revision-aware line cache with short `RefCell` guard scopes and explicit hit/miss behavior. No callback may run while a mutable runtime borrow is held. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -634,11 +662,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [RefCell](https://doc.rust-lang.org/std/cell/struct.RefCell.html)
 - [UnsafeCell](https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html)
 
-[← Module 16](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 18 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md)
+[← Module 16](../../../02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 18 →](../../../02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md)
 
 ## Continue
 
-1. Complete the [Module 17 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 17 — Revisioned Interior Cache](../../labs/module-07-interior-cache/README.md) from its public contract.
-3. Apply the Module 17 increment in the [Memory Workspace engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 18 — Memory Representation, Validity, and Layout](../module-18-memory-representation-validity-and-layout/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

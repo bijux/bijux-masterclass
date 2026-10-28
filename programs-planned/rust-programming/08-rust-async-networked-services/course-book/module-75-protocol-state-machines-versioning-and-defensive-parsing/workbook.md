@@ -1,6 +1,17 @@
 # Workbook — Module 75: Protocol State Machines, Versioning, and Defensive Parsing
 
-[Return to the chapter](index.md) · [Open the solutions](solutions.md) · [Open the JobWire guide](../capstone.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-negotiated-command-protocol/README.md) · [JobWire guide](../capstone.md) · [Solutions](solutions.md)
+
+This workbook tests whether **Protocol State Machines, Versioning, and Defensive Parsing** has become a usable model rather than remembered vocabulary. Its governing question is: *Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope?* Preserve your first prediction and record decisive facts in a **protocol transition table**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 74 — TCP, UDP, DNS, and Connection Lifecycles that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope?**
+3. Draw the smallest **protocol transition table** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -41,6 +52,17 @@ Choose exact match or highest common version. Add tests for no common version, r
 
 Implement parse/render tests for every message and error. Add noncanonical input cases and state whether they are rejected or normalized.
 
+### Interleaved reasoning pass
+
+1. For **Separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the protocol transition table.
+2. For **Design an explicit connection-state machine with typed transitions**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the protocol transition table.
+3. For **Distinguish connection-fatal errors from request-local rejections**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the protocol transition table.
+4. For **Negotiate protocol versions before accepting ordinary commands**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the protocol transition table.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Protocol State Machines, Versioning, and Defensive Parsing** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Negotiated Command Protocol](../../labs/module-05-negotiated-command-protocol/README.md). Required evidence:
@@ -53,9 +75,25 @@ Build [Negotiated Command Protocol](../../labs/module-05-negotiated-command-prot
 - request and idempotency identities kept distinct;
 - no socket dependency in protocol tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Negotiated Command Protocol**, record:
+
+- the public behavior that demonstrates **Separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Freeze JobWire V1. Write its frame-independent grammar, typed messages, canonical renderer, connection state machine, public error codes, and close policy. Use sequential requests per connection in V1. Add a compatibility note that states which changes require V2.
+
+### Capstone invariant trace
+
+For the Module 75 JobWire increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -69,3 +107,7 @@ Freeze JobWire V1. Write its frame-independent grammar, typed messages, canonica
 ### Independent transfer
 
 Design a two-version key-value protocol where V2 adds compare-and-swap. Specify negotiation, grammar, state, response correlation, duplicate semantics, and how a V1 client behaves when the server supports V2.
+
+### Closed-book defense
+
+In five minutes, answer “Once frames arrive intact, how do they become legal protocol messages whose meaning depends on version, connection state, request identity, and error scope?” using the **protocol transition table**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside JobWire. A list of APIs without the deciding relationship is incomplete.

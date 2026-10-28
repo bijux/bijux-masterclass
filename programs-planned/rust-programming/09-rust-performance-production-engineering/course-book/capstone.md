@@ -4,6 +4,67 @@ MetricRail is the cumulative product for Course 9. It is a bounded telemetry agg
 
 The project is not an observability backend and does not attempt distributed storage, replication, arbitrary query languages, authentication infrastructure, or high availability. Those would obscure the course’s purpose. MetricRail is a single-process service with explicit limits and deterministic output. The engineering challenge is to make every production claim precise.
 
+## How this capstone completes the course
+
+MetricRail is a bounded telemetry aggregator with offline and network paths, representative benchmarks, profiling hooks, memory and byte ledgers, structured tracing, overload policy, security and dependency records, release manifests, runbooks, and rollout exercises.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; MetricRail proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | Every performance claim names workload, metric, population, percentile or statistic, and correctness oracle. |
+| 2 | Profiles, allocation counts, byte traces, and saturation curves are observations of named artifacts and environments. |
+| 3 | Live metrics never replace authoritative post-operation state. |
+| 4 | Overload, retry, degradation, recovery, and terminal accounting share one bounded policy. |
+| 5 | Threat models and dependency records state assets, actors, entry points, controls, and residual risk. |
+| 6 | Release manifests tie source, toolchain, target, profile, features, lock state, artifact digest, and rollback plan together. |
+
+For each MetricRail change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 81 | Performance Contracts, Workloads, and Benchmark Design | Turn an imprecise performance complaint into a falsifiable contract with workload, metric, percentile, resource budget, and correctness oracle | [Benchmark Integrity Clinic](../labs/module-01-benchmark-integrity-clinic/README.md) |
+| 82 | CPU Profiling, Cost Models, and Hot-Path Optimization | Choose sampling, instrumentation, counters, and targeted tracing based on the question being asked | [Profile-Guided Query Engine](../labs/module-02-profile-guided-query-engine/README.md) |
+| 83 | Allocation, Memory Footprint, and Ownership Cost | Distinguish object size, heap allocation, capacity, live bytes, retained bytes, peak bytes, and allocation count | [Allocation-Budgeted Batch Parser](../labs/module-03-allocation-budgeted-batch-parser/README.md) |
+| 84 | Data Movement, Buffering, and Zero-Copy Boundaries | Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers | [Borrowed Record Window](../labs/module-04-borrowed-record-window/README.md) |
+| 85 | Runtime Efficiency: Contention, Queueing, Batching, and Async Load | Separate service time, wait time, queue depth, concurrency, throughput, and utilization | [Bounded Throughput Tuner](../labs/module-05-bounded-throughput-tuner/README.md) |
+| 86 | Observability: Structured Tracing, Metrics, and Diagnostic Context | Separate events, spans, metrics, profiles, and domain audit records by the questions they can answer | [Structured Observability Harness](../labs/module-06-structured-observability-harness/README.md) |
+| 87 | Reliability Under Load: SLOs, Load Shedding, Retries, and Degradation | Write a service-level indicator and objective whose population, success condition, window, and exclusions are unambiguous | [Overload Control Simulator](../labs/module-07-overload-control-simulator/README.md) |
+| 88 | Security and Supply-Chain Engineering | Identify assets, actors, trust boundaries, entry points, privileges, and abuse cases for a Rust service | [Attack Surface and Supply-Chain Audit](../labs/module-08-attack-surface-and-supply-chain-audit/README.md) |
+| 89 | Cargo Profiles, Binary Size, Packaging, CI, and Reproducible Releases | Explain how Cargo profile settings affect optimization, debug information, overflow checks, assertions, code generation, link-time optimization, panic behavior, and strip policy | [Release Matrix and Artifact Manifest](../labs/module-09-release-matrix-and-artifact-manifest/README.md) |
+| 90 | Production Readiness, Capacity Planning, Rollouts, and Incident Learning | Write a production-readiness review that connects user behavior to capacity, dependencies, failure modes, observability, security, and recovery | [Production Readiness Review](../labs/module-10-production-readiness-review/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **production decision record** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. MetricRail ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
+## Production evidence chain
+
+MetricRail must never present a number without the chain that gives it meaning. For every claimed improvement or operating limit, preserve the source revision, toolchain, target, profile, enabled features, workload generator, dataset characteristics, warm-up policy, sample count, correctness oracle, raw result, and interpretation. A comparison is inconclusive when environmental noise, workload mismatch, or correctness drift can explain the difference.
+
+The service has three distinct views of truth. Domain state owns accepted telemetry aggregates. Live instrumentation reports current activity and may lag or fail independently. Offline benchmark and profile artifacts describe one named executable under one named workload. The production review must not substitute any one of these for another.
+
+Before release, connect every SLO and capacity claim to a saturation experiment, every alert to a runbook action, every dependency to a recorded feature and advisory review, and every artifact to a digest and rollback procedure. This evidence chain is the capstone’s main production invariant.
+
 ## Product contract
 
 MetricRail accepts telemetry records:
@@ -358,7 +419,7 @@ record_bytes
 
 Tenant and metric values are not emitted by default. The service can log a bounded classification or one-way test-safe surrogate when debugging policy explicitly permits it.
 
-Metrics are represented by an in-process snapshot structure for the teaching product:
+Metrics are represented by an in-process snapshot structure for the course material:
 
 - accepted records;
 - rejected records by bounded code;

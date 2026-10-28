@@ -1,8 +1,17 @@
 # Workbook — Module 65: Message Passing, Backpressure, and Shutdown
 
-[Return to the chapter](index.md) · [Open the BatchWeave engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-05-bounded-map-pipeline/README.md) · [BatchWeave guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether the chapter has become an operational model. Freeze predictions, protocol diagrams, and invariants before compiling. Concurrency is unusually forgiving of explanations written after observing one successful run; that is exactly why the reasoning record must come first.
+This workbook tests whether **Message Passing, Backpressure, and Shutdown** has become a usable model rather than remembered vocabulary. Its governing question is: *Which values cross ownership boundaries, how is capacity bounded, and which explicit protocol event proves that every sender, receiver, and worker can terminate?* Preserve your first prediction and record decisive facts in a **channel topology**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 64 — Coordination: Condvars, Barriers, and Phase Protocols that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which values cross ownership boundaries, how is capacity bounded, and which explicit protocol event proves that every sender, receiver, and worker can terminate?**
+3. Draw the smallest **channel topology** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -105,6 +114,17 @@ Prove shutdown for zero jobs, all successes, first-job cancellation, and one wor
 
 Required evidence: List endpoint closure and join actions for each path.
 
+### Interleaved reasoning pass
+
+1. For **Model channel operations as ownership transfer rather than shared access**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the channel topology.
+2. For **Choose bounded, zero-capacity, or unbounded channels from an explicit resource and latency policy**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the channel topology.
+3. For **Draw sender/receiver topology and identify which endpoints are clonable**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the channel topology.
+4. For **State whether disconnect is normal completion, cancellation, or infrastructure failure**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the channel topology.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Message Passing, Backpressure, and Shutdown** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Bounded Map Pipeline](../../labs/module-05-bounded-map-pipeline/README.md) from the starter. Before opening the solution, produce:
@@ -116,6 +136,18 @@ Build [Bounded Map Pipeline](../../labs/module-05-bounded-map-pipeline/README.md
 - a test for disconnect caused by worker loss rather than normal completion;
 
 Your submission must also identify one schedule that the implementation handles correctly and one product claim it deliberately does not make.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Bounded Map Pipeline**, record:
+
+- the public behavior that demonstrates **Model channel operations as ownership transfer rather than shared access**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -131,6 +163,10 @@ Required capstone evidence:
 
 Add at least one regression test that fails if this module's governing contract is removed. Tests that merely sleep and hope for a schedule do not count as causal evidence.
 
+### Capstone invariant trace
+
+For the Module 65 BatchWeave increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Answer without the chapter:
@@ -144,3 +180,7 @@ Answer without the chapter:
 ### Independent transfer
 
 Design a bounded document-conversion service with one dispatcher, three format-specific workers, and one result collector. Some formats have no worker. State what happens to unsupported documents, failed sends, worker panics, and cancellation. Bound every queue and payload, preserve request order in the final report, and prove that all receivers terminate when the dispatcher fails halfway through input.
+
+### Closed-book defense
+
+In five minutes, answer “Which values cross ownership boundaries, how is capacity bounded, and which explicit protocol event proves that every sender, receiver, and worker can terminate?” using the **channel topology**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside BatchWeave. A list of APIs without the deciding relationship is incomplete.

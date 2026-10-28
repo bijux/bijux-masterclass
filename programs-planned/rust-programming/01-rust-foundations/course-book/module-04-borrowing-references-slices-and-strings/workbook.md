@@ -1,8 +1,17 @@
 # Workbook — Module 04: Borrowing, References, Slices, and Strings
 
-[Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-04-borrowed-catalog/README.md) · [Taskboard guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Borrowing, References, Slices, and Strings** without relying on surface syntax. Keep the module question in view: *Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Borrowing, References, Slices, and Strings** has become a usable model rather than remembered vocabulary. Its governing question is: *Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?* Preserve your first prediction and record decisive facts in a **borrow map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 3 — Ownership, Moves, Copying, and Destruction that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?**
+3. Draw the smallest **borrow map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -24,7 +33,6 @@ python3 ../tools/run_compiler_labs.py 01-rust-foundations
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 Defective code:
 
@@ -110,7 +118,6 @@ Implement `matching_titles(&[Record], &str) -> Vec<&str>` and explain why return
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 ### Exercise 1 — Signature classification
 
 For 20 requirements, choose `T`, `&T`, or `&mut T` and justify. Include store-after-return, print-only, in-place sort, consume-and-transform, and independent snapshot cases.
@@ -151,11 +158,18 @@ Implement removal policy using `retain`. Then implement a variant returning remo
 
 Review ten APIs using `String`, `&String`, `&str`, `&mut String`. Correct each signature and state allocation/ownership consequences.
 
+### Interleaved reasoning pass
 
+1. For **Model shared and mutable references as permissions constrained by aliasing and validity**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the borrow map.
+2. For **Shorten borrow scopes, reborrow correctly, and split disjoint data instead of cloning or over-owning**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the borrow map.
+3. For **Design slice-based APIs and distinguish String, str, &String, and &str by ownership and representation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the borrow map.
+4. For **Handle UTF-8 text without assuming character indexing or byte-boundary equivalence**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the borrow map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Borrowing, References, Slices, and Strings** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Product contract
 
@@ -227,6 +241,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-04-borrowed-catalog](../../labs/module-04-borrowed-catalog/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Borrowed Catalog**, record:
+
+- the public behavior that demonstrates **Model shared and mutable references as permissions constrained by aliasing and validity**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -236,7 +262,6 @@ The executable starter and reference implementation are in [module-04-borrowed-c
 - Design slice-based APIs and distinguish String, str, &String, and &str by ownership and representation.
 - Handle UTF-8 text without assuming character indexing or byte-boundary equivalence.
 - Return borrowed views only when provenance remains valid and explain the source of every returned reference.
-
 
 Refactor the temporary tuple-based capstone APIs from ownership shuttling to borrowing.
 
@@ -274,11 +299,13 @@ The capstone now reveals three access classes:
 
 This distinction must survive the Module 5 typed refactor.
 
-
-
 ### Capstone defense
 
 Repair a catalog update that conflicts with an active search borrow by changing access topology rather than extending ownership.
+
+### Capstone invariant trace
+
+For the Module 4 Taskboard increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -288,11 +315,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Model shared and mutable references as permissions constrained by aliasing and validity.
-- Shorten borrow scopes, reborrow correctly, and split disjoint data instead of cloning or over-owning.
-- Design slice-based APIs and distinguish String, str, &String, and &str by ownership and representation.
-- Handle UTF-8 text without assuming character indexing or byte-boundary equivalence.
-- Return borrowed views only when provenance remains valid and explain the source of every returned reference.
+Without reopening the chapter, reconstruct the outcomes for **Module 04: Borrowing, References, Slices, and Strings**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -331,6 +354,18 @@ Implement shared lookup, mutable rename, and borrowed `first_word` from a blank 
 
 ### Transfer defense
 
-Repair a catalog update that conflicts with an active search borrow by changing access topology rather than extending ownership.
+Transfer **Module 04: Borrowing, References, Slices, and Strings** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 04: Borrowing, References, Slices, and Strings** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
+
+### Closed-book defense
+
+In five minutes, answer “Which temporary permissions does an operation require, and how narrowly can those permissions be scoped?” using the **borrow map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Taskboard. A list of APIs without the deciding relationship is incomplete.

@@ -39,4 +39,4 @@ Controls: lockfile, exact teaching-release versions, advisory review, feature re
 - process-level denial of service remains possible within host and proxy limits;
 - platform allocator and operating-system behavior are observations, not Rust guarantees.
 
-These risks must be accepted by the deployment owner or addressed outside the teaching product.
+These risks must be accepted by the deployment owner or addressed outside the course material.

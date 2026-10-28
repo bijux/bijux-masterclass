@@ -1,12 +1,17 @@
 # Workbook — Module 41: Metaprogramming Boundaries and the Expansion Model
 
-[Return to the chapter](index.md) · [Open the CommandForge engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-decision-table-generator/README.md) · [CommandForge guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Metaprogramming Boundaries and the Expansion Model** as an engineering mechanism rather than repeat its syntax. The governing question is:
+This workbook tests whether **Metaprogramming Boundaries and the Expansion Model** has become a usable model rather than remembered vocabulary. Its governing question is: *Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?* Preserve your first prediction and record decisive facts in a **mechanism-selection record**. A repair succeeds only when it keeps the difficult product requirement visible.
 
-> Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?
+## Retrieval warm-up
 
-For each case, separate the ordinary-Rust alternative, the proposed source of truth, the generated surface, and the first phase that possesses enough information to reject the defect. A correct prediction must say not only whether compilation succeeds, but whether metaprogramming was justified at all.
+Before compiling or running anything:
+
+1. Restate the invariant from Module 40 — Functional Architecture Synthesis that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?**
+3. Draw the smallest **mechanism-selection record** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -81,6 +86,17 @@ Design an authority ledger for CommandForge covering command name, handler signa
 
 For every answer that proposes a macro, add a one-sentence rejection criterion: what simpler condition would make ordinary Rust preferable?
 
+### Interleaved reasoning pass
+
+1. For **Separate runtime abstraction from compile-time generation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the mechanism-selection record.
+2. For **Identify the source of truth and generated surface of a proposed macro**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the mechanism-selection record.
+3. For **Explain expansion as a staged production of ordinary Rust tokens**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the mechanism-selection record.
+4. For **Distinguish matcher, parser, name-resolution, type-checking, build, and runtime failures**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the mechanism-selection record.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Metaprogramming Boundaries and the Expansion Model** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 ### Product: Decision Table Generator
@@ -102,11 +118,27 @@ Before implementation, complete this module-specific design record:
 
 Build the smallest valid **mechanism selection and phase ownership** surface first. Add one accepted case, one rejection owned by this mechanism, and one case that expands successfully before ordinary Rust rejects a later obligation. Compare with the reference only after those three phase boundaries are protected by tests.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Decision Table Generator**, record:
+
+- the public behavior that demonstrates **Separate runtime abstraction from compile-time generation**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Create CommandForge’s authority ledger and phase map before writing any macro. Record every generated surface and one explicit non-goal for each mechanism. The increment is complete when no command fact has two independent owners.
 
 The capstone increment must leave a visible design record: one diagram or table, one positive test, one negative test, and one statement of what this mechanism deliberately does **not** own.
+
+### Capstone invariant trace
+
+For the Module 41 CommandForge increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -140,3 +172,7 @@ Before advancing, defend these module-specific points:
 - which facts become duplicated if generation is removed
 - why the selected mechanism is weaker than the alternatives above it
 - what change would make the macro unnecessary
+
+### Closed-book defense
+
+In five minutes, answer “Which facts deserve generation, and what exactly happens between macro input and the Rust program that finally runs?” using the **mechanism-selection record**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside CommandForge. A list of APIs without the deciding relationship is incomplete.

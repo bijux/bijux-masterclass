@@ -1,6 +1,14 @@
 # Laboratory 56 — Panic-Safe Batch Builder
 
-This is the independent product for **Course 6, Module 56: Raw Pointers, Provenance, and Uninitialized Memory**. Read the [module chapter](../../course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) and complete its [workbook](../../course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/workbook.md) before consulting the reference implementation.
+**Course 6 · Module 56: Raw Pointers, Provenance, and Uninitialized Memory**
+
+[Chapter](../../course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/index.md) · [Workbook](../../course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/workbook.md) · [FrameVault guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Raw Pointers, Provenance, and Uninitialized Memory**: How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation? The product must make **Distinguish raw pointers from references and explain why conversion does not transfer ownership** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **initialization and provenance map** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Learning target
 
@@ -14,7 +22,7 @@ By the end, the answer must be visible in the public API, failure behavior, adve
 
 Build a fixed-size array through `MaybeUninit` while an element constructor can return an error or panic. The product must drop exactly the initialized prefix and never treat the suffix as live values.
 
-## Why this laboratory exists
+## Product-specific design pressure
 
 This lab focuses on the interval between allocation and full initialization, where the type system cannot yet treat the buffer as `[T]`. A guard must know exactly how many elements are live and destroy that prefix if construction returns or unwinds early. The finished owner may exist only after every slot has been initialized.
 
@@ -65,7 +73,7 @@ Use the common [laboratory method](../../../START_HERE.md#laboratory-method). Wo
 
 The laboratory is complete when the tests and documented failure paths pass, and you can answer this question without the chapter:
 
-> How do you manipulate addresses and storage without accidentally creating an invalid reference, leaving uninitialized values live, or performing pointer arithmetic outside its allocation?
+For **Laboratory 56 — Panic-Safe Batch Builder**, answer the learning-target question from the completed product. Point to the public boundary that carries the rule, the adversarial case that would falsify it, and one fact the test suite does not establish.
 
 Run the local proof route:
 
@@ -75,3 +83,26 @@ cargo test
 cargo fmt -- --check
 cargo clippy -- -D warnings
 ```
+
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Panic-Safe Batch Builder**.
+2. Draw the smallest **initialization and provenance map** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to FrameVault so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Distinguish raw pointers from references and explain why conversion does not transfer ownership.
+- Use raw borrow operators when creating a reference would itself be invalid.
+- Derive pointer arithmetic from one allocation and checked element counts.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 56 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **initialization and provenance map**. Defend why your design is simpler than one plausible alternative under the new requirements.

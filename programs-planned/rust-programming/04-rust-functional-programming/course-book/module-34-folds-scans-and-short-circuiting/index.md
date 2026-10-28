@@ -1,9 +1,11 @@
-# 34 — Folds, Scans, and Short-Circuiting
+# Module 34 — Folds, Scans, and Short-Circuiting
 
-**Course 4, day 4 · Module 34 of 90**  
-`███████████░░░░░░░░░` **34/90**
+**Course 4 · Day 4 · Module 34 of 100**
+`████████░░░░░░░░░░░░░░░░░` **34/100**
 
-[← Module 33: Iterator Algebra and Pipeline Shape](../module-33-iterator-algebra-and-pipeline-shape/index.md) · [Course 4 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 35: Option, Result, and Fallible Traversal →](../module-35-option-result-and-fallible-traversal/index.md)
+[Program](../../../README.md) · [Course 4](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-04-streaming-metrics/README.md) · [LedgerFlow guide](../capstone.md)
+
+[← Module 33: Iterator Algebra and Pipeline Shape](../module-33-iterator-algebra-and-pipeline-shape/index.md) · [Module 35: Option, Result, and Fallible Traversal →](../module-35-option-result-and-fallible-traversal/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Mapping changes items; many real analyses must accumulate state or stop when an invariant is violated. Folds, scans, `try_fold`, and short-circuiting are taught through accumulator invariants. This prevents reductions from becoming opaque one-liners whose correctness cannot be explained.
+
+### Prerequisite bridge
+
+Module 33 established **Iterator Algebra and Pipeline Shape**. Before continuing, verify that you can refactor long chains into named semantic stages without forcing premature collection. This module preserves that capability and adds the ability to design a fold accumulator with a precise prefix invariant. Module 35, **Option, Result, and Fallible Traversal**, will rely on both when it asks: *Should a fallible traversal skip, fail fast, recover, accumulate diagnostics, or continue with an explicit default?*
+
+### Scope boundary
+
+This module owns the reasoning for **folds, scans, and short-circuiting** inside Course 4. The course uses ordinary functions, closures, iterators, and immutable public models. It does not treat mutation as forbidden, and it postpones macro construction, parallel iteration, async streams, and benchmark-driven optimization. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -78,7 +88,7 @@ For a fold, write:
 5. order dependence;
 6. final interpretation.
 
-### Decision rule
+### Decision rule — Proof template
 
 Use `fold` when one named state summarizes every consumed prefix and each item advances that state. If the accumulator cannot be explained without simulating code, redesign it.
 
@@ -180,7 +190,7 @@ As with folds, use a struct when the state has several fields or invariants. Avo
 - emitting state transitions;
 - stopping after a threshold while preserving prefix outputs.
 
-### Decision rule
+### Decision rule — Use cases
 
 Use `scan` when each input updates state and that evolving state must produce a lazy stream. Use `fold` when only the final state matters. Use `filter_map` when `None` means skip rather than terminate.
 
@@ -243,7 +253,7 @@ lines.enumerate().try_fold(Vec::new(), |mut records, (index, line)| {
 
 A simple loop may be more readable for this multi-step case. The point is the short-circuiting contract, not syntax compression.
 
-### Decision rule
+### Decision rule — Error context
 
 Use `try_fold` when a prefix accumulator should be returned only if every processed step succeeds. Use `try_for_each` for fallible traversal without an aggregate. State partial-effect behavior separately.
 
@@ -304,7 +314,7 @@ Tree walks can use `ControlFlow` to stop after finding a node while avoiding a f
 
 A domain enum may be appropriate when there are several terminal outcomes. For simple continue/break semantics, the standard type communicates integration with short-circuiting APIs.
 
-### Decision rule
+### Decision rule — Avoid custom control enums without need
 
 Use `ControlFlow` when early termination is a normal control result and the stop condition needs accumulated or recursive context. Use `Result` when termination represents failure with error meaning.
 
@@ -372,7 +382,7 @@ let totals = events.into_iter().fold(BTreeMap::new(), |mut by_account, event| {
 
 For an in-memory slice, two simple passes can be better than one complicated fold. The cost difference may be irrelevant, and separate passes allow independent tests. One-pass design matters for streams, expensive sources, or large data only after requirements and measurement.
 
-### Decision rule
+### Decision rule — Multiple passes may be clearer
 
 Use one-pass aggregation when the accumulator has one coherent invariant and source traversal is meaningfully constrained. Split phases when error reporting, sorting, or review clarity requires different structures.
 
@@ -426,7 +436,7 @@ A local `mut` variable with exclusive ownership is often the clearest implementa
 
 Iterator chains and loops are both subject to compiler optimization. Do not teach that one is categorically faster. Course 9 measures real workloads.
 
-### Decision rule
+### Decision rule — Optimization claims
 
 Choose the control form that makes overflow, early exit, diagnostics, and state invariants visible. Functional skill includes knowing when not to use a fold.
 
@@ -472,6 +482,24 @@ This yields an error item but continues unless the consumer stops; it does not a
 
 Use `try_fold` with `ControlFlow::Break` when finding the first negative balance is a search result rather than an error.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For design a fold accumulator with a precise prefix invariant, construct one positive and one causal negative example. Mark the first decisive fact in the **accumulator invariant** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For distinguish `fold`, `reduce`, `sum`, `product`, and explicit loops by semantics rather than style, construct one positive and one causal negative example. Mark the first decisive fact in the **accumulator invariant** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For use `scan` when evolving state must also yield an output stream, construct one positive and one causal negative example. Mark the first decisive fact in the **accumulator invariant** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For use `try_fold` and `try_for_each` for fallible short-circuiting traversal, construct one positive and one causal negative example. Mark the first decisive fact in the **accumulator invariant** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **LedgerFlow**, a deterministic event-analysis pipeline with diagnostics, audit history, queries, and reports. Reduce valid events into ledger state with an explicit prefix invariant and short-circuit on fatal violations without leaving partial mutation. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -502,11 +530,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Iterator::try_fold](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.try_fold)
 - [ControlFlow](https://doc.rust-lang.org/std/ops/enum.ControlFlow.html)
 
-[← Module 33](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 35 →](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md)
+[← Module 33](../../../04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 35 →](../../../04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md)
 
 ## Continue
 
-1. Complete the [Module 34 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 34 — Streaming Metrics](../../labs/module-04-streaming-metrics/README.md) from its public contract.
-3. Apply the Module 34 increment in the [LedgerFlow engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 35 — Option, Result, and Fallible Traversal](../module-35-option-result-and-fallible-traversal/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

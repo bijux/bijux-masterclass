@@ -1,4 +1,43 @@
-# Course 4 reference — Functional Rust
+# Course 4 Reference Desk — Functional Rust
+
+Use this page while designing or reviewing. It is a decision aid, not a replacement for the module explanations.
+
+## Governing question
+
+> How can Rust make capture, traversal, cardinality, ordering, failure, accumulation, structural sharing, effects, and cost visible in one dataflow?
+
+## Working record
+
+Keep a capture map, iterator stage table, cardinality and order trace, failure-policy matrix, accumulator invariant, structural-sharing graph, effect boundary, and qualitative cost model. A design is not ready when the record still contains unnamed owners, contradictory states, implicit failure, accidental order, unbounded accumulation, or a claim with no matching evidence.
+
+## Decision rules
+
+| Decision | Rule |
+|---|---|
+| Closure bound | Derive `Fn`, `FnMut`, or `FnOnce` from invocation count and capture behavior. |
+| Iterator ownership | State whether the source is borrowed, mutably borrowed, or consumed and what item type follows. |
+| Failure policy | Choose fail-fast, skip, recover, or accumulate diagnostics explicitly. |
+| Reduction | Write the accumulator invariant before replacing a loop with `fold` or `try_fold`. |
+| Effect boundary | Keep deterministic decisions pure enough to test without the filesystem, clock, terminal, or process. |
+
+## Module quick reference
+
+| Module | Mechanism | Minimum usable outcome |
+|---:|---|---|
+| 31 | Closures, Capture, and Callable Contracts | Distinguish function items, function pointers, and anonymous closure types |
+| 32 | The Iterator Model | Explain the distinct roles of `IntoIterator`, `Iterator`, adapters, and consumers |
+| 33 | Iterator Algebra and Pipeline Shape | Derive the item type and cardinality effect of common iterator adapters |
+| 34 | Folds, Scans, and Short-Circuiting | Design a fold accumulator with a precise prefix invariant |
+| 35 | Option, Result, and Fallible Traversal | Compose optional and fallible transformations while preserving ownership and error meaning |
+| 36 | Custom Iterators and Collection Protocols | Implement a correct custom `Iterator` by defining state and exhaustion behavior |
+| 37 | Recursive Data and Structural Sharing | Define recursive algebraic data with the appropriate indirection |
+| 38 | Functional Core and Effect Isolation | Separate deterministic domain decisions from filesystem, time, environment, and terminal effects |
+| 39 | Combinator Laws and Cost Models | Design domain combinators that preserve type and error meaning |
+| 40 | Functional Architecture Synthesis | Produce a transformation map that identifies source, shape, ownership, failure, state, and effect boundaries |
+
+## Claim boundary
+
+Separate language guarantees, library contracts, product policy, target observations, and measured artifact facts. When an exact API or version detail matters, follow the primary source from [Source Notes](../../SOURCE_NOTES.md).
 
 Functional Rust is not “never mutate” and not “replace every loop with adapters.” It is the discipline of making dataflow, state, failure, effects, and cost explicit.
 

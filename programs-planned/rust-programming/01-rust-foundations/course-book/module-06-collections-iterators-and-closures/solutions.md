@@ -1,8 +1,8 @@
-# Reasoned solutions — Module 06: Collections, Iterators, and Closures
+# Reasoned Solutions — Module 06: Collections, Iterators, and Closures
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-06-in-memory-board/README.md) · [Taskboard guide](../capstone.md)
 
-Use these explanations to review your reasoning about **Collections, Iterators, and Closures**, not to substitute for an attempt. The decisive question is: *Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow?* When your design differs, separate three possibilities: a Rust rule was applied incorrectly, the product contract changed, or two architectures satisfy the same contract with different trade-offs.
+Use these notes only after preserving your prediction and repair for **Module 6: Collections, Iterators, and Closures**. Compare the reasoning against this question: *Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Compiler specimen reasoning
 
@@ -307,9 +307,7 @@ Replacing the vector with a map is not yet justified. The board is small, listin
 
 Implement the same board query as a loop and as an iterator pipeline, then select one using ownership, readability, and allocation evidence.
 
-
-
-## Laboratory comparison
+## Reference implementation comparison
 
 The complete laboratory implementation is in [`module-06-in-memory-board/solution`](../../labs/module-06-in-memory-board/solution). Before reading it, write down:
 
@@ -330,3 +328,42 @@ For **Collections, Iterators, and Closures**, compare the contract, invariant, f
 - Produce deterministic public output even when internal storage has unspecified iteration order.
 
 A complete explanation of **Collections, Iterators, and Closures** also states the boundary of the mechanism: which guarantee it does not provide, which cost it introduces, and which simpler design should be preferred when that guarantee is unnecessary.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow?
+
+Build a **collection and iteration trace**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Use Vec, slices, and HashMap with explicit length, capacity, invalidation, lookup, and ordering assumptions.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Derive item ownership for iter, iter_mut, into_iter, and for-loop desugaring contexts.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use closures and core iterator adapters while keeping transformations readable and cost-aware.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Avoid mutation-during-iteration hazards by staging keys, splitting phases, or selecting a different operation.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Produce deterministic public output even when internal storage has unspecified iteration order.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Use Vec, slices, and HashMap with explicit length, capacity, invalidation, lookup, and ordering assumptions.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the collection and iteration trace.
+
+### Laboratory transfer review
+
+For [In-Memory Task Board](../../labs/module-06-in-memory-board/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In Taskboard, Module 6 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Collections, Iterators, and Closures**, which relationship decides this question: “Does an algorithm borrow, mutate, or consume a collection, and what complexity and invalidation consequences follow?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to Taskboard?

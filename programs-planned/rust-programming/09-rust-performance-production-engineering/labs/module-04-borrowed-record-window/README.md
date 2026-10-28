@@ -1,6 +1,14 @@
-# Laboratory 4 — Borrowed Record Window
+# Laboratory 84 — Borrowed Record Window
 
-[Common laboratory method](../../../START_HERE.md#laboratory-method) · [Module 84 chapter](../../course-book/module-84-data-movement-buffering-and-zero-copy-boundaries/index.md)
+**Course 9 · Module 84: Data Movement, Buffering, and Zero-Copy Boundaries**
+
+[Chapter](../../course-book/module-84-data-movement-buffering-and-zero-copy-boundaries/index.md) · [Workbook](../../course-book/module-84-data-movement-buffering-and-zero-copy-boundaries/workbook.md) · [MetricRail guide](../../course-book/capstone.md) · [Program method](../../../START_HERE.md#laboratory-method)
+
+## Why this laboratory exists
+
+The laboratory isolates one decision from **Data Movement, Buffering, and Zero-Copy Boundaries**: Where do bytes move, who owns them at each boundary, and when does avoiding a copy improve the whole system rather than merely relocate lifetime and retention cost? The product must make **Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers** visible through its public behavior, failure state, and tests rather than through explanatory comments alone.
+
+Work from `starter/` with a **byte journey** beside the code. Preserve the first failing case and your original design before reading `solution/`; the reference is a comparison surface, not a sequence of missing lines.
 
 ## Product
 
@@ -73,3 +81,25 @@ Add a test in which a caller holds a borrowed window while attempting to advance
 
 Can a caller point to the exact operation that ends every borrowed view, and can the implementation explain every remaining copy? Answer with the public signatures and one concrete buffer-state trace. If either answer depends on caller discipline that the types do not enforce, revise the API before treating the laboratory as complete.
 
+## Working route
+
+1. Read the product contract and run the starter’s baseline checks for **Borrowed Record Window**.
+2. Draw the smallest **byte journey** capable of deciding the governing question.
+3. Add a causal negative or adversarial test that fails for the intended relationship.
+4. Implement one invariant at a time; after each failure, record state, ownership, cleanup, order, and capacity.
+5. Complete the transfer task in a domain unrelated to MetricRail so that syntax cannot substitute for understanding.
+6. Compare with `solution/` by contract, proof boundary, and rejected shortcuts before comparing implementation shape.
+
+## Completion standard
+
+The laboratory is complete when the implementation and tests demonstrate:
+
+- Trace bytes across kernel, transport, framing, parsing, domain, storage, and response layers.
+- Distinguish copying bytes from moving ownership of a buffer handle.
+- Use slices, `bytes::Bytes`, and split/freeze operations while explaining their retention semantics.
+
+Also preserve one ordinary success trace, one causal rejection or partial-failure trace, cleanup, deterministic behavior where promised, and one explicit limit on what the tests establish. A happy-path implementation or an explanation that merely names the API is incomplete.
+
+## Independent transfer
+
+Rebuild the decisive relationship from Module 84 in a different product. Change the domain types, names, public behavior, and failure mode while retaining the same **byte journey**. Defend why your design is simpler than one plausible alternative under the new requirements.

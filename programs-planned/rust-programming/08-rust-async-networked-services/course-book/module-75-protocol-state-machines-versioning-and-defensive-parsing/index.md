@@ -1,8 +1,11 @@
-# Module 75: Protocol State Machines, Versioning, and Defensive Parsing
+# Module 75 — Protocol State Machines, Versioning, and Defensive Parsing
 
-**Course 8, day 5 · Module 75 of 90**
+**Course 8 · Day 5 · Module 75 of 100**
+`███████████████████░░░░░░` **75/100**
 
-**75/90** · [Course overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [JobWire guide](../capstone.md)
+[Program](../../../README.md) · [Course 8](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-05-negotiated-command-protocol/README.md) · [JobWire guide](../capstone.md)
+
+[← Module 74: TCP, UDP, DNS, and Connection Lifecycles](../module-74-tcp-udp-dns-and-connection-lifecycles/index.md) · [Module 76: Backpressure, Admission Control, and Fair Work Distribution →](../module-76-backpressure-admission-control-and-fair-work-distribution/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ A bounded frame is not yet a valid request. The bytes may be invalid UTF-8, the 
 Modules 73 and 74 established frame and connection lifecycles. This module adds the language spoken over that connection. The protocol becomes a typed state machine rather than a collection of commands that happen to arrive over TCP.
 
 Versioning appears here because every public protocol creates future compatibility obligations. A version field is useful only when both peers define negotiation, unsupported versions, feature behavior, and the lifetime of compatibility. Request IDs and idempotency keys also appear here as distinct concepts: one correlates a response; the other prevents duplicate semantic effects.
+
+### Prerequisite bridge
+
+Module 74 established **TCP, UDP, DNS, and Connection Lifecycles**. Before continuing, verify that you can write a connection ledger with every close and error path. This module preserves that capability and adds the ability to separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution;. Module 76, **Backpressure, Admission Control, and Fair Work Distribution**, will rely on both when it asks: *When demand exceeds service capacity, where may work wait, which bound is authoritative, and how does overload become an explicit product outcome instead of memory growth, latency collapse, or starvation?*
+
+### Scope boundary
+
+This module owns the reasoning for **protocol state machines, versioning, and defensive parsing** inside Course 8. The course builds a process-local network service. It does not attempt distributed consensus, TLS implementation, database transactions, service meshes, or framework-driven web development. Those concerns are discussed only where they affect the stated protocol and lifecycle guarantees. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -212,6 +223,24 @@ parse(render(message)) == message
 
 They do not prove that every accepted noncanonical input renders identically unless that is part of the contract. Decide whether the parser is strict or normalizing.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution, construct one positive and one causal negative example. Mark the first decisive fact in the **protocol transition table** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For design an explicit connection-state machine with typed transitions, construct one positive and one causal negative example. Mark the first decisive fact in the **protocol transition table** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For distinguish connection-fatal errors from request-local rejections, construct one positive and one causal negative example. Mark the first decisive fact in the **protocol transition table** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For negotiate protocol versions before accepting ordinary commands, construct one positive and one causal negative example. Mark the first decisive fact in the **protocol transition table** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 A small pure state machine can be tested without I/O:
@@ -314,4 +343,4 @@ Continue only when you can explain:
 
 ## Continue
 
-Complete the [workbook](workbook.md), use the [reasoned solutions](solutions.md) only after freezing your own answer, build [Negotiated Command Protocol](../../labs/module-05-negotiated-command-protocol/README.md), and add the fifth [JobWire increment](../capstone.md#increment-5-freeze-the-wire-protocol). Then continue to [Module 76](../module-76-backpressure-admission-control-and-fair-work-distribution/index.md).
+Continue to [Module 76 — Backpressure, Admission Control, and Fair Work Distribution](../module-76-backpressure-admission-control-and-fair-work-distribution/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

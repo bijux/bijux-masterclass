@@ -1,4 +1,43 @@
-# Async and Network Service Reference Desk
+# Course 8 Reference Desk — Rust Async and Networked Services
+
+Use this page while designing or reviewing. It is a decision aid, not a replacement for the module explanations.
+
+## Governing question
+
+> How do suspension, wakeup, task ownership, framing, protocol state, capacity, cancellation, retry, and shutdown remain explicit when peers and timing are only partly observable?
+
+## Working record
+
+Keep a future state table, wake-source map, task tree, buffer/frame ledger, connection state machine, protocol transition table, capacity ledger, cancellation trace, retry/commit matrix, and shutdown timeline. A design is not ready when the record still contains unnamed owners, contradictory states, implicit failure, accidental order, unbounded accumulation, or a claim with no matching evidence.
+
+## Decision rules
+
+| Decision | Rule |
+|---|---|
+| Future | List stored states, wake source, completion, and drop behavior before writing `poll` or `async` code. |
+| Task lifecycle | Every spawned task is observed, joined, aborted, or deliberately detached with a stated owner. |
+| Framing | Treat transport chunks as arbitrary; validate frame length before allocation. |
+| Cancellation | Identify the exact suspension points after which dropping the future can leave an external effect. |
+| Retry | Use one overall deadline and an idempotency strategy when commit may be ambiguous. |
+
+## Module quick reference
+
+| Module | Mechanism | Minimum usable outcome |
+|---:|---|---|
+| 71 | Futures, Polling, Wakers, and Async State Machines | explain why a future is inert until polled; |
+| 72 | Tokio Runtimes, Tasks, and Structured Async Lifecycles | distinguish a runtime, worker thread, task, future, reactor, and blocking pool; |
+| 73 | Async I/O, Buffers, Streams, and Framing | distinguish readiness from transfer completion; |
+| 74 | TCP, UDP, DNS, and Connection Lifecycles | distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close; |
+| 75 | Protocol State Machines, Versioning, and Defensive Parsing | separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution; |
+| 76 | Backpressure, Admission Control, and Fair Work Distribution | find every accumulation point in an async service; |
+| 77 | Cancellation Safety, Deadlines, and Graceful Shutdown | derive cancellation behavior from future-owned state and external side effects; |
+| 78 | HTTP Services with Hyper: Requests, Bodies, and Connections | distinguish accepted transport, HTTP connection future, request future, body stream, and application service; |
+| 79 | Network Failure, Idempotency, Retries, and Deterministic Testing | classify failures by phase, scope, retryability, and commit ambiguity; |
+| 80 | Integrated Async Service Architecture, Testing, and Audit | construct a complete async service dossier; |
+
+## Claim boundary
+
+Separate language guarantees, library contracts, product policy, target observations, and measured artifact facts. When an exact API or version detail matters, follow the primary source from [Source Notes](../../SOURCE_NOTES.md).
 
 Use this page after attempting recall. It compresses the course’s recurring distinctions; it is not a substitute for the module chapters.
 

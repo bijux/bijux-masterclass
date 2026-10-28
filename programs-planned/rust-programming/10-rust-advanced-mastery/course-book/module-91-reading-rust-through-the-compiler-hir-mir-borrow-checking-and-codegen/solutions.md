@@ -1,8 +1,8 @@
-# Module 91 Solutions — Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen
+# Reasoned Solutions — Module 91: Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen
 
-[Workbook](workbook.md) · [Chapter](index.md) · [AxiomStore guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-01-compiler-evidence-notebook/README.md) · [AxiomStore guide](../capstone.md)
 
-These are reasoned reference answers. Compare your predicted phase, invariant owner, and failure state before comparing syntax. A different implementation is stronger when it preserves the same contract with a smaller proof surface.
+Use these notes only after preserving your prediction and repair for **Module 91: Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen**. Compare the reasoning against this question: *When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Part 1 — Prediction
 
@@ -32,7 +32,7 @@ Judge every repair against the source-to-artifact evidence ladder: the decisive 
 
 **Principled repair.** Shorten the returned borrow, split cursor state from backing storage, or change sequencing. Cloning abandons the intended borrowing contract.
 
-A strong answer updates the source-to-artifact evidence ladder and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Clone inserted after borrow error** while preserving the surrounding requirement. The source-to-artifact evidence ladder must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 2 — Runtime experiment used as drop proof
 
@@ -40,7 +40,7 @@ A strong answer updates the source-to-artifact evidence ladder and includes a ne
 
 **Principled repair.** Derive required destruction from initialization and exit edges. Keep print order as one observation and remove claims that optimization or future toolchains cannot preserve.
 
-A strong answer updates the source-to-artifact evidence ladder and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Runtime experiment used as drop proof** while preserving the surrounding requirement. The source-to-artifact evidence ladder must identify the first phase at which the original assumption becomes invalid.
 
 ### Repair 3 — Assembly used to explain a method error
 
@@ -48,7 +48,7 @@ A strong answer updates the source-to-artifact evidence ladder and includes a ne
 
 **Principled repair.** Return to resolution: enumerate inherent and trait candidates, autoderef/autoref, and bounds. Machine code exists only after selection succeeds.
 
-A strong answer updates the source-to-artifact evidence ladder and includes a negative case that fails for the original cause.
+The negative case should reintroduce **Assembly used to explain a method error** while preserving the surrounding requirement. The source-to-artifact evidence ladder must identify the first phase at which the original assumption becomes invalid.
 
 ## Part 3 — Focused exercises
 
@@ -58,7 +58,7 @@ The construction should answer: Create three types with overlapping inherent and
 
 The decisive acceptance criterion is: The table predicts every call and does not appeal to source proximity.
 
-Evaluate the result through the source-to-artifact evidence ladder; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Receiver adjustment table**, apply the source-to-artifact evidence ladder to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 2 — Control-flow drop graph
 
@@ -66,7 +66,7 @@ The construction should answer: Write a function with `?`, a `match`, partial in
 
 The decisive acceptance criterion is: Every live value appears exactly once on each applicable exit.
 
-Evaluate the result through the source-to-artifact evidence ladder; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Control-flow drop graph**, apply the source-to-artifact evidence ladder to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 3 — Place projection repair
 
@@ -74,7 +74,7 @@ The construction should answer: Diagnose a conflict involving two fields and an 
 
 The decisive acceptance criterion is: The repair changes places or borrow duration; no blanket cloning is accepted.
 
-Evaluate the result through the source-to-artifact evidence ladder; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Place projection repair**, apply the source-to-artifact evidence ladder to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Exercise 4 — Scoped artifact note
 
@@ -82,12 +82,11 @@ The construction should answer: Inspect one generic and one dynamic path in a fi
 
 The decisive acceptance criterion is: The note includes semantic parity, build identity, observation, and an explicit expiry condition.
 
-Evaluate the result through the source-to-artifact evidence ladder; helper names may differ, but the invariant owner and adversarial case must be explicit.
+For **Scoped artifact note**, apply the source-to-artifact evidence ladder to the exact construction above and to its closest simpler alternative. The answer is complete only when the stated acceptance criterion survives a counterexample aimed at that design choice.
 
 ### Cross-course transfer
 
 Full credit may conclude that **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen** should not be retrofitted into the earlier artifact. The comparison must identify the current owner, the proof benefit, maintenance cost, and a concrete failure that would change.
-
 
 ### Applied case study — one error, four representations
 
@@ -118,3 +117,42 @@ A strong capstone change keeps the responsibility described by the source-to-art
 Explain a borrow rejection, a destructor obligation, and a code-size observation using three different evidence layers. Then justify why the compiler cannot select the product redesign after the borrow rejection.
 
 The defense passes when it reconstructs the source-to-artifact evidence ladder from the requirement, shows a causal rejected construction, compares a simpler alternative, maps evidence, and names residual risk. Terminology without that chain is not mastery.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result?
+
+Build a **compiler-phase record**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Translate source constructs into a control-flow and place-oriented model suitable for borrow, move, and drop reasoning.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Identify when an observation is a language guarantee, a compiler implementation detail, or generated machine-code evidence.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Use compiler diagnostics, expanded code, MIR-oriented reasoning, and assembly inspection without treating any single view as the complete semantics.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Explain non-lexical lifetimes, temporary scopes, partial moves, and destructor placement through explicit control-flow points.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Separate parsing, name resolution, type checking, trait solving, borrow checking, monomorphization, optimization, and linking as distinct explanatory phases.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the compiler-phase record.
+
+### Reference implementation comparison
+
+For [Compiler Evidence Notebook](../../labs/module-01-compiler-evidence-notebook/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In AxiomStore, Module 91 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Reading Rust Through the Compiler: HIR, MIR, Borrow Checking, and Codegen**, which relationship decides this question: “When difficult Rust code surprises you, which compiler representation and which proof obligation actually decide the result?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to AxiomStore?

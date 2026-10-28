@@ -1,10 +1,8 @@
-# Reasoned solutions — Module 60: Integrated Systems Design, Testing, and Audit
+# Reasoned Solutions — Module 60: Integrated Systems Design, Testing, and Audit
 
-[Return to the workbook](workbook.md) · [Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md)
+[Workbook](workbook.md) · [Chapter](index.md) · [Laboratory](../../labs/module-10-systems-boundary-audit/README.md) · [FrameVault guide](../capstone.md)
 
-Use these solutions after freezing your own analysis. The code result matters less than locating the first broken contract and identifying who owns the repair.
-
-Read each answer as a boundary proof: identify the missing fact, the component able to establish it, and the state that must remain unchanged when the proof fails.
+Use these notes only after preserving your prediction and repair for **Module 60: Integrated Systems Design, Testing, and Audit**. Compare the reasoning against this question: *How do you prove a systems product across binary formats, files, paths, processes, unsafe code, allocation, and FFI without letting one boundary invalidate another?* Do not compare line count first. A different implementation is valid when it preserves the same public contract and can defend its ownership, failure, ordering, capacity, safety, compatibility, and evidence consequences.
 
 ## Prediction analysis
 
@@ -124,3 +122,42 @@ Use the chapter’s readiness statement as the first threshold:
 You are ready to complete Course 6 when you can defend FrameVault boundary by boundary, identify claims that depend on target evidence, repair an unseen unsafe or I/O defect without weakening the product, and implement an independent binary utility under the same proof discipline.
 
 Then perform this destructive regression check: add one new entry kind from wire format through CLI and FFI, then deliberately omit one layer and confirm that the traceability matrix exposes the incomplete change. The resulting failure should be caught for the causal reason predicted in the workbook, not by an unrelated panic or syntax error.
+
+## Deep reasoning and transfer
+
+### Decisive model
+
+> How do you prove a systems product across binary formats, files, paths, processes, unsafe code, allocation, and FFI without letting one boundary invalidate another?
+
+Build a **whole-system boundary dossier**. Mark the owner or authority, valid and invalid states, first decisive phase or event, state after failure, and visible consequence. The model is too weak when it records only the API call and not the relationship that makes the call legal or useful.
+
+### Outcome checks
+
+1. **Draw one boundary map from external bytes to final effects and back to foreign callers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+2. **Build a threat model that separates malformed input, hostile namespaces, untrusted processes, allocation pressure, and invalid foreign callers.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+3. **Use layered tests, dynamic tools, cross-target checks, and failure injection as complementary evidence.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+4. **Audit unsafe code through invariants and call graphs rather than counting blocks.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+5. **Define deterministic output, compatibility, and recovery rules as product contracts.** Give one satisfying example, one example that fails for that exact cause, and the earliest decisive observation.
+
+### Repair discipline
+
+The weak repair for this module is any change that makes the current example pass by deleting the first outcome: **Draw one boundary map from external bytes to final effects and back to foreign callers.** A principled repair preserves that requirement, narrows the unsupported assumption, and makes the deciding fact observable in the whole-system boundary dossier.
+
+### Reference implementation comparison
+
+For [Systems Boundary Audit](../../labs/module-10-systems-boundary-audit/README.md), compare contract, state transitions, adversarial cases, cleanup, and public behavior before syntax. Identify the earliest operation that could violate the contract and the type, check, protocol, or review procedure that prevents it. Then state when a simpler design would be preferable.
+
+### Capstone transfer
+
+In FrameVault, Module 60 is complete only when the new behavior fits the existing authority map. Trace the changed fact from input through validation, state transition, effect, output, and tests. Two components deciding the same fact indicate a second source of truth rather than successful integration.
+
+### Oral defense
+
+Answer these without notes:
+
+1. In **Integrated Systems Design, Testing, and Audit**, which relationship decides this question: “How do you prove a systems product across binary formats, files, paths, processes, unsafe code, allocation, and FFI without letting one boundary invalidate another?”
+2. What is the smallest causal negative case?
+3. Which repair preserves the requirement?
+4. Which tempting repair deletes it?
+5. What can the chosen evidence falsify, and what remains unproved?
+6. How would the design change in a product unrelated to FrameVault?

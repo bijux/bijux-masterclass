@@ -1,8 +1,17 @@
 # Workbook — Module 12: Lifetime Relationships and Borrowed APIs
 
-[Return to the chapter](index.md) · [Open the Memory Workspace engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-02-zero-copy-records/README.md) · [Memory Workspace guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Lifetime Relationships and Borrowed APIs** without relying on surface syntax. Keep the module question in view: *What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Lifetime Relationships and Borrowed APIs** has become a usable model rather than remembered vocabulary. Its governing question is: *What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?* Preserve your first prediction and record decisive facts in a **lifetime constraint graph**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 11 — Places, Move Paths, and Advanced Borrowing that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?**
+3. Draw the smallest **lifetime constraint graph** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -26,7 +35,6 @@ python3 ../tools/run_compiler_labs.py 02-rust-ownership-lifetimes-memory
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A parser stores source text, a schema label, and diagnostics:
 
@@ -83,7 +91,6 @@ Tests must show that a short-lived schema can be attached to a long-lived source
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 ### 1. Expand elision
 
 Expand lifetime parameters for ten supplied functions, including methods with additional reference parameters and iterator returns.
@@ -124,11 +131,18 @@ Implement tokens borrowing from source text and prove that no token can outlive 
 
 A supplied API has four lifetime parameters and three outlives bounds. Remove every redundant relationship and defend the remaining ones.
 
+### Interleaved reasoning pass
 
+1. For **Translate lifetime syntax into constraints among borrows rather than durations attached to values**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the lifetime constraint graph.
+2. For **Derive elision and explicit relationships for one-source and multiple-source APIs**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the lifetime constraint graph.
+3. For **Use lifetime shortening and subtyping in ordinary covariant borrowed views without extending provenance**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the lifetime constraint graph.
+4. For **Design structs and enums containing references while accounting for temporary and drop scopes**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the lifetime constraint graph.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Lifetime Relationships and Borrowed APIs** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 Implement `labs/module-02-zero-copy-records/starter`.
 
@@ -188,6 +202,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-02-zero-copy-records](../../labs/module-02-zero-copy-records/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Zero-Copy Records**, record:
+
+- the public behavior that demonstrates **Translate lifetime syntax into constraints among borrows rather than durations attached to values**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -197,7 +223,6 @@ The executable starter and reference implementation are in [module-02-zero-copy-
 - Use lifetime shortening and subtyping in ordinary covariant borrowed views without extending provenance.
 - Design structs and enums containing references while accounting for temporary and drop scopes.
 - Reject unnecessary lifetime coupling and choose owned output when retention must outlive input borrowing.
-
 
 Add `DocumentView<'workspace>` to `memory-workspace`.
 
@@ -238,11 +263,13 @@ The line index stores `Range<usize>` values, not `&str` slices into the body. A 
 
 Explain why a returned `DocumentId` is preferable to a view for long-lived selection state, while a view is preferable for immediate zero-copy rendering.
 
-
-
 ### Capstone defense
 
 Repair a parser whose single lifetime unnecessarily couples source input to scratch state, then decide which results should borrow and which should own.
+
+### Capstone invariant trace
+
+For the Module 12 Memory Workspace increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -252,11 +279,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Translate lifetime syntax into constraints among borrows rather than durations attached to values.
-- Derive elision and explicit relationships for one-source and multiple-source APIs.
-- Use lifetime shortening and subtyping in ordinary covariant borrowed views without extending provenance.
-- Design structs and enums containing references while accounting for temporary and drop scopes.
-- Reject unnecessary lifetime coupling and choose owned output when retention must outlive input borrowing.
+Without reopening the chapter, reconstruct the outcomes for **Module 12: Lifetime Relationships and Borrowed APIs**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -277,9 +300,17 @@ Practical check: write a zero-copy `split_once` record view and an owned convers
 
 ### Transfer defense
 
-Repair a parser whose single lifetime unnecessarily couples source input to scratch state, then decide which results should borrow and which should own.
+Transfer **Module 12: Lifetime Relationships and Borrowed APIs** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 12: Lifetime Relationships and Borrowed APIs** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
 
 1. What does a lifetime parameter describe?
 2. What owner does a returned reference point into?
@@ -304,3 +335,7 @@ A lifetime names a validity relationship, not a clock duration. Output provenanc
 #### Transfer task
 
 Design a parsed log book whose records borrow one input buffer while annotations borrow a separate catalog. Add a method replacing annotations without shortening record data. Include one compile-fail local annotation case.
+
+### Closed-book defense
+
+In five minutes, answer “What provenance and outlives relationships must hold for every returned or stored reference, and which relationships should remain independent?” using the **lifetime constraint graph**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Memory Workspace. A list of APIs without the deciding relationship is incomplete.

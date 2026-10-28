@@ -1,9 +1,11 @@
-# 27 — Typestate and Capability-Oriented APIs
+# Module 27 — Typestate and Capability-Oriented APIs
 
-**Course 3, day 7 · Module 27 of 90**  
-`█████████░░░░░░░░░░░` **27/90**
+**Course 3 · Day 7 · Module 27 of 100**
+`███████░░░░░░░░░░░░░░░░░░` **27/100**
 
-[← Module 26: Composition and OOP-Style Design Without Inheritance](../module-26-composition-and-oop-style-design-without-inheritance/index.md) · [Course 3 overview](../index.md) · [Ninety-module map](../../../COURSE_MAP.md) · [Module 28: Boundary Traits and Adapters →](../module-28-boundary-traits-and-adapters/index.md)
+[Program](../../../README.md) · [Course 3](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-07-typestate-publication/README.md) · [Review Engine guide](../capstone.md)
+
+[← Module 26: Composition and OOP-Style Design Without Inheritance](../module-26-composition-and-oop-style-design-without-inheritance/index.md) · [Module 28: Boundary Traits and Adapters →](../module-28-boundary-traits-and-adapters/index.md)
 
 ## The question
 
@@ -12,6 +14,14 @@
 ## Why this comes now
 
 Composition handles variation among components; typestate handles variation over a protocol's lifetime. Consuming transitions and capability tokens remove illegal operations from the method set. The module also treats the cost: state explosion, generic leakage, and the point where a runtime enum is the better model.
+
+### Prerequisite bridge
+
+Module 26 established **Composition and OOP-Style Design Without Inheritance**. Before continuing, verify that you can test composed behavior without coupling tests to concrete collaborators. This module preserves that capability and adds the ability to encode a finite protocol with marker states and consuming transitions. Module 28, **Boundary Traits and Adapters**, will rely on both when it asks: *How should a Rust program adapt external data, effects, closures, and foreign types without contaminating its core model?*
+
+### Scope boundary
+
+This module owns the reasoning for **typestate and capability-oriented apis** inside Course 3. The course focuses on behavioral and architectural variation. It deliberately postpones iterator-centered functional architecture, macro generation, unsafe systems boundaries, and concurrent execution. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -477,6 +487,24 @@ Serialized bytes do not arrive with a Rust typestate proof. Decode into an unche
 
 A builder may use typestate to prevent `build` before source and reporter configuration exist, then return one non-generic `Engine`. The construction protocol has ended; retaining marker parameters would contaminate storage, trait-object boundaries, error types, and downstream signatures without adding protection. Typestate is most effective when its lifetime in the architecture is deliberately short.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For encode a finite protocol with marker states and consuming transitions, construct one positive and one causal negative example. Mark the first decisive fact in the **typestate transition graph** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For decide which invalid operations deserve compile-time prevention, construct one positive and one causal negative example. Mark the first decisive fact in the **typestate transition graph** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For prevent construction of forbidden states through visibility and sealed state markers, construct one positive and one causal negative example. Mark the first decisive fact in the **typestate transition graph** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For erase typestate at a dynamic boundary without corrupting invariants, construct one positive and one causal negative example. Mark the first decisive fact in the **typestate transition graph** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 The course capstone is **Review Engine**, a policy evaluation engine with static boundaries, a dynamic rule registry, and typestate construction. Build the engine through typestate so execution is unavailable until source, policy, and reporter are present. Keep the state machinery out of the finished engine's public behavior. The exact implementation task is in the [workbook](workbook.md); the full product contract is in the [capstone guide](../capstone.md).
@@ -506,11 +534,8 @@ This chapter is self-contained. These official sources are included for verifica
 - [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 - [Rust Reference: Visibility](https://doc.rust-lang.org/reference/visibility-and-privacy.html)
 
-[← Module 26](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md) · [ninety-module map](../../../COURSE_MAP.md) · [Module 28 →](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md)
+[← Module 26](../../../03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md) · [one-hundred-module map](../../../COURSE_MAP.md) · [Module 28 →](../../../03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md)
 
 ## Continue
 
-1. Complete the [Module 27 workbook](workbook.md) and freeze every prediction before compiling.
-2. Build [Laboratory 27 — Typestate Publication](../../labs/module-07-typestate-publication/README.md) from its public contract.
-3. Apply the Module 27 increment in the [Review Engine engineering guide](../capstone.md).
-4. Review the [reasoned solutions](solutions.md) only after an independent attempt, then revise the causal model rather than copying code shape.
+Continue to [Module 28 — Boundary Traits and Adapters](../module-28-boundary-traits-and-adapters/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

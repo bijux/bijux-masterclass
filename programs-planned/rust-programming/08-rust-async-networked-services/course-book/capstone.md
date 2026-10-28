@@ -15,6 +15,59 @@ The capstone is not a framework. It is intentionally narrow:
 
 The constraints make deep reasoning possible. Adding authentication, durable storage, TLS, multiplexing, distributed brokers, or a high-level web framework before the base contracts are proved would blur the learning target.
 
+## How this capstone completes the course
+
+JobWire is a bounded async job service with a framed TCP protocol, version negotiation, a broker authority, bounded queued and active work, idempotency records, structured cancellation, a small Hyper health surface, and deterministic tests.
+
+The ten increments form one product history. An increment is accepted only when the new behavior fits the existing ownership and authority map, has a causal failure model, and preserves every earlier invariant not explicitly revised. The independent lab proves the mechanism in isolation; JobWire proves that it can coexist with nine other mechanisms.
+
+### Product invariants
+
+| # | Invariant that must survive every increment |
+|---:|---|
+| 1 | Every future that can remain pending has a wake source or terminal event. |
+| 2 | Listeners, connections, broker work, HTTP tasks, and shutdown handles form one owned task tree. |
+| 3 | Frame lengths are bounded before reserve or allocation and partial reads preserve parser state. |
+| 4 | Protocol legality is an explicit state machine selected by negotiated version. |
+| 5 | Mailbox, queued work, active work, retained results, and duplicate waiters are independently bounded. |
+| 6 | Idempotency, retry, cancellation, quiescence, draining, abort, and join have separate semantics. |
+
+For each JobWire change, annotate the owning component, state before and after success, state after every rejected or partial path, cleanup, order, capacity, and public compatibility. Where the course concerns compiler, platform, scheduler, workload, or peer behavior, label that condition rather than promoting it into an unconditional guarantee.
+
+### Ten-module integration map
+
+| Module | Mechanism | Capability visible in the product | Independent laboratory |
+|---:|---|---|---|
+| 71 | Futures, Polling, Wakers, and Async State Machines | Explain why a future is inert until polled | [One-Shot Signal](../labs/module-01-one-shot-signal/README.md) |
+| 72 | Tokio Runtimes, Tasks, and Structured Async Lifecycles | Distinguish a runtime, worker thread, task, future, reactor, and blocking pool | [Task Nursery](../labs/module-02-task-nursery/README.md) |
+| 73 | Async I/O, Buffers, Streams, and Framing | Distinguish readiness from transfer completion | [Bounded Length Codec](../labs/module-03-bounded-length-codec/README.md) |
+| 74 | TCP, UDP, DNS, and Connection Lifecycles | Distinguish bind, listen, accept, connect, resolve, read, write, half-close, and full close | [Deadline Echo Service](../labs/module-04-deadline-echo-service/README.md) |
+| 75 | Protocol State Machines, Versioning, and Defensive Parsing | Separate framing, text decoding, syntax parsing, semantic validation, state legality, and application execution | [Negotiated Command Protocol](../labs/module-05-negotiated-command-protocol/README.md) |
+| 76 | Backpressure, Admission Control, and Fair Work Distribution | Find every accumulation point in an async service | [Bounded Relay Broker](../labs/module-06-bounded-relay-broker/README.md) |
+| 77 | Cancellation Safety, Deadlines, and Graceful Shutdown | Derive cancellation behavior from future-owned state and external side effects | [Graceful Task Tree](../labs/module-07-graceful-task-tree/README.md) |
+| 78 | HTTP Services with Hyper: Requests, Bodies, and Connections | Distinguish accepted transport, HTTP connection future, request future, body stream, and application service | [Hyper Health Surface](../labs/module-08-hyper-health-surface/README.md) |
+| 79 | Network Failure, Idempotency, Retries, and Deterministic Testing | Classify failures by phase, scope, retryability, and commit ambiguity | [Idempotent Retry Client](../labs/module-09-idempotent-retry-client/README.md) |
+| 80 | Integrated Async Service Architecture, Testing, and Audit | Construct a complete async service dossier | [Async Service Audit](../labs/module-10-async-service-audit/README.md) |
+
+### How to read the implementation
+
+Begin with the product promise and private invariant-bearing types. Next locate validation and conversion boundaries, state transitions, effectful operations, cleanup, deterministic rendering or wire behavior, and finally the tests. This order prevents `main.rs` call order from being mistaken for architecture.
+
+Use a **async service dossier** to connect the implementation to the course. Every row should point to code, a test or review, and a documented limit on the claim. Missing evidence is not repaired by a stronger adjective.
+
+### Acceptance traces
+
+Preserve at least these six traces while completing the capstone:
+
+1. JobWire ordinary success from external input to visible output;
+2. malformed or unsupported input rejected before trusted state changes;
+3. domain or capacity rejection with the original authoritative state preserved;
+4. partial work followed by failure, including cleanup and retry state;
+5. the largest accepted and smallest rejected order, size, lifetime, or capacity boundary;
+6. one compatibility, platform, scheduler, peer, compiler, or workload edge specific to this course.
+
+A passing test suite is necessary, but the final defense also names a simpler architecture and explains why this product’s requirements justify the additional mechanism. If the simpler design would satisfy the real contract, prefer it.
+
 ## Product story
 
 A client connects and sends a length-delimited `HELLO` frame. After version 1 is accepted, it may send one request, receive one response, and continue. A `SUBMIT` request carries both a request ID and an idempotency key. The connection task validates the message and asks the broker to own the semantic operation. The broker either rejects admission, attaches the caller to an existing operation, or commits a new in-progress record and schedules bounded work. The terminal result remains retrievable through the same key during the process-local retention window.

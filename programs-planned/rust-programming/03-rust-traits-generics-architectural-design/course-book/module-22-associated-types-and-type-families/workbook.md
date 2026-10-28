@@ -1,8 +1,17 @@
 # Workbook — Module 22: Associated Types and Type Families
 
-[Return to the chapter](index.md) · [Open the Review Engine engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-02-associated-families/README.md) · [Review Engine guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Associated Types and Type Families** without relying on surface syntax. Keep the module question in view: *When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Associated Types and Type Families** has become a usable model rather than remembered vocabulary. Its governing question is: *When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?* Preserve your first prediction and record decisive facts in a **associated-type relationship map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 21 — Traits as Behavioral Contracts that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?**
+3. Draw the smallest **associated-type relationship map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -98,6 +107,17 @@ State what the `where Self: 'a` relationship says. Do not add a GAT when an ordi
 
 For the Review Engine, draw a table for `Source`, `Rule`, and `Reporter`: which related types are chosen by the implementation, which are selected per method call, and which should remain concrete domain types. Identify one relationship that would become weaker if converted into an unconstrained generic parameter.
 
+### Interleaved reasoning pass
+
+1. For **Choose between generic parameters and associated types from relationship cardinality**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the associated-type relationship map.
+2. For **Use associated constants and associated types without hiding call-site variation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the associated-type relationship map.
+3. For **Derive a generic associated type from a borrowing family requirement**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the associated-type relationship map.
+4. For **Explain the effect of associated-item choices on dyn compatibility and callers**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the associated-type relationship map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Associated Types and Type Families** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Implement a tabular source abstraction with two layers:
@@ -110,6 +130,18 @@ The lab must demonstrate why ordinary `Iterator` cannot express the lending rela
 The solution must not expose the GAT to callers that only need owned rows.
 
 The executable starter and reference implementation are in [module-02-associated-families](../../labs/module-02-associated-families/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
+
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Associated Families**, record:
+
+- the public behavior that demonstrates **Choose between generic parameters and associated types from relationship cardinality**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
 
 ## Part 5 — Capstone transfer
 
@@ -131,6 +163,10 @@ trait Reporter {
 
 The capstone fixes `Source::Item = Submission` at the engine boundary but preserves implementation-specific errors until they are converted into `EngineError`. Do not erase source and reporter types. Their selection occurs at construction, and callers benefit from concrete output types.
 
+### Capstone invariant trace
+
+For the Module 22 Review Engine increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
+
 ## Part 6 — Reconstruct and defend
 
 Pass only when you can derive the associated-item design from relationship cardinality, implement and explain one GAT, state why it constrains caller control flow, and show how associated items affect trait-object formation.
@@ -147,3 +183,7 @@ Oral prompt: **“Why is an associated type not merely a generic parameter writt
 ### Independent transfer
 
 Design a parser family whose view type borrows from each input invocation. Compare a GAT-based trait with a trait that returns an owned value and with an ordinary generic function. State who chooses every type, how long each result may live, and which caller control-flow constraints each design imposes.
+
+### Closed-book defense
+
+In five minutes, answer “When is a type chosen once by an implementation, when may callers choose it repeatedly, and how should that relationship appear in the API?” using the **associated-type relationship map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Review Engine. A list of APIs without the deciding relationship is incomplete.

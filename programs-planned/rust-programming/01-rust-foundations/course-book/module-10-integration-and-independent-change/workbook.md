@@ -1,8 +1,17 @@
 # Workbook — Module 10: Integration and Independent Change
 
-[Return to the chapter](index.md) · [Open the Taskboard engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-10-inventory-ledger/README.md) · [Taskboard guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether you can use **Integration and Independent Change** without relying on surface syntax. Keep the module question in view: *Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?* For every task, identify the program point where the decisive type, ownership, dispatch, failure, or cost relationship is established. Compile only after committing to a prediction, and preserve the smallest counterexample that changes your model.
+This workbook tests whether **Integration and Independent Change** has become a usable model rather than remembered vocabulary. Its governing question is: *Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?* Preserve your first prediction and record decisive facts in a **whole-program invariant map**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 9 — Crates, Modules, Public APIs, Tests, and Documentation that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?**
+3. Draw the smallest **whole-program invariant map** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -24,7 +33,6 @@ python3 ../tools/run_compiler_labs.py 01-rust-foundations
 ```
 
 ## Part 2 — Diagnose and repair
-
 
 A feature branch adds `rename <id> <title>`. It compiles and its one happy-path test passes. The diff includes:
 
@@ -108,7 +116,6 @@ Do not solve by making a universal `rename` utility or exposing fields for tests
 
 Attempt every required exercise and commit the attempt before opening `exercise-answers.md`. Mark each as:
 
-
 ### 1. Invariant map
 
 Produce a complete map of capstone invariants, owner functions/types, preservation operations, failure variants, and proving tests.
@@ -157,11 +164,18 @@ Answer twenty randomized questions spanning all ten modules in under forty minut
 
 Build a 150–300 line safe-Rust program in an unrelated domain, with typed state, error boundary, tests, docs, and thin shell. Submit a comparison explaining which capstone patterns were reused and which were rejected.
 
+### Interleaved reasoning pass
 
+1. For **Trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the whole-program invariant map.
+2. For **Preserve failure atomicity, deterministic behavior, and public invariants while refactoring across architectural layers**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the whole-program invariant map.
+3. For **Review unfamiliar Rust for ownership workarounds, swallowed errors, invalid-state models, and missing evidence**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the whole-program invariant map.
+4. For **Build a closed-book small program and an independent capstone feature from specification only**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the whole-program invariant map.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Integration and Independent Change** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
 
 ## Part 4 — Independent laboratory
-
-
 
 ### Purpose
 
@@ -242,6 +256,18 @@ Do not open a later tier until the previous tier has produced a written attempt.
 
 The executable starter and reference implementation are in [module-10-inventory-ledger](../../labs/module-10-inventory-ledger/README.md). Implement from the contract first. Compare with the reference only after your tests pass or you have written a precise blocker.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Inventory Ledger**, record:
+
+- the public behavior that demonstrates **Trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 ### Outcomes mapped
@@ -251,7 +277,6 @@ The executable starter and reference implementation are in [module-10-inventory-
 - Review unfamiliar Rust for ownership workarounds, swallowed errors, invalid-state models, and missing evidence.
 - Build a closed-book small program and an independent capstone feature from specification only.
 - Defend design choices, rejected alternatives, known limitations, and verification boundaries with concrete evidence.
-
 
 ### Part 1 — Independent feature
 
@@ -321,11 +346,13 @@ Then archive only `programs/rust-programming/`, unpack elsewhere, and rerun the 
 
 Answer twenty questions sampled from the mastery defense bank. At least five must require predicting code without compiler access, five must concern failure state, and five must require architectural tradeoffs.
 
-
-
 ### Capstone defense
 
 Implement an unseen command across every taskboard layer, add adversarial tests, and explain the ownership and failure model without running the code.
+
+### Capstone invariant trace
+
+For the Module 10 Taskboard increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -335,11 +362,7 @@ Complete this checkpoint closed-book. Compiler access is allowed only after the 
 
 For each outcome, write a claim, one example, one non-example, and one limitation.
 
-- Trace a behavioral change through grammar, types, domain rules, persistence, rendering, tests, and documentation.
-- Preserve failure atomicity, deterministic behavior, and public invariants while refactoring across architectural layers.
-- Review unfamiliar Rust for ownership workarounds, swallowed errors, invalid-state models, and missing evidence.
-- Build a closed-book small program and an independent capstone feature from specification only.
-- Defend design choices, rejected alternatives, known limitations, and verification boundaries with concrete evidence.
+Without reopening the chapter, reconstruct the outcomes for **Module 10: Integration and Independent Change**. Compare your list with the earlier outcome map only after writing it, then mark each item as modelled, predicted, repaired, built, transferred, or still unsupported.
 
 ### Closed-book checkpoint
 
@@ -402,6 +425,18 @@ Design a small unrelated Rust program with:
 
 ### Transfer defense
 
-Implement an unseen command across every taskboard layer, add adversarial tests, and explain the ownership and failure model without running the code.
+Transfer **Module 10: Integration and Independent Change** to a product unrelated to the course capstone. Change the domain model and failure mode, preserve the governing relationship, and identify which part of the original design was essential rather than accidental.
 
 Your answer must include:
+
+- the governing rule for **Module 10: Integration and Independent Change** in plain language;
+- state, ownership, or authority before and after the decisive operation;
+- one causal negative case that fails for the intended reason;
+- one principled repair and one easier repair that deletes a requirement;
+- the limit of the evidence you used;
+- one transfer to a product with different data and failure behavior.
+
+
+### Closed-book defense
+
+In five minutes, answer “Can you make and defend a cross-layer change without tutorial imitation or accidental contract regression?” using the **whole-program invariant map**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside Taskboard. A list of APIs without the deciding relationship is incomplete.

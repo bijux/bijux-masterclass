@@ -1,8 +1,11 @@
 # Module 99 — Long-Lived APIs: SemVer, MSRV, Features, Migrations, and Workspace Stewardship
 
-**99/100** · Course 10 · Module 99 of 100
+**Course 10 · Day 9 · Module 99 of 100**
+`█████████████████████████` **99/100**
 
-[Course 10 overview](../index.md) · [Workbook](workbook.md) · [Solutions](solutions.md) · [AxiomStore guide](../capstone.md)
+[Program](../../../README.md) · [Course 10](../index.md) · [Workbook](workbook.md) · [Laboratory](../../labs/module-09-versioned-sdk/README.md) · [AxiomStore guide](../capstone.md)
+
+[← Module 98: Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration](../module-98-verification-beyond-examples-compile-fail-property-model-fuzz-miri-and-concurrency-exploration/index.md) · [Module 100: Architectural Synthesis: Building and Defending a Long-Lived Rust System →](../module-100-architectural-synthesis-building-and-defending-a-long-lived-rust-system/index.md)
 
 ## The question
 
@@ -15,6 +18,14 @@ Course 3 introduced public API evolution and Course 9 covered release artifacts.
 Course 3 addressed API evolution and Course 9 addressed release identity. This module treats source, feature, toolchain, data-format, and migration compatibility as one long-lived stewardship problem.
 
 A library becomes difficult not when it has many lines but when many parties depend on different surfaces: source signatures, trait implementations, inference, feature combinations, minimum toolchains, stored bytes, migrations, generated artifacts, and operational behavior. Module 99 makes those audiences explicit before changes are called compatible.
+
+### Prerequisite bridge
+
+Module 98 established **Verification Beyond Examples: Compile-Fail, Property, Model, Fuzz, Miri, and Concurrency Exploration**. Before continuing, verify that you can build a verification matrix that names uncovered claims and the reason they remain manual review obligations. This module preserves that capability and adds the ability to analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data. Module 100, **Architectural Synthesis: Building and Defending a Long-Lived Rust System**, will rely on both when it asks: *Can you turn ten courses of mechanisms into one restrained architecture whose guarantees, unsafe core, verification evidence, compatibility policy, and operating limits can survive independent review?*
+
+### Scope boundary
+
+This module owns the reasoning for **long-lived apis: semver, msrv, features, migrations, and workspace stewardship** inside Course 10. The course selects stable mechanisms that serve real product requirements. It does not reward obscure syntax, nightly-feature collecting, unsafe code retained for display, or lower-level compiler output used where source-level reasoning is already decisive. The purpose of the boundary is to keep the decisive relationship visible before later mechanisms are layered on top of it.
 
 ## What you will be able to do
 
@@ -146,6 +157,24 @@ Cargo and the compiler can enforce syntax, type, and selected dependency constra
 
 Compatibility is multidimensional. A source-compatible change may alter stored bytes; a data-compatible reader may change output ordering; an additive feature may become nonadditive under unification. Record the dimensions instead of using one green label.
 
+### Model checkpoint
+
+Before the complete-program example, verify that the model can decide a design rather than merely name its mechanism.
+
+1. **Outcome 1.** For analyze a proposed change from the perspectives of downstream callers, downstream implementors, type inference, pattern matching, and stored data, construct one positive and one causal negative example. Mark the first decisive fact in the **compatibility and migration matrix** and state which evidence could falsify the claim.
+
+2. **Outcome 2.** For define and test an MSRV policy without confusing the manifest declaration with actual verification, construct one positive and one causal negative example. Mark the first decisive fact in the **compatibility and migration matrix** and state which evidence could falsify the claim.
+
+3. **Outcome 3.** For design additive Cargo features that do not change unrelated semantics or create unsupported combinations, construct one positive and one causal negative example. Mark the first decisive fact in the **compatibility and migration matrix** and state which evidence could falsify the claim.
+
+4. **Outcome 4.** For version persistent formats and implement deterministic, failure-atomic migrations with preserved fixtures, construct one positive and one causal negative example. Mark the first decisive fact in the **compatibility and migration matrix** and state which evidence could falsify the claim.
+
+5. **Preservation.** Name one earlier invariant that an easier but less precise implementation could regress.
+
+6. **Boundary.** State one claim this module can justify and one adjacent claim that requires a later course, platform contract, peer behavior, or measurement.
+
+A strong answer records state before and after the operation, the failure path, and the public consequence. An API name by itself is not a model.
+
 ## Use the idea in a complete program
 
 Treat V1 and V2 configuration formats as separate contracts. Decode V1, transform into a stable model, encode V2, decode the candidate again, and only then make it eligible for installation. The migration must never reinterpret malformed V1 as valid V2.
@@ -229,7 +258,4 @@ Use Cargo’s `rust-version`, features, workspace, and SemVer guidance as operat
 
 ## Continue
 
-1. Complete the [workbook](workbook.md) without consulting answers.
-2. Build [Versioned SDK](../../labs/module-09-versioned-sdk/README.md).
-3. Apply Module 99 in the [AxiomStore engineering guide](../capstone.md).
-4. Review the [solutions](solutions.md) only after preserving your own predictions and design record.
+Continue to [Module 100 — Architectural Synthesis: Building and Defending a Long-Lived Rust System](../module-100-architectural-synthesis-building-and-defending-a-long-lived-rust-system/index.md) after completing the workbook, independent laboratory, capstone increment, and closed-book explanation for this module.

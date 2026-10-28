@@ -1,8 +1,17 @@
 # Workbook — Module 51: Binary Data Contracts: Bytes, Endianness, and Checked Parsing
 
-[Return to the chapter](index.md) · [Open the FrameVault engineering guide](../capstone.md) · [Open solutions only after attempting the work](solutions.md)
+[Chapter](index.md) · [Laboratory](../../labs/module-01-checked-frame-codec/README.md) · [FrameVault guide](../capstone.md) · [Solutions](solutions.md)
 
-This workbook tests whether the chapter has become an operational model. Freeze answers before compiling or reading the reference implementation. A correct result without the governing reason is incomplete.
+This workbook tests whether **Binary Data Contracts: Bytes, Endianness, and Checked Parsing** has become a usable model rather than remembered vocabulary. Its governing question is: *How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?* Preserve your first prediction and record decisive facts in a **binary layout and range proof**. A repair succeeds only when it keeps the difficult product requirement visible.
+
+## Retrieval warm-up
+
+Before compiling or running anything:
+
+1. Restate the invariant from Module 50 — Build Scripts, Generated Code, and Compile-Time Architecture that today’s mechanism must preserve.
+2. Rewrite the governing question in your own words: **How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?**
+3. Draw the smallest **binary layout and range proof** that could decide one positive and one negative case.
+4. Name one shortcut that could make the visible example pass while deleting ownership, failure, ordering, capacity, safety, compatibility, or evidence required by the product.
 
 ## Part 1 — Predict
 
@@ -16,43 +25,43 @@ Record: **compile status or runtime category**, **governing contract**, **first 
 
 A cursor increments its offset before calling `get`. The input is truncated. Which state is now false?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 2**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 3
 
 A file stores `u32::to_ne_bytes`. Can another architecture decode it portably?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 3**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 4
 
 A name uses `String::from_utf8_lossy`. Does the decoder still preserve the original identity?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 4**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 5
 
 Each payload is limited to 1 MiB, but entry count is one million. Is the allocation policy bounded?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 5**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 6
 
 The checksum matches. Is the producer authenticated?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 6**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 7
 
 The parser returns `&[u8]` payloads. May the input vector be mutated while views exist?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 7**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ### Prediction 8
 
 The decoder accepts valid entries and ignores trailing bytes. What compatibility risk appears?
 
-Record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
+For **Prediction 8**, record: **compile status or runtime category**, **governing contract**, **first invalid transition**, and **smallest principled repair**.
 
 ## Part 2 — Diagnose and repair
 
@@ -107,6 +116,17 @@ Transfer the method to a sensor packet with a fixed header and variable samples.
 
 Required evidence: Write the format, bounds, endianness, and error-offset policy before code.
 
+### Interleaved reasoning pass
+
+1. For **Define a binary format as a versioned contract rather than a sequence of convenient writes**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the binary layout and range proof.
+2. For **Trace byte offsets, item widths, endianness, and length arithmetic before allocating**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the binary layout and range proof.
+3. For **Build a bounds-first cursor that never advances after failure**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the binary layout and range proof.
+4. For **Separate structural validity, textual validity, integrity checks, and domain validation**, construct one smallest positive case and one causal negative case. Mark the earliest phase or event that distinguishes them in the binary layout and range proof.
+
+5. Identify one guarantee from an earlier course that a careless implementation of **Binary Data Contracts: Bytes, Endianness, and Checked Parsing** could regress.
+
+For one case, write both a principled repair and a weaker repair that appears to work. The principled repair must preserve the requirement; the weaker repair must name the information, state, bound, or compatibility promise it silently discards.
+
 ## Part 4 — Independent laboratory
 
 Build [Checked Frame Codec](../../labs/module-01-checked-frame-codec/README.md) from the starter. Freeze the public boundary and adversarial cases before opening the solution. Produce the evidence required by the lab:
@@ -119,9 +139,25 @@ Build [Checked Frame Codec](../../labs/module-01-checked-frame-codec/README.md) 
 
 Also identify one feature deliberately excluded because it would enlarge the trust, portability, concurrency, or unsafe proof surface.
 
+### Laboratory acceptance trace
+
+Before opening the reference implementation for **Checked Frame Codec**, record:
+
+- the public behavior that demonstrates **Define a binary format as a versioned contract rather than a sequence of convenient writes**;
+- one adversarial input, state transition, schedule, peer action, workload, or build condition appropriate to this module;
+- the exact state after rejection or partial failure;
+- ownership and cleanup;
+- ordering and capacity;
+- one shortcut deliberately excluded by the contract;
+- one claim the tests cannot establish.
+
 ## Part 5 — Capstone transfer
 
 Implement the matching increment from the [capstone engineering guide](../capstone.md). Add one regression test that fails if this module’s central contract is removed.
+
+### Capstone invariant trace
+
+For the Module 51 FrameVault increment, name the changed invariant and its owner before editing code. Follow it through input, validation, state transition, effect, output, failure, cleanup, and tests. Add storage, wire, scheduler, generated-code, compatibility, resource, or measurement consequences when this course makes them relevant. End by naming one earlier guarantee that remains unchanged.
 
 ## Part 6 — Reconstruct and defend
 
@@ -137,3 +173,7 @@ End by naming the strongest honest claim after success and one claim the impleme
 ### Independent transfer
 
 Design a `SENSOR01` packet format with a timestamp, signed reading count, and a sequence of little-endian `i16` readings. The count is untrusted. State exact widths, maximum readings, cumulative byte calculation, and trailing-data policy before writing code. Implement decoding without indexing and produce an error offset for every malformed fixture. Then change the format so the reading payload may be compressed in a future version: decide which reserved field or version rule prevents an old decoder from silently misreading new bytes.
+
+### Closed-book defense
+
+In five minutes, answer “How do you turn untrusted bytes into typed values without confusing representation, validation, allocation, and meaning?” using the **binary layout and range proof**. Include one positive case, one causal negative case, one principled repair, one rejected shortcut, and one transfer outside FrameVault. A list of APIs without the deciding relationship is incomplete.
