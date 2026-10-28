@@ -1,0 +1,6 @@
+version: atlas-data-network-security-1.0
+obligations:
+  - preserve Course 5 default-deny policy
+  - allow only named CSI, database, snapshot, backup, object-store, KMS, and DNS flows
+  - validate connected peers for external recovery targets
+  - never place backend credentials in Git-managed route or workload objects

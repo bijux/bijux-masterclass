@@ -1,0 +1,50 @@
+type: object
+additionalProperties: false
+required:
+- type
+- title
+- status
+- detail
+- instance
+- requestId
+- errors
+properties:
+  type:
+    type: string
+    format: uri-reference
+  title:
+    type: string
+    minLength: 1
+    maxLength: 120
+  status:
+    type: integer
+    const: 422
+  detail:
+    type: string
+    minLength: 1
+    maxLength: 1000
+  instance:
+    type: string
+    format: uri-reference
+  requestId:
+    type: string
+    pattern: ^req_[a-f0-9]{12}$
+  errors:
+    type: array
+    minItems: 1
+    maxItems: 100
+    items:
+      $ref: ./ValidationIssue.yaml
+examples:
+- type: https://api.example.test/problems/validation
+  title: Request validation failed
+  status: 422
+  detail: One or more request values are invalid.
+  instance: /projects
+  requestId: req_012345abcdef
+  errors:
+  - location:
+    - body
+    - name
+    message: String should have at least 1 character
+    code: string_too_short

@@ -1,0 +1,47 @@
+{
+  "checks": [
+    {
+      "logicalHost": "wrong.test",
+      "name": "wrong-tls-name-rejected"
+    },
+    {
+      "body": {
+        "checks": {
+          "storage": "writable",
+          "worker": "age=0.001"
+        },
+        "status": "ready"
+      },
+      "name": "https-readiness",
+      "status": 200
+    },
+    {
+      "jobId": "job_e861d6c5cace4d0db1f9",
+      "name": "submit",
+      "status": 202
+    },
+    {
+      "name": "durable-result",
+      "status": 200,
+      "uppercase": "ATLAS PLATFORM"
+    },
+    {
+      "discardedClientHeader": true,
+      "forwardedFor": "127.0.0.1",
+      "name": "forwarding-identity-rewritten",
+      "status": 200
+    },
+    {
+      "name": "invalid-http-authority-rejected",
+      "status": 421
+    },
+    {
+      "name": "graceful-worker-stop",
+      "returnCode": 0
+    }
+  ],
+  "cleanup": {
+    "allProcessesStopped": true
+  },
+  "eventCount": 28
+}

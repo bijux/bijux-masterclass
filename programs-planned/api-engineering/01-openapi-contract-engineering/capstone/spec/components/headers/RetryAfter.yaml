@@ -1,0 +1,6 @@
+description: Suggested number of seconds before polling again.
+schema:
+  type: integer
+  minimum: 1
+  maximum: 60
+example: 1

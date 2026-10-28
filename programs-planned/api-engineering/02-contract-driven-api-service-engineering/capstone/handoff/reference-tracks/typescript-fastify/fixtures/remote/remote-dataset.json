@@ -1,0 +1,8 @@
+{
+  "name": "reference-dataset",
+  "source": {
+    "kind": "remote-object",
+    "uri": "https://objects.example.test/datasets/reference.json",
+    "checksumSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  }
+}

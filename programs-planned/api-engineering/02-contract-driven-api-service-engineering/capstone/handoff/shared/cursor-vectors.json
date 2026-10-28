@@ -1,0 +1,22 @@
+{
+  "implementation": "server-side numeric handle bound to principal, operation, normalized filters, and boundary position",
+  "vectors": [
+    {
+      "case": "reuse with changed filter",
+      "outcome": "422 cursor-invalid"
+    },
+    {
+      "case": "reuse by another principal",
+      "outcome": "404/422 without resource disclosure"
+    },
+    {
+      "case": "expired handle",
+      "outcome": "422 cursor-invalid"
+    },
+    {
+      "case": "concurrent insertion after boundary",
+      "outcome": "excluded from the current high-water traversal; visible only in a new traversal"
+    }
+  ],
+  "wireShape": "decimal string required by frozen predecessor contract"
+}

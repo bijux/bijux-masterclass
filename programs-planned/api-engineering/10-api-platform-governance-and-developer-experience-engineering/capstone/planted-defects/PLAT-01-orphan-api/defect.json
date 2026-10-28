@@ -1,0 +1,5 @@
+{
+  "defect": "Catalog contains an API with no owner or implementing component",
+  "expectedRejectingProof": "catalog-proof",
+  "id": "PLAT-01-orphan-api"
+}

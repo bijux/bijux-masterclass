@@ -1,0 +1,6 @@
+mutation StartAnalysis($input: StartAnalysisInput!) {
+  startAnalysis(input: $input) {
+    ... on StartAnalysisSuccess { clientMutationId replayed run { id status version } }
+    ... on MutationProblem { clientMutationId code message field }
+  }
+}

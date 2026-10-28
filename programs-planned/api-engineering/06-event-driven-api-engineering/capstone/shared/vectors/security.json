@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "security",
+  "cases": [
+    {
+      "id": "SEC-001",
+      "description": "source must be granted",
+      "expected": "accepted"
+    },
+    {
+      "id": "SEC-002",
+      "description": "channel must be granted",
+      "expected": "accepted"
+    },
+    {
+      "id": "SEC-003",
+      "description": "event type must be granted",
+      "expected": "accepted"
+    },
+    {
+      "id": "SEC-004",
+      "description": "tenant must be granted",
+      "expected": "accepted"
+    },
+    {
+      "id": "SEC-005",
+      "description": "sensitive payload field is rejected",
+      "expected": "rejected"
+    },
+    {
+      "id": "SEC-006",
+      "description": "altered or stale signature is rejected",
+      "expected": "rejected"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "horizonMonths": 6,
+  "resources": [
+    {
+      "capacityUnits": "4",
+      "id": "apiCpu",
+      "targetUtilization": "0.65"
+    },
+    {
+      "capacityUnits": "4",
+      "id": "dbCpu",
+      "targetUtilization": "0.60"
+    },
+    {
+      "capacityUnits": "8",
+      "id": "workerCpu",
+      "targetUtilization": "0.70"
+    },
+    {
+      "capacityUnits": "125000000",
+      "id": "egressBytes",
+      "targetUtilization": "0.70"
+    }
+  ],
+  "scenario": "MEDIUM-GROWTH",
+  "uncertainty": {
+    "arrivalRateMultiplier": [
+      "0.8",
+      "1.0",
+      "1.3"
+    ],
+    "resourceDemandMultiplier": [
+      "0.85",
+      "1.0",
+      "1.25"
+    ]
+  },
+  "workloads": [
+    {
+      "id": "WL-RUN-LIST",
+      "ratePerSecond": "180",
+      "resourceDemand": {
+        "apiCpu": "0.0021",
+        "dbConnections": "0.006",
+        "dbCpu": "0.0017"
+      }
+    },
+    {
+      "id": "WL-RUN-SUBMIT",
+      "ratePerSecond": "28",
+      "resourceDemand": {
+        "apiCpu": "0.0044",
+        "dbCpu": "0.0052",
+        "workerCpu": "0.021"
+      }
+    },
+    {
+      "id": "WL-ARTIFACT-DOWNLOAD",
+      "ratePerSecond": "12",
+      "resourceDemand": {
+        "apiCpu": "0.001",
+        "egressBytes": "8400000"
+      }
+    }
+  ]
+}

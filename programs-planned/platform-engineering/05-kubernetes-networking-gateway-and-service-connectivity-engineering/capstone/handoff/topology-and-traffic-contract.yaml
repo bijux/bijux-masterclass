@@ -1,0 +1,13 @@
+version: atlas-topology-traffic-1.0
+api:
+  intendedZones: 2
+  replicas: 3
+  serviceTrafficPolicy: Cluster
+  trafficDistribution: PreferClose may be evaluated but is not an availability guarantee
+worker:
+  replicas: 1
+  topologyAuthority: deferred to storage binding and effect-concurrency proof
+warnings:
+  - local traffic policy drops when no local endpoint exists
+  - topology hints are preferences, not hard placement guarantees
+  - storage topology can make a network-feasible Pod unschedulable

@@ -1,0 +1,18 @@
+[Unit]
+Description=Create Atlas state backup fixture
+RequiresMountsFor=/var/lib/atlas /var/backups/atlas
+
+[Service]
+Type=oneshot
+User=atlas-backup
+Group=atlas-backup
+SupplementaryGroups=atlas-spool
+UMask=0077
+ExecStart=/usr/bin/tar --one-file-system --numeric-owner --xattrs --acls -C /var/lib -czf /var/backups/atlas/atlas-state.tar.gz atlas
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadOnlyPaths=/var/lib/atlas
+ReadWritePaths=/var/backups/atlas
+ProtectHome=yes
+PrivateDevices=yes

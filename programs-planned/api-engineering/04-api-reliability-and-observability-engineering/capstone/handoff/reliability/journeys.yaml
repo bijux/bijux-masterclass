@@ -1,0 +1,59 @@
+journeys:
+- id: JRN-001
+  name: Create and retrieve a project
+  entryOperation: createProject
+  success: A valid authenticated request returns one durable project and an immediately
+    retrievable representation.
+  reliabilityDimensions:
+  - availability
+  - latency
+  - correctness
+  - durability
+- id: JRN-002
+  name: Register and upload a dataset
+  entryOperation: createDataset
+  success: Metadata and bytes are durably associated with the correct tenant without
+    partial publication.
+  reliabilityDimensions:
+  - availability
+  - latency
+  - correctness
+  - durability
+- id: JRN-003
+  name: Submit an analysis exactly once
+  entryOperation: createAnalysisRun
+  success: An accepted idempotent submission creates one durable run and one recoverable
+    job.
+  reliabilityDimensions:
+  - availability
+  - correctness
+  - durability
+- id: JRN-004
+  name: Observe analysis progress
+  entryOperation: getAnalysisRun
+  success: The client receives sufficiently fresh, monotonic state until a terminal
+    outcome.
+  reliabilityDimensions:
+  - availability
+  - latency
+  - freshness
+  - correctness
+- id: JRN-005
+  name: Retrieve a verified artifact
+  entryOperation: downloadArtifactContent
+  success: A completed run exposes the correct immutable bytes with matching integrity
+    metadata.
+  reliabilityDimensions:
+  - availability
+  - latency
+  - correctness
+  - durability
+- id: JRN-006
+  name: Receive a terminal webhook
+  entryOperation: createWebhookSubscription
+  success: A terminal event is delivered, authenticated, deduplicable, and within
+    the stated freshness objective.
+  reliabilityDimensions:
+  - availability
+  - freshness
+  - correctness

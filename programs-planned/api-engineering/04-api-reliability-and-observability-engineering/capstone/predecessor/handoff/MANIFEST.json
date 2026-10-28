@@ -1,0 +1,110 @@
+{
+  "algorithm": "sha256",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "541778e666c2da5d26637326b992a965658ac798a64ef4a3512a69d0d8b3beae",
+      "size": 505
+    },
+    {
+      "path": "contract/openapi-api-1.2.bundle.yaml",
+      "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+      "size": 355600
+    },
+    {
+      "path": "identity/jwks.json",
+      "sha256": "b82bd9e4fc58982f5aa85ae8bdd7887b8a2d9007cf5b311bbc6a5f581ba93c3a",
+      "size": 505
+    },
+    {
+      "path": "migrations/006_security_identity_state.sql",
+      "sha256": "d31d26b43cf7132fc65ef072d62e1391500f7ff07262fcd649feda61b488d631",
+      "size": 811
+    },
+    {
+      "path": "migrations/007_security_audit_and_budgets.sql",
+      "sha256": "675f802f068006a5a15b7b83f01252dad32b829d7efbaa0d099c1d84b60bcd37",
+      "size": 1156
+    },
+    {
+      "path": "release/RELEASE.yaml",
+      "sha256": "a76991682e231695627e5810db336247bf98dbced3e069076facdcc22c86c3b2",
+      "size": 336
+    },
+    {
+      "path": "security/assumptions.yaml",
+      "sha256": "e5d10c3a041cac2d965463d0e0ef91ddc04e596e0a6ad8243b37eb2e409ceb00",
+      "size": 768
+    },
+    {
+      "path": "security/policy-matrix.yaml",
+      "sha256": "dd692bf156a265942ad6c0d2973998b8edda55468a9ebdbd06c7af2dbfc2a27f",
+      "size": 4707
+    },
+    {
+      "path": "security/proof-map.yaml",
+      "sha256": "d90f153e2da80b6a72d42a04d59f5efa908e3f5825224111819dbce567d80a7b",
+      "size": 8956
+    },
+    {
+      "path": "security/requirements.yaml",
+      "sha256": "be1686ef3d7968140afd140c26b165077272c9493145c063b2665e071f1a24b9",
+      "size": 6415
+    },
+    {
+      "path": "security/residual-risks.yaml",
+      "sha256": "5cc555c18ffe070039c08e8c6c0b1803368c7e8df83025260a70db8fcef8e1a7",
+      "size": 785
+    },
+    {
+      "path": "security/security-profile.yaml",
+      "sha256": "f807eb05a16b47a29df44e56a19906066c25694684eca811d4437e646f0439fa",
+      "size": 741
+    },
+    {
+      "path": "vectors/abuse.json",
+      "sha256": "f0b4b1c92364e54210d3eda3f6cd2daf69ac8bd9e2879238d4865dc500151406",
+      "size": 1464
+    },
+    {
+      "path": "vectors/audit.json",
+      "sha256": "ee5d45fce4432ace9e471ae2a2efc018be44c27c48d0b74f1dbbe232d454d9d7",
+      "size": 467
+    },
+    {
+      "path": "vectors/authorization.json",
+      "sha256": "d970d8d9627d9448f5d0a6d91013a32db2dc4b2fcfdba115d278f2354cf9ed2e",
+      "size": 2307
+    },
+    {
+      "path": "vectors/edge.json",
+      "sha256": "03b548f563559aa8b98a07aa45b503cd927b00df28a697939f2c1a0316589e78",
+      "size": 1770
+    },
+    {
+      "path": "vectors/input-security.json",
+      "sha256": "f093c899cd646c8cf918393acf691d534c51faf26ee71dc6a3f55062f0e6580f",
+      "size": 2225
+    },
+    {
+      "path": "vectors/redaction.json",
+      "sha256": "ae1d53216751b0e13d2831a9237162bf89fe413dd90287476931cb1c940929da",
+      "size": 1051
+    },
+    {
+      "path": "vectors/ssrf.json",
+      "sha256": "142f8d82a0dabe69d075878d90180edbf26fcfeee3a303ac7fc2274e0b23026b",
+      "size": 2051
+    },
+    {
+      "path": "vectors/strict-json.json",
+      "sha256": "465183f18a71401081483356dc5e6f3e9ad7f03c2fa3f855dc0146d6ef7b2e4c",
+      "size": 1241
+    },
+    {
+      "path": "vectors/webhook.json",
+      "sha256": "9a6034d99ce155f383a8faadf8d70aae7ac79827453350ab38cbfe0ecbeac569",
+      "size": 1330
+    }
+  ]
+}

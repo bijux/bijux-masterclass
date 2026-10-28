@@ -1,0 +1,8 @@
+name: cursor
+in: query
+required: false
+description: Opaque continuation cursor returned by the preceding page.
+schema:
+  type: string
+  pattern: ^[0-9]+$
+example: '20'

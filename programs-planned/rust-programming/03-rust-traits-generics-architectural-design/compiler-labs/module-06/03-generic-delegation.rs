@@ -1,0 +1,1 @@
+trait R{fn r(&self)->String;}impl R for str{fn r(&self)->String{self.into()}}struct Signed<T>(T);impl<T:R>R for Signed<T>{fn r(&self)->String{format!("{}!",self.0.r())}}fn main(){assert_eq!(Signed("x").r(),"x!");}

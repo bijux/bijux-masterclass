@@ -1,0 +1,414 @@
+{
+  "catalogVersion": "1.0",
+  "entities": [
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Domain",
+      "lifecycle": "active",
+      "name": "analysis",
+      "namespace": "default",
+      "owner": "group:default/analysis-leadership",
+      "providesApis": [],
+      "system": null,
+      "title": "Analysis Domain"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "domain": "domain:default/analysis",
+      "kind": "System",
+      "lifecycle": "active",
+      "name": "analysis-platform",
+      "namespace": "default",
+      "owner": "group:default/analysis-leadership",
+      "providesApis": [],
+      "title": "Analysis Runs Platform"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Group",
+      "lifecycle": "active",
+      "name": "analysis-leadership",
+      "namespace": "default",
+      "owner": null,
+      "providesApis": [],
+      "title": "Analysis Platform Leadership"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Group",
+      "lifecycle": "active",
+      "name": "analysis-control-team",
+      "namespace": "default",
+      "owner": "group:default/analysis-leadership",
+      "providesApis": [],
+      "title": "Analysis Control Team"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Group",
+      "lifecycle": "active",
+      "name": "artifact-team",
+      "namespace": "default",
+      "owner": "group:default/analysis-leadership",
+      "providesApis": [],
+      "title": "Artifact Team"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Group",
+      "lifecycle": "active",
+      "name": "notification-team",
+      "namespace": "default",
+      "owner": "group:default/analysis-leadership",
+      "providesApis": [],
+      "title": "Notification Team"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Group",
+      "lifecycle": "active",
+      "name": "api-platform-team",
+      "namespace": "default",
+      "owner": "group:default/analysis-leadership",
+      "providesApis": [],
+      "title": "API Platform Team"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [
+        "resource:default/analysis-postgres"
+      ],
+      "kind": "Component",
+      "lifecycle": "active",
+      "name": "analysis-control",
+      "namespace": "default",
+      "owner": "group:default/analysis-control-team",
+      "providesApis": [
+        "api:default/analysis-http",
+        "api:default/analysis-rpc",
+        "api:default/analysis-events"
+      ],
+      "system": "system:default/analysis-platform",
+      "title": "Analysis Control Service"
+    },
+    {
+      "consumesApis": [
+        "api:default/analysis-events"
+      ],
+      "dependsOn": [
+        "resource:default/artifact-store"
+      ],
+      "kind": "Component",
+      "lifecycle": "active",
+      "name": "artifact-service",
+      "namespace": "default",
+      "owner": "group:default/artifact-team",
+      "providesApis": [
+        "api:default/artifact-http"
+      ],
+      "system": "system:default/analysis-platform",
+      "title": "Artifact Service"
+    },
+    {
+      "consumesApis": [
+        "api:default/analysis-events"
+      ],
+      "dependsOn": [
+        "resource:default/notification-postgres"
+      ],
+      "kind": "Component",
+      "lifecycle": "active",
+      "name": "notification-service",
+      "namespace": "default",
+      "owner": "group:default/notification-team",
+      "providesApis": [
+        "api:default/notification-http"
+      ],
+      "system": "system:default/analysis-platform",
+      "title": "Notification Service"
+    },
+    {
+      "consumesApis": [
+        "api:default/analysis-http",
+        "api:default/artifact-http",
+        "api:default/notification-http"
+      ],
+      "dependsOn": [],
+      "kind": "Component",
+      "lifecycle": "active",
+      "name": "analysis-graph-gateway",
+      "namespace": "default",
+      "owner": "group:default/api-platform-team",
+      "providesApis": [
+        "api:default/analysis-graph"
+      ],
+      "system": "system:default/analysis-platform",
+      "title": "Analysis Graph Gateway"
+    },
+    {
+      "consumesApis": [
+        "api:default/analysis-http",
+        "api:default/analysis-events",
+        "api:default/analysis-rpc",
+        "api:default/analysis-graph"
+      ],
+      "dependsOn": [
+        "resource:default/platform-registry"
+      ],
+      "kind": "Component",
+      "lifecycle": "active",
+      "name": "analysis-api-platform",
+      "namespace": "default",
+      "owner": "group:default/api-platform-team",
+      "providesApis": [
+        "api:default/platform-catalog"
+      ],
+      "system": "system:default/analysis-platform",
+      "title": "Analysis API Platform"
+    },
+    {
+      "consumesApis": [],
+      "definition": "contracts/http/analysis-http-api-1.2.openapi.yaml",
+      "dependsOn": [],
+      "kind": "API",
+      "lifecycle": "active",
+      "name": "analysis-http",
+      "namespace": "default",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "openapi",
+      "providesApis": [],
+      "system": "system:default/analysis-platform",
+      "title": "Analysis HTTP API",
+      "version": "1.2.0"
+    },
+    {
+      "consumesApis": [],
+      "definition": "contracts/events/asyncapi.yaml",
+      "dependsOn": [],
+      "kind": "API",
+      "lifecycle": "active",
+      "name": "analysis-events",
+      "namespace": "default",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "asyncapi",
+      "providesApis": [],
+      "system": "system:default/analysis-platform",
+      "title": "Analysis Events API",
+      "version": "1.0.0"
+    },
+    {
+      "consumesApis": [],
+      "definition": "contracts/rpc/bijux/analysis/v1/analysis.proto",
+      "dependsOn": [],
+      "kind": "API",
+      "lifecycle": "active",
+      "name": "analysis-rpc",
+      "namespace": "default",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "protobuf",
+      "providesApis": [],
+      "system": "system:default/analysis-platform",
+      "title": "Analysis RPC API",
+      "version": "1.0.0"
+    },
+    {
+      "consumesApis": [],
+      "definition": "contracts/graph/schema.graphql",
+      "dependsOn": [],
+      "kind": "API",
+      "lifecycle": "active",
+      "name": "analysis-graph",
+      "namespace": "default",
+      "owner": "group:default/api-platform-team",
+      "protocol": "graphql",
+      "providesApis": [],
+      "system": "system:default/analysis-platform",
+      "title": "Analysis Graph API",
+      "version": "1.0.0"
+    },
+    {
+      "consumesApis": [],
+      "definition": "contracts/capabilities/artifact-http.openapi.yaml",
+      "dependsOn": [],
+      "kind": "API",
+      "lifecycle": "active",
+      "name": "artifact-http",
+      "namespace": "default",
+      "owner": "group:default/artifact-team",
+      "protocol": "openapi",
+      "providesApis": [],
+      "system": "system:default/analysis-platform",
+      "title": "Artifact HTTP Capability",
+      "version": "1.0.0"
+    },
+    {
+      "consumesApis": [],
+      "definition": "contracts/capabilities/notification-http.openapi.yaml",
+      "dependsOn": [],
+      "kind": "API",
+      "lifecycle": "active",
+      "name": "notification-http",
+      "namespace": "default",
+      "owner": "group:default/notification-team",
+      "protocol": "openapi",
+      "providesApis": [],
+      "system": "system:default/analysis-platform",
+      "title": "Notification HTTP Capability",
+      "version": "1.0.0"
+    },
+    {
+      "consumesApis": [],
+      "definition": "contracts/platform/platform-catalog.openapi.yaml",
+      "dependsOn": [],
+      "kind": "API",
+      "lifecycle": "active",
+      "name": "platform-catalog",
+      "namespace": "default",
+      "owner": "group:default/api-platform-team",
+      "protocol": "openapi",
+      "providesApis": [],
+      "system": "system:default/analysis-platform",
+      "title": "Analysis Platform Catalog API",
+      "version": "1.0.0"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Resource",
+      "lifecycle": "active",
+      "name": "analysis-postgres",
+      "namespace": "default",
+      "owner": "group:default/analysis-control-team",
+      "providesApis": [],
+      "resourceType": "database",
+      "system": "system:default/analysis-platform",
+      "title": "Analysis PostgreSQL"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Resource",
+      "lifecycle": "active",
+      "name": "artifact-store",
+      "namespace": "default",
+      "owner": "group:default/artifact-team",
+      "providesApis": [],
+      "resourceType": "object-storage",
+      "system": "system:default/analysis-platform",
+      "title": "Artifact Object Store"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Resource",
+      "lifecycle": "active",
+      "name": "notification-postgres",
+      "namespace": "default",
+      "owner": "group:default/notification-team",
+      "providesApis": [],
+      "resourceType": "database",
+      "system": "system:default/analysis-platform",
+      "title": "Notification PostgreSQL"
+    },
+    {
+      "consumesApis": [],
+      "dependsOn": [],
+      "kind": "Resource",
+      "lifecycle": "active",
+      "name": "platform-registry",
+      "namespace": "default",
+      "owner": "group:default/api-platform-team",
+      "providesApis": [],
+      "resourceType": "registry",
+      "system": "system:default/analysis-platform",
+      "title": "Platform Contract Registry"
+    }
+  ],
+  "registryVersion": "1.0",
+  "releases": [
+    {
+      "apiRef": "api:default/analysis-events",
+      "compatibilityEvidence": "evidence/events-api-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "asyncapi",
+      "publishedAt": "2026-08-02T09:00:00Z",
+      "sha256": "43410d220996bd5dd1f86242ab36916bac3817febda716b39023aceb9cf3c37a",
+      "source": "contracts/events/asyncapi.yaml",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/analysis-graph",
+      "compatibilityEvidence": "evidence/graph-api-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/api-platform-team",
+      "protocol": "graphql",
+      "publishedAt": "2026-08-04T09:00:00Z",
+      "sha256": "4481898caf1404e6b5607638c328c06a54ee3408962b7185b68d261294c10ad9",
+      "source": "contracts/graph/schema.graphql",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/analysis-http",
+      "compatibilityEvidence": "evidence/http-api-1.2-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "openapi",
+      "publishedAt": "2026-08-01T09:00:00Z",
+      "sha256": "85ca8a20905bc175cda57807ead65431b36bdb3389955992c9fa0ab4463b03c3",
+      "source": "contracts/http/analysis-http-api-1.2.openapi.yaml",
+      "version": "1.2.0"
+    },
+    {
+      "apiRef": "api:default/analysis-rpc",
+      "compatibilityEvidence": "evidence/rpc-api-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/analysis-control-team",
+      "protocol": "protobuf",
+      "publishedAt": "2026-08-03T09:00:00Z",
+      "sha256": "871307a4cfd2b34658fe5a7506ca1f8a127816c4186ef426163869dd2dbbda27",
+      "source": "contracts/rpc/bijux/analysis/v1/analysis.proto",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/artifact-http",
+      "compatibilityEvidence": "evidence/artifact-http-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/artifact-team",
+      "protocol": "openapi",
+      "publishedAt": "2026-08-08T08:00:00Z",
+      "sha256": "72a95928e6ee1b053b8bfe76a8032ac0d1012df86962c36138402283a89caa7f",
+      "source": "contracts/capabilities/artifact-http.openapi.yaml",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/notification-http",
+      "compatibilityEvidence": "evidence/notification-http-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/notification-team",
+      "protocol": "openapi",
+      "publishedAt": "2026-08-08T08:00:00Z",
+      "sha256": "db729a97a723c84b96b8871e88771b06f1e830c1f1df5af2984f0adf68047f40",
+      "source": "contracts/capabilities/notification-http.openapi.yaml",
+      "version": "1.0.0"
+    },
+    {
+      "apiRef": "api:default/platform-catalog",
+      "compatibilityEvidence": "evidence/platform-catalog-1.0-compatibility.json",
+      "lifecycle": "active",
+      "owner": "group:default/api-platform-team",
+      "protocol": "openapi",
+      "publishedAt": "2026-08-08T08:00:00Z",
+      "sha256": "bda58d7af7e33e2cdc058b901f43ef107d935dd5d297841bb4aea1304f4bbb8f",
+      "source": "contracts/platform/platform-catalog.openapi.yaml",
+      "version": "1.0.0"
+    }
+  ]
+}

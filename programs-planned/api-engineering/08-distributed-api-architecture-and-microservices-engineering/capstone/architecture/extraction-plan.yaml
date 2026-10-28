@@ -1,0 +1,43 @@
+version: '1.0'
+phases:
+- n: 0
+  name: modular-baseline
+  route: legacy
+  writes: legacy owners
+  exit: baseline conformance and telemetry
+- n: 1
+  name: notification-shadow
+  route: legacy plus event shadow
+  writes: legacy notification plus shadow consumer
+  exit: zero semantic divergence across replay window
+- n: 2
+  name: notification-cutover
+  route: notification-service
+  writes: notification-service only
+  exit: rollback and replay proven
+- n: 3
+  name: artifact-backfill
+  route: legacy reads; new artifact shadow
+  writes: legacy plus controlled importer, never uncontrolled dual write
+  exit: checksums and ownership reconciled
+- n: 4
+  name: artifact-shadow-read
+  route: legacy response plus new compare
+  writes: artifact-service
+  exit: byte, metadata, authorization, and latency parity
+- n: 5
+  name: artifact-cutover
+  route: artifact-service
+  writes: artifact-service only
+  exit: rollback window and orphan reconciliation proven
+- n: 6
+  name: decommission
+  route: new services
+  writes: service owners
+  exit: legacy paths removed after retention window
+retained: analysis-control remains cohesive
+merge_back_trigger:
+- operational cost exceeds isolation value
+- ownership collapses
+- synchronous coupling increases
+- release independence is not realized

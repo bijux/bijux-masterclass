@@ -1,0 +1,124 @@
+{
+  "consumers": {
+    "consumers": [
+      {
+        "apiRef": "api:default/analysis-graph",
+        "contact": "platform@example.invalid",
+        "criticality": "high",
+        "environment": "production",
+        "id": "consumer-web-console",
+        "lastSeen": "2026-08-07T08:00:00Z",
+        "owner": "group:default/api-platform-team",
+        "version": "1.0.0"
+      },
+      {
+        "apiRef": "api:default/analysis-http",
+        "contact": "analysis@example.invalid",
+        "criticality": "medium",
+        "environment": "production",
+        "id": "consumer-lab-cli",
+        "lastSeen": "2026-08-07T09:00:00Z",
+        "owner": "group:default/analysis-control-team",
+        "version": "1.2.0"
+      },
+      {
+        "apiRef": "api:default/analysis-events",
+        "contact": "analysis@example.invalid",
+        "criticality": "high",
+        "environment": "production",
+        "id": "consumer-audit-projection",
+        "lastSeen": "2026-08-07T09:30:00Z",
+        "owner": "group:default/analysis-control-team",
+        "version": "1.0.0"
+      },
+      {
+        "apiRef": "api:default/analysis-rpc",
+        "contact": "analysis@example.invalid",
+        "criticality": "critical",
+        "environment": "production",
+        "id": "consumer-worker-plane",
+        "lastSeen": "2026-08-07T09:45:00Z",
+        "owner": "group:default/analysis-control-team",
+        "version": "1.0.0"
+      },
+      {
+        "apiRef": "api:default/analysis-http",
+        "contact": "analysis@example.invalid",
+        "criticality": "medium",
+        "environment": "production",
+        "id": "consumer-legacy-cli",
+        "lastSeen": "2026-08-06T16:00:00Z",
+        "migrationStatus": "scheduled",
+        "owner": "group:default/analysis-control-team",
+        "version": "1.1.0"
+      }
+    ],
+    "version": "1.0"
+  },
+  "deprecationImpact": {
+    "affectedConsumers": [
+      "consumer-legacy-cli"
+    ],
+    "apiRef": "api:default/analysis-http",
+    "blockingConsumers": [
+      "consumer-legacy-cli"
+    ],
+    "retirementDecision": "blocked",
+    "version": "1.1.0"
+  },
+  "policy": {
+    "emergencyChangePolicy": "security emergency may shorten notice only with incident, owner, consumer-impact, and executive risk acceptance evidence",
+    "minimumNoticeDays": 90,
+    "states": [
+      "proposed",
+      "experimental",
+      "active",
+      "deprecated",
+      "retired"
+    ],
+    "transitions": [
+      {
+        "from": "proposed",
+        "requires": [
+          "owner",
+          "contract",
+          "riskReview",
+          "sandbox"
+        ],
+        "to": "experimental"
+      },
+      {
+        "from": "experimental",
+        "requires": [
+          "compatibilityEvidence",
+          "securityEvidence",
+          "reliabilityEvidence",
+          "documentation",
+          "supportOwner"
+        ],
+        "to": "active"
+      },
+      {
+        "from": "active",
+        "requires": [
+          "replacementOrExitPlan",
+          "consumerInventory",
+          "migrationGuide",
+          "noticeEnd"
+        ],
+        "to": "deprecated"
+      },
+      {
+        "from": "deprecated",
+        "requires": [
+          "zeroBlockingConsumers",
+          "retirementApproval",
+          "runtimeRemovalPlan",
+          "archivePlan"
+        ],
+        "to": "retired"
+      }
+    ],
+    "version": "1.0"
+  }
+}

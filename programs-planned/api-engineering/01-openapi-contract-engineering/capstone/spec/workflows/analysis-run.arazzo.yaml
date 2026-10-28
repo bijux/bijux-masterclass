@@ -1,0 +1,141 @@
+arazzo: 1.1.0
+$self: https://api.example.test/workflows/analysis-run.arazzo.yaml
+info:
+  title: Create and complete an analysis run
+  summary: From project creation to artifact retrieval.
+  description: The workflow expresses operation dependencies. The inspect step performs one poll; a workflow
+    runner must repeat or wait externally until the run is terminal.
+  version: 1.0.0
+sourceDescriptions:
+- name: analysisApi
+  url: ../dist/openapi.bundle.yaml
+  type: openapi
+workflows:
+- workflowId: completeAnalysisRun
+  summary: Create project, upload data, start analysis, inspect status, retrieve artifacts.
+  inputs:
+    type: object
+    additionalProperties: false
+    required:
+    - authorization
+    - projectName
+    - datasetName
+    - datasetFile
+    - idempotencyKey
+    properties:
+      authorization:
+        type: string
+        pattern: ^Bearer .+$
+      projectName:
+        type: string
+        minLength: 1
+        maxLength: 80
+      datasetName:
+        type: string
+        minLength: 1
+        maxLength: 100
+      datasetFile:
+        type: string
+        description: Runner-specific file value.
+      idempotencyKey:
+        type: string
+        minLength: 16
+        maxLength: 64
+  parameters:
+  - name: Authorization
+    in: header
+    value: $inputs.authorization
+  steps:
+  - stepId: createProject
+    operationId: createProject
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.projectName
+        description: Created by Arazzo workflow.
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      projectId: $response.body#/id
+      projectEtag: $response.header.ETag
+  - stepId: registerDataset
+    operationId: createDataset
+    parameters:
+    - name: projectId
+      in: path
+      value: $steps.createProject.outputs.projectId
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.datasetName
+        source:
+          kind: local-file
+          fileName: workflow-input.csv
+          mediaType: text/csv
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      datasetId: $response.body#/id
+  - stepId: uploadDataset
+    operationId: uploadDatasetContent
+    parameters:
+    - name: datasetId
+      in: path
+      value: $steps.registerDataset.outputs.datasetId
+    requestBody:
+      contentType: multipart/form-data
+      payload:
+        file: $inputs.datasetFile
+        description: Workflow upload
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      checksum: $response.body#/checksumSha256
+  - stepId: startAnalysis
+    operationId: createAnalysisRun
+    parameters:
+    - name: Idempotency-Key
+      in: header
+      value: $inputs.idempotencyKey
+    requestBody:
+      contentType: application/json
+      payload:
+        projectId: $steps.createProject.outputs.projectId
+        datasetId: $steps.registerDataset.outputs.datasetId
+        parameters:
+          algorithm: quality-summary
+          priority: normal
+    successCriteria:
+    - condition: $statusCode == 202
+    outputs:
+      runId: $response.body#/id
+      statusLocation: $response.header.Location
+  - stepId: inspectAnalysis
+    description: Performs one status read. External orchestration repeats this step until completed; the
+      boundary is explicit rather than modeled as a fictitious loop.
+    operationId: getAnalysisRun
+    parameters:
+    - name: runId
+      in: path
+      value: $steps.startAnalysis.outputs.runId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      runStatus: $response.body#/status
+      runProgress: $response.body#/progress
+    x-course-boundary: poll-until-terminal
+  - stepId: retrieveArtifacts
+    operationId: listRunArtifacts
+    parameters:
+    - name: runId
+      in: path
+      value: $steps.startAnalysis.outputs.runId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      artifacts: $response.body#/items
+  outputs:
+    projectId: $steps.createProject.outputs.projectId
+    datasetId: $steps.registerDataset.outputs.datasetId
+    runId: $steps.startAnalysis.outputs.runId
+    artifacts: $steps.retrieveArtifacts.outputs.artifacts

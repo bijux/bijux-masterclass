@@ -1,0 +1,9 @@
+{
+  "risks": [
+    "Course 4 does not prove a CNI, service proxy, DNS, Gateway, or egress implementation",
+    "kind observation images are not the Course 3 Atlas binaries",
+    "PVC interfaces are unbound until Course 6 provides a storage class",
+    "resource values remain hypotheses until Course 5 performance evidence",
+    "managed-cluster admission and cloud integration are unexecuted"
+  ]
+}

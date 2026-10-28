@@ -1,0 +1,35 @@
+{
+  "profile": "atlas-cloud-foundation-1.0",
+  "requirements": [
+    {
+      "id": "CF-001",
+      "owner": "foundation",
+      "statement": "State is encrypted, versioned, locked, and recoverable"
+    },
+    {
+      "id": "CF-002",
+      "owner": "identity",
+      "statement": "Plan and apply authority are separate"
+    },
+    {
+      "id": "CF-003",
+      "owner": "compute",
+      "statement": "Workload hosts are private and replaceable"
+    },
+    {
+      "id": "CF-004",
+      "owner": "edge",
+      "statement": "Public traffic enters only through the governed TLS edge"
+    },
+    {
+      "id": "CF-005",
+      "owner": "data-protection",
+      "statement": "Durable Atlas results have an integrity-checked recovery path"
+    },
+    {
+      "id": "CF-006",
+      "owner": "release",
+      "statement": "Cloud changes have source, plan, policy, target, and verification evidence"
+    }
+  ]
+}

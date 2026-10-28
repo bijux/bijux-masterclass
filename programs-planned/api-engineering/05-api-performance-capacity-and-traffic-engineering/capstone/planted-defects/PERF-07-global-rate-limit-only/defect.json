@@ -1,0 +1,7 @@
+{
+  "description": "One tenant can consume the entire shared budget.",
+  "expectedOracle": "fairness-vector",
+  "id": "PERF-07",
+  "mustBeRejected": true,
+  "slug": "global-rate-limit-only"
+}

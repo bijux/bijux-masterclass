@@ -1,0 +1,40 @@
+version: '1.0'
+channels:
+  analysis.commands.start.v1:
+    kind: command
+    partitions: 8
+    orderingKey: runId
+    retention: work-queue
+    acknowledgement: explicit
+    ackWaitSeconds: 30
+    maximumDeliveries: 8
+    deadLetterChannel: analysis.dead.commands.start.v1
+    producerOwners: [analysis-control]
+    consumerGroups: [analysis-workers]
+  analysis.events.run.lifecycle.v1:
+    kind: event-log
+    partitions: 16
+    orderingKey: runId
+    retentionDays: 90
+    acknowledgement: explicit
+    ackWaitSeconds: 30
+    maximumDeliveries: 5
+    deadLetterChannel: analysis.dead.run.lifecycle.v1
+    producerOwners: [analysis-control, analysis-worker]
+    consumerGroups: [analytics-v1, audit-v1, notification-v1]
+  analysis.events.artifact.v1:
+    kind: event-log
+    partitions: 8
+    orderingKey: runId
+    retentionDays: 365
+    acknowledgement: explicit
+    ackWaitSeconds: 60
+    maximumDeliveries: 5
+    deadLetterChannel: analysis.dead.artifact.v1
+    producerOwners: [artifact-service]
+    consumerGroups: [artifact-index-v1, audit-v1]
+invariants:
+  - Ordering is promised only inside one channel partition.
+  - Acknowledgement follows committed consumer effects.
+  - Expired or negatively acknowledged deliveries may be redelivered.
+  - Retention is not an archive or a backup guarantee.

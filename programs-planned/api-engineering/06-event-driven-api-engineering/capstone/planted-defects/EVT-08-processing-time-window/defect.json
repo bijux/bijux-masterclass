@@ -1,0 +1,8 @@
+{
+  "id": "EVT-08",
+  "slug": "EVT-08-processing-time-window",
+  "summary": "Analytics assigns windows from processing time",
+  "mustBeRejected": true,
+  "expectedOracle": "event-time vectors expose unstable results under delayed delivery",
+  "proofFamily": "stream-time"
+}

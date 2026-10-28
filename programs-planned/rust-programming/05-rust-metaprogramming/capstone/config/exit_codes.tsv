@@ -1,0 +1,3 @@
+SUCCESS	0	Command completed successfully
+COMMAND_FAILURE	1	Command or domain validation failed
+USAGE_FAILURE	2	Invocation or command-line usage was invalid

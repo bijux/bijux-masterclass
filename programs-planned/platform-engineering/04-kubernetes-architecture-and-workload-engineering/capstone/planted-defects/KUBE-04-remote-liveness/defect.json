@@ -1,0 +1,7 @@
+{
+  "expectedProof": "probe-policy",
+  "id": "KUBE-04-remote-liveness",
+  "slug": "remote-liveness",
+  "status": "must-be-rejected",
+  "summary": "liveness failure is controlled by a remote dependency"
+}

@@ -1,0 +1,18 @@
+{
+  "evidenceSource": "Course 1 host measurements and Course 2 sandbox hypotheses",
+  "cpu": {
+    "request": "to-be-measured-in-course3",
+    "limit": "must-not-be-inferred-from-instance-size"
+  },
+  "memory": {
+    "request": "to-be-measured-in-course3",
+    "limit": "bounded-failure-required"
+  },
+  "files": {
+    "openDescriptors": "bounded"
+  },
+  "shutdown": {
+    "graceSeconds": 30
+  },
+  "claim": "not-production-capacity-evidence"
+}

@@ -1,0 +1,7 @@
+{
+  "cniSpec": "1.1.0",
+  "course5ConnectivityPlane": "1.0.0",
+  "course6Target": "kubernetes-storage-1.0.0",
+  "gatewayAPI": "1.6.1",
+  "kubernetes": "1.36.2"
+}

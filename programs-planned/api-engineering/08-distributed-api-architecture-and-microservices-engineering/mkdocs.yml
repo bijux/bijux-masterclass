@@ -1,0 +1,95 @@
+site_name: Distributed API Architecture and Microservices Engineering
+site_description: Course 8 of the API Engineering program
+docs_dir: course-book
+site_dir: site
+use_directory_urls: false
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - navigation.indexes
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
+nav:
+- Course Introduction: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Standards: standards.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Glossary: glossary.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — Distribution Economics, Boundary Evidence, and Architecture Fitness Functions:
+  - Chapter: module-01-distribution-economics-and-boundary-evidence/index.md
+  - Exercises: module-01-distribution-economics-and-boundary-evidence/exercises.md
+  - Worked Answers: module-01-distribution-economics-and-boundary-evidence/exercise-answers.md
+  - Lab: module-01-distribution-economics-and-boundary-evidence/lab.md
+  - Checkpoint: module-01-distribution-economics-and-boundary-evidence/checkpoint.md
+- Module 02 — Service Boundaries, Bounded Contexts, and Contract Ownership:
+  - Chapter: module-02-service-boundaries-and-contract-ownership/index.md
+  - Exercises: module-02-service-boundaries-and-contract-ownership/exercises.md
+  - Worked Answers: module-02-service-boundaries-and-contract-ownership/exercise-answers.md
+  - Lab: module-02-service-boundaries-and-contract-ownership/lab.md
+  - Checkpoint: module-02-service-boundaries-and-contract-ownership/checkpoint.md
+- Module 03 — Data Ownership, Replication, and Cross-Service Query Design:
+  - Chapter: module-03-data-ownership-replication-and-cross-service-queries/index.md
+  - Exercises: module-03-data-ownership-replication-and-cross-service-queries/exercises.md
+  - Worked Answers: module-03-data-ownership-replication-and-cross-service-queries/exercise-answers.md
+  - Lab: module-03-data-ownership-replication-and-cross-service-queries/lab.md
+  - Checkpoint: module-03-data-ownership-replication-and-cross-service-queries/checkpoint.md
+- Module 04 — Synchronous Collaboration, API Composition, and Dependency Budgets:
+  - Chapter: module-04-synchronous-collaboration-and-dependency-budgets/index.md
+  - Exercises: module-04-synchronous-collaboration-and-dependency-budgets/exercises.md
+  - Worked Answers: module-04-synchronous-collaboration-and-dependency-budgets/exercise-answers.md
+  - Lab: module-04-synchronous-collaboration-and-dependency-budgets/lab.md
+  - Checkpoint: module-04-synchronous-collaboration-and-dependency-budgets/checkpoint.md
+- Module 05 — Distributed Workflows, Sagas, Compensation, and Process Managers:
+  - Chapter: module-05-distributed-workflows-sagas-and-compensation/index.md
+  - Exercises: module-05-distributed-workflows-sagas-and-compensation/exercises.md
+  - Worked Answers: module-05-distributed-workflows-sagas-and-compensation/exercise-answers.md
+  - Lab: module-05-distributed-workflows-sagas-and-compensation/lab.md
+  - Checkpoint: module-05-distributed-workflows-sagas-and-compensation/checkpoint.md
+- Module 06 — Service Identity, Authorization, and Trust Propagation:
+  - Chapter: module-06-service-identity-authorization-and-trust-propagation/index.md
+  - Exercises: module-06-service-identity-authorization-and-trust-propagation/exercises.md
+  - Worked Answers: module-06-service-identity-authorization-and-trust-propagation/exercise-answers.md
+  - Lab: module-06-service-identity-authorization-and-trust-propagation/lab.md
+  - Checkpoint: module-06-service-identity-authorization-and-trust-propagation/checkpoint.md
+- Module 07 — Discovery, Routing, Gateways, and Traffic Topology:
+  - Chapter: module-07-discovery-routing-gateways-and-traffic-topology/index.md
+  - Exercises: module-07-discovery-routing-gateways-and-traffic-topology/exercises.md
+  - Worked Answers: module-07-discovery-routing-gateways-and-traffic-topology/exercise-answers.md
+  - Lab: module-07-discovery-routing-gateways-and-traffic-topology/lab.md
+  - Checkpoint: module-07-discovery-routing-gateways-and-traffic-topology/checkpoint.md
+- Module 08 — Deployment Independence, Version Skew, and Release Choreography:
+  - Chapter: module-08-deployment-independence-version-skew-and-release-choreography/index.md
+  - Exercises: module-08-deployment-independence-version-skew-and-release-choreography/exercises.md
+  - Worked Answers: module-08-deployment-independence-version-skew-and-release-choreography/exercise-answers.md
+  - Lab: module-08-deployment-independence-version-skew-and-release-choreography/lab.md
+  - Checkpoint: module-08-deployment-independence-version-skew-and-release-choreography/checkpoint.md
+- Module 09 — Distributed Verification, Fault Injection, and Operability:
+  - Chapter: module-09-distributed-verification-fault-injection-and-operability/index.md
+  - Exercises: module-09-distributed-verification-fault-injection-and-operability/exercises.md
+  - Worked Answers: module-09-distributed-verification-fault-injection-and-operability/exercise-answers.md
+  - Lab: module-09-distributed-verification-fault-injection-and-operability/lab.md
+  - Checkpoint: module-09-distributed-verification-fault-injection-and-operability/checkpoint.md
+- Module 10 — Incremental Extraction, Strangler Migration, and Final Architecture Defense:
+  - Chapter: module-10-incremental-extraction-migration-and-final-defense/index.md
+  - Exercises: module-10-incremental-extraction-migration-and-final-defense/exercises.md
+  - Worked Answers: module-10-incremental-extraction-migration-and-final-defense/exercise-answers.md
+  - Lab: module-10-incremental-extraction-migration-and-final-defense/lab.md
+  - Checkpoint: module-10-incremental-extraction-migration-and-final-defense/checkpoint.md

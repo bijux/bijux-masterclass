@@ -1,0 +1,1 @@
+import assert from'node:assert/strict';import test from'node:test';import{createCounter}from'../src/legacy-counter.js';test('starter declaration matches basic runtime',()=>assert.equal(createCounter(2).increment(),3));

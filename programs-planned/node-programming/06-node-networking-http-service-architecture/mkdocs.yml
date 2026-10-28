@@ -1,0 +1,97 @@
+site_name: Node.js Networking, HTTP, and Service Architecture
+site_description: 'Reader-first Course 6: sockets, HTTP, TLS, HTTP/2, SSE, clients,
+  and service lifecycle'
+docs_dir: .
+site_dir: site
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.indexes
+  - content.code.copy
+nav:
+- Course overview: README.md
+- Course-book start: course-book/index.md
+- Learning outcomes: course-book/outcomes.md
+- Ten-day study plan: course-book/study-plan.md
+- 'Module 51 — Network Boundaries: Addresses, DNS, Sockets, and Time':
+  - Chapter: course-book/module-51-network-boundaries-addresses-dns-sockets-and-time/index.md
+  - Workbook: course-book/module-51-network-boundaries-addresses-dns-sockets-and-time/workbook.md
+  - Reasoned solutions: course-book/module-51-network-boundaries-addresses-dns-sockets-and-time/solutions.md
+- 'Module 52 — TCP: Connection State, Framing, Half-Close, and Idle Policy':
+  - Chapter: course-book/module-52-tcp-connection-state-framing-half-close-and-idle-policy/index.md
+  - Workbook: course-book/module-52-tcp-connection-state-framing-half-close-and-idle-policy/workbook.md
+  - Reasoned solutions: course-book/module-52-tcp-connection-state-framing-half-close-and-idle-policy/solutions.md
+- 'Module 53 — UDP: Datagrams, Loss, Duplication, Reordering, and Correlation':
+  - Chapter: course-book/module-53-udp-datagrams-loss-duplication-reordering-and-correlation/index.md
+  - Workbook: course-book/module-53-udp-datagrams-loss-duplication-reordering-and-correlation/workbook.md
+  - Reasoned solutions: course-book/module-53-udp-datagrams-loss-duplication-reordering-and-correlation/solutions.md
+- 'Module 54 — HTTP/1.1: Messages, Methods, Headers, Bodies, and Connections':
+  - Chapter: course-book/module-54-http1-messages-methods-headers-bodies-and-connections/index.md
+  - Workbook: course-book/module-54-http1-messages-methods-headers-bodies-and-connections/workbook.md
+  - Reasoned solutions: course-book/module-54-http1-messages-methods-headers-bodies-and-connections/solutions.md
+- 'Module 55 — HTTP Application Boundaries: Routing, Validation, Errors, and Idempotency':
+  - Chapter: course-book/module-55-http-application-boundaries-routing-validation-errors-and-idempotency/index.md
+  - Workbook: course-book/module-55-http-application-boundaries-routing-validation-errors-and-idempotency/workbook.md
+  - Reasoned solutions: course-book/module-55-http-application-boundaries-routing-validation-errors-and-idempotency/solutions.md
+- 'Module 56 — HTTP Clients: Agents, Pooling, Deadlines, Redirects, and Retry':
+  - Chapter: course-book/module-56-http-clients-agents-pooling-deadlines-redirects-and-retry/index.md
+  - Workbook: course-book/module-56-http-clients-agents-pooling-deadlines-redirects-and-retry/workbook.md
+  - Reasoned solutions: course-book/module-56-http-clients-agents-pooling-deadlines-redirects-and-retry/solutions.md
+- 'Module 57 — TLS and HTTPS: Certificates, Trust, Identity, SNI, and ALPN':
+  - Chapter: course-book/module-57-tls-and-https-certificates-trust-identity-sni-and-alpn/index.md
+  - Workbook: course-book/module-57-tls-and-https-certificates-trust-identity-sni-and-alpn/workbook.md
+  - Reasoned solutions: course-book/module-57-tls-and-https-certificates-trust-identity-sni-and-alpn/solutions.md
+- 'Module 58 — HTTP/2: Sessions, Streams, Multiplexing, and Flow Control':
+  - Chapter: course-book/module-58-http2-sessions-streams-multiplexing-and-flow-control/index.md
+  - Workbook: course-book/module-58-http2-sessions-streams-multiplexing-and-flow-control/workbook.md
+  - Reasoned solutions: course-book/module-58-http2-sessions-streams-multiplexing-and-flow-control/solutions.md
+- 'Module 59 — Long-Lived HTTP: SSE, Heartbeats, Replay, and Slow Consumers':
+  - Chapter: course-book/module-59-long-lived-http-sse-heartbeats-replay-and-slow-consumers/index.md
+  - Workbook: course-book/module-59-long-lived-http-sse-heartbeats-replay-and-slow-consumers/workbook.md
+  - Reasoned solutions: course-book/module-59-long-lived-http-sse-heartbeats-replay-and-slow-consumers/solutions.md
+- 'Module 60 — Integrated Service Architecture: Admission, Overload, Shutdown, and Audit':
+  - Chapter: course-book/module-60-integrated-service-architecture-admission-overload-shutdown-and-audit/index.md
+  - Workbook: course-book/module-60-integrated-service-architecture-admission-overload-shutdown-and-audit/workbook.md
+  - Reasoned solutions: course-book/module-60-integrated-service-architecture-admission-overload-shutdown-and-audit/solutions.md
+- ServiceWire engineering guide: course-book/capstone.md
+- Final review: course-book/final-review.md
+- Final review solutions: course-book/final-review-solutions.md
+- Reference desk: course-book/reference.md
+- Independent laboratories:
+  - Laboratory system: labs/README.md
+  - Laboratory 51 — Address Resolution Observatory: labs/module-51-address-resolution-observatory/README.md
+  - Laboratory 52 — Bounded TCP Frame Server: labs/module-52-bounded-tcp-frame-server/README.md
+  - Laboratory 53 — Reliable Datagram Protocol: labs/module-53-reliable-datagram-protocol/README.md
+  - Laboratory 54 — Strict HTTP Message Server: labs/module-54-strict-http-message-server/README.md
+  - Laboratory 55 — Typed HTTP Router: labs/module-55-typed-http-router/README.md
+  - Laboratory 56 — Deadline-Aware HTTP Client: labs/module-56-deadline-aware-http-client/README.md
+  - Laboratory 57 — Local TLS Identity Lab: labs/module-57-local-tls-identity-lab/README.md
+  - Laboratory 58 — Multiplexed HTTP/2 Service: labs/module-58-multiplexed-http2-service/README.md
+  - Laboratory 59 — Replayable SSE Channel: labs/module-59-replayable-sse-channel/README.md
+  - Laboratory 60 — Network Service Audit: labs/module-60-network-service-audit/README.md
+- Compiler and runtime investigations: compiler-labs/README.md
+- ServiceWire implementation: capstone/README.md
+markdown_extensions:
+- admonition
+- tables
+- toc
+- pymdownx.superfences
+exclude_docs: '**/node_modules/**
+
+  **/dist/**
+
+  **/site/**
+
+  **/starter/**
+
+  **/reference/**
+
+  **/compiler-labs/module-*/**
+
+  **/capstone/src/**
+
+  **/capstone/tests/**
+
+  '

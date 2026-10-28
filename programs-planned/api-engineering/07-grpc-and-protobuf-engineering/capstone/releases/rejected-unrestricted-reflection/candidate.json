@@ -1,0 +1,5 @@
+{
+  "change": "enable reflection in every environment without policy",
+  "expected": "reject",
+  "reason": "internal schema exposure"
+}

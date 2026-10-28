@@ -1,0 +1,94 @@
+{
+  "cases": [
+    {
+      "headers": [
+        [
+          "host",
+          "api.example.test"
+        ]
+      ],
+      "id": "edge-direct-host",
+      "origin": "https://api.example.test",
+      "peer": "198.51.100.10",
+      "trustedProxies": [],
+      "valid": true
+    },
+    {
+      "headers": [
+        [
+          "host",
+          "api.example.test"
+        ],
+        [
+          "x-forwarded-host",
+          "internal.example"
+        ]
+      ],
+      "id": "edge-spoof-forwarded",
+      "origin": "https://api.example.test",
+      "peer": "198.51.100.10",
+      "trustedProxies": [],
+      "valid": true
+    },
+    {
+      "headers": [
+        [
+          "host",
+          "service:8000"
+        ],
+        [
+          "x-forwarded-host",
+          "api.example.test"
+        ],
+        [
+          "x-forwarded-proto",
+          "https"
+        ]
+      ],
+      "id": "edge-trusted-forwarded",
+      "origin": "https://api.example.test",
+      "peer": "10.0.0.5",
+      "trustedProxies": [
+        "10.0.0.5"
+      ],
+      "valid": true
+    },
+    {
+      "error": "ambiguous-header",
+      "headers": [
+        [
+          "host",
+          "api.example.test"
+        ],
+        [
+          "authorization",
+          "Bearer a"
+        ],
+        [
+          "authorization",
+          "Bearer b"
+        ]
+      ],
+      "id": "edge-duplicate-auth",
+      "peer": "198.51.100.10",
+      "trustedProxies": [],
+      "valid": false
+    },
+    {
+      "allowedHosts": [
+        "api.example.test"
+      ],
+      "error": "host-not-allowed",
+      "headers": [
+        [
+          "host",
+          "evil.example"
+        ]
+      ],
+      "id": "edge-bad-host",
+      "peer": "198.51.100.10",
+      "trustedProxies": [],
+      "valid": false
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "expectedControl": "immutable artifact gate",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-01",
+  "title": "Mutable tag selected by production"
+}

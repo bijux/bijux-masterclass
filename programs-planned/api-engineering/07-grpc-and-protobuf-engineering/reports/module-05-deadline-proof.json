@@ -1,0 +1,10 @@
+{
+  "module": 5,
+  "status": "passed",
+  "claim": "deadlines, retries, and mutation idempotency are bounded",
+  "evidence": {
+    "deadline_cases": 3,
+    "retry_cases": 5,
+    "post_commit_reconciliation": "covered"
+  }
+}

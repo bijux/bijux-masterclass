@@ -1,0 +1,8 @@
+{
+  "active_operations_admitted": 10,
+  "alias_storm": "rejected",
+  "fragment_cycle": "rejected",
+  "oversized_page": "rejected",
+  "rejected_source_calls": 0,
+  "status": "pass"
+}

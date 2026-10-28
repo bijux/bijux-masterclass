@@ -1,0 +1,214 @@
+openapi: 3.2.0
+jsonSchemaDialect: https://spec.openapis.org/oas/3.2/dialect/2025-09-17
+info:
+  title: Analysis Runs API
+  summary: OpenAPI 3.2 frontier for the Analysis Runs API.
+  description: A standards-frontier representation of public API 1.1.0. It exercises enhanced tags,
+    additional HTTP methods, whole-query-string parameters, and stream item schemas without implying
+    a new public API major version. It is not the default generation input.
+  version: 1.1.0
+  license:
+    name: Apache License 2.0
+    identifier: Apache-2.0
+  contact:
+    name: Bijux Masterclass
+servers:
+- url: http://127.0.0.1:8000
+  description: Python/FastAPI provider
+- url: http://127.0.0.1:3000
+  description: TypeScript/Fastify provider
+- url: http://127.0.0.1:4010
+  description: Prism mock
+tags:
+- name: Public API
+  summary: Public API
+  description: Consumer-facing resources.
+  kind: nav
+- name: System
+  summary: System
+  description: Health operations.
+  parent: Public API
+  kind: nav
+- name: Projects
+  summary: Projects
+  description: Project resources.
+  parent: Public API
+  kind: nav
+- name: Datasets
+  summary: Datasets
+  description: Dataset resources.
+  parent: Public API
+  kind: nav
+- name: Analysis Runs
+  summary: Analysis Runs
+  description: Run lifecycle.
+  parent: Public API
+  kind: nav
+- name: Artifacts
+  summary: Artifacts
+  description: Run outputs.
+  parent: Public API
+  kind: nav
+- name: Webhooks
+  summary: Webhooks
+  description: Event delivery.
+  parent: Public API
+  kind: nav
+- name: Internal
+  summary: Internal
+  description: Administrative diagnostics.
+  kind: audience
+security:
+- OAuth2: []
+- ApiKey: []
+paths:
+  /health:
+    $ref: ./paths/health.yaml
+  /projects:
+    $ref: ./paths/projects.yaml
+  /projects/{projectId}:
+    $ref: ./paths/project.yaml
+  /projects/{projectId}/datasets:
+    $ref: ./paths/project-datasets.yaml
+  /datasets/{datasetId}:
+    $ref: ./paths/dataset.yaml
+  /datasets/{datasetId}/content:
+    $ref: ./paths/dataset-content.yaml
+  /analysis-runs:
+    $ref: ./paths/analysis-runs.yaml
+  /analysis-runs/{runId}:
+    $ref: ./paths/analysis-run.yaml
+  /analysis-runs/{runId}/cancellation:
+    $ref: ./paths/analysis-run-cancellation.yaml
+  /analysis-runs/{runId}/artifacts:
+    $ref: ./paths/analysis-run-artifacts.yaml
+  /analysis-runs/{runId}/events:
+    $ref: ./paths/analysis-run-events-3.2.yaml
+  /artifacts/{artifactId}:
+    $ref: ./paths/artifact.yaml
+  /webhook-subscriptions:
+    $ref: ./paths/webhook-subscriptions.yaml
+  /internal/diagnostics:
+    $ref: ./paths/internal-diagnostics.yaml
+  /analysis-runs/query:
+    $ref: ./paths/analysis-run-query-3.2.yaml
+webhooks:
+  analysisCompleted:
+    $ref: ./paths/webhook-analysis-completed.yaml
+components:
+  schemas:
+    Health:
+      $ref: ./components/schemas/Health.yaml
+    ProjectCreate:
+      $ref: ./components/schemas/ProjectCreate.yaml
+    ProjectPatch:
+      $ref: ./components/schemas/ProjectPatch.yaml
+    Project:
+      $ref: ./components/schemas/Project.yaml
+    ProjectPage:
+      $ref: ./components/schemas/ProjectPage.yaml
+    LocalFileSource:
+      $ref: ./components/schemas/LocalFileSource.yaml
+    RemoteObjectSource:
+      $ref: ./components/schemas/RemoteObjectSource.yaml
+    DatasetCreate:
+      $ref: ./components/schemas/DatasetCreate.yaml
+    Dataset:
+      $ref: ./components/schemas/Dataset.yaml
+    DatasetPage:
+      $ref: ./components/schemas/DatasetPage.yaml
+    UploadReceipt:
+      $ref: ./components/schemas/UploadReceipt.yaml
+    AnalysisParameters:
+      $ref: ./components/schemas/AnalysisParameters.yaml
+    AnalysisRunCreate:
+      $ref: ./components/schemas/AnalysisRunCreate.yaml
+    AnalysisRun:
+      $ref: ./components/schemas/AnalysisRun.yaml
+    AnalysisRunPage:
+      $ref: ./components/schemas/AnalysisRunPage.yaml
+    Artifact:
+      $ref: ./components/schemas/Artifact.yaml
+    ArtifactPage:
+      $ref: ./components/schemas/ArtifactPage.yaml
+    WebhookSubscriptionCreate:
+      $ref: ./components/schemas/WebhookSubscriptionCreate.yaml
+    WebhookSubscription:
+      $ref: ./components/schemas/WebhookSubscription.yaml
+    RunProgressEvent:
+      $ref: ./components/schemas/RunProgressEvent.yaml
+    RunCompletedEvent:
+      $ref: ./components/schemas/RunCompletedEvent.yaml
+    Problem:
+      $ref: ./components/schemas/Problem.yaml
+    ValidationIssue:
+      $ref: ./components/schemas/ValidationIssue.yaml
+    ValidationProblem:
+      $ref: ./components/schemas/ValidationProblem.yaml
+    Diagnostics:
+      $ref: ./components/schemas/Diagnostics.yaml
+  parameters:
+    ProjectId:
+      $ref: ./components/parameters/ProjectId.yaml
+    DatasetId:
+      $ref: ./components/parameters/DatasetId.yaml
+    RunId:
+      $ref: ./components/parameters/RunId.yaml
+    ArtifactId:
+      $ref: ./components/parameters/ArtifactId.yaml
+    Limit:
+      $ref: ./components/parameters/Limit.yaml
+    Cursor:
+      $ref: ./components/parameters/Cursor.yaml
+    ProjectNameFilter:
+      $ref: ./components/parameters/ProjectNameFilter.yaml
+    DatasetStatusFilter:
+      $ref: ./components/parameters/DatasetStatusFilter.yaml
+    RunStatusFilter:
+      $ref: ./components/parameters/RunStatusFilter.yaml
+    IdempotencyKey:
+      $ref: ./components/parameters/IdempotencyKey.yaml
+    IfMatch:
+      $ref: ./components/parameters/IfMatch.yaml
+  headers:
+    Location:
+      $ref: ./components/headers/Location.yaml
+    ETag:
+      $ref: ./components/headers/ETag.yaml
+    RetryAfter:
+      $ref: ./components/headers/RetryAfter.yaml
+    RequestId:
+      $ref: ./components/headers/RequestId.yaml
+    IdempotentReplay:
+      $ref: ./components/headers/IdempotentReplay.yaml
+  responses:
+    BadRequestProblem:
+      $ref: ./components/responses/BadRequestProblem.yaml
+    UnauthorizedProblem:
+      $ref: ./components/responses/UnauthorizedProblem.yaml
+    ForbiddenProblem:
+      $ref: ./components/responses/ForbiddenProblem.yaml
+    NotFoundProblem:
+      $ref: ./components/responses/NotFoundProblem.yaml
+    ConflictProblem:
+      $ref: ./components/responses/ConflictProblem.yaml
+    PreconditionProblem:
+      $ref: ./components/responses/PreconditionProblem.yaml
+    PreconditionRequiredProblem:
+      $ref: ./components/responses/PreconditionRequiredProblem.yaml
+    UnsupportedMediaTypeProblem:
+      $ref: ./components/responses/UnsupportedMediaTypeProblem.yaml
+    PayloadTooLargeProblem:
+      $ref: ./components/responses/PayloadTooLargeProblem.yaml
+    ValidationProblemResponse:
+      $ref: ./components/responses/ValidationProblemResponse.yaml
+  securitySchemes:
+    OAuth2:
+      $ref: ./components/security-schemes/OAuth2.yaml
+    ApiKey:
+      $ref: ./components/security-schemes/ApiKey.yaml
+    WebhookSignature:
+      $ref: ./components/security-schemes/WebhookSignature.yaml
+externalDocs:
+  description: Course capstone architecture and proof routes.
+  url: https://github.com/bijux/bijux-masterclass

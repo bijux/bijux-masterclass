@@ -1,0 +1,33 @@
+{
+  "profileVersion": "1.0",
+  "scenarios": [
+    {
+      "id": "process-exit",
+      "oracle": "supervisor records exit and applies bounded restart policy"
+    },
+    {
+      "id": "worker-termination",
+      "oracle": "claimed work is completed or becomes recoverable after the lease"
+    },
+    {
+      "id": "durable-path-read-only",
+      "oracle": "readiness fails and mutating traffic is removed"
+    },
+    {
+      "id": "certificate-expiry",
+      "oracle": "client verification fails before application request"
+    },
+    {
+      "id": "backend-unavailable",
+      "oracle": "edge returns bounded 503 without unbounded retries"
+    },
+    {
+      "id": "instance-replacement",
+      "oracle": "new instance reconstructs code/config and reattaches or restores durable state"
+    },
+    {
+      "id": "single-zone-loss",
+      "oracle": "no tolerance claim unless compute and durable copies span at least two zones"
+    }
+  ]
+}

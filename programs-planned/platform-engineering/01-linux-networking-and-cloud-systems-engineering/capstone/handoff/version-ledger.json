@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "courseRelease": "1.0.0",
+  "hostRuntimeProfile": "1.0",
+  "course2Target": "02-infrastructure-as-code-and-cloud-foundation-engineering",
+  "handoffProfile": "1.0",
+  "standardsSnapshot": "2026-08-09"
+}

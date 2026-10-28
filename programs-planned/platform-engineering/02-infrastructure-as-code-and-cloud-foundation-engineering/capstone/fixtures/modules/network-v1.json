@@ -1,0 +1,35 @@
+{
+  "configuresProvider": false,
+  "name": "atlas-network",
+  "outputs": [
+    {
+      "description": "VPC identifier consumed by workload roots",
+      "name": "vpc_id"
+    },
+    {
+      "description": "Private subnet IDs keyed by stable availability-zone ID",
+      "name": "private_subnet_ids"
+    }
+  ],
+  "readsRemoteState": false,
+  "variables": [
+    {
+      "description": "Address boundary owned by the foundation root",
+      "name": "vpc_cidr",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "Stable subnet identities owned by the network module",
+      "name": "subnets",
+      "required": true,
+      "type": "map(object)"
+    },
+    {
+      "description": "Governed tags",
+      "name": "tags",
+      "required": true,
+      "type": "map(string)"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+id: DEFECT-REL-01
+module: 1
+name: Component-only dashboard
+detector: journey-slo-coverage
+mutation: Remove all journey references from one SLO.
+oracle: journey SLI and durable-state check
+expectedCommand: make module-proof MODULE=01
+expectedFailure: SLO without a critical journey is rejected.

@@ -1,0 +1,1 @@
+interface Animal{kind:string}interface Dog extends Animal{bark():void}const dogs:Dog[]=[{kind:'dog',bark(){}}];const animals:Animal[]=dogs;animals.push({kind:'cat'});const selected=dogs[1];if(selected===undefined)throw new Error('missing');selected.bark();

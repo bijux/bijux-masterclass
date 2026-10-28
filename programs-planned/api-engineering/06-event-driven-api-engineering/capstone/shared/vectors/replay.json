@@ -1,0 +1,36 @@
+{
+  "profile": "event-1.0",
+  "vectorSet": "replay",
+  "cases": [
+    {
+      "id": "REP-001",
+      "description": "replay has an explicit maximum event count",
+      "expected": "accepted"
+    },
+    {
+      "id": "REP-002",
+      "description": "dry run records would-apply without mutating",
+      "expected": "accepted"
+    },
+    {
+      "id": "REP-003",
+      "description": "tenant filter prevents cross-tenant replay",
+      "expected": "accepted"
+    },
+    {
+      "id": "REP-004",
+      "description": "external side effects remain disabled",
+      "expected": "accepted"
+    },
+    {
+      "id": "REP-005",
+      "description": "bound overflow aborts the replay",
+      "expected": "rejected"
+    },
+    {
+      "id": "REP-006",
+      "description": "new effect version can rebuild a projection independently",
+      "expected": "accepted"
+    }
+  ]
+}

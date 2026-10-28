@@ -1,0 +1,50 @@
+{
+  "files": [
+    {
+      "bytes": 525,
+      "path": "README.md",
+      "sha256": "8a67225ce1b29f570c22a919b0dc746b15701f705893269310f58e3c3b1ae0dd"
+    },
+    {
+      "bytes": 4698,
+      "path": "cloud-foundation-requirements.json",
+      "sha256": "406f9cc4bcfc67b023a22ccf52e708efcf5c2e180996486371b5b1604348de03"
+    },
+    {
+      "bytes": 1050,
+      "path": "cloud-provider-map.json",
+      "sha256": "17d02d91e2378eb9f5e38167c9ec4cf66edc1d88159397cd651f73bd2667ef4f"
+    },
+    {
+      "bytes": 937,
+      "path": "failure-scenarios.json",
+      "sha256": "6b5cc2864b6c0035883a5aa6e0f82d0b8f95a0f112b5072a5ca11323bd449062"
+    },
+    {
+      "bytes": 1361,
+      "path": "handoff-profile.schema.json",
+      "sha256": "0c974f2eea660c0018e74eae7005d0f8e6fb935d71d25955c5cde20362f10b44"
+    },
+    {
+      "bytes": 1144,
+      "path": "host-profile.json",
+      "sha256": "0b53b544d025aeb054d9cb4bfb4cf27a71782056d88cfc2a3fce5454151fd547"
+    },
+    {
+      "bytes": 946,
+      "path": "network-plan.json",
+      "sha256": "836832d0283ae49fb396650d2a566dc69cb079dcf14ef634fc46537bc1898d81"
+    },
+    {
+      "bytes": 625,
+      "path": "storage-plan.json",
+      "sha256": "00af8f30a1002a472ecbb26f1851be7b1a43525e61965993d4db280eec2ca0b0"
+    },
+    {
+      "bytes": 229,
+      "path": "version-ledger.json",
+      "sha256": "8db38c5c462ca781bf3e8b4f890803ee05ac03a725d01b88f86f0beb8202df34"
+    }
+  ],
+  "schemaVersion": "1.0"
+}

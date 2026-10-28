@@ -1,0 +1,6 @@
+{
+  "backupEncrypted": true,
+  "expected": "restore-blocked",
+  "keyState": "disabled",
+  "recoveryRoleCanDecrypt": false
+}

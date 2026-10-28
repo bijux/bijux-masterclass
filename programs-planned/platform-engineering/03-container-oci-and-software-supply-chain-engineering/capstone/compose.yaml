@@ -1,0 +1,31 @@
+services:
+  api:
+    image: ${ATLAS_API_IMAGE:?set digest-qualified image}
+    user: "65532:65532"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=16m
+    volumes:
+      - atlas-spool:/var/lib/atlas/spool
+    ports:
+      - "127.0.0.1:8080:8080"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+  worker:
+    image: ${ATLAS_WORKER_IMAGE:?set digest-qualified image}
+    user: "65532:65532"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=16m
+    volumes:
+      - atlas-spool:/var/lib/atlas/spool
+      - atlas-results:/var/lib/atlas/results
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  atlas-spool: {}
+  atlas-results: {}

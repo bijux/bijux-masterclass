@@ -1,0 +1,11 @@
+[
+  {
+    "evidence": [
+      "reports/reachability.json"
+    ],
+    "id": "CVE-ATLAS-0001",
+    "impactStatement": "The fixture component path is not present in the statically linked probe; verified by symbol and call-graph fixture.",
+    "justification": "code_not_reachable",
+    "status": "not_affected"
+  }
+]

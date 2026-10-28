@@ -1,0 +1,9 @@
+[package]
+name = "c9-lab04-record-window-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+bytes = "=1.12.1"

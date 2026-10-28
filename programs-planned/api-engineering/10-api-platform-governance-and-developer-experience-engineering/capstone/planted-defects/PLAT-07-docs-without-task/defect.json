@@ -1,0 +1,5 @@
+{
+  "defect": "An active API has reference text but no successful task path",
+  "expectedRejectingProof": "docs-proof",
+  "id": "PLAT-07-docs-without-task"
+}

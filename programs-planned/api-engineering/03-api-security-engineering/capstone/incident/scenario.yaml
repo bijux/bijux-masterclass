@@ -1,0 +1,28 @@
+incidentId: INC-SEC-001
+title: credential and webhook compromise drill
+facts:
+- at: '2026-08-06T09:00:00Z'
+  source: build-log-scan
+  statement: Canary identifies current webhook key value in a private build log fixture.
+  confidence: confirmed
+- at: '2026-08-06T09:04:00Z'
+  source: abuse-alert
+  statement: Token jti fixture-stolen-jti submits abnormal run volume.
+  confidence: high
+- at: '2026-08-06T09:07:00Z'
+  source: authorization-audit
+  statement: Cross-tenant artifact attempts detected; no confirmed content disclosure
+    in baseline evidence.
+  confidence: medium
+- at: '2026-08-06T09:10:00Z'
+  source: dependency-fixture
+  statement: Strict JSON dependency fixture is marked vulnerable.
+  confidence: confirmed
+requiredActions:
+- preserve evidence references without secret values
+- revoke stolen jti
+- activate new webhook key and bounded overlap
+- verify replay controls
+- apply compatible dependency/security release
+- rerun affected proofs
+- update threat model and residual risk

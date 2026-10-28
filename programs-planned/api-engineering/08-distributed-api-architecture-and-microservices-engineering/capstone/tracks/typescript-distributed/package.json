@@ -1,0 +1,14 @@
+{
+  "name": "course8-distributed-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test test-js/*.test.mjs",
+    "tour": "npm run build && node dist/src/tour.js"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3"
+  }
+}

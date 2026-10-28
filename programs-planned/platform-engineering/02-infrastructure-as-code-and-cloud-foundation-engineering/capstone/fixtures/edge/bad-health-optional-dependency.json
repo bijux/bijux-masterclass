@@ -1,0 +1,10 @@
+{
+  "failureMode": "all-targets-unhealthy",
+  "path": "/ready/all-dependencies",
+  "requires": [
+    "spool",
+    "worker",
+    "analytics-sink",
+    "email-provider"
+  ]
+}

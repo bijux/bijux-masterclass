@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "bytes": 381,
+      "path": "README.md",
+      "sha256": "bedc1b02edfb54fe616b31c7196e484648270b6f8eea2c42fc2abfcd5eea1655"
+    },
+    {
+      "bytes": 298,
+      "path": "dns-requirements.yaml",
+      "sha256": "4c73b30c06cc5d5e0a6683bc9c284f5ba217ebbc84791e196975aae717379f16"
+    },
+    {
+      "bytes": 485,
+      "path": "gateway-requirements.yaml",
+      "sha256": "64ee67c63c982495d219a9a3cfe1805aba64564ca033df24c8f87cc5bbeb95b9"
+    },
+    {
+      "bytes": 400,
+      "path": "known-risks.json",
+      "sha256": "9c32145e785db70e473e382b5ddd19942d57a8ed37659a8fa4af30d2119a5ca8"
+    },
+    {
+      "bytes": 444,
+      "path": "network-policy-requirements.yaml",
+      "sha256": "28746df31ccf5ce45b3c2a7aba43562edfd955f0e11a81f98bc7e5ea7b3f2660"
+    },
+    {
+      "bytes": 383,
+      "path": "readiness-and-endpoints.yaml",
+      "sha256": "bc8829653b795a4e5f54b98f3b42fa8a008e51ecdb9ba9c90bac468400812c50"
+    },
+    {
+      "bytes": 376,
+      "path": "service-connectivity.yaml",
+      "sha256": "12ebf5d2e97a339528c57716bb5c66c56e63d51fc8d23b3896aa7e843d00a0b3"
+    },
+    {
+      "bytes": 255,
+      "path": "topology-requirements.yaml",
+      "sha256": "04bd76452cef68a37285111beb6a6bad1a4c8f2022ded44887f57db0bfe2559a"
+    },
+    {
+      "bytes": 233,
+      "path": "version-ledger.json",
+      "sha256": "918d6e8a99cb7537c5b03009432baba7cf2c85e0677291e3e7116c3d9c69642c"
+    },
+    {
+      "bytes": 495,
+      "path": "workload-inventory.json",
+      "sha256": "563b2b2878a248bb0bf4c27f02518f32d14d1740204711b928e2f93022471e7f"
+    }
+  ],
+  "schemaVersion": "1.0"
+}

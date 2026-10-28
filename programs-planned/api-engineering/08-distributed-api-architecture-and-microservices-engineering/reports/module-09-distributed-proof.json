@@ -1,0 +1,8 @@
+{
+  "evidence_class": "combined-dependency-light",
+  "planted_defects": 10,
+  "planted_defects_rejected": 10,
+  "proof_layers": ["boundary", "ownership", "data", "contract", "topology", "failure", "reconciliation", "release", "operator"],
+  "runtime_environment_claimed": false,
+  "status": "pass"
+}

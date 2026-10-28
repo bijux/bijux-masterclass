@@ -1,0 +1,8 @@
+{
+  "name": "managed-cloud-required-candidate",
+  "expected": "not-executed",
+  "gates": [
+    {"name": "dependency-light-proof", "state": "pass"},
+    {"name": "managed-cloud-load-balancer", "state": "not-executed", "blocker": true}
+  ]
+}

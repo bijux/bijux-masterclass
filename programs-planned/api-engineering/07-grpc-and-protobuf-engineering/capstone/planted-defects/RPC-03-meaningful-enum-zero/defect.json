@@ -1,0 +1,5 @@
+{
+  "id": "RPC-03",
+  "title": "Make QUEUED the zero enum value",
+  "expected_rejection": "model-proof"
+}

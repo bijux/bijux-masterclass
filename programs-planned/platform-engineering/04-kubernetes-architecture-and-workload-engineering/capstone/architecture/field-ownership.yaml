@@ -1,0 +1,29 @@
+version: atlas-field-ownership-1.0
+objects:
+  AtlasWorkload:
+    atlas-author:
+      - spec.apiImage
+      - spec.workerImage
+      - spec.apiReplicas
+      - spec.workerReplicas
+      - spec.configurationRef
+      - spec.availabilityClass
+    atlas-controller:
+      - metadata.finalizers[platform.bijux.dev/release-reservation]
+      - status
+  Deployment/atlas-api:
+    atlas-controller:
+      - spec.selector
+      - spec.template
+      - spec.strategy
+      - metadata.labels
+    atlas-controller-default:
+      - spec.replicas
+  Deployment/atlas-worker:
+    atlas-controller:
+      - spec
+      - metadata.labels
+rules:
+  - no actor force-owns a field without an explicit transfer record
+  - generated child objects are not edited directly by learners or GitOps
+  - status is controller-owned and never used as desired state

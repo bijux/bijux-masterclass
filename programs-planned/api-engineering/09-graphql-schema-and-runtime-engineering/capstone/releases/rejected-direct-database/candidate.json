@@ -1,0 +1,9 @@
+{
+  "activeOperationsValid": true,
+  "architecturePolicy": "private-database-read",
+  "budgetsPass": true,
+  "change": "resolver reads notification private database",
+  "expected": "breaking-architecture",
+  "oldClientPasses": true,
+  "ownershipComplete": false
+}

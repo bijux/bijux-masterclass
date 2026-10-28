@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlas-sentinel
+  namespace: atlas-system
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: atlas-sentinel
+  ports:
+    - name: peer
+      port: 9090
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: atlas-sentinel
+  namespace: atlas-system
+spec:
+  serviceName: atlas-sentinel
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: atlas-sentinel
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: atlas-sentinel
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: sentinel
+          image: platform/atlas-probe@sha256:7e0649ee963175daed1b6acece2fbc7543f05cd23cd5348d2502150caa0b6e4e
+          args: ["sentinel", "--identity=$(POD_NAME)"]
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef: {fieldPath: metadata.name}
+          resources:
+            requests: {cpu: 25m, memory: 32Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}

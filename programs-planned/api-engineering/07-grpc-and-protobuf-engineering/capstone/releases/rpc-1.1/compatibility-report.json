@@ -1,0 +1,16 @@
+{
+  "rpc_api": "1.1-candidate",
+  "change": "add optional diagnostic_summary field 10 to AnalysisRun",
+  "classification": {
+    "wire": "compatible",
+    "source": "compatible-after-regeneration",
+    "protojson": "additive",
+    "behavior": "review-required"
+  },
+  "consumer_evidence": {
+    "python-gateway": "pass",
+    "typescript-worker": "not-affected",
+    "typescript-operator": "pass-with-unknown-field-policy"
+  },
+  "decision": "accepted-for-course-fixture"
+}

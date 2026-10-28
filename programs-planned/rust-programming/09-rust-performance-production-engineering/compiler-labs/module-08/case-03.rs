@@ -1,0 +1,1 @@
+fn bounded_length(declared: usize, maximum: usize) -> Result<usize,&'static str> { (declared <= maximum).then_some(declared).ok_or("too large") } fn main() { assert_eq!(bounded_length(8,16), Ok(8)); }

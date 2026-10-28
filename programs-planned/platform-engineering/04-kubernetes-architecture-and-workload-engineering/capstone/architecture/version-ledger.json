@@ -1,0 +1,9 @@
+{
+  "course1HostRuntime": "1.0.0",
+  "course2CloudFoundation": "1.0.0",
+  "course3WorkloadRelease": "1.0.0",
+  "course4KubernetesRuntime": "1.0.0",
+  "kubernetesConceptualBaseline": "1.36.2",
+  "kindReference": "0.32.0",
+  "kindNodeImage": "v1.36.1"
+}

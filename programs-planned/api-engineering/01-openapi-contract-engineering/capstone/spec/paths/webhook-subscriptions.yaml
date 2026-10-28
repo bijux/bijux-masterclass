@@ -1,0 +1,39 @@
+post:
+  tags:
+  - Webhooks
+  summary: Create a webhook subscription
+  description: Stores a constrained HTTPS destination. The secret is accepted once and never returned.
+  operationId: createWebhookSubscription
+  security:
+  - OAuth2:
+    - webhooks:write
+  - ApiKey: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/WebhookSubscriptionCreate.yaml
+        example:
+          targetUrl: https://hooks.example.test/team-a
+          eventTypes:
+          - analysis.completed
+          secret: training-secret-0001
+  responses:
+    '201':
+      description: Webhook subscription created.
+      headers:
+        Location:
+          $ref: ../components/headers/Location.yaml
+        X-Request-Id:
+          $ref: ../components/headers/RequestId.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/WebhookSubscription.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedProblem.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenProblem.yaml
+    '422':
+      $ref: ../components/responses/ValidationProblemResponse.yaml

@@ -1,0 +1,16 @@
+edition = "2024";
+
+package bijux.analysis.v1frontier;
+
+// Standards-frontier sketch. The executable course baseline remains proto3.
+// This file is validated only when the local Editions-capable toolchain proves it.
+
+option features.field_presence = EXPLICIT;
+option features.enum_type = OPEN;
+option features.repeated_field_encoding = PACKED;
+
+message FrontierAnalysisRun {
+  string name = 1;
+  int64 revision = 2;
+  string result_summary = 3;
+}

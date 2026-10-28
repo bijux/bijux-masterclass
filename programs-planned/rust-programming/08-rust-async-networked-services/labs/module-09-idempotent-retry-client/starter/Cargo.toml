@@ -1,0 +1,17 @@
+[package]
+name = "async-idempotent-retry-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+tokio = { version = "=1.53.1", features = ["macros", "rt", "time", "test-util", "sync"] }
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

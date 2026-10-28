@@ -1,0 +1,11 @@
+{
+  "candidateRelease": "atlas-workload-release-1.0.0",
+  "condition": "The BOM validates syntactically but does not identify Atlas or cover every released image subject.",
+  "evidenceClass": "dependency-light",
+  "expectedDecision": "rejected",
+  "failedGate": "inventory-completeness",
+  "id": "rejected-incomplete-sbom",
+  "reviewQuestion": "What exact evidence would be required to change this decision without weakening another gate?",
+  "schemaVersion": "1.0",
+  "title": "SBOM omits the primary application component"
+}

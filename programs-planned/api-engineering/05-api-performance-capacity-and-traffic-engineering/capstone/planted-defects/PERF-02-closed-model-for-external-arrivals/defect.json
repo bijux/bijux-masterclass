@@ -1,0 +1,7 @@
+{
+  "description": "The generator waits for responses and therefore lowers offered load during saturation.",
+  "expectedOracle": "workload-model-review",
+  "id": "PERF-02",
+  "mustBeRejected": true,
+  "slug": "closed-model-for-external-arrivals"
+}

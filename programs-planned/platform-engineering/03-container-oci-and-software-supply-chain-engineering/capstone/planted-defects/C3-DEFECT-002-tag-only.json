@@ -1,0 +1,10 @@
+{
+  "defect": "deployment reference uses mutable tag without digest",
+  "expectedDecision": "rejected",
+  "expectedGate": "release-policy-proof",
+  "expectedProof": "release-policy-proof",
+  "id": "C3-DEFECT-002",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "Promotion records a tag without binding the selected manifest digest.",
+  "title": "Mutable tag used as deployment identity"
+}

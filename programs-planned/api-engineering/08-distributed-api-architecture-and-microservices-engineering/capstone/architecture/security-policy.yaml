@@ -1,0 +1,32 @@
+version: '1.0'
+principles:
+- zero implicit network trust
+- audience-bound workload identity
+- end-user context is delegated not copied
+- every service authorizes its owned resource
+capabilities:
+- name: artifact-upload
+  issuer: analysis-control
+  audience: artifact-service
+  claims:
+  - tenant
+  - run
+  - attempt
+  - sha256
+  - max_bytes
+  - expires_at
+  max_ttl_seconds: 300
+- name: artifact-download
+  issuer: analysis-control
+  audience: artifact-service
+  claims:
+  - tenant
+  - artifact
+  - subject
+  - expires_at
+  max_ttl_seconds: 60
+forbidden:
+- x-user-id as authority
+- x-tenant-id as authority
+- shared superuser token
+- network location as authorization

@@ -1,0 +1,95 @@
+site_name: API Reliability and Observability Engineering
+site_description: Course 4 of the API Engineering program
+docs_dir: course-book
+site_dir: site
+use_directory_urls: false
+strict: true
+theme:
+  name: material
+  features:
+  - navigation.sections
+  - navigation.top
+  - navigation.indexes
+  - content.code.copy
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- tables
+- toc
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.superfences
+nav:
+- Course Introduction: index.md
+- Start Here: start-here.md
+- Study Plan: study-plan.md
+- Capstone: capstone.md
+- Standards: standards.md
+- Evidence Model: evidence-model.md
+- Language Strategy: language-strategy.md
+- Glossary: glossary.md
+- Orientation:
+  - Chapter: module-00-orientation/index.md
+  - Lab: module-00-orientation/lab.md
+  - Checkpoint: module-00-orientation/checkpoint.md
+- Module 01 — Reliability Model and Critical Journeys:
+  - Chapter: module-01-reliability-model-and-critical-journeys/index.md
+  - Exercises: module-01-reliability-model-and-critical-journeys/exercises.md
+  - Worked Answers: module-01-reliability-model-and-critical-journeys/exercise-answers.md
+  - Lab: module-01-reliability-model-and-critical-journeys/lab.md
+  - Checkpoint: module-01-reliability-model-and-critical-journeys/checkpoint.md
+- Module 02 — Deadlines, Cancellation, and Retry Budgets:
+  - Chapter: module-02-deadlines-timeouts-cancellation-and-retry-budgets/index.md
+  - Exercises: module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercises.md
+  - Worked Answers: module-02-deadlines-timeouts-cancellation-and-retry-budgets/exercise-answers.md
+  - Lab: module-02-deadlines-timeouts-cancellation-and-retry-budgets/lab.md
+  - Checkpoint: module-02-deadlines-timeouts-cancellation-and-retry-budgets/checkpoint.md
+- Module 03 — Dependency Resilience and Graceful Degradation:
+  - Chapter: module-03-dependency-resilience-and-graceful-degradation/index.md
+  - Exercises: module-03-dependency-resilience-and-graceful-degradation/exercises.md
+  - Worked Answers: module-03-dependency-resilience-and-graceful-degradation/exercise-answers.md
+  - Lab: module-03-dependency-resilience-and-graceful-degradation/lab.md
+  - Checkpoint: module-03-dependency-resilience-and-graceful-degradation/checkpoint.md
+- Module 04 — Lifecycle, Health, Shutdown, and Recovery:
+  - Chapter: module-04-lifecycle-health-graceful-shutdown-and-recovery/index.md
+  - Exercises: module-04-lifecycle-health-graceful-shutdown-and-recovery/exercises.md
+  - Worked Answers: module-04-lifecycle-health-graceful-shutdown-and-recovery/exercise-answers.md
+  - Lab: module-04-lifecycle-health-graceful-shutdown-and-recovery/lab.md
+  - Checkpoint: module-04-lifecycle-health-graceful-shutdown-and-recovery/checkpoint.md
+- Module 05 — Telemetry Architecture and Structured Events:
+  - Chapter: module-05-telemetry-architecture-and-structured-operational-events/index.md
+  - Exercises: module-05-telemetry-architecture-and-structured-operational-events/exercises.md
+  - Worked Answers: module-05-telemetry-architecture-and-structured-operational-events/exercise-answers.md
+  - Lab: module-05-telemetry-architecture-and-structured-operational-events/lab.md
+  - Checkpoint: module-05-telemetry-architecture-and-structured-operational-events/checkpoint.md
+- Module 06 — Metrics and Service-Level Indicators:
+  - Chapter: module-06-metrics-and-service-level-indicators/index.md
+  - Exercises: module-06-metrics-and-service-level-indicators/exercises.md
+  - Worked Answers: module-06-metrics-and-service-level-indicators/exercise-answers.md
+  - Lab: module-06-metrics-and-service-level-indicators/lab.md
+  - Checkpoint: module-06-metrics-and-service-level-indicators/checkpoint.md
+- Module 07 — Distributed Tracing Across Asynchronous Work:
+  - Chapter: module-07-distributed-tracing-across-http-workers-storage-and-webhooks/index.md
+  - Exercises: module-07-distributed-tracing-across-http-workers-storage-and-webhooks/exercises.md
+  - Worked Answers: module-07-distributed-tracing-across-http-workers-storage-and-webhooks/exercise-answers.md
+  - Lab: module-07-distributed-tracing-across-http-workers-storage-and-webhooks/lab.md
+  - Checkpoint: module-07-distributed-tracing-across-http-workers-storage-and-webhooks/checkpoint.md
+- Module 08 — SLOs, Error Budgets, Dashboards, and Alerts:
+  - Chapter: module-08-slos-error-budgets-dashboards-and-alerts/index.md
+  - Exercises: module-08-slos-error-budgets-dashboards-and-alerts/exercises.md
+  - Worked Answers: module-08-slos-error-budgets-dashboards-and-alerts/exercise-answers.md
+  - Lab: module-08-slos-error-budgets-dashboards-and-alerts/lab.md
+  - Checkpoint: module-08-slos-error-budgets-dashboards-and-alerts/checkpoint.md
+- Module 09 — Fault Injection, Troubleshooting, and Game Days:
+  - Chapter: module-09-fault-injection-troubleshooting-and-game-days/index.md
+  - Exercises: module-09-fault-injection-troubleshooting-and-game-days/exercises.md
+  - Worked Answers: module-09-fault-injection-troubleshooting-and-game-days/exercise-answers.md
+  - Lab: module-09-fault-injection-troubleshooting-and-game-days/lab.md
+  - Checkpoint: module-09-fault-injection-troubleshooting-and-game-days/checkpoint.md
+- Module 10 — Incident Command, Reconciliation, and Readiness:
+  - Chapter: module-10-incident-command-state-reconciliation-and-operational-readiness/index.md
+  - Exercises: module-10-incident-command-state-reconciliation-and-operational-readiness/exercises.md
+  - Worked Answers: module-10-incident-command-state-reconciliation-and-operational-readiness/exercise-answers.md
+  - Lab: module-10-incident-command-state-reconciliation-and-operational-readiness/lab.md
+  - Checkpoint: module-10-incident-command-state-reconciliation-and-operational-readiness/checkpoint.md

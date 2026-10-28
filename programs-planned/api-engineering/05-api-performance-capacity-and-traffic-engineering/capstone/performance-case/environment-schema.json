@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bijux.example/api-performance/environment.schema.json",
+  "type": "object",
+  "required": [
+    "runtime",
+    "runtimeVersion",
+    "cpuLogical",
+    "memoryLimitBytes",
+    "processCount",
+    "workerCount",
+    "sourceRevision",
+    "datasetId",
+    "databaseProfile"
+  ],
+  "properties": {
+    "runtime": {
+      "enum": [
+        "python",
+        "node"
+      ]
+    },
+    "runtimeVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cpuLogical": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "memoryLimitBytes": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*$"
+    },
+    "processCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "workerCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sourceRevision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "datasetId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "databaseProfile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "featureFlags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    }
+  },
+  "additionalProperties": false
+}

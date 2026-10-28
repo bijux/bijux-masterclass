@@ -1,0 +1,9 @@
+{
+  "candidate": "dual-write",
+  "defect": "legacy and artifact service are written independently",
+  "expected": "reject",
+  "id": "DIST-05",
+  "lesson": "Two independent commits cannot be presented as one outcome without durable coordination, comparison, and repair.",
+  "rejecting_gate": "saga-recovery",
+  "title": "Uncontrolled Dual Write"
+}

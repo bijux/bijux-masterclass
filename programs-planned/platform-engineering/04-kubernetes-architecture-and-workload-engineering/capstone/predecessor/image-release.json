@@ -1,0 +1,64 @@
+{
+  "deploymentIdentity": "repository plus immutable digest",
+  "discoveryTag": "1.0.0",
+  "images": [
+    {
+      "digest": "sha256:6e3b38e88f6ef4252b635b6d199095db46233d7b6f85f3be4384d746386317a7",
+      "entrypoint": [
+        "/usr/local/bin/atlas-api"
+      ],
+      "name": "atlas-api",
+      "platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ],
+      "repository": "platform/atlas-api",
+      "runtimeUser": "65532:65532"
+    },
+    {
+      "digest": "sha256:bbd52b30969ebb6fb3568d2ce5c1ebfb420c7bd7a80001f2a1014feaa4d7a036",
+      "entrypoint": [
+        "/usr/local/bin/atlas-worker"
+      ],
+      "name": "atlas-worker",
+      "platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ],
+      "repository": "platform/atlas-worker",
+      "runtimeUser": "65532:65532"
+    }
+  ],
+  "release": "atlas-workload-release-1.0.0",
+  "sourceDigest": "sha256:250ff3122870302db3bec42e284f8bd8bea8905638472ac64eee0d4c70aab4b3",
+  "verificationImages": [
+    {
+      "deployByDefault": false,
+      "digest": "sha256:7e0649ee963175daed1b6acece2fbc7543f05cd23cd5348d2502150caa0b6e4e",
+      "name": "atlas-probe",
+      "platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        },
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ],
+      "repository": "platform/atlas-probe"
+    }
+  ]
+}

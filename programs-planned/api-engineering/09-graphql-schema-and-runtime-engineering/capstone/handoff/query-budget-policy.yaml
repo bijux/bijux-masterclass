@@ -1,0 +1,18 @@
+version: '1.0'
+limits:
+  document_bytes: 32768
+  token_count: 4000
+  depth: 12
+  aliases: 30
+  root_fields: 8
+  estimated_cost: 5000
+  service_fanout: 12
+list_defaults:
+  default_page_size: 20
+  maximum_page_size: 100
+rules:
+  - validate before execution
+  - charge list fields by bounded cardinality
+  - include fragments and aliases once per executed occurrence
+  - reject fragment cycles
+  - persisted operation admission does not remove runtime variable budgets

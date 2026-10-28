@@ -1,0 +1,8 @@
+{
+  "name": "mutable-workload-candidate",
+  "expected": "rejected",
+  "gates": [
+    {"name": "predecessor-workload-identity", "state": "fail", "blocker": true},
+    {"name": "network-semantics", "state": "pass"}
+  ]
+}

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atlas-runtime
+data:
+  LOG_LEVEL: debug
+  DATA_RELEASE_PHASE: expand

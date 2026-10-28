@@ -1,0 +1,281 @@
+threats:
+- id: T-01
+  name: HTTP interpretation ambiguity
+  actor: ACT-01
+  assets:
+  - A-01
+  - A-02
+  boundaries:
+  - B-01
+  scenario: Duplicate critical headers or JSON members are interpreted differently
+    across layers.
+  disposition: mitigate
+  requirements:
+  - R-01
+  - R-02
+  - R-03
+- id: T-02
+  name: forwarded-header spoofing
+  actor: ACT-01
+  assets:
+  - A-01
+  - A-02
+  boundaries:
+  - B-01
+  scenario: Untrusted forwarding fields alter external origin or client identity.
+  disposition: mitigate
+  requirements:
+  - R-04
+  - R-05
+- id: T-03
+  name: wrong-audience token replay
+  actor: ACT-04
+  assets:
+  - A-01
+  - A-02
+  boundaries:
+  - B-02
+  scenario: A valid token intended for another service is accepted.
+  disposition: mitigate
+  requirements:
+  - R-06
+  - R-07
+  - R-08
+- id: T-04
+  name: JWT key or algorithm confusion
+  actor: ACT-04
+  assets:
+  - A-01
+  - A-02
+  boundaries:
+  - B-02
+  scenario: Attacker-controlled token metadata expands trusted key or algorithm choices.
+  disposition: mitigate
+  requirements:
+  - R-06
+  - R-09
+- id: T-05
+  name: credential reuse after compromise
+  actor: ACT-04
+  assets:
+  - A-01
+  - A-08
+  boundaries:
+  - B-02
+  scenario: Stolen token or API key remains usable until nominal expiry.
+  disposition: mitigate
+  requirements:
+  - R-10
+  - R-11
+  - R-12
+- id: T-06
+  name: cross-tenant object access
+  actor: ACT-02
+  assets:
+  - A-02
+  - A-04
+  boundaries:
+  - B-04
+  - B-05
+  scenario: A valid principal substitutes a foreign identifier.
+  disposition: mitigate
+  requirements:
+  - R-13
+  - R-14
+  - R-15
+- id: T-07
+  name: collection or count leakage
+  actor: ACT-02
+  assets:
+  - A-02
+  - A-03
+  boundaries:
+  - B-04
+  - B-05
+  scenario: List/query paths omit tenant restriction.
+  disposition: mitigate
+  requirements:
+  - R-14
+  - R-16
+- id: T-08
+  name: privilege and field escalation
+  actor: ACT-03
+  assets:
+  - A-02
+  - A-03
+  boundaries:
+  - B-04
+  scenario: Caller writes server-owned or privileged fields.
+  disposition: mitigate
+  requirements:
+  - R-13
+  - R-17
+- id: T-09
+  name: path traversal or symlink escape
+  actor: ACT-03
+  assets:
+  - A-04
+  - A-09
+  boundaries:
+  - B-06
+  scenario: Decoded or linked paths escape a fixed root.
+  disposition: mitigate
+  requirements:
+  - R-18
+  - R-19
+- id: T-10
+  name: unbounded upload/archive exhaustion
+  actor: ACT-03
+  assets:
+  - A-08
+  - A-09
+  boundaries:
+  - B-06
+  scenario: Body or archive consumes memory, disk, descriptors, or file count.
+  disposition: mitigate
+  requirements:
+  - R-20
+  - R-21
+- id: T-11
+  name: SQL or interpreter injection
+  actor: ACT-03
+  assets:
+  - A-02
+  - A-03
+  - A-09
+  boundaries:
+  - B-05
+  scenario: Untrusted values become SQL, shell, template, or deserialization instructions.
+  disposition: mitigate
+  requirements:
+  - R-22
+- id: T-12
+  name: SSRF to forbidden network
+  actor: ACT-03
+  assets:
+  - A-06
+  - A-09
+  boundaries:
+  - B-07
+  scenario: Tenant-controlled destination reaches loopback/private/link-local/reserved
+    peers.
+  disposition: mitigate
+  requirements:
+  - R-23
+  - R-24
+  - R-25
+- id: T-13
+  name: webhook forgery
+  actor: ACT-05
+  assets:
+  - A-05
+  boundaries:
+  - B-07
+  scenario: Receiver accepts a body not authenticated by a trusted key.
+  disposition: mitigate
+  requirements:
+  - R-26
+  - R-27
+- id: T-14
+  name: webhook replay
+  actor: ACT-05
+  assets:
+  - A-05
+  - A-03
+  boundaries:
+  - B-07
+  scenario: A valid old delivery is accepted repeatedly.
+  disposition: mitigate
+  requirements:
+  - R-27
+  - R-28
+- id: T-15
+  name: secret or personal data leakage
+  actor: ACT-01
+  assets:
+  - A-01
+  - A-05
+  - A-06
+  - A-07
+  boundaries:
+  - B-08
+  scenario: Logs, exceptions, reports, or handoff expose sensitive values.
+  disposition: mitigate
+  requirements:
+  - R-29
+  - R-30
+  - R-31
+- id: T-16
+  name: resource and queue abuse
+  actor: ACT-03
+  assets:
+  - A-08
+  boundaries:
+  - B-01
+  - B-04
+  - B-05
+  scenario: Valid expensive operations monopolize service resources.
+  disposition: mitigate
+  requirements:
+  - R-32
+  - R-33
+- id: T-17
+  name: supply-chain substitution
+  actor: ACT-06
+  assets:
+  - A-10
+  - A-06
+  boundaries:
+  - B-09
+  scenario: Unreviewed dependency/build input changes released security behavior.
+  disposition: mitigate
+  requirements:
+  - R-34
+  - R-35
+- id: T-18
+  name: incident containment failure
+  actor: ACT-04
+  assets:
+  - A-01
+  - A-05
+  - A-07
+  boundaries:
+  - B-02
+  - B-07
+  - B-08
+  scenario: Operators cannot revoke/rotate while preserving evidence and service compatibility.
+  disposition: mitigate
+  requirements:
+  - R-10
+  - R-12
+  - R-28
+  - R-36
+  - R-37
+- id: T-19
+  name: audit tampering or overcollection
+  actor: ACT-08
+  assets:
+  - A-07
+  boundaries:
+  - B-08
+  scenario: Evidence is changed, incomplete, or contains unnecessary sensitive payloads.
+  disposition: mitigate
+  requirements:
+  - R-30
+  - R-31
+  - R-38
+- id: T-20
+  name: security-control regression
+  actor: ACT-06
+  assets:
+  - A-01
+  - A-02
+  - A-04
+  - A-08
+  boundaries:
+  - B-09
+  scenario: A refactor removes a control while normal tests remain green.
+  disposition: mitigate
+  requirements:
+  - R-39
+  - R-40

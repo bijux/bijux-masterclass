@@ -1,0 +1,32 @@
+catalogVersion: '1.0'
+alerts:
+- id: ALERT-API-FAST-BURN
+  slo: SLO-API-AVAILABILITY
+  severity: page
+  longWindow: 1h
+  shortWindow: 5m
+  threshold: 14.4
+  runbook: RB-API-ERROR-BUDGET
+- id: ALERT-API-SLOW-BURN
+  slo: SLO-API-AVAILABILITY
+  severity: ticket
+  longWindow: 6h
+  shortWindow: 30m
+  threshold: 6.0
+  runbook: RB-API-ERROR-BUDGET
+- id: ALERT-RUN-START-FRESHNESS
+  slo: SLO-RUN-START-FRESHNESS
+  severity: page
+  longWindow: 1h
+  shortWindow: 5m
+  threshold: 10.0
+  runbook: RB-WORKER-BACKLOG
+- id: ALERT-STATE-DIVERGENCE
+  slo: SLO-RUN-TERMINAL-CORRECTNESS
+  severity: page
+  condition: any confirmed divergence
+  runbook: RB-STATE-RECONCILIATION
+- id: ALERT-TELEMETRY-DROPS
+  severity: ticket
+  condition: telemetry drops sustained for 15m
+  runbook: RB-TELEMETRY-PIPELINE

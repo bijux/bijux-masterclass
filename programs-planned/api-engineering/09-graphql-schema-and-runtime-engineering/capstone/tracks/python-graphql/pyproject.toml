@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "analysis-graph-python"
+version = "1.0.0"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+server = ["strawberry-graphql[fastapi]>=0.278,<0.279", "graphql-core>=3.2,<3.3"]
+test = ["pytest>=8.4,<9"]

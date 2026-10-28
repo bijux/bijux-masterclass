@@ -1,0 +1,11 @@
+authorities:
+- state: source
+  writer: application or environment repository owner
+- state: artifact
+  writer: build system
+- state: desired environment revision
+  writer: promotion authority
+- state: owned Kubernetes fields
+  writer: GitOps controller
+- state: business facts
+  writer: application/data owner

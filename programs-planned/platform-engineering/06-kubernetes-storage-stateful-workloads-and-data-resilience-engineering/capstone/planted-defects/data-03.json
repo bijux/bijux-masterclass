@@ -1,0 +1,6 @@
+{
+  "description": "CSI CreateVolume retry creates a second backend volume",
+  "expectedProof": "idempotency test",
+  "id": "DATA-03",
+  "status": "must-be-rejected"
+}

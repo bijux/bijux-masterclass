@@ -1,0 +1,1 @@
+interface Animal{readonly name:string}interface Dog extends Animal{bark():void}interface Producer<out T>{get():T}declare const dogs:Producer<Dog>;const animals:Producer<Animal>=dogs;console.log(animals.get().name);

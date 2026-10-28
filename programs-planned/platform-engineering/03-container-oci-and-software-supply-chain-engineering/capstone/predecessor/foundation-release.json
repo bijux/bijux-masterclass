@@ -1,0 +1,9 @@
+{
+  "release": "atlas-cloud-foundation-1.0",
+  "publicApi": "atlas-host-runtime-1.0",
+  "network": "private-workload-behind-governed-edge",
+  "state": "separate-bootstrap-foundation-workload",
+  "dataProtection": "encrypted-volume-plus-versioned-backup",
+  "realCloudEvidence": "environment-dependent",
+  "knownAvailability": "singleton-and-zonal"
+}

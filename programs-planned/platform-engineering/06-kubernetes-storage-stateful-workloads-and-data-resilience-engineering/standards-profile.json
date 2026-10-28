@@ -1,0 +1,25 @@
+{
+  "claimPolicy": "API presence is not implementation evidence; snapshot readiness is not application consistency; backup completion is not restore proof",
+  "csi": {
+    "role": "storage interface reference",
+    "version": "1.13.0"
+  },
+  "kubernetes": {
+    "role": "inherited conceptual baseline",
+    "version": "1.36.2"
+  },
+  "volumeAttributesClass": {
+    "api": "storage.k8s.io/v1",
+    "status": "stable; driver capability required"
+  },
+  "volumeGroupSnapshot": {
+    "feature": "GA in Kubernetes 1.36",
+    "frontierApi": "groupsnapshot.storage.k8s.io/v1",
+    "implementationLaneApi": "groupsnapshot.storage.k8s.io/v1beta2",
+    "warning": "Kubernetes feature status, served CRD versions, stored version, conversion webhook, external-snapshotter release, and CSI driver capability must all be verified independently"
+  },
+  "volumeSnapshot": {
+    "api": "snapshot.storage.k8s.io/v1",
+    "status": "stable extension API"
+  }
+}

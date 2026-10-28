@@ -1,0 +1,6 @@
+{
+  "description": "performance tier accepted after weakening retention",
+  "expectedProof": "categorical release gate",
+  "id": "DATA-09",
+  "status": "must-be-rejected"
+}

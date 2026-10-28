@@ -1,0 +1,26 @@
+[
+  {
+    "Plan": {
+      "Actual Rows": 50,
+      "Node Type": "Limit",
+      "Plan Rows": 50,
+      "Plans": [
+        {
+          "Actual Rows": 50,
+          "Index Name": "idx_analysis_runs_owner_status_created_id",
+          "Node Type": "Index Only Scan",
+          "Plan Rows": 50,
+          "Relation Name": "analysis_runs",
+          "Shared Hit Blocks": 78,
+          "Shared Read Blocks": 14,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        }
+      ],
+      "Shared Hit Blocks": 82,
+      "Shared Read Blocks": 18,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0
+    }
+  }
+]

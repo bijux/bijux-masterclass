@@ -1,0 +1,15 @@
+version: '1.0'
+request_errors:
+  - parse
+  - validation
+  - operation-admission
+execution_errors:
+  - unauthorized-field
+  - downstream-unavailable
+  - stale-projection
+  - resolver-timeout
+rules:
+  - errors include stable extension code and path
+  - internal exception text is never exposed
+  - domain rejections use typed mutation results when clients can act on them
+  - partial success is explicit in data and errors

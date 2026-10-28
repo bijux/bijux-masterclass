@@ -1,0 +1,30 @@
+version: atlas-network-ownership-1.0
+transitions:
+  - stage: pod-attachment
+    desiredState: Pod sandbox and CNI network selection
+    owner: kubelet + container runtime + CNI implementation
+    evidence: CNI result, links, addresses, routes, plugin logs
+  - stage: service-discovery
+    desiredState: Service identity and cluster domain
+    owner: EndpointSlice controller + CoreDNS
+    evidence: Service, EndpointSlices, DNS answer, TTL, CoreDNS logs
+  - stage: service-forwarding
+    desiredState: ClusterIP and traffic policy
+    owner: service dataplane implementation
+    evidence: dataplane entries, flow observation, selected Endpoint
+  - stage: policy
+    desiredState: NetworkPolicy objects
+    owner: NetworkPolicy implementation
+    evidence: policy status where available, verdict logs, allowed and denied probes
+  - stage: gateway
+    desiredState: Gateway and Route objects
+    owner: Gateway controller and data-plane proxy
+    evidence: Accepted/Programmed/ResolvedRefs conditions and proxy behavior
+  - stage: tls
+    desiredState: listener and certificate references
+    owner: certificate lifecycle controller + gateway
+    evidence: chain, SAN, expiry, handshake, rotation test
+  - stage: egress
+    desiredState: approved destinations and ports
+    owner: workload policy + network dataplane + egress proxy where used
+    evidence: DNS set, connected peer, policy verdict, proxy log

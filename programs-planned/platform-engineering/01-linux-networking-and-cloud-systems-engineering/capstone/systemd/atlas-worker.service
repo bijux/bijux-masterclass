@@ -1,0 +1,35 @@
+[Unit]
+Description=Atlas Worker
+After=local-fs.target
+RequiresMountsFor=/var/lib/atlas /var/log/atlas
+
+[Service]
+Type=simple
+User=atlas-worker
+Group=atlas-worker
+SupplementaryGroups=atlas-spool atlas-runtime atlas-log
+UMask=0027
+WorkingDirectory=/opt/atlas
+Environment=PYTHONPATH=/opt/atlas/capstone
+ExecStart=/usr/bin/python3 -m atlas_host.worker --config /etc/atlas/atlas.json
+Restart=on-failure
+RestartSec=2s
+TimeoutStopSec=30s
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/run/atlas /var/lib/atlas /var/log/atlas
+CapabilityBoundingSet=
+AmbientCapabilities=
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictSUIDSGID=yes
+RestrictNamespaces=yes
+SystemCallArchitectures=native
+TasksMax=64
+MemoryMax=512M
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+{
+  "expectedProof": "controller-proof",
+  "id": "KUBE-08-finalizer-no-cleanup",
+  "slug": "finalizer-no-cleanup",
+  "status": "must-be-rejected",
+  "summary": "finalizer is removed without idempotent external cleanup"
+}

@@ -1,0 +1,14 @@
+{
+  "capstone": "Atlas Delivery Plane 1.0",
+  "cumulativeCapstone": "Atlas Developer Platform",
+  "directory": "07-kubernetes-delivery-gitops-and-release-engineering",
+  "duration": "10 dense teaching days plus orientation",
+  "id": "platform-engineering-course-07",
+  "modules": 10,
+  "number": 7,
+  "predecessor": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering",
+  "primaryProduct": "course-book",
+  "schemaVersion": 1,
+  "successor": "08-platform-security-identity-policy-and-multitenancy-engineering",
+  "title": "Kubernetes Delivery, GitOps, and Release Engineering"
+}

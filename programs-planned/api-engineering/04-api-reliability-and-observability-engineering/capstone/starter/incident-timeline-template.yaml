@@ -1,0 +1,5 @@
+incident: INC-XXX
+severity: ''
+roles: {}
+timeline: []
+# Each entry: timestamp, kind(observation|inference|action|confirmation), source, text, confidence

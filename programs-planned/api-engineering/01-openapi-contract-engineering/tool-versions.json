@@ -1,0 +1,44 @@
+{
+  "recorded_on": "2026-08-05",
+  "python": ">=3.11",
+  "node": ">=22",
+  "openapi_baseline": "3.1.2",
+  "openapi_frontier": "3.2.0",
+  "json_schema": "2020-12",
+  "overlay": "1.1.0",
+  "arazzo": "1.1.0",
+  "python_packages": {
+    "fastapi": "0.128.2",
+    "pydantic": "2.13.4",
+    "httpx": "0.28.1",
+    "pytest": "9.0.2",
+    "PyYAML": "6.0.3",
+    "jsonschema": "4.26.0",
+    "schemathesis": "4.24.3",
+    "python-multipart": "0.0.32",
+    "uvicorn": "0.48.0",
+    "mkdocs": "1.6.1",
+    "mkdocs-material": "9.7.0",
+    "openapi-python-client": "0.29.0",
+    "ruff": "0.14.13"
+  },
+  "node_packages": {
+    "@redocly/cli": "2.43.2",
+    "@stoplight/spectral-cli": "6.16.0",
+    "@stoplight/prism-cli": "5.16.0",
+    "openapi-typescript": "7.13.0",
+    "openapi-fetch": "0.17.0",
+    "fastify": "5.11.2",
+    "@fastify/swagger": "9.8.1",
+    "@fastify/swagger-ui": "5.2.6",
+    "@fastify/multipart": "10.1.0",
+    "@sinclair/typebox": "0.34.52",
+    "vitest": "4.1.10",
+    "typescript": "5.9.2",
+    "@types/node": "26.1.2",
+    "tsx": "4.23.5"
+  },
+  "native_tools": {
+    "oasdiff": "1.27.0"
+  }
+}

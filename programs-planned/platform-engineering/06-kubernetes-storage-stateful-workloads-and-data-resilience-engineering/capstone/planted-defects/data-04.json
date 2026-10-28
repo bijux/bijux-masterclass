@@ -1,0 +1,6 @@
+{
+  "description": "partial multi-volume provisioning is silently forgotten",
+  "expectedProof": "capacity transition ledger",
+  "id": "DATA-04",
+  "status": "must-be-rejected"
+}

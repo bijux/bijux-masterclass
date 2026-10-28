@@ -1,0 +1,70 @@
+version: '1.0'
+services:
+- name: edge-gateway
+  kind: edge-component
+  owner: api-edge
+  data_owner: false
+  interfaces:
+  - public-http-1.2
+  responsibilities:
+  - credential normalization
+  - request budget
+  - routing
+  - response composition
+- name: analysis-control
+  kind: business-service
+  owner: analysis-control
+  data_owner: true
+  interfaces:
+  - public-http-1.2
+  - analysis-events-1.0
+  - analysis-rpc-1.0
+  responsibilities:
+  - projects
+  - dataset metadata
+  - runs
+  - idempotency
+  - job leases
+  - authoritative state
+  - event outbox
+- name: artifact-service
+  kind: business-service
+  owner: artifact-platform
+  data_owner: true
+  interfaces:
+  - artifact-rpc-1.0
+  - artifact-http-1.0
+  - artifact-events-1.0
+  responsibilities:
+  - artifact metadata
+  - object integrity
+  - content publication
+  - content retrieval
+  - retention
+- name: notification-service
+  kind: business-service
+  owner: notification-platform
+  data_owner: true
+  interfaces:
+  - analysis-events-1.0
+  - notification-admin-1.0
+  responsibilities:
+  - webhook subscriptions
+  - delivery attempts
+  - receiver deduplication evidence
+  - delivery retention
+- name: worker-plane
+  kind: compute-plane
+  owner: analysis-runtime
+  data_owner: false
+  interfaces:
+  - analysis-rpc-1.0
+  responsibilities:
+  - worker sessions
+  - execution
+  - progress and completion attempts
+rejected_services:
+- project-service
+- dataset-table-service
+- idempotency-service
+- shared-data-service

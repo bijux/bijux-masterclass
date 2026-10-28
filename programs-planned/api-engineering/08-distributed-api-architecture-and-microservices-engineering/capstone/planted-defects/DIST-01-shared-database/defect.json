@@ -1,0 +1,9 @@
+{
+  "candidate": "shared-database",
+  "defect": "two services write the same schema",
+  "expected": "reject",
+  "id": "DIST-01",
+  "lesson": "Separate deployments do not create service autonomy when credentials and tables still permit multiple writers.",
+  "rejecting_gate": "single-writer-ownership",
+  "title": "Shared Database"
+}

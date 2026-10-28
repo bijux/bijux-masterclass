@@ -1,0 +1,70 @@
+{
+  "files": [
+    {
+      "bytes": 542,
+      "path": "README.md",
+      "sha256": "3324e8c1946d98d4d4566ffe974237a9f221c1e29381af60d76a0660c01d1802"
+    },
+    {
+      "bytes": 459,
+      "path": "configuration-and-secrets.json",
+      "sha256": "90ef9efdcaf901964635db73de4bc34a92db00caab52c20bd47744feca3957b9"
+    },
+    {
+      "bytes": 768,
+      "path": "filesystem-contract.json",
+      "sha256": "02e2c8b51bb1ccf7eae545111be0b5b24ffb358be812c7c83c403b20a93228d7"
+    },
+    {
+      "bytes": 350,
+      "path": "foundation-release.json",
+      "sha256": "67e9d9f84b850841e26bb880d2fd6eb25fc2f9d6e65c2fd7cc88cde156cde6e1"
+    },
+    {
+      "bytes": 438,
+      "path": "health-and-logging.json",
+      "sha256": "eadd5b600a5037132a741966962a8c669926421830842d3a29c196d851d93970"
+    },
+    {
+      "bytes": 216,
+      "path": "host-runtime-contract.json",
+      "sha256": "88fdd2b092bbdd81a3a467595cbeefc712dd7911ce8f850ab77879a72c000cd8"
+    },
+    {
+      "bytes": 442,
+      "path": "identity-and-permissions.json",
+      "sha256": "e090284ae94fc10f253dbb91bc5067c63481b46986f3f164fe2dd6955404a037"
+    },
+    {
+      "bytes": 383,
+      "path": "image-and-bootstrap-boundary.json",
+      "sha256": "e78cac8bcf4103d8208f25f98b802c2956bd008846700a195577e920641e024a"
+    },
+    {
+      "bytes": 686,
+      "path": "known-risks.json",
+      "sha256": "be989f07106e014e33cf1d317ef224e3453360add7c7daa5af1ed7ca7d11aac6"
+    },
+    {
+      "bytes": 538,
+      "path": "network-contract.json",
+      "sha256": "8d47f7d924badfe754ac6b05757aa7c8a46aa682a5bdb2c8b35ebcc846b5e741"
+    },
+    {
+      "bytes": 635,
+      "path": "process-contract.json",
+      "sha256": "c3b4fa23bfd77469991e02496ff21efa8d9865f5bb0e47588b87a6cb555d1f22"
+    },
+    {
+      "bytes": 445,
+      "path": "resource-envelope.json",
+      "sha256": "b8ffdee57aa7960dcfc1691bccc56fa8e7de1e7cb8ac0671d9c870eb7e956e77"
+    },
+    {
+      "bytes": 179,
+      "path": "version-ledger.json",
+      "sha256": "4fd4d4e631c3885b4e0443cc0b2de1092982a46f1987007d664d8e633fede423"
+    }
+  ],
+  "schemaVersion": "1.0"
+}

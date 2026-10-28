@@ -1,0 +1,10 @@
+{
+  "module": 7,
+  "status": "passed",
+  "claim": "method, scope, tenant, worker, and attempt authorization are explicit",
+  "evidence": {
+    "security_cases": 6,
+    "default_deny": true,
+    "live_mtls": "not-executed"
+  }
+}

@@ -1,0 +1,25 @@
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: atlas-api
+  namespace: atlas-staging
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: atlas-api-staging
+  service:
+    port: 80
+    targetPort: http
+  analysis:
+    interval: 2m
+    threshold: 2
+    maxWeight: 50
+    stepWeight: 10
+    metrics:
+      - name: request-success-rate
+        thresholdRange: {min: 99.5}
+        interval: 2m
+      - name: request-duration
+        thresholdRange: {max: 750}
+        interval: 2m

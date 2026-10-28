@@ -1,0 +1,2 @@
+export interface OwnPropertyAudit { readonly key:string; readonly kind:'data'|'accessor'; readonly enumerable:boolean; readonly configurable:boolean }
+export function ownPropertyAudit(value:object):readonly OwnPropertyAudit[]{return Reflect.ownKeys(value).map((key)=>{const d=Object.getOwnPropertyDescriptor(value,key)!;return{key:typeof key==='symbol'?`Symbol(${key.description??''})`:key,kind:'value'in d?'data':'accessor',enumerable:d.enumerable??false,configurable:d.configurable??false};});}

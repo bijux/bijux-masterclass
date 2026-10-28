@@ -1,0 +1,7 @@
+{
+  "expectedProof": "manifest-policy",
+  "id": "KUBE-02-root-runtime",
+  "slug": "root-runtime",
+  "status": "must-be-rejected",
+  "summary": "container violates inherited non-root and privilege contract"
+}

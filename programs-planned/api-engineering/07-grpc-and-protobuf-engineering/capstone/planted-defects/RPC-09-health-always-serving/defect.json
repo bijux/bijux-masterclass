@@ -1,0 +1,5 @@
+{
+  "id": "RPC-09",
+  "title": "Report SERVING during startup and drain",
+  "expected_rejection": "lifecycle-proof"
+}

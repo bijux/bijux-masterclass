@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "class": "compute",
+      "evidence": "estimate",
+      "monthlyEstimate": "20",
+      "name": "atlas-host",
+      "owner": "atlas-team"
+    },
+    {
+      "class": "load-balancer",
+      "evidence": "estimate",
+      "monthlyEstimate": "25",
+      "name": "edge",
+      "owner": "platform-team"
+    },
+    {
+      "class": "nat-gateway",
+      "evidence": "estimate",
+      "monthlyEstimate": "35",
+      "name": "nat-a",
+      "owner": "platform-team"
+    },
+    {
+      "class": "nat-gateway",
+      "evidence": "estimate",
+      "monthlyEstimate": "35",
+      "name": "nat-b",
+      "owner": "platform-team"
+    },
+    {
+      "class": "storage",
+      "evidence": "estimate",
+      "monthlyEstimate": "15",
+      "name": "storage-logging",
+      "owner": "platform-team"
+    }
+  ],
+  "monthlyBudget": "150"
+}

@@ -1,0 +1,6 @@
+{
+  "candidate": "breaking-version-skew",
+  "expected": "reject",
+  "issue": "new consumer requires field absent from old provider",
+  "rejecting_gate": "version-skew"
+}

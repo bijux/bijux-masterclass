@@ -1,0 +1,6 @@
+{
+  "candidate": "shared-database",
+  "expected": "reject",
+  "issue": "two services write the same schema",
+  "rejecting_gate": "single-writer-ownership"
+}

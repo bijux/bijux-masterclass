@@ -1,0 +1,25 @@
+name: AnalysisRunProgressed
+title: Analysis run progress changed
+summary: Analysis run progress changed under event profile 1.0
+contentType: application/cloudevents+json
+payload:
+  allOf:
+  - $ref: ../schemas/event-envelope.v1.schema.json
+  - type: object
+    properties:
+      type:
+        const: org.bijux.analysis.run.progressed.v1
+      dataschema:
+        const: https://schemas.bijux.dev/events/analysis-run-progressed.v1
+      data:
+        $ref: ../schemas/analysis-run-progressed.v1.schema.json
+    required:
+    - type
+    - dataschema
+    - data
+x-event-type: org.bijux.analysis.run.progressed.v1
+x-data-schema: ../schemas/analysis-run-progressed.v1.schema.json
+x-example: ../../examples/analysis-run-progressed.v1.json
+x-owner: urn:bijux:analysis-worker
+x-partition-key: partitionkey
+x-event-profile: '1.0'

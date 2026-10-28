@@ -1,0 +1,15 @@
+{
+  "id": "dts_0001",
+  "projectId": "prj_0001",
+  "ownerId": "learner",
+  "name": "reads",
+  "source": {
+    "kind": "remote-object",
+    "uri": "https://objects.example.test/reads.csv"
+  },
+  "status": "ready",
+  "contentLength": 100,
+  "checksumSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "createdAt": "2026-08-05T10:00:00Z",
+  "updatedAt": "2026-08-05T10:01:00Z"
+}

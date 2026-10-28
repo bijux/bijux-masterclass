@@ -1,0 +1,19 @@
+[package]
+name = "jobwire"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+tokio.workspace = true
+tokio-util.workspace = true
+bytes.workspace = true
+futures-util.workspace = true
+hyper.workspace = true
+hyper-util.workspace = true
+http-body-util.workspace = true
+
+[lints]
+workspace = true

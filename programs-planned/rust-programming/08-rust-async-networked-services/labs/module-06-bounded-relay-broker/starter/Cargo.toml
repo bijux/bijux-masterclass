@@ -1,0 +1,18 @@
+[package]
+name = "async-bounded-relay-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[dependencies]
+tokio = { version = "=1.53.1", features = ["macros", "rt-multi-thread", "sync", "time"] }
+tokio-util = { version = "=0.7.19", features = ["rt"] }
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

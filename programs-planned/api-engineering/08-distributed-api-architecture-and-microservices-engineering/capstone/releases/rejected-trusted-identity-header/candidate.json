@@ -1,0 +1,6 @@
+{
+  "candidate": "trusted-identity-header",
+  "expected": "reject",
+  "issue": "service trusts x-user-id from caller",
+  "rejecting_gate": "service-auth"
+}

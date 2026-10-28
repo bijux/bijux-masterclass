@@ -1,0 +1,12 @@
+CREATE INDEX projects_owner_page_idx ON projects(owner_id,position);
+CREATE INDEX projects_owner_name_page_idx ON projects(owner_id,lower(name),position);
+CREATE INDEX datasets_project_page_idx ON datasets(owner_id,project_id,status,position);
+CREATE INDEX runs_owner_page_idx ON analysis_runs(owner_id,status,position);
+CREATE INDEX runs_dataset_idx ON analysis_runs(dataset_id,status);
+CREATE INDEX run_events_stream_idx ON run_events(run_id,position);
+CREATE INDEX jobs_claim_idx ON run_jobs(available_at,created_at) WHERE status='queued';
+CREATE INDEX jobs_expired_idx ON run_jobs(lease_expires_at) WHERE status='leased';
+CREATE INDEX cursors_expiry_idx ON pagination_cursors(expires_at);
+CREATE INDEX outbox_expand_idx ON outbox_events(position) WHERE expanded_at IS NULL;
+CREATE INDEX deliveries_claim_idx ON webhook_deliveries(available_at,position) WHERE status='pending';
+CREATE INDEX deliveries_expired_idx ON webhook_deliveries(lease_expires_at) WHERE status='leased';

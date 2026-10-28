@@ -1,0 +1,11 @@
+{
+  "eventApi": "1.0",
+  "asyncapi": "3.1.0",
+  "cloudEvents": "1.0",
+  "eventProfile": "1.0",
+  "publicHttpApi": "1.2",
+  "migrationHead": "012",
+  "contract": "contracts/asyncapi.yaml",
+  "catalog": "contracts/event-catalog.yaml",
+  "evidenceBoundary": "Dependency-light semantics are verified; live broker and PostgreSQL routes remain environment-backed."
+}

@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: reporting-api
+  namespace: default
+  title: Reporting API
+spec:
+  type: openapi
+  lifecycle: proposed
+  owner: analysis-control-team
+  system: analysis-platform
+  definition: '$text: ./contracts/contract.stub'

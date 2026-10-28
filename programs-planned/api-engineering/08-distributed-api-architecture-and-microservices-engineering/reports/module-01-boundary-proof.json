@@ -1,0 +1,10 @@
+{
+  "evidence_class": "structural-and-semantic",
+  "approved": ["notification-service"],
+  "conditional": ["artifact-service"],
+  "retained": ["analysis-control", "dataset-metadata"],
+  "non_data_components": ["edge-gateway", "worker-plane"],
+  "rejected": ["project-service", "dataset-table-service", "idempotency-service", "shared-data-service"],
+  "reversal_criteria_present": true,
+  "status": "pass"
+}

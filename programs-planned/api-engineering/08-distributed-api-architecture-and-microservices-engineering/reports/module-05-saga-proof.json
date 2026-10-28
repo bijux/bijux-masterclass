@@ -1,0 +1,12 @@
+{
+  "evidence_class": "semantic",
+  "saga": "artifact-publication-and-run-completion",
+  "owner": "analysis-control-process-manager",
+  "steps": 5,
+  "stable_effect_identities": true,
+  "stale_attempt_compensation": "ExpireOrphanArtifact",
+  "terminal_states": ["completed", "compensated", "manual-review"],
+  "duplicate_schedules_passed": true,
+  "response_loss_schedule_passed": true,
+  "status": "pass"
+}

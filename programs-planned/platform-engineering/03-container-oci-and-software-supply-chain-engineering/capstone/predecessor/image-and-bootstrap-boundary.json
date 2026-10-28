@@ -1,0 +1,14 @@
+{
+  "course2Image": "machine image plus launch template",
+  "course3Target": "OCI image plus runtime specification",
+  "bootstrapMayDo": [
+    "bind environment configuration",
+    "mount/validate durable storage",
+    "start reconciled service"
+  ],
+  "bootstrapMustNotDo": [
+    "download mutable latest",
+    "carry static credentials",
+    "rebuild application at startup"
+  ]
+}

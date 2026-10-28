@@ -1,0 +1,14 @@
+{
+  "candidateId": "rejected-unsafe-replay",
+  "eventType": "org.bijux.analysis.run.completed.v1",
+  "eventApiVersion": "1.1.0-rejected",
+  "expectedDecision": "rejected",
+  "gates": {
+    "contractValid": true,
+    "replaySafe": false,
+    "catalogComplete": true,
+    "securityValid": true,
+    "reliabilityReady": true
+  },
+  "rationale": "The schema is additive, but the candidate replays external notifications and therefore fails the replay gate."
+}

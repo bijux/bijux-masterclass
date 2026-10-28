@@ -1,0 +1,34 @@
+{
+  "profile": "grpc-flow-control-1.0",
+  "cases": [
+    {
+      "id": "FLW-01",
+      "capacity": 2,
+      "offers": 3,
+      "expected_high_water": 2,
+      "expected_rejected": 1
+    },
+    {
+      "id": "FLW-02",
+      "max_chunk_bytes": 8,
+      "chunk_bytes": 9,
+      "expected": "RESOURCE_EXHAUSTED"
+    },
+    {
+      "id": "FLW-03",
+      "max_total_bytes": 16,
+      "chunks": [
+        8,
+        8,
+        1
+      ],
+      "expected": "RESOURCE_EXHAUSTED"
+    },
+    {
+      "id": "FLW-04",
+      "slow_consumer": true,
+      "bounded_queue": true,
+      "expected": "bounded-or-reject"
+    }
+  ]
+}

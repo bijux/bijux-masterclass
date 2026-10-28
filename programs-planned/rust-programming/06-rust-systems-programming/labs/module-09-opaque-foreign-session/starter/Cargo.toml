@@ -1,0 +1,9 @@
+[package]
+name = "course6-lab59-module-09-opaque-foreign-session-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[lib]
+crate-type = ["rlib", "cdylib"]

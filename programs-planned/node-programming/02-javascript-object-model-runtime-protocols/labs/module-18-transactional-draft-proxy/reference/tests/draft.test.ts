@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict'; import test from 'node:test'; import { openDraft } from '../src/index.js';
+const validate=(key:string,value:unknown)=>{if(key==='count'&&(typeof value!=='number'||value<0))throw new Error('count invalid');};
+test('commits one immutable candidate without mutating source',()=>{const source={count:1,label:'x'};const s=openDraft(source,validate);s.draft.count=2;delete s.draft.label;const out=s.commit();assert.deepEqual(out,{count:2});assert.deepEqual(source,{count:1,label:'x'});assert.equal(s.state,'committed');assert.throws(()=>Reflect.get(s.draft,'count'));assert.throws(()=>s.commit());});
+test('rejects dangerous writes and remains open after validation failure',()=>{const s=openDraft({count:1},validate);assert.throws(()=>Reflect.set(s.draft,'count',-1),/invalid/);assert.equal(s.state,'open');assert.throws(()=>Reflect.set(s.draft,'__proto__',1));s.rollback();assert.throws(()=>Reflect.get(s.draft,'count'));});
+test('dispose rolls back only while open',()=>{const s=openDraft({},validate);s[Symbol.dispose]();assert.equal(s.state,'rolled-back');s[Symbol.dispose]();});

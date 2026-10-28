@@ -1,0 +1,11 @@
+{
+  "name": "@bijux-masterclass/module-06-record-query-starter",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build --silent && node --test dist/tests/*.test.js"
+  }
+}
