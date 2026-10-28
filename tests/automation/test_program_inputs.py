@@ -10,6 +10,37 @@ from scripts.program_qualification.inputs import program_inputs
 
 
 class ProgramInputBoundaryTests(unittest.TestCase):
+    def test_planned_content_cannot_invalidate_or_supply_execution_inputs(self):
+        artifacts = (
+            Path(__file__).resolve().parents[2]
+            / "artifacts/program-admission/input-controls"
+        )
+        artifacts.mkdir(parents=True, exist_ok=True)
+        with TemporaryDirectory(dir=artifacts) as directory:
+            root = Path(directory)
+            active = root / "programs/family/course/capstone/main.py"
+            active.parent.mkdir(parents=True)
+            active.write_text("supported implementation\n")
+            subprocess.run(["git", "init", "--quiet", str(root)], check=True)
+            subprocess.run(["git", "add", "--", str(active)], cwd=root, check=True)
+            original = program_inputs(root, "family/course")
+
+            planned = root / "programs-planned/computing-reference/tools/check.py"
+            planned.parent.mkdir(parents=True)
+            planned.write_text("unfinished implementation\n")
+            self.assertEqual(program_inputs(root, "family/course"), original)
+            subprocess.run(["git", "add", "--", str(planned)], cwd=root, check=True)
+            planned.write_text("changed unfinished implementation\n")
+            self.assertEqual(program_inputs(root, "family/course"), original)
+
+            link = active.with_name("planned.py")
+            link.symlink_to("../../../../programs-planned/computing-reference/tools/check.py")
+            with self.assertRaisesRegex(ValueError, "references planned content"):
+                program_inputs(root, "family/course")
+            link.unlink()
+            planned.unlink()
+            self.assertEqual(program_inputs(root, "family/course"), original)
+
     def test_transitive_recipe_config_lock_workflow_modes_and_symlinks_are_bound(self):
         artifacts = (
             Path(__file__).resolve().parents[2]
