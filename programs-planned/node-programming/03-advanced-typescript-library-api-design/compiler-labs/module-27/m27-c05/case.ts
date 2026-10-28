@@ -1,0 +1,1 @@
+interface Formatter{format(value:string):string}class InternalFormatter implements Formatter{format(value:string){return value.trim();}}export function createFormatter():Formatter{return new InternalFormatter();}console.log(createFormatter().format(' x '));

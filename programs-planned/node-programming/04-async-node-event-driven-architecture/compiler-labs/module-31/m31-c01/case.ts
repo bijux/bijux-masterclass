@@ -1,0 +1,1 @@
+queueMicrotask(() => undefined); export {};

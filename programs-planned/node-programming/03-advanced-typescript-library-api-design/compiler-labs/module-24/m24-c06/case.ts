@@ -1,0 +1,1 @@
+declare const token:unique symbol;interface Model{readonly name:string;readonly[token]:number}type EventName<K extends string>=`${K}Changed`;type Names=EventName<keyof Model>;const value:Names='nameChanged';console.log(value);

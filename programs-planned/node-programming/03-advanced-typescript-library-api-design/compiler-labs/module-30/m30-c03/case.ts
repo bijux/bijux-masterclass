@@ -1,0 +1,1 @@
+interface Schema<T>{parse(input:unknown):T}type Infer<S extends Schema<unknown>>=S extends Schema<infer T>?T:never;const text:Schema<string>={parse(input){if(typeof input!=='string')throw new Error('text');return input;}};const value:Infer<typeof text>=text.parse('Ada');console.log(value);
