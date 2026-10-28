@@ -1,0 +1,1823 @@
+{
+  "schema_version": 1,
+  "source_repository": "bijux/bijux-courses",
+  "source_branch": "master",
+  "source_commit": "dda1bcd49faa48ab8d8e1a9b247d1602ff7cb0b7",
+  "captured_source_tip": "71f14e0a9ff959e0dbd5ef87720ce3d0b8e6ee7c",
+  "captured_source_commit_count": 1486,
+  "history_complete": false,
+  "destination_base": "3c776dde16320dc85e4c5f223d77a6abc510ded5",
+  "status": "planned",
+  "publication_qualification": "not-assessed",
+  "original_commit_count": 190,
+  "history_access": "git show dda1bcd49faa48ab8d8e1a9b247d1602ff7cb0b7:<source_path>",
+  "meta_boundary": "The production backlog TODO.md remains recoverable in the original Git history; it is not a product backlog.",
+  "files": [
+    {
+      "source_path": ".gitattributes",
+      "source_blob": "5c1a2dfcbce5e8cde87652f66746e5424e0f40dc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/.gitattributes",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": ".gitignore",
+      "source_blob": "29e3100448d9378f9774dc16e7386b4c655594f4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/.gitignore",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "ALL_3000_MODULES.md",
+      "source_blob": "4eb7625102905eb2e587161d884bc22922fbc05c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/ALL_3000_MODULES.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "CANONICAL_30_PROGRAMS.md",
+      "source_blob": "ffeafc674ae204143f1742bdd34beeda50344aad",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/CANONICAL_30_PROGRAMS.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "DEPENDENCY_AND_SEQUENCE.md",
+      "source_blob": "82d2bbb90d09ae586e23ac841ddb5529c67ef359",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/DEPENDENCY_AND_SEQUENCE.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "LEVEL_AND_MODULE_MODEL.md",
+      "source_blob": "e30070b5cef1e12c33c83901ba15604df662850e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/LEVEL_AND_MODULE_MODEL.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "LEVEL_III_POLICY.md",
+      "source_blob": "b1ee2bd59638691376d91d2369ff97fe7761b6ad",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/LEVEL_III_POLICY.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "MASTER_SPEC.md",
+      "source_blob": "0b9520a74bc7fa4a27a74b5b7326990b7e926205",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/MASTER_SPEC.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "MODULE_CONTENT_CONTRACT.md",
+      "source_blob": "21d1740ed605637ce70e05c14801fbb4da3114a7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/MODULE_CONTENT_CONTRACT.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "Makefile",
+      "source_blob": "4355d57c9d01fcdf1e87bae14f2074e4a8870ceb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/Makefile",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "PROGRAM_BOUNDARIES.md",
+      "source_blob": "98a1453ad072990d49bd578d4f633bea3ea96235",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/PROGRAM_BOUNDARIES.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "README.md",
+      "source_blob": "0245111f1234c1df21582e9ecccfd9ba1778ca93",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/README.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "ROADMAP_QUALITY_GATES.md",
+      "source_blob": "0157eb296231b245cf2107a44105991752981641",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/ROADMAP_QUALITY_GATES.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "SOURCE_CALIBRATION.md",
+      "source_blob": "aa68aef1a4512fed5707bd5e87e0a2bfd36b340c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/SOURCE_CALIBRATION.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "TODO.md",
+      "source_blob": "1438bc54c5a08e4aed77f5b0c9b97360d9248982",
+      "mode": "100644",
+      "destination": null,
+      "disposition": "retained-in-original-history"
+    },
+    {
+      "source_path": "VALIDATION_REPORT.md",
+      "source_blob": "e68e9765be55e5faaf46db5ed34271d693dfea1f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/VALIDATION_REPORT.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "manifests/modules.csv",
+      "source_blob": "b1c6bc922c5412727cfde19d692007df6f196263",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/manifests/modules.csv",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "manifests/modules.jsonl",
+      "source_blob": "f02f7cd2720027c6d3029dd5469cd4ac66e72f53",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/manifests/modules.jsonl",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "manifests/programs.csv",
+      "source_blob": "7e86de1a6e9408f164992f5c121717dffb185bc2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/manifests/programs.csv",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/01-programming-languages-and-semantics/ROADMAP.md",
+      "source_blob": "e768bbcfdb54d47077af16c950ccba730b15e63d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/01-programming-languages-and-semantics/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/01-programming-languages-and-semantics/modules/001-programs-languages-and-observable-behavior.md",
+      "source_blob": "637d99d183733366b169f766be54983ce2831ad7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/01-programming-languages-and-semantics/modules/001-programs-languages-and-observable-behavior.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/01-programming-languages-and-semantics/modules/002-lexical-structure-tokens-and-concrete-syntax.md",
+      "source_blob": "f0930712f9f2c381bddbfbf5f7a9cb20d84cdad2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/01-programming-languages-and-semantics/modules/002-lexical-structure-tokens-and-concrete-syntax.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/02-programming-languages-object-oriented-programming/ROADMAP.md",
+      "source_blob": "bd2effce8eb226b1a06fe391c8c57a02f6563383",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/02-programming-languages-object-oriented-programming/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/02-programming-languages-object-oriented-programming/modules/001-objects-as-state-behavior-and-identity.md",
+      "source_blob": "5fe31ca04ec47ab204f77d1d732d68539a62b707",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/02-programming-languages-object-oriented-programming/modules/001-objects-as-state-behavior-and-identity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/02-programming-languages-object-oriented-programming/modules/002-classes-as-construction-and-classification-mechanisms.md",
+      "source_blob": "6eb8d313bbe88e72c9e0fbed802d08f66c66044b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/02-programming-languages-object-oriented-programming/modules/002-classes-as-construction-and-classification-mechanisms.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/03-programming-languages-functional-programming/ROADMAP.md",
+      "source_blob": "e149f86d067eac599c6c0b71190a1f3738d203be",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/03-programming-languages-functional-programming/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/03-programming-languages-functional-programming/modules/001-expressions-values-and-referential-transparency.md",
+      "source_blob": "7716e3755d5a25a77d7df42c8dfe0c07e72eb5aa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/03-programming-languages-functional-programming/modules/001-expressions-values-and-referential-transparency.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/03-programming-languages-functional-programming/modules/002-pure-functions-and-explicit-inputs.md",
+      "source_blob": "c5378954ac0193b23834d9d3f87de586f7115d6f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/03-programming-languages-functional-programming/modules/002-pure-functions-and-explicit-inputs.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/ROADMAP.md",
+      "source_blob": "f845611d61828ced171976c977a3596bfddee9eb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/001-concurrency-parallelism-and-asynchrony.md",
+      "source_blob": "545d90f33d645ed69ffbec9db84425cbc589c154",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/001-concurrency-parallelism-and-asynchrony.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/002-processes-threads-tasks-and-fibers.md",
+      "source_blob": "820318958990d7dfe4c6cd988fde7a9b5c25cc5c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/002-processes-threads-tasks-and-fibers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/003-interleavings-and-state-space-explosion.md",
+      "source_blob": "431ea17afa5e9224b31e0a31857fdc79002c862c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/003-interleavings-and-state-space-explosion.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/004-safety-liveness-and-progress.md",
+      "source_blob": "9cb2937d584b15a37c2946cb364e3aa0b6ed5dea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/004-safety-liveness-and-progress.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/005-race-conditions-and-atomicity-violations.md",
+      "source_blob": "181fa0f3873b42166c0a22a857425329ec3c3152",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/005-race-conditions-and-atomicity-violations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/006-deadlock-livelock-and-starvation.md",
+      "source_blob": "3231ce94f1c0a46f95866861b3c6278e35e45e15",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/006-deadlock-livelock-and-starvation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/007-determinism-and-reproducibility.md",
+      "source_blob": "c309d4297e852a9b4ee2b1b5f52eee145e02d091",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/007-determinism-and-reproducibility.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/008-critical-sections-and-shared-state-invariants.md",
+      "source_blob": "158fde70242d42f36f96e68b1fec2cf562513f22",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/008-critical-sections-and-shared-state-invariants.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/009-message-passing-and-ownership-transfer.md",
+      "source_blob": "e1e971c12e38d22bcaea9d4c220a3af78d803b93",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/009-message-passing-and-ownership-transfer.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/010-choosing-a-concurrency-model-from-the-workload.md",
+      "source_blob": "65095c7f023e7cf7491cab3c55691fd00652e1a6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/010-choosing-a-concurrency-model-from-the-workload.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/011-creating-and-joining-threads.md",
+      "source_blob": "54032c31da73da235f637fd56faf8fec512480e6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/011-creating-and-joining-threads.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/012-mutexes-and-mutual-exclusion.md",
+      "source_blob": "ecc06f76d7be1030aa321a58eac62208ec965631",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/012-mutexes-and-mutual-exclusion.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/013-condition-variables-and-predicate-waiting.md",
+      "source_blob": "dbea7ee8e4b78aa1a76607f8fa9cbab5893b8377",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/013-condition-variables-and-predicate-waiting.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/014-semaphores-and-resource-counting.md",
+      "source_blob": "d0f78c6aa83e3f32f6fda1c6dd2bef2186d14414",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/014-semaphores-and-resource-counting.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/015-read-write-locks.md",
+      "source_blob": "fbc21bb19a0f8e8e343fa4177407fbf897864cb1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/015-read-write-locks.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/016-barriers-latches-and-phasers.md",
+      "source_blob": "eed2838ac8969ede33568784528f1e4f7090b8fc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/016-barriers-latches-and-phasers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/017-thread-safe-queues.md",
+      "source_blob": "d08267f0d4854d5300c555f92fea8300c7cf37c5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/017-thread-safe-queues.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/018-lock-ordering-and-deadlock-prevention.md",
+      "source_blob": "4e998145db7bb022e4270fd24e24d24efac378d4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/018-lock-ordering-and-deadlock-prevention.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/019-thread-pools-and-bounded-work-queues.md",
+      "source_blob": "22b23ecb4007c721dbf554cb7e21162401c3bd04",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/019-thread-pools-and-bounded-work-queues.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/020-designing-a-correct-multithreaded-component.md",
+      "source_blob": "4bea5bf260a41e0aa9fdf306eebf3ad1a7cd233c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/020-designing-a-correct-multithreaded-component.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/021-compiler-and-processor-reordering.md",
+      "source_blob": "b72d398c016d91b00feeb1ef31398112dbb780e5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/021-compiler-and-processor-reordering.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/022-sequential-consistency-in-shared-memory.md",
+      "source_blob": "825ff883e9886e0b87d34d8db0c28c99db32fb5a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/022-sequential-consistency-in-shared-memory.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/023-happens-before-relations.md",
+      "source_blob": "36e2565128d4246fc54fa95ef03110b778769eed",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/023-happens-before-relations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/024-visibility-and-publication.md",
+      "source_blob": "64c21fce9c9ddce9530d7e9676bb040ee998c7a7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/024-visibility-and-publication.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/025-atomic-read-modify-write-operations.md",
+      "source_blob": "010946683d03a05151df512606bdb327ccb65630",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/025-atomic-read-modify-write-operations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/05-programming-languages-systems-programming/ROADMAP.md",
+      "source_blob": "20f19d3e47273600248789b56602708a95ce3e1e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/05-programming-languages-systems-programming/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/05-programming-languages-systems-programming/modules/001-from-source-text-to-process-image.md",
+      "source_blob": "6abf8a666ec7388ac45d687b256ec66afe1f81b6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/05-programming-languages-systems-programming/modules/001-from-source-text-to-process-image.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/05-programming-languages-systems-programming/modules/002-integer-representation-overflow-and-conversion.md",
+      "source_blob": "edbd91b55568fed9a6690b283e569c0866a10530",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/05-programming-languages-systems-programming/modules/002-integer-representation-overflow-and-conversion.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/06-programming-languages-metaprogramming/ROADMAP.md",
+      "source_blob": "a7c135addfa65fbd39390d624316d28e8effdd80",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/06-programming-languages-metaprogramming/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/06-programming-languages-metaprogramming/modules/001-programs-about-programs.md",
+      "source_blob": "2076579bbf6eb424f3608ed16be2abc754328327",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/06-programming-languages-metaprogramming/modules/001-programs-about-programs.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/06-programming-languages-metaprogramming/modules/002-compile-time-build-time-load-time-and-run-time-metaprogramming.md",
+      "source_blob": "a415587288ff5151fdd0cef1889f7a90ecfe0f9e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/06-programming-languages-metaprogramming/modules/002-compile-time-build-time-load-time-and-run-time-metaprogramming.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/07-programming-languages-theory-of-programming/ROADMAP.md",
+      "source_blob": "a84445b6f726fc3ac6c269f9933a366eaff526ef",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/07-programming-languages-theory-of-programming/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/07-programming-languages-theory-of-programming/modules/001-propositions-predicates-and-formal-specifications.md",
+      "source_blob": "678ac519a0b64badc0ef22afff15e56a168eeee9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/07-programming-languages-theory-of-programming/modules/001-propositions-predicates-and-formal-specifications.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/07-programming-languages-theory-of-programming/modules/002-natural-deduction.md",
+      "source_blob": "8a10c7dea6b1ac339a9d1b02ea30fa5cfa43ae47",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/07-programming-languages-theory-of-programming/modules/002-natural-deduction.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/08-compilers-and-language-implementation/ROADMAP.md",
+      "source_blob": "8136d2da97e54234fec7eb40cdc8342e220e9427",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/08-compilers-and-language-implementation/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/08-compilers-and-language-implementation/modules/001-language-implementation-pipelines.md",
+      "source_blob": "0ddc8dc47f6dde06c86ea7b052c1d4cd5c5aea47",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/08-compilers-and-language-implementation/modules/001-language-implementation-pipelines.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/08-compilers-and-language-implementation/modules/002-source-text-encodings-and-position-tracking.md",
+      "source_blob": "7c3ff9a88fb641463ae7dfd008d299762eda9dad",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/08-compilers-and-language-implementation/modules/002-source-text-encodings-and-position-tracking.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/09-software-engineering-software-design-and-domain-modeling/ROADMAP.md",
+      "source_blob": "a955bab59aa306c65070f64c111762d14ad93c56",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/09-software-engineering-software-design-and-domain-modeling/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/09-software-engineering-software-design-and-domain-modeling/modules/001-distinguishing-the-problem-domain-from-the-solution-domain.md",
+      "source_blob": "d009ecaab81e12244e3fbea7bd4c26cdfff06385",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/09-software-engineering-software-design-and-domain-modeling/modules/001-distinguishing-the-problem-domain-from-the-solution-domain.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/09-software-engineering-software-design-and-domain-modeling/modules/002-stakeholders-goals-and-observable-outcomes.md",
+      "source_blob": "3167c8d9dca7ebc90d4bdb567e122755243d8ba9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/09-software-engineering-software-design-and-domain-modeling/modules/002-stakeholders-goals-and-observable-outcomes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/10-software-engineering-methods-and-evolution/ROADMAP.md",
+      "source_blob": "6f6446d3eb0da57cba76e640033f5e4020f2569f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/10-software-engineering-methods-and-evolution/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/10-software-engineering-methods-and-evolution/modules/001-software-products-projects-services-and-platforms.md",
+      "source_blob": "d8a208d8f08549819b36528c63b8a7fc31edabb4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/10-software-engineering-methods-and-evolution/modules/001-software-products-projects-services-and-platforms.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/10-software-engineering-methods-and-evolution/modules/002-lifecycle-activities-and-feedback-loops.md",
+      "source_blob": "bfeeca3052d453d53c38fac639157aeca8de64af",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/10-software-engineering-methods-and-evolution/modules/002-lifecycle-activities-and-feedback-loops.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/ROADMAP.md",
+      "source_blob": "6d3cf855dde89a5c12dbb3693f6e1493bcbd142f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/001-recurring-problems-context-forces-and-consequences.md",
+      "source_blob": "d1d4f5c4d07d73a035eaddf0ea6e4b0aa6ca8c74",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/001-recurring-problems-context-forces-and-consequences.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/002-pattern-versus-idiom-principle-recipe-and-framework.md",
+      "source_blob": "b1c5555e4d1897749da7b31169b353271ca733ad",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/002-pattern-versus-idiom-principle-recipe-and-framework.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/003-reading-and-writing-a-pattern-form.md",
+      "source_blob": "6175ad30bb3827c6e1bc025628bc33e569410212",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/003-reading-and-writing-a-pattern-form.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/004-pattern-intent-and-applicability.md",
+      "source_blob": "c5c1869772cf77cf7d31e3de51d39d1769e265eb",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/004-pattern-intent-and-applicability.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/005-trade-offs-and-negative-consequences.md",
+      "source_blob": "5732c49919be9ec1a9d7aaa655ddab892892a704",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/005-trade-offs-and-negative-consequences.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/006-pattern-composition.md",
+      "source_blob": "42c9221307947f0e7df229f2d6bfed4b94744fd8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/006-pattern-composition.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/007-pattern-sequences-and-pattern-languages.md",
+      "source_blob": "8b9903839dbf370ddefa19bd1e15255ca3cffdac",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/007-pattern-sequences-and-pattern-languages.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/008-refactoring-toward-and-away-from-patterns.md",
+      "source_blob": "7dbfa71b98d9c8a3ce3e593b8c028c1d7fd09c6a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/008-refactoring-toward-and-away-from-patterns.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/009-pattern-hype-and-cargo-cult-design.md",
+      "source_blob": "1be14445e8eb04f22b12a60ec80e77738466122c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/009-pattern-hype-and-cargo-cult-design.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/010-selecting-a-pattern-from-forces-rather-than-names.md",
+      "source_blob": "27a833f28d435bf5cd13c54dfe46cb6e5c76caba",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/010-selecting-a-pattern-from-forces-rather-than-names.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/011-simple-factory-and-creation-functions.md",
+      "source_blob": "f160b2e7e00dda0740a05c6c33d703f1baaf43d3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/011-simple-factory-and-creation-functions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/012-factory-method.md",
+      "source_blob": "24bc912d463f333ba6e4ebd250e5743374561be8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/012-factory-method.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/013-abstract-factory.md",
+      "source_blob": "e3c8518488eea23b6e0d4656680fd92c19e22c4b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/013-abstract-factory.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/014-builder.md",
+      "source_blob": "31393512ad1697a674d97ae0e2fce3801d791e97",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/014-builder.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/015-prototype.md",
+      "source_blob": "f074ce500854ff1148ef4d92f34e91d64b7d3a87",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/015-prototype.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/016-singleton-and-its-hidden-global-state.md",
+      "source_blob": "85b0a64a79d25d538eaaa65c228975095708f7f6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/016-singleton-and-its-hidden-global-state.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/017-object-pool.md",
+      "source_blob": "13f4e637ad5270b640354f1112b689a3841c44f3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/017-object-pool.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/018-dependency-injection-as-a-creation-pattern.md",
+      "source_blob": "9738ebedfc142da91ae6ddc9575882908f6cb2de",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/018-dependency-injection-as-a-creation-pattern.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/019-lazy-initialization.md",
+      "source_blob": "09660d786588c9ac6034e94f6f66a91e5d8b3152",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/019-lazy-initialization.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/020-comparing-creational-patterns-under-change.md",
+      "source_blob": "9b1702bcdee4746fbcd83c76eb37739b5b65dafd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/020-comparing-creational-patterns-under-change.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/021-adapter.md",
+      "source_blob": "70c6f66c49594772c5f61392987fa466dc09e496",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/021-adapter.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/022-bridge.md",
+      "source_blob": "0d7e8da82e28547039fc527f0c00356f32d110d8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/022-bridge.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/023-composite.md",
+      "source_blob": "8e2d54bf2e132903280a5eae6453910673d9abf5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/023-composite.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/024-decorator.md",
+      "source_blob": "bc2bc67b26a0127514028f9e20a79cf6356791ed",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/024-decorator.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/025-facade.md",
+      "source_blob": "abc8c47e791b5fdfe77d0192d451c8cc915e43f9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/025-facade.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/026-flyweight.md",
+      "source_blob": "deca339a4a51d13aa0fca0acf66850fb590396a9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/026-flyweight.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/027-proxy.md",
+      "source_blob": "58ef299058761400f9dcec173db6c09a65aad3c9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/027-proxy.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/028-module-and-package-facades.md",
+      "source_blob": "87f6e227de4c00c46af71b147c78023c8fbf6d2e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/028-module-and-package-facades.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/029-ports-and-adapters-as-a-structural-pattern.md",
+      "source_blob": "60d032eea4c2888d0fd6d6636ed888ac5b798496",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/029-ports-and-adapters-as-a-structural-pattern.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/030-combining-structural-patterns-without-indirection-explosion.md",
+      "source_blob": "47c89728547bb3ea90e74694599ba6784eaaa990",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/030-combining-structural-patterns-without-indirection-explosion.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/031-chain-of-responsibility.md",
+      "source_blob": "9dc82cd2bc528f956391ff164f5e445963a2d4af",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/031-chain-of-responsibility.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/032-command.md",
+      "source_blob": "0c188ffa2a8a14b006d45eb91441e1a25ef8c0ca",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/032-command.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/033-interpreter-as-an-object-pattern.md",
+      "source_blob": "a18647a56b568ab6d8affdc4f8f9992631547ff6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/033-interpreter-as-an-object-pattern.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/034-iterator.md",
+      "source_blob": "48259e355fcd5f0f96b8e36a6d50d720f3456b3b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/034-iterator.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/035-mediator.md",
+      "source_blob": "d008e527e4c4bf0a5d7c025a272461468f5935e9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/035-mediator.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/036-memento.md",
+      "source_blob": "e1858b40ed4e0dbeda9952de797fc268a3d2a3e2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/036-memento.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/037-observer.md",
+      "source_blob": "04dbf5098ee72cdecf8d6ac2fcd1aeed8284a008",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/037-observer.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/038-state.md",
+      "source_blob": "3ccc6e3da4db2c29d31b487f77514b27483c16f2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/038-state.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/039-strategy.md",
+      "source_blob": "b2388386c00ab649d4c75a2ed2d41f789bbc648a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/039-strategy.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/040-template-method.md",
+      "source_blob": "51cbb0ec0ab3bb7c20c81dbb4c94c53a44946b07",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/040-template-method.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/041-visitor.md",
+      "source_blob": "0fe88230e72ec53fc343c80fd55810c49804d303",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/041-visitor.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/042-null-object.md",
+      "source_blob": "79b99b9e18ad0160a309ab1f6edb290ac2d289db",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/042-null-object.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/043-specification.md",
+      "source_blob": "f9d083b2e331dff449d2e6367696c1c5528e5eee",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/043-specification.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/044-method-object.md",
+      "source_blob": "b07dc98ed5d81d8047fb3006e3f27ea8e66289d5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/044-method-object.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/045-role-object.md",
+      "source_blob": "154478a15b795fc91d5f871cd6ecc713f65d879c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/045-role-object.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/046-double-dispatch.md",
+      "source_blob": "2185906051118a68a60e66343024f7339a07960c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/046-double-dispatch.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/047-event-listener-and-callback.md",
+      "source_blob": "c52d1cd947fa636dba68f2d7a8ad42b301326000",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/047-event-listener-and-callback.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/048-policy-object.md",
+      "source_blob": "b2edd9f46722b148048aa1ca840b6cbefa2a0126",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/048-policy-object.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/049-object-mother-and-test-data-builder.md",
+      "source_blob": "182bb2719b68ea3c6428185bcd1581097233749f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/049-object-mother-and-test-data-builder.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/050-diagnosing-behavioral-pattern-misuse.md",
+      "source_blob": "3e6b8910d6a89addf7102221454d7d3743a678db",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/050-diagnosing-behavioral-pattern-misuse.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/051-transaction-script.md",
+      "source_blob": "3faf745d547928499384ed94d941090a331db235",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/051-transaction-script.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/052-domain-model.md",
+      "source_blob": "3348d2ceb2867fb9d4e87efe25746956eefc2188",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/052-domain-model.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/053-table-module.md",
+      "source_blob": "e95eec01fa8fbe63c3c721f712b7ce3cb29c1bfc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/053-table-module.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/054-service-layer.md",
+      "source_blob": "c0aab5fce0cc709ad321f84e2d805a660551337a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/054-service-layer.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/055-unit-of-work.md",
+      "source_blob": "bae2aaaa5b4c2a4cce43c8447daf873b9151599e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/055-unit-of-work.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/056-identity-map.md",
+      "source_blob": "8c66867e40e77372c8b52448089d42bc69b09ef6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/056-identity-map.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/057-data-mapper.md",
+      "source_blob": "cc6e94f873a2f94dbe70e31a024a995df9ab08a4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/057-data-mapper.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/058-active-record.md",
+      "source_blob": "2f750d4804402f95851769dc737da7dc7dc81ebf",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/058-active-record.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/059-lazy-load.md",
+      "source_blob": "7e1bd4508d0ee2241977b51c8944672088e4baa1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/059-lazy-load.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/060-choosing-an-enterprise-domain-and-persistence-pattern.md",
+      "source_blob": "e594450b838a0951bf5eb769c261ae358d0bf5fd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/060-choosing-an-enterprise-domain-and-persistence-pattern.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/061-message-channel.md",
+      "source_blob": "08af11b7af2e1120ea29a3f84f32183e0e507a6e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/061-message-channel.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/062-message-router.md",
+      "source_blob": "1c8065c17e979b511b1b854a5a8a91183e42c383",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/062-message-router.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/063-message-translator.md",
+      "source_blob": "081a1e7f0a5e5f9c9eeb608d0686246af9109af5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/063-message-translator.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/064-canonical-data-model.md",
+      "source_blob": "f4ee3b2e39b8efe27560400616a5470b225ffad9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/064-canonical-data-model.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/065-content-based-router.md",
+      "source_blob": "9ac046188808f5d05ccd7385d47c185371419f5a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/065-content-based-router.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/066-publish-subscribe-channel.md",
+      "source_blob": "d9a40498ad3a7ab3deb52f23f8e2a392d940032d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/066-publish-subscribe-channel.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/067-competing-consumers.md",
+      "source_blob": "9348d31a81edbb6f5587f3f2eaea5d96a3fbd150",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/067-competing-consumers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/068-claim-check.md",
+      "source_blob": "3482779fec7cbaea98d00ef9baf4f665167897b5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/068-claim-check.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/069-dead-letter-channel.md",
+      "source_blob": "125acb24049e132cc2f05e1bc386f2c2a31d398b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/069-dead-letter-channel.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/070-designing-an-integration-flow-from-message-semantics.md",
+      "source_blob": "60de241c9ecb52be68bde39f50190bd23bb4b9f4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/070-designing-an-integration-flow-from-message-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/071-reactor.md",
+      "source_blob": "6338d7c7f5f1938e7a35d6e76a25c96c0c267ffc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/071-reactor.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/072-proactor.md",
+      "source_blob": "b0ca57831a8bbd0052d837d18d265c41a1822323",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/072-proactor.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/073-half-sync-half-async.md",
+      "source_blob": "4c1abf08d388740acbb9039630e2043cfc5d001b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/073-half-sync-half-async.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/074-leader-followers.md",
+      "source_blob": "4378e0ec474cd99ef76c1c008f3e421e0a98aa74",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/074-leader-followers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/075-thread-pool.md",
+      "source_blob": "8a8325c452efdfa916b1eb497b8c4ec64ce78341",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/075-thread-pool.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/076-active-object.md",
+      "source_blob": "e4e141ffaaf7486f436b8991ee4b081fa4888537",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/076-active-object.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/077-monitor-object.md",
+      "source_blob": "f58b127a746df7dd058fac4926ba3d8396cc0c0d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/077-monitor-object.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/078-future-and-promise.md",
+      "source_blob": "43dd6c5c744361f2b1a4b6db8ce74f22d5703345",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/078-future-and-promise.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/079-producer-consumer-with-bounded-buffers.md",
+      "source_blob": "f8dd759b985f608dec0a7c8825a1ded5710d4b08",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/079-producer-consumer-with-bounded-buffers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/080-selecting-a-concurrency-pattern-from-blocking-and-ownership-constraints.md",
+      "source_blob": "e60f0d39c7a9ca0436a21a175ca69c86a54d8906",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/080-selecting-a-concurrency-pattern-from-blocking-and-ownership-constraints.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/081-retry-with-bounded-backoff.md",
+      "source_blob": "19bb038022173a3997997aab0f82658c6fca0efe",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/081-retry-with-bounded-backoff.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/082-timeout-and-deadline.md",
+      "source_blob": "962d0a1862c72710832c6c4ef0d8c8df1f62b378",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/082-timeout-and-deadline.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/083-circuit-breaker.md",
+      "source_blob": "a39bb5f6b916fb7c1d3c4f851e466303edde87e1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/083-circuit-breaker.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/084-bulkhead.md",
+      "source_blob": "34af96fd616e6409be39f7796b74d6ee3cf83e15",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/084-bulkhead.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/085-rate-limiter.md",
+      "source_blob": "15fabf7754dc07344fd3fa4a7c4c7728d7670f08",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/085-rate-limiter.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/086-load-shedding-pattern.md",
+      "source_blob": "1942a3315e76644f47e24ad1f7420f378eea3ae6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/086-load-shedding-pattern.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/087-saga.md",
+      "source_blob": "8c697b4f46971c11c1f7bcdb2ce8425b26ee3bf9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/087-saga.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/088-transactional-outbox.md",
+      "source_blob": "be4041804616f9703f68a3f9b3de5b5f989eddc5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/088-transactional-outbox.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/089-idempotent-consumer.md",
+      "source_blob": "71fd2d5f510dc9e04cf4e0f0312ccf3013d8e120",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/089-idempotent-consumer.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/090-combining-resilience-patterns-without-failure-amplification.md",
+      "source_blob": "0324f3a7195de207d6c40d967e7e63371a7a5a25",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/090-combining-resilience-patterns-without-failure-amplification.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/091-repository.md",
+      "source_blob": "31f04dd4fce6b69ba2fae12463cdfdf6603ba24e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/091-repository.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/092-data-transfer-object.md",
+      "source_blob": "486e1a044fda22899a2f1fbe757ddfbe2f2cfc1c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/092-data-transfer-object.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/093-change-data-capture-pattern.md",
+      "source_blob": "c6c18c97da0fe62b350b64935d1f0d3b73bb633c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/093-change-data-capture-pattern.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/094-event-sourcing.md",
+      "source_blob": "3ae5d3326cecf978e75fc8644ffdc846ab9c1657",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/094-event-sourcing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/095-command-query-responsibility-segregation.md",
+      "source_blob": "833859b680735682d8d277b6efd6c744ddfcc169",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/095-command-query-responsibility-segregation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/096-materialized-view.md",
+      "source_blob": "22c4bab59b03c4677be27ed4ca8deecd4b8aabaa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/096-materialized-view.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/097-strangler-fig.md",
+      "source_blob": "20c732eeee431f4b864e3ca4cef4d87798ce7941",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/097-strangler-fig.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/098-branch-by-abstraction-pattern.md",
+      "source_blob": "38c63c8068b1bd820f2ca01af67579d0da7d7fcf",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/098-branch-by-abstraction-pattern.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/099-recognizing-golden-hammer-big-ball-of-mud-and-distributed-monolith.md",
+      "source_blob": "bbf6e47b1ed9d5d450abaf4f38952b043d05e910",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/099-recognizing-golden-hammer-big-ball-of-mud-and-distributed-monolith.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/11-software-engineering-patterns/modules/100-conducting-a-pattern-review-from-context-forces-and-evidence.md",
+      "source_blob": "9f621aa8d2ca1455e160fd152f31e5c15f494011",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/100-conducting-a-pattern-review-from-context-forces-and-evidence.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/12-software-engineering-software-architecture/ROADMAP.md",
+      "source_blob": "37f4bd13fb5ead00b9f67f71121ec6ca3d90e85a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/12-software-engineering-software-architecture/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/12-software-engineering-software-architecture/modules/001-architecture-as-significant-design-decisions.md",
+      "source_blob": "92a45630cf13644e31908d64f267d0b865fc0c67",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/12-software-engineering-software-architecture/modules/001-architecture-as-significant-design-decisions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/12-software-engineering-software-architecture/modules/002-stakeholders-and-architectural-concerns.md",
+      "source_blob": "b021d59803305b084725aaeca2f29ee1defe6de0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/12-software-engineering-software-architecture/modules/002-stakeholders-and-architectural-concerns.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/13-software-engineering-testing-and-quality-engineering/ROADMAP.md",
+      "source_blob": "f80ea77d6715b3b29e4b10860690507ce9036a23",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/13-software-engineering-testing-and-quality-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/13-software-engineering-testing-and-quality-engineering/modules/001-why-software-testing-cannot-prove-absence-of-defects.md",
+      "source_blob": "9ed34c9c5d9bb46acf81677dcb705ba535db5572",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/13-software-engineering-testing-and-quality-engineering/modules/001-why-software-testing-cannot-prove-absence-of-defects.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/13-software-engineering-testing-and-quality-engineering/modules/002-specifications-expectations-and-test-oracles.md",
+      "source_blob": "cf83c294194231a1d01fc5b8ddd2e6f44e31c9ea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/13-software-engineering-testing-and-quality-engineering/modules/002-specifications-expectations-and-test-oracles.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/14-software-engineering-software-delivery-and-reliability-engineering/ROADMAP.md",
+      "source_blob": "42a529af3b6b389d1b54559a1e781fa03af3d732",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/14-software-engineering-software-delivery-and-reliability-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/001-from-source-change-to-deployable-artifact.md",
+      "source_blob": "f1d9d2039a2892e2774d2f2ff8226aae26a200b0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/001-from-source-change-to-deployable-artifact.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/002-dependency-resolution-and-locking.md",
+      "source_blob": "ccbae5ecbfa4f77f54bed5241a75423ba50f82d2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/002-dependency-resolution-and-locking.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/15-theory-of-computation-and-complexity/ROADMAP.md",
+      "source_blob": "1f33c476228c59204f744530d294e6f961c17984",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/15-theory-of-computation-and-complexity/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/15-theory-of-computation-and-complexity/modules/001-alphabets-strings-languages-and-decision-problems.md",
+      "source_blob": "6a5f9614c3ee8ec128da997f6af54197f5e2c7b8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/15-theory-of-computation-and-complexity/modules/001-alphabets-strings-languages-and-decision-problems.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/15-theory-of-computation-and-complexity/modules/002-machines-recognizers-deciders-and-transducers.md",
+      "source_blob": "d18e89fe823d44883e3ba0d020f838269d7e0d61",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/15-theory-of-computation-and-complexity/modules/002-machines-recognizers-deciders-and-transducers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/16-algorithm-engineering/ROADMAP.md",
+      "source_blob": "edd1eb00521776b2b093b26e0c399b4e9ba85f00",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/16-algorithm-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/16-algorithm-engineering/modules/001-problem-statements-inputs-outputs-and-constraints.md",
+      "source_blob": "22bc9b895eccd0b6abbc2528f437fe09a2d6f3f6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/16-algorithm-engineering/modules/001-problem-statements-inputs-outputs-and-constraints.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/16-algorithm-engineering/modules/002-preconditions-postconditions-and-correctness.md",
+      "source_blob": "e162871c081db8ba6610be538d666cdd3904d83f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/16-algorithm-engineering/modules/002-preconditions-postconditions-and-correctness.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/17-data-structures-engineering/ROADMAP.md",
+      "source_blob": "b7f28b21c3c638bf477659bfb50200aec7831161",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/17-data-structures-engineering/modules/001-abstract-data-types-and-concrete-representations.md",
+      "source_blob": "ddb0bbf6ac17923409df91677822873b9de152d6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/001-abstract-data-types-and-concrete-representations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/17-data-structures-engineering/modules/002-representation-invariants.md",
+      "source_blob": "0798f84f67c39e1bd0352b53cd757d6a94bda8f7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/002-representation-invariants.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/ROADMAP.md",
+      "source_blob": "083a880007609088552d1eb49176caa8513c0796",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/001-database-systems-workloads-and-guarantees.md",
+      "source_blob": "ee854c2d1e1a9143fc2f04381bc462e3c663631f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/001-database-systems-workloads-and-guarantees.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/002-relational-model-and-relational-algebra.md",
+      "source_blob": "bda54568e2078476bd02a2527b1455fdbafc2795",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/002-relational-model-and-relational-algebra.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/ROADMAP.md",
+      "source_blob": "8bbee14dd17a45d01f741e9d17574f0055a1596a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/modules/001-data-producers-consumers-and-lifecycle.md",
+      "source_blob": "caf87dbaa9cd5d769b5e5c5c7dc78b69afaf0450",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/001-data-producers-consumers-and-lifecycle.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/19-data-engineering/modules/002-rows-columns-records-and-events.md",
+      "source_blob": "b956b0698eccb3b23483a8987aea4b1a3a4312b7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/19-data-engineering/modules/002-rows-columns-records-and-events.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/20-data-architecture-engineering/ROADMAP.md",
+      "source_blob": "71f54e39a5495d9bd51342a8058c112652769e6d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/20-data-architecture-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/20-data-architecture-engineering/modules/001-data-architecture-as-structure-flow-ownership-and-policy.md",
+      "source_blob": "e206f7fe871def825fb009d8c909752f67fdf3ec",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/20-data-architecture-engineering/modules/001-data-architecture-as-structure-flow-ownership-and-policy.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/20-data-architecture-engineering/modules/002-business-strategy-and-data-outcomes.md",
+      "source_blob": "1af49a441707ce97bc58241fdd420d546aee6f3e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/20-data-architecture-engineering/modules/002-business-strategy-and-data-outcomes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/ROADMAP.md",
+      "source_blob": "8b2fff07698d8c4395f90b0fe028a3539d7e1900",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/001-workloads-that-require-multiple-machines.md",
+      "source_blob": "5ae9cd48e9b398c20eb02bf8b168ba527325476c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/001-workloads-that-require-multiple-machines.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/21-large-scale-data-systems-engineering/modules/002-horizontal-partitioning.md",
+      "source_blob": "e8eaa5a3df9b02cab0a281ce4c3b6e1ad3d40ce0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/21-large-scale-data-systems-engineering/modules/002-horizontal-partitioning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/ROADMAP.md",
+      "source_blob": "27f7017344d1993d87bd6e5a599bc86ada605d1c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/001-operating-system-goals-and-resource-abstractions.md",
+      "source_blob": "290974ebb2464f50a43685c06e52dd9577f451bd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/001-operating-system-goals-and-resource-abstractions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/22-operating-systems/modules/002-privilege-levels-and-protection-rings.md",
+      "source_blob": "b9feed7d60d642a944ad2dca65938667c1e3c8b3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/22-operating-systems/modules/002-privilege-levels-and-protection-rings.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/23-computer-architecture/ROADMAP.md",
+      "source_blob": "266a0b3d36926f78fd68d646fa03d5cf7287f35d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/23-computer-architecture/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/23-computer-architecture/modules/001-boolean-logic-and-combinational-circuits.md",
+      "source_blob": "b3d0a4baf6c9fb0e4fc4fd3b07c5e4438f69f9a7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/23-computer-architecture/modules/001-boolean-logic-and-combinational-circuits.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/23-computer-architecture/modules/002-sequential-logic-and-state.md",
+      "source_blob": "8f1a06e1ffcba7ae341eafcb0178bba8c17bfae0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/23-computer-architecture/modules/002-sequential-logic-and-state.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/24-network-engineering/ROADMAP.md",
+      "source_blob": "8d3662001091c601f1592bff6b380ff4ccb29bb4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/24-network-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/24-network-engineering/modules/001-network-requirements-reachability-capacity-delay-and-loss.md",
+      "source_blob": "66e81ce97afdba5f3c7cf05ce892f5465b038e2f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/24-network-engineering/modules/001-network-requirements-reachability-capacity-delay-and-loss.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/24-network-engineering/modules/002-layering-encapsulation-and-protocol-data-units.md",
+      "source_blob": "9279627c414e3255458db278eef843eb677ea31e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/24-network-engineering/modules/002-layering-encapsulation-and-protocol-data-units.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/25-security-engineering/ROADMAP.md",
+      "source_blob": "99a3387d214b291d9bcdaba1d329b5959c959ca6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/25-security-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/25-security-engineering/modules/001-assets-adversaries-trust-and-security-goals.md",
+      "source_blob": "1973aa19e8d530aab42b3bc57f25da2b8d9f1138",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/25-security-engineering/modules/001-assets-adversaries-trust-and-security-goals.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/25-security-engineering/modules/002-confidentiality-integrity-availability-and-authenticity.md",
+      "source_blob": "78e90103bb841fe0094b51441053ad300ee12956",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/25-security-engineering/modules/002-confidentiality-integrity-availability-and-authenticity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/ROADMAP.md",
+      "source_blob": "98d61c764e965d328bf58e137fbdbedbb1e6b4d1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/001-systems-boundaries-environments-and-context.md",
+      "source_blob": "a7aec398af85f13bc487015157dbf6500883418d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/001-systems-boundaries-environments-and-context.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/002-purpose-mission-and-measures-of-effectiveness.md",
+      "source_blob": "68c961c48a71df8e216e325317c7c62415b20905",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/002-purpose-mission-and-measures-of-effectiveness.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/27-distributed-systems-engineering/ROADMAP.md",
+      "source_blob": "e1728a96e429814d6be7ed2bdbcfb3d31b49f950",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/27-distributed-systems-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/27-distributed-systems-engineering/modules/001-why-distribution-changes-the-problem.md",
+      "source_blob": "54669ab14a7b2006f615bc91d6393af9855f27c2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/27-distributed-systems-engineering/modules/001-why-distribution-changes-the-problem.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/27-distributed-systems-engineering/modules/002-processes-nodes-links-and-executions.md",
+      "source_blob": "254ecaf12b1e71714756da21fb27fc9aea5ab8d3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/27-distributed-systems-engineering/modules/002-processes-nodes-links-and-executions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/ROADMAP.md",
+      "source_blob": "ecee66c36e8351fa765221c1d4584138f7e33df3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/001-resources-representations-and-messages.md",
+      "source_blob": "b56c3e004567b35977cc7f3dab03e10d02719e29",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/001-resources-representations-and-messages.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/002-http-methods-and-their-semantics.md",
+      "source_blob": "c45d1ba7a96b792d183c39e659cddedc5de672f7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/002-http-methods-and-their-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/ROADMAP.md",
+      "source_blob": "dd95b8339c04cd10cbd83f3c06a382908339d4c4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/001-platform-engineering-as-complexity-management.md",
+      "source_blob": "b36fdeecefa965732fe2452f642a25f5590954b1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/001-platform-engineering-as-complexity-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/29-platform-engineering/modules/002-platform-consumers-and-jobs-to-be-done.md",
+      "source_blob": "07b1ee6f732c76a0679beb54be403ab85b4e8d7b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/002-platform-consumers-and-jobs-to-be-done.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/30-cloud-and-infrastructure-engineering/ROADMAP.md",
+      "source_blob": "9325312fd23b3164bd6497175a64ea99b0646af2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/30-cloud-and-infrastructure-engineering/ROADMAP.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/30-cloud-and-infrastructure-engineering/modules/001-cloud-service-and-deployment-models.md",
+      "source_blob": "e9b023cb0651adf073e6844e66b22f19f693c6e4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/30-cloud-and-infrastructure-engineering/modules/001-cloud-service-and-deployment-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/30-cloud-and-infrastructure-engineering/modules/002-shared-responsibility.md",
+      "source_blob": "a8ad63fc9c45386fc352364ea691c36abe13f559",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/30-cloud-and-infrastructure-engineering/modules/002-shared-responsibility.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "templates/module-template.md",
+      "source_blob": "34d173d3e7ed021ac7f10c3169b53491df643e83",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/templates/module-template.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/__init__.py",
+      "source_blob": "94fd43b97ce2adf6eca8a6ac5595dc958a8c9181",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/__init__.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/__init__.py",
+      "source_blob": "69ff86eeb9d4fc8fa18e6672ee139b801a6f9da5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/__init__.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/fixtures.py",
+      "source_blob": "aae26763f07af1f7f120116afb26ccf0c07ba87b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/fixtures.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/test_audit.py",
+      "source_blob": "e3c8b8a847fe2963ab222e986b8f792b6e416dfe",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/test_audit.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/test_blueprint.py",
+      "source_blob": "be289a59306d12fe89ba0b51cf521973f428091d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/test_blueprint.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/test_chapter.py",
+      "source_blob": "d678875d086d429edf63646a30e00b881ec7a549",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/test_chapter.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/test_completion.py",
+      "source_blob": "d40ed7c74d385bfbc7ab3ef53d221d9623084db1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/test_completion.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/test_markdown.py",
+      "source_blob": "f90f875c8546c107ecb99b6005bec302d1026efe",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/test_markdown.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/test_review.py",
+      "source_blob": "c484f479c37455974dbef5c250e11688564a56e2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/test_review.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tests/course_validation/test_snippets.py",
+      "source_blob": "5b82572aec8d9369a6ae7edf21cd436bd943262b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tests/course_validation/test_snippets.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/audit_modules.py",
+      "source_blob": "3ab93b03cf42ec3a1df111c22b87a15ef11d624b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/audit_modules.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/complete_module.py",
+      "source_blob": "d920b467fb1277bd90131e91188ef50970ff1dc5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/complete_module.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/__init__.py",
+      "source_blob": "df4ac9990c02cacaf925641c99c3357b4b0bddf9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/__init__.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/audit.py",
+      "source_blob": "4295f4d32b47aaf3255ee2497a281899efa57cf4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/audit.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/blueprint.py",
+      "source_blob": "fc9022b94077a5d3dd7ce3ac25419d84005e3a67",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/blueprint.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/chapter.py",
+      "source_blob": "6917d0934e649c37288835cc230f2cb965238e9d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/chapter.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/completion.py",
+      "source_blob": "1dbd323250bb7a9305b92c6a3e61f03ba1a1872b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/completion.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/manifest.py",
+      "source_blob": "ec25c09f2885ed9a49cc40e8da1091d68532c46a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/manifest.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/markdown.py",
+      "source_blob": "1ffc236ec08b95739d8428caa0b7124f49a99b33",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/markdown.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/result.py",
+      "source_blob": "271dcc6a694d75ca8cc95b51cd40649a19ca8411",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/result.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/review.py",
+      "source_blob": "671fa3ebbec067322201bdef3278416f32e66cc5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/review.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/course_validation/snippets.py",
+      "source_blob": "d2d32827f4409b589cb856d0b8f156c9fb74b886",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/course_validation/snippets.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/create_review_record.py",
+      "source_blob": "e322334afd4636c2f496f93d55065bb6e5bd69d2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/create_review_record.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/validate_blueprint.py",
+      "source_blob": "4aa08ea70e386385e87f0adcd66b16f893583a9b",
+      "mode": "100755",
+      "destination": "programs-planned/computing-reference/tools/validate_blueprint.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/validate_module.py",
+      "source_blob": "a980b5d8bd90055471b3a3fec6a885a2d0e41974",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/validate_module.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/validate_review.py",
+      "source_blob": "ea5cb0ac2848f81559f61a1fb07b7b37000342dc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/validate_review.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/verify_snippets.py",
+      "source_blob": "e3eca7db670d7ee47bcd8d471efdd11e7a0abca8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/verify_snippets.py",
+      "disposition": "imported-unchanged"
+    }
+  ]
+}
