@@ -3,7 +3,6 @@
 This file is excluded from the dependency-light proof. Install the `server`
 extra and use the course schema/resolver policies before running it.
 """
-from __future__ import annotations
 
 def create_app():
     import strawberry
@@ -18,7 +17,7 @@ def create_app():
     @strawberry.type
     class Query:
         @strawberry.field
-        def viewer(self, info) -> Viewer:
+        def viewer(self, info: strawberry.Info) -> Viewer:
             principal = info.context["principal"]
             return Viewer(subject=principal.subject, tenant_id=principal.tenant_id)
 

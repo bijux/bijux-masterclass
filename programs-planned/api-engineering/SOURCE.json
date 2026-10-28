@@ -77152,8 +77152,8 @@
       "sha256": "16df9e448dd9744bfffb2fadb683e00b4afeb84ebf15c526aa39204efb9eca99",
       "bytes": 330,
       "mode": "100644",
-      "sha256_after": "0af4937d309f84bebb857d6ab22d5c0666359cb466d9ac4b490c276f67dcdc67",
-      "transformation": "dependency-security-maintenance"
+      "sha256_after": "0fa80ce9b5ca4bf265d913774ebe357d8f7b0469648739f6d29c5863cc07d168",
+      "transformation": "dependency-security-maintenance; dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/src/graph_api/__init__.py",
@@ -77314,8 +77314,8 @@
       "sha256": "0a9173c035872c1849832f0fdaaf40baa30cde29c66bf9e64a099ef9ed3bea25",
       "bytes": 829,
       "mode": "100644",
-      "sha256_after": "0a9173c035872c1849832f0fdaaf40baa30cde29c66bf9e64a099ef9ed3bea25",
-      "transformation": null
+      "sha256_after": "ed806ebc5d534ae8b20f54a07f62824ca828b8e6f9ecc3bb1b7b4957d1e902fa",
+      "transformation": "dependency-and-contract-maintenance"
     },
     {
       "source": "zzz-bijux-courses-new-v1/- programs/engineering-api/api-engineering-v102/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/tests/test_gateway.py",
@@ -81969,6 +81969,28 @@
         {
           "path": "programs-planned/api-engineering/01-openapi-contract-engineering/package-lock.json",
           "sha256": "48cac01c627d16a77d97992b34c65e6dc3262732d884401c253961378dbd6b08"
+        }
+      ]
+    },
+    {
+      "intent": "Qualify patched Strawberry server dependencies and resolve factory-local annotations when constructing the optional GraphQL schema.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/pyproject.toml",
+          "sha256_before": "0af4937d309f84bebb857d6ab22d5c0666359cb466d9ac4b490c276f67dcdc67",
+          "sha256_after": "0fa80ce9b5ca4bf265d913774ebe357d8f7b0469648739f6d29c5863cc07d168"
+        },
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/src/graph_api/adapters/strawberry_app.py",
+          "sha256_before": "0a9173c035872c1849832f0fdaaf40baa30cde29c66bf9e64a099ef9ed3bea25",
+          "sha256_after": "ed806ebc5d534ae8b20f54a07f62824ca828b8e6f9ecc3bb1b7b4957d1e902fa"
+        }
+      ],
+      "added_dependency_locks": [],
+      "added_maintained_files": [
+        {
+          "path": "programs-planned/api-engineering/09-graphql-schema-and-runtime-engineering/capstone/tracks/python-graphql/tests/test_server_adapter.py",
+          "sha256": "2dee865416d9c0c1c1ab2e5d71519cc22e8a2007a9674120df79057d609af0ba"
         }
       ]
     }
