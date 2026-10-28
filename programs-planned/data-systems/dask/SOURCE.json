@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "collection": "dask-course",
+  "state": "planned",
+  "base_commit": "30265cfc10a0875d49504cf12c169f7e92e7c3cd",
+  "qualified_for_course_ci": false,
+  "qualified_for_publication": false,
+  "selected_snapshot": "578660957986976d08d7bf497f526bd73fa21b08",
+  "source_snapshots": [
+    {
+      "content_id": "eebdcd754a0b9624552f2f6d6414d316ddfed6c49c9b466f1348f084a5877332",
+      "commit": "9be89a36637f99965e3765cd082bac9689f40f43",
+      "files": [
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/M01.md",
+          "source_revision": "25177052d8e49724eace57be29937842786f5c66",
+          "destination": "M01.md",
+          "sha256": "6129d57e53f89d02455dd7bc3a3e727b7b848474aba176a05247ca35ff2c8918",
+          "bytes": 22960,
+          "mode": "100644"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/M02.md",
+          "source_revision": "25177052d8e49724eace57be29937842786f5c66",
+          "destination": "M02.md",
+          "sha256": "74a76fdc812d9e20112277a9d0ae4b12d370e4ad4a20032346e36f082ec23731",
+          "bytes": 20566,
+          "mode": "100644"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/M03.md",
+          "source_revision": "25177052d8e49724eace57be29937842786f5c66",
+          "destination": "M03.md",
+          "sha256": "eac4353e679a715fb42158b2591c9b7d748ed8d8696527e686bdefe3039aec1f",
+          "bytes": 20087,
+          "mode": "100644"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/M04.md",
+          "source_revision": "25177052d8e49724eace57be29937842786f5c66",
+          "destination": "M04.md",
+          "sha256": "f3d2c03f8bdd0ee43c036fb756c8b8f5bc3ba42e108421413267ea69f1e534bb",
+          "bytes": 30230,
+          "mode": "100644"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/ToC.md",
+          "source_revision": "25177052d8e49724eace57be29937842786f5c66",
+          "destination": "ToC.md",
+          "sha256": "ffc7e9c1f6d843acf8222e1da786ff6bf212c616b7e0cc2f408320214e13efdf",
+          "bytes": 7931,
+          "mode": "100644"
+        }
+      ]
+    },
+    {
+      "content_id": "2f1ef47d5e238729127379d539bb3b77be2a0bd9812dcc2df3f7591b37820410",
+      "commit": "578660957986976d08d7bf497f526bd73fa21b08",
+      "files": [
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/LICENSE",
+          "destination": "LICENSE",
+          "sha256": "1f59d4620b2153d5eb76b4aa149fc3ae922e2b28d0775239bdd17ceff36e4669",
+          "bytes": 1070,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/Makefile",
+          "destination": "Makefile",
+          "sha256": "3989a9b7996befbf758ef32bbcc7c92c8a68371ccd85017413563d22ec27b2b6",
+          "bytes": 3058,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/README.md",
+          "destination": "README.md",
+          "sha256": "f473fde321b82193ff042a310add536f782c234ec1bdd08920b84c4102b385f6",
+          "bytes": 5123,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/mkdocs.yml",
+          "destination": "mkdocs.yml",
+          "sha256": "8cfdbd99958512f5323ec118310505d8c3011b716a8c316cc42fe44803bcfd97",
+          "bytes": 1351,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/pyproject.toml",
+          "destination": "pyproject.toml",
+          "sha256": "acc54322827767e1ab756b009348199924ea1657542e2e6e474a0165c4adf68d",
+          "bytes": 1001,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-00.md",
+          "destination": "course-book/module-00.md",
+          "sha256": "ffc7e9c1f6d843acf8222e1da786ff6bf212c616b7e0cc2f408320214e13efdf",
+          "bytes": 7931,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-01.md",
+          "destination": "course-book/module-01.md",
+          "sha256": "6129d57e53f89d02455dd7bc3a3e727b7b848474aba176a05247ca35ff2c8918",
+          "bytes": 22960,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-02.md",
+          "destination": "course-book/module-02.md",
+          "sha256": "74a76fdc812d9e20112277a9d0ae4b12d370e4ad4a20032346e36f082ec23731",
+          "bytes": 20566,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-03.md",
+          "destination": "course-book/module-03.md",
+          "sha256": "eac4353e679a715fb42158b2591c9b7d748ed8d8696527e686bdefe3039aec1f",
+          "bytes": 20087,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-04.md",
+          "destination": "course-book/module-04.md",
+          "sha256": "f3d2c03f8bdd0ee43c036fb756c8b8f5bc3ba42e108421413267ea69f1e534bb",
+          "bytes": 30230,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/docs/assets/bijux_icon.png",
+          "destination": "docs/assets/bijux_icon.png",
+          "sha256": "8b0f7851d7a2c9fe3adef8638af58f395cda37d12eee720c82965c3bab735f7b",
+          "bytes": 1549490,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/docs/assets/bijux_logo_hq.png",
+          "destination": "docs/assets/bijux_logo_hq.png",
+          "sha256": "92d45837e0c2a9cd68d3db74e131f829e519b6416a34ef36408ac79b47c94223",
+          "bytes": 3756644,
+          "mode": "100755"
+        }
+      ]
+    }
+  ],
+  "current_source_files": [
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/LICENSE",
+      "destination": "programs-planned/data-systems/dask/LICENSE",
+      "sha256": "1f59d4620b2153d5eb76b4aa149fc3ae922e2b28d0775239bdd17ceff36e4669",
+      "bytes": 1070,
+      "mode": "100755",
+      "sha256_after": "1f59d4620b2153d5eb76b4aa149fc3ae922e2b28d0775239bdd17ceff36e4669",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/Makefile",
+      "destination": "programs-planned/data-systems/dask/Makefile",
+      "sha256": "3989a9b7996befbf758ef32bbcc7c92c8a68371ccd85017413563d22ec27b2b6",
+      "bytes": 3058,
+      "mode": "100755",
+      "sha256_after": "3989a9b7996befbf758ef32bbcc7c92c8a68371ccd85017413563d22ec27b2b6",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/README.md",
+      "destination": "programs-planned/data-systems/dask/README.md",
+      "sha256": "f473fde321b82193ff042a310add536f782c234ec1bdd08920b84c4102b385f6",
+      "bytes": 5123,
+      "mode": "100755",
+      "sha256_after": "5e8094034a2c158613b23928b368db0b86e636aeb0b36a8af9f62959c4bab1da",
+      "transformation": "correct-inherited-make-readme"
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/mkdocs.yml",
+      "destination": "programs-planned/data-systems/dask/mkdocs.yml",
+      "sha256": "8cfdbd99958512f5323ec118310505d8c3011b716a8c316cc42fe44803bcfd97",
+      "bytes": 1351,
+      "mode": "100755",
+      "sha256_after": "8cfdbd99958512f5323ec118310505d8c3011b716a8c316cc42fe44803bcfd97",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/pyproject.toml",
+      "destination": "programs-planned/data-systems/dask/pyproject.toml",
+      "sha256": "acc54322827767e1ab756b009348199924ea1657542e2e6e474a0165c4adf68d",
+      "bytes": 1001,
+      "mode": "100755",
+      "sha256_after": "acc54322827767e1ab756b009348199924ea1657542e2e6e474a0165c4adf68d",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-00.md",
+      "destination": "programs-planned/data-systems/dask/course-book/module-00.md",
+      "sha256": "ffc7e9c1f6d843acf8222e1da786ff6bf212c616b7e0cc2f408320214e13efdf",
+      "bytes": 7931,
+      "mode": "100755",
+      "sha256_after": "ffc7e9c1f6d843acf8222e1da786ff6bf212c616b7e0cc2f408320214e13efdf",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-01.md",
+      "destination": "programs-planned/data-systems/dask/course-book/module-01.md",
+      "sha256": "6129d57e53f89d02455dd7bc3a3e727b7b848474aba176a05247ca35ff2c8918",
+      "bytes": 22960,
+      "mode": "100755",
+      "sha256_after": "6129d57e53f89d02455dd7bc3a3e727b7b848474aba176a05247ca35ff2c8918",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-02.md",
+      "destination": "programs-planned/data-systems/dask/course-book/module-02.md",
+      "sha256": "74a76fdc812d9e20112277a9d0ae4b12d370e4ad4a20032346e36f082ec23731",
+      "bytes": 20566,
+      "mode": "100755",
+      "sha256_after": "74a76fdc812d9e20112277a9d0ae4b12d370e4ad4a20032346e36f082ec23731",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-03.md",
+      "destination": "programs-planned/data-systems/dask/course-book/module-03.md",
+      "sha256": "eac4353e679a715fb42158b2591c9b7d748ed8d8696527e686bdefe3039aec1f",
+      "bytes": 20087,
+      "mode": "100755",
+      "sha256_after": "eac4353e679a715fb42158b2591c9b7d748ed8d8696527e686bdefe3039aec1f",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/course-book/module-04.md",
+      "destination": "programs-planned/data-systems/dask/course-book/module-04.md",
+      "sha256": "f3d2c03f8bdd0ee43c036fb756c8b8f5bc3ba42e108421413267ea69f1e534bb",
+      "bytes": 30230,
+      "mode": "100755",
+      "sha256_after": "f3d2c03f8bdd0ee43c036fb756c8b8f5bc3ba42e108421413267ea69f1e534bb",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/docs/assets/bijux_icon.png",
+      "destination": "programs-planned/data-systems/dask/docs/assets/bijux_icon.png",
+      "sha256": "8b0f7851d7a2c9fe3adef8638af58f395cda37d12eee720c82965c3bab735f7b",
+      "bytes": 1549490,
+      "mode": "100755",
+      "sha256_after": "8b0f7851d7a2c9fe3adef8638af58f395cda37d12eee720c82965c3bab735f7b",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/-deep-dive-dask/docs/assets/bijux_logo_hq.png",
+      "destination": "programs-planned/data-systems/dask/docs/assets/bijux_logo_hq.png",
+      "sha256": "92d45837e0c2a9cd68d3db74e131f829e519b6416a34ef36408ac79b47c94223",
+      "bytes": 3756644,
+      "mode": "100755",
+      "sha256_after": "92d45837e0c2a9cd68d3db74e131f829e519b6416a34ef36408ac79b47c94223",
+      "transformation": null
+    }
+  ],
+  "duplicate_source_aliases": [],
+  "source_git_backup": {
+    "source_commit": "25177052d8e49724eace57be29937842786f5c66",
+    "bundle": "artifacts/planned-program-imports/source-history/dask-course.bundle",
+    "bundle_sha256": "425e964bba967fa91682d8e79603a54f65eccc87cb9db467e78c87c5aac976b7",
+    "source_status": " D M01.md\n D M02.md\n D M03.md\n D M04.md\n D ToC.md\n?? LICENSE\n?? Makefile\n?? README.md\n?? course-book/\n?? docs/\n?? mkdocs.yml\n?? pyproject.toml\n"
+  },
+  "original_git_history": {
+    "head": "25177052d8e49724eace57be29937842786f5c66",
+    "commits": 2,
+    "preservation": "Original Git ancestry is joined without replacing the planned working tree."
+  }
+}
