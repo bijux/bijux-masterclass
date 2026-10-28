@@ -20,18 +20,18 @@ How can a bit vector retain direct bit access while answering prefix counts and 
 
 For (B[0..n)in\{0,1\}^n), this chapter uses half-open, zero-based conventions:
 
-\[
+$$
 \operatorname{rank}_b(i)=|\{j:0\le j<i\land B[j]=b\}|,
 \qquad 0\le i\le n,
-\]
+$$
 
-and (operatorname{select}_b(t)) is the position of the zero-based (t)-th occurrence of bit (b). It is defined only for (0\le t<\operatorname{rank}_b(n)). Thus `rank` counts *before* a position, while `select` returns a position.
+and (operatorname{select}_b(t)) is the position of the zero-based (t)-th occurrence of bit (b). It is defined only for $0\le t<\operatorname{rank}_b(n)$. Thus `rank` counts *before* a position, while `select` returns a position.
 
-A plain bit vector takes (n) bits. A succinct static rank/select representation targets (n+o(n)) total bits while supporting `access`, `rank`, and `select` in constant time on a stated word-RAM model. A compressed bit vector instead targets space related to density or entropy, such as (log_2\binom{n}{m}) for (m) one-bits, with its own time/space contract.
+A plain bit vector takes (n) bits. A succinct static rank/select representation targets (n+o(n)) total bits while supporting `access`, `rank`, and `select` in constant time on a stated word-RAM model. A compressed bit vector instead targets space related to density or entropy, such as $log_2\binom{n}{m}$ for (m) one-bits, with its own time/space contract.
 
 ### Central model, mechanism, or theorem
 
-Jacobson-style rank uses a two-level directory. Store global counts at superblocks of (s=\Theta(\log^2 n)) bits, within-superblock counts at blocks of (b=\Theta(\log n)) bits, then answer the residual block with a word operation or universal lookup. The auxiliary terms are (o(n)), so the original (n) bits plus the directory are succinct.
+Jacobson-style rank uses a two-level directory. Store global counts at superblocks of $s=\Theta(\log^2 n)$ bits, within-superblock counts at blocks of $b=\Theta(\log n)$ bits, then answer the residual block with a word operation or universal lookup. The auxiliary terms are (o(n)), so the original (n) bits plus the directory are succinct.
 
 Select is harder because occurrence spacing is irregular. Designs sample selected positions, classify sparse/dense regions, use subdirectories or tables, or reduce to rank-guided search with a weaker time bound. Practical structures use broadword instructions, hierarchical inventories, or compressed encodings. Every claim depends on conventions, machine word size, serialized layout, and density.
 
@@ -40,7 +40,7 @@ Select is harder because occurrence spacing is irregular. Designs sample selecte
 - Length, bit order within bytes/words, endianness, padding, and rank/select convention are versioned.
 - (operatorname{rank}_1(0)=0), (operatorname{rank}_1(n)) equals total one-bits, and rank is nondecreasing with unit increments.
 - (operatorname{rank}_0(i)=i-operatorname{rank}_1(i)) under the half-open convention.
-- For valid (t), (B[\operatorname{select}_b(t)]=b) and (operatorname{rank}_b(\operatorname{select}_b(t))=t).
+- For valid (t), $B[\operatorname{select}_b(t)]=b$ and $operatorname{rank}_b(\operatorname{select}_b(t))=t$.
 - Directory counters equal recomputed prefixes and fit their serialized widths.
 - Padding bits never contribute to logical rank/select.
 - Static supports are rebuilt or atomically versioned when bits change; dynamic supports update every affected summary.
@@ -95,54 +95,54 @@ After this chapter, you should be able to:
 
 ### Contract before representation
 
-Let `access(i)` return (B[i]) for (0\le i<n). This chapter's (operatorname{rank}_1(i)) counts ones in (B[0..i)), so rank accepts the endpoint (n). Select uses zero-based occurrence numbering. Other libraries may count through position (i) or number occurrences from one. Neither convention is inherently wrong; undocumented mixing is.
+Let `access(i)` return (B[i]) for $0\le i<n$. This chapter's (operatorname{rank}_1(i)) counts ones in (B[0..i)), so rank accepts the endpoint (n). Select uses zero-based occurrence numbering. Other libraries may count through position (i) or number occurrences from one. Neither convention is inherently wrong; undocumented mixing is.
 
 The identities become executable specifications:
 
-\[
+$$
 \operatorname{rank}_0(i)=i-operatorname{rank}_1(i),
-\]
+$$
 
-\[
+$$
 \operatorname{rank}_b(\operatorname{select}_b(t))=t,
 \qquad
 \operatorname{rank}_b(\operatorname{select}_b(t)+1)=t+1.
-\]
+$$
 
-Rank increments by (B[i]): (operatorname{rank}_1(i+1)-\operatorname{rank}_1(i)=B[i]). Select results strictly increase with (t). Define out-of-domain behavior—error, option, or sentinel—without colliding with a valid position.
+Rank increments by (B[i]): $operatorname{rank}_1(i+1)-\operatorname{rank}_1(i)=B[i]$. Select results strictly increase with (t). Define out-of-domain behavior—error, option, or sentinel—without colliding with a valid position.
 
 ### Succinct, compact, and compressed space
 
 There are (2^n) arbitrary length-(n) bit vectors, so any injective representation needs (n) bits in the worst case. A structure using (n+o(n)) bits is succinct relative to that baseline. Saying “linear space” is weaker: (n) 64-bit counters use (64n) bits.
 
-When exactly (m) bits are one, there are (inom{n}{m}) possible sets, giving information bound (log_2\binom{n}{m}) bits. Compressed rank/select structures aim near this density-sensitive bound plus redundancy. The bound excludes external labels, allocator metadata, process overhead, and sometimes construction workspace. State what is counted.
+When exactly (m) bits are one, there are (inom{n}{m}) possible sets, giving information bound $log_2\binom{n}{m}$ bits. Compressed rank/select structures aim near this density-sensitive bound plus redundancy. The bound excludes external labels, allocator metadata, process overhead, and sometimes construction workspace. State what is counted.
 
 An implicit representation uses the baseline plus (O(1)) bits; a succinct representation permits lower-order redundancy; a compact implementation may simply use much less space in practice without attaining a formal bound. Do not exchange these terms casually.
 
 ### Two-level rank directory
 
-Choose superblock size (s=\Theta(\log^2 n)) and block size (b=\Theta(\log n)). At each superblock boundary store the total ones before it, requiring (lceil\log_2(n+1)\rceil) bits. At each block boundary store ones since its superblock start, requiring (lceil\log_2(s+1)\rceil) bits.
+Choose superblock size $s=\Theta(\log^2 n)$ and block size $b=\Theta(\log n)$. At each superblock boundary store the total ones before it, requiring $lceil\log_2(n+1)\rceil$ bits. At each block boundary store ones since its superblock start, requiring $lceil\log_2(s+1)\rceil$ bits.
 
-For query position (i), add its superblock count, within-superblock block count, and population count in the residual bits from block boundary through (i). With (s=\log^2 n), the first directory costs
+For query position (i), add its superblock count, within-superblock block count, and population count in the residual bits from block boundary through (i). With $s=\log^2 n$, the first directory costs
 
-\[
+$$
 O\!\left(\frac{n}{\log^2 n}\log n\right)
 =O\!\left(\frac{n}{\log n}\right)=o(n).
-\]
+$$
 
-With (b=\tfrac12\log n), the second costs
+With $b=\tfrac12\log n$, the second costs
 
-\[
+$$
 O\!\left(\frac{n}{\log n}\log\log n\right)=o(n).
-\]
+$$
 
-If the residual fits a word, masked population count is constant time under the word-RAM/instruction model. The classical universal table alternative stores answers for all (2^b=\sqrt n) block patterns and local positions; its polylogarithmic factor times (sqrt n) remains (o(n)). Real implementations normally use word operations because a global table and cache traffic have different constants.
+If the residual fits a word, masked population count is constant time under the word-RAM/instruction model. The classical universal table alternative stores answers for all $2^b=\sqrt n$ block patterns and local positions; its polylogarithmic factor times (sqrt n) remains (o(n)). Real implementations normally use word operations because a global table and cache traffic have different constants.
 
 Counter widths must be derived. A superblock count can reach (n); a block-relative count can reach (s). Bit packing narrower fields saves space but complicates unaligned loads and portability. Using full machine words simplifies access but may change the measured redundancy for finite (n).
 
 ### Select structures
 
-Select cannot be answered from a fixed position directory alone because equal occurrence intervals can span one bit or millions. A simple reduction binary-searches positions using rank in (O(\log n)); it is valuable as an oracle and fallback but not the constant-time succinct result.
+Select cannot be answered from a fixed position directory alone because equal occurrence intervals can span one bit or millions. A simple reduction binary-searches positions using rank in $O(\log n)$; it is valuable as an oracle and fallback but not the constant-time succinct result.
 
 Classical select samples every (q)-th occurrence. Samples delimit regions containing equal numbers of target bits. A region spanning many positions is sparse and can store explicit positions within a bounded total space; a short dense region can use subblocks and a lookup table. Multi-level sampling or broadword selection reduces constants. The proof accounts separately for sparse exceptional regions, dense subdirectories, and universal tables.
 
@@ -158,9 +158,9 @@ Layout directories near query data when locality helps, or separate them for str
 
 ### Compressed representations
 
-RRR-style bit vectors partition bits into fixed-size blocks. A block's *class* is its number of ones; its *offset* identifies the block among all patterns in that class. Encoding offsets near (log_2\binom{b}{c}) bits approaches zero-order entropy while rank/select directories navigate class and offset streams. Decoding tables and variable offsets add cost and implementation complexity.
+RRR-style bit vectors partition bits into fixed-size blocks. A block's *class* is its number of ones; its *offset* identifies the block among all patterns in that class. Encoding offsets near $log_2\binom{b}{c}$ bits approaches zero-order entropy while rank/select directories navigate class and offset streams. Decoding tables and variable offsets add cost and implementation complexity.
 
-Sparse bit vectors can store sorted one positions or their gaps. Elias–Fano-style representations split monotone values into high and low parts; a unary high-part bit vector itself uses select. Sparse dictionaries can approach (log\binom{n}{m}) space and support position/ordinal mapping efficiently. For density near one, represent zeros sparsely or choose adaptively.
+Sparse bit vectors can store sorted one positions or their gaps. Elias–Fano-style representations split monotone values into high and low parts; a unary high-part bit vector itself uses select. Sparse dictionaries can approach $log\binom{n}{m}$ space and support position/ordinal mapping efficiently. For density near one, represent zeros sparsely or choose adaptively.
 
 Run-length compression is strong when bits form long runs even if density is near one half. Roaring-like chunked bitmaps trade formal succinctness for practical intersections and updates. No representation dominates: density, clustering, operations, construction, updates, SIMD, and downstream composition decide.
 
@@ -192,7 +192,7 @@ FM-indexes use rank over a transformed text to update suffix-array intervals. Bi
 
 ### Verification and benchmarking
 
-The simplest oracle stores the bits plainly. For every (i\in[0,n]), recompute rank by scanning (B[0..i)). Enumerate zero and one positions for select. Exhaustive small-vector tests should cover all (2^n) patterns for feasible (n); larger tests generate uniform, sparse, dense, clustered, alternating, periodic, and adversarial boundary patterns.
+The simplest oracle stores the bits plainly. For every $i\in[0,n]$, recompute rank by scanning (B[0..i)). Enumerate zero and one positions for select. Exhaustive small-vector tests should cover all (2^n) patterns for feasible (n); larger tests generate uniform, sparse, dense, clustered, alternating, periodic, and adversarial boundary patterns.
 
 Properties include rank endpoints, unit increments, rank-zero complement, select monotonicity, access at select, both inverse identities, total counts, and agreement before/after serialization. Test lengths around word, block, superblock, page, and counter-width boundaries. Corrupt headers, offsets, counters, and padding deliberately.
 
@@ -294,7 +294,7 @@ print("evidence=two_level_rank_select_model")
 ## Definitions and Notation
 
 - (B[0..n)): logical bit vector of length (n), excluding physical padding.
-- `access(i)`: bit (B[i]), valid for (0\le i<n).
+- `access(i)`: bit (B[i]), valid for $0\le i<n$.
 - (operatorname{rank}_b(i)): count of bit (b) in half-open prefix (B[0..i)).
 - (operatorname{select}_b(t)): position of zero-based occurrence (t) of bit (b).
 - (m=operatorname{rank}_1(n)): number of one-bits; (n-m): zero-bits.
@@ -302,18 +302,18 @@ print("evidence=two_level_rank_select_model")
 - **Superblock/block:** coarse/fine rank-directory regions.
 - **Inventory/sample:** stored select position for a periodic occurrence ordinal.
 - **Class/offset:** RRR block population and identifier among same-population patterns.
-- **Word RAM:** model with word size (w=\Omega(\log n)) and declared constant-time word operations.
+- **Word RAM:** model with word size $w=\Omega(\log n)$ and declared constant-time word operations.
 - **Generation:** immutable logical bits, supports, layout parameters, and checksums published together.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 ### Rank-space derivation
 
-Superblock counters use (O((n/s)\log n)=O(n/\log n)) bits for (s=\Theta(\log^2n)). Block-relative counters use (O((n/b)\log s)=O(n\log\log n/\log n)) bits for (b=\Theta(\log n)). A residual universal table with (2^{(\log n)/2}=\sqrt n) patterns and polylogarithmic metadata is (o(n)). Each term divided by (n) tends to zero.
+Superblock counters use $O((n/s)\log n)=O(n/\log n)$ bits for $s=\Theta(\log^2n)$. Block-relative counters use $O((n/b)\log s)=O(n\log\log n/\log n)$ bits for $b=\Theta(\log n)$. A residual universal table with $2^{(\log n)/2}=\sqrt n$ patterns and polylogarithmic metadata is (o(n)). Each term divided by (n) tends to zero.
 
 ### Semantic inverses
 
-If (p=\operatorname{select}_b(t)), exactly (t) occurrences precede (p), (B[p]=b), and exactly (t+1) occur before (p+1). Conversely, if (B[i]=b), then (operatorname{select}_b(\operatorname{rank}_b(i))=i). These statements depend on half-open rank and zero-based select.
+If $p=\operatorname{select}_b(t)$, exactly (t) occurrences precede (p), (B[p]=b), and exactly (t+1) occur before (p+1). Conversely, if (B[i]=b), then $operatorname{select}_b(\operatorname{rank}_b(i))=i$. These statements depend on half-open rank and zero-based select.
 
 ### Systems invariants
 
@@ -337,7 +337,7 @@ Select-heavy and rank-heavy workloads may choose different supports over the sam
 - **(O(n)) space means succinct.** The hidden unit may be machine words.
 - **The source bits are the whole footprint.** Directories, tables, padding, headers, and build peak count.
 - **Little-(o) means small at every practical (n).** Constants and field rounding can dominate.
-- **Rank automatically provides constant-time select.** Rank-guided binary search is (O(\log n)).
+- **Rank automatically provides constant-time select.** Rank-guided binary search is $O(\log n)$.
 - **Population count is universally constant and available.** Model and target ISA must be stated.
 - **Padding zeros are logical zeros.** They are outside (B[0..n)).
 - **Native serialization preserves layout.** ABI padding, byte order, and word size differ.
@@ -415,7 +415,7 @@ For `B=011010011`, compute (operatorname{rank}_1(i)) for (i=0,4,9), all (operato
 
 ### Exercise 2
 
-Derive why superblocks of (Theta(\log^2n)), blocks of (Theta(\log n)), and residual tables for half-logarithmic blocks add (o(n)) bits. State the computational-model assumptions.
+Derive why superblocks of $Theta(\log^2n)$, blocks of $Theta(\log n)$, and residual tables for half-logarithmic blocks add (o(n)) bits. State the computational-model assumptions.
 
 ### Exercise 3
 
@@ -437,11 +437,11 @@ Prefixes give (operatorname{rank}_1(0)=0), (operatorname{rank}_1(4)=2) for `0110
 
 ### Answer 2
 
-There are (n/\Theta(\log^2n)) global counters of (Theta(\log n)) bits, totaling (O(n/\log n)). There are (n/\Theta(\log n)) local counters of (O(\log\log n)) bits, totaling (O(n\log\log n/\log n)). With residual length (b=\tfrac12\log n), (2^b=\sqrt n); storing polylogarithmic answers per pattern remains (o(n)). All ratios to (n) tend to zero. Constant query time assumes a word RAM with (w=\Omega(\log n)), constant-time indexed word access/arithmetic/masking and either population count or a shared addressable table whose space is included.
+There are $n/\Theta(\log^2n)$ global counters of $Theta(\log n)$ bits, totaling $O(n/\log n)$. There are $n/\Theta(\log n)$ local counters of $O(\log\log n)$ bits, totaling $O(n\log\log n/\log n)$. With residual length $b=\tfrac12\log n$, $2^b=\sqrt n$; storing polylogarithmic answers per pattern remains (o(n)). All ratios to (n) tend to zero. Constant query time assumes a word RAM with $w=\Omega(\log n)$, constant-time indexed word access/arithmetic/masking and either population count or a shared addressable table whose space is included.
 
 ### Answer 3
 
-A counter per bit costs (10^9\cdot8=8) GB, 64 times the 125 MB payload. Superblock counts cost approximately ((10^9/4096)\cdot8=1.953125) MB. Relative block counts cost ((10^9/64)\cdot13/8\approx25.390625) MB. The approximate directory is 27.34375 MB, so payload plus these two terms is about 152.34 MB. Omitted terms include ceilings/sentinels, residual implementation/tables, select supports, section alignment, headers/checksums, allocator or file-system rounding, construction workspace, and mappings.
+A counter per bit costs $10^9\cdot8=8$ GB, 64 times the 125 MB payload. Superblock counts cost approximately $(10^9/4096)\cdot8=1.953125$ MB. Relative block counts cost $(10^9/64)\cdot13/8\approx25.390625$ MB. The approximate directory is 27.34375 MB, so payload plus these two terms is about 152.34 MB. Omitted terms include ceilings/sentinels, residual implementation/tables, select supports, section alignment, headers/checksums, allocator or file-system rounding, construction workspace, and mappings.
 
 ### Answer 4
 

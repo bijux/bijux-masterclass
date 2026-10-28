@@ -22,8 +22,8 @@ How do formal machines turn finite inputs into runs, language judgments, or outp
 - A **configuration** is a complete abstract snapshot needed to determine possible next steps: control state plus relevant input position, stack, tape, registers, or output.
 - A **run/computation** is a finite or infinite sequence of configurations connected by legal transitions.
 - An **acceptor** uses accepting runs to define a language.
-- A **recognizer** (semidecider) for \(L\) accepts exactly strings in \(L\); on a nonmember it may reject or run forever.
-- A **decider** for \(L\) halts on every input, accepting members and rejecting nonmembers.
+- A **recognizer** (semidecider) for $L$ accepts exactly strings in $L$; on a nonmember it may reject or run forever.
+- A **decider** for $L$ halts on every input, accepting members and rejecting nonmembers.
 - A language is **Turing-recognizable** if some Turing-equivalent machine recognizes it and **decidable** if some such machine decides it.
 - A **transducer** maps inputs to outputs rather than only yes/no verdicts. It may be partial, total, deterministic, nondeterministic, functional, or relational.
 - A **deterministic** transition system has at most one next configuration per nonterminal configuration; a **nondeterministic** one may branch.
@@ -33,18 +33,18 @@ How do formal machines turn finite inputs into runs, language judgments, or outp
 
 Represent a machine operationally as
 
-\[
+$$
 M=(C,init,\longrightarrow,F_{acc},F_{rej},out),
-\]
+$$
 
-where \(C\) is the configuration set, \(init(w)\) begins input \(w\), \(\longrightarrow\) is the step relation, and terminal configurations may accept, reject, or produce output.
+where $C$ is the configuration set, $init(w)$ begins input $w$, $\longrightarrow$ is the step relation, and terminal configurations may accept, reject, or produce output.
 
 The recognized language is
 
-\[
+$$
 L(M)=\{w\in\Sigma^*\mid init(w)\longrightarrow^* c
 \text{ for some }c\in F_{acc}\}.
-\]
+$$
 
 A decider additionally requires every maximal computation on every input to terminate with a defined verdict under the model’s nondeterminism convention. For deterministic machines this means the unique run halts. Every decider is a recognizer; not every recognizer is a decider.
 
@@ -98,7 +98,7 @@ Retrieve:
 - state, transition, stack, tape, input cursor, output buffer, and invariant;
 - deterministic algorithm, termination, error, malformed input, and timeout.
 
-You should be able to distinguish \(w\in L\) from “a procedure has so far not accepted \(w\),” and explain why a finite ruleset can generate an infinite run.
+You should be able to distinguish $w\in L$ from “a procedure has so far not accepted $w$,” and explain why a finite ruleset can generate an infinite run.
 
 ## Learning Objectives
 
@@ -119,9 +119,9 @@ After completing this module, you should be able to:
 
 ### Start from configurations, not pictures
 
-A state diagram often hides the data that makes a transition possible. For a deterministic finite automaton, a configuration can be \((q,i)\): control state and input position. For a pushdown automaton it also includes stack content. For a single-tape Turing machine it includes control state, entire finite nonblank tape content, and head position. For a transducer it may include accumulated output.
+A state diagram often hides the data that makes a transition possible. For a deterministic finite automaton, a configuration can be $(q,i)$: control state and input position. For a pushdown automaton it also includes stack content. For a single-tape Turing machine it includes control state, entire finite nonblank tape content, and head position. For a transducer it may include accumulated output.
 
-The transition relation \(c\to c'\) defines one legal computation step. Its reflexive-transitive closure \(c\to^*c'\) means zero or more steps. A run begins at \(init(w)\) and follows transitions. It can:
+The transition relation $c\to c'$ defines one legal computation step. Its reflexive-transitive closure $c\to^*c'$ means zero or more steps. A run begins at $init(w)$ and follows transitions. It can:
 
 - enter an accepting terminal configuration;
 - enter a rejecting terminal configuration;
@@ -133,7 +133,7 @@ These outcomes must be defined, not inferred from implementation behavior. A mis
 
 ### Acceptance defines a language
 
-For existential nondeterministic acceptance, \(w\) is accepted if at least one finite run from \(init(w)\) reaches \(F_{acc}\). Then \(L(M)\) is the set of accepted strings. Rejected, stuck, and divergent runs do not themselves add a string to the language.
+For existential nondeterministic acceptance, $w$ is accepted if at least one finite run from $init(w)$ reaches $F_{acc}$. Then $L(M)$ is the set of accepted strings. Rejected, stuck, and divergent runs do not themselves add a string to the language.
 
 This definition is extensional: two machines recognize the same language if they accept exactly the same strings, even when their internal steps, rejection behavior, or running times differ. Machine equivalence can therefore mean language equivalence, function equivalence, trace equivalence, or bisimulation; never use “equivalent” without the observation.
 
@@ -141,14 +141,14 @@ An acceptance convention matters. A pushdown automaton may accept by final state
 
 ### Recognizers provide one-sided evidence
 
-A recognizer \(R\) for \(L\) satisfies:
+A recognizer $R$ for $L$ satisfies:
 
-\[
+$$
 w\in L\Rightarrow R(w)\text{ eventually accepts},
-\]
-\[
+$$
+$$
 w\notin L\Rightarrow R(w)\text{ never accepts}.
-\]
+$$
 
 On a nonmember, it may explicitly reject or run forever. Thus a finite accepting computation is evidence of membership, while waiting without acceptance is not evidence of nonmembership.
 
@@ -158,16 +158,16 @@ A recognizer must still be specified for every input string. “For members, run
 
 ### Deciders require total termination and correctness
 
-A decider \(D\) for \(L\) has a total characteristic behavior:
+A decider $D$ for $L$ has a total characteristic behavior:
 
-\[
+$$
 D(w)=
 \begin{cases}
 accept & w\in L,\\
 reject & w\notin L,
 \end{cases}
 \quad\text{and }D\text{ halts for every }w\in\Sigma^*.
-\]
+$$
 
 Proving decision requires two independent obligations:
 
@@ -180,20 +180,20 @@ For deterministic machines, one run must halt. For nondeterministic “decider�
 
 ### Every decider recognizes, but the converse can fail
 
-If \(D\) decides \(L\), using \(D\) as a recognizer works immediately: it accepts members and rejects nonmembers. Therefore every decidable language is recognizable.
+If $D$ decides $L$, using $D$ as a recognizer works immediately: it accepts members and rejects nonmembers. Therefore every decidable language is recognizable.
 
 The converse is not true in Turing-complete models: some languages are recognizable but not decidable. The recognizer’s divergence on nonmembers is exactly the missing negative decision procedure. This is not shown merely by presenting a loop; later undecidability proofs establish that no alternative decider exists.
 
-Decidable languages are closed under complement at this elementary level. Given decider \(D\) for \(L\), run it and swap accept/reject. Termination is preserved, so the new machine decides \(\overline L\).
+Decidable languages are closed under complement at this elementary level. Given decider $D$ for $L$, run it and swap accept/reject. Termination is preserved, so the new machine decides $\overline L$.
 
 A deeper characterization is:
 
-\[
+$$
 L\text{ decidable}\iff L\text{ and }\overline L
 \text{ are both recognizable}.
-\]
+$$
 
-The forward direction uses complement closure. For the reverse direction, dovetail recognizers \(R_L(w)\) and \(R_{\overline L}(w)\): simulate one step of each alternately. Exactly one side contains \(w\), so its recognizer eventually accepts; return the corresponding verdict. Sequentially running \(R_L\) first is wrong because it may diverge before \(R_{\overline L}\) gets a step.
+The forward direction uses complement closure. For the reverse direction, dovetail recognizers $R_L(w)$ and $R_{\overline L}(w)$: simulate one step of each alternately. Exactly one side contains $w$, so its recognizer eventually accepts; return the corresponding verdict. Sequentially running $R_L$ first is wrong because it may diverge before $R_{\overline L}$ gets a step.
 
 ### Halting, rejection, error, and timeout differ
 
@@ -201,15 +201,15 @@ Halting means no further machine step is taken under the model. A halt may accep
 
 Divergence is a property of an infinite computation. A finite observation cannot generally establish it. A wall-clock timeout implements a new total policy:
 
-\[
+$$
 D_T(w)=
 \begin{cases}
 M(w)\text{ verdict} & \text{if observed within }T,\\
 timeout & \text{otherwise}.
 \end{cases}
-\]
+$$
 
-If timeout is coerced to reject, \(D_T\) decides a bounded operational approximation, not necessarily \(L(M)\). A member whose accepting run needs more than \(T\) becomes a false rejection. Time bounds can be valid when proved from input size/model; an arbitrary operational deadline is not a computability theorem.
+If timeout is coerced to reject, $D_T$ decides a bounded operational approximation, not necessarily $L(M)$. A member whose accepting run needs more than $T$ becomes a false rejection. Time bounds can be valid when proved from input size/model; an arbitrary operational deadline is not a computability theorem.
 
 ### Determinism and nondeterminism are semantic choices
 
@@ -223,17 +223,17 @@ Universal branching—accept only if every branch accepts—defines another sema
 
 An acceptor induces a predicate/language. A deterministic transducer induces a partial function
 
-\[
+$$
 f_M:\Sigma^*\rightharpoonup\Gamma^*,
-\]
+$$
 
-where \(f_M(w)=y\) only if the computation terminates successfully with committed output \(y\). A total transducer terminates with one output for every valid input (and has a stated malformed-input policy).
+where $f_M(w)=y$ only if the computation terminates successfully with committed output $y$. A total transducer terminates with one output for every valid input (and has a stated malformed-input policy).
 
 A nondeterministic transducer can induce a relation
 
-\[
+$$
 T_M\subseteq\Sigma^*\times\Gamma^*,
-\]
+$$
 
 containing every input/output pair produced by an accepting run. It is functional only if each input relates to at most one output, even if several runs produce that same output. It is total on a domain if every domain input has at least one output.
 
@@ -259,34 +259,34 @@ When a parser, controller, or compiler is called a recognizer/transducer, identi
 
 ## Definitions and Notation
 
-Let \(C\) be configurations and \(\to\subseteq C\times C\) the step relation. Write \(\to^*\) for its reflexive-transitive closure. A run on \(w\) is \(c_0,c_1,\ldots\) with \(c_0=init(w)\) and \(c_i\to c_{i+1}\).
+Let $C$ be configurations and $\to\subseteq C\times C$ the step relation. Write $\to^*$ for its reflexive-transitive closure. A run on $w$ is $c_0,c_1,\ldots$ with $c_0=init(w)$ and $c_i\to c_{i+1}$.
 
-A finite run is **maximal** if its last configuration has no successor. An infinite run is maximal automatically. Terminal outcome sets \(F_{acc},F_{rej},F_{err}\) should be disjoint. Under existential acceptance:
+A finite run is **maximal** if its last configuration has no successor. An infinite run is maximal automatically. Terminal outcome sets $F_{acc},F_{rej},F_{err}$ should be disjoint. Under existential acceptance:
 
-\[
+$$
 Accept_M(w)\iff\exists c\in F_{acc}:init(w)\to^*c.
-\]
+$$
 
-For deterministic \(M\), define:
+For deterministic $M$, define:
 
-\[
+$$
 Recognizes(M,L)\iff
 \forall w\,[Accept_M(w)\leftrightarrow w\in L].
-\]
+$$
 
-\[
+$$
 Decides(M,L)\iff Recognizes(M,L)\land
 \forall w\,\exists c\in F_{acc}\cup F_{rej}:init(w)\to^*c,
-\]
+$$
 
 assuming the terminal sets and transition semantics ensure a unique verdict. For nondeterministic decider definitions, add the exact all-branches termination and branch-acceptance convention.
 
-A deterministic transducer’s partial function is \(f_M(w)=out(c)\) when its unique run reaches a successful output terminal \(c\); otherwise undefined. A relational transducer has
+A deterministic transducer’s partial function is $f_M(w)=out(c)$ when its unique run reaches a successful output terminal $c$; otherwise undefined. A relational transducer has
 
-\[
+$$
 \mathcal{T}_M=\{(w,y)\mid init(w)\to^*c,\ c\text{ is output-accepting},\
 out(c)=y\}.
-\]
+$$
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -330,7 +330,7 @@ for sample in ("", "101", "111", "10x"):
     print(run_machine(sample))
 ```
 
-Loop invariant after consuming prefix \(x\): state is `even` exactly when \(x\) contains an even number of ones, and accumulated output is the bitwise complement of \(x\). Each transition preserves it. Finite input consumption proves termination, so binary inputs receive both a total output and a correct parity verdict.
+Loop invariant after consuming prefix $x$: state is `even` exactly when $x$ contains an even number of ones, and accumulated output is the bitwise complement of $x$. Each transition preserves it. Finite input consumption proves termination, so binary inputs receive both a total output and a correct parity verdict.
 
 ## Alternatives and Trade-Offs
 
@@ -379,15 +379,15 @@ Loop invariant after consuming prefix \(x\): state is `even` exactly when \(x\) 
 
 **Question:** A binary-string procedure scans to the end and accepts exactly when the count of ones is even. Is it a decider?
 
-**Reasoning:** The parity invariant proves the verdict. Each step advances the input cursor, so after \(|w|\) steps it reaches the end for every binary string. A separate finite malformed-input path handles nonbinary symbols.
+**Reasoning:** The parity invariant proves the verdict. Each step advances the input cursor, so after $|w|$ steps it reaches the end for every binary string. A separate finite malformed-input path handles nonbinary symbols.
 
 **Conclusion:** Correctness plus a decreasing remaining-length measure establishes decision.
 
 ### Example 3
 
-**Question:** A procedure enumerates all proofs in a sound formal system and accepts when it finds a proof of formula \(\varphi\). What kind of machine is it?
+**Question:** A procedure enumerates all proofs in a sound formal system and accepts when it finds a proof of formula $\varphi$. What kind of machine is it?
 
-**Reasoning:** If proof checking and fair enumeration are effective, provable \(\varphi\) is eventually accepted. If no proof exists, enumeration may continue forever. It recognizes the set of provable formulas; it decides it only with an additional terminating negative method.
+**Reasoning:** If proof checking and fair enumeration are effective, provable $\varphi$ is eventually accepted. If no proof exists, enumeration may continue forever. It recognizes the set of provable formulas; it decides it only with an additional terminating negative method.
 
 **Conclusion:** Effective witness enumeration naturally yields recognition, not automatically decision.
 
@@ -409,9 +409,9 @@ Loop invariant after consuming prefix \(x\): state is `even` exactly when \(x\) 
 
 ### Example 6
 
-**Question:** Why does running recognizer \(R_L\) to completion and then \(R_{\overline L}\) not decide \(L\)?
+**Question:** Why does running recognizer $R_L$ to completion and then $R_{\overline L}$ not decide $L$?
 
-**Reasoning:** If \(w\notin L\), \(R_L(w)\) may diverge, so the complement recognizer never starts. Alternating one simulation step of each is fair. Exactly one recognizer must eventually accept, yielding the correct verdict.
+**Reasoning:** If $w\notin L$, $R_L(w)$ may diverge, so the complement recognizer never starts. Alternating one simulation step of each is fair. Exactly one recognizer must eventually accept, yielding the correct verdict.
 
 **Conclusion:** Dovetailing, not sequential composition, converts two complementary recognizers into a decider.
 
@@ -419,7 +419,7 @@ Loop invariant after consuming prefix \(x\): state is `even` exactly when \(x\) 
 
 **Question:** A nondeterministic transducer emits `ab` on one accepting run and `ba` on another for the same input. Does it compute a function?
 
-**Reasoning:** Its induced relation contains both \((w,ab)\) and \((w,ba)\). Because one input has two distinct outputs, the relation is not functional unless an external selection/canonicalization rule changes the semantics.
+**Reasoning:** Its induced relation contains both $(w,ab)$ and $(w,ba)$. Because one input has two distinct outputs, the relation is not functional unless an external selection/canonicalization rule changes the semantics.
 
 **Conclusion:** Successful output does not imply functional transduction.
 
@@ -491,13 +491,13 @@ Specify and review an abstract controller/transducer for autonomous railway door
 
 ### Answer 1
 
-The description is the finite mathematical specification \(M=(C,init,\to,F_{acc},F_{rej},out)\) or its model-specific equivalent. A configuration is one complete instantaneous abstract state, such as control, unread input, stack/tape/head, and accumulated output. A step is one pair in \(\to\). A run is a finite or infinite sequence beginning at \(init(w)\) with adjacent legal steps. A terminal configuration has no successor or is designated halting by convention; its membership in accept/reject/error/output sets determines meaning.
+The description is the finite mathematical specification $M=(C,init,\to,F_{acc},F_{rej},out)$ or its model-specific equivalent. A configuration is one complete instantaneous abstract state, such as control, unread input, stack/tape/head, and accumulated output. A step is one pair in $\to$. A run is a finite or infinite sequence beginning at $init(w)$ with adjacent legal steps. A terminal configuration has no successor or is designated halting by convention; its membership in accept/reject/error/output sets determines meaning.
 
 Under existential acceptance, the recognized language contains exactly inputs having some finite path from initialization to an accepting configuration. This language is an extensional observation of all runs, not the diagram, one trace, or the set of halting inputs.
 
 ### Answer 2
 
-Invariant after reading prefix \(x\): (1) state is even exactly when the number of `1` symbols in \(x\) is even; (2) output equals the bitwise complement of \(x\). Base \(x=\epsilon\): zero ones is even and output is empty. On `0`, parity is unchanged and `1` is appended, preserving both clauses. On `1`, parity toggles and `0` is appended, also preserving both.
+Invariant after reading prefix $x$: (1) state is even exactly when the number of `1` symbols in $x$ is even; (2) output equals the bitwise complement of $x$. Base $x=\epsilon$: zero ones is even and output is empty. On `0`, parity is unchanged and `1` is appended, preserving both clauses. On `1`, parity toggles and `0` is appended, also preserving both.
 
 After the finite input is consumed, the invariant proves accept exactly for even parity and output exactly the complement. Each iteration consumes one symbol, so remaining length decreases to zero; therefore every binary input halts with one verdict and one output. Determinism makes the relation functional. A nonbinary symbol halts under the stated error policy, outside the binary transducer domain rather than silently rejecting parity.
 
@@ -509,9 +509,9 @@ Preserve timeout as timeout/error, capture configuration/progress evidence, and 
 
 ### Answer 4
 
-Forward: suppose \(D\) decides \(L\). It is already a recognizer for \(L\). Construct \(D^c\) that runs \(D\), swaps accept and reject, and halts when \(D\) halts. Since \(D\) is total and correct, \(D^c\) recognizes (indeed decides) \(\overline L\).
+Forward: suppose $D$ decides $L$. It is already a recognizer for $L$. Construct $D^c$ that runs $D$, swaps accept and reject, and halts when $D$ halts. Since $D$ is total and correct, $D^c$ recognizes (indeed decides) $\overline L$.
 
-Reverse: suppose \(R\) recognizes \(L\) and \(S\) recognizes \(\overline L\). On input \(w\), dovetail their simulations: one step of \(R(w)\), one of \(S(w)\), repeatedly, retaining configurations. Because every string lies in exactly one of \(L,\overline L\), the corresponding recognizer eventually accepts. If \(R\) accepts, accept; if \(S\) accepts, reject. Soundness prevents the wrong recognizer from accepting, and fair alternation prevents either divergence from starving the other. Thus the constructed machine halts correctly on every input and decides \(L\).
+Reverse: suppose $R$ recognizes $L$ and $S$ recognizes $\overline L$. On input $w$, dovetail their simulations: one step of $R(w)$, one of $S(w)$, repeatedly, retaining configurations. Because every string lies in exactly one of $L,\overline L$, the corresponding recognizer eventually accepts. If $R$ accepts, accept; if $S$ accepts, reject. Soundness prevents the wrong recognizer from accepting, and fair alternation prevents either divergence from starving the other. Thus the constructed machine halts correctly on every input and decides $L$.
 
 ### Answer 5
 

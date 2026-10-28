@@ -33,9 +33,9 @@ How can a service govern how much work an authenticated scope may offer over tim
 
 For token count T at last update t₀, current monotonic time t, refill rate r, capacity B and requested cost c:
 
-\[
+$$
 T'=\min(B,\;T+r\max(0,t-t_0)).
-\]
+$$
 
 Admit atomically iff T'≥c, then set T←T'−c; otherwise retain T' and reject/defer. Over any interval of length Δ, a single bucket can admit no more than B+rΔ cost under the ideal model, including allowance stored before the interval. Local buckets on n replicas can jointly admit roughly nB+nrΔ unless configured/coordinated to represent a global policy. Rate limiting does not bound concurrent residence: admitted rate λ combined with long service W can still produce L≈λW in-flight work.
 
@@ -404,9 +404,9 @@ For a fleet, hash tenant to limiter shards, use a central atomic service, or lea
 
 At cost 4, the full bucket admits floor(30/4)=7 complete requests immediately and leaves 30−28=2 tokens. The ideal admitted-cost upper bound over ten seconds from a full bucket is
 
-\[
+$$
 B+r\Delta=30+6(10)=90\text{ units}.
-\]
+$$
 
 Although floor(90/4)=22, the interval cost bound does not guarantee 22 complete requests. Arrival timing, refill granularity, prior admissions at the interval boundary, other hierarchy/concurrency limits, failures and the rule for tokens stored before the interval affect individual admission. Ninety is an upper bound on cost under stated assumptions, not promised capacity.
 

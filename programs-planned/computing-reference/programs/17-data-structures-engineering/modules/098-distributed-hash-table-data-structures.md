@@ -83,13 +83,13 @@ After this chapter, you should be able to:
 
 ### Identifier geometry and responsibility
 
-Canonical bytes map keys and nodes into an (m)-bit space. Chord assigns key (k) to the first live node clockwise at or after (k), with one exact modular interval convention. Kademlia defines distance (d(x,y)=x\oplus y); closer means numerically smaller XOR, and buckets group contacts by the most significant differing bit. Pastry uses prefix digits plus a numeric leaf set. CAN assigns coordinate zones and routes geometrically.
+Canonical bytes map keys and nodes into an (m)-bit space. Chord assigns key (k) to the first live node clockwise at or after (k), with one exact modular interval convention. Kademlia defines distance $d(x,y)=x\oplus y$; closer means numerically smaller XOR, and buckets group contacts by the most significant differing bit. Pastry uses prefix digits plus a numeric leaf set. CAN assigns coordinate zones and routes geometrically.
 
 The metric determines progress and routing-table structure. Circular clockwise order is not XOR closeness: applying one protocol's “closest” choice inside another can loop or miss the responsible node. Identifier collision, endpoint changes, bit width, hash algorithm, namespace, and tie-breaking are protocol fields.
 
 ### Chord routing and stabilization
 
-For node (n), finger (i) targets the successor of (n+2^i) modulo (2^m). To find successor of (k), return the immediate successor when (k\in(n,successor]); otherwise forward to the closest known finger strictly inside clockwise interval ((n,k)), falling back to a live successor. A correct step advances without overshooting the target under the modular order.
+For node $n$, finger $i$ targets the successor of $n+2^i$ modulo $2^m$. To find successor of $k$, return the immediate successor when $k\in(n,successor]$; otherwise forward to the closest known finger strictly inside clockwise interval $(n,k)$, falling back to a live successor. A correct step advances without overshooting the target under the modular order.
 
 The successor pointer is the safety-critical route; fingers accelerate. A successor list supplies alternatives under adjacent failures. Stabilization asks successors about predecessors, adopts a closer valid node, notifies, refreshes fingers, and checks liveness. Joins initialize through a known bootstrap node and transfer/replicate affected records only after routing state supports them.
 
@@ -211,7 +211,7 @@ The assertion rejects repeated nodes in this fixture route, but a real implement
 - (m) is identifier width and (2^m) the identifier-space size.
 - (successor(k)) is the first live Chord node clockwise at or after key (k).
 - A **finger table** contains exponentially offset Chord successors; a **successor list** contains adjacent fallback nodes.
-- (d(x,y)=x\oplus y) is Kademlia's XOR distance interpreted as an unsigned integer.
+- $d(x,y)=x\oplus y$ is Kademlia's XOR distance interpreted as an unsigned integer.
 - A **k-bucket** stores bounded contacts for one XOR-distance/prefix region; (alpha) bounds parallel lookup queries.
 - A **routing-table invariant** is a condition on contacts sufficient for progress/reachability under named failures.
 - **Iterative routing** lets the origin query contacts; **recursive routing** delegates forwarding to overlay peers.

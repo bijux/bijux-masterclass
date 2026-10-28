@@ -31,9 +31,9 @@ How can a base abstraction own an invariant algorithm sequence while subclasses 
 
 Let template (T) sequence invariant base steps (b_i), required primitives (p_j), and optional hooks (h_k):
 
-\[
+$$
 T(x)=b_{post}(h_2(p_2(b_2(h_1(p_1(b_{pre}(x))))))).
-\]
+$$
 
 If precondition (P) holds, every override satisfies its hook contract, and failures/cleanup follow the skeleton, then template postcondition (Q) and invariant (I) may be derived compositionally. Inheritance and call order alone do not prove override correctness, exception safety, resource release, or transactional effects.
 
@@ -193,11 +193,11 @@ Run the common contract suite against every production subclass. Mutation testin
 
 Let base invariant (I(z)), input precondition (P(x)), final postcondition (Q(x,y)), and step contracts (K_i=(P_i,Q_i,F_i,R_i)) for pre/post, failure, and resource behavior.
 
-For sequence (f_n\circ...\circ f_1), compositional proof requires (Q_i\Rightarrow P_{i+1}), each step preserves the required invariant, and failure edges satisfy the cleanup relation (C_i). Success is
+For sequence $f_n\circ...\circ f_1$, compositional proof requires $Q_i\Rightarrow P_{i+1}$, each step preserves the required invariant, and failure edges satisfy the cleanup relation (C_i). Success is
 
-\[
+$$
 P(x)\Rightarrow Q(x,T(x))\land I(z_{final}).
-\]
+$$
 
 Call trace (	au=[validate,prepare,primitive,normalize,postvalidate,commit,cleanup]) is part of the behavioral contract only where explicitly promised. Undocumented trace details are not subclass rights.
 

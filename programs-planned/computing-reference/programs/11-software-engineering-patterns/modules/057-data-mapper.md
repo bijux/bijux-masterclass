@@ -31,19 +31,19 @@ How can a mapping layer translate between a behavior-rich object model and a rel
 
 ### Central model, mechanism, or theorem
 
-Let valid domain states be \(O_v\), accepted database rows \(R_a\), encoding \(e:O_v\to R_a\), decoding \(d:R_a\to O_v\cup E\), and semantic equivalence \(\simeq\). A sound mapping aims for
+Let valid domain states be $O_v$, accepted database rows $R_a$, encoding $e:O_v\to R_a$, decoding $d:R_a\to O_v\cup E$, and semantic equivalence $\simeq$. A sound mapping aims for
 
-\[
+$$
 \forall o\in O_v:\quad d(e(o))\simeq o,
-\]
+$$
 
 and, for accepted rows,
 
-\[
+$$
 \forall r\in R_a:\quad e(d(r))=c(r),
-\]
+$$
 
-where \(c\) is documented canonicalization (normalization, defaults, generated values, representation changes). These laws are conditional on identity, precision, schema version, relationships, and transaction context. Passing one round trip does not prove concurrency, query plans, migration correctness, or domain truth.
+where $c$ is documented canonicalization (normalization, defaults, generated values, representation changes). These laws are conditional on identity, precision, schema version, relationships, and transaction context. Passing one round trip does not prove concurrency, query plans, migration correctness, or domain truth.
 
 ### Critical invariants
 
@@ -259,21 +259,21 @@ Concurrency tests race versions. Query tests assert results plus bounded stateme
 
 ## Definitions and Notation
 
-Let \(O_v\) be valid domain states, \(R_a\) accepted row states, \(E\) mapping errors, \(e:O_v\to R_a\) encoding/decomposition, and \(d:R_a\to O_v\cup E\) decoding/materialization. Semantic equivalence \(\simeq\) ignores representation-only differences but preserves all behaviorally relevant identity, value, relationship, and version facts.
+Let $O_v$ be valid domain states, $R_a$ accepted row states, $E$ mapping errors, $e:O_v\to R_a$ encoding/decomposition, and $d:R_a\to O_v\cup E$ decoding/materialization. Semantic equivalence $\simeq$ ignores representation-only differences but preserves all behaviorally relevant identity, value, relationship, and version facts.
 
 Object round trip requires
 
-\[
+$$
 d(e(o))\simeq o\quad\forall o\in O_v.
-\]
+$$
 
-Row canonicalization requires, when \(d(r)\notin E\),
+Row canonicalization requires, when $d(r)\notin E$,
 
-\[
+$$
 e(d(r))=c(r),
-\]
+$$
 
-not necessarily \(r\), because defaults, normalized text, canonical enum code, generated values, column order, and equivalent representations may differ. For lossy mappings, define observation \(\pi\) and require only \(\pi(d(e(o)))=\pi(o)\); never hide loss behind full equivalence.
+not necessarily $r$, because defaults, normalized text, canonical enum code, generated values, column order, and equivalent representations may differ. For lossy mappings, define observation $\pi$ and require only $\pi(d(e(o)))=\pi(o)$; never hide loss behind full equivalence.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -561,9 +561,9 @@ The Service Layer must inspect the typed domain result and avoid registering/sav
 
 ### Answer 2
 
-Let domain Money use exact integer minor units or arbitrary exact decimal plus validated ISO currency; choose one. For decimal columns define precision \(P\), scale \(S\), accepted range, and rounding mode/stage. Encode currency as stable uppercase code with reference/check constraint. Decode rejects null (unless domain type is optional), unknown code, excess scale not canonically representable, out-of-range, NaN/infinite driver values, and malformed data.
+Let domain Money use exact integer minor units or arbitrary exact decimal plus validated ISO currency; choose one. For decimal columns define precision $P$, scale $S$, accepted range, and rounding mode/stage. Encode currency as stable uppercase code with reference/check constraint. Decode rejects null (unless domain type is optional), unknown code, excess scale not canonically representable, out-of-range, NaN/infinite driver values, and malformed data.
 
-Define \(d(e(m))=m\) for every representable Money. For accepted rows, \(e(d(r))=c(r)\), where canonicalization may uppercase code and quantize only under declared non-lossy/approved rounding. If rounding is allowed, define observation/error bound explicitly rather than claim full equality. Tests cover zero, signs if allowed, half cases, max/min, each currency exponent policy, mixed currency prohibition, null, unknown code, excess precision/scale, and aggregate overflow. Integration tests use the real driver/database for decimal binding/result types, constraints, locale independence, and round trip; finance/domain reviewers approve rounding semantics.
+Define $d(e(m))=m$ for every representable Money. For accepted rows, $e(d(r))=c(r)$, where canonicalization may uppercase code and quantize only under declared non-lossy/approved rounding. If rounding is allowed, define observation/error bound explicitly rather than claim full equality. Tests cover zero, signs if allowed, half cases, max/min, each currency exponent policy, mixed currency prohibition, null, unknown code, excess precision/scale, and aggregate overflow. Integration tests use the real driver/database for decimal binding/result types, constraints, locale independence, and round trip; finance/domain reviewers approve rounding semantics.
 
 ### Answer 3
 

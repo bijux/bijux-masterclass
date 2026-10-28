@@ -31,17 +31,17 @@ How can a sender offer a request to an ordered set of potential handlers without
 
 ### Central model, mechanism, or theorem
 
-Let ordered handlers be (H=(h_1,\ldots,h_n)), where
+Let ordered handlers be $H=(h_1,\ldots,h_n)$, where
 
-\[
+$$
 h_i:C\times X\to Pass\mid Handled(Y)\mid Rejected(R)\mid Failed(E).
-\]
+$$
 
 Dispatch finds the least index (j) whose result is not `Pass` and returns that result; if none exists it returns `Unhandled` unless a total terminal handler is guaranteed. Thus order is semantic. Completeness requires
 
-\[
+$$
 \forall(c,x)\in D,\ \exists i:\ h_i(c,x)\ne Pass
-\]
+$$
 
 for the declared input domain (D), or an explicit `Unhandled` contract.
 
@@ -180,15 +180,15 @@ If handlers are pure predicates mapping to static outcomes, a decision table, pa
 
 ## Definitions and Notation
 
-For domain (D\subseteq C\times X), define eligibility predicate (q_i(c,x)). In first-match semantics, selected handler is
+For domain $D\subseteq C\times X$, define eligibility predicate (q_i(c,x)). In first-match semantics, selected handler is
 
-\[
+$$
 j(c,x)=\min\{i\mid q_i(c,x)\},
-\]
+$$
 
-when the set is nonempty. Overlap (q_i\land q_k) makes order observable; a gap (\neg\bigvee_i q_i) produces `Unhandled` absent a terminal handler.
+when the set is nonempty. Overlap $q_i\land q_k$ makes order observable; a gap $\neg\bigvee_i q_i$ produces `Unhandled` absent a terminal handler.
 
-Let visited prefix (V(c,x)=\{1,\ldots,j\}), or all handlers if unhandled. Total sequential decision cost is (T=\sum_{i\in V}t_i) under the stated simple model. Expected cost depends on request distribution and predicate/handler costs; cheapest-first order is valid only when semantics permit reordering.
+Let visited prefix $V(c,x)=\{1,\ldots,j\}$, or all handlers if unhandled. Total sequential decision cost is $T=\sum_{i\in V}t_i$ under the stated simple model. Expected cost depends on request distribution and predicate/handler costs; cheapest-first order is valid only when semantics permit reordering.
 
 For configuration generation (g), request traversal uses immutable chain (H_g). Reconfiguration publishes (H_{g+1}) atomically for new requests while (H_g) remains alive until its in-flight count reaches zero.
 
@@ -377,7 +377,7 @@ Trace all executable paths and state which completeness and ordering properties 
 
 ### Exercise 2
 
-Given predicates (q_1=x<0), (q_2=x\bmod2=0), and (q_3=true), derive selected handlers for (-2,-1,0,3), overlaps, and the result of swapping the first two.
+Given predicates (q_1=x<0), $q_2=x\bmod2=0$, and (q_3=true), derive selected handlers for (-2,-1,0,3), overlaps, and the result of swapping the first two.
 
 ### Exercise 3
 
@@ -401,7 +401,7 @@ The traces do not prove coverage for a different chain/configuration, authentica
 
 ### Answer 2
 
-In order (q_1,q_2,q_3): (-2) matches both (q_1) and (q_2) but selects 1; (-1) selects 1; (0) selects 2; (3) selects 3. The fallback makes coverage total. Overlap sets include all negative even values for (q_1\land q_2), all values with (q_3), and negative values with (q_1\land q_3).
+In order (q_1,q_2,q_3): (-2) matches both (q_1) and (q_2) but selects 1; (-1) selects 1; (0) selects 2; (3) selects 3. The fallback makes coverage total. Overlap sets include all negative even values for $q_1\land q_2$, all values with (q_3), and negative values with $q_1\land q_3$.
 
 After swapping even before negative: (-2) selects even handler 2-now-first, (-1) selects negative, (0) still selects even, and (3) selects fallback. The changed result for negative evens proves order observability. Reordering by cost is invalid unless overlapping handlers have equivalent outcomes or priority policy allows the change.
 

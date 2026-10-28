@@ -33,16 +33,16 @@ Given concrete ownership, I/O, blocking, ordering, dependency, capacity, cancell
 
 Select from constraints in this order:
 
-\[
+$$
 ownership\rightarrow event/blocking\rightarrow ordering\rightarrow capacity/dependencies
 \rightarrow cancellation/effects\rightarrow lifecycle\rightarrow evidence.
-\]
+$$
 
 First choose where mutable state lives. Then keep potentially blocking work out of an owner that must make multiplexed progress. Introduce a queue/worker boundary only when the blocking map requires it and bound both directions. For a pipeline with accepted rate λ and stage capacities μᵢ, sustainable throughput is limited by
 
-\[
+$$
 \mu_{pipeline}\le \min_i\mu_i,
-\]
+$$
 
 so adding concurrency before a slower dependency cannot make the system stable. Every candidate must satisfy safety invariants, absence/management of wait cycles, finite resource bounds and terminal shutdown/effect accounting before performance comparison.
 
@@ -171,10 +171,10 @@ Ordering external effects may require idempotency and database/device conditiona
 
 List:
 
-\[
+$$
 C=(connections,outstanding\ ops,queue\ count/bytes,workers,buffers,
 dependencies,results,retries,tenants,timers).
-\]
+$$
 
 For each give hard bound, owner, full policy, metric and shutdown behavior. A finite upstream queue with an unbounded downstream executor is not bounded. A Proactor with unlimited submissions is not scalable. A Future graph can be an unbounded queue without visible queue depth.
 
@@ -301,7 +301,7 @@ print("checks=ownership,blocking,event,ordering,capacity,effect,shutdown,evidenc
 
 Let ownership graph (O=(R,D)) map mutable resources (R) to owner domains (D). Blocking map β assigns each call/context a worst-case blocking class. Wait graph (G_w=(V,E)) records resource/execution dependencies. Ordering equivalence ∼ partitions operations into domains requiring serialization.
 
-Capacity vector (C=(c_1,\ldots,c_n)) records hard resource bounds and full policies. Stage service rates are μᵢ; accepted rate λ; end-to-end deadline (D_r); lifecycle generation (g); and stable request/effect identity (r,e).
+Capacity vector $C=(c_1,\ldots,c_n)$ records hard resource bounds and full policies. Stage service rates are μᵢ; accepted rate λ; end-to-end deadline (D_r); lifecycle generation (g); and stable request/effect identity (r,e).
 
 A candidate (P) is admissible only if it maps every resource to one ownership policy, respects β, preserves required ∼, has finite C, handles cycles/effects/lifecycle and has testable evidence obligations.
 
@@ -507,15 +507,15 @@ Reject pure Reactor because DB blocks; pure Proactor because readiness/DB are no
 
 Worker nominal capacity is
 
-\[
+$$
 24\times45=1080\text{ requests/s}.
-\]
+$$
 
 Pipeline upper bound is the minimum of parse 1,400, worker 1,080 and database 700, so at most 700 requests/s under stated safe rates. Accepted 900/s exceeds the bottleneck: no finite queue is long-run stable. Little's Law for the *claimed stable measured boundary* gives
 
-\[
+$$
 L=900\times0.4=360.
-\]
+$$
 
 But the rates contradict a long-run stable pipeline unless 900 is transient, measurement boundary excludes rejected/backlogged work, or DB 700 is not binding during that sample.
 

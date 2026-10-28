@@ -30,20 +30,20 @@ When should business logic be organized as one module over a table or record set
 
 ### Central model, mechanism, or theorem
 
-For relation state \(R\), trusted command \(c\), and context \(x\), a table operation denotes
+For relation state $R$, trusted command $c$, and context $x$, a table operation denotes
 
-\[
+$$
 F(R,c,x)=R' \quad\text{or typed rejection},
-\]
+$$
 
-where the intended update can be expressed as replacing each tuple \(t\) satisfying authorized predicate \(P(t,c,x)\) with transformation \(g(t,c,x)\):
+where the intended update can be expressed as replacing each tuple $t$ satisfying authorized predicate $P(t,c,x)$ with transformation $g(t,c,x)$:
 
-\[
+$$
 R'=(R\setminus S)\cup\{g(t,c,x)\mid t\in S\},
 \quad S=\{t\in R\mid P(t,c,x)\}.
-\]
+$$
 
-If \(g\) preserves row invariant \(I\), the database enforces required set constraints, and transaction isolation prevents the relevant anomaly, the committed result preserves the stated invariant. Source-level set notation alone proves none of those premises.
+If $g$ preserves row invariant $I$, the database enforces required set constraints, and transaction isolation prevents the relevant anomaly, the committed result preserves the stated invariant. Source-level set notation alone proves none of those premises.
 
 ### Critical invariants
 
@@ -222,22 +222,22 @@ Conversely, a Domain Model may delegate a true bulk calculation to a Table Modul
 
 ## Definitions and Notation
 
-Let \(R\subseteq D_1\times\cdots\times D_n\) be a finite relation with key function \(k\). Let predicate \(P(t,c,x)\) select tuples authorized and eligible for command \(c\) under trusted context \(x\). Let transformation \(g\) preserve the key and return a tuple of the same schema.
+Let $R\subseteq D_1\times\cdots\times D_n$ be a finite relation with key function $k$. Let predicate $P(t,c,x)$ select tuples authorized and eligible for command $c$ under trusted context $x$. Let transformation $g$ preserve the key and return a tuple of the same schema.
 
-Define \(S=\sigma_P(R)\). A conceptual simultaneous update is
+Define $S=\sigma_P(R)$. A conceptual simultaneous update is
 
-\[
+$$
 U(R)=(R\setminus S)\cup g[S],
 \quad g[S]=\{g(t,c,x)\mid t\in S\}.
-\]
+$$
 
 Key preservation requires
 
-\[
+$$
 \forall t_1,t_2\in U(R): k(t_1)=k(t_2)\Rightarrow t_1=t_2.
-\]
+$$
 
-For a percentage discount \(d\in[0,1]\) on nonnegative integer-cent subtotal \(a\), define a specified rounding function \(\rho\) and \(a'=\rho(a(1-d))\). The finite executable model uses integer formula \(a'=\lfloor 9a/10\rfloor\) for exactly 10%; production policy must state whether floor is correct.
+For a percentage discount $d\in[0,1]$ on nonnegative integer-cent subtotal $a$, define a specified rounding function $\rho$ and $a'=\rho(a(1-d))$. The finite executable model uses integer formula $a'=\lfloor 9a/10\rfloor$ for exactly 10%; production policy must state whether floor is correct.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -297,9 +297,9 @@ print(f"repeat={changed} {values}")
 
 **Base.** Each row has a unique ID, nonnegative subtotal, recognized status, tenant, and no applied policy.
 
-**Selection.** Only rows satisfying tenant `T1`, open status, threshold \(a\ge10000\), and different policy marker enter \(S\). Thus `I3` and `I4` cannot change.
+**Selection.** Only rows satisfying tenant `T1`, open status, threshold $a\ge10000$, and different policy marker enter $S$. Thus `I3` and `I4` cannot change.
 
-**Transformation.** For each selected integer \(a\ge0\), \(a'=\lfloor9a/10\rfloor\ge0\); identity, tenant, and status remain unchanged; policy becomes `P-7`. IDs remain unique because keys do not change.
+**Transformation.** For each selected integer $a\ge0$, $a'=\lfloor9a/10\rfloor\ge0$; identity, tenant, and status remain unchanged; policy becomes `P-7`. IDs remain unique because keys do not change.
 
 **Repeat.** No transformed row satisfies `discount_policy != "P-7"`, while originally ineligible rows remain ineligible, so the second qualifying set is empty.
 
@@ -474,13 +474,13 @@ With `I2=9999`, it fails the inclusive `>=10000` threshold. With `I4` open, it n
 
 ### Answer 2
 
-Directly joining invoice, line, and payment rows forms each line-payment pair: \(m\) lines and \(n\) payments yield \(mn\) rows, multiplying both sums. Compute `line_totals` grouped by invoice key and `payment_totals` grouped by invoice key, then left-join each one-row-per-invoice result to invoices. Coalesce missing aggregate results to zero only if “no children means zero” is the domain rule; do not coalesce unknown amounts.
+Directly joining invoice, line, and payment rows forms each line-payment pair: $m$ lines and $n$ payments yield $mn$ rows, multiplying both sums. Compute `line_totals` grouped by invoice key and `payment_totals` grouped by invoice key, then left-join each one-row-per-invoice result to invoices. Coalesce missing aggregate results to zero only if “no children means zero” is the domain rule; do not coalesce unknown amounts.
 
 Primary/foreign keys support identity/references; nonnegative/units/currency constraints support valid components. Group by currency unless conversion is explicit. Tests cover no children, one/many on each side, duplicate source keys, nulls, mixed currency, large totals/overflow, and representative plans. Recompute small fixtures manually and compare ledger authority where applicable.
 
 ### Answer 3
 
-Capture one authoritative cutoff \(T\) and operation ID/policy digest. Membership is sessions with `expires_at < T`, not legally retained, and not already completed by this operation. Use a selective `(status, expires_at, id)`-style index suited to the engine. Process stable keyset batches ordered by `(expires_at,id)`; atomically claim/version rows or conditionally update only if `expires_at < T` still holds, so a concurrent refresh wins rather than being expired.
+Capture one authoritative cutoff $T$ and operation ID/policy digest. Membership is sessions with `expires_at < T`, not legally retained, and not already completed by this operation. Use a selective `(status, expires_at, id)`-style index suited to the engine. Process stable keyset batches ordered by `(expires_at,id)`; atomically claim/version rows or conditionally update only if `expires_at < T` still holds, so a concurrent refresh wins rather than being expired.
 
 Record checkpoints, attempted/changed/conflicted counts, deadlines, lock waits, and errors. Each change stores operation marker and outbox intent atomically; repeat is idempotent. Decide whether new already-expired sessions after snapshot belong to this run or the next. Support cancellation between batches, expired-claim recovery, bounded retry, and final queries reconciling eligible, changed, refreshed/conflicted, excluded, and failed populations. Load-test plans/locks/log growth and fault-inject at batch and commit boundaries.
 

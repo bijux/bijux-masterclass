@@ -31,14 +31,14 @@ How can an application expose one stable set of use-case operations to HTTP, job
 
 ### Central model, mechanism, or theorem
 
-For trusted operation context \(x\), command \(c\), local state \(S\), and idempotency map \(K\), an application operation denotes
+For trusted operation context $x$, command $c$, local state $S$, and idempotency map $K$, an application operation denotes
 
-\[
+$$
 L(S,K,c,x)\to(S',K',r,O')
 \quad\text{or}\quad(S,K,e,O),
-\]
+$$
 
-where \(r\) is typed success, \(e\) typed failure, and \(O'\) outbox intent. The layer validates/binds identity and authority, establishes the local transaction, loads governed state, delegates domain decisions, persists state plus idempotency/outbox, and maps the result. Local atomicity is conditional on the real transaction system; it does not make remote calls atomic or prove the domain rule correct.
+where $r$ is typed success, $e$ typed failure, and $O'$ outbox intent. The layer validates/binds identity and authority, establishes the local transaction, loads governed state, delegates domain decisions, persists state plus idempotency/outbox, and maps the result. Local atomicity is conditional on the real transaction system; it does not make remote calls atomic or prove the domain rule correct.
 
 ### Critical invariants
 
@@ -236,24 +236,24 @@ When an application service accumulates domain conditionals, move rules into a m
 
 ## Definitions and Notation
 
-Let local state be \(S\), idempotency registry \(K\), command \(c\), trusted context \(x\), result set \(R\), error set \(E\), and outbox multiset \(O\). One operation is a partial function
+Let local state be $S$, idempotency registry $K$, command $c$, trusted context $x$, result set $R$, error set $E$, and outbox multiset $O$. One operation is a partial function
 
-\[
+$$
 L:S\times K\times C\times X
 \rightarrow (S\times K\times R\times O)\cup E.
-\]
+$$
 
-Let identity \(k=\kappa(c,x)\) and canonical request digest \(h=H(c)\). Required idempotency behavior is
+Let identity $k=\kappa(c,x)$ and canonical request digest $h=H(c)$. Required idempotency behavior is
 
-\[
+$$
 K[k]=(h,r)\Rightarrow
 \begin{cases}
 r,&H(c)=h,\\
 \mathrm{key\_conflict},&H(c)\ne h.
 \end{cases}
-\]
+$$
 
-For transfer amount \(a>0\) between same-currency balances \(b_s\ge a\) and \(b_t\ge0\), the domain transition gives \(b'_s=b_s-a\), \(b'_t=b_t+a\), preserving \(b'_s+b'_t=b_s+b_t\). The Service Layer establishes identity, authority, transaction, persistence, and outbox premises around that domain operation.
+For transfer amount $a>0$ between same-currency balances $b_s\ge a$ and $b_t\ge0$, the domain transition gives $b'_s=b_s-a$, $b'_t=b_t+a$, preserving $b'_s+b'_t=b_s+b_t$. The Service Layer establishes identity, authority, transaction, persistence, and outbox premises around that domain operation.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -355,7 +355,7 @@ print(f"denied={result} A={store.accounts['A'].balance_cents} B={store.accounts[
 
 **Base.** Balances are nonnegative; total is 1500; receipt/outbox are empty.
 
-**Authorized first call.** The service opens a private copy, the source domain object checks \(300>0\) and \(1000\ge300\), debit/credit yield 700 and 800, receipt and one event are added, then all copied state replaces store state. Total remains 1500.
+**Authorized first call.** The service opens a private copy, the source domain object checks $300>0$ and $1000\ge300$, debit/credit yield 700 and 800, receipt and one event are added, then all copied state replaces store state. Total remains 1500.
 
 **Duplicate.** A copied registry already contains `R-1`, so the operation returns before domain mutation/commit; state remains unchanged.
 

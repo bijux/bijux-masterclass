@@ -31,9 +31,9 @@ How can clients traverse a collection or computed sequence without depending on 
 
 Represent a pull iterator as state machine (I=(S,s_0,step)), where
 
-\[
+$$
 step(s)=End\quad\text{or}\quad step(s)=(x,s').
-\]
+$$
 
 Correct traversal is relative to a declared logical source version, encounter order, and mutation policy. If a finite snapshot has (n) elements, every successful step advances a rank (r) from 0 toward (n), emits the element at that rank exactly once for that iterator, and exhaustion occurs at (r=n). This local argument does not establish thread safety, freshness, bounded latency, cleanup, or exactly-once processing effects.
 
@@ -196,15 +196,15 @@ For concurrent/remote sources, test races, snapshot expiry, duplicate/missing bo
 
 ## Definitions and Notation
 
-Let source (A) define logical sequence (L_v=(x_0,...,x_{n-1})) at version (v). A snapshot iterator state is (s=(v,r)), where (0\le r\le n):
+Let source (A) define logical sequence (L_v=(x_0,...,x_{n-1})) at version (v). A snapshot iterator state is (s=(v,r)), where $0\le r\le n$:
 
-\[
+$$
 step(v,r)=
 \begin{cases}
 (x_r,(v,r+1)) & r<n,\\
 End & r=n.
 \end{cases}
-\]
+$$
 
 For a filter predicate (p), `filter(p,I)` repeatedly advances (I) until it finds (x) with (p(x)), reaches end, or returns failure. Thus one emitted step can consume multiple source steps.
 
@@ -272,7 +272,7 @@ print(f"ended={iterator.position == len(iterator.values)} remaining={iterator.re
 
 ### Finite snapshot argument
 
-Initially (r=0). Each successful step emits (x_r) and changes rank to (r+1), so rank strictly increases and no rank is emitted twice. Since (r\le n), after exactly (n) successful steps rank equals (n) and the next step is `End`. Induction establishes ordered, complete, duplicate-free traversal of this fixed sequence.
+Initially (r=0). Each successful step emits (x_r) and changes rank to (r+1), so rank strictly increases and no rank is emitted twice. Since $r\le n$, after exactly (n) successful steps rank equals (n) and the next step is `End`. Induction establishes ordered, complete, duplicate-free traversal of this fixed sequence.
 
 The argument assumes finite immutable snapshot contents, a private cursor, correct indexed access, no exceptions, and arithmetic capable of representing ranks. It proves neither uniqueness of equal-valued elements nor exactly-once downstream effects.
 

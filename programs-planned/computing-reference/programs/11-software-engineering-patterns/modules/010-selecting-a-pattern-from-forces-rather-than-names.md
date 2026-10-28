@@ -32,17 +32,17 @@ How can a designer move from a concrete problem and competing forces to a defens
 
 Let (A) be candidate alternatives and (H) hard constraints. First compute
 
-\[
+$$
 A_F=\{a\in A\mid h(a)=true\text{ for every }h\in H\}.
-\]
+$$
 
-For minimized consequence vector (c(a)=(c_1,\ldots,c_k)), alternative (a) dominates (b) when
+For minimized consequence vector $c(a)=(c_1,\ldots,c_k)$, alternative (a) dominates (b) when
 
-\[
+$$
 c_i(a)\le c_i(b)\ \forall i
 \quad\text{and}\quad
 c_j(a)<c_j(b)\ \text{for some }j.
-\]
+$$
 
 Remove dominated alternatives, evaluate the remaining frontier with prioritized scenarios, uncertainty, and reversibility, then record why one mechanism fits. A pattern name labels the selected recurring relationship after this reasoning; it is not an input that bypasses it.
 
@@ -189,32 +189,32 @@ The record should let a future reviewer reconstruct why the decision was rationa
 
 Let forces be partitioned into hard constraints (H), evaluated criteria (C), and uncertainties (U). The feasible set is
 
-\[
+$$
 A_F=\bigcap_{h\in H}\{a\in A:h(a)=true\}.
-\]
+$$
 
-For minimized criterion vector (c(a)\in\mathbb{R}^k), define strict Pareto dominance
+For minimized criterion vector $c(a)\in\mathbb{R}^k$, define strict Pareto dominance
 
-\[
+$$
 a\prec b
 \iff
 (\forall i,\ c_i(a)\le c_i(b))
 \land
 (\exists j,\ c_j(a)<c_j(b)).
-\]
+$$
 
 The nondominated frontier is
 
-\[
+$$
 P=\{a\in A_F:\nexists b\in A_F\text{ such that }b\prec a\}.
-\]
+$$
 
-For scenarios (Q=\{q_1,\ldots,q_m\}), record response measure (r(a,q)) and evidence confidence (e(a,q)). A robust decision remains feasible over a declared uncertainty set (\Omega):
+For scenarios $Q=\{q_1,\ldots,q_m\}$, record response measure (r(a,q)) and evidence confidence (e(a,q)). A robust decision remains feasible over a declared uncertainty set $\Omega$:
 
-\[
+$$
 h(a,\omega)=true
 \quad\forall h\in H,\ \forall\omega\in\Omega.
-\]
+$$
 
 This is a strong condition; when it is unattainable, state failure regions and contingency actions. Pareto analysis cannot compare omitted criteria, prove causal effects, or decide stakeholder values.
 

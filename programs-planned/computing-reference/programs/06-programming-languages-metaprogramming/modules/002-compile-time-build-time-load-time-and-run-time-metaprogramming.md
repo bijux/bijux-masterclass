@@ -31,17 +31,17 @@ How should an engineer place program inspection, generation, transformation, and
 
 ### Central model, mechanism, or theorem
 
-For subject artifact \(A\), model phase \(p\) as
+For subject artifact $A$, model phase $p$ as
 
-\[
+$$
 F_p:(R_p,E_p,I_p)\rightarrow(O_p,D_p,\Pi_p),
-\]
+$$
 
-where \(R_p\) is program representation, \(E_p\) phase environment, \(I_p\) declared inputs, \(O_p\) residual output, \(D_p\) diagnostics, and \(\Pi_p\) provenance. Phase order is a dependency graph, not always the simple line
+where $R_p$ is program representation, $E_p$ phase environment, $I_p$ declared inputs, $O_p$ residual output, $D_p$ diagnostics, and $\Pi_p$ provenance. Phase order is a dependency graph, not always the simple line
 
-\[
+$$
 author\prec build\prec compile\prec load\prec run.
-\]
+$$
 
 A compiler can invoke a compiled macro; a running virtual machine can JIT-compile code; a build action can compile a generator before executing it. Correctness requires every edge to carry an explicit representation and only values available at its source phase.
 
@@ -62,7 +62,7 @@ Common failures are calling every pre-deployment action “compile time,” read
 
 ### Compact example
 
-A schema generator runs as build action \(G\), reads `api.yaml` and generator version \(v\), emits `client.rs` plus a digest, then the Rust compiler type-checks the result. The correct cache key contains the schema bytes, \(v\), target options, and relevant configuration. A generator success does not imply that emitted code compiles; compilation success does not imply that a deployed service accepts the same schema version.
+A schema generator runs as build action $G$, reads `api.yaml` and generator version $v$, emits `client.rs` plus a digest, then the Rust compiler type-checks the result. The correct cache key contains the schema bytes, $v$, target options, and relevant configuration. A generator success does not imply that emitted code compiles; compilation success does not imply that a deployed service accepts the same schema version.
 
 ### Connections
 
@@ -151,13 +151,13 @@ Run-time generation should expose fallback behavior. If specialization fails or 
 
 An earlier phase can pass information forward by emitting source, serializing data, embedding constants, creating object metadata, linking a resource, or generating code. This is cross-stage persistence. The carrier must specify representation, version, integrity, confidentiality, and ownership. Embedding an environment value into an executable is not free caching; it changes when that value can be updated and may leak secrets.
 
-Partial evaluation divides inputs into early-known static values \(s\) and later dynamic values \(d\):
+Partial evaluation divides inputs into early-known static values $s$ and later dynamic values $d$:
 
-\[
+$$
 specialize(P,s)=P_s,\qquad \llbracket P_s\rrbracket(d)\approx\llbracket P\rrbracket(s,d).
-\]
+$$
 
-The residual program \(P_s\) should preserve the claimed observations for admissible \(d\). Specialization can reduce runtime work but multiply variants, code size, compile cost, and invalidation obligations.
+The residual program $P_s$ should preserve the claimed observations for admissible $d$. Specialization can reduce runtime work but multiply variants, code size, compile cost, and invalidation obligations.
 
 ### Phase environment, authority, and trust
 
@@ -167,7 +167,7 @@ Never embed credentials merely because an earlier phase can read them. Separate 
 
 ### Caching and invalidation
 
-Let output \(O=F(I,E,T)\), where \(I\) is declared content, \(E\) permitted environment, and \(T\) toolchain/target. A sound cache key \(K\) must distinguish any changes in those domains that can change \(O\), or the system must prove them irrelevant/normalized. Completeness matters more than hashing algorithm choice.
+Let output $O=F(I,E,T)$, where $I$ is declared content, $E$ permitted environment, and $T$ toolchain/target. A sound cache key $K$ must distinguish any changes in those domains that can change $O$, or the system must prove them irrelevant/normalized. Completeness matters more than hashing algorithm choice.
 
 Over-invalidation wastes time; under-invalidation serves stale artifacts. Dynamic dependency discovery can be sound if the first execution records reads and the build system validates them before reuse. Nondeterministic timestamps in generated headers defeat byte-for-byte reuse unless normalized or explicitly modeled.
 
@@ -207,35 +207,35 @@ print("available=" + ",".join(sorted(available)))
 
 ## Definitions and Notation
 
-Let \(P=\{b,c,l,r\}\) denote build, compile, load, and run phases for one named subject. The relation \(p\prec q\) means an output of \(p\) is required before action \(q\); it is a dependency relation, not necessarily total chronological order.
+Let $P=\{b,c,l,r\}$ denote build, compile, load, and run phases for one named subject. The relation $p\prec q$ means an output of $p$ is required before action $q$; it is a dependency relation, not necessarily total chronological order.
 
-For phase \(p\):
+For phase $p$:
 
-- \(R_p\): input program representation;
-- \(I_p\): declared content/configuration inputs;
-- \(E_p\): allowed environment and capabilities;
-- \(T_p\): toolchain and target identity;
-- \(O_p\): residual outputs;
-- \(D_p\): diagnostics;
-- \(\Pi_p\): provenance linking output to inputs and execution.
+- $R_p$: input program representation;
+- $I_p$: declared content/configuration inputs;
+- $E_p$: allowed environment and capabilities;
+- $T_p$: toolchain and target identity;
+- $O_p$: residual outputs;
+- $D_p$: diagnostics;
+- $\Pi_p$: provenance linking output to inputs and execution.
 
-A cache is sound with respect to function \(F_p\) when equal keys imply equivalent reusable outputs under the promised observation:
+A cache is sound with respect to function $F_p$ when equal keys imply equivalent reusable outputs under the promised observation:
 
-\[
+$$
 K_p(x)=K_p(y)\Rightarrow F_p(x)\approx F_p(y).
-\]
+$$
 
 This is a specification obligation; observing several cache hits is not a proof.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Availability invariant.** If \(q\) consumes value \(v\) produced at \(p\), then \(p\prec q\), and an explicit carrier preserves \(v\)'s relevant meaning. A runtime request cannot be a compile-time input in the same build.
+**Availability invariant.** If $q$ consumes value $v$ produced at $p$, then $p\prec q$, and an explicit carrier preserves $v$'s relevant meaning. A runtime request cannot be a compile-time input in the same build.
 
 **Provenance invariant.** Every residual artifact maps to generator/macro/agent version, source inputs, target, configuration, and transformation trace sufficient for diagnosis and policy.
 
-**Cache-completeness argument.** Suppose generator output reads schema \(S\), template \(M\), option \(C\), and tool \(T\). A key omitting \(M\) permits two executions with the same key and different output after the template changes, contradicting sound reuse. Therefore \(M\), or a proved-equivalent normalized identity, must enter the key.
+**Cache-completeness argument.** Suppose generator output reads schema $S$, template $M$, option $C$, and tool $T$. A key omitting $M$ permits two executions with the same key and different output after the template changes, contradicting sound reuse. Therefore $M$, or a proved-equivalent normalized identity, must enter the key.
 
-**Residual-equivalence obligation.** When specialization claims preservation, evaluate the original under static \(s\) and dynamic \(d\), and the residual under \(d\), under the same stated observation relation. Effects, errors, and termination cannot be silently excluded.
+**Residual-equivalence obligation.** When specialization claims preservation, evaluate the original under static $s$ and dynamic $d$, and the residual under $d$, under the same stated observation relation. Effects, errors, and termination cannot be silently excluded.
 
 **Load publication invariant.** A transformed unit is validated and fully initialized according to platform rules before other threads can observe it as usable. Failure leaves a defined cache/registry state rather than a half-published identity.
 
@@ -399,7 +399,7 @@ The subject is the client/server source API that will be generated and consumed.
 
 ### Answer 2
 
-The dependency order is: generator source \(\prec\) generator compilation \(\prec\) generator execution with schema \(\prec\) generated source \(\prec\) application compilation \(\prec\) application load/start \(\prec\) hot execution/profile collection \(\prec\) JIT compilation \(\prec\) native residual execution. Generator compilation is compile time for the generator and build time for the application; JIT is run time for the application and compile time for the method. Relative labels plus dependency edges preserve both truths.
+The dependency order is: generator source $\prec$ generator compilation $\prec$ generator execution with schema $\prec$ generated source $\prec$ application compilation $\prec$ application load/start $\prec$ hot execution/profile collection $\prec$ JIT compilation $\prec$ native residual execution. Generator compilation is compile time for the generator and build time for the application; JIT is run time for the application and compile time for the method. Relative labels plus dependency edges preserve both truths.
 
 ### Answer 3
 

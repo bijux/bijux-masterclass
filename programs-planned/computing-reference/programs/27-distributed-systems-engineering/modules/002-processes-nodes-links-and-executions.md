@@ -31,26 +31,26 @@ How can we describe a distributed system precisely enough to distinguish algorit
 
 ### Central model, mechanism, or theorem
 
-Let \(P\) be processes, \(L \subseteq P \times P\) directed links, and
+Let $P$ be processes, $L \subseteq P \times P$ directed links, and
 
-\[
+$$
 C = \left(\prod_{p\in P} S_p\right) \times
     \left(\prod_{\ell\in L} Q_\ell\right) \times E
-\]
+$$
 
-be a configuration composed of local states \(S_p\), channel states \(Q_\ell\), and modeled environment state \(E\). A transition relation \(C \xrightarrow{a} C'\) defines enabled actions and their effects. An execution is
+be a configuration composed of local states $S_p$, channel states $Q_\ell$, and modeled environment state $E$. A transition relation $C \xrightarrow{a} C'$ defines enabled actions and their effects. An execution is
 
-\[
+$$
 C_0, a_1, C_1, a_2, C_2,\ldots
-\]
+$$
 
-with \(C_{i-1}\xrightarrow{a_i}C_i\) for every step. Correctness quantifies over all admissible executions, not one observed schedule. A participant decides from its local-history projection, not from the unobservable global configuration.
+with $C_{i-1}\xrightarrow{a_i}C_i$ for every step. Correctness quantifies over all admissible executions, not one observed schedule. A participant decides from its local-history projection, not from the unobservable global configuration.
 
 ### Critical invariants
 
 - Process identity, node placement, endpoint identity, and incarnation are separate and explicit.
 - Every action has one declared abstraction boundary and one state transition.
-- A receive of message identity \(m\) requires an allowed prior creation/send; the link contract decides loss, duplication, ordering, corruption, and delivery.
+- A receive of message identity $m$ requires an allowed prior creation/send; the link contract decides loss, duplication, ordering, corruption, and delivery.
 - Local-state transitions follow the process automaton; channel transitions follow the link automaton.
 - A log or trace is an observation with a capture boundary, not automatically the authoritative global execution.
 - Proofs range over all reachable configurations and admissible schedules relevant to the claim.
@@ -62,7 +62,7 @@ Teams equate a process with a machine; use an address as eternal identity; resta
 
 ### Compact example
 
-Client process \(c\) sends request `r7` over directed link \((c,w)\). The link duplicates it. Worker \(w\) applies the request once, records its identity durably, and replays the same acknowledgement for the duplicate. The execution has two receive actions but one effect. A client history ending before either acknowledgement is compatible with several global configurations: both copies queued, one applied with replies delayed, or link loss under a lossy model. The local history alone does not choose among them.
+Client process $c$ sends request `r7` over directed link $(c,w)$. The link duplicates it. Worker $w$ applies the request once, records its identity durably, and replays the same acknowledgement for the duplicate. The execution has two receive actions but one effect. A client history ending before either acknowledgement is compatible with several global configurations: both copies queued, one applied with replies delayed, or link loss under a lossy model. The local history alone does not choose among them.
 
 ### Connections
 
@@ -115,7 +115,7 @@ By the end of this module, you should be able to:
 
 ### Processes are semantic agents
 
-A process is the unit whose state and next-step rule the model defines. Depending on the question, it may represent a client, replica, protocol role, actor, thread, service instance, device controller, or environment participant. The model commonly gives process \(p\) a state set \(S_p\), initial states \(I_p\), and actions whose enabling conditions and effects mention \(S_p\).
+A process is the unit whose state and next-step rule the model defines. Depending on the question, it may represent a client, replica, protocol role, actor, thread, service instance, device controller, or environment participant. The model commonly gives process $p$ a state set $S_p$, initial states $I_p$, and actions whose enabling conditions and effects mention $S_p$.
 
 Calling the agent sequential does not claim its implementation has one thread. It means the abstraction presents a local order of atomic actions. A multithreaded server may be refined into several modeled processes when races matter, or abstracted as one process when its internal synchronization already establishes the exported transition relation.
 
@@ -123,13 +123,13 @@ Separate a **logical process identity** from a **process incarnation**. If `work
 
 ### Nodes are deployment and failure abstractions
 
-A node hosts process incarnations and relevant resources. The placement function can be written \(host_C(p)=n\), indexed by configuration or time when migration and rescheduling are allowed. Several modeled processes on one node may fail together. One logical process may move across nodes. A physical server may contain virtual nodes with partly shared power, kernel, storage, network, or administration.
+A node hosts process incarnations and relevant resources. The placement function can be written $host_C(p)=n$, indexed by configuration or time when migration and rescheduling are allowed. Several modeled processes on one node may fail together. One logical process may move across nodes. A physical server may contain virtual nodes with partly shared power, kernel, storage, network, or administration.
 
 “Different nodes” does not prove independent failure. Name shared runtime, machine, power, network, identity, control-plane, software, and operator domains relevant to the claim. Conversely, two colocated processes can be distributed semantically when they communicate asynchronously without shared immediate state. Node state distinguishes relevant volatile, stable, external, credential, clock, and configuration state. Crash, replacement, and recovery actions state what disappears, persists, or receives a new incarnation; later modules refine the failure classes.
 
 ### Links are directed state machines
 
-A link \(\ell=(p,q)\) models communication from endpoint \(p\) to endpoint \(q\). Bidirectional communication normally requires two directed links because delay, reachability, buffers, credentials, and failure may be asymmetric. The channel state \(Q_\ell\) could be:
+A link $\ell=(p,q)$ models communication from endpoint $p$ to endpoint $q$. Bidirectional communication normally requires two directed links because delay, reachability, buffers, credentials, and failure may be asymmetric. The channel state $Q_\ell$ could be:
 
 - a sequence for FIFO delivery;
 - a multiset when reordering is unconstrained;
@@ -144,15 +144,15 @@ The representation follows the property. TCP's ordered byte-stream abstraction d
 
 For fixed process and link sets, a configuration is often
 
-\[
+$$
 C=(s_1,\ldots,s_n,q_1,\ldots,q_m,e,d),
-\]
+$$
 
-where \(s_i\) are process-local states, \(q_j\) are channel states, \(e\) is environment state, and \(d\) represents modeled durable or external state. It is “global” as a mathematical description, not necessarily something any real observer can read atomically.
+where $s_i$ are process-local states, $q_j$ are channel states, $e$ is environment state, and $d$ represents modeled durable or external state. It is “global” as a mathematical description, not necessarily something any real observer can read atomically.
 
 Messages in flight are part of state. Omitting them makes a send followed by a delayed receive appear to create information from nowhere. Pending timers, queued inputs, uncommitted operations, leases, membership, and process generations also belong if they influence enabled actions or properties.
 
-Initial configurations \(Init\subseteq C\) declare allowed starting state. One deployment may have several valid initial configurations because input, placement, keying, or membership varies. Hidden assumptions often enter here: empty channels, unique IDs, consistent configuration, synchronized replicas, or no preexisting external effects. State them.
+Initial configurations $Init\subseteq C$ declare allowed starting state. One deployment may have several valid initial configurations because input, placement, keying, or membership varies. Hidden assumptions often enter here: empty channels, unique IDs, consistent configuration, synchronized replicas, or no preexisting external effects. State them.
 
 ### Actions and transitions
 
@@ -166,7 +166,7 @@ An action label describes one transition at the selected granularity. Common cat
 - **environment:** schedule, user, device, or dependency behavior;
 - **lifecycle:** crash, stop, recover, replace, migrate, join, or leave under the model.
 
-The relation \(C\xrightarrow{a}C'\) means action \(a\) is enabled in \(C\) and taking it may produce \(C'\). A guard states when it is enabled; an effect states changed variables; a frame condition preserves everything else. If several successors are possible, the transition is nondeterministic.
+The relation $C\xrightarrow{a}C'$ means action $a$ is enabled in $C$ and taking it may produce $C'$. A guard states when it is enabled; an effect states changed variables; a frame condition preserves everything else. If several successors are possible, the transition is nondeterministic.
 
 Nondeterminism is not randomness. It represents underspecification, scheduler choice, environment choice, or behavior outside the abstraction. A probability distribution is an additional model, not implied by “one of these actions may occur.” Proving a safety invariant for all nondeterministic choices can be stronger than sampling likely schedules; quantitative reliability needs probabilistic evidence.
 
@@ -176,31 +176,31 @@ Atomic actions must have a refinement story. “Send request and receive respons
 
 An execution fragment is an alternating sequence
 
-\[
+$$
 C_0,a_1,C_1,\ldots,a_k,C_k
-\]
+$$
 
-where every adjacent transition is legal. It is an execution if \(C_0\in Init\). It may be finite or infinite. Its schedule is \(a_1,\ldots,a_k\). A behavior often means a state sequence or externally relevant execution projection; terminology varies, so define it in each analysis.
+where every adjacent transition is legal. It is an execution if $C_0\in Init$. It may be finite or infinite. Its schedule is $a_1,\ldots,a_k$. A behavior often means a state sequence or externally relevant execution projection; terminology varies, so define it in each analysis.
 
 A **trace** hides internal actions and possibly internal values, retaining an interface projection. Two implementations can have different internal executions but the same external trace. Trace refinement asks whether every implementation trace is permitted by a higher-level specification. It does not make hidden resource, timing, or fault properties disappear unless the abstraction includes them.
 
-A process history \(H_p\) projects to actions observed by or at \(p\), often plus local states. If \(H_p(e_1)=H_p(e_2)\), process \(p\) cannot choose different deterministic next actions based solely on those histories. This indistinguishability technique connects modeling to impossibility and safety arguments.
+A process history $H_p$ projects to actions observed by or at $p$, often plus local states. If $H_p(e_1)=H_p(e_2)$, process $p$ cannot choose different deterministic next actions based solely on those histories. This indistinguishability technique connects modeling to impossibility and safety arguments.
 
 One recorded log is not automatically an execution. Entries can be missing, duplicated, export-reordered, clock-skewed, emitted before durable effect, or lost after it. Preserve event identity, incarnation, local sequence, message correlation, capture stage, and uncertainty.
 
 ### Reachability, prefixes, and invariants
 
-A configuration is reachable if some finite execution leads to it. A state invariant \(Inv\) must hold in every reachable configuration. Inductive proof establishes:
+A configuration is reachable if some finite execution leads to it. A state invariant $Inv$ must hold in every reachable configuration. Inductive proof establishes:
 
-\[
+$$
 Init\Rightarrow Inv
-\]
+$$
 
 and
 
-\[
+$$
 Inv(C)\land Next(C,a,C')\Rightarrow Inv(C').
-\]
+$$
 
 The second obligation covers every enabled action, including link, environment, crash, and recovery actions admitted by the model. Checking only “normal” process actions proves a property of a smaller system.
 
@@ -278,26 +278,26 @@ The run verifies state updates for one finite schedule in one toy model. It does
 
 Let:
 
-- \(P\) be a set of logical processes;
-- \(N\) be nodes or declared deployment containers;
-- \(host_C:P\rightarrow N\) map active incarnations to nodes in configuration \(C\);
-- \(L\subseteq P\times P\) be directed links;
-- \(S_p\) be local states of process \(p\);
-- \(Q_\ell\) be states of link \(\ell\);
-- \(E\) be relevant environment states;
-- \(A=A_{in}\cup A_{out}\cup A_{int}\) be input, output, and internal action labels;
-- \(Init\) be initial configurations;
-- \(Next\subseteq C\times A\times C\) be the transition relation;
-- \(\alpha=C_0,a_1,C_1,\ldots\) be an execution;
-- \(sched(\alpha)\) be its action schedule;
-- \(trace_V(\alpha)\) be its projection to visible interface \(V\); and
-- \(H_p(\alpha)\) be process \(p\)'s local-history projection.
+- $P$ be a set of logical processes;
+- $N$ be nodes or declared deployment containers;
+- $host_C:P\rightarrow N$ map active incarnations to nodes in configuration $C$;
+- $L\subseteq P\times P$ be directed links;
+- $S_p$ be local states of process $p$;
+- $Q_\ell$ be states of link $\ell$;
+- $E$ be relevant environment states;
+- $A=A_{in}\cup A_{out}\cup A_{int}$ be input, output, and internal action labels;
+- $Init$ be initial configurations;
+- $Next\subseteq C\times A\times C$ be the transition relation;
+- $\alpha=C_0,a_1,C_1,\ldots$ be an execution;
+- $sched(\alpha)$ be its action schedule;
+- $trace_V(\alpha)$ be its projection to visible interface $V$; and
+- $H_p(\alpha)$ be process $p$'s local-history projection.
 
 A **state** is a valuation at one abstraction level. A **configuration** combines all modeled component states. An **event** is an occurrence of an action in an execution, so two occurrences may have the same action label but distinct event identities.
 
 An action is **enabled** when at least one allowed successor exists. An execution is **maximal** if it cannot be extended or is infinite. A **run** often means an execution of an implementation or test; because terminology differs, do not infer fairness or maximality from the word alone.
 
-A **reachable set** \(Reach\) is the least set containing \(Init\) and closed under \(Next\). A **history** or **trace** is a projection, never automatically the entire configuration sequence. A **cut** selects prefixes of process histories; consistency of cuts is deferred to DIST-007.
+A **reachable set** $Reach$ is the least set containing $Init$ and closed under $Next$. A **history** or **trace** is a projection, never automatically the entire configuration sequence. A **cut** selects prefixes of process histories; consistency of cuts is deferred to DIST-007.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -316,7 +316,7 @@ Build and review the model in this order:
 
 The **transition legality invariant** requires each observed or generated step to be enabled and to change only variables permitted by its action. The **message provenance invariant** requires a receive to correspond to message creation allowed by the channel/adversary model. The **incarnation invariant** prevents stale process state, messages, leases, or authority from being attributed to a replacement without a declared recovery transition.
 
-The **projection discipline** forbids reasoning from information hidden by a participant's projection. A global execution diagram helps an analyst, but code at process \(p\) sees only \(H_p\) plus explicitly supplied or inferred facts. The **quantification discipline** requires a universal correctness claim to cover every admissible execution, including unfavorable schedules.
+The **projection discipline** forbids reasoning from information hidden by a participant's projection. A global execution diagram helps an analyst, but code at process $p$ sees only $H_p$ plus explicitly supplied or inferred facts. The **quantification discipline** requires a universal correctness claim to cover every admissible execution, including unfavorable schedules.
 
 For an inductive invariant, check initiality and preservation for every action. For trace refinement, map concrete states/actions to abstract ones and show every concrete visible behavior is allowed; internal concrete steps may map to stuttering. For liveness, add exact fairness assumptions only after stating which continuously or repeatedly enabled actions must progress.
 
@@ -480,9 +480,9 @@ A multi-hospital medication-allocation service coordinates pharmacy inventory, p
 
 ### Answer 1
 
-Let client state be `idle`, `waiting(r)`, or `done(r,result)`; server state contain a durable map from request ID/fingerprint to status/result. Directed channel states \(Q_{cs}\) and \(Q_{sc}\) are multisets of request and response occurrences. Initial state is idle client, empty result map, and empty channels. `invoke(r,payload)` changes client state and appends a request; link actions may deliver, delay, duplicate, or drop according to the declared model; `handle` validates identity/fingerprint and atomically stores a result; `reply` adds a response; `accept` changes matching waiting state.
+Let client state be `idle`, `waiting(r)`, or `done(r,result)`; server state contain a durable map from request ID/fingerprint to status/result. Directed channel states $Q_{cs}$ and $Q_{sc}$ are multisets of request and response occurrences. Initial state is idle client, empty result map, and empty channels. `invoke(r,payload)` changes client state and appends a request; link actions may deliver, delay, duplicate, or drop according to the declared model; `handle` validates identity/fingerprint and atomically stores a result; `reply` adds a response; `accept` changes matching waiting state.
 
-One execution delivers, handles, replies, and reaches `done`. A second delays the request and ends in a finite waiting prefix with it in \(Q_{cs}\). A third handles durably but delays the response, leaving client waiting, server result recorded, and response in \(Q_{sc}\). If finite executions need be maximal, add explicit stop/environment actions or call them execution fragments. The three client histories may initially match although global configurations differ.
+One execution delivers, handles, replies, and reaches `done`. A second delays the request and ends in a finite waiting prefix with it in $Q_{cs}$. A third handles durably but delays the response, leaving client waiting, server result recorded, and response in $Q_{sc}$. If finite executions need be maximal, add explicit stop/environment actions or call them execution fragments. The three client histories may initially match although global configurations differ.
 
 ### Answer 2
 

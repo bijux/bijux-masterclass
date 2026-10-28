@@ -18,15 +18,15 @@ How can rank/select bit vectors recursively represent a sequence over a larger a
 
 ### Essential definitions
 
-Let (S[0..n)) use ordered alphabet (Sigma), (|\Sigma|=\sigma). A balanced wavelet tree recursively partitions the alphabet. Each internal node stores, in original relative order, a bit indicating whether each routed symbol belongs to its left or right alphabet subset. Stable routing makes a prefix at a parent map to a prefix at its child using bit rank.
+Let (S[0..n)) use ordered alphabet (Sigma), $|\Sigma|=\sigma$. A balanced wavelet tree recursively partitions the alphabet. Each internal node stores, in original relative order, a bit indicating whether each routed symbol belongs to its left or right alphabet subset. Stable routing makes a prefix at a parent map to a prefix at its child using bit rank.
 
 This chapter inherits [DSE-091](091-bit-vectors-with-rank-and-select.md): (operatorname{rank}_b(B,i)) counts (b) in (B[0..i)), and (operatorname{select}_b(B,t)) returns the position of zero-based occurrence (t). Sequence rank is (operatorname{rank}_c(S,i)); sequence select returns the zero-based (t)-th (c).
 
 ### Central model, mechanism, or theorem
 
-For access at position (i), read the node bit (b=B[i]), append that branch to the symbol code, and map (i\leftarrow\operatorname{rank}_b(B,i)). For rank of known symbol (c), follow (c)'s branches and map prefix endpoint the same way. Select reverses from leaf to root via bit select.
+For access at position (i), read the node bit (b=B[i]), append that branch to the symbol code, and map $i\leftarrow\operatorname{rank}_b(B,i)$. For rank of known symbol (c), follow (c)'s branches and map prefix endpoint the same way. Select reverses from leaf to root via bit select.
 
-A balanced binary shape has height (lceil\log_2\sigma\rceil), stores about (n\lceil\log_2\sigma\rceil) routing bits, and supports basic operations in (O(\log\sigma)) bit-vector queries. Entropy-shaped or compressed bit vectors can reduce space under stated models. Wavelet matrices store one bitmap per level with stable zero/one partitions and offsets, improving layout while changing navigation formulas.
+A balanced binary shape has height $lceil\log_2\sigma\rceil$, stores about $n\lceil\log_2\sigma\rceil$ routing bits, and supports basic operations in $O(\log\sigma)$ bit-vector queries. Entropy-shaped or compressed bit vectors can reduce space under stated models. Wavelet matrices store one bitmap per level with stable zero/one partitions and offsets, improving layout while changing navigation formulas.
 
 ### Critical invariants
 
@@ -35,13 +35,13 @@ A balanced binary shape has height (lceil\log_2\sigma\rceil), stores about (n\lc
 - Each node bitmap length equals the subsequence routed to that node; each level totals (n) bits for a full balanced shape.
 - Prefix mappings use the same half-open rank convention at every level.
 - Select reverses the exact forward path with correct node or level offsets.
-- Range endpoints remain half-open and satisfy (0\le l\le r\le n) after every mapping.
+- Range endpoints remain half-open and satisfy $0\le l\le r\le n$ after every mapping.
 - Padding codes for non-power-of-two alphabets never decode as live symbols.
 - Serialized bitmaps, rank/select supports, offsets, alphabet, and checksums publish atomically.
 
 ### Common failures
 
-Failures include unstable partitioning, mixing inclusive rank into child mapping, omitting zero offsets in a wavelet matrix, applying tree formulas to matrix layout, using lexical byte order when the domain requires numeric/collation order, decoding unused codes, confusing occurrence rank with position, reversing select levels incorrectly, reporting (n\log\sigma) bits without support metadata, using Huffman shape without storing the codebook, and mutating the sequence beneath static bitmaps.
+Failures include unstable partitioning, mixing inclusive rank into child mapping, omitting zero offsets in a wavelet matrix, applying tree formulas to matrix layout, using lexical byte order when the domain requires numeric/collation order, decoding unused codes, confusing occurrence rank with position, reversing select levels incorrectly, reporting $n\log\sigma$ bits without support metadata, using Huffman shape without storing the codebook, and mutating the sequence beneath static bitmaps.
 
 ### Compact example
 
@@ -93,53 +93,53 @@ At a node owning alphabet interval (A), split it into ordered subsets (A_0,A_1).
 
 Stability is the key invariant. If the first (i) parent symbols contain (z) zeros, those symbols become exactly the first (z) items of the left child. Therefore the parent prefix endpoint maps to (operatorname{rank}_0(B,i)). Reordering equal-branch symbols may preserve counts at one node but destroys their coordinate identity downstream.
 
-Balanced splitting by alphabet cardinality gives height (lceil\log_2\sigma\rceil); if (sigma) is not a power of two, some codes or leaves are unused/shallower. Splitting by value midpoint supports ordered queries naturally. Splitting by frequency/Huffman codes reduces average depth but complicates range-by-value traversal and requires a persisted code/tree.
+Balanced splitting by alphabet cardinality gives height $lceil\log_2\sigma\rceil$; if (sigma) is not a power of two, some codes or leaves are unused/shallower. Splitting by value midpoint supports ordered queries naturally. Splitting by frequency/Huffman codes reduces average depth but complicates range-by-value traversal and requires a persisted code/tree.
 
 ### Access, rank, and select
 
-For access, start at root position (i). At node bitmap (B), observe (b=B[i]), choose child (b), and set (i=\operatorname{rank}_b(B,i)). The leaf identifies the symbol. Inductively, (i) remains the ordinal of the original item among elements routed along that prefix.
+For access, start at root position (i). At node bitmap (B), observe (b=B[i]), choose child (b), and set $i=\operatorname{rank}_b(B,i)$. The leaf identifies the symbol. Inductively, (i) remains the ordinal of the original item among elements routed along that prefix.
 
 For (operatorname{rank}_c(S,i)), the path is already determined by (c). Start with endpoint (i) and replace it by (operatorname{rank}_{b_c}(B,i)) at each node. At (c)'s leaf, the endpoint equals occurrences of (c) in the original prefix.
 
-For (operatorname{select}_c(S,t)), start with occurrence ordinal (t) at (c)'s leaf. Walk upward. If the child is branch (b), set (t=\operatorname{select}_b(B,t)). At the root, (t) is the original position. Each reverse step uses the exact bitmap and code path used forward.
+For (operatorname{select}_c(S,t)), start with occurrence ordinal (t) at (c)'s leaf. Walk upward. If the child is branch (b), set $t=\operatorname{select}_b(B,t)$. At the root, (t) is the original position. Each reverse step uses the exact bitmap and code path used forward.
 
-Conventions matter twice: bit-vector select occurrence numbering and sequence select numbering. Validity also requires (t<\operatorname{rank}_c(S,n)); a sentinel must not collide with position zero.
+Conventions matter twice: bit-vector select occurrence numbering and sequence select numbering. Validity also requires $t<\operatorname{rank}_c(S,n)$; a sentinel must not collide with position zero.
 
 ### Range quantile and counting
 
 For range (S[l..r)), a node's zero count is
 
-\[
+$$
 z=\operatorname{rank}_0(B,r)-\operatorname{rank}_0(B,l).
-\]
+$$
 
-If zero-based desired order (k<z), descend left and map both endpoints with rank-zero. Otherwise set (k\leftarrow k-z), descend right, and map endpoints with rank-one. The leaf is the range quantile. The range must be nonempty and (0\le k<r-l).
+If zero-based desired order (k<z), descend left and map both endpoints with rank-zero. Otherwise set $k\leftarrow k-z$, descend right, and map endpoints with rank-one. The leaf is the range quantile. The range must be nonempty and $0\le k<r-l$.
 
-Range frequency of symbol (c) is (operatorname{rank}_c(S,r)-\operatorname{rank}_c(S,l)). Counting values in an alphabet interval recursively accepts fully covered nodes, rejects disjoint nodes, and maps endpoints for partial children. Predecessor/successor and report operations similarly prune by value interval while maintaining sequence ranges.
+Range frequency of symbol (c) is $operatorname{rank}_c(S,r)-\operatorname{rank}_c(S,l)$. Counting values in an alphabet interval recursively accepts fully covered nodes, rejects disjoint nodes, and maps endpoints for partial children. Predecessor/successor and report operations similarly prune by value interval while maintaining sequence ranges.
 
 These algorithms are order-sensitive. If alphabet codes use UTF-8 bytes, locale collation or numeric order is not implied. Persist a canonical domain order and normalization version.
 
 ### Wavelet matrix
 
-A pointer wavelet tree stores separate bitmaps per node. A levelwise layout concatenates them. The wavelet matrix instead stores one bitmap per bit level and stably places all zeros before ones for the next level. It records zero count (Z_\ell). Mapping becomes
+A pointer wavelet tree stores separate bitmaps per node. A levelwise layout concatenates them. The wavelet matrix instead stores one bitmap per bit level and stably places all zeros before ones for the next level. It records zero count $Z_\ell$. Mapping becomes
 
-\[
+$$
 i'=
 \begin{cases}
 \operatorname{rank}_0(B_\ell,i),&b=0,\\
 Z_\ell+\operatorname{rank}_1(B_\ell,i),&b=1.
 \end{cases}
-\]
+$$
 
-Access and rank descend these global level arrays. Select reverses and subtracts (Z_\ell) before select-one. Final stable code groups or per-symbol starts locate a symbol's occurrence interval. Matrix and tree bitmaps may look similar, but node boundaries and offsets differ; formulas are not interchangeable.
+Access and rank descend these global level arrays. Select reverses and subtracts $Z_\ell$ before select-one. Final stable code groups or per-symbol starts locate a symbol's occurrence interval. Matrix and tree bitmaps may look similar, but node boundaries and offsets differ; formulas are not interchangeable.
 
 The matrix offers contiguous per-level storage and avoids many small node objects, especially for large alphabets. Code assignment, padding codes, final starts, and range-order semantics must match the implementation variant.
 
 ### Space and shape
 
-For fixed-width balanced codes of (h=\lceil\log_2\sigma\rceil), every sequence item contributes one bit per level, so routing payload is (nh) bits. Succinct rank/select support adds lower-order redundancy per bitmap/level under its assumptions. Alphabet map, shape/codebook, level offsets, zero counts, symbol starts, headers, alignment, and construction workspace are additional.
+For fixed-width balanced codes of $h=\lceil\log_2\sigma\rceil$, every sequence item contributes one bit per level, so routing payload is (nh) bits. Succinct rank/select support adds lower-order redundancy per bitmap/level under its assumptions. Alphabet map, shape/codebook, level offsets, zero counts, symbol starts, headers, alignment, and construction workspace are additional.
 
-Compressing node bitmaps can make the total approach (nH_0(S)) plus lower-order terms for suitable shapes/supports. The identity arises because binary partition entropies decompose the alphabet entropy. This is not a promise that every library configuration or small input is below plain (n\log\sigma) space.
+Compressing node bitmaps can make the total approach (nH_0(S)) plus lower-order terms for suitable shapes/supports. The identity arises because binary partition entropies decompose the alphabet entropy. This is not a promise that every library configuration or small input is below plain $n\log\sigma$ space.
 
 Huffman-shaped trees give expected operation depth related to code lengths and can approach entropy with plain node bitmaps. Balanced shapes give worst-case logarithmic depth and simpler ordered range traversal. Multiary nodes reduce height but require rank/select over larger alphabets or multiple bitmaps and increase tables/branching.
 
@@ -317,13 +317,13 @@ print("evidence=bounded_wavelet_matrix_model")
 
 ## Definitions and Notation
 
-- (S[0..n)): sequence over ordered alphabet (Sigma), (|\Sigma|=\sigma).
+- (S[0..n)): sequence over ordered alphabet (Sigma), $|\Sigma|=\sigma$.
 - **Node subsequence:** stable projection of original symbols routed to one node.
 - **Routing bitmap:** zero/one decisions for a node or matrix level.
 - (operatorname{rank}_c(S,i)): occurrences of (c) in (S[0..i)).
 - (operatorname{select}_c(S,t)): original position of zero-based occurrence (t) of (c).
 - **Range quantile:** zero-based (k)-th smallest symbol of (S[l..r)).
-- (Z_\ell): number of zeros in wavelet-matrix level (ell).
+- $Z_\ell$: number of zeros in wavelet-matrix level (ell).
 - **Stable partition:** preserves relative order within each branch.
 - **Shape/codebook:** alphabet-to-root-path mapping for a tree variant.
 - **Generation:** atomic sequence metadata, routing data, supports, offsets, and checksums.
@@ -346,7 +346,7 @@ System invariants require stable construction, valid codes, per-level length/tot
 
 ## Alternatives and Trade-Offs
 
-Per-symbol position lists make select direct and rank searchable but duplicate dictionaries and do not naturally support range quantiles. Prefix-count tables are fast and large. Balanced wavelet trees offer worst-case (O(\log\sigma)) depth; Huffman shapes reduce expected depth; wavelet matrices improve level locality; multiary variants reduce height; compressed bitmaps exploit skew; dynamic variants support edits with more overhead.
+Per-symbol position lists make select direct and rank searchable but duplicate dictionaries and do not naturally support range quantiles. Prefix-count tables are fast and large. Balanced wavelet trees offer worst-case $O(\log\sigma)$ depth; Huffman shapes reduce expected depth; wavelet matrices improve level locality; multiary variants reduce height; compressed bitmaps exploit skew; dynamic variants support edits with more overhead.
 
 Use exact arrays for small alphabets/data, inverted lists for posting-centric workloads, or range trees for multidimensional needs. Choose by required operations, order semantics, entropy, updates, mapping, and measured cache behavior.
 
@@ -359,7 +359,7 @@ Use exact arrays for small alphabets/data, inverted lists for posting-centric wo
 - Code order defines quantile order; locale/numeric order is not automatic.
 - Unused fixed-width codes must not decode as symbols.
 - Huffman shape needs persisted canonical code metadata.
-- (n\log\sigma) excludes supports, dictionaries, padding, and build peak.
+- $n\log\sigma$ excludes supports, dictionaries, padding, and build peak.
 - Compressed bitmaps are not smaller for every finite distribution.
 - Static bitmaps cannot be edited underneath their supports.
 - Correct access alone does not prove rank/select/range correctness.
@@ -389,7 +389,7 @@ Use exact arrays for small alphabets/data, inverted lists for posting-centric wo
 
 ### Example 6
 
-**Range frequency.** A in `[1,6)` is (operatorname{rank}_A(6)-\operatorname{rank}_A(1)=3). **Conclusion:** two prefix mappings answer a range count.
+**Range frequency.** A in `[1,6)` is $operatorname{rank}_A(6)-\operatorname{rank}_A(1)=3$. **Conclusion:** two prefix mappings answer a range count.
 
 ### Example 7
 
@@ -405,7 +405,7 @@ Use exact arrays for small alphabets/data, inverted lists for posting-centric wo
 
 ### Example 10
 
-**Corrupt zero count.** One wrong (Z_\ell) keeps addresses in bounds yet redirects every one-branch query. **Conclusion:** recompute semantic totals, not only checksums.
+**Corrupt zero count.** One wrong $Z_\ell$ keeps addresses in bounds yet redirects every one-branch query. **Conclusion:** recompute semantic totals, not only checksums.
 
 ## Cross-Program Connections
 
@@ -460,12 +460,12 @@ Induct on depth. Stability makes the first (i) parent items taking branch (b) ex
 
 ### Answer 3
 
-The subrange is `ANANA`, sorted `AAANN`; order 3 is N. A appears three times. Equivalently, (operatorname{rank}_A(6)-\operatorname{rank}_A(1)=3-0=3). Each quantile step counts zeros between mapped endpoints, chooses left if the order is smaller, otherwise subtracts and chooses right.
+The subrange is `ANANA`, sorted `AAANN`; order 3 is N. A appears three times. Equivalently, $operatorname{rank}_A(6)-\operatorname{rank}_A(1)=3-0=3$. Each quantile step counts zeros between mapped endpoints, chooses left if the order is smaller, otherwise subtracts and chooses right.
 
 ### Answer 4
 
-A balanced tree gives predictable (O(\log\sigma)) basic and ordered-query depth. Huffman shape lowers frequency-weighted depth and can improve compressed space but complicates value-range decomposition and persists a codebook. A matrix provides contiguous levels and simpler large-alphabet layout with zero offsets/final starts. Benchmark actual access/rank/select/range mixes, entropy/skew, supports, code metadata, build peak, mapping, and cache/tail latency before choosing.
+A balanced tree gives predictable $O(\log\sigma)$ basic and ordered-query depth. Huffman shape lowers frequency-weighted depth and can improve compressed space but complicates value-range decomposition and persists a codebook. A matrix provides contiguous levels and simpler large-alphabet layout with zero offsets/final starts. Benchmark actual access/rank/select/range mixes, entropy/skew, supports, code metadata, build peak, mapping, and cache/tail latency before choosing.
 
 ### Answer 5
 
-Persist schema, length, canonical alphabet/order, code width, level count, bit convention, each bitmap/support section, (Z_\ell), final starts, bounds, and checksums. Build stable levels with deterministic worker offsets into private files; validate lengths, totals, starts, padding, sampled access/rank/select/quantiles, and source histograms; flush then atomically publish one manifest. Differential tests exhaust small sequences and fuzz skew, missing codes, boundaries, corruption, truncation, platforms, serialization round trips, and crash points against plain and sorted-range oracles.
+Persist schema, length, canonical alphabet/order, code width, level count, bit convention, each bitmap/support section, $Z_\ell$, final starts, bounds, and checksums. Build stable levels with deterministic worker offsets into private files; validate lengths, totals, starts, padding, sampled access/rank/select/quantiles, and source histograms; flush then atomically publish one manifest. Differential tests exhaust small sequences and fuzz skew, missing codes, boundaries, corruption, truncation, platforms, serialization round trips, and crash points against plain and sorted-range oracles.

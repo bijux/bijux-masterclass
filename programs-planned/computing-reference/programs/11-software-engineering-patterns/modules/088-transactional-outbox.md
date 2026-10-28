@@ -31,19 +31,19 @@ How can a committed change in one transactional store durably create an obligati
 
 ### Central model, mechanism, or theorem
 
-Let local transaction \(T\) atomically commit domain state \(D'\) and outbox intent \(O_e\):
+Let local transaction $T$ atomically commit domain state $D'$ and outbox intent $O_e$:
 
-\[
+$$
 T: (D,O) \rightarrow (D', O \cup \{O_e\}).
-\]
+$$
 
 Atomicity establishes the producer invariant
 
-\[
+$$
 D'\text{ commits} \iff O_e\text{ commits}
-\]
+$$
 
-for the change/event pair encoded by that transaction. A relay later attempts \(O_e\rightarrow B_e\). It cannot generally atomically combine broker acceptance and outbox acknowledgement; a crash can therefore publish \(B_e\) more than once. The pattern guarantees durable *publication intent* coupled to local commit, not exactly-once delivery or consumer effect. End-to-end correctness requires a stable event ID, safe relay retries, broker retention/acknowledgement, and an idempotent consumer boundary.
+for the change/event pair encoded by that transaction. A relay later attempts $O_e\rightarrow B_e$. It cannot generally atomically combine broker acceptance and outbox acknowledgement; a crash can therefore publish $B_e$ more than once. The pattern guarantees durable *publication intent* coupled to local commit, not exactly-once delivery or consumer effect. End-to-end correctness requires a stable event ID, safe relay retries, broker retention/acknowledgement, and an idempotent consumer boundary.
 
 ### Critical invariants
 
@@ -293,9 +293,9 @@ Security tests attempt destination/header/tenant injection, oversized payload, r
 
 ## Definitions and Notation
 
-Let \(D_v\) be authoritative domain entity state at version \(v\), \(O_e\) an outbox intent with stable event ID \(e\), type \(\tau\), schema version \(s\), payload/fingerprint \(p\), ordering key \(k\) and sequence \(q\). Let relay attempts be \(a_1,a_2,\ldots\), broker records \(B_{e,a}\), and outbox lifecycle state \(l_e\). Let \(A\) be eligible pending backlog, \(|A|\) count, \(bytes(A)\) storage, and \(age_{max}(A)\) oldest eligible age.
+Let $D_v$ be authoritative domain entity state at version $v$, $O_e$ an outbox intent with stable event ID $e$, type $\tau$, schema version $s$, payload/fingerprint $p$, ordering key $k$ and sequence $q$. Let relay attempts be $a_1,a_2,\ldots$, broker records $B_{e,a}$, and outbox lifecycle state $l_e$. Let $A$ be eligible pending backlog, $|A|$ count, $bytes(A)$ storage, and $age_{max}(A)$ oldest eligible age.
 
-The core local invariant is that the corresponding \(D_v\) and \(O_e\) are visible together after commit and absent together after rollback. It does not imply \(B_{e,a}\) is synchronous, unique, ordered globally, retained forever, delivered to every consumer, or applied exactly once.
+The core local invariant is that the corresponding $D_v$ and $O_e$ are visible together after commit and absent together after rollback. It does not imply $B_{e,a}$ is synchronous, unique, ordered globally, retained forever, delivered to every consumer, or applied exactly once.
 
 ## Mechanisms, Invariants, or Proof Structure
 

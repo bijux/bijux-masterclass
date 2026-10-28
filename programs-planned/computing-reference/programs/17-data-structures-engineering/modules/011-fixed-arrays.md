@@ -19,8 +19,8 @@ How should a fixed array's extent, layout, indexing, initialization, ownership, 
 ### Essential definitions
 
 - A **fixed array** is a finite indexed sequence of homogeneous element slots whose extent does not change during that array value's lifetime.
-- The **extent** \(n\) is the number of slots; valid zero-based indices satisfy \(0\le i<n\).
-- A **contiguous array representation** places equal-size element slots consecutively, so slot \(i\) has byte offset \(i s\) for slot size \(s\), subject to valid arithmetic and layout rules.
+- The **extent** $n$ is the number of slots; valid zero-based indices satisfy $0\le i<n$.
+- A **contiguous array representation** places equal-size element slots consecutively, so slot $i$ has byte offset $i s$ for slot size $s$, subject to valid arithmetic and layout rules.
 - A **slice/view** describes some array storage using a base, length, and possibly strides; it need not own the storage or preserve the array's full extent in its type.
 - A **stride** is the byte displacement for increasing one dimension's index by one. Contiguity is one stride configuration, not a synonym for every multidimensional view.
 - **bounds checking** verifies an index before memory access. Failure may be a language exception, panic, optional result, trap, or rejected operation; unchecked access has a different contract.
@@ -31,21 +31,21 @@ How should a fixed array's extent, layout, indexing, initialization, ownership, 
 
 ### Central model, mechanism, or theorem
 
-The abstract value is \(A=\langle a_0,\ldots,a_{n-1}\rangle\). Under a contiguous uniform-slot representation with base address \(B\) and slot size \(s\), valid element access computes
+The abstract value is $A=\langle a_0,\ldots,a_{n-1}\rangle$. Under a contiguous uniform-slot representation with base address $B$ and slot size $s$, valid element access computes
 
-\[
+$$
 addr(A[i])=B+i s,\qquad 0\le i<n.
-\]
+$$
 
-This gives constant abstract address computation, not constant end-to-end latency across cache, page, device, or remote-memory regimes. Correctness requires that \(n\), \(s\), multiplication, addition, allocation size, alignment, provenance, initialization, lifetime, and bounds all satisfy their representation contracts.
+This gives constant abstract address computation, not constant end-to-end latency across cache, page, device, or remote-memory regimes. Correctness requires that $n$, $s$, multiplication, addition, allocation size, alignment, provenance, initialization, lifetime, and bounds all satisfy their representation contracts.
 
-For a row-major \(R\times C\) matrix, \(offset(r,c)=(rC+c)s\). More generally, a \(d\)-dimensional strided view has
+For a row-major $R\times C$ matrix, $offset(r,c)=(rC+c)s$. More generally, a $d$-dimensional strided view has
 
-\[
+$$
 offset(i_0,\ldots,i_{d-1})=o+\sum_{k=0}^{d-1} i_k t_k,
-\]
+$$
 
-where \(o\) is a base offset and \(t_k\) are byte strides.
+where $o$ is a base offset and $t_k$ are byte strides.
 
 ### Critical invariants
 
@@ -72,7 +72,7 @@ where \(o\) is a base offset and \(t_k\) are byte strides.
 
 ### Compact example
 
-A fixed `int32` matrix with shape \(2\times3\) in row-major layout has element size 4 bytes, row stride 12 bytes, column stride 4 bytes, and 24 bytes of element storage. Logical index `(1,2)` maps to flat index `1*3+2=5` and byte offset `5*4=20`. The access is valid because `0<=1<2` and `0<=2<3`; `(2,0)` is rejected before calculating or using an address.
+A fixed `int32` matrix with shape $2\times3$ in row-major layout has element size 4 bytes, row stride 12 bytes, column stride 4 bytes, and 24 bytes of element storage. Logical index `(1,2)` maps to flat index `1*3+2=5` and byte offset `5*4=20`. The access is valid because `0<=1<2` and `0<=2<3`; `(2,0)` is rejected before calculating or using an address.
 
 ### Connections
 
@@ -117,19 +117,19 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-**Begin with the abstract sequence.** For element domain \(T\) and extent \(n\ge0\), define \(A\in T^n\). `get(i)` requires \(0\le i<n\) and returns \(a_i\). `set(i,x)` under a mutable contract produces the sequence whose position \(i\) is \(x\) and whose other positions are unchanged. Length remains \(n\). Iteration yields positions in a declared order, ordinarily increasing index. This model says nothing yet about bytes, storage region, language exceptions, or cache behavior.
+**Begin with the abstract sequence.** For element domain $T$ and extent $n\ge0$, define $A\in T^n$. `get(i)` requires $0\le i<n$ and returns $a_i$. `set(i,x)` under a mutable contract produces the sequence whose position $i$ is $x$ and whose other positions are unchanged. Length remains $n$. Iteration yields positions in a declared order, ordinarily increasing index. This model says nothing yet about bytes, storage region, language exceptions, or cache behavior.
 
 “Fixed” qualifies extent, not value. Elements may be mutable; an immutable array may still contain references to mutable objects; and a fixed array value may itself be replaced, moved, copied, or referenced under language rules. Conversely, a dynamically allocated Java array has fixed length after creation. Storage duration and extent mutability are orthogonal.
 
-**Choose the representation deliberately.** The core low-level representation is \(n\) homogeneous slots stored consecutively. If type \(T\) has slot size \(s\) and required alignment \(a\), the array begins at a suitably aligned base and occupies \(n s\) element bytes when the language layout says so. Each slot begins at \(B+i s\). The slot size already incorporates any padding needed between consecutive elements; do not add a second invented padding term.
+**Choose the representation deliberately.** The core low-level representation is $n$ homogeneous slots stored consecutively. If type $T$ has slot size $s$ and required alignment $a$, the array begins at a suitably aligned base and occupies $n s$ element bytes when the language layout says so. Each slot begins at $B+i s$. The slot size already incorporates any padding needed between consecutive elements; do not add a second invented padding term.
 
 Not all values called “arrays” expose that physical guarantee. A managed runtime can specify logical components and bounds without promising an ABI-visible object layout. A nested array can store references to separate row arrays. A numerical array view can expose homogeneous fixed-size items with arbitrary positive, negative, or zero-like broadcast strides subject to its library contract. Write “contiguous inline fixed array” when physical adjacency is part of the claim.
 
 **Validate address arithmetic before using it.** A safe access sequence is conceptual:
 
-1. validate or establish \(0\le i<n\);
-2. establish that \(n s\) was representable and sufficient when storage was allocated;
-3. establish that \(i s\) and \(B+i s\) satisfy the language's integer and pointer rules;
+1. validate or establish $0\le i<n$;
+2. establish that $n s$ was representable and sufficient when storage was allocated;
+3. establish that $i s$ and $B+i s$ satisfy the language's integer and pointer rules;
 4. establish alignment, provenance, lifetime, initialization, and access permission;
 5. load or store exactly one `T` under its representation rules.
 
@@ -141,13 +141,13 @@ Some low-level languages permit forming a pointer one position beyond an array f
 
 Languages differ materially. Safe Rust array indexing is bounds checked and all array elements are initialized; unchecked raw/slice operations are explicitly unsafe. Java checks every array access at runtime. Go specifies valid index ranges and panics for out-of-range runtime indices. C and C++ built-in subscript operations can have undefined behavior outside the array object; C++ `std::array::at` is checked while `operator[]` carries the ordinary precondition. Do not write a language-neutral statement that “arrays throw” or “arrays are unchecked.”
 
-**Initialization is part of representation validity.** Many safe languages initialize every component at array creation, through explicit elements, repeated values, or language-defined zero/default values. Low-level performance code may reserve raw storage and construct elements one at a time. During partial construction, state includes the set or prefix of initialized slots. If construction of element \(k\) fails, exactly elements already constructed must be destroyed; uninitialized bytes must not be read, compared, hashed, serialized, or destroyed as `T`.
+**Initialization is part of representation validity.** Many safe languages initialize every component at array creation, through explicit elements, repeated values, or language-defined zero/default values. Low-level performance code may reserve raw storage and construct elements one at a time. During partial construction, state includes the set or prefix of initialized slots. If construction of element $k$ fails, exactly elements already constructed must be destroyed; uninitialized bytes must not be read, compared, hashed, serialized, or destroyed as `T`.
 
 For nontrivial elements, copying, moving, replacing, and destroying an array apply element operations under language-specific ordering and failure rules. A bitwise copy is valid only for types whose representation contract permits it. Padding bytes, pointer provenance, ownership tokens, reference counts, file descriptors, and cryptographic secrets make raw byte copying or comparison dangerous. Clearing an array of objects is not necessarily equivalent to zeroing its storage.
 
-Zero extent is mathematically ordinary: \(T^0\) contains the empty sequence. Language support differs. Rust `[T; 0]`, Go `[0]T`, Java zero-length arrays, and `std::array<T,0>` are supported, but pointer/data behavior and built-in C array constraints require their own rules. Empty-array `front`, `back`, or element access is invalid. Generic code must not assume a non-null distinct data pointer for every empty representation unless guaranteed.
+Zero extent is mathematically ordinary: $T^0$ contains the empty sequence. Language support differs. Rust `[T; 0]`, Go `[0]T`, Java zero-length arrays, and `std::array<T,0>` are supported, but pointer/data behavior and built-in C array constraints require their own rules. Empty-array `front`, `back`, or element access is invalid. Generic code must not assume a non-null distinct data pointer for every empty representation unless guaranteed.
 
-**Array type identity differs across ecosystems.** Rust `[T; N]` and Go `[N]T` make \(N\) part of the type. This supports compile-time extent constraints but means different extents are different types. Java uses `T[]`; length belongs to the object, not the array type. C built-in array declarators encode bounds in declarations, but parameters undergo adjustments and many expressions decay to pointers. C++ `std::array<T,N>` retains extent as a template parameter and behaves as an aggregate container.
+**Array type identity differs across ecosystems.** Rust `[T; N]` and Go `[N]T` make $N$ part of the type. This supports compile-time extent constraints but means different extents are different types. Java uses `T[]`; length belongs to the object, not the array type. C built-in array declarators encode bounds in declarations, but parameters undergo adjustments and many expressions decay to pointers. C++ `std::array<T,N>` retains extent as a template parameter and behaves as an aggregate container.
 
 Copy semantics also differ. Go array assignment copies the array value when element semantics permit. Rust arrays follow move/copy rules of the element type and array type. Java variables hold references to array objects; assignment aliases rather than copies components. C built-in arrays are not assignable as whole array values, though an enclosing structure can be copied according to C rules. API documentation must say whether passing an array copies elements, moves ownership, borrows, aliases, or passes a descriptor.
 
@@ -157,15 +157,15 @@ Java reference arrays expose a classic type-safety trade-off. If `Dog[]` is view
 
 C array-to-pointer decay illustrates extent loss. A function receiving only `T*` cannot recover the caller's array length from the pointer. Pass a length, a sentinel under a valid element policy, a span-like descriptor, or an extent-carrying type. Validate that the length describes the same allocated object. `sizeof(pointer)` is not array byte size, and a sentinel cannot represent termination safely if every bit pattern is valid data or corruption removes the sentinel.
 
-**Multidimensional arrays are mappings.** For a dense row-major shape \((n_0,\ldots,n_{d-1})\), strides are derived from trailing extents. For a two-dimensional \(R\times C\) array of slot size \(s\), row stride is \(Cs\) and column stride is \(s\). Column-major order reverses which dimension is contiguous. A general view stores explicit strides; transpose can swap strides without moving elements.
+**Multidimensional arrays are mappings.** For a dense row-major shape $(n_0,\ldots,n_{d-1})$, strides are derived from trailing extents. For a two-dimensional $R\times C$ array of slot size $s$, row stride is $Cs$ and column stride is $s$. Column-major order reverses which dimension is contiguous. A general view stores explicit strides; transpose can swap strides without moving elements.
 
 Validate every dimension, the product of extents, byte size, base offset, and extremal reachable offset using checked arithmetic. A shape product that wraps to a small allocation followed by large logical indexing is a serious vulnerability. Negative strides require a base positioned so valid logical indices stay in the allocation. Overlapping strides can cause multiple logical indices to alias one slot; reject them for independent mutable-element APIs or specify reductions/synchronization.
 
-Nested arrays are not automatically dense matrices. Java `int[][]` is an array whose components reference `int[]` objects; rows can be null or have different lengths. Go and Rust can express nested inline array types with outer extent \(R\) and inner extent \(C\), under their different language layout guarantees. At FFI boundaries, exchange explicit element type, shape, strides, byte order, alignment, ownership, lifetime, mutability, and address space instead of relying on surface syntax.
+Nested arrays are not automatically dense matrices. Java `int[][]` is an array whose components reference `int[]` objects; rows can be null or have different lengths. Go and Rust can express nested inline array types with outer extent $R$ and inner extent $C$, under their different language layout guarantees. At FFI boundaries, exchange explicit element type, shape, strides, byte order, alignment, ownership, lifetime, mutability, and address space instead of relying on surface syntax.
 
 **Serialization is not memory dumping.** In-memory layout can contain padding, native endianness, pointers, runtime headers, invalid/noncanonical bit patterns, or secrets. A wire/file format needs explicit field encoding, byte order, sizes, version, integrity limits, and validation. An array of integers serialized little-endian is a deliberate representation distinct from “whatever bytes this host uses.” Decode only after checking byte count, element count, multiplication overflow, and resource limits.
 
-**Cost depends on the operation and regime.** Index address calculation is \(O(1)\) in the abstract RAM model. Reading/writing includes bounds policy, element semantics, and memory-system behavior. Full traversal is \(\Theta(n)\); linear search is \(O(n)\); inserting/removing while preserving sequence order requires shifting \(\Theta(n)\) elements or leaving a hole/side metadata because extent cannot grow or shrink. Copy is \(\Theta(n)\) in element operations even when a bulk primitive lowers constants.
+**Cost depends on the operation and regime.** Index address calculation is $O(1)$ in the abstract RAM model. Reading/writing includes bounds policy, element semantics, and memory-system behavior. Full traversal is $\Theta(n)$; linear search is $O(n)$; inserting/removing while preserving sequence order requires shifting $\Theta(n)$ elements or leaving a hole/side metadata because extent cannot grow or shrink. Copy is $\Theta(n)$ in element operations even when a bulk primitive lowers constants.
 
 Contiguity often enables prefetching, vectorization, compact metadata, and few allocations, but never guarantees that one implementation wins. Element size, alignment, cache state, stride, working set, branch behavior, compiler, runtime, NUMA, device memory, and surrounding work can reverse rankings. Use [DSE-010](010-benchmarking-a-structure-without-misleading-results.md)'s evidence protocol rather than inherited ratios or a single timing.
 
@@ -173,7 +173,7 @@ Contiguity often enables prefetching, vectorization, compact metadata, and few a
 
 **Security review follows the arithmetic and lifecycle.** Validate attacker-controlled extents before allocation; cap dimensions, total bytes, nesting, and work; reject truncated encodings; avoid speculative use of unchecked indices where threat models require mitigations; clear sensitive contents under a method the compiler/runtime contract preserves when required; and do not leak uninitialized/padding bytes. Memory-safe languages reduce classes of corruption but do not prevent resource exhaustion, stale logical data, index confusion, side channels, or unsafe FFI defects.
 
-The following standard-library-only example implements a bounded \(2\times3\) signed-32-bit matrix over an explicitly little-endian byte buffer. The byte order is a pedagogical storage/wire choice, not a claim about native array ABI.
+The following standard-library-only example implements a bounded $2\times3$ signed-32-bit matrix over an explicitly little-endian byte buffer. The byte order is a pedagogical storage/wire choice, not a claim about native array ABI.
 
 <!-- bijux-verify: {"id":"checked-fixed-matrix-layout","mode":"run","language":"python","toolchain":"python3","expect":{"exit_code":0,"stdout":"shape=2x3\nstrides_bytes=(12, 4)\nflat=(10, 20, 30, 40, 50, 60)\nat_1_2=60\noffset_1_2=20\nbounds=IndexError\nbytes=24\nevidence=finite_checked_layout_trace\n","stderr":""}} -->
 ```python
@@ -236,19 +236,19 @@ This finite trace verifies the educational class's declared shape, row-major map
 
 ## Definitions and Notation
 
-Let \(T\) be an element type, \(n\in\mathbb{N}\) an extent, and \(A\in T^n\) an abstract fixed array. Let \(B\) be a representation base, \(s=size(T)\) the element-slot size under a stated layout, and \([0,n)=\{i\mid0\le i<n\}\) the valid index set.
+Let $T$ be an element type, $n\in\mathbb{N}$ an extent, and $A\in T^n$ an abstract fixed array. Let $B$ be a representation base, $s=size(T)$ the element-slot size under a stated layout, and $[0,n)=\{i\mid0\le i<n\}$ the valid index set.
 
-For dimension vector \(N=(n_0,\ldots,n_{d-1})\), logical index \(I=(i_0,\ldots,i_{d-1})\) is valid when \(0\le i_k<n_k\) for every \(k\). Stride vector \(S=(t_0,\ldots,t_{d-1})\) maps it to byte offset \(o+I\cdot S\). **Dense row-major** and **dense column-major** are particular stride choices. A **ragged array** is a sequence of row arrays whose extents may differ.
+For dimension vector $N=(n_0,\ldots,n_{d-1})$, logical index $I=(i_0,\ldots,i_{d-1})$ is valid when $0\le i_k<n_k$ for every $k$. Stride vector $S=(t_0,\ldots,t_{d-1})$ maps it to byte offset $o+I\cdot S$. **Dense row-major** and **dense column-major** are particular stride choices. A **ragged array** is a sequence of row arrays whose extents may differ.
 
 An element is **initialized/live** after its construction contract succeeds and before destruction. A **view** is a non-owning or shared-ownership logical mapping to storage, depending on the API. **Provenance** denotes the language/IR constraints that tie a pointer and derived addresses to an allocated object; integer equality alone may not establish valid access.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-For one dimension, injectivity follows from positive \(s\): if \(i\ne j\), then \(is\ne js\) in mathematical integers. Under overflow-free address arithmetic and an allocation of \(ns\) bytes, each valid \(i\) maps into `[B,B+ns)` and distinct indices map to distinct slot starts. This proof does not authorize language-level pointer formation unless alignment, provenance, lifetime, and type-access rules also hold.
+For one dimension, injectivity follows from positive $s$: if $i\ne j$, then $is\ne js$ in mathematical integers. Under overflow-free address arithmetic and an allocation of $ns$ bytes, each valid $i$ maps into `[B,B+ns)` and distinct indices map to distinct slot starts. This proof does not authorize language-level pointer formation unless alignment, provenance, lifetime, and type-access rules also hold.
 
-For dense row-major \(R\times C\), flattening \(f(r,c)=rC+c\) maps valid indices into `[0,RC)`. If `f(r,c)=f(r',c')`, division with remainder by positive \(C\) yields \(r=r'\) and \(c=c'\), so the mapping is injective. Empty dimensions require separate handling because division by zero is invalid even though the total element set is empty.
+For dense row-major $R\times C$, flattening $f(r,c)=rC+c$ maps valid indices into `[0,RC)`. If `f(r,c)=f(r',c')`, division with remainder by positive $C$ yields $r=r'$ and $c=c'$, so the mapping is injective. Empty dimensions require separate handling because division by zero is invalid even though the total element set is empty.
 
-Partial construction uses invariant `live = [0,k)` for a prefix strategy: slots below \(k\) contain valid `T`, slots at or above \(k\) are raw storage, and failure cleanup destroys exactly `[0,k)` in the required order. Arbitrary initialization order needs a bitmap or equivalent ownership state rather than one counter.
+Partial construction uses invariant `live = [0,k)` for a prefix strategy: slots below $k$ contain valid `T`, slots at or above $k$ are raw storage, and failure cleanup destroys exactly `[0,k)` in the required order. Arbitrary initialization order needs a bitmap or equivalent ownership state rather than one counter.
 
 ## Alternatives and Trade-Offs
 
@@ -350,7 +350,7 @@ A fixed table of medication dosage limits uses explicit unit-tagged values and c
 
 ### Exercise 1
 
-Specify a generic fixed array of extent \(N\), including abstraction, layout, construction, indexing, copying/moving, destruction, and zero extent.
+Specify a generic fixed array of extent $N$, including abstraction, layout, construction, indexing, copying/moving, destruction, and zero extent.
 
 ### Exercise 2
 
@@ -372,7 +372,7 @@ Prepare a verification plan for a fixed array used in a safety-critical lookup t
 
 ### Answer 1
 
-Model the value as \(T^N\) with fixed type- or value-level extent under the chosen language. For contiguous inline layout require checked `N*size(T)`, correct alignment, and slot `i` at `B+i*size(T)`. Construction establishes all-live state; a raw-storage implementation tracks a live prefix/bitmap and cleans exactly constructed elements on failure. Checked access accepts `[0,N)`; unchecked access requires an explicit proof. Copy/move/destruction apply element operations under stated ordering and exception rules, never assumed bytewise. Zero extent has no valid element, so `front/back/index` fail and pointer identity is not assumed beyond specification. Storage placement and element mutability remain separate policies.
+Model the value as $T^N$ with fixed type- or value-level extent under the chosen language. For contiguous inline layout require checked `N*size(T)`, correct alignment, and slot `i` at `B+i*size(T)`. Construction establishes all-live state; a raw-storage implementation tracks a live prefix/bitmap and cleans exactly constructed elements on failure. Checked access accepts `[0,N)`; unchecked access requires an explicit proof. Copy/move/destruction apply element operations under stated ordering and exception rules, never assumed bytewise. Zero extent has no valid element, so `front/back/index` fail and pointer identity is not assumed beyond specification. Storage placement and element mutability remain separate policies.
 
 ### Answer 2
 

@@ -33,9 +33,9 @@ When recent evidence says a dependency call is unlikely to succeed, how can a ca
 
 For N recorded calls with F classified failures, the observed failure rate is
 
-\[
+$$
 \hat p_f=\frac{F}{N}.
-\]
+$$
 
 A simple policy opens only if N ≥ Nmin and p̂f ≥ θf; a separate slow-call rule may use S/N ≥ θs. The decision is conditional evidence, not a proof that the dependency is down. Open state reduces protected-call admission toward zero. After a bounded interval, at most H half-open probe leases are issued. Probe results atomically decide whether to reopen, remain half-open under an exact rule, or close and begin a fresh observation epoch.
 

@@ -30,11 +30,11 @@ How can a changeable domain decision be represented by a named, versioned, testa
 
 ### Central model, mechanism, or theorem
 
-For validated facts (x\in X), explicit context (c\in C), and immutable policy version (p_v), evaluation is
+For validated facts $x\in X$, explicit context $c\in C$, and immutable policy version (p_v), evaluation is
 
-\[
+$$
 decide(p_v,x,c)\to d\in\{approve,deny,not\_applicable,indeterminate,error\}\times Reasons\times v.
-\]
+$$
 
 Determinism means equal normalized (p_v,x,c) yields the same decision. It holds only when time, data/model/configuration versions, randomness, and external facts are captured. A passing finite evaluator trace does not establish that the underlying policy is lawful, fair, safe, current, or domain-correct.
 
@@ -199,15 +199,15 @@ Property/metamorphic tests require valid assumptions: increasing risk might neve
 
 Let immutable policy version (p_v), validated fact snapshot (x_s), explicit context (c), decision outcomes (O), reasons (R), and evaluation function
 
-\[
+$$
 E(p_v,x_s,c)=(o,r,v),\quad o\in O.
-\]
+$$
 
 For deterministic evaluation,
 
-\[
+$$
 (p_v,x_s,c)=(p'_v,x'_s,c')\Rightarrow E(p_v,x_s,c)=E(p'_v,x'_s,c').
-\]
+$$
 
 This equality requires normalization and captured external inputs. Action correctness additionally requires freshness/authorization/invariant checks that are not implied by (E).
 
@@ -377,7 +377,7 @@ Review a model-backed high-stakes Policy Object without claiming legal, fairness
 
 ### Answer 1
 
-For unopened day 12, defect/opened are false and (12\le30), so approve/within-window/v3. For opened day 12, defect false and opened true, so deny/opened-item/v3 before checking window. For defective day 45 with opened true, the first rule approves/defect/v3, demonstrating explicit defect precedence.
+For unopened day 12, defect/opened are false and $12\le30$, so approve/within-window/v3. For opened day 12, defect false and opened true, so deny/opened-item/v3 before checking window. For defective day 45 with opened true, the first rule approves/defect/v3, demonstrating explicit defect precedence.
 
 The run establishes three deterministic finite routes, reason/version propagation, boundary operation order, and exact Python output. It does not establish negative/zero/day-30/31 behavior, input validation, applicability, policy selection/approval/effective time, fact provenance, authorization, action freshness, persistence/cache/rollout, any jurisdiction's return law, fairness, or high-stakes suitability.
 

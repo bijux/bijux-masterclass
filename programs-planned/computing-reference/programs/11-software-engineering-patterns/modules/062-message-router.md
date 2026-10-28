@@ -31,26 +31,26 @@ How can an integration flow direct each immutable message to the correct zero, o
 
 ### Central model, mechanism, or theorem
 
-Let \(M\) be valid messages, \(D\) allowed destination channels, and \(C_v\) a routing configuration version. A router is a policy function
+Let $M$ be valid messages, $D$ allowed destination channels, and $C_v$ a routing configuration version. A router is a policy function
 
-\[
+$$
 R_v:M\rightarrow D^*,
-\]
+$$
 
-where \(D^*\) is a finite ordered sequence: length zero filters, one routes, and more than one forms a recipient list. Production execution must additionally record publication outcomes. For deterministic replay under historical policy,
+where $D^*$ is a finite ordered sequence: length zero filters, one routes, and more than one forms a recipient list. Production execution must additionally record publication outcomes. For deterministic replay under historical policy,
 
-\[
+$$
 m_1=m_2\land v_1=v_2\Rightarrow R_{v_1}(m_1)=R_{v_2}(m_2),
 
-\]
+$$
 
 assuming pure predicates and stable referenced data. If rules call mutable services or current authorization, that equality does not hold; the decision evidence or policy inputs must be captured instead.
 
-For a route graph \(G=(D,E)\), a decreasing hop budget \(h\) establishes finite forwarding only if every hop decrements \(h\) and zero is quarantined rather than forwarded:
+For a route graph $G=(D,E)$, a decreasing hop budget $h$ establishes finite forwarding only if every hop decrements $h$ and zero is quarantined rather than forwarded:
 
-\[
+$$
 h_{k+1}=h_k-1,\quad h_k\ge0\Rightarrow \text{at most }h_0\text{ routed hops}.
-\]
+$$
 
 ### Critical invariants
 
@@ -162,7 +162,7 @@ Alternatively a broker-native transaction may cover specific channels/partitions
 
 ### Treat fan-out as a workflow
 
-For destinations \(d_1,\ldots,d_n\), track each intended output independently: pending, confirmed, terminally rejected, cancelled, or quarantined. “Router succeeded” needs a policy—perhaps all mandatory destinations confirmed while optional telemetry may fail separately.
+For destinations $d_1,\ldots,d_n$, track each intended output independently: pending, confirmed, terminally rejected, cancelled, or quarantined. “Router succeeded” needs a policy—perhaps all mandatory destinations confirmed while optional telemetry may fail separately.
 
 Do not roll back an already observed external message by wishful thinking. Retry missing outputs idempotently, reconcile, or issue explicit compensation/correction where domain semantics allow. Preserve which rule created each obligation.
 
@@ -287,19 +287,19 @@ The snippet report is empirical evidence for three deterministic decisions and i
 
 ## Definitions and Notation
 
-A validated message is \(m=(id,type,version,tenant,key,source,causation,payload,metadata)\). Routing policy \(C_v\) contains ordered predicates \(p_i\), output functions/constant destinations \(o_i\), resolution semantics \(s\), default \(d_0\), allowed destination set \(D\), and safety bounds.
+A validated message is $m=(id,type,version,tenant,key,source,causation,payload,metadata)$. Routing policy $C_v$ contains ordered predicates $p_i$, output functions/constant destinations $o_i$, resolution semantics $s$, default $d_0$, allowed destination set $D$, and safety bounds.
 
 For first-match,
 
-\[
+$$
 R_v(m)=o_k(m),\quad k=\min\{i\mid p_i(m)=\mathrm{true}\},
-\]
+$$
 
-or default when the set is empty. For all-match, output is the stable deduplicated union of all \(o_i(m)\) with true predicates. Best-match additionally requires a total priority/tie policy.
+or default when the set is empty. For all-match, output is the stable deduplicated union of all $o_i(m)$ with true predicates. Best-match additionally requires a total priority/tie policy.
 
-A route-output identity \(rid=(m.id,v,rule,destination,ordinal)\) supports idempotent publication tracking without changing \(m.id\). Decision record \(J=(m.id,v,rule,R_v(m),time,outcomes)\) is protected evidence, not a copy of sensitive payload.
+A route-output identity $rid=(m.id,v,rule,destination,ordinal)$ supports idempotent publication tracking without changing $m.id$. Decision record $J=(m.id,v,rule,R_v(m),time,outcomes)$ is protected evidence, not a copy of sensitive payload.
 
-Route graph \(G=(D,E)\), maximum hop budget \(H\), actual hop \(h\), and route history \(V_m\) support static and runtime cycle analysis. Fan-out factor \(f(m)=|R_v(m)|\) is bounded by configured \(F_{max}\).
+Route graph $G=(D,E)$, maximum hop budget $H$, actual hop $h$, and route history $V_m$ support static and runtime cycle analysis. Fan-out factor $f(m)=|R_v(m)|$ is bounded by configured $F_{max}$.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -309,8 +309,8 @@ Safety obligations are:
 
 1. **Preservation:** routing does not alter message meaning/identity/provenance.
 2. **Totality:** every admitted supported input yields a governed finite outcome or typed failure.
-3. **Destination confinement:** every output belongs to authorized \(D\) for tenant/type/context.
-4. **Resolution:** rule ordering/overlap/ties/default yield deterministic cardinality under \(C_v\).
+3. **Destination confinement:** every output belongs to authorized $D$ for tenant/type/context.
+4. **Resolution:** rule ordering/overlap/ties/default yield deterministic cardinality under $C_v$.
 5. **Durable obligation:** input is not acknowledged before decision/intended outputs are recoverable.
 6. **Idempotent execution:** retry under the same decision cannot create a new logical output obligation.
 7. **Bounded traversal:** hop/fan-out and cycle policy prevent unbounded amplification.

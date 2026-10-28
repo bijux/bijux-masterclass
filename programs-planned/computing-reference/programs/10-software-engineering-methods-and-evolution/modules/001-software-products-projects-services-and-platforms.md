@@ -32,13 +32,13 @@ When software persists beyond a delivery date, which product, project, service, 
 
 The categories answer different questions and may overlap:
 
-\[
+$$
 Work = Change_{temporary} + Stewardship_{continuing},
-\]
+$$
 
-\[
+$$
 Value(t)=Outcomes(t)-LifecycleCost(t)-RiskExposure(t).
-\]
+$$
 
 A project can create or change a product, service, or platform; closure transfers accepted results and unresolved obligations to durable owners. A product defines for whom and why to evolve. A service defines how capability is continuously delivered and supported. A platform defines which reusable capabilities and interaction boundaries enable others. The invariant is continuity of ownership across every transition—not preservation of a particular team name or method.
 
@@ -246,7 +246,7 @@ The run proves only that declared sets satisfy this toy checklist and computes t
 
 ## Definitions and Notation
 
-Let (U) be users/beneficiaries, (O_t) observed outcomes at time (t), (Q_t) quality and risk guardrails, (C_t) lifecycle cost, and (R_t) residual risk. Let project (J=(g,b,\tau,a)) contain goal (g), boundary/constraints (b), termination condition (\tau), and acceptance/transition rule (a). Product (P=(U,v,B,E)) has users (U), value proposition (v), boundary (B), and evolution policy/evidence (E). Service (S=(c,p,w,o)) has consumers (c), provider (p), quality/continuity expectations (w), and operating model (o). Platform (F=(U_F,K,I,O_F)) has consumer groups, curated capabilities (K), interfaces (I), and platform outcomes (O_F).
+Let (U) be users/beneficiaries, (O_t) observed outcomes at time (t), (Q_t) quality and risk guardrails, (C_t) lifecycle cost, and (R_t) residual risk. Let project $J=(g,b,\tau,a)$ contain goal (g), boundary/constraints (b), termination condition $\tau$, and acceptance/transition rule (a). Product (P=(U,v,B,E)) has users (U), value proposition (v), boundary (B), and evolution policy/evidence (E). Service (S=(c,p,w,o)) has consumers (c), provider (p), quality/continuity expectations (w), and operating model (o). Platform (F=(U_F,K,I,O_F)) has consumer groups, curated capabilities (K), interfaces (I), and platform outcomes (O_F).
 
 These tuples are reasoning aids, not universal standards. `owner` means authority plus accountability and capacity. `ready` means a defined gate passed with evidence, not absence of future work. `retired` means obligations have been discharged or transferred, not merely traffic disabled.
 

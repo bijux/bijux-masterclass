@@ -31,17 +31,17 @@ How can a team replace a deeply used implementation continuously on the mainline
 
 ### Central model, mechanism, or theorem
 
-Let callers (C) depend on contract (A), and implementations (I_0,I_1\models A). Migration states are
+Let callers (C) depend on contract (A), and implementations $I_0,I_1\models A$. Migration states are
 
-\[
+$$
 C\rightarrow I_0
 \Rightarrow C\rightarrow A\rightarrow I_0
 \Rightarrow C\rightarrow A\rightarrow\{I_0,I_1\}
 \Rightarrow C\rightarrow A\rightarrow I_1
 \Rightarrow C\rightarrow I_1\text{ through durable }A.
-\]
+$$
 
-Each arrow is a small releasable mainline change. Safety requires observational equivalence under the agreed contract for relevant inputs and effects: (obs_A(I_0,x)\equiv obs_A(I_1,x)), except documented intentional corrections. The pattern shortens integration branches; it does not make abstraction, state migration, concurrency or equivalence automatically correct.
+Each arrow is a small releasable mainline change. Safety requires observational equivalence under the agreed contract for relevant inputs and effects: $obs_A(I_0,x)\equiv obs_A(I_1,x)$, except documented intentional corrections. The pattern shortens integration branches; it does not make abstraction, state migration, concurrency or equivalence automatically correct.
 
 ### Critical invariants
 
@@ -241,11 +241,11 @@ The run proves equality for four integer cases only. It does not prove all-input
 
 ## Definitions and Notation
 
-Let (A) be contract consisting of observable operation semantics (Obs_A), legacy adapter (I_0), replacement (I_1), caller set (C=\{c_1,\ldots,c_m\}), and centralized selector (S(u,t)). `Migrated(c)` means caller depends only on (A), not concrete (I_0).
+Let (A) be contract consisting of observable operation semantics (Obs_A), legacy adapter (I_0), replacement (I_1), caller set $C=\{c_1,\ldots,c_m\}$, and centralized selector (S(u,t)). `Migrated(c)` means caller depends only on (A), not concrete (I_0).
 
-**Structural completion** requires (\forall c\in C:Migrated(c)) and no bypass. **Behavioral readiness** requires relevant (x\in X): (Obs_A(I_0,x)\equiv_C Obs_A(I_1,x)), plus nonfunctional/security budgets. This is tested evidence over a chosen domain, not proof for all possible inputs.
+**Structural completion** requires $\forall c\in C:Migrated(c)$ and no bypass. **Behavioral readiness** requires relevant $x\in X$: $Obs_A(I_0,x)\equiv_C Obs_A(I_1,x)$, plus nonfunctional/security budgets. This is tested evidence over a chosen domain, not proof for all possible inputs.
 
-For stateful ownership (W_t(k)\in\{I_0,I_1\}), require one writer per key unless a single logical transaction protocol exists. **Rollback compatibility** means every state accepted by (I_1) during horizon can be correctly consumed/reversed into (I_0). **Convergence** requires selector fixed to (I_1), old path/dependency removed and temporary configuration state eliminated.
+For stateful ownership $W_t(k)\in\{I_0,I_1\}$, require one writer per key unless a single logical transaction protocol exists. **Rollback compatibility** means every state accepted by (I_1) during horizon can be correctly consumed/reversed into (I_0). **Convergence** requires selector fixed to (I_1), old path/dependency removed and temporary configuration state eliminated.
 
 ## Mechanisms, Invariants, or Proof Structure
 

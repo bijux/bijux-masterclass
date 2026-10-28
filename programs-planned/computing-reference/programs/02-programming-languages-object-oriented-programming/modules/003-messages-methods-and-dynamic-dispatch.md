@@ -30,18 +30,18 @@ When an operation is requested from an object, how does the language determine w
 
 ### Central model, mechanism, or theorem
 
-For a single-dispatch model with dynamic class \(class_H(o)\), selector \(m\), arguments \(\bar v\), and deterministic class linearization \(L(C)\), define
+For a single-dispatch model with dynamic class $class_H(o)$, selector $m$, arguments $\bar v$, and deterministic class linearization $L(C)$, define
 
-\[
+$$
 lookup(C,m)=\text{the first }D\in L(C)\text{ whose method table defines }m.
-\]
+$$
 
 Then an ordinary send reduces as
 
-\[
+$$
 send(o,m,\bar v,H)\Downarrow
 apply(method(lookup(class_H(o),m),m),o,\bar v,H).
-\]
+$$
 
 Selection starts from the receiver's runtime class, while the selected body receives the original receiver. A language may elaborate, restrict, or replace this model, but must define selection and failure precisely.
 
@@ -114,7 +114,7 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-A **message** is a request description, not executable method code. In a simple model it is a pair \((m,\bar v)\) of selector and argument tuple. The **receiver** is separate. A **method** is one possible implementation that can answer the selector for some receiver population. Several classes may define methods for the same selector; one method can answer many receiver objects. Saying “call the message” or “send the method” collapses distinctions needed to explain lookup.
+A **message** is a request description, not executable method code. In a simple model it is a pair $(m,\bar v)$ of selector and argument tuple. The **receiver** is separate. A **method** is one possible implementation that can answer the selector for some receiver population. Several classes may define methods for the same selector; one method can answer many receiver objects. Saying “call the message” or “send the method” collapses distinctions needed to explain lookup.
 
 Terminology varies. Smalltalk uniformly describes sending messages to objects. Java specifies method invocation expressions with compile-time and runtime stages. Python normally evaluates an attribute, whose descriptor behavior can create a bound method, and then calls the resulting callable. ECMAScript evaluates property references and calls function objects with a `this` value; a property containing a function is not intrinsically a permanently bound method. CLOS invokes a generic function and can select methods from multiple argument classes. The shared abstraction is a request-to-implementation selection process, not identical syntax or identical semantics.
 
@@ -132,7 +132,7 @@ Prototype delegation uses related but distinct machinery. In ordinary ECMAScript
 
 Python adds another separation. Evaluating `obj.method` performs attribute lookup. A function stored on the class is a descriptor; its `__get__` behavior produces a bound method carrying `obj`. Calling that bound method supplies the instance. An instance attribute, data descriptor, custom `__getattribute__`, metaclass, or special-method lookup can change parts of the story. The useful review question is whether a value is being looked up, bound, and called, rather than whether syntax looks familiar.
 
-Multiple inheritance requires a lookup policy. A naive depth-first search can make behavior depend unintuitively on graph shape and can visit shared ancestors poorly. Some languages reject ambiguous final overriders; others compute a linearization. The policy must produce a deterministic sequence or an explicit error. This chapter uses an already supplied linearization \(L(C)\); constructing and evaluating competing policies belongs to OOP-024.
+Multiple inheritance requires a lookup policy. A naive depth-first search can make behavior depend unintuitively on graph shape and can visit shared ancestors poorly. Some languages reject ambiguous final overriders; others compute a linearization. The policy must produce a deterministic sequence or an explicit error. This chapter uses an already supplied linearization $L(C)$; constructing and evaluating competing policies belongs to OOP-024.
 
 Single dispatch is not universal. CLOS generic functions determine applicable methods from specializers on multiple required arguments and can combine methods. Julia also centers multiple dispatch. A visitor can emulate a limited two-stage choice by one virtual call followed by another, but that is not the same semantic mechanism as a generic function whose applicability rule jointly considers several arguments. OOP-015 and OOP-057 treat those systems directly.
 
@@ -213,51 +213,51 @@ The output verifies four claims about this model: inherited lookup retains the r
 
 Let:
 
-- \(I\) be receiver identities and \(H\) the heap;
-- \(C\) be runtime classes or lookup owners;
-- \(M\) be selectors;
-- \(V^*\) be argument tuples;
-- \(class_H:I\rightharpoonup C\) give a live receiver's runtime class;
-- \(parent:C\rightharpoonup C\) describe simple inheritance;
-- \(methods:C\to(M\rightharpoonup Body)\) be method tables;
-- \(L(C)=[C,C_1,\ldots,C_n]\) be the language-defined lookup linearization;
-- \(apply(b,o,\bar v,H)\Downarrow(r,H',t)\) execute body \(b\) with receiver \(o\), producing result \(r\), heap \(H'\), and observable trace \(t\).
+- $I$ be receiver identities and $H$ the heap;
+- $C$ be runtime classes or lookup owners;
+- $M$ be selectors;
+- $V^*$ be argument tuples;
+- $class_H:I\rightharpoonup C$ give a live receiver's runtime class;
+- $parent:C\rightharpoonup C$ describe simple inheritance;
+- $methods:C\to(M\rightharpoonup Body)$ be method tables;
+- $L(C)=[C,C_1,\ldots,C_n]$ be the language-defined lookup linearization;
+- $apply(b,o,\bar v,H)\Downarrow(r,H',t)$ execute body $b$ with receiver $o$, producing result $r$, heap $H'$, and observable trace $t$.
 
-For a selector \(m\), define
+For a selector $m$, define
 
-\[
+$$
 owner(C,m)=\min_{L(C)}\{D\mid m\in dom(methods(D))\},
-\]
+$$
 
-where the minimum is the first class in lookup order. If the set is empty, lookup yields \(miss\). If the language does not define a total order for competing candidates, it must apply an ambiguity rule before invocation.
+where the minimum is the first class in lookup order. If the set is empty, lookup yields $miss$. If the language does not define a total order for competing candidates, it must apply an ambiguity rule before invocation.
 
 Ordinary send is
 
-\[
+$$
 \frac{class_H(o)=C\quad owner(C,m)=D\quad methods(D)(m)=b\quad
 apply(b,o,\bar v,H)\Downarrow(r,H',t)}
 {send(o,m,\bar v,H)\Downarrow(r,H',t)}.
-\]
+$$
 
-The occurrence of \(o\) in `apply` is the receiver-preservation property. Method ownership \(D\) and receiver class \(C\) can differ.
+The occurrence of $o$ in `apply` is the receiver-preservation property. Method ownership $D$ and receiver class $C$ can differ.
 
-For a method lexically defined in \(C\), a simple super lookup uses a specified successor \(next(L(class_H(o)),C)\) as its starting position. This notation is intentionally conditional: languages define `super` differently, and some qualified calls suppress ordinary virtual dispatch rather than perform cooperative continuation.
+For a method lexically defined in $C$, a simple super lookup uses a specified successor $next(L(class_H(o)),C)$ as its starting position. This notation is intentionally conditional: languages define `super` differently, and some qualified calls suppress ordinary virtual dispatch rather than perform cooperative continuation.
 
-A static judgment \(\Gamma\vdash e.m(\bar a):T\) means a source call is admitted and assigned result type \(T\). It does not alone identify the runtime body. Conversely, runtime lookup does not excuse a call rejected by the language's static rules. A complete account can therefore contain both a static selection \(sig_\Gamma(e,m,\bar a)\) and a runtime selection \(body(class_H(o),sig)\).
+A static judgment $\Gamma\vdash e.m(\bar a):T$ means a source call is admitted and assigned result type $T$. It does not alone identify the runtime body. Conversely, runtime lookup does not excuse a call rejected by the language's static rules. A complete account can therefore contain both a static selection $sig_\Gamma(e,m,\bar a)$ and a runtime selection $body(class_H(o),sig)$.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Unique first match.** If \(L(C)\) is finite, contains no repeated lookup position relevant to selection, and the rule chooses its first definition of \(m\), then `owner(C,m)` is unique. Determinism follows from the total order. If inheritance supplies incomparable candidates without a linearization or dominance rule, uniqueness is not established and the language must reject or disambiguate.
+**Unique first match.** If $L(C)$ is finite, contains no repeated lookup position relevant to selection, and the rule chooses its first definition of $m$, then `owner(C,m)` is unique. Determinism follows from the total order. If inheritance supplies incomparable candidates without a linearization or dominance rule, uniqueness is not established and the language must reject or disambiguate.
 
-**Receiver preservation.** Suppose \(owner(Savings,kind)=Account\). The send rule passes \(o\), not a newly allocated `Account`, to `Account.kind`. Therefore object identity, descendant fields, and later virtual self-sends remain those of \(o\). Changing the lookup owner does not change the receiver.
+**Receiver preservation.** Suppose $owner(Savings,kind)=Account$. The send rule passes $o$, not a newly allocated `Account`, to `Account.kind`. Therefore object identity, descendant fields, and later virtual self-sends remain those of $o$. Changing the lookup owner does not change the receiver.
 
-**Most-specific shadowing in a chain.** If `Savings` defines `fee`, it precedes `Account` in \(L(Savings)\). The first-match rule selects `Savings.fee`. Removing that definition makes `Account` the first owner. This is a structural lookup result only; behavioral compatibility of the override needs a separate contract argument.
+**Most-specific shadowing in a chain.** If `Savings` defines `fee`, it precedes `Account` in $L(Savings)$. The first-match rule selects `Savings.fee`. Removing that definition makes `Account` the first owner. This is a structural lookup result only; behavioral compatibility of the override needs a separate contract argument.
 
-**Static/dynamic separation.** Let the declared type of \(x\) be `Account` and \(class_H(x)=Savings\). Static checking can select admitted signature `Account.fee()`. Runtime selection can choose `Savings.fee`. No contradiction exists because signature admission and body selection occur at distinct semantic stages.
+**Static/dynamic separation.** Let the declared type of $x$ be `Account` and $class_H(x)=Savings$. Static checking can select admitted signature `Account.fee()`. Runtime selection can choose `Savings.fee`. No contradiction exists because signature admission and body selection occur at distinct semantic stages.
 
 **Evaluation preservation.** Replacing a dynamic send with a direct call is sound only if it preserves receiver evaluation, argument evaluation order, target choice, receiver binding, returned values, exceptions, effects, synchronization, and all permitted reflective observations. Proving one likely receiver class is insufficient if another class can reach the call site.
 
-**Super continuation.** In the simple model, a super send from the lexical owner `Savings` begins at its successor `Account`. It still passes \(o\) into `apply`. Therefore `super` changes lookup position, not receiver identity. In a cooperative multiple-inheritance system, hard-coding one named parent can violate the linearization and cause an ancestor to run twice or not at all.
+**Super continuation.** In the simple model, a super send from the lexical owner `Savings` begins at its successor `Account`. It still passes $o$ into `apply`. Therefore `super` changes lookup position, not receiver identity. In a cooperative multiple-inheritance system, hard-coding one named parent can violate the linearization and cause an ancestor to run twice or not at all.
 
 **Failure totality.** Extend lookup's result to `Hit(D,b)` or `Miss(path)`. Every finite search then produces evidence of either selection or absence. A language-level hook may transform `Miss` into another computation, but that hook is an explicit semantic branch, not a successful lookup of the missing selector.
 

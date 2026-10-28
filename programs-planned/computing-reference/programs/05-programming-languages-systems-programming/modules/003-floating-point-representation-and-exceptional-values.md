@@ -30,25 +30,25 @@ How do finite floating-point formats approximate real arithmetic, and how must s
 
 ### Central model, mechanism, or theorem
 
-For a binary format with precision \(p\), a positive normal value has the abstract form
+For a binary format with precision $p$, a positive normal value has the abstract form
 
-\[
+$$
 x=(1.f)_2 2^e,
-\]
+$$
 
 while a positive subnormal has
 
-\[
+$$
 x=(0.f)_2 2^{e_{min}}.
-\]
+$$
 
 An arithmetic operation is modeled as exact real computation followed by format rounding:
 
-\[
+$$
 fl(x\circ y)=round_F(x\circ y).
-\]
+$$
 
-For round-to-nearest and a normal result, a common local model is \(fl(z)=z(1+\delta)\) with \(|\delta|\le u\), where unit roundoff \(u=2^{-p}\) for binary precision \(p\). The model needs qualification near zero, overflow, and exceptional values.
+For round-to-nearest and a normal result, a common local model is $fl(z)=z(1+\delta)$ with $|\delta|\le u$, where unit roundoff $u=2^{-p}$ for binary precision $p$. The model needs qualification near zero, overflow, and exceptional values.
 
 ### Critical invariants
 
@@ -67,7 +67,7 @@ Typical defects are assuming decimal literals are exact binary values, comparing
 
 ### Compact example
 
-Binary64 cannot represent \(0.1\) or \(0.2\) exactly, so their rounded sum in Python is displayed as `0.30000000000000004` and does not equal the binary64 approximation selected for literal `0.3`. Binary64 also has only 53 bits of significand precision: converting integers \(2^{53}\) and \(2^{53}+1\) to binary64 produces the same value. These are defined consequences of a finite value set, not random hardware errors.
+Binary64 cannot represent $0.1$ or $0.2$ exactly, so their rounded sum in Python is displayed as `0.30000000000000004` and does not equal the binary64 approximation selected for literal `0.3`. Binary64 also has only 53 bits of significand precision: converting integers $2^{53}$ and $2^{53}+1$ to binary64 produces the same value. These are defined consequences of a finite value set, not random hardware errors.
 
 ### Connections
 
@@ -117,11 +117,11 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-A general floating-point number has sign \(s\), radix \(\beta\), significand digits, and exponent \(e\):
+A general floating-point number has sign $s$, radix $\beta$, significand digits, and exponent $e$:
 
-\[
+$$
 (-1)^s\times significand\times\beta^e.
-\]
+$$
 
 IEEE 754 specifies binary and decimal formats, operations, conversions, comparisons, exceptions, and default handling. The familiar binary32 and binary64 interchange formats use radix two. Binary32 has precision 24 and binary64 precision 53, counting the implicit leading bit of normal values. Their stored fields are not simply “a sign bit, an integer, and a decimal exponent”; decoding depends on exponent categories.
 
@@ -129,21 +129,21 @@ For binary interchange formats, an exponent field strictly between its all-zero 
 
 Normalization gives each nonzero normal value a unique leading one and full precision. Subnormals remove that leading-one assumption at the minimum exponent. They make underflow gradual: results can decrease through a linearly spaced interval toward zero rather than jumping directly from the smallest normal to zero. Relative precision worsens as the significand loses leading bits, but absolute spacing remains small and important identities can degrade more gracefully.
 
-Floating-point spacing is nonuniform. For a binary format of precision \(p\), adjacent normal values in a binade \([2^e,2^{e+1})\) are spaced \(2^{e-p+1}\) apart. Binary64 values in \([1,2)\) are spaced \(2^{-52}\); values near \(2^{53}\) are spaced by 2. Therefore \(2^{53}+1\) is not representable as binary64 even though it is far below the format's maximum magnitude. Range says a finite approximation exists; precision says which values are distinct.
+Floating-point spacing is nonuniform. For a binary format of precision $p$, adjacent normal values in a binade $[2^e,2^{e+1})$ are spaced $2^{e-p+1}$ apart. Binary64 values in $[1,2)$ are spaced $2^{-52}$; values near $2^{53}$ are spaced by 2. Therefore $2^{53}+1$ is not representable as binary64 even though it is far below the format's maximum magnitude. Range says a finite approximation exists; precision says which values are distinct.
 
-Most finite decimal fractions do not have finite binary expansions. A reduced rational \(a/b\) has a finite radix-two expansion only when \(b\) has no prime factor other than two. Thus \(1/10\), whose denominator contains five, repeats in binary. Parsing literal `0.1` selects a nearby representable value according to language conversion rules. Printing commonly chooses a short decimal that round-trips to the same binary value, not the complete exact decimal expansion of that stored fraction.
+Most finite decimal fractions do not have finite binary expansions. A reduced rational $a/b$ has a finite radix-two expansion only when $b$ has no prime factor other than two. Thus $1/10$, whose denominator contains five, repeats in binary. Parsing literal `0.1` selects a nearby representable value according to language conversion rules. Printing commonly chooses a short decimal that round-trips to the same binary value, not the complete exact decimal expansion of that stored fraction.
 
 Arithmetic introduces another rounding. The useful model is `exact then round`: take the mathematical result of representable operands and choose a representable destination value under the active rounding direction. IEEE 754 includes round-to-nearest ties-to-even, round-to-nearest ties-away, toward positive infinity, toward negative infinity, and toward zero for specified operations and formats, with required support depending on the standard's clauses. A source language may expose only part of this control or fix its own evaluation rule.
 
-Round-to-nearest ties-to-even limits bias over many midpoint cases and gives a normal result within one-half ulp of the exact value. Unit roundoff \(u\) expresses a relative bound for one correctly rounded normal operation under assumptions. It is not a promise that a long computation has relative error \(u\); errors propagate according to algorithm, conditioning, dependence, overflow, underflow, cancellation, and exceptional behavior.
+Round-to-nearest ties-to-even limits bias over many midpoint cases and gives a normal result within one-half ulp of the exact value. Unit roundoff $u$ expresses a relative bound for one correctly rounded normal operation under assumptions. It is not a promise that a long computation has relative error $u$; errors propagate according to algorithm, conditioning, dependence, overflow, underflow, cancellation, and exceptional behavior.
 
-The name **machine epsilon** is used inconsistently. In many libraries it means the distance from 1 to the next representable value, \(2^{1-p}\) for binary precision \(p\), while numerical analysis often uses unit roundoff \(2^{-p}\). State which quantity is meant. Neither is a universal tolerance. Comparing coordinates near \(10^{12}\), probabilities near zero, and account balances in fixed minor units demands different domain policies.
+The name **machine epsilon** is used inconsistently. In many libraries it means the distance from 1 to the next representable value, $2^{1-p}$ for binary precision $p$, while numerical analysis often uses unit roundoff $2^{-p}$. State which quantity is meant. Neither is a universal tolerance. Comparing coordinates near $10^{12}$, probabilities near zero, and account balances in fixed minor units demands different domain policies.
 
-Floating-point addition is not generally associative. Let a format approximate a very large \(a\) and small \(b\). If \(b\) is below half the spacing at \(a\), `fl(a+b)=a`; subtracting \(a\) later yields zero. Grouping `a + (b-a)` can yield something else after separate roundings. Compilers may reassociate only under applicable language and optimization permissions. A proof over real addition does not silently authorize the transformation.
+Floating-point addition is not generally associative. Let a format approximate a very large $a$ and small $b$. If $b$ is below half the spacing at $a$, `fl(a+b)=a`; subtracting $a$ later yields zero. Grouping `a + (b-a)` can yield something else after separate roundings. Compilers may reassociate only under applicable language and optimization permissions. A proof over real addition does not silently authorize the transformation.
 
 **Absorption** occurs when a small addend does not change a much larger value. **Cancellation** occurs when subtracting nearby approximations removes leading shared digits, exposing error in the residual. The subtraction may itself be correctly rounded; the loss came from limited information in the inputs. Stable algorithms restructure computations, scale inputs, compensate sums, or use greater precision based on analysis. Simply replacing equality with a tolerance does not repair an unstable algorithm.
 
-A fused multiply-add computes \(x\times y+z\) with one final rounding rather than rounding the product and then the sum. It often improves accuracy and performance, but can differ bitwise from the two-operation sequence. Contraction is therefore a semantic choice when reproducibility requires a particular result. Extended intermediates and double rounding can likewise make a stored result differ across targets or compiler modes unless the language and build fix them.
+A fused multiply-add computes $x\times y+z$ with one final rounding rather than rounding the product and then the sum. It often improves accuracy and performance, but can differ bitwise from the two-operation sequence. Contraction is therefore a semantic choice when reproducibility requires a particular result. Extended intermediates and double rounding can likewise make a stored result differ across targets or compiler modes unless the language and build fix them.
 
 IEEE-style exceptional categories extend computation. A finite nonzero value divided by signed zero can produce signed infinity under languages that expose IEEE division semantics. Zero divided by zero and infinity minus infinity are invalid operations producing NaN under default non-trapping handling. Overflow commonly yields infinity or a maximum finite value depending on sign and rounding direction. Underflow concerns tiny results and can yield subnormal values or signed zero. Inexact records that rounding changed the exact result; it is extremely common and not itself an application error.
 
@@ -188,59 +188,59 @@ This output verifies representation boundaries for the recorded Python toolchain
 
 ## Definitions and Notation
 
-Let a binary format have precision \(p\), minimum normal exponent \(e_{min}\), maximum exponent \(e_{max}\), sign \(s\in\{0,1\}\), and fraction integer \(F\).
+Let a binary format have precision $p$, minimum normal exponent $e_{min}$, maximum exponent $e_{max}$, sign $s\in\{0,1\}$, and fraction integer $F$.
 
-For a normal value with \(0\le F<2^{p-1}\),
+For a normal value with $0\le F<2^{p-1}$,
 
-\[
+$$
 value=(-1)^s\left(1+\frac{F}{2^{p-1}}\right)2^e,
 \qquad e_{min}\le e\le e_{max}.
-\]
+$$
 
 For a subnormal,
 
-\[
+$$
 value=(-1)^s\left(\frac{F}{2^{p-1}}\right)2^{e_{min}},
 \qquad 0<F<2^{p-1}.
-\]
+$$
 
-When \(F=0\) in the subnormal exponent category, the value is signed zero. Infinity and NaN use reserved exponent encodings and are not described by the finite equations.
+When $F=0$ in the subnormal exponent category, the value is signed zero. Infinity and NaN use reserved exponent encodings and are not described by the finite equations.
 
-Let \(Fset\) be the format's representable values and \(RN:F_{extended}\to Fset\) round to nearest, ties to even. For finite exact \(z\) with a normal rounded result,
+Let $Fset$ be the format's representable values and $RN:F_{extended}\to Fset$ round to nearest, ties to even. For finite exact $z$ with a normal rounded result,
 
-\[
+$$
 RN(z)=z(1+\delta),\qquad |\delta|\le u=2^{-p}.
-\]
+$$
 
-Define absolute error \(|\hat x-x|\), relative error \(|\hat x-x|/|x|\) for \(x\ne0\), and ulp error by scaling absolute error to local representable spacing. These measures answer different questions.
+Define absolute error $|\hat x-x|$, relative error $|\hat x-x|/|x|$ for $x\ne0$, and ulp error by scaling absolute error to local representable spacing. These measures answer different questions.
 
-For binary64, \(p=53\), \(e_{min}=-1022\), and the smallest positive subnormal is \(2^{-1074}\). The spacing in \([2^e,2^{e+1})\) is
+For binary64, $p=53$, $e_{min}=-1022$, and the smallest positive subnormal is $2^{-1074}$. The spacing in $[2^e,2^{e+1})$ is
 
-\[
+$$
 ulp=2^{e-(p-1)}.
-\]
+$$
 
-Thus spacing in \([2^{53},2^{54})\) is 2, explaining why adjacent mathematical integers are not all representable there.
+Thus spacing in $[2^{53},2^{54})$ is 2, explaining why adjacent mathematical integers are not all representable there.
 
 Let classification
 
-\[
+$$
 class_F(x)\in\{zero,subnormal,normal,infinity,nan\}
-\]
+$$
 
-be accompanied by sign where the format makes it meaningful. Ordinary numeric comparison \(<_n\) is partial because NaN is unordered. A format's `totalOrder`-style predicate is a separate relation designed to order all canonical members or encodings according to its specification.
+be accompanied by sign where the format makes it meaningful. Ordinary numeric comparison $<_n$ is partial because NaN is unordered. A format's `totalOrder`-style predicate is a separate relation designed to order all canonical members or encodings according to its specification.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-**Finite binary criterion.** For rational \(a/b\) in lowest terms, a finite binary expansion exists iff \(b=2^k\) for some \(k\ge0\). If \(b\) contains another prime factor, no multiplication by a power of two makes \(a2^n/b\) an integer, so the binary expansion cannot terminate. This proves why \(1/10\) needs rounding.
+**Finite binary criterion.** For rational $a/b$ in lowest terms, a finite binary expansion exists iff $b=2^k$ for some $k\ge0$. If $b$ contains another prime factor, no multiplication by a power of two makes $a2^n/b$ an integer, so the binary expansion cannot terminate. This proves why $1/10$ needs rounding.
 
-**Normal spacing.** Fix exponent \(e\). Incrementing fraction integer \(F\) by one changes the value by \(2^e/2^{p-1}=2^{e-p+1}\). Spacing doubles at the next binade. Consequently, a fixed absolute epsilon represents different ulp counts at different magnitudes.
+**Normal spacing.** Fix exponent $e$. Incrementing fraction integer $F$ by one changes the value by $2^e/2^{p-1}=2^{e-p+1}$. Spacing doubles at the next binade. Consequently, a fixed absolute epsilon represents different ulp counts at different magnitudes.
 
-**Integer exactness threshold.** Binary precision \(p\) represents every integer through \(2^p\), but above that point spacing exceeds one. For binary64, \(2^{53}\) is representable and the next representable value is \(2^{53}+2\); rounding \(2^{53}+1\) under ties-to-even collides with \(2^{53}\).
+**Integer exactness threshold.** Binary precision $p$ represents every integer through $2^p$, but above that point spacing exceeds one. For binary64, $2^{53}$ is representable and the next representable value is $2^{53}+2$; rounding $2^{53}+1$ under ties-to-even collides with $2^{53}$.
 
 **Subnormal continuity.** The largest subnormal and smallest normal differ by one subnormal spacing. This gradual transition avoids a format gap immediately below the smallest normal. Relative error grows toward zero because the absolute spacing remains constant while magnitudes shrink.
 
-**Non-associativity witness.** In binary64 let \(a=2^{53}\), \(b=1\), and \(c=-2^{53}\). Rounding gives `fl(fl(a+b)+c)=0` because \(a+b\) ties to \(a\), while `fl(a+fl(b+c))=1` for the relevant exact representable intermediate. One witness refutes universal associativity; it does not quantify every sum's error.
+**Non-associativity witness.** In binary64 let $a=2^{53}$, $b=1$, and $c=-2^{53}$. Rounding gives `fl(fl(a+b)+c)=0` because $a+b$ ties to $a$, while `fl(a+fl(b+c))=1` for the relevant exact representable intermediate. One witness refutes universal associativity; it does not quantify every sum's error.
 
 **NaN validation invariant.** A domain requiring finite values must explicitly establish `is_finite(x)` before arithmetic or ordering. Range comparisons alone are insufficient as a communicative proof because NaN makes each ordered comparison false and infinity can satisfy one-sided bounds.
 
@@ -270,7 +270,7 @@ be accompanied by sign where the format makes it meaningful. Ordinary numeric co
 
 1. **“Floating point stores decimals.”** Binary formats store binary significands and exponents; decimal literals undergo conversion.
 2. **“Binary64 has about 16 digits everywhere.”** Decimal-digit summaries hide nonuniform spacing, subnormals, and magnitude-dependent absolute precision.
-3. **“If a value is in range, it is exact.”** Binary64 has enormous range but cannot distinguish every integer above \(2^{53}\).
+3. **“If a value is in range, it is exact.”** Binary64 has enormous range but cannot distinguish every integer above $2^{53}$.
 4. **“One epsilon fixes equality.”** A tolerance needs scale, units, uncertainty, algorithmic bound, and near-zero policy.
 5. **“NaN is just another large or missing number.”** It is unordered and has special propagation, encoding, and serialization behavior.
 6. **“`x != x` is the complete NaN policy.”** Classification, admissibility, optimizer mode, provenance, and boundary response remain unspecified.
@@ -289,15 +289,15 @@ be accompanied by sign where the format makes it meaningful. Ordinary numeric co
 
 **Question:** Why is decimal `0.1` not exact in a finite binary format?
 
-**Reasoning:** In lowest terms it is \(1/10\), and denominator 10 contains factor 5. A finite binary fraction has denominator dividing a power of two. No power of two cancels 5, so the expansion repeats and conversion must round.
+**Reasoning:** In lowest terms it is $1/10$, and denominator 10 contains factor 5. A finite binary fraction has denominator dividing a power of two. No power of two cancels 5, so the expansion repeats and conversion must round.
 
 **Conclusion:** The approximation follows number representation, not a defective adder.
 
 ### Example 2
 
-**Question:** Why do \(2^{53}\) and \(2^{53}+1\) collide in binary64?
+**Question:** Why do $2^{53}$ and $2^{53}+1$ collide in binary64?
 
-**Reasoning:** Precision is 53 bits. In the binade beginning at \(2^{53}\), adjacent values are two apart. The odd integer lies exactly halfway between neighboring representable even integers; ties-to-even selects \(2^{53}\) for this case.
+**Reasoning:** Precision is 53 bits. In the binade beginning at $2^{53}$, adjacent values are two apart. The odd integer lies exactly halfway between neighboring representable even integers; ties-to-even selects $2^{53}$ for this case.
 
 **Conclusion:** Dynamic range does not imply unit resolution.
 
@@ -313,7 +313,7 @@ be accompanied by sign where the format makes it meaningful. Ordinary numeric co
 
 **Question:** Is `(a+b)+c` equivalent to `a+(b+c)` for binary64 addition?
 
-**Reasoning:** With \(a=2^{53}\), \(b=1\), and \(c=-2^{53}\), the first grouping rounds away `b` before cancellation and yields zero; the second preserves a unit residual and yields one under the stated mode.
+**Reasoning:** With $a=2^{53}$, $b=1$, and $c=-2^{53}$, the first grouping rounds away `b` before cancellation and yields zero; the second preserves a unit residual and yields one under the stated mode.
 
 **Conclusion:** Real-number associativity is not a floating-point identity.
 
@@ -392,7 +392,7 @@ be accompanied by sign where the format makes it meaningful. Ordinary numeric co
 
 ### Exercise 1
 
-For a toy binary format with precision \(p=4\), list the representable normal values in \([1,2)\), give their spacing, and state which value receives exact real number \(1.3125\) under round-to-nearest ties-to-even.
+For a toy binary format with precision $p=4$, list the representable normal values in $[1,2)$, give their spacing, and state which value receives exact real number $1.3125$ under round-to-nearest ties-to-even.
 
 ### Exercise 2
 
@@ -400,7 +400,7 @@ Classify these categories and state one required handling rule for each: positiv
 
 ### Exercise 3
 
-Using \(a=2^{53}\), \(b=1\), and \(c=-2^{53}\), recompute both binary64 groupings `(a+b)+c` and `a+(b+c)` under round-to-nearest ties-to-even. Name the rounding point that creates the difference.
+Using $a=2^{53}$, $b=1$, and $c=-2^{53}$, recompute both binary64 groupings `(a+b)+c` and `a+(b+c)` under round-to-nearest ties-to-even. Name the rounding point that creates the difference.
 
 ### Exercise 4
 
@@ -414,7 +414,7 @@ Prepare a verification plan for migrating a parallel risk-aggregation service to
 
 ### Answer 1
 
-With precision four, significands in \([1,2)\) are `1.000`, `1.001`, `1.010`, `1.011`, `1.100`, `1.101`, `1.110`, and `1.111`, corresponding to increments of \(2^{-3}=0.125\). Thus 1.25 and 1.375 bracket 1.3125 exactly halfway. Their trailing stored significand integers are 2 and 3; ties-to-even selects the one with even least significant bit, 1.25 (`1.010`).
+With precision four, significands in $[1,2)$ are `1.000`, `1.001`, `1.010`, `1.011`, `1.100`, `1.101`, `1.110`, and `1.111`, corresponding to increments of $2^{-3}=0.125$. Thus 1.25 and 1.375 bracket 1.3125 exactly halfway. Their trailing stored significand integers are 2 and 3; ties-to-even selects the one with even least significant bit, 1.25 (`1.010`).
 
 ### Answer 2
 
@@ -422,7 +422,7 @@ Positive and negative zero are zero-category values with different signs; decide
 
 ### Answer 3
 
-At \(a=2^{53}\), binary64 spacing is two. Exact \(a+b=2^{53}+1\) is a midpoint; ties-to-even rounds it to \(2^{53}\). Adding \(c=-2^{53}\) then yields zero. For the other grouping, \(b+c=1-2^{53}=-(2^{53}-1)\), an exactly representable integer in range; adding \(a\) yields one. The decisive information loss is the first grouping's rounding of \(a+b\).
+At $a=2^{53}$, binary64 spacing is two. Exact $a+b=2^{53}+1$ is a midpoint; ties-to-even rounds it to $2^{53}$. Adding $c=-2^{53}$ then yields zero. For the other grouping, $b+c=1-2^{53}=-(2^{53}-1)$, an exactly representable integer in range; adding $a$ yields one. The decisive information loss is the first grouping's rounding of $a+b$.
 
 ### Answer 4
 

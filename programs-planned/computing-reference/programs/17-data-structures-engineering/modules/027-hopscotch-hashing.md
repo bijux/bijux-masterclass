@@ -33,9 +33,9 @@ How can an open-addressed map keep every key inside a small contiguous neighborh
 
 For capacity `m>0`, neighborhood width `1<=H<=m`, and cyclic distance
 
-\[
+$$
 dist(a,b)=(b-a)\bmod m,
-\]
+$$
 
 key `k` with home `h(k)` may occupy slot `j` only when `dist(h(k),j)<H`. Bitmap bit `d` at home `h` is set exactly when slot `(h+d) mod m` holds a live key whose home is `h`.
 
@@ -110,9 +110,9 @@ After completing this module, you should be able to:
 
 Store at each home a bitmap `hop[h]` with `H` meaningful bits. Bit `d` means slot `(h+d) mod m` contains a live key whose home is exactly `h`. It does not merely mean the slot is occupied. Therefore:
 
-\[
+$$
 bit(h,d)=1\iff slot[(h+d)\bmod m]=OCCUPIED(k,v)\land home(k)=h.
-\]
+$$
 
 This biconditional is the representation invariant. Cached full hashes or home metadata help validate it and avoid rehashing during relocation. If metadata uses fingerprints, equality remains authoritative.
 

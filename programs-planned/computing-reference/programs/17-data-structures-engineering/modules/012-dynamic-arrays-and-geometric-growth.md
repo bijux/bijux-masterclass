@@ -19,10 +19,10 @@ How can a dynamic array preserve contiguous sequence semantics while changing ca
 ### Essential definitions
 
 - A **dynamic array** is a variable-length sequence represented by a contiguous backing allocation plus logical length and capacity metadata.
-- **length/size** \(n\) counts live elements; **capacity** \(c\) counts element slots available before another allocation is required.
+- **length/size** $n$ counts live elements; **capacity** $c$ counts element slots available before another allocation is required.
 - **spare capacity** is the region of slots `[n,c)`; for nontrivial element types it is storage, not a sequence of live default elements.
-- A **growth policy** selects a new capacity \(c'\ge n+k\) when appending \(k\) elements would exceed \(c\).
-- **geometric growth** chooses capacities that increase by a factor \(\alpha>1\), up to rounding, minimum-capacity, required-size, and maximum-size rules.
+- A **growth policy** selects a new capacity $c'\ge n+k$ when appending $k$ elements would exceed $c$.
+- **geometric growth** chooses capacities that increase by a factor $\alpha>1$, up to rounding, minimum-capacity, required-size, and maximum-size rules.
 - **reallocation** obtains different storage and transfers live elements; it can invalidate pointers, references, iterators, slices, and foreign views according to the API.
 - **reserve** requests capacity for future elements without changing logical length; exactness and growth policy are contract-specific.
 - **amortized cost** bounds total cost across every permitted operation sequence under a stated cost model; it does not cap each individual operation.
@@ -31,21 +31,21 @@ How can a dynamic array preserve contiguous sequence semantics while changing ca
 
 ### Central model, mechanism, or theorem
 
-State is \((B,n,c)\) with invariants
+State is $(B,n,c)$ with invariants
 
-\[
+$$
 0\le n\le c\le c_{max},
-\]
+$$
 
-live initialized sequence in slots `[0,n)`, and spare non-element storage in `[n,c)`. If `append(x)` finds \(n<c\), it constructs at slot \(n\) and increments length only after success. If \(n=c\), it checks a new capacity, allocates, transfers exactly the \(n\) live elements, constructs `x`, commits the new state, and releases the old storage under its failure guarantee.
+live initialized sequence in slots `[0,n)`, and spare non-element storage in `[n,c)`. If `append(x)` finds $n<c$, it constructs at slot $n$ and increments length only after success. If $n=c$, it checks a new capacity, allocates, transfers exactly the $n$ live elements, constructs `x`, commits the new state, and releases the old storage under its failure guarantee.
 
-For doubling from capacity 1, capacities copied before \(N\) successful single-element appends form
+For doubling from capacity 1, capacities copied before $N$ successful single-element appends form
 
-\[
+$$
 1+2+4+\cdots+2^{m-1}=2^m-1<N.
-\]
+$$
 
-Thus fewer than \(N\) prior elements are copied and \(N\) new elements are written: total unit element work is below \(2N\), although a resize append can cost \(\Theta(n)\). The potential \(\Phi=2n-c+1\) gives amortized cost at most 3 under the chapter's explicit append/copy unit model.
+Thus fewer than $N$ prior elements are copied and $N$ new elements are written: total unit element work is below $2N$, although a resize append can cost $\Theta(n)$. The potential $\Phi=2n-c+1$ gives amortized cost at most 3 under the chapter's explicit append/copy unit model.
 
 ### Critical invariants
 
@@ -72,7 +72,7 @@ Thus fewer than \(N\) prior elements are copied and \(N\) new elements are writt
 
 ### Compact example
 
-Start with capacity 1 and append nine integers under doubling. Growth copies 1 element at capacity 1, then 2, 4, and 8: 15 copied elements total. Nine new-element writes produce 24 unit writes, capacity ends at 16, and the capacity trace after each append is `1,2,4,4,8,8,8,8,16`. The observed ratio `24/9` is not the asymptotic proof; the geometric-series argument establishes the bound for arbitrary \(N\) in the stated model.
+Start with capacity 1 and append nine integers under doubling. Growth copies 1 element at capacity 1, then 2, 4, and 8: 15 copied elements total. Nine new-element writes produce 24 unit writes, capacity ends at 16, and the capacity trace after each append is `1,2,4,4,8,8,8,8,16`. The observed ratio `24/9` is not the asymptotic proof; the geometric-series argument establishes the bound for arbitrary $N$ in the stated model.
 
 ### Connections
 
@@ -116,17 +116,17 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-**Separate abstract length from physical capacity.** The abstract value is a finite sequence \(A=\langle a_0,\ldots,a_{n-1}\rangle\). The representation stores a backing allocation \(B\), length \(n\), and capacity \(c\). Only slots `[0,n)` are live elements and observable through ordinary indexing/iteration. Slots `[n,c)` are reserve storage. For reference-based runtimes they may contain implementation values; for low-level generic storage they may be logically uninitialized. In neither case does capacity add elements to the abstract sequence.
+**Separate abstract length from physical capacity.** The abstract value is a finite sequence $A=\langle a_0,\ldots,a_{n-1}\rangle$. The representation stores a backing allocation $B$, length $n$, and capacity $c$. Only slots `[0,n)` are live elements and observable through ordinary indexing/iteration. Slots `[n,c)` are reserve storage. For reference-based runtimes they may contain implementation values; for low-level generic storage they may be logically uninitialized. In neither case does capacity add elements to the abstract sequence.
 
-The central invariant is `0 <= n <= c <= max_size`. The backing storage must support at least \(c\) properly aligned slots under checked byte arithmetic. The abstraction function reads exactly the live prefix. Any debug interface that exposes spare storage creates additional initialization, aliasing, and information-leak obligations.
+The central invariant is `0 <= n <= c <= max_size`. The backing storage must support at least $c$ properly aligned slots under checked byte arithmetic. The abstraction function reads exactly the live prefix. Any debug interface that exposes spare storage creates additional initialization, aliasing, and information-leak obligations.
 
-**Append is a commit protocol.** With spare capacity, append constructs or assigns the new element into slot \(n\), then publishes \(n+1\). If construction fails, length remains \(n\), and cleanup follows the element/API guarantee. Publishing length first would make a failed or concurrent observer see uninitialized/nonexistent data.
+**Append is a commit protocol.** With spare capacity, append constructs or assigns the new element into slot $n$, then publishes $n+1$. If construction fails, length remains $n$, and cleanup follows the element/API guarantee. Publishing length first would make a failed or concurrent observer see uninitialized/nonexistent data.
 
 When full, a strong conceptual protocol is:
 
 1. compute `required = n + k` with checked arithmetic for the incoming count;
-2. choose \(c'\ge required\), respecting maximum element and byte limits;
-3. acquire storage for \(c'\) slots;
+2. choose $c'\ge required$, respecting maximum element and byte limits;
+3. acquire storage for $c'$ slots;
 4. transfer live elements in order under copy/move/relocation rules, tracking the constructed prefix;
 5. construct incoming elements, including self-alias cases defined by the API;
 6. if a step fails, destroy newly constructed objects and release new storage, preserving the promised old state when possible;
@@ -137,25 +137,25 @@ Real implementations can reorder steps for performance and type traits, but must
 
 **Growth policy is policy, not essence.** A geometric rule can be written
 
-\[
+$$
 c'=\max(required,c_{min},\lceil\alpha c\rceil),\qquad \alpha>1,
-\]
+$$
 
 with special handling at zero and near `max_size`. Production rules may change factors by size, use allocator size classes, choose the smallest sufficient allocation for bulk append, or retain implementation freedom. Java `ArrayList`, Rust `Vec`, Go `append`, C++ `vector`, Python `list`, and .NET `List<T>` should be used through their documented guarantees, not reverse-engineered growth constants treated as API.
 
-Before multiplying capacity by \(\alpha\), check whether required size already exceeds the geometric candidate and whether either exceeds element/byte limits. Integer wrap can select a small capacity followed by out-of-bounds construction. APIs should distinguish arithmetic/capacity overflow from allocator exhaustion where their ecosystem supports it. Fallible reservation enables callers to recover without relying on process termination or unwinding.
+Before multiplying capacity by $\alpha$, check whether required size already exceeds the geometric candidate and whether either exceeds element/byte limits. Integer wrap can select a small capacity followed by out-of-bounds construction. APIs should distinguish arithmetic/capacity overflow from allocator exhaustion where their ecosystem supports it. Fallible reservation enables callers to recover without relying on process termination or unwinding.
 
-**Aggregate proof for doubling.** Suppose capacity begins at 1; a successful append costs one unit to construct the new element, and growth additionally costs one per existing element copied. Immediately before the \((N+1)\)-st slot would be needed, copied capacities are powers of two smaller than the final range. Their sum is less than \(N\). Thus \(N\) successful appends perform \(N\) new writes plus fewer than \(N\) copy writes: total below \(2N\), so amortized element work is \(O(1)\).
+**Aggregate proof for doubling.** Suppose capacity begins at 1; a successful append costs one unit to construct the new element, and growth additionally costs one per existing element copied. Immediately before the $(N+1)$-st slot would be needed, copied capacities are powers of two smaller than the final range. Their sum is less than $N$. Thus $N$ successful appends perform $N$ new writes plus fewer than $N$ copy writes: total below $2N$, so amortized element work is $O(1)$.
 
 This is deterministic over every append sequence under this model; it is not an average over random inputs. It also excludes allocator internals, destructor effects, page faults, cache traffic, and failed operations unless added to the cost model. Rounding and a different factor change constants, not the geometric conclusion when the factor remains bounded away from one and capacity progress is guaranteed.
 
-For general \(\alpha>1\), old capacities form a geometric series whose sum is proportional to final capacity with factor roughly \(1/(\alpha-1)\), subject to rounding. A factor close to one reduces immediate slack but increases allocation/copy frequency and constants. A large factor reduces copying but increases unused capacity and peak allocation. The “best” factor depends on allocator behavior, element size, workload lifetime, memory budget, and latency.
+For general $\alpha>1$, old capacities form a geometric series whose sum is proportional to final capacity with factor roughly $1/(\alpha-1)$, subject to rounding. A factor close to one reduces immediate slack but increases allocation/copy frequency and constants. A large factor reduces copying but increases unused capacity and peak allocation. The “best” factor depends on allocator behavior, element size, workload lifetime, memory budget, and latency.
 
-**Potential proof for doubling.** Under initial `(n=0,c=1)` and reachable nonempty invariant \(n\le c\le2n\), choose \(\Phi=2n-c+1\). It is nonnegative and initially zero. A no-growth append has actual cost 1 and increases potential by 2, for amortized cost 3. At a full state `n=c`, growth to `2n` and append has actual cost `n+1`; potential changes from `n+1` to 3, so \(\Delta\Phi=2-n\) and amortized cost is 3. Telescoping bounds total actual cost by total amortized cost.
+**Potential proof for doubling.** Under initial `(n=0,c=1)` and reachable nonempty invariant $n\le c\le2n$, choose $\Phi=2n-c+1$. It is nonnegative and initially zero. A no-growth append has actual cost 1 and increases potential by 2, for amortized cost 3. At a full state `n=c`, growth to `2n` and append has actual cost `n+1`; potential changes from `n+1` to 3, so $\Delta\Phi=2-n$ and amortized cost is 3. Telescoping bounds total actual cost by total amortized cost.
 
 Potential is an analysis device, not stored runtime credit. The proof establishes a sequence bound for the defined state transitions. It does not make the expensive operation physically fast or reserve memory for future growth.
 
-**Latency and peak space tell different stories.** At capacity \(n\), a growth append can transfer \(n\) elements and cost \(\Theta(n)\). During allocate-copy-free growth, old and new buffers coexist, so peak element storage can approach \(c+c'\), plus allocator metadata and temporaries. Virtual reservation, in-place expansion, relocation primitives, garbage collection, and reference sharing change observed peaks but require evidence.
+**Latency and peak space tell different stories.** At capacity $n$, a growth append can transfer $n$ elements and cost $\Theta(n)$. During allocate-copy-free growth, old and new buffers coexist, so peak element storage can approach $c+c'$, plus allocator metadata and temporaries. Virtual reservation, in-place expansion, relocation primitives, garbage collection, and reference sharing change observed peaks but require evidence.
 
 Pre-reserving a known final size can remove intermediate reallocations and preserve addresses until that capacity is exceeded. It may also overallocate, retain memory, increase working set, or fail earlier. Benchmark both default growth and relevant reservation policy; do not pre-reserve only the preferred implementation while claiming ordinary append performance.
 
@@ -165,11 +165,11 @@ Go makes an especially useful aliasing lesson: a slice is a descriptor of an und
 
 An index often survives relocation as a numeric position, but insertion/erasure before it can change which element occupies that position. Stable IDs need a separate indirection/generation scheme. FFI consumers, device kernels, asynchronous I/O, and stored callbacks cannot retain a data pointer across possible growth unless ownership freezes capacity or an explicit pin/lease prevents mutation.
 
-**Insertion and erasure add movement.** Appending affects the end; inserting at position \(i\) shifts \(n-i\) elements even without reallocation. Erasing shifts later elements left and destroys one logical element. Overlap-safe move direction, exception behavior, self-references, and invalidation must be specified. Bulk operations should reserve once when size is known, yet input ranges can alias the destination or be single-pass, and `required=n+k` still needs checking.
+**Insertion and erasure add movement.** Appending affects the end; inserting at position $i$ shifts $n-i$ elements even without reallocation. Erasing shifts later elements left and destroys one logical element. Overlap-safe move direction, exception behavior, self-references, and invalidation must be specified. Bulk operations should reserve once when size is known, yet input ranges can alias the destination or be single-pass, and `required=n+k` still needs checking.
 
 Removal does not imply capacity shrink. Retaining capacity makes refill cheap and avoids allocator churn but can hold large memory. `shrink_to_fit`, `trimToSize`, or equivalent is often a request with language/library-specific strength. It can reallocate and invalidate views. Security-sensitive code must not assume removed or freed capacity is overwritten; use a documented secure-erasure facility when required.
 
-**Shrinking needs hysteresis.** If growth occurs at full capacity and shrink occurs immediately near the same boundary, alternating append/remove operations can trigger repeated \(Theta(n)\) transfers. A common analytical policy grows by two and shrinks only at utilization at most one quarter, perhaps to half capacity. Between a shrink and the next grow, sufficiently many net inserts are required to pay for rebuilding. The exact thresholds and potential need proof, rounding rules, minimum capacity, and workload analysis.
+**Shrinking needs hysteresis.** If growth occurs at full capacity and shrink occurs immediately near the same boundary, alternating append/remove operations can trigger repeated $Theta(n)$ transfers. A common analytical policy grows by two and shrinks only at utilization at most one quarter, perhaps to half capacity. Between a shrink and the next grow, sufficiently many net inserts are required to pay for rebuilding. The exact thresholds and potential need proof, rounding rules, minimum capacity, and workload analysis.
 
 Automatic shrinking is not always desirable: oscillating workloads, allocator fragmentation, pointer stability, and cache warming can favor retention. Expose an explicit compaction operation or application lifecycle boundary when predictable reclamation is more valuable than automatic response.
 
@@ -242,17 +242,17 @@ This trace establishes the educational implementation's nine-element behavior an
 
 ## Definitions and Notation
 
-Let \(A\in T^n\) be the abstract sequence, \(B\) the current backing storage, \(n=len(A)\), \(c\) capacity, and \(c_{max}\) the maximum permitted element count after byte/layout constraints. The **utilization/load** is \(u=n/c\) for positive \(c\). A **capacity trace** records capacity after each operation.
+Let $A\in T^n$ be the abstract sequence, $B$ the current backing storage, $n=len(A)$, $c$ capacity, and $c_{max}$ the maximum permitted element count after byte/layout constraints. The **utilization/load** is $u=n/c$ for positive $c$. A **capacity trace** records capacity after each operation.
 
-Let actual operation cost be \(a_i\), potential \(\Phi(s)\ge0\), and amortized cost \(\hat a_i=a_i+\Phi(s_i)-\Phi(s_{i-1})\). Telescoping relates their sums. This chapter's unit model charges one for a new-element construction and one per transferred element; real models add allocation, destruction, callbacks, bytes, or time.
+Let actual operation cost be $a_i$, potential $\Phi(s)\ge0$, and amortized cost $\hat a_i=a_i+\Phi(s_i)-\Phi(s_{i-1})$. Telescoping relates their sums. This chapter's unit model charges one for a new-element construction and one per transferred element; real models add allocation, destruction, callbacks, bytes, or time.
 
 A pointer/reference/view is **invalidated** when its later use is outside contract, even if the numerical address happens to remain readable. **Peak capacity** and **peak live memory** differ because allocators, old/new overlap, references, and garbage collection can retain additional storage.
 
 ## Mechanisms, Invariants, or Proof Structure
 
-Representation preservation splits append into spare and full cases. The spare case maintains the live-prefix invariant by constructing at exactly \(n\) before increment. The full case uses a temporary representation with a constructed-prefix counter; rollback destroys exactly that prefix, while commit swaps ownership only after the new live sequence is complete under the promised guarantee.
+Representation preservation splits append into spare and full cases. The spare case maintains the live-prefix invariant by constructing at exactly $n$ before increment. The full case uses a temporary representation with a constructed-prefix counter; rollback destroys exactly that prefix, while commit swaps ownership only after the new live sequence is complete under the promised guarantee.
 
-The doubling aggregate proof follows the finite geometric identity \(\sum_{j=0}^{m-1}2^j=2^m-1\). The potential proof follows from nonnegative \(\Phi=2n-c+1\) over reachable states and amortized cost 3 in both cases. Both quantify element-unit work; neither bounds one resize's actual cost.
+The doubling aggregate proof follows the finite geometric identity $\sum_{j=0}^{m-1}2^j=2^m-1$. The potential proof follows from nonnegative $\Phi=2n-c+1$ over reachable states and amortized cost 3 in both cases. Both quantify element-unit work; neither bounds one resize's actual cost.
 
 For shrink/grow hysteresis, prove a minimum number of net operations between opposite resizes and charge the later transfer to those operations, or supply a piecewise potential covering sparse and dense regimes. Threshold equality, integer rounding, minimum capacity, failed operations, and bulk changes belong in the proof.
 
@@ -294,11 +294,11 @@ Appending nine values under doubling copies 1+2+4+8=15 prior elements and writes
 
 ### Example 2
 
-Growing by a fixed 100 slots copies approximately 100+200+...+N elements before size \(N\), which is quadratic in the number of fixed-size growth steps. Fixed increments are appropriate only under a bounded demand or different cost model.
+Growing by a fixed 100 slots copies approximately 100+200+...+N elements before size $N$, which is quadratic in the number of fixed-size growth steps. Fixed increments are appropriate only under a bounded demand or different cost model.
 
 ### Example 3
 
-For \(n=c=2^{63}\), computing `2*c` in an unsigned 64-bit type wraps. A correct policy first compares required and maximum capacities, uses checked arithmetic, and reports length overflow rather than attempting a small allocation.
+For $n=c=2^{63}$, computing `2*c` in an unsigned 64-bit type wraps. A correct policy first compares required and maximum capacities, uses checked arithmetic, and reports length overflow rather than attempting a small allocation.
 
 ### Example 4
 
@@ -310,7 +310,7 @@ Two Go slices share a backing array. Appending within capacity changes the retur
 
 ### Example 6
 
-A C++ vector transfer of resource-owning elements fails on element \(k\). Exception safety depends on element copy/move traits and the operation's specified guarantee; cleanup must destroy exactly the successfully constructed new prefix without double-owning resources.
+A C++ vector transfer of resource-owning elements fails on element $k$. Exception safety depends on element copy/move traits and the operation's specified guarantee; cleanup must destroy exactly the successfully constructed new prefix without double-owning resources.
 
 ### Example 7
 
@@ -382,11 +382,11 @@ State `(B,n,c)` with checked `0<=n<=c<=max`, live initialized prefix `[0,n)`, an
 
 ### Answer 2
 
-For \(N\) appends, copied full capacities are powers of two whose sum is below \(N\); adding \(N\) new writes gives total element work below \(2N\). With \(\Phi=2n-c+1\), reachable `c<=2n` states make potential nonnegative; a spare append has amortized 3, and a full append costing `n+1` changes potential by `2-n`, also 3. Telescoping bounds the sequence. Neither establishes worst-case append latency, allocator time, byte traffic for variable-size elements, exception/failure behavior, peak old-plus-new memory, address stability, concurrency, cache performance, or a production library's private factor.
+For $N$ appends, copied full capacities are powers of two whose sum is below $N$; adding $N$ new writes gives total element work below $2N$. With $\Phi=2n-c+1$, reachable `c<=2n` states make potential nonnegative; a spare append has amortized 3, and a full append costing `n+1` changes potential by `2-n`, also 3. Telescoping bounds the sequence. Neither establishes worst-case append latency, allocator time, byte traffic for variable-size elements, exception/failure behavior, peak old-plus-new memory, address stability, concurrency, cache performance, or a production library's private factor.
 
 ### Answer 3
 
-For an analytical policy, grow from full positive `c` to `2c`; after removal, shrink to `c/2` only when `n<=c/4`, never below minimum 1, with explicit floor/ceiling and checked arithmetic. After shrinking, utilization is at most one half; reaching full requires \(Theta(c)\) net appends, while reaching the next shrink requires \(Theta(c)\) net removals, so transfers can be charged to intervening operations. A rigorous solution supplies aggregate charging or a piecewise potential for append and pop. Test equality at thresholds, odd capacities, zero/one, bulk changes, failures, alternating boundary sequences, maximum size, capacity traces, total transfers, and abstraction equality. Production choice can prefer no automatic shrink.
+For an analytical policy, grow from full positive `c` to `2c`; after removal, shrink to `c/2` only when `n<=c/4`, never below minimum 1, with explicit floor/ceiling and checked arithmetic. After shrinking, utilization is at most one half; reaching full requires $Theta(c)$ net appends, while reaching the next shrink requires $Theta(c)$ net removals, so transfers can be charged to intervening operations. A rigorous solution supplies aggregate charging or a piecewise potential for append and pop. Test equality at thresholds, odd capacities, zero/one, bulk changes, failures, alternating boundary sequences, maximum size, capacity traces, total transfers, and abstraction equality. Production choice can prefer no automatic shrink.
 
 ### Answer 4
 

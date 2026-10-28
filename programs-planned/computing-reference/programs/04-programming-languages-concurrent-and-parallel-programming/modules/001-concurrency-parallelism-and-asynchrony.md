@@ -28,13 +28,13 @@ Which kind of overlap does a program need: independently progressing activities,
 
 ### Central model, mechanism, or theorem
 
-Represent a computation by events (E) and a strict partial order (\prec) containing program-order and communication dependencies. A legal sequential schedule is a linear extension of this order. Events incomparable under (\prec) are concurrent in the model; an implementation may interleave them on one processor or execute them simultaneously on several processors.
+Represent a computation by events (E) and a strict partial order $\prec$ containing program-order and communication dependencies. A legal sequential schedule is a linear extension of this order. Events incomparable under $\prec$ are concurrent in the model; an implementation may interleave them on one processor or execute them simultaneously on several processors.
 
 An asynchronous operation splits one conceptual action into at least an initiation event and a later completion event:
 
-\[
+$$
 start(op)\prec complete(op)\prec consume(result).
-\]
+$$
 
 Asynchrony changes control flow and waiting; parallelism additionally requires overlapping execution on distinct resources.
 
@@ -54,7 +54,7 @@ Typical failures include equating async with multithreading, equating threads wi
 
 ### Compact example
 
-Two activities contain ordered events (A_1\prec A_2) and (B_1\prec B_2), with no cross-dependency. There are (\binom{4}{2}=6) legal interleavings on one sequential processor. Two processors may also run an (A) event and a (B) event simultaneously. The same concurrent structure admits both interleaved and parallel implementations.
+Two activities contain ordered events $A_1\prec A_2$ and $B_1\prec B_2$, with no cross-dependency. There are $\binom{4}{2}=6$ legal interleavings on one sequential processor. Two processors may also run an (A) event and a (B) event simultaneously. The same concurrent structure admits both interleaved and parallel implementations.
 
 ### Connections
 
@@ -127,31 +127,31 @@ Mechanism selection begins with questions, not brand names:
 
 ## Definitions and Notation
 
-Let (E) be events and (\prec\subset E\times E) a strict partial order: irreflexive and transitive. If neither (e_1\prec e_2) nor (e_2\prec e_1), write (e_1\parallel_c e_2) for logical concurrency. This symbol does not assert physical simultaneous execution.
+Let (E) be events and $\prec\subset E\times E$ a strict partial order: irreflexive and transitive. If neither $e_1\prec e_2$ nor $e_2\prec e_1$, write $e_1\parallel_c e_2$ for logical concurrency. This symbol does not assert physical simultaneous execution.
 
-A schedule (\sigma=(e_1,\ldots,e_n)) is legal when it contains each selected event once and respects the order:
+A schedule $\sigma=(e_1,\ldots,e_n)$ is legal when it contains each selected event once and respects the order:
 
-\[
+$$
 e_i\prec e_j\Longrightarrow i<j.
-\]
+$$
 
 For two chains of lengths (m) and (n) with no cross-dependencies, the number of interleavings is
 
-\[
+$$
 \binom{m+n}{m}=\frac{(m+n)!}{m!n!}.
-\]
+$$
 
-Physical parallelism can be modeled by start and finish times (s(e),f(e)) and resource assignment (r(e)). Two events execute in parallel when their intervals overlap and (r(e_1)\ne r(e_2)).
+Physical parallelism can be modeled by start and finish times (s(e),f(e)) and resource assignment (r(e)). Two events execute in parallel when their intervals overlap and $r(e_1)\ne r(e_2)$.
 
 An asynchronous operation has a handle or continuation (h) linking initiation to a later outcome:
 
-\[
+$$
 init(op)\to h,
 \qquad
 resolve(h,Outcome),
 \qquad
 await(h)\to Outcome.
-\]
+$$
 
 This notation describes a protocol, not a promise that `await` blocks a thread or that work runs elsewhere.
 
@@ -159,9 +159,9 @@ This notation describes a protocol, not a promise that `await` blocks a thread o
 
 **Order preservation.** Every schedule must preserve program-order and communication edges. Reordering independent events is allowed; reversing a dependency is not.
 
-**Interleaving count.** Choose the (m) positions occupied by activity A among (m+n) positions. A's local order then fixes its events in those slots, and B's order fixes the rest. Therefore there are (\binom{m+n}{m}) schedules for two independent chains. This counts schedules, not processor executions or distinct observations.
+**Interleaving count.** Choose the (m) positions occupied by activity A among (m+n) positions. A's local order then fixes its events in those slots, and B's order fixes the rest. Therefore there are $\binom{m+n}{m}$ schedules for two independent chains. This counts schedules, not processor executions or distinct observations.
 
-**Dependency lower bound.** If (e_1\prec e_2\prec\cdots\prec e_k), those events cannot execute simultaneously with one another in any valid implementation. Extra processors cannot shorten their combined dependency-path work below the path's own execution requirement.
+**Dependency lower bound.** If $e_1\prec e_2\prec\cdots\prec e_k$, those events cannot execute simultaneously with one another in any valid implementation. Extra processors cannot shorten their combined dependency-path work below the path's own execution requirement.
 
 **Completion ownership.** Every initiated operation must have a defined owner responsible for observing completion, failure, or cancellation. Detached work without such an owner can outlive requests, leak resources, or hide failures.
 
@@ -202,7 +202,7 @@ This notation describes a protocol, not a promise that `await` blocks a thread o
 
 **Question:** How many schedules can interleave two two-event activities?
 
-**Reasoning:** Preserve (A1\prec A2) and (B1\prec B2). The executable enumerator checks all permutations and keeps those satisfying both constraints.
+**Reasoning:** Preserve $A1\prec A2$ and $B1\prec B2$. The executable enumerator checks all permutations and keeps those satisfying both constraints.
 
 <!-- bijux-verify: {"id":"two-chain-interleavings","mode":"run","language":"python","toolchain":"python3","expect":{"exit_code":0,"stdout":"A1 A2 B1 B2\nA1 B1 A2 B2\nA1 B1 B2 A2\nB1 A1 A2 B2\nB1 A1 B2 A2\nB1 B2 A1 A2\ncount: 6\n","stderr":""}} -->
 ```python
@@ -320,7 +320,7 @@ Classify each situation as concurrent, parallel, asynchronous, or a combination:
 
 ### Exercise 2
 
-Activities A and B contain three and two ordered events with no cross-dependencies. Derive the number of legal interleavings and list the reasoning, not all schedules. Then add dependency (A2\prec B2) and explain how you would count the remaining schedules.
+Activities A and B contain three and two ordered events with no cross-dependencies. Derive the number of legal interleavings and list the reasoning, not all schedules. Then add dependency $A2\prec B2$ and explain how you would count the remaining schedules.
 
 ### Exercise 3
 
@@ -342,7 +342,7 @@ The one-thread socket loop is concurrent and asynchronous but not executing call
 
 ### Answer 2
 
-For independent chains of lengths 3 and 2, choose the three A positions among five, giving (\binom{5}{3}=10); local order fixes events within chosen positions. With (A2\prec B2), filter those ten linear extensions by requiring A2's position to precede B2's. A direct count can condition on B2's position or enumerate combinations of A positions; either method must still preserve A1 before A2 before A3 and B1 before B2. The added edge removes schedules in which B2 precedes A2 but does not impose an unnecessary total order on all events.
+For independent chains of lengths 3 and 2, choose the three A positions among five, giving $\binom{5}{3}=10$; local order fixes events within chosen positions. With $A2\prec B2$, filter those ten linear extensions by requiring A2's position to precede B2's. A direct count can condition on B2's position or enumerate combinations of A positions; either method must still preserve A1 before A2 before A3 and B1 before B2. The added edge removes schedules in which B2 precedes A2 but does not impose an unnecessary total order on all events.
 
 ### Answer 3
 

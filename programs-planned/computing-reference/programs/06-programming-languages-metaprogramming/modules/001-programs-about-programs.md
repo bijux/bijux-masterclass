@@ -32,17 +32,17 @@ What changes when a program treats another program—or itself—as input, outpu
 
 ### Central model, mechanism, or theorem
 
-Let (P\in Prog_L) be an object program and (\rho_L(P)\in Rep_L) a representation. A metaprogram is modeled as
+Let $P\in Prog_L$ be an object program and $\rho_L(P)\in Rep_L$ a representation. A metaprogram is modeled as
 
-\[
+$$
 M:Rep_L\times E_M\rightarrow Rep_{L'}\times D,
-\]
+$$
 
 where (E_M) is its phase environment and (D) includes diagnostics/evidence/provenance. If (M) claims behavior preservation, it owes a relation
 
-\[
+$$
 \llbracket P\rrbracket_L \approx_C \llbracket decode(M(\rho_L(P)))\rrbracket_{L'}
-\]
+$$
 
 for an explicit observation context (C). A generator from a schema has no original program whose behavior must be preserved; instead it must satisfy a generation contract derived from the schema. Representation and stage determine what names/types/resources are meaningful and when failures appear.
 
@@ -271,10 +271,9 @@ This run proves one pure integer trace in the toy language. It does not parse so
 
 ## Definitions and Notation
 
-Let (Prog_L) be well-formed programs in language (L), (Rep_L) representations, (
-ho_L:Prog_L\rightarrow Rep_L) reification, and (decode_L:Rep_L\rightharpoonup Prog_L) partial reconstruction. Let (M) run at meta-stage (s_M) with declared environment (E_M).
+Let $Prog_L$ be well-formed programs in language $L$, $Rep_L$ representations, and $\rho_L:Prog_L\rightarrow Rep_L$ reification. Let $decode_L:Rep_L\rightharpoonup Prog_L$ be partial reconstruction. Let $M$ run at meta-stage $s_M$ with declared environment $E_M$.
 
-An **analyzer** (A:Rep_L\rightarrow Facts\times Diagnostics) need not produce a program. A **generator** (G:Model\rightarrow Rep_L\times D) satisfies model-to-program contract (K_G). A **transformer** (T:Rep_L\rightarrow Rep_{L'}\times D) may claim observation relation (\approx_C). A **specializer** (S:Rep_L\times StaticInput\rightarrow Rep_L\) should satisfy (\llbracket S(P,a)\rrbracket(b)\approx\llbracket P\rrbracket(a,b)) within its semantic domain.
+An **analyzer** $A:Rep_L\rightarrow Facts\times Diagnostics$ need not produce a program. A **generator** $G:Model\rightarrow Rep_L\times D$ satisfies model-to-program contract (K_G). A **transformer** $T:Rep_L\rightarrow Rep_{L'}\times D$ may claim observation relation $\approx_C$. A **specializer** $S:Rep_L\times StaticInput\rightarrow Rep_L$ should satisfy $\llbracket S(P,a)\rrbracket(b)\approx\llbracket P\rrbracket(a,b)$ within its semantic domain.
 
 Meta-level 0 is ordinary object computation by convention; level (n+1) manipulates a representation/behavior at level (n). Levels and chronological phases are not identical: a runtime reflector is meta-level activity at runtime. **Stage correctness** means referenced values/code are available and used at their declared phase.
 

@@ -30,9 +30,9 @@ How can interaction policy among a cohesive set of objects be owned explicitly s
 
 For mediator state (m), colleague input (i), trusted context (ctx), define one transition
 
-\[
+$$
 \delta:(m,i,ctx)\rightarrow(m',O),
-\]
+$$
 
 where (O=[o_1,...,o_k]) is an explicitly ordered set of colleague commands and/or domain facts. Direct undirected acquaintance among (n) colleagues can require up to (n(n-1)/2) links; a mediator topology needs (n) colleague-to-mediator links. This graph result concerns communication structure only: the mediator now owns cross-colleague rules, ordering, and failure policy.
 
@@ -187,13 +187,13 @@ Cover invalid inputs, boundary states, repeated/no-op changes, reentrancy, dupli
 
 Let colleagues be (C=\{c_1,...,c_n\}). A fully connected undirected acquaintance graph has
 
-\[
+$$
 |E_{pair}|=\binom{n}{2}=\frac{n(n-1)}{2},
-\]
+$$
 
 while a star centered at mediator (mu) has (|E_{star}|=n). Directed request/response interfaces may count differently; the comparison illustrates topology, not total semantic complexity.
 
-Let mediator state be (m=(id,v,q)): collaboration identity, version, and owned policy state. Transition (delta(m,i,ctx)=(m',O)), with ordered outputs (O=[o_1,...,o_k]). Safety invariant (P(m)) should satisfy (P(m)\land Valid(i,ctx)\Rightarrow P(m')), under stated assumptions about output application.
+Let mediator state be (m=(id,v,q)): collaboration identity, version, and owned policy state. Transition (delta(m,i,ctx)=(m',O)), with ordered outputs (O=[o_1,...,o_k]). Safety invariant (P(m)) should satisfy $P(m)\land Valid(i,ctx)\Rightarrow P(m')$, under stated assumptions about output application.
 
 For durable output identity (j=(collaboration,version,outputIndex)), duplicate-safe receivers bind (j) to the same payload digest/outcome. This supports retry of one logical output but does not prove exactly-once external effects.
 
@@ -260,7 +260,7 @@ print(f"transitions={mediator.transitions} commands={button.commands}")
 
 ### Local invariant argument
 
-After every successful `notify`, the mediator normalizes exactly one owned input, computes (eligible=(name\ne\epsilon)\land terms), and commands the button only if its state differs. Therefore on return, `button.enabled == eligible`; three transitions yield two actual button changes. The argument assumes no concurrent/reentrant mutation and that `apply_enabled` terminates without failure.
+After every successful `notify`, the mediator normalizes exactly one owned input, computes $eligible=(name\ne\epsilon)\land terms$, and commands the button only if its state differs. Therefore on return, `button.enabled == eligible`; three transitions yield two actual button changes. The argument assumes no concurrent/reentrant mutation and that `apply_enabled` terminates without failure.
 
 ### Distributed review obligations
 
@@ -298,7 +298,7 @@ When boundaries become durable/distributed, separately review state/output atomi
 
 ### Example 1
 
-Six peers with all possible undirected direct links have (6\cdot5/2=15) links; a star has six. The mediator still understands all six roles. **Conclusion:** Topology shrinks, while semantic complexity moves rather than vanishes.
+Six peers with all possible undirected direct links have $6\cdot5/2=15$ links; a star has six. The mediator still understands all six roles. **Conclusion:** Topology shrinks, while semantic complexity moves rather than vanishes.
 
 ### Example 2
 
@@ -386,7 +386,7 @@ Review a proposed mediator for safety-critical industrial actuation without clai
 
 ### Answer 1
 
-For six colleagues, pairwise undirected acquaintance has \(\binom{6}{2}=6\cdot5/2=15\) links; the mediator star has one link per colleague, six. This counts topology only and ignores direction, interface breadth, and semantic knowledge.
+For six colleagues, pairwise undirected acquaintance has $\binom{6}{2}=6\cdot5/2=15$ links; the mediator star has one link per colleague, six. This counts topology only and ignores direction, interface breadth, and semantic knowledge.
 
 In the executable example, base state has empty name, false terms, and disabled button, so the invariant holds. Each valid input updates exactly one mediator field, increments transition count, derives `eligible = nonempty(normalized name) and terms`, and applies that Boolean. Thus after successful return button state equals the predicate. The trace yields false, false, true, false; only false→true and true→false change the button, so three transitions produce two commands. The proof assumes serialization, accepted event types, terminating nonfailing button application, and no external button mutation; it proves no thread, persistence, security, or distributed property.
 

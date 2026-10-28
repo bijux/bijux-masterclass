@@ -31,23 +31,23 @@ How can a message flow carry a small, stable reference to large, sensitive, or t
 
 ### Central model, mechanism, or theorem
 
-Let payload bytes be \(B\), cryptographic digest \(h=H(B)\), length \(n=|B|\), immutable object identity/version \(o\), and claim descriptor
+Let payload bytes be $B$, cryptographic digest $h=H(B)$, length $n=|B|$, immutable object identity/version $o$, and claim descriptor
 
-\[
+$$
 C=(o,h,n,t,s),
-\]
+$$
 
-where \(t\) identifies media/schema type and \(s\) the nonsecret security/lifecycle metadata required by policy. Redemption is valid only if the authenticated principal is authorized for the current purpose and tenant, the exact object version is retrieved, and
+where $t$ identifies media/schema type and $s$ the nonsecret security/lifecycle metadata required by policy. Redemption is valid only if the authenticated principal is authorized for the current purpose and tenant, the exact object version is retrieved, and
 
-\[
+$$
 H(B')=h\quad\land\quad |B'|=n.
-\]
+$$
 
-If broker retention/replay is \(R_b\), maximum unresolved processing/retry horizon is \(R_p\), and audit or domain policy requires \(R_a\), then absent a stronger obligation ledger the object lifetime must satisfy
+If broker retention/replay is $R_b$, maximum unresolved processing/retry horizon is $R_p$, and audit or domain policy requires $R_a$, then absent a stronger obligation ledger the object lifetime must satisfy
 
-\[
+$$
 R_o\ge\max(R_b,R_p,R_a).
-\]
+$$
 
 This is a lower bound, not deletion authorization: legal holds, multiple subscriptions, backups, and privacy requirements may impose different outcomes.
 
@@ -199,15 +199,15 @@ Correlate by opaque message/object IDs; never label metrics with raw URLs, token
 
 | Symbol or term | Meaning |
 | --- | --- |
-| \(B\) | Exact stored/transported payload byte sequence |
-| \(H\) | Declared collision-resistant digest algorithm |
-| \(h=H(B)\) | Expected payload digest in authenticated envelope |
-| \(n=|B|\) | Expected payload byte length |
-| \(o=(key,version)\) | Immutable object identity and version |
-| \(C\) | Claim descriptor binding object, digest, length, type/schema, and safe policy metadata |
-| \(R_b\) | Supported broker retention or replay horizon |
-| \(R_p\) | Maximum unresolved processing/retry horizon |
-| \(R_a\) | Audit/domain retention requirement |
+| $B$ | Exact stored/transported payload byte sequence |
+| $H$ | Declared collision-resistant digest algorithm |
+| $h=H(B)$ | Expected payload digest in authenticated envelope |
+| $n=|B|$ | Expected payload byte length |
+| $o=(key,version)$ | Immutable object identity and version |
+| $C$ | Claim descriptor binding object, digest, length, type/schema, and safe policy metadata |
+| $R_b$ | Supported broker retention or replay horizon |
+| $R_p$ | Maximum unresolved processing/retry horizon |
+| $R_a$ | Audit/domain retention requirement |
 | orphan | Stored content without a live published obligation |
 | dangling claim | Delivered/live claim whose required content cannot be validly redeemed |
 | bearer capability | Token whose possession enables the scoped operation without another identity decision |
@@ -219,7 +219,7 @@ Confidentiality, integrity, authenticity, availability, and authorization are di
 
 ### Integrity argument
 
-Assume the authenticated envelope binds expected \((o,h,n,t)\), the object store returns exact version \(o\), and the consumer rejects unless retrieved \(B'\) satisfies \(H(B')=h\) and \(|B'|=n\) before parsing/effect. Corruption or replacement that changes bytes is detected except with digest collision or compromise of envelope/trust boundary. The argument does not prove confidentiality, authorization, semantic correctness, or malware safety.
+Assume the authenticated envelope binds expected $(o,h,n,t)$, the object store returns exact version $o$, and the consumer rejects unless retrieved $B'$ satisfies $H(B')=h$ and $|B'|=n$ before parsing/effect. Corruption or replacement that changes bytes is detected except with digest collision or compromise of envelope/trust boundary. The argument does not prove confidentiality, authorization, semantic correctness, or malware safety.
 
 ### Publication-safety argument
 
@@ -227,7 +227,7 @@ If durable verified storage precedes claim visibility, a crash before publicatio
 
 ### Retention lower bound
 
-Any supported replay at age \(R_b\), unresolved retry at age \(R_p\), or required audit retrieval at age \(R_a\) needs the bytes. Therefore deletion before their maximum violates at least one contract. Keeping until the maximum is necessary but may not be sufficient: subscription-specific lag, legal hold, backup, supersession, privacy and derived-data policy can alter the terminal outcome.
+Any supported replay at age $R_b$, unresolved retry at age $R_p$, or required audit retrieval at age $R_a$ needs the bytes. Therefore deletion before their maximum violates at least one contract. Keeping until the maximum is necessary but may not be sufficient: subscription-specific lag, legal hold, backup, supersession, privacy and derived-data policy can alter the terminal outcome.
 
 ### Executable finite model
 
@@ -327,7 +327,7 @@ Conditional offloading reduces small-message latency but creates two representat
 
 **Situation.** A 20 MiB document is published to five subscriptions and may redeliver twice per subscription. Compare inline broker-carried bytes with one stored object and small claims, ignoring replication and envelope size.
 
-**Reasoning.** Inline logical delivery can move up to \(20\times5\times2=200\) MiB through subscriber paths. Claim Check stores 20 MiB once, then consumers still retrieve according to their needs; it reduces broker bytes but not necessarily total payload egress. Cache or shared regional reads may help, while every subscriber still owns integrity and effect processing.
+**Reasoning.** Inline logical delivery can move up to $20\times5\times2=200$ MiB through subscriber paths. Claim Check stores 20 MiB once, then consumers still retrieve according to their needs; it reduces broker bytes but not necessarily total payload egress. Cache or shared regional reads may help, while every subscriber still owns integrity and effect processing.
 
 **Conclusion.** The pattern shifts and can reduce broker amplification; it does not make payload transfer free.
 
@@ -461,15 +461,15 @@ Include stable message/business identity; immutable object key plus version; dig
 
 Average logical payload delivery is
 
-\[
+$$
 12\text{ MiB}\times4\times1.5=72\text{ MiB}.
-\]
+$$
 
 Claim Check removes most of those payload bytes from broker storage/replication and claim-message delivery, replacing them with small descriptors. It still stores 12 MiB plus replicas/versions and incurs upload, retrieval per subscriber/attempt unless cached safely, scanning, encryption, operations, egress, retention, backup, and cleanup. The necessary basic object-retention lower bound is
 
-\[
+$$
 R_o\ge\max(14,21,90)=90\text{ days}.
-\]
+$$
 
 Legal hold, slow subscriptions, restore margin, backups, or privacy policy may require a different terminal decision; 90 days is not automatic deletion authorization.
 

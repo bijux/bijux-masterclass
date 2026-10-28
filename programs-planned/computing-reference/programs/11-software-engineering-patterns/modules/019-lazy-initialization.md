@@ -33,11 +33,11 @@ When should construction be deferred until demand, and how must concurrency, pub
 
 Represent a lazy cell as a state machine:
 
-\[
+$$
 U \rightarrow I \rightarrow R(v),\qquad I\rightarrow F(e)\;\text{or}\;U.
-\]
+$$
 
-Only one initializer may own state \(I\). A value is published only after complete successful construction, with \(complete(v)\;hb\;read(v)\) for every observer. Failure policy chooses cached terminal \(F(e)\), reset to \(U\), or bounded retry with time/backoff conditions. For use probability \(p\), initialization cost \(C_i\), and per-access lazy overhead \(C_a\), a crude expected-work comparison is eager \(C_i\) versus lazy \(pC_i+nC_a\); it excludes tail latency, contention, retained memory, failure timing, and operational risk, so measurement and service objectives govern the decision.
+Only one initializer may own state $I$. A value is published only after complete successful construction, with $complete(v)\;hb\;read(v)$ for every observer. Failure policy chooses cached terminal $F(e)$, reset to $U$, or bounded retry with time/backoff conditions. For use probability $p$, initialization cost $C_i$, and per-access lazy overhead $C_a$, a crude expected-work comparison is eager $C_i$ versus lazy $pC_i+nC_a$; it excludes tail latency, contention, retained memory, failure timing, and operational risk, so measurement and service objectives govern the decision.
 
 ### Critical invariants
 
@@ -156,7 +156,7 @@ Never mark the whole service healthy because the process starts while every esse
 
 ### Invalidation and generations
 
-If a value never changes, a one-time cell is enough. Configuration reload introduces generations. Build generation \(g+1\) independently, validate it, atomically route new callers to it, allow holders of \(g\) to finish, then close it.
+If a value never changes, a one-time cell is enough. Configuration reload introduces generations. Build generation $g+1$ independently, validate it, atomically route new callers to it, allow holders of $g$ to finish, then close it.
 
 Clearing a shared pointer in place can race active users and trigger duplicate initialization. Use immutable generation handles and ownership counts or an explicit drain protocol.
 
@@ -180,35 +180,35 @@ Trace which request triggered demand without attaching unbounded caller identiti
 
 ## Definitions and Notation
 
-Let state \(S_t\in\{U,I,R(v),F(e),D,C\}\) mean uninitialized, initializing, ready, failed, draining, or closed. Let attempt \(a_g\) belong to configuration generation \(g\). `owner(a)` is the one initializer; \(W_a\) is its waiter set.
+Let state $S_t\in\{U,I,R(v),F(e),D,C\}$ mean uninitialized, initializing, ready, failed, draining, or closed. Let attempt $a_g$ belong to configuration generation $g$. `owner(a)` is the one initializer; $W_a$ is its waiter set.
 
 For safe publication:
 
-\[
+$$
 complete(a_g,v)\;hb\;observe_c(R_g(v))\quad\text{for every successful caller }c.
-\]
+$$
 
-For one active attempt per key \(k\):
+For one active attempt per key $k$:
 
-\[
+$$
 |\{a: active(a)\land key(a)=k\}|\le 1.
-\]
+$$
 
-Let \(p\) be probability of use, \(C_i\) initialization cost, \(C_a\) lazy access overhead, and \(n\) access count. The estimate \(pC_i+nC_a\) is only a screening model; real decisions require latency distributions, concurrency, memory, failure, and operational evidence.
+Let $p$ be probability of use, $C_i$ initialization cost, $C_a$ lazy access overhead, and $n$ access count. The estimate $pC_i+nC_a$ is only a screening model; real decisions require latency distributions, concurrency, memory, failure, and operational evidence.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 ### Safety argument
 
-Assume state changes are atomic under a documented synchronization protocol. Only a successful owner stores \(v\), and it performs the release/publication transition after complete construction. Readers acquire/await the ready transition before reading. Then no reader can observe \(v\) through the cell before construction happens-before its read. This proof sketch does not cover objects that leak themselves from their constructors.
+Assume state changes are atomic under a documented synchronization protocol. Only a successful owner stores $v$, and it performs the release/publication transition after complete construction. Readers acquire/await the ready transition before reading. Then no reader can observe $v$ through the cell before construction happens-before its read. This proof sketch does not cover objects that leak themselves from their constructors.
 
 ### Failure transition
 
-On failure, the owner records a classified error before waking waiters. Cached policy transitions to \(F(e)\); retry policy atomically returns to \(U\) with attempt/backoff metadata. No waiter may both consume the failed attempt and silently become a new owner without reevaluating its deadline and policy.
+On failure, the owner records a classified error before waking waiters. Cached policy transitions to $F(e)$; retry policy atomically returns to $U$ with attempt/backoff metadata. No waiter may both consume the failed attempt and silently become a new owner without reevaluating its deadline and policy.
 
 ### Generation transition
 
-Publishing generation \(g+1\) changes only the routing pointer for new acquisitions. Existing handles pin \(g\). Therefore closure of \(g\) occurs only after it is unpublished and its holder count reaches zero, preventing use-after-close under those assumptions.
+Publishing generation $g+1$ changes only the routing pointer for new acquisitions. Existing handles pin $g$. Therefore closure of $g$ occurs only after it is unpublished and its holder count reaches zero, preventing use-after-close under those assumptions.
 
 ### Executable sequential model
 
@@ -411,7 +411,7 @@ Each waiter registers with its own deadline and atomically detaches on timeout. 
 
 ### Answer 3
 
-Eager simple cost is 800 ms per process. Lazy expected initialization cost is \(0.05\times800=40\) ms. When used, 400 accesses cost \(400\times2\) microseconds = 800 microseconds = 0.8 ms; averaged over all processes that overhead is 0.04 ms if accesses occur only in the 5% used case. Under that simplified interpretation, expected lazy work is about 40.04 ms versus 800 ms.
+Eager simple cost is 800 ms per process. Lazy expected initialization cost is $0.05\times800=40$ ms. When used, 400 accesses cost $400\times2$ microseconds = 800 microseconds = 0.8 ms; averaged over all processes that overhead is 0.04 ms if accesses occur only in the 5% used case. Under that simplified interpretation, expected lazy work is about 40.04 ms versus 800 ms.
 
 This does not place the cost. A used process's first caller still pays roughly 800 ms; concurrent callers contend; initialization can fail; access overhead distribution and memory differ; use may correlate with peak load; fleet replicas may stampede; readiness and service objectives may require prevalidation; and resource lifetime/shutdown may dominate. Measure use distribution, cold/warm tail latency, concurrency, downstream capacity, failure/retry behavior, startup budget, memory, and user-visible objectives. Hybrid bounded warming may be preferable.
 
@@ -419,7 +419,7 @@ This does not place the cost. A used process's first caller still pays roughly 8
 
 Key cells by `(tenant_id, config_generation)` under a global bounded cache. Parse and validate signed configuration before eligibility. A miss starts at most one build for that key; waiters share it with individual deadlines. A failed new generation is cached as a classified configuration error and does not displace the last known good generation.
 
-After generation \(g+1\) builds and passes route invariants, atomically update that tenant's routing handle for new requests. Each request pins its selected immutable generation until completion. Retire \(g\), close it only when unpublished and holder count is zero, and enforce global/per-tenant memory and build-concurrency limits with eviction of safe retired/idle entries. Rollback republishes a still-valid prior generation through the same transition, never mutates a table under readers. Test concurrent first access, bad config, delayed build, timeout, cancellation, duplicate event, rollback, tenant deletion, memory pressure, and process restart.
+After generation $g+1$ builds and passes route invariants, atomically update that tenant's routing handle for new requests. Each request pins its selected immutable generation until completion. Retire $g$, close it only when unpublished and holder count is zero, and enforce global/per-tenant memory and build-concurrency limits with eviction of safe retired/idle entries. Rollback republishes a still-valid prior generation through the same transition, never mutates a table under readers. Test concurrent first access, bad config, delayed build, timeout, cancellation, duplicate event, rollback, tenant deletion, memory pressure, and process restart.
 
 ### Answer 5
 

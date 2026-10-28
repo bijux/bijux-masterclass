@@ -31,13 +31,13 @@ When does reusing a bounded set of objects improve a system, and what lease, san
 
 ### Central model, mechanism, or theorem
 
-Let live objects be partitioned at time \(t\) into available \(A_t\) and leased \(L_t\), with capacity \(C\):
+Let live objects be partitioned at time $t$ into available $A_t$ and leased $L_t$, with capacity $C$:
 
-\[
+$$
 A_t\cap L_t=\varnothing,\qquad |A_t|+|L_t|\le C.
-\]
+$$
 
-Checkout transfers one valid object from \(A_t\) to \(L_t\), or creates one if live count is below \(C\). Return removes it from \(L_t\), then resets and validates it before adding it to \(A_t\); otherwise the pool destroys it. Under an idealized arrival rate \(\lambda\), mean hold time \(E[S]\), and \(C\) identical servers, offered utilization is \(\rho=\lambda E[S]/C\). Sustained operation near or above one produces rapidly growing waits or rejection, so sizing needs measured distributions and an explicit overload policy.
+Checkout transfers one valid object from $A_t$ to $L_t$, or creates one if live count is below $C$. Return removes it from $L_t$, then resets and validates it before adding it to $A_t$; otherwise the pool destroys it. Under an idealized arrival rate $\lambda$, mean hold time $E[S]$, and $C$ identical servers, offered utilization is $\rho=\lambda E[S]/C$. Sustained operation near or above one produces rapidly growing waits or rejection, so sizing needs measured distributions and an explicit overload policy.
 
 ### Critical invariants
 
@@ -174,23 +174,23 @@ Tag only bounded dimensions. Borrower identity can be sampled or traced without 
 
 ## Definitions and Notation
 
-Let \(R_t\) be all live pooled resources. Partition it into available \(A_t\), leased \(L_t\), and transient creation/validation/return states \(X_t\):
+Let $R_t$ be all live pooled resources. Partition it into available $A_t$, leased $L_t$, and transient creation/validation/return states $X_t$:
 
-\[
+$$
 R_t=A_t\uplus L_t\uplus X_t,\qquad |R_t|\le C.
-\]
+$$
 
-The disjoint-union symbol \(\uplus\) requires each live resource to occupy exactly one state. For resource \(r\), let \(g(r)\) be its configuration generation and \(k(r)\) its compatibility key. A request \(q\) may receive \(r\) only if the required generation and key match.
+The disjoint-union symbol $\uplus$ requires each live resource to occupy exactly one state. For resource $r$, let $g(r)$ be its configuration generation and $k(r)$ its compatibility key. A request $q$ may receive $r$ only if the required generation and key match.
 
-Let \(reset(r)\) and \(valid(r)\) be predicates checked before re-entry to \(A\). Let \(deadline(q)\) bound acquisition. Let \(h\) be observed lease hold time. Queueing estimates use \(\lambda\) for arrival rate, \(E[S]\) for mean service/hold time, \(C\) for slots, and \(\rho=\lambda E[S]/C\) only as an idealized first approximation.
+Let $reset(r)$ and $valid(r)$ be predicates checked before re-entry to $A$. Let $deadline(q)$ bound acquisition. Let $h$ be observed lease hold time. Queueing estimates use $\lambda$ for arrival rate, $E[S]$ for mean service/hold time, $C$ for slots, and $\rho=\lambda E[S]/C$ only as an idealized first approximation.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 ### Safety argument
 
-Assume every transition is serialized under one correct synchronization protocol; capacity is reserved before creation; lease handles cannot be forged; release removes a resource from \(L\) exactly once; reset/validation precede addition to \(A\); and destruction decrements live count exactly once.
+Assume every transition is serialized under one correct synchronization protocol; capacity is reserved before creation; lease handles cannot be forged; release removes a resource from $L$ exactly once; reset/validation precede addition to $A$; and destruction decrements live count exactly once.
 
-By induction over transitions, disjointness and \(|R_t|\le C\) hold initially for the empty pool. Checkout moves one identity between sets or adds one after reserving a slot. Return moves it through a transient state and either to available or destroyed. No transition duplicates an identity. This is a proof sketch for the abstract state machine, not for an arbitrary implementation or language memory model.
+By induction over transitions, disjointness and $|R_t|\le C$ hold initially for the empty pool. Checkout moves one identity between sets or adds one after reserving a slot. Return moves it through a transient state and either to available or destroyed. No transition duplicates an identity. This is a proof sketch for the abstract state machine, not for an arbitrary implementation or language memory model.
 
 ### Liveness conditions
 
@@ -198,11 +198,11 @@ Safety does not guarantee acquisition. Liveness additionally needs eventual reso
 
 ### Sanitation obligation
 
-For borrower-visible state projection \(B(r)\), safe reuse requires the post-reset observation to equal the declared baseline \(B_0\):
+For borrower-visible state projection $B(r)$, safe reuse requires the post-reset observation to equal the declared baseline $B_0$:
 
-\[
+$$
 reset(r)=true \Longrightarrow B(r)=B_0.
-\]
+$$
 
 This is a contract to test for the defined projection, not proof that no hidden runtime or external state exists.
 
@@ -330,7 +330,7 @@ An image service leases sandboxed worker processes. Each job gets a deadline and
 
 ### Example 4
 
-A resource enlisted in transaction \(x\) cannot be handed to transaction \(y\). The pool uses an affinity subpool while \(x\) is active, then rolls back/commits and validates before general reuse. **Conclusion:** Interchangeability may be conditional on contextual state.
+A resource enlisted in transaction $x$ cannot be handed to transaction $y$. The pool uses an affinity subpool while $x$ is active, then rolls back/commits and validates before general reuse. **Conclusion:** Interchangeability may be conditional on contextual state.
 
 ### Example 5
 
@@ -411,7 +411,7 @@ The pool states are `open`, `draining`, and `closed`. `draining` rejects acquisi
 
 ### Answer 2
 
-Nonadministrative capacity is \(120-12=108\). To remain safe at 12 replicas, the simple even upper bound is \(\lfloor108/12\rfloor=9\) sessions per replica, assuming no other clients and that administrative slots are truly isolated. Starting below that—perhaps 6–8—leaves room for deployment overlap, monitoring, migrations, and uncertainty. If old and new replicas overlap during rollout, include both in the denominator or use a fleet-wide broker/admission limit.
+Nonadministrative capacity is $120-12=108$. To remain safe at 12 replicas, the simple even upper bound is $\lfloor108/12\rfloor=9$ sessions per replica, assuming no other clients and that administrative slots are truly isolated. Starting below that—perhaps 6–8—leaves room for deployment overlap, monitoring, migrations, and uncertainty. If old and new replicas overlap during rollout, include both in the denominator or use a fleet-wide broker/admission limit.
 
 Arithmetic does not prove performance. Measure arrival and hold-time distributions, transaction duration, query mix, database CPU/memory/I/O/lock saturation, acquisition wait percentiles, timeouts, throughput, and failover behavior. Load-test bursts, slow queries, unavailable database, rolling deployment, autoscaling, and retries. Increase capacity only while end-to-end throughput or objectives improve without violating database headroom. Document whether reserved local slots map to database-reserved capacity; otherwise remove the misleading distinction.
 

@@ -274,15 +274,15 @@ The run proves only arithmetic for synthetic normalized values and declared weig
 
 ## Definitions and Notation
 
-Let stakeholder set be `S`, operational scenarios `\Omega`, mission objectives `O`, and candidate concepts `C`. For concept `c`, scenario `\omega`, and stakeholder/viewpoint `s`, an effectiveness vector is
+Let stakeholder set be `S`, operational scenarios $\Omega$, mission objectives `O`, and candidate concepts `C`. For concept `c`, scenario $\omega$, and stakeholder/viewpoint `s`, an effectiveness vector is
 
-`E(c,\omega,s)=(e_1,\ldots,e_n)`
+$E(c,\omega,s)=(e_1,\ldots,e_n)$
 
-with each component defined by a governed measurement specification. A decision relation `\succeq` compares vectors under stakeholder authority, constraints, uncertainty, and guardrails. It need not be a total order.
+with each component defined by a governed measurement specification. A decision relation $\succeq$ compares vectors under stakeholder authority, constraints, uncertainty, and guardrails. It need not be a total order.
 
 If an exploratory weighted score is used,
 
-`V(c)=\sum_{i=1}^{n}w_i\,n_i(e_i(c)),\quad w_i\ge0,\quad\sum_iw_i=1,`
+$V(c)=\sum_{i=1}^{n}w_i\,n_i(e_i(c)),\quad w_i\ge0,\quad\sum_iw_i=1,$
 
 where `n_i` normalizes unlike measures. Report the original units, functions `n_i`, weights, uncertainty, sensitivity, and veto set. A score is a decision aid, not objective value.
 

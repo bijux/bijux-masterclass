@@ -31,13 +31,13 @@ How can engineers translate a data structure's abstract model, invariants, and o
 
 ### Central model, mechanism, or theorem
 
-For input domain \(D\), system \(S\), observation function \(O\), and predicate \(P\), one run checks
+For input domain $D$, system $S$, observation function $O$, and predicate $P$, one run checks
 
-\[
+$$
 P(O(S,x_i)) = \mathrm{true}\quad\text{for sampled }x_1,\ldots,x_n\sim G_{\theta}.
-\]
+$$
 
-For a mutable data structure, commands \(c_1,\ldots,c_k\) drive both an abstract model \(M\) and implementation \(S\). With transitions \(\delta_M,\delta_S\), the test checks a representation relation \(R(M_i,S_i)\) and matching observable results after every legal command. A failure establishes a counterexample to the encoded property under the observed execution. Passing samples do not establish \(\forall x\in D\;P(O(S,x))\).
+For a mutable data structure, commands $c_1,\ldots,c_k$ drive both an abstract model $M$ and implementation $S$. With transitions $\delta_M,\delta_S$, the test checks a representation relation $R(M_i,S_i)$ and matching observable results after every legal command. A failure establishes a counterexample to the encoded property under the observed execution. Passing samples do not establish $\forall x\in D\;P(O(S,x))$.
 
 ### Critical invariants
 
@@ -108,7 +108,7 @@ After completing this module, you should be able to:
 
 ## Core Exposition
 
-**Start from the contract, not from random values.** A property is useful only if its failure contradicts an intended behavior. Let \(A\) be the abstract value, \(r\) the concrete representation, \(\alpha(r)=A\) the abstraction function, and \(I(r)\) the representation invariant. For operation \(op\), derive claims from its precondition and postcondition. For example, inserting key \(k\) with value \(v\) into a map should make lookup of \(k\) observe \(v\) under the map's declared equality policy; it should preserve unrelated mappings; and the resulting representation should satisfy \(I\). These are stronger and more stable than assertions about buckets or tree rotations unless those internals are explicitly under test.
+**Start from the contract, not from random values.** A property is useful only if its failure contradicts an intended behavior. Let $A$ be the abstract value, $r$ the concrete representation, $\alpha(r)=A$ the abstraction function, and $I(r)$ the representation invariant. For operation $op$, derive claims from its precondition and postcondition. For example, inserting key $k$ with value $v$ into a map should make lookup of $k$ observe $v$ under the map's declared equality policy; it should preserve unrelated mappings; and the resulting representation should satisfy $I$. These are stronger and more stable than assertions about buckets or tree rotations unless those internals are explicitly under test.
 
 Property families complement one another:
 
@@ -132,17 +132,17 @@ Compose valid cases by construction when constraints are structural. Generate a 
 
 **Boundary targeting is not optional.** Include empty and singleton structures, minimum and maximum sizes, duplicate-heavy and all-equal values, absent keys, repeated updates, deletion of roots and last elements, threshold capacities, wraparound candidates, degenerate depth, adversarial equality/hash/comparator callbacks, invalid encodings, and injected allocation or I/O failure where the contract admits them. Mix hand-selected examples with generated search. Randomness does not absolve the engineer from naming dangerous equivalence classes.
 
-**Shrinking is a second search problem.** Given failing case \(x\), a shrinker explores candidates \(y\prec x\) under a simplicity relation. A good relation is well-founded—often represented by a measure \(\mu(y)<\mu(x)\)—so search cannot descend forever. A candidate is retained only if it remains within the property domain and reproduces the relevant failure. Frameworks differ: some use type-directed shrink functions, some integrate generation and shrinking, and state-machine tools can delete or simplify transitions. The final case is typically locally minimal relative to available moves and budgets, not globally smallest under every human notion of simplicity.
+**Shrinking is a second search problem.** Given failing case $x$, a shrinker explores candidates $y\prec x$ under a simplicity relation. A good relation is well-founded—often represented by a measure $\mu(y)<\mu(x)$—so search cannot descend forever. A candidate is retained only if it remains within the property domain and reproduces the relevant failure. Frameworks differ: some use type-directed shrink functions, some integrate generation and shrinking, and state-machine tools can delete or simplify transitions. The final case is typically locally minimal relative to available moves and budgets, not globally smallest under every human notion of simplicity.
 
 Shrinking command sequences is particularly delicate. Deleting `create(k)` may make later `update(k)` illegal. A shrinker may regenerate dependencies, repair the sequence, or reject invalid candidates, but each choice changes the search. Preserve command preconditions and distinguish a newly triggered error from the original mismatch. Record the original failure, shrink trace or summary, minimized failure, and whether failure identity stayed stable. Nondeterministic failures need controlled schedules, repeated confirmation, or classification as flaky; a shrink that can no longer reproduce must not silently convert the original failure into success.
 
-**State-machine testing makes history explicit.** Define model state \(m\), implementation state \(s\), commands \(c\), legal-command predicate \(Pre(m,c)\), model transition \(\delta_M(m,c)\), implementation action \(\delta_S(s,c)\), observable results, and relation \(R(m,s)\). For each step:
+**State-machine testing makes history explicit.** Define model state $m$, implementation state $s$, commands $c$, legal-command predicate $Pre(m,c)$, model transition $\delta_M(m,c)$, implementation action $\delta_S(s,c)$, observable results, and relation $R(m,s)$. For each step:
 
 1. generate a command legal in the current model, including deliberately invalid commands when error behavior is the target;
 2. compute or record the model's expected result and next state;
 3. apply exactly one implementation action with bounded time and resources;
 4. compare result, error category, and any permitted nondeterminism;
-5. check \(R(m',s')\) and relevant representation invariants;
+5. check $R(m',s')$ and relevant representation invariants;
 6. label the transition and state class for coverage;
 7. release resources even when comparison fails.
 
@@ -154,7 +154,7 @@ The model need not mirror internal layout. A priority queue model can be a multi
 
 **Measure semantic coverage.** Example counts alone are weak. Label structure shapes, operation types, state transitions, collision classes, duplicate ratios, depths, load-factor thresholds, success/error outcomes, mutation during iteration, and cleanup paths. Establish minimum thresholds for high-value categories and fail a test campaign whose generator never reaches them. Source coverage can reveal unexecuted branches, but reaching a branch does not validate its semantics; semantic labels can reveal that a heavily executed test still explored only trivial states.
 
-Finite random sampling can support a probability statement only under defensible independence and distribution assumptions. If a defect-triggering set has per-trial probability at least \(p\), independent trials miss it with probability \((1-p)^n\). In engineered generators, trials may be adaptive, cached, size-scheduled, dependent, or deliberately nonuniform, and \(p\) is usually unknown. Use the equation for planning under stated assumptions, not as a correctness certificate.
+Finite random sampling can support a probability statement only under defensible independence and distribution assumptions. If a defect-triggering set has per-trial probability at least $p$, independent trials miss it with probability $(1-p)^n$. In engineered generators, trials may be adaptive, cached, size-scheduled, dependent, or deliberately nonuniform, and $p$ is usually unknown. Use the equation for planning under stated assumptions, not as a correctness certificate.
 
 **Property testing and fuzzing overlap but are not synonyms.** Coverage-guided fuzzers mutate inputs to discover new execution behavior and are excellent for parsers, memory safety, crashes, and hostile bytes. Property-based systems emphasize structured generation, semantic predicates, and shrinking. Either can borrow the other's techniques. “Does not crash” is a valuable robustness property but often far weaker than semantic correctness; a map that always returns “not found” may never crash.
 
@@ -265,11 +265,11 @@ The trace is one reproducible counterexample to the demonstration defect. The de
 
 ## Definitions and Notation
 
-Let \(D\) be the declared domain, \(G_\theta\) a generator under configuration \(\theta\), \(S\) the system, \(O\) its observation, and \(P:D\to\{\mathrm{true},\mathrm{false}\}\) the property predicate. The **support** \(supp(G_\theta)\subseteq D\) contains cases the generator can produce. A run is \(X=(x_1,\ldots,x_n)\), not the entire domain.
+Let $D$ be the declared domain, $G_\theta$ a generator under configuration $\theta$, $S$ the system, $O$ its observation, and $P:D\to\{\mathrm{true},\mathrm{false}\}$ the property predicate. The **support** $supp(G_\theta)\subseteq D$ contains cases the generator can produce. A run is $X=(x_1,\ldots,x_n)$, not the entire domain.
 
-For stateful tests, \(C\) is the command set, \(m_i\) and \(s_i\) are model and implementation states, \(Pre(m_i,c_i)\) is command legality, and \(R(m_i,s_i)\) is the conformance relation. A **history** also records invocation and response events; this distinction matters under concurrency.
+For stateful tests, $C$ is the command set, $m_i$ and $s_i$ are model and implementation states, $Pre(m_i,c_i)$ is command legality, and $R(m_i,s_i)$ is the conformance relation. A **history** also records invocation and response events; this distinction matters under concurrency.
 
-A shrink relation \(\prec\) proposes simpler cases. It should be compatible with a well-founded measure \(\mu\) for termination. A result is **1-minimal** under a deletion operator if deleting any one component either removes the failure or violates the admissible domain. This is weaker than global minimum size and weaker still than unique human simplicity.
+A shrink relation $\prec$ proposes simpler cases. It should be compatible with a well-founded measure $\mu$ for termination. A result is **1-minimal** under a deletion operator if deleting any one component either removes the failure or violates the admissible domain. This is weaker than global minimum size and weaker still than unique human simplicity.
 
 An **exact oracle** knows the expected result; a **model oracle** computes it through a simpler specification; a **differential oracle** compares implementations; a **metamorphic oracle** checks a relation across executions; a **partial oracle** checks only some obligations such as invariants or absence of crashes.
 
@@ -277,18 +277,18 @@ An **exact oracle** knows the expected result; a **model oracle** computes it th
 
 The central stateful invariant is
 
-\[
+$$
 R(m_i,s_i)\land Pre(m_i,c_i)
 \Rightarrow
 R(\delta_M(m_i,c_i),\delta_S(s_i,c_i))
 \land Obs_M=Obs_S.
-\]
+$$
 
-Initialization establishes \(R(m_0,s_0)\). Each generated legal command supplies an induction step; therefore a fully checked finite trace conforms at every prefix under the model, observation, and execution assumptions. This is a proof about that trace and harness behavior, not about ungenerated traces.
+Initialization establishes $R(m_0,s_0)$. Each generated legal command supplies an induction step; therefore a fully checked finite trace conforms at every prefix under the model, observation, and execution assumptions. This is a proof about that trace and harness behavior, not about ungenerated traces.
 
-Shrinker termination follows if every accepted candidate strictly decreases a well-founded \(\mu\), such as lexicographic `(command_count, structural_size, value_complexity)`. Failure preservation is checked empirically on every candidate. Domain preservation comes from constructive shrinking, sequence repair with reviewed semantics, or rejection of candidates violating \(Pre\). Without strict decrease, validity, and stable failure identity, a shrink report is not trustworthy.
+Shrinker termination follows if every accepted candidate strictly decreases a well-founded $\mu$, such as lexicographic `(command_count, structural_size, value_complexity)`. Failure preservation is checked empirically on every candidate. Domain preservation comes from constructive shrinking, sequence repair with reviewed semantics, or rejection of candidates violating $Pre$. Without strict decrease, validity, and stable failure identity, a shrink report is not trustworthy.
 
-The miss formula \((1-p)^n\) follows from multiplying independent per-trial miss probabilities \(1-p\). Its assumptions must be reviewed: independence, stationary probability, and a known lower bound on the defect-triggering region. Coverage-guided and size-scheduled generators often violate the simple model, so empirical label counts are more honest than invented confidence percentages.
+The miss formula $(1-p)^n$ follows from multiplying independent per-trial miss probabilities $1-p$. Its assumptions must be reviewed: independence, stationary probability, and a known lower bound on the defect-triggering region. Coverage-guided and size-scheduled generators often violate the simple model, so empirical label counts are more honest than invented confidence percentages.
 
 ## Alternatives and Trade-Offs
 
@@ -327,7 +327,7 @@ For a stack, derive `pop(push(S,x)) = (x,S)` under successful allocation and val
 
 ### Example 2
 
-For a set, union idempotence gives \(A\cup A=A\), while insertion then membership gives `contains(insert(A,x),x)`. Generate duplicate-heavy values deliberately. If equality or hashing can be mutable or inconsistent, test those policies separately instead of assuming mathematical-set laws apply.
+For a set, union idempotence gives $A\cup A=A$, while insertion then membership gives `contains(insert(A,x),x)`. Generate duplicate-heavy values deliberately. If equality or hashing can be mutable or inconsistent, test those policies separately instead of assuming mathematical-set laws apply.
 
 ### Example 3
 
@@ -339,7 +339,7 @@ A heap oracle can be a multiset: after each insertion or removal, compare size a
 
 ### Example 5
 
-For serialization, `decode(encode(A))` should be observationally equivalent to \(A\) for encodable values. A second property feeds malformed bytes and checks bounded rejection. Do not discard malformed inputs in the robustness property; they are its intended domain.
+For serialization, `decode(encode(A))` should be observationally equivalent to $A$ for encodable values. A second property feeds malformed bytes and checks bounded rejection. Do not discard malformed inputs in the robustness property; they are its intended domain.
 
 ### Example 6
 
@@ -419,7 +419,7 @@ Either construct trees recursively with bounds or generate legal insert sequence
 
 ### Answer 3
 
-Model state as a sequence of capacity at most \(C\). Commands are push-left/right, pop-left/right, peek, iterate, clear, and injected failure; preconditions distinguish successful operations from deliberate full/empty error tests. Apply each command once to model and implementation, compare value/error, size, order, capacity, and post-failure state, then check representation invariants. Generate histories based on current model state while deliberately reaching empty/full/near-wrap states. Shrink with legal sequence deletion and value simplification, preserving failure identity. Retain concrete and minimized histories, seed/replay token, generator/property/tool versions, configuration, environment, and cleanup results.
+Model state as a sequence of capacity at most $C$. Commands are push-left/right, pop-left/right, peek, iterate, clear, and injected failure; preconditions distinguish successful operations from deliberate full/empty error tests. Apply each command once to model and implementation, compare value/error, size, order, capacity, and post-failure state, then check representation invariants. Generate histories based on current model state while deliberately reaching empty/full/near-wrap states. Shrink with legal sequence deletion and value simplification, preserving failure identity. Retain concrete and minimized histories, seed/replay token, generator/property/tool versions, configuration, environment, and cleanup results.
 
 ### Answer 4
 

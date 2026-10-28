@@ -31,11 +31,11 @@ How should a language define the boundary between decoded source text and parser
 
 ### Central model, mechanism, or theorem
 
-Let the decoded source be (s\in\Sigma^*), and let ordered token/trivia rules define languages (L_1,\ldots,L_k\subseteq\Sigma^+). At offset (p), form
+Let the decoded source be $s\in\Sigma^*$, and let ordered token/trivia rules define languages $L_1,\ldots,L_k\subseteq\Sigma^+$. At offset (p), form
 
-\[
+$$
 C(p)=\{(i,x)\mid x\ne\epsilon\land x\text{ is a prefix of }s[p:]\land x\in L_i\}.
-\]
+$$
 
 Choose a candidate with maximum (|x|); among equal-length candidates choose the smallest declared priority (i). Emit or retain its classified record, advance by (|x|), and repeat. If (C(p)) is empty, report a bounded lexical error and advance only according to the recovery contract. Rules must not accept the empty string, or scanning may fail to progress.
 
@@ -107,15 +107,15 @@ Begin by naming the lexical input alphabet. A byte-oriented language can define 
 
 The output should be richer than a pair of kind and text. A durable token record often contains
 
-\[
+$$
 Token=(kind,span,lexeme,value,trivia,flags,origin).
-\]
+$$
 
 Not every implementation stores every field inline. The invariant is that consumers can recover what their contract promises. `INTEGER` may carry a parsed magnitude while retaining spelling `0xff_ff`; a string may carry decoded contents while diagnostics still point to the raw escape; a macro token may carry an expansion origin chain.
 
 **Token languages and progress.** Each rule recognizes a set of nonempty strings. Fixed punctuation has singleton languages: (L_{PLUS}=\{+\}). An identifier rule might start with an identifier-start character and continue with identifier-continue characters. A decimal-integer rule may constrain separators and suffixes. The rule language must distinguish recognition from later meaning: spelling `count` can be an identifier token even before name resolution decides which declaration it denotes.
 
-No ordinary rule may accept (\epsilon). If an empty token wins without advancing, the scanner loops forever. EOF is exceptional: it is a synthetic zero-width observation at the already reached end, emitted once under API state rather than repeatedly recognized by a source regex. Inserted recovery tokens are likewise parser artifacts with explicit synthetic provenance, not ordinary source-consuming tokens.
+No ordinary rule may accept $\epsilon$. If an empty token wins without advancing, the scanner loops forever. EOF is exceptional: it is a synthetic zero-width observation at the already reached end, emitted once under API state rather than repeatedly recognized by a source regex. Inserted recovery tokens are likewise parser artifacts with explicit synthetic provenance, not ordinary source-consuming tokens.
 
 **Longest match and priority.** At a source offset, several rules may match prefixes. The common policy is maximum length, then declaration priority. Thus `==` beats `=` because it consumes more source. If both `IF` and `IDENT` match `if` with equal length, priority can select `IF`; alternatively the scanner can recognize `IDENT` and reclassify it through a reserved-word table. Both are valid if specified consistently.
 
@@ -153,9 +153,9 @@ Comments can overlap operator prefixes and can nest in some languages. A block-c
 
 **Lexical modes and feedback.** Pure tokenization is a function of source and language configuration. Real languages sometimes need finite lexical state: string delimiters, template interpolation, indentation stacks, or embedded sublanguages. Model the state explicitly:
 
-\[
+$$
 (tokens,state')=Lex(source,state,configuration).
-\]
+$$
 
 Avoid unconstrained parser-to-lexer feedback because it makes tokenization history-dependent and complicates caching. If the language standard defines lexical goals, expose a finite named goal at token requests and include it in cache keys. JavaScript regular-expression literals versus division are a classic example of lexical interpretation depending on syntactic context.
 
@@ -171,9 +171,9 @@ Recovery state matters. At newline or EOF, a scanner may reset a string mode, pr
 
 A useful coverage invariant is
 
-\[
+$$
 [0,|s|)=\biguplus spans(tokens,trivia,errors),
-\]
+$$
 
 after translating all spans to one coordinate system. Synthetic tokens have empty spans and are excluded from physical coverage. This invariant catches dropped bytes and duplicated ownership but does not prove correct classification.
 
@@ -239,21 +239,21 @@ print("policy=longest_then_rule_order")
 
 ## Definitions and Notation
 
-Let (s=c_0\ldots c_{n-1}\in\Sigma^*) be a decoded source sequence whose boundaries map to COMP-002 byte offsets. A lexeme at position (p) is half-open slice (s[p:q]), (p<q\le n).
+Let $s=c_0\ldots c_{n-1}\in\Sigma^*$ be a decoded source sequence whose boundaries map to COMP-002 byte offsets. A lexeme at position (p) is half-open slice (s[p:q]), $p<q\le n$.
 
-An ordered lexical rule is (R_i=(name_i,L_i,channel_i,action_i)), where (L_i\subseteq\Sigma^+), `channel` distinguishes significant token, trivia, or diagnostic ownership, and `action` computes a kind/value/mode transition without changing the consumed span.
+An ordered lexical rule is (R_i=(name_i,L_i,channel_i,action_i)), where $L_i\subseteq\Sigma^+$, `channel` distinguishes significant token, trivia, or diagnostic ownership, and `action` computes a kind/value/mode transition without changing the consumed span.
 
 The candidate set is
 
-\[
+$$
 C(p,m)=\{(i,q)\mid s[p:q]\in L_i\text{ and }R_i\text{ is active in mode }m\}.
-\]
+$$
 
 Selection orders candidates lexicographically by maximum (q-p), then minimum priority (i). A configuration (K) includes language edition, feature flags, Unicode data, preprocessing policy, limits, and initial mode. Thus tokenization is a partial function
 
-\[
+$$
 Lex_K:(Source,Revision)\to(Token^*,Trivia^*,Diagnostic^*,FinalState).
-\]
+$$
 
 It becomes operationally total when every unmatched position has a progress-preserving error action. This totality does not mean every input is lexically valid.
 

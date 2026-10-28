@@ -33,10 +33,10 @@ How can concurrent caller threads share one object through synchronized methods 
 
 For protected state (S) and invariant (I(S)), every public synchronized operation follows
 
-\[
+$$
 acquire\rightarrow while\;\neg P(S):wait\rightarrow mutate/read
 \rightarrow I(S)\rightarrow signal\rightarrow release.
-\]
+$$
 
 The safety argument requires (I(S)) on monitor entry, before every condition wait (because wait releases the lock), and on every exit. A waiter resumes with the lock but must recheck (P): wakeups may be spurious, another thread may consume the enabling state first, timeout/interrupt may race, and Mesa notification transfers no entitlement.
 
@@ -117,7 +117,7 @@ The synchronization belongs with the representation. Do not require clients to l
 
 ### State the invariant first
 
-Write invariant (I(S)) in domain terms: for a circular buffer, (0\le count\le capacity), indices remain within bounds, occupied slots correspond to count, and closed state forbids new puts. For a resource pool, every resource is exactly available, leased with owner/generation, quarantined, or retired.
+Write invariant (I(S)) in domain terms: for a circular buffer, $0\le count\le capacity$, indices remain within bounds, occupied slots correspond to count, and closed state forbids new puts. For a resource pool, every resource is exactly available, leased with owner/generation, quarantined, or retired.
 
 Construction establishes the invariant before safe publication. Each method assumes it after acquire, may temporarily break it while no other thread can enter, and restores it before release. A condition wait releases the lock, so restore the invariant before calling wait. Exception cleanup must restore or permanently quarantine the object before unlock.
 
@@ -293,7 +293,7 @@ Let (S) be private monitor state, (I(S)) its representation invariant, (M) the s
 
 Operation (op) has precondition (Pre_{op}), protected transition (f_{op}), postcondition (Post_{op}), and linearization point (lin(op)) within its monitor interval. Timed operation uses monotonic deadline (D) and remaining (D-now).
 
-For cross-monitor graph (G=(V,E)), (A\to B) means a thread holding/waiting through monitor A needs monitor B or a B-holder needs A to satisfy a predicate. A reachable cycle is a deadlock risk; a condition wait releases only its associated mutex.
+For cross-monitor graph (G=(V,E)), $A\to B$ means a thread holding/waiting through monitor A needs monitor B or a B-holder needs A to satisfy a predicate. A reachable cycle is a deadlock risk; a condition wait releases only its associated mutex.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -485,7 +485,7 @@ Design and review a Monitor Object for a safety-critical railway route reservati
 
 ### Answer 1
 
-Private stable-lock-protected state is fixed array/deque, capacity (N>0), count/head/tail, and closed flag/generation. Invariant: (0\le count\le N); indices valid; exactly count occupied logical slots in FIFO order; no new put after closed. `not_empty` is `count>0 OR closed`; `not_full` is `count<N OR closed` (with closed leading to rejection, not put).
+Private stable-lock-protected state is fixed array/deque, capacity (N>0), count/head/tail, and closed flag/generation. Invariant: $0\le count\le N$; indices valid; exactly count occupied logical slots in FIFO order; no new put after closed. `not_empty` is `count>0 OR closed`; `not_full` is `count<N OR closed` (with closed leading to rejection, not put).
 
 Put acquires, loops while full and open using one monotonic deadline/cancel policy, rejects closed, inserts and increments at its protected mutation linearization point, restores invariant, signals `not_empty`. Take loops while empty/open; if empty/closed returns EOS; otherwise extracts/decrements at its mutation point and signals `not_full`. Close linearizes when setting closed/generation under lock and broadcasts both conditions. Exceptions restore state or quarantine; timeout/cancel returns only after final predicate check with lock.
 
@@ -495,15 +495,15 @@ Invariants include private nonescaping representation; stable lock on every acce
 
 Maximum queued payload is
 
-\[
+$$
 64\times24\text{ KiB}=1536\text{ KiB}=1.5\text{ MiB}.
-\]
+$$
 
 Little's Law gives
 
-\[
+$$
 L=\lambda W=500\times0.08=40
-\]
+$$
 
 average items inside the measured buffer boundary.
 

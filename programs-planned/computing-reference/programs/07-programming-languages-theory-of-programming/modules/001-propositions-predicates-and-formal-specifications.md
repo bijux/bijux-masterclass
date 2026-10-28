@@ -20,33 +20,33 @@ How can engineers turn informal claims about programs and states into formulas w
 
 - A **proposition** is a declarative claim assigned a truth value under an interpretation; a **propositional variable** stands for such a claim.
 - **syntax** determines well-formed formulas; **semantics** assigns meaning/truth under a valuation, structure, and variable assignment.
-- The connectives **negation** (\neg), **conjunction** (\land), **disjunction** (\lor), **implication** (\rightarrow), and **biconditional** (\leftrightarrow) construct formulas.
+- The connectives **negation** $\neg$, **conjunction** $\land$, **disjunction** $\lor$, **implication** $\rightarrow$, and **biconditional** $\leftrightarrow$ construct formulas.
 - A formula is **satisfiable** if true under at least one interpretation, **valid** if true under every permitted interpretation, and **unsatisfiable** if true under none.
-- (\Gamma\models\varphi) (**semantic entailment**) means every model satisfying all assumptions in (\Gamma) also satisfies conclusion (\varphi).
-- Formulas (\varphi,\psi) are **logically equivalent** when they have the same truth value under every permitted interpretation.
-- A **predicate** (P(x_1,\ldots,x_n)) denotes a truth-valued property/relation over a domain; an open formula becomes a proposition after variables are assigned or bound.
-- (\forall x.P(x)) asserts (P) for every domain element; (\exists x.P(x)) asserts at least one witness.
+- $\Gamma\models\varphi$ (**semantic entailment**) means every model satisfying all assumptions in $\Gamma$ also satisfies conclusion $\varphi$.
+- Formulas $\varphi,\psi$ are **logically equivalent** when they have the same truth value under every permitted interpretation.
+- A **predicate** $P(x_1,\ldots,x_n)$ denotes a truth-valued property/relation over a domain; an open formula becomes a proposition after variables are assigned or bound.
+- $\forall x.P(x)$ asserts (P) for every domain element; $\exists x.P(x)$ asserts at least one witness.
 - A variable occurrence is **bound** by a quantifier or **free** relative to a formula; substitution must avoid capture.
 - A **formal specification** states permitted inputs/states/behaviors/results using a language with defined syntax and semantics.
 - A **precondition** restricts admissible initial states; a **postcondition** relates initial state, result, and final state; an **invariant** holds at designated states throughout a computation/model.
 
 ### Central model, mechanism, or theorem
 
-For propositional formula (\varphi), valuation (v:Atoms\rightarrow\{\mathsf F,\mathsf T\}) extends compositionally, for example
+For propositional formula $\varphi$, valuation $v:Atoms\rightarrow\{\mathsf F,\mathsf T\}$ extends compositionally, for example
 
-\[
+$$
 \llbracket\varphi\rightarrow\psi\rrbracket_v=\neg\llbracket\varphi\rrbracket_v\lor\llbracket\psi\rrbracket_v.
-\]
+$$
 
-For first-order predicates, a structure (\mathcal M=(D,I)) supplies a domain and interpretations for symbols, and assignment (\eta) supplies free variables. Quantification changes the assignment:
+For first-order predicates, a structure $\mathcal M=(D,I)$ supplies a domain and interpretations for symbols, and assignment $\eta$ supplies free variables. Quantification changes the assignment:
 
-\[
+$$
 \mathcal M,\eta\models\forall x.\varphi
 \iff
 \text{for every }d\in D,\ \mathcal M,\eta[x\mapsto d]\models\varphi.
-\]
+$$
 
-A function contract can be a relation (Pre(s)\land Exec(s,s',r)\Rightarrow Post(s,s',r)). It proves nothing until `Exec`, domain, arithmetic, failure/termination and observation semantics are connected to the implementation.
+A function contract can be a relation $Pre(s)\land Exec(s,s',r)\Rightarrow Post(s,s',r)$. It proves nothing until `Exec`, domain, arithmetic, failure/termination and observation semantics are connected to the implementation.
 
 ### Critical invariants
 
@@ -54,9 +54,9 @@ A function contract can be a relation (Pre(s)\land Exec(s,s',r)\Rightarrow Post(
 - State the domain, types/sorts, arithmetic/overflow, equality, time and undefined/error behavior.
 - Distinguish validity, satisfiability, entailment, equivalence, provability and empirical truth.
 - Parenthesize or state precedence; do not rely on ambiguous natural-language “and/or/unless.”
-- Treat (P\rightarrow Q) as (\neg P\lor Q), not as causality, chronology or its converse.
+- Treat $P\rightarrow Q$ as $\neg P\lor Q$, not as causality, chronology or its converse.
 - Track free/bound variables and use capture-avoiding substitution/renaming.
-- Negate quantifiers correctly: (\neg\forall x.P\equiv\exists x.\neg P), (\neg\exists x.P\equiv\forall x.\neg P).
+- Negate quantifiers correctly: $\neg\forall x.P\equiv\exists x.\neg P$, $\neg\exists x.P\equiv\forall x.\neg P$.
 - State preconditions without hiding desired conclusions; handle empty domains/collections and vacuity intentionally.
 - Specifications include allowed failures, side effects, nondeterminism and termination when those are relevant.
 - Testing/model enumeration provides counterexamples within a scope; proof soundly connects all modeled cases only under explicit assumptions.
@@ -67,7 +67,7 @@ Common failures include treating a predicate as true before assigning/binding va
 
 ### Compact example
 
-Requirement: “Every admitted job has a known owner.” With domain `Job`, predicates `Admitted(j)` and `KnownOwner(j)`, write (\forall j:Job.\ Admitted(j)\rightarrow KnownOwner(j)). A job with neither property does not violate the implication; an admitted ownerless job is a counterexample. If the intended requirement also demands some admitted job exists, add (\exists j.Admitted(j)).
+Requirement: “Every admitted job has a known owner.” With domain `Job`, predicates `Admitted(j)` and `KnownOwner(j)`, write $\forall j:Job.\ Admitted(j)\rightarrow KnownOwner(j)$. A job with neither property does not violate the implication; an admitted ownerless job is a counterexample. If the intended requirement also demands some admitted job exists, add $\exists j.Admitted(j)$.
 
 ### Connections
 
@@ -122,15 +122,15 @@ After this module, learners can:
 
 ### Build formulas from syntax, then interpret them
 
-Fix atoms (p,q,r\). Propositional formulas are built recursively: each atom is a formula; if (\varphi,\psi) are formulas, then so are (\neg\varphi), (\varphi\land\psi), (\varphi\lor\psi), (\varphi\rightarrow\psi), (\varphi\leftrightarrow\psi). This grammar is syntax.
+Fix atoms $p,q,r$. Propositional formulas are built recursively: each atom is a formula; if $\varphi,\psi$ are formulas, then so are $\neg\varphi$, $\varphi\land\psi$, $\varphi\lor\psi$, $\varphi\rightarrow\psi$, $\varphi\leftrightarrow\psi$. This grammar is syntax.
 
 A valuation assigns each atom true/false. Semantics extends recursively:
 
-- (\neg\varphi) reverses truth;
-- (\varphi\land\psi) is true only when both are true;
-- (\varphi\lor\psi) is inclusive true when at least one is true;
-- (\varphi\rightarrow\psi) is false only when antecedent true/consequent false;
-- (\varphi\leftrightarrow\psi) is true when their values agree.
+- $\neg\varphi$ reverses truth;
+- $\varphi\land\psi$ is true only when both are true;
+- $\varphi\lor\psi$ is inclusive true when at least one is true;
+- $\varphi\rightarrow\psi$ is false only when antecedent true/consequent false;
+- $\varphi\leftrightarrow\psi$ is true when their values agree.
 
 Thus the same syntax can model different domain claims depending on atom interpretation. Truth tables enumerate (2^n) valuations for (n) atoms and decide classical propositional validity, but grow exponentially.
 
@@ -138,11 +138,11 @@ Thus the same syntax can model different domain claims depending on atom interpr
 
 `p ∨ q` is satisfiable but not valid. `p ∨ ¬p` is valid in classical two-valued logic. `p ∧ ¬p` is unsatisfiable. These classify one formula.
 
-Entailment relates assumptions to conclusion. (\{p\rightarrow q,p\}\models q) because no valuation makes both premises true and conclusion false. To refute (\Gamma\models\varphi), find a countermodel satisfying (\Gamma\land\neg\varphi). If none exists, entailment holds under the semantics.
+Entailment relates assumptions to conclusion. $\{p\rightarrow q,p\}\models q$ because no valuation makes both premises true and conclusion false. To refute $\Gamma\models\varphi$, find a countermodel satisfying $\Gamma\land\neg\varphi$. If none exists, entailment holds under the semantics.
 
-Logical equivalence (\varphi\equiv\psi) means (\models\varphi\leftrightarrow\psi). `p → q` is equivalent to `¬p ∨ q` and to contrapositive `¬q → ¬p`; it is not equivalent to converse `q → p`.
+Logical equivalence $\varphi\equiv\psi$ means $\models\varphi\leftrightarrow\psi$. `p → q` is equivalent to `¬p ∨ q` and to contrapositive `¬q → ¬p`; it is not equivalent to converse `q → p`.
 
-Provability (\Gamma\vdash\varphi) is syntactic derivability in a proof system. Soundness connects proof to entailment; completeness connects entailment to proof for a logic. Do not swap (\models) and (\vdash) before specifying calculus/metatheorem.
+Provability $\Gamma\vdash\varphi$ is syntactic derivability in a proof system. Soundness connects proof to entailment; completeness connects entailment to proof for a logic. Do not swap $\models$ and $\vdash$ before specifying calculus/metatheorem.
 
 ### Read implication materially, not causally
 
@@ -150,25 +150,25 @@ Classical material implication is truth-functional. `RequestValid → Accepted` 
 
 Vacuity is often correct: if no request is accepted, `Accepted → RequestValid` holds. But an availability requirement may also need `ValidRequest → eventually AcceptedOrRejected`, which needs temporal logic, not a static implication. Keep descriptive invariants, permissions, obligations and temporal/causal claims separate.
 
-Translate “only if”: “A only if B” means (A\rightarrow B). “A if B” means (B\rightarrow A). “A iff B” means both. “Unless” is context-sensitive; rewrite in explicit cases instead of trusting prose precedence.
+Translate “only if”: “A only if B” means $A\rightarrow B$. “A if B” means $B\rightarrow A$. “A iff B” means both. “Unless” is context-sensitive; rewrite in explicit cases instead of trusting prose precedence.
 
 ### Move from propositions to predicates
 
 A predicate is not a proposition until its arguments are supplied/bound. With domain users, `Active(u)` is an open formula in free variable (u); `Active(alice)` is closed if `alice` denotes an element; `∀u.Active(u)` binds it.
 
-A first-order signature supplies predicate/function/constant symbols. A structure (\mathcal M\) supplies domain and interpretations; assignment (\eta) maps free variables. Equality may be logical identity or domain-defined equivalence depending on formalism; state it.
+A first-order signature supplies predicate/function/constant symbols. A structure $\mathcal M$ supplies domain and interpretations; assignment $\eta$ maps free variables. Equality may be logical identity or domain-defined equivalence depending on formalism; state it.
 
 Quantifier order matters:
 
-\[
+$$
 \forall tenant.\exists server.\ Handles(server,tenant)
-\]
+$$
 
 allows a different server per tenant, while
 
-\[
+$$
 \exists server.\forall tenant.\ Handles(server,tenant)
-\]
+$$
 
 requires one server for all. The second entails the first for nonempty relevant domains; converse does not.
 
@@ -176,14 +176,14 @@ requires one server for all. The second entails the first for nonempty relevant 
 
 To negate a requirement, move negation through quantifiers/connectives:
 
-\[
+$$
 \neg\forall x.P(x)\equiv\exists x.\neg P(x),\qquad
 \neg\exists x.P(x)\equiv\forall x.\neg P(x).
-\]
+$$
 
 The counterexample to “every completed order has payment” is “some completed order lacks payment,” not “every completed order lacks payment.”
 
-Substituting term (t) for free (x) in (\varphi) must avoid capture. In (\forall y.R(x,y)), substituting (y) for (x) naively yields (\forall y.R(y,y)), changing the formerly free (y). Rename binder first: (\forall z.R(x,z)), then substitute to get (\forall z.R(y,z)).
+Substituting term (t) for free (x) in $\varphi$ must avoid capture. In $\forall y.R(x,y)$, substituting (y) for (x) naively yields $\forall y.R(y,y)$, changing the formerly free (y). Rename binder first: $\forall z.R(x,z)$, then substitute to get $\forall z.R(y,z)$.
 
 ### Specify states and transitions
 
@@ -191,16 +191,16 @@ Let (State) map variables/heap abstractions to values. A precondition (Pre(s)) s
 
 For successful withdrawal over mathematical integers:
 
-\[
+$$
 Pre(s,a)\equiv a>0,
-\]
+$$
 
-\[
+$$
 Post(s,a,s',r)\equiv
 (r=success\rightarrow balance(s)\ge a\land balance(s')=balance(s)-a)
 \land
 (r=failure\rightarrow balance(s')=balance(s)).
-\]
+$$
 
 If insufficient funds must fail, add `balance(s)<a → r=failure`; otherwise the contract permits failure even when funds exist and may permit success only through the first implication. If account identity, authorization, overdraft, fees, concurrency and machine overflow matter, add them/model them. Specification strength is inclusion/exclusion of behaviors.
 
@@ -208,9 +208,9 @@ If insufficient funds must fail, add `balance(s)<a → r=failure`; otherwise the
 
 For `max(xs)` over nonempty finite integer sequence, result (m) needs both:
 
-\[
+$$
 m\in xs\quad\land\quad\forall x\in xs.\ x\le m.
-\]
+$$
 
 Only upper-bound clause admits 1,000,000 for `[1,2]`; only membership admits 1. Empty sequence needs precondition `xs ≠ []` or explicit `None/error` result. Duplicate maxima do not alter value but matter if result includes index.
 
@@ -220,9 +220,9 @@ For sorting, state permutation/multiset preservation plus nondecreasing order. S
 
 A contract is useful only after its quantifiers and execution meaning are exposed. For partial correctness, the central obligation is
 
-\[
+$$
 \forall s,i,s',r.\ Pre(s,i)\land Exec(s,i,s',r)\Rightarrow Post(s,i,s',r).
-\]
+$$
 
 This statement ranges over every terminating outcome admitted by `Exec`; it does not assert that an outcome exists. Total correctness adds termination for every covered initial state, usually through a well-founded variant, a liveness argument, or a termination-aware operational semantics. Conflating the two turns a diverging program into a vacuous “correct” implementation.
 
@@ -254,7 +254,7 @@ In every case validate encoding and requirement. Preserve counterexamples with v
 
 ### Exhaustive propositional evaluation
 
-The executable model enumerates every Boolean valuation for two atoms and checks the equivalence (p\rightarrow q\equiv\neg p\lor q).
+The executable model enumerates every Boolean valuation for two atoms and checks the equivalence $p\rightarrow q\equiv\neg p\lor q$.
 
 <!-- bijux-verify: {"id":"tprog-001-material-implication","mode":"run","language":"python","toolchain":"python3","expect":{"exit_code":0,"stdout":"p q p->q !p|q\nF F T T\nF T T T\nT F F F\nT T T T\nequivalent=yes\ncountermodels=0\n","stderr":""}} -->
 ```python
@@ -282,15 +282,15 @@ The run exhausts two-valued valuations for exactly this encoded formula and conf
 
 ## Definitions and Notation
 
-Let propositional atoms be (AP), formulas (Form(AP)), valuations (v:AP\to\mathbb B), with (\mathbb B=\{\mathsf F,\mathsf T\}). Satisfaction (v\models\varphi) means formula evaluates true under (v). Validity (\models\varphi); satisfiability (\exists v.v\models\varphi); entailment (\Gamma\models\varphi\).
+Let propositional atoms be (AP), formulas (Form(AP)), valuations $v:AP\to\mathbb B$, with $\mathbb B=\{\mathsf F,\mathsf T\}$. Satisfaction $v\models\varphi$ means formula evaluates true under (v). Validity $\models\varphi$; satisfiability $\exists v.v\models\varphi$; entailment $\Gamma\models\varphi$.
 
-First-order signature (\Sigma=(Func,Pred,Const)). Structure (\mathcal M=(D,I)) interprets symbols over domain (D); assignment (\eta:Var\to D). `FV(φ)` denotes free variables. A sentence has no free variables. Substitution (\varphi[t/x]) replaces free (x) capture-avoidably where term is free-for (x).
+First-order signature $\Sigma=(Func,Pred,Const)$. Structure $\mathcal M=(D,I)$ interprets symbols over domain (D); assignment $\eta:Var\to D$. `FV(φ)` denotes free variables. A sentence has no free variables. Substitution $\varphi[t/x]$ replaces free (x) capture-avoidably where term is free-for (x).
 
-For programs, initial state (s\in S), input (i\in I), final state (s'\in S), result (r\in R), and transition/execution relation (Exec\subseteq S\times I\times S\times R). A contract is
+For programs, initial state $s\in S$, input $i\in I$, final state $s'\in S$, result $r\in R$, and transition/execution relation $Exec\subseteq S\times I\times S\times R$. A contract is
 
-\[
+$$
 \forall s,i,s',r.\ Pre(s,i)\land Exec(s,i,s',r)\rightarrow Post(s,i,s',r).
-\]
+$$
 
 This resembles partial correctness because it constrains terminating outcomes represented by `Exec`; termination/liveness needs an additional obligation/model. Nondeterministic `Exec` requires every permitted outcome satisfy postcondition for demonic correctness interpretations.
 
@@ -336,9 +336,9 @@ Combine rather than rank universally: prose for stakeholder intent, formal formu
 - **“A formula is true by itself.”** Truth is under interpretation; validity quantifies interpretations.
 - **“Predicate equals proposition.”** Open predicates require arguments/assignments or binding.
 - **“Implication is causality/time.”** Material implication is truth-functional.
-- **“Converse is equivalent.”** (P\to Q) does not imply (Q\to P).
+- **“Converse is equivalent.”** $P\to Q$ does not imply $Q\to P$.
 - **“False antecedent is a bug in logic.”** Vacuous truth is coherent; requirement may need existence/progress.
-- **“Or means exclusive.”** Classical (\lor) is inclusive; XOR must be stated.
+- **“Or means exclusive.”** Classical $\lor$ is inclusive; XOR must be stated.
 - **“Negate words locally.”** Quantifiers/connectives transform under negation.
 - **“Quantifier order does not matter.”** `∀∃` and `∃∀` usually express different dependency.
 - **“Substitution is textual replacement.”** It must avoid variable capture.
@@ -353,7 +353,7 @@ Combine rather than rank universally: prose for stakeholder intent, formal formu
 
 ### Example 1
 
-**Situation.** Classify (p\lor\neg p), (p\land\neg p), and (p\rightarrow q).
+**Situation.** Classify $p\lor\neg p$, $p\land\neg p$, and $p\rightarrow q$.
 
 **Reasoning.** First is true for p false/true: valid. Second false for both: unsatisfiable. Third true in three of four valuations: satisfiable but not valid; countermodel p=true,q=false.
 
@@ -369,7 +369,7 @@ Combine rather than rank universally: prose for stakeholder intent, formal formu
 
 ### Example 3
 
-**Situation.** Does (p\lor q,\neg p\models q)?
+**Situation.** Does $p\lor q,\neg p\models q$?
 
 **Reasoning.** A countermodel would require premises true and q false. Then `p∨q` forces p true, conflicting with `¬p`. No countermodel exists over four valuations.
 
@@ -387,7 +387,7 @@ Combine rather than rank universally: prose for stakeholder intent, formal formu
 
 **Situation.** Negate “every completed job has an artifact.”
 
-**Reasoning.** Original (\forall j.Completed(j)\to HasArtifact(j)). Negation becomes (\exists j.Completed(j)\land\neg HasArtifact(j)). It asks for one causal counterexample, not all jobs lacking artifacts.
+**Reasoning.** Original $\forall j.Completed(j)\to HasArtifact(j)$. Negation becomes $\exists j.Completed(j)\land\neg HasArtifact(j)$. It asks for one causal counterexample, not all jobs lacking artifacts.
 
 **Conclusion.** Quantifier/connective negation constructs useful counterexample queries.
 
@@ -459,7 +459,7 @@ Combine rather than rank universally: prose for stakeholder intent, formal formu
 
 ### Exercise 1
 
-For formulas (p\to q), (q\to p), (\neg q\to\neg p), classify equivalences and give a countermodel for the non-equivalence.
+For formulas $p\to q$, $q\to p$, $\neg q\to\neg p$, classify equivalences and give a countermodel for the non-equivalence.
 
 ### Exercise 2
 
@@ -481,27 +481,27 @@ Write a preliminary formal specification/evidence plan for an unfamiliar autonom
 
 ### Answer 1
 
-(p\to q\equiv\neg q\to\neg p) (contrapositive). The converse (q\to p) is not equivalent. Countermodel p=false,q=true: original `false→true` is true, converse `true→false` false. Conversely p=true,q=false makes original false and converse true. Do not confuse inverse `¬p→¬q`, which is equivalent to converse, with contrapositive. A four-row truth table proves these equivalences under classical two-valued semantics.
+$p\to q\equiv\neg q\to\neg p$ (contrapositive). The converse $q\to p$ is not equivalent. Countermodel p=false,q=true: original `false→true` is true, converse `true→false` false. Conversely p=true,q=false makes original false and converse true. Do not confuse inverse `¬p→¬q`, which is equivalent to converse, with contrapositive. A four-row truth table proves these equivalences under classical two-valued semantics.
 
 ### Answer 2
 
 Let predicates `Active(t)`, `Healthy(s)`, `Serves(s,t)` over Tenant/Server. First:
 
-\[
+$$
 \forall t:Tenant. Active(t)\rightarrow\exists s:Server. Healthy(s)\land Serves(s,t).
-\]
+$$
 
 Negation:
 
-\[
+$$
 \exists t. Active(t)\land\forall s.\neg(Healthy(s)\land Serves(s,t)).
-\]
+$$
 
 Second:
 
-\[
+$$
 \exists s.Healthy(s)\land\forall t.(Active(t)\rightarrow Serves(s,t)).
-\]
+$$
 
 It requires one healthy server for all active tenants, stronger than possibly different witnesses. If no active tenants, first is vacuously true; second still requires a healthy server due to its existential. Decide whether existence/load/capacity is intended.
 

@@ -30,11 +30,11 @@ How can behavior depend on the runtime types of two collaborating objects when t
 
 ### Central model, mechanism, or theorem
 
-For runtime variants (A_i) and (B_j), desired operation is matrix (F:A\times B\to R\cup E). In a single-dispatch language, a conventional encoding is
+For runtime variants (A_i) and (B_j), desired operation is matrix $F:A\times B\to R\cup E$. In a single-dispatch language, a conventional encoding is
 
-\[
+$$
 dispatch(a_i,b_j)=a_i.accept(b_j)=b_j.with_i(a_i)=F(A_i,B_j).
-\]
+$$
 
 The first call selects (A_i.accept); its type-specific callback name exposes (i), and the second receiver dispatch selects (B_j.with_i). This establishes pair selection only when every callback is mapped correctly; it proves neither semantic correctness nor completeness for future variants.
 
@@ -191,11 +191,11 @@ Test reverse order, same-type pairs, subtypes, unknown/versioned variants, null/
 
 ## Definitions and Notation
 
-Let runtime type sets (A=\{A_1,...,A_m\}) and (B=\{B_1,...,B_n\}), and ordered behavior matrix (F:A\times B\to R\cup E). Double dispatch encoding has first-stage functions (d_i) and second-stage callbacks (c_{j,i}):
+Let runtime type sets (A=\{A_1,...,A_m\}) and (B=\{B_1,...,B_n\}), and ordered behavior matrix $F:A\times B\to R\cup E$. Double dispatch encoding has first-stage functions (d_i) and second-stage callbacks (c_{j,i}):
 
-\[
+$$
 d_i(a_i,b_j)=c_{j,i}(b_j,a_i)=F(A_i,B_j,a_i,b_j).
-\]
+$$
 
 Coverage requires every supported ordered pair to map to exactly one intended cell. For a commutative domain operation, additionally verify (normalize(F(a,b))=normalize(F(b,a))) over its stated valid domain.
 

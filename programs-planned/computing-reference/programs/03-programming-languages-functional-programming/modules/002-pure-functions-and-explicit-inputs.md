@@ -30,19 +30,19 @@ How can a computation expose every fact that influences its result while produci
 
 ### Central model, mechanism, or theorem
 
-For a pure total function \(f:X\to Y\),
+For a pure total function $f:X\to Y$,
 
-\[
+$$
 x_1=x_2\Longrightarrow f(x_1)=f(x_2),
-\]
+$$
 
-and evaluation changes no observable world state. If an apparent function depends on changing environment \(d\in D\), make that dependency explicit:
+and evaluation changes no observable world state. If an apparent function depends on changing environment $d\in D$, make that dependency explicit:
 
-\[
+$$
 g:X\times D\to Y,\qquad g(x,d)=y.
-\]
+$$
 
-Randomness can be represented as state transformation \(r:X\times Seed\to Y\times Seed\); fallible computation as \(h:X\to Result(Y,E)\); and intended commands as data \(p:X\to Y\times List(Command)\). The effectful boundary still has to obtain \(d\), execute commands, and record outcomes.
+Randomness can be represented as state transformation $r:X\times Seed\to Y\times Seed$; fallible computation as $h:X\to Result(Y,E)$; and intended commands as data $p:X\to Y\times List(Command)$. The effectful boundary still has to obtain $d$, execute commands, and record outcomes.
 
 ### Critical invariants
 
@@ -110,7 +110,7 @@ Determinism is weaker. A routine that always writes the same line to a log and r
 
 Totality is independent. Integer division modeled only for nonzero divisors can be a pure partial function. A pure recursive definition can diverge. A function can deterministically raise the same exception without mutating external state, though exceptions complicate equational reasoning because control transfer is an observable outcome. Production APIs often improve the model by narrowing the input type or returning `Result`/`Either` so failure is an ordinary explicit value.
 
-Idempotence is also different. An effectful `set_status("closed")` operation may be idempotent because repeating it has the same final external state, yet it performs I/O and can emit distinct logs. A pure function need not satisfy \(f(f(x))=f(x)\); negation is pure but applying it twice differs from once. Thread safety means concurrent calls avoid invalid races; a synchronized global counter can be thread-safe and impure.
+Idempotence is also different. An effectful `set_status("closed")` operation may be idempotent because repeating it has the same final external state, yet it performs I/O and can emit distinct logs. A pure function need not satisfy $f(f(x))=f(x)$; negation is pure but applying it twice differs from once. Thread safety means concurrent calls avoid invalid races; a synchronized global counter can be thread-safe and impure.
 
 An apparent parameter list rarely captures the whole dependency set. Follow every read reachable from the body: module globals, singleton configuration, environment variables, locale, timezone database, system clock, random generator, process identity, filesystem, database, network, mutable closure cells, caches, object properties, dynamic dispatch targets, callbacks, and foreign code. A dependency audit asks whether each item is immutable and fixed by the function definition, part of the supplied value graph, or an effect.
 
@@ -118,7 +118,7 @@ Explicitness is semantic, not merely syntactic. Passing `context` is not enough 
 
 Time illustrates the boundary. The shell reads a trusted clock once and obtains an instant plus clock-quality metadata if relevant. It validates and passes that snapshot. The core compares dates and deadlines as values. If a long operation needs current time again, that second observation is another boundary event and should not be disguised as the same pure calculation.
 
-Randomness can be made explicit in two ways. The shell can sample random values and pass them to the core. Or a pure generator can transform an explicit seed/state: \(next:Seed\to Value\times Seed\). The latter is deterministic and replayable for a pinned algorithm. It is not cryptographic safety merely because the state transition is pure; seed secrecy, entropy acquisition, algorithm suitability, state compromise, and versioning remain security obligations.
+Randomness can be made explicit in two ways. The shell can sample random values and pass them to the core. Or a pure generator can transform an explicit seed/state: $next:Seed\to Value\times Seed$. The latter is deterministic and replayable for a pinned algorithm. It is not cryptographic safety merely because the state transition is pure; seed secrecy, entropy acquisition, algorithm suitability, state compromise, and versioning remain security obligations.
 
 Configuration should be a validated value, not an ambient bag. Read environment files and feature services at the edge, resolve precedence, validate cross-field constraints, attach version/digest and effective scope, freeze the snapshot, and pass only fields the core needs. This prevents a single calculation from observing half of one rollout and half of another. It also reveals when two tenants or jurisdictions require different policies.
 
@@ -158,59 +158,59 @@ A useful pure-function contract names the input domain, output type, equality, n
 
 ## Definitions and Notation
 
-Let \(W\) be observable world states, \(X\) admitted inputs, \(Y\) results, and \(T\) observable traces. Model a general procedure as
+Let $W$ be observable world states, $X$ admitted inputs, $Y$ results, and $T$ observable traces. Model a general procedure as
 
-\[
+$$
 P:X\times W\to Outcome(Y,W,T).
-\]
+$$
 
-It is pure under the chosen functional observation when there exists \(f:X\to Y\) such that for every admitted \(x\) and world \(w\),
+It is pure under the chosen functional observation when there exists $f:X\to Y$ such that for every admitted $x$ and world $w$,
 
-\[
+$$
 P(x,w)=Success(f(x),w,\epsilon),
-\]
+$$
 
-where \(\epsilon\) is the empty observable trace. This strong total model can be extended with explicit error or divergence outcomes, but must not hide world changes.
+where $\epsilon$ is the empty observable trace. This strong total model can be extended with explicit error or divergence outcomes, but must not hide world changes.
 
-If result depends on environmental value \(d\in D\), expose
+If result depends on environmental value $d\in D$, expose
 
-\[
+$$
 g:X\times D\to Y.
-\]
+$$
 
 For deterministic state threading,
 
-\[
+$$
 s:X\times S\to Y\times S.
-\]
+$$
 
 For explicit failure,
 
-\[
+$$
 v:X\to Result(Y,E).
-\]
+$$
 
 For a pure decision plus intended interactions,
 
-\[
+$$
 q:X\to Y\times List(Command).
-\]
+$$
 
-Define the **semantic dependency set** \(Dep(f)\) as all varying values whose substitution can change the functional result. Dependency completeness requires \(Dep(f)\subseteq Inputs(f)\), where captured immutable values are considered inputs to function creation. The claim is relative to a specified code and value semantics.
+Define the **semantic dependency set** $Dep(f)$ as all varying values whose substitution can change the functional result. Dependency completeness requires $Dep(f)\subseteq Inputs(f)$, where captured immutable values are considered inputs to function creation. The claim is relative to a specified code and value semantics.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 **Extensionality.** For a pure function, equal complete inputs imply equal outputs. This does not say distinct inputs must yield distinct outputs and does not establish an implementation from finite tests.
 
-**World noninterference.** In the model above, input world \(w\) equals output world and trace is empty. If logs, metrics, cache identity, allocation, timing, or energy are admitted observations, the proof must include them or weaken the purity claim to functional observations.
+**World noninterference.** In the model above, input world $w$ equals output world and trace is empty. If logs, metrics, cache identity, allocation, timing, or energy are admitted observations, the proof must include them or weaken the purity claim to functional observations.
 
 **Dependency extraction.** Start from the body and compute the transitive closure of reads and calls. Classify each leaf as supplied immutable data, fixed language/definition, or environmental effect. Any varying environmental leaf falsifies dependency completeness until it is passed as data or isolated outside.
 
-**Explicit state equivalence.** A hidden counter procedure \(next:W\to Int\times W\) becomes a pure state transformer \(next:S\to Int\times S\) when the counter state is an ordinary immutable input/output value. The caller now sequences state explicitly; the computation no longer updates ambient storage.
+**Explicit state equivalence.** A hidden counter procedure $next:W\to Int\times W$ becomes a pure state transformer $next:S\to Int\times S$ when the counter state is an ordinary immutable input/output value. The caller now sequences state explicitly; the computation no longer updates ambient storage.
 
 **Replay sufficiency.** Equal business fields are not enough when policy or code changed. A valid replay key includes every meaning-relevant input and version. If two executions use identical serialized inputs but different rounding semantics, model artifact, Unicode table, timezone database, or code, equality is not promised.
 
-**Memoization obligation.** Cache key \(k(x)\) is sound only when \(k(x_1)=k(x_2)\Rightarrow f(x_1)=f(x_2)\) under the output equality and implementation version. Returned values must not permit mutation that changes cached observations. Eviction may change cost, not functional result.
+**Memoization obligation.** Cache key $k(x)$ is sound only when $k(x_1)=k(x_2)\Rightarrow f(x_1)=f(x_2)$ under the output equality and implementation version. Returned values must not permit mutation that changes cached observations. Eviction may change cost, not functional result.
 
 **Parallelism qualification.** Pure independent evaluations commute under functional observations. They may still contend for CPU/memory and fail under resource bounds. Parallel safety therefore follows for values, not automatically for performance, termination, or availability.
 
@@ -239,7 +239,7 @@ Define the **semantic dependency set** \(Dep(f)\) as all varying values whose su
 - **“Local mutation is always impure.”** Unobservable owned mutation can refine a pure value computation.
 - **“Exceptions prove impurity.”** Deterministic failure can be effect-free but makes the function partial under a value-only type.
 - **“Purity implies termination.”** A pure recursion can diverge.
-- **“Purity implies idempotence.”** \(f(f(x))=f(x)\) is a separate algebraic property.
+- **“Purity implies idempotence.”** $f(f(x))=f(x)$ is a separate algebraic property.
 - **“Pure calls are automatically cheap and parallel.”** Resource consumption and scheduling remain real.
 - **“A seed makes cryptography safe.”** It makes generator behavior explicit; entropy and algorithm security remain separate.
 - **“A successful replay proves current correctness.”** It proves reproducibility under captured semantics, not truth or applicability.
@@ -251,7 +251,7 @@ Define the **semantic dependency set** \(Dep(f)\) as all varying values whose su
 
 **Question:** Is `square(x) = x * x` pure?
 
-**Reasoning:** Over a fixed numeric domain, if it reads only \(x\), returns the product, and performs no observable interaction, equal inputs yield equal results. For bounded or overloaded multiplication, the result/failure semantics must still be specified.
+**Reasoning:** Over a fixed numeric domain, if it reads only $x$, returns the product, and performs no observable interaction, equal inputs yield equal results. For bounded or overloaded multiplication, the result/failure semantics must still be specified.
 
 **Conclusion:** The definition is pure under its declared numeric and failure model, not by name alone.
 
@@ -356,7 +356,7 @@ Classify pure, deterministic, total, idempotent, and thread-safe independently f
 
 ### Exercise 2
 
-Transform a hidden-state function `draw(limit)` that reads a process PRNG into a pure state transformer. Give its type, two sequential transitions from seed \(s_0\), invariants, and the claims that still require security/statistical evidence.
+Transform a hidden-state function `draw(limit)` that reads a process PRNG into a pure state transformer. Give its type, two sequential transitions from seed $s_0$, invariants, and the claims that still require security/statistical evidence.
 
 ### Exercise 3
 
@@ -380,7 +380,7 @@ An infinite recursion can be pure and deterministic in its divergence but is not
 
 ### Answer 2
 
-Use `draw : Limit × Seed → Result((Value, Seed), Error)` with a pinned generator algorithm/version. First compute \((v_1,s_1)=draw(limit,s_0)\); then \((v_2,s_2)=draw(limit,s_1)\). For valid positive limit, require \(0\le v_i<limit\), deterministic transition from equal inputs, progress to the specified next state, and no ambient generator mutation. Invalid limits return an explicit error without consuming state.
+Use `draw : Limit × Seed → Result((Value, Seed), Error)` with a pinned generator algorithm/version. First compute $(v_1,s_1)=draw(limit,s_0)$; then $(v_2,s_2)=draw(limit,s_1)$. For valid positive limit, require $0\le v_i<limit$, deterministic transition from equal inputs, progress to the specified next state, and no ambient generator mutation. Invalid limits return an explicit error without consuming state.
 
 Retain initial seed, algorithm/version, limit sequence, and code identity for replay. Purity does not establish unpredictability, uniformity, independence, resistance to state recovery, safe seeding, forward/backward secrecy, concurrency partitioning, or suitability for cryptography, lotteries, simulations, or regulated decisions. Those require domain-specific analysis and empirical/statistical or cryptographic evidence.
 

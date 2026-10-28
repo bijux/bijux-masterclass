@@ -32,13 +32,13 @@ When should a domain preserve its accepted facts as the authoritative history an
 
 ### Central model, mechanism, or theorem
 
-For stream (E_a=\langle e_1,\ldots,e_n\rangle) of aggregate (a), state is
+For stream $E_a=\langle e_1,\ldots,e_n\rangle$ of aggregate (a), state is
 
-\[
+$$
 s_n=fold(apply,s_0,E_a).
-\]
+$$
 
-A command handler computes (decide(s_n,c)=\langle e_{n+1},\ldots,e_{n+k}\rangle), then atomically appends those events with expected revision (n). If another writer already appended, the store rejects the append; the caller reloads and re-decides or reports conflict. Events are authority only if `apply` is deterministic, order/revision is durable, accepted events cannot be silently changed, every retained representation remains interpretable, and corrections are explicit.
+A command handler computes $decide(s_n,c)=\langle e_{n+1},\ldots,e_{n+k}\rangle$, then atomically appends those events with expected revision (n). If another writer already appended, the store rejects the append; the caller reloads and re-decides or reports conflict. Events are authority only if `apply` is deterministic, order/revision is durable, accepted events cannot be silently changed, every retained representation remains interpretable, and corrections are explicit.
 
 ### Critical invariants
 
@@ -224,11 +224,11 @@ The run proves the pure fold and chosen trace only. It does not implement atomic
 
 ## Definitions and Notation
 
-Let aggregate (a) have stream (E_a=\langle e_1,\ldots,e_n\rangle). Let (s_0) be initial state, (apply:S\times E\rightarrow S), (D:S\times C\rightarrow E^*\cup Reject), and (A(a,n,newEvents)) be an atomic append conditioned on current revision (n).
+Let aggregate (a) have stream $E_a=\langle e_1,\ldots,e_n\rangle$. Let (s_0) be initial state, $apply:S\times E\rightarrow S$, $D:S\times C\rightarrow E^*\cup Reject$, and (A(a,n,newEvents)) be an atomic append conditioned on current revision (n).
 
 **Deterministic replay** requires equal supported event sequences to produce equal state: (fold(apply,s_0,E)=fold(apply,s_0,E)) across runs independent of external environment. **Linear per-stream history** requires a unique event at each revision and atomic multi-event append. **Decision safety** means emitted events follow from command rules evaluated against the exact revision used for append. **Projection completeness through position (q)** means every in-scope event at/before (q) has been applied under the projector's declared semantics.
 
-If a snapshot is ((s_k,k)), recovery computes (fold(apply,s_k,\langle e_{k+1},\ldots,e_n\rangle)). Snapshot correctness depends on (s_k=fold(apply,s_0,\langle e_1,\ldots,e_k\rangle)); revision alone does not establish that equality.
+If a snapshot is ((s_k,k)), recovery computes $fold(apply,s_k,\langle e_{k+1},\ldots,e_n\rangle)$. Snapshot correctness depends on $s_k=fold(apply,s_0,\langle e_1,\ldots,e_k\rangle)$; revision alone does not establish that equality.
 
 Event time (t_o) (domain occurrence), recorded time (t_r) (store acceptance), stream revision (v), global/store position (g), event ID, command ID, causation ID and correlation ID are separate coordinates. None universally substitutes for another.
 

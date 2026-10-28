@@ -31,23 +31,23 @@ How can a router inspect validated message content and choose the correct destin
 
 ### Central model, mechanism, or theorem
 
-Let admitted semantic message domain be \(M\), destinations \(D\), and predicates \(p_1,\ldots,p_n:M\to\{T,F,U,E\}\). A complete exclusive partition under strict two-valued assumptions requires
+Let admitted semantic message domain be $M$, destinations $D$, and predicates $p_1,\ldots,p_n:M\to\{T,F,U,E\}$. A complete exclusive partition under strict two-valued assumptions requires
 
-\[
+$$
 \forall m\in M:\bigvee_i p_i(m)=T
-\]
+$$
 
 and pairwise disjointness
 
-\[
+$$
 \forall m\in M,\ i\ne j:\neg(p_i(m)=T\land p_j(m)=T).
-\]
+$$
 
 First-match can tolerate overlap, but rule order becomes semantic:
 
-\[
+$$
 R_v(m)=d_k,\quad k=\min\{i\mid p_i(m)=T\}.
-\]
+$$
 
 `U` or `E` must follow explicit fail-closed, quarantine, or reviewed fallback policy; silently coercing them to `F` can route incomplete or failed evidence through an ordinary default.
 
@@ -169,7 +169,7 @@ For exclusive decision tables, strive for mutually exclusive/collectively exhaus
 
 ### Detect shadowing and gaps
 
-Rule \(p_j\) is shadowed under first-match if every message satisfying \(p_j\) also satisfies an earlier \(p_i\). Interval/set implication is often mechanically decidable. Gaps are regions where no ordinary rule matches; overlap regions satisfy several.
+Rule $p_j$ is shadowed under first-match if every message satisfying $p_j$ also satisfies an earlier $p_i$. Interval/set implication is often mechanically decidable. Gaps are regions where no ordinary rule matches; overlap regions satisfy several.
 
 Render decision tables/partitions for reviewers. Static analysis must understand the expression subset; otherwise label results incomplete and rely on corpus/runtime evidence too.
 
@@ -296,11 +296,11 @@ The snippet report is empirical evidence for exact-boundary, below-boundary, pri
 
 ## Definitions and Notation
 
-Typed admitted domain is \(M_v\) for message schema version \(v\). Policy artifact \(P_k=(predicates,order,outputs,defaults,bounds,schemas,references)\). Predicate result lattice is \(B_4=\{T,F,U,E\}\); the policy defines short-circuit and terminal handling rather than assuming ordinary Boolean coercion.
+Typed admitted domain is $M_v$ for message schema version $v$. Policy artifact $P_k=(predicates,order,outputs,defaults,bounds,schemas,references)$. Predicate result lattice is $B_4=\{T,F,U,E\}$; the policy defines short-circuit and terminal handling rather than assuming ordinary Boolean coercion.
 
-For two-valued subset, coverage region is \(\cup_i S_i=M\), where \(S_i=\{m:p_i(m)=T\}\). Overlap is \(S_i\cap S_j\), gap is \(M\setminus\cup_iS_i\), and first-match shadowing of \(j\) occurs when \(S_j\subseteq\cup_{i<j}S_i\).
+For two-valued subset, coverage region is $\cup_i S_i=M$, where $S_i=\{m:p_i(m)=T\}$. Overlap is $S_i\cap S_j$, gap is $M\setminus\cup_iS_i$, and first-match shadowing of $j$ occurs when $S_j\subseteq\cup_{i<j}S_i$.
 
-Decision record \(J=(message\_id,schema\_v,policy\_k,rule,outcome,destination,time,evidence\_digest)\) is protected and immutable. Stable output identity binds `(message_id, policy_k, destination)` for idempotent relay.
+Decision record $J=(message\_id,schema\_v,policy\_k,rule,outcome,destination,time,evidence\_digest)$ is protected and immutable. Stable output identity binds `(message_id, policy_k, destination)` for idempotent relay.
 
 ## Mechanisms, Invariants, or Proof Structure
 

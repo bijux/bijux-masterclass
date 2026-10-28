@@ -30,7 +30,7 @@ How do service and deployment models describe what a cloud service offers, which
 
 ### Central model, mechanism, or theorem
 
-Service model and deployment model are independent axes. Let (S=\{I,P,A\}) represent IaaS, PaaS, and SaaS, and (D=\{private,community,public,hybrid\}). A basic classification lies in (S\times D), but the pair is only a starting point. The actual contract (K) must specify controllable resources, retained consumer duties, provider duties, interfaces, tenancy, location, service levels, security, data use, portability, metering, and exit. Calling an offering “public PaaS” does not determine those particulars.
+Service model and deployment model are independent axes. Let (S=\{I,P,A\}) represent IaaS, PaaS, and SaaS, and (D=\{private,community,public,hybrid\}). A basic classification lies in $S\times D$, but the pair is only a starting point. The actual contract (K) must specify controllable resources, retained consumer duties, provider duties, interfaces, tenancy, location, service levels, security, data use, portability, metering, and exit. Calling an offering “public PaaS” does not determine those particulars.
 
 ### Critical invariants
 
@@ -148,7 +148,7 @@ Execution establishes only the sizes and relationships encoded in this simplifie
 
 ## Definitions and Notation
 
-Let (C=\{self\text{-}service,network\ access,pooling,elasticity,measurement\}) be the NIST characteristic set. Let (S=\{IaaS,PaaS,SaaS\}), (D=\{private,community,public,hybrid\}), and (K) an exact service contract. Classification function (f(o,r)) maps offering (o), from consumer role (r)'s perspective, to a service model based on capabilities and control—not branding.
+Let $C=\{self\text{-}service,network\ access,pooling,elasticity,measurement\}$ be the NIST characteristic set. Let (S=\{IaaS,PaaS,SaaS\}), (D=\{private,community,public,hybrid\}), and (K) an exact service contract. Classification function (f(o,r)) maps offering (o), from consumer role (r)'s perspective, to a service model based on capabilities and control—not branding.
 
 Let (L_c) be layers or capabilities controlled by the consumer and (L_p) those operated by the provider. The sets are not necessarily a clean partition: responsibility can be shared, configuration can be delegated, and third parties can operate components. A **cloud consumer** acquires and uses cloud services; a **provider** makes them available; NIST's reference architecture also names broker, auditor, and carrier roles.
 

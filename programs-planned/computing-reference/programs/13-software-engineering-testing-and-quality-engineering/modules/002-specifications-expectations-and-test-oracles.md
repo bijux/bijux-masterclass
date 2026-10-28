@@ -32,13 +32,13 @@ Given an execution and its observations, what trustworthy information lets a tes
 
 ### Central model, mechanism, or theorem
 
-For test item \(P_v\), case \(t\), environment \(e\), observation function \(obs\), accepted-behavior set \(A(t,e)\), and oracle procedure \(O\),
+For test item $P_v$, case $t$, environment $e$, observation function $obs$, accepted-behavior set $A(t,e)$, and oracle procedure $O$,
 
-\[
+$$
 y=obs(P_v,t,e),\qquad O(y,A)\in\{pass,fail,inconclusive,error\}.
-\]
+$$
 
-A pass establishes only that observed \(y\) satisfied the predicates encoded by \(O\), relative to the basis, item, environment, and observation boundary. It does not establish that \(A\) captures stakeholder intent, that unobserved effects are correct, or that the oracle is independent and defect-free.
+A pass establishes only that observed $y$ satisfied the predicates encoded by $O$, relative to the basis, item, environment, and observation boundary. It does not establish that $A$ captures stakeholder intent, that unobserved effects are correct, or that the oracle is independent and defect-free.
 
 ### Critical invariants
 
@@ -113,9 +113,9 @@ After completing this module, you should be able to:
 
 A requirement such as “authorized users can transfer funds” is a test basis, not a complete expected result. Test design must specify authority, source account, destination, currency, prestate, amount, dependency behavior, response, state transition, events, failure behavior, timing, and observation method. The expected result is conditional:
 
-\[
+$$
 pre(t,e)\Rightarrow post(prestate,input,observed\ state,e).
-\]
+$$
 
 Execution yields observations, not truth. The oracle procedure maps those observations and its information source into a verdict. If a telemetry collector failed, the absence of a duplicate event may be unknowable. If a specification is ambiguous, the discrepancy may expose a specification defect rather than a product defect.
 
@@ -130,7 +130,7 @@ Some systems merge inconclusive/error into failure for pipeline safety, but pres
 
 ### Specifications define accepted sets, not always one value
 
-For input and prestate \(x\), a deterministic exact specification may define a singleton accepted set \(A(x)=\{y^*\}\). Nondeterministic specifications define several permitted outcomes. Approximate specifications define a region. Protocol specifications may define permitted histories and forbidden transitions.
+For input and prestate $x$, a deterministic exact specification may define a singleton accepted set $A(x)=\{y^*\}$. Nondeterministic specifications define several permitted outcomes. Approximate specifications define a region. Protocol specifications may define permitted histories and forbidden transitions.
 
 This distinction prevents two common errors. First, nondeterminism does not mean “accept any output”; the allowed set still has boundaries. Second, an exact snapshot may over-specify behavior when ordering, identifiers, timestamps, or formatting are intentionally unconstrained.
 
@@ -186,7 +186,7 @@ For concurrency, a correct result may be any history satisfying a consistency co
 
 ### Metamorphic and relational oracles
 
-When exact answers are unavailable, relate multiple executions. If a sorting function receives a permutation of the same input, sorted output should remain equal. Scaling every geometric length by \(k>0\) should scale area by \(k^2\) under the model. Adding a zero-weight item should not change a valid weighted sum.
+When exact answers are unavailable, relate multiple executions. If a sorting function receives a permutation of the same input, sorted output should remain equal. Scaling every geometric length by $k>0$ should scale area by $k^2$ under the model. Adding a zero-weight item should not change a valid weighted sum.
 
 A metamorphic relation is itself a specification fragment and can be wrong or too weak. A constant-output defect satisfies many invariance relations. Use diverse relations, validate their preconditions, and combine them with direct oracles where possible. The relation reveals disagreement with the stated property; it may not identify which execution is wrong.
 
@@ -212,9 +212,9 @@ Exact binary equality is often inappropriate for numerical algorithms, but `abs(
 
 A combined comparison can be
 
-\[
+$$
 |a-e|\le \epsilon_{abs}+\epsilon_{rel}|e|.
-\]
+$$
 
 This is a policy, not a universal formula. Near zero, absolute tolerance matters; at large magnitude, relative tolerance may dominate. NaN, infinities, signed zero, overflow, underflow, discontinuities, and units require explicit cases. Independently recompute critical values at higher precision or with interval/error bounds.
 
@@ -245,17 +245,17 @@ Test the oracle itself. Introduce known-invalid outputs, mutate predicates, corr
 
 ## Definitions and Notation
 
-Let \(B_v\) be the versioned test basis, \(P_v\) the test item, \(t=(s_0,i)\) the prestate/input, \(e\) the environment, and \(\Omega\) the universe of possible effects. Observation function \(obs_Q:\Omega\to Q\) projects effects into observable set \(Q\); effects outside \(Q\) are invisible to that oracle.
+Let $B_v$ be the versioned test basis, $P_v$ the test item, $t=(s_0,i)$ the prestate/input, $e$ the environment, and $\Omega$ the universe of possible effects. Observation function $obs_Q:\Omega\to Q$ projects effects into observable set $Q$; effects outside $Q$ are invisible to that oracle.
 
 Let the specification define permitted observations:
 
-\[
+$$
 A_{B_v}(t,e)=\{q\in Q\mid predicates_{B_v}(q,t,e)\}.
-\]
+$$
 
 The verdict is:
 
-\[
+$$
 O(q)=
 \begin{cases}
 pass & q\in A\ \text{and required evidence is complete}\\
@@ -263,11 +263,11 @@ fail & q\notin A\ \text{under a valid basis}\\
 inconclusive & basis/observation cannot distinguish membership\\
 error & oracle execution or evidence collection failed.
 \end{cases}
-\]
+$$
 
 An oracle is **sound for rejection** relative to a model if every fail verdict is a real model violation. It is **complete for rejection** if every model violation it is intended to detect yields fail. Real oracles are often partial and neither universally sound nor complete because basis, observation, implementation, and environment can be wrong.
 
-For multiple oracle predicates \(o_1,\ldots,o_n\), conjunction means pass only if every required predicate passes. Do not aggregate non-compensable predicates into an average score. Missing evidence should propagate according to declared three-/four-valued logic rather than coercing unknown to true.
+For multiple oracle predicates $o_1,\ldots,o_n$, conjunction means pass only if every required predicate passes. Do not aggregate non-compensable predicates into an average score. Missing evidence should propagate according to declared three-/four-valued logic rather than coercing unknown to true.
 
 ## Mechanisms, Invariants, or Proof Structure
 

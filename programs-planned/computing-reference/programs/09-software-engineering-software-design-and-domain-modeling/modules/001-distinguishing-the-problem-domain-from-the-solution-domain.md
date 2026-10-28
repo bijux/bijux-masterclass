@@ -31,9 +31,9 @@ Which facts describe the world in which a need exists, and which decisions descr
 Let (W) denote relevant domain properties and assumptions, (S) a machine specification, and (R) the required effect in the world. The central adequacy obligation is:
 
 
-\[
+$$
 W \land S \models R.
-\]
+$$
 
 
 The formula is an argument shape, not a promise that every project uses formal logic. It asks reviewers to show why the machine behavior, when composed with credible environmental properties, entails the desired outcome. A solution that satisfies its own tests but relies on a false (W) does not solve the problem.
@@ -96,7 +96,7 @@ After completing this module, you should be able to:
 - classify statements as domain fact, stakeholder goal, requirement, assumption, specification, design decision, implementation detail, or evidence;
 - draw a context boundary showing the machine, relevant external domains, and shared phenomena;
 - transform a proposed feature into an outcome-oriented requirement without discarding useful design information;
-- write and challenge an adequacy argument of the form (W \land S \models R);
+- write and challenge an adequacy argument of the form $W \land S \models R$;
 - detect inaccessible phenomena, circular definitions of success, and solution-shaped vocabulary;
 - compare multiple solutions against the same problem model;
 - trace requirements to design mechanisms and observed evidence in both directions;
@@ -162,8 +162,8 @@ Let:
 
 Three judgments must not be collapsed:
 
-1. **Implementation verification:** (I \models S). The implementation conforms to its machine specification under the verification model.
-2. **Problem adequacy:** (W \land S \models R). In a world satisfying the stated properties, the specified machine behavior entails the required effect.
+1. **Implementation verification:** $I \models S$. The implementation conforms to its machine specification under the verification model.
+2. **Problem adequacy:** $W \land S \models R$. In a world satisfying the stated properties, the specified machine behavior entails the required effect.
 3. **Assumption validation:** evidence (E) supports treating (W) as credible for the intended context.
 
 The notation (models) means semantic entailment: every interpretation satisfying the premises also satisfies the conclusion. In ordinary projects, the premises may be structured prose, state models, examples, simulations, and testable contracts rather than a fully formal theory. The obligation still disciplines reasoning.
@@ -200,7 +200,7 @@ The decisive invariant is **category traceability**: no arrow in the argument ch
 
 A second invariant is **causal reachability**. Construct a directed graph whose nodes are relevant domain states and shared phenomena. Every required change must have a path beginning with something the machine can observe or control and ending at the required state. Every edge needs a mechanism or explicit assumption. Missing edges identify wishful requirements; weak edges identify operational risk.
 
-A third invariant is **replaceability of means**. If two candidate solutions (S_1) and (S_2) both satisfy (W \land S_i \models R), then the problem statement should allow both unless an authorized constraint excludes one. A statement that admits only the first idea may be overspecified.
+A third invariant is **replaceability of means**. If two candidate solutions (S_1) and (S_2) both satisfy $W \land S_i \models R$, then the problem statement should allow both unless an authorized constraint excludes one. A statement that admits only the first idea may be overspecified.
 
 The adequacy argument is defeasible because (W) may change. Review it with:
 

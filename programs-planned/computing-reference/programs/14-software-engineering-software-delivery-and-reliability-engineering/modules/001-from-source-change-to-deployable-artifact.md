@@ -33,15 +33,15 @@ How does an accepted source change become an immutable, identifiable, verified, 
 
 Model a build invocation as
 
-\[
+$$
 (A,E)=B(S,D,T,P,X),
-\]
+$$
 
 where source revision (S), resolved dependency graph (D), toolchain/builder identity (T), parameters/target (P), and declared execution context (X) produce artifact set (A) and evidence (E). For each artifact byte sequence (a), record content identity (h(a)) and bind evidence to that digest. A promotion gate checks
 
-\[
+$$
 digest(candidate)=digest(verified)=digest(promoted),
-\]
+$$
 
 plus policy/evidence validity. Source identity alone is insufficient: two builders or dependency resolutions can produce different bytes. A tag alone is insufficient: mutable names can point to different bytes.
 

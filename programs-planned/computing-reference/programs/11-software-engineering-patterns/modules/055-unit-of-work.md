@@ -31,15 +31,15 @@ How can an application track every persistent object changed by one local busine
 
 ### Central model, mechanism, or theorem
 
-For identity map \(M\), original snapshots \(B\), and disjoint pending sets new \(N\), dirty \(D\), deleted \(X\), Unit of Work computes an ordered write plan \(W=\tau(N,D,X)\). Commit succeeds only if one database transaction applies every guarded action:
+For identity map $M$, original snapshots $B$, and disjoint pending sets new $N$, dirty $D$, deleted $X$, Unit of Work computes an ordered write plan $W=\tau(N,D,X)$. Commit succeeds only if one database transaction applies every guarded action:
 
-\[
+$$
 \mathrm{commit}(M,B,N,D,X)=
 \begin{cases}
 (B',\varnothing,\mathrm{committed}),&\text{all constraints/versions hold},\\
 (B,\varnothing,\mathrm{conflict/failure}),&\text{transaction aborts}.
 \end{cases}
-\]
+$$
 
 Atomic database rollback prevents partial durable writes under its assumptions. It does not rewind object graphs, files, network calls, sequences, logs, or another resource; post-failure in-memory state must be expired, discarded, refreshed, or repaired explicitly.
 
@@ -173,7 +173,7 @@ Do not catch a flush exception and continue using a failed transaction. Define c
 
 ### Apply optimistic concurrency
 
-Store original version \(v\). Flush an update using identity and version predicate, set \(v'=v+1\), and require exactly one affected row. Zero means stale/not-found/unauthorized depending on prior scoped lookup and disclosure; classify carefully. More than one violates key assumptions.
+Store original version $v$. Flush an update using identity and version predicate, set $v'=v+1$, and require exactly one affected row. Zero means stale/not-found/unauthorized depending on prior scoped lookup and disclosure; classify carefully. More than one violates key assumptions.
 
 On conflict, rollback/discard and return a typed conflict or reload/re-run the entire safe operation. Automatic field merge is valid only for explicitly commutative independent changes, not arbitrary domain transitions.
 
@@ -239,23 +239,23 @@ Coordinate concurrent transactions deterministically. Fault-inject before/during
 
 ## Definitions and Notation
 
-Let identity map \(M:K\rightharpoonup O\) be a partial function from persistence key \(K\) to managed object instance \(O\). Thus
+Let identity map $M:K\rightharpoonup O$ be a partial function from persistence key $K$ to managed object instance $O$. Thus
 
-\[
+$$
 M(k)=o_1\land M(k)=o_2\Rightarrow o_1=o_2.
-\]
+$$
 
-Let disjoint pending identity sets be \(N,D,X\subseteq K\), with \(N\cap D=N\cap X=D\cap X=\varnothing\) after normalization. A write plan \(W=\tau(N,D,X,G)\) is a topological order over dependency graph \(G=(V,E)\); an order exists if the required action graph is acyclic or cycles are resolved by the persistence strategy.
+Let disjoint pending identity sets be $N,D,X\subseteq K$, with $N\cap D=N\cap X=D\cap X=\varnothing$ after normalization. A write plan $W=\tau(N,D,X,G)$ is a topological order over dependency graph $G=(V,E)$; an order exists if the required action graph is acyclic or cycles are resolved by the persistence strategy.
 
-For dirty object key \(k\), original version \(v_k\), and current persistent projection \(p(o_k)\), guarded update is conceptually
+For dirty object key $k$, original version $v_k$, and current persistent projection $p(o_k)$, guarded update is conceptually
 
-\[
+$$
 \mathrm{UPDATE}(k,v_k,p(o_k))\Rightarrow
 \begin{cases}
 1\text{ row},&v_k\text{ still current},\\
 0\text{ rows},&\text{stale/missing under scope}.
 \end{cases}
-\]
+$$
 
 ## Mechanisms, Invariants, or Proof Structure
 

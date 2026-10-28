@@ -33,19 +33,19 @@ How can producers and consumers exchange owned items at different rates through 
 
 For capacity (K), FIFO ring state can satisfy
 
-\[
+$$
 0\le count\le K,\qquad tail-head=count
-\]
+$$
 
 when head/tail are logical monotonic sequences (or equivalent modulo invariants). Each successful enqueue consumes one free-slot permit and publishes exactly one owned item; each successful dequeue consumes one item permit and returns one slot. In a correct work-sharing queue,
 
-\[
+$$
 accepted = queued + in\_flight + terminal
-\]
+$$
 
 for a defined audit boundary, with disjoint item identities.
 
-If accepted arrival rate is λ and aggregate sustainable consumer rate is μₜ, long-run stability requires λ < μₜ. Little's Law (L=\lambda W) checks stable averages. A finite (K) bounds queue entries but cannot make sustained overload disappear; it forces a full-buffer policy and bounds only declared payload memory (Kb_{max}), not producers, consumers, results or hidden downstream queues.
+If accepted arrival rate is λ and aggregate sustainable consumer rate is μₜ, long-run stability requires λ < μₜ. Little's Law $L=\lambda W$ checks stable averages. A finite (K) bounds queue entries but cannot make sustained overload disappear; it forces a full-buffer policy and bounds only declared payload memory (Kb_{max}), not producers, consumers, results or hidden downstream queues.
 
 ### Critical invariants
 
@@ -130,7 +130,7 @@ In-process queue acceptance is not durable. A crash can lose queued items. If ca
 
 ### Bound slots and bytes
 
-Capacity (K) bounds entries, not size. Enforce (b_i\le b_{max}), aggregate queued bytes (B_q\le B_{max}), in-flight bytes, per-tenant/partition shares, result/output and downstream work. Large-item classes may need separate queues/permits.
+Capacity (K) bounds entries, not size. Enforce $b_i\le b_{max}$, aggregate queued bytes $B_q\le B_{max}$, in-flight bytes, per-tenant/partition shares, result/output and downstream work. Large-item classes may need separate queues/permits.
 
 For fixed preallocated ring entries, storage is predictable but referenced external payload still counts. Clearing slots after consume may be needed to release references/sensitive data. Reuse only after every required consumer sequence passed; work-sharing one-consumer release differs from multicast slowest-consumer gating.
 
@@ -202,7 +202,7 @@ Abort differs from drain. It terminally classifies/disposes queued items and coo
 
 For stages, throughput is limited by the slowest sustainable consumer/downstream. If accepted λ exceeds μₜ, a finite buffer reaches full; the full policy is normal operation. Larger K delays pressure and increases memory/latency but not sustainable throughput.
 
-Little's Law checks stable measured (L=\lambda W). Use distributions for bursts/tails. Correlated downstream outages invalidate stationary assumptions. Backpressure must propagate to the original admission point; otherwise hidden buffers accumulate upstream.
+Little's Law checks stable measured $L=\lambda W$. Use distributions for bursts/tails. Correlated downstream outages invalidate stationary assumptions. Backpressure must propagate to the original admission point; otherwise hidden buffers accumulate upstream.
 
 Observe every queue, kernel/socket/broker/client buffer and in-flight stage. Local low depth can coexist with downstream connection-pool saturation or upstream memory.
 
@@ -284,7 +284,7 @@ print(f"invariants=bounded:{bounded} fifo:{fifo} accepted:{len(queue.accepted)} 
 
 Let (K) be slot capacity, (B_{max}) queued-byte capacity, (b_i) item bytes, (h,t) logical dequeue/enqueue sequences, (count=t-h), λ effective accepted production rate, μₜ aggregate sustainable consume rate, and (W_q) queue residence.
 
-Let item lifecycle be `created -> rejected | accepted -> queued -> claimed -> terminal/requeued/quarantined`. Let (A,Q,F,T) be accepted, queued, in-flight and terminal identity sets at an audit instant. Conservation requires (A=Q\uplus F\uplus T) under a defined recovery boundary.
+Let item lifecycle be `created -> rejected | accepted -> queued -> claimed -> terminal/requeued/quarantined`. Let (A,Q,F,T) be accepted, queued, in-flight and terminal identity sets at an audit instant. Conservation requires $A=Q\uplus F\uplus T$ under a defined recovery boundary.
 
 For broadcast consumer j has sequence (c_j); producer wrap is safe only below (min_j c_j+K). For work sharing one claim sequence assigns each item to one consumer. Close generation (g) fences late producers/consumers.
 
@@ -292,7 +292,7 @@ For broadcast consumer j has sequence (c_j); producer wrap is safe only below (m
 
 ### Count/permit conservation
 
-Assume capacity K, atomic slot acquisition before accepted publish, atomic item acquisition before dequeue, and every failure path restores the acquired permit exactly once. Then `free_slots + queued_items = K` for queue storage and (0\le count\le K). In-flight consumer work is outside slots if dequeue frees immediately and needs its own bound.
+Assume capacity K, atomic slot acquisition before accepted publish, atomic item acquisition before dequeue, and every failure path restores the acquired permit exactly once. Then `free_slots + queued_items = K` for queue storage and $0\le count\le K$. In-flight consumer work is outside slots if dequeue frees immediately and needs its own bound.
 
 ### Ownership/no-duplication argument
 
@@ -482,7 +482,7 @@ Design bounded producer-consumer buffering for a safety-critical emergency telem
 
 Use stable item/effect ID, producer/tenant/partition/sequence, schema, monotonic deadline, immutable payload/lease, byte size, authority/class and trace. Admission atomically reserves both one slot and bytes/per-tenant capacity; rejection returns ownership; successful enqueue publishes initialized data and transfers ownership. Dequeue atomically assigns one identity to one consumer/in-flight lease; terminal ack/requeue/quarantine is serialized under same identity.
 
-Invariants include (0\le count\le K), (0\le bytes\le B_{max}), permit conservation, no duplicate queue/in-flight identity, initialized-before-visible memory order, no slot reuse before release, per-partition ordering policy, queue wait inside deadline, bounded in-flight/retry/result, effect-aware requeue, fair/quota admission, and all lifecycle paths returning permits/leases once. Cancellation before enqueue retains ownership; queued removes/marks; claimed/running reconciles actual effect.
+Invariants include $0\le count\le K$, $0\le bytes\le B_{max}$, permit conservation, no duplicate queue/in-flight identity, initialized-before-visible memory order, no slot reuse before release, per-partition ordering policy, queue wait inside deadline, bounded in-flight/retry/result, effect-aware requeue, fair/quota admission, and all lifecycle paths returning permits/leases once. Cancellation before enqueue retains ownership; queued removes/marks; claimed/running reconciles actual effect.
 
 Close is protected generation state: rejects production, wakes all, drains to EOS; abort terminally disposes queue and reconciles in-flight. Join before destruction. Tests cover simultaneous full/empty/byte races, producer failure between permits/publish, consumer failure before/after effect/ack, duplicates, wrap, large items, fairness, deadlines, close/abort and memory visibility on target runtime.
 
@@ -490,17 +490,17 @@ Close is protected generation state: rejects production, wakes all, drains to EO
 
 Maximum declared queued payload is
 
-\[
+$$
 256\times48\text{ KiB}=12{,}288\text{ KiB}=12\text{ MiB}.
-\]
+$$
 
 Little's Law gives average queued items
 
-\[
+$$
 L_q=\lambda W_q=1200\times0.12=144.
-\]
+$$
 
-Aggregate nominal consumer service is (12\times110=1320) items/s, so (1200<1320) satisfies the necessary mean inequality and nominal utilization is (1200/1320\approx0.9091), about 90.9%.
+Aggregate nominal consumer service is $12\times110=1320$ items/s, so (1200<1320) satisfies the necessary mean inequality and nominal utilization is $1200/1320\approx0.9091$, about 90.9%.
 
 The memory bound excludes in-flight/results/object graphs/producers/overhead. Means do not bound bursts/tails, and high utilization amplifies wait under variability. Consumers may contend for downstream resources; arrivals/service may correlate or be nonstationary; hidden queues invalidate the boundary. No arithmetic proves ordering, ownership, memory visibility, fairness, durability or adequate deadlines.
 

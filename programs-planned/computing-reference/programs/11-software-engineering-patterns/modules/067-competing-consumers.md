@@ -31,25 +31,25 @@ How can several replaceable workers share one logical stream of work to increase
 
 ### Central model, mechanism, or theorem
 
-For arrival rate \(\lambda\), \(k\) homogeneous consumers, and mean service rate \(\mu\) per consumer, an idealized queue is stable only if
+For arrival rate $\lambda$, $k$ homogeneous consumers, and mean service rate $\mu$ per consumer, an idealized queue is stable only if
 
-\[
+$$
 \lambda < k\mu.
-\]
+$$
 
-Real capacity is bounded by broker partitions, serial work, and downstream capacity \(C_d\):
+Real capacity is bounded by broker partitions, serial work, and downstream capacity $C_d$:
 
-\[
+$$
 C_{effective}\le \min(k\mu,\;p\mu_p,\;C_d).
-\]
+$$
 
-If fraction \(f\) is inherently serial, Amdahl's bound gives
+If fraction $f$ is inherently serial, Amdahl's bound gives
 
-\[
+$$
 S(k)\le\frac{1}{f+(1-f)/k}.
-\]
+$$
 
-For message \(m\), at-least-once recovery permits delivery attempts \(D_m\ge1\), while the business contract may require committed effect \(E_m=1\). Stable message/operation identity, an atomic idempotency boundary, and—when leases can overlap—a current fencing generation establish the latter; the queue alone does not.
+For message $m$, at-least-once recovery permits delivery attempts $D_m\ge1$, while the business contract may require committed effect $E_m=1$. Stable message/operation identity, an atomic idempotency boundary, and—when leases can overlap—a current fencing generation establish the latter; the queue alone does not.
 
 ### Critical invariants
 
@@ -155,7 +155,7 @@ An expired worker may still be alive and able to write. Therefore a lease alone 
 
 ### Understand capacity and stability
 
-For homogeneous independent jobs, \(k\mu\) is an optimistic service bound. Sustainable operation needs headroom: at utilization near one, latency and backlog become highly sensitive to variability. Account for arrival bursts, tail service times, retry amplification, maintenance, and degraded workers.
+For homogeneous independent jobs, $k\mu$ is an optimistic service bound. Sustainable operation needs headroom: at utilization near one, latency and backlog become highly sensitive to variability. Account for arrival bursts, tail service times, retry amplification, maintenance, and degraded workers.
 
 Downstream capacity often binds first. If each job holds one database connection for 200 ms and only 50 connections are safely available, the effect tier caps near 250 jobs/s even if worker CPU capacity is 1,000 jobs/s. Scaling workers beyond that point increases contention and timeouts, which generate retries and reduce useful throughput.
 
@@ -199,32 +199,32 @@ Trace one stable message across attempts and effect identity without placing sec
 
 | Symbol or term | Meaning |
 | --- | --- |
-| \(\lambda\) | Mean arrival rate into the logical subscription |
-| \(k\) | Number of eligible consumer instances |
-| \(\mu_i\) | Mean service rate of consumer \(i\) under stated workload |
-| \(p\) | Number of independently assignable partitions/groups |
-| \(C_d\) | Safe downstream effect capacity |
-| \(U\) | Utilization; idealized as \(\lambda/\sum_i\mu_i\) |
-| \(D_m\) | Number of delivery attempts for message \(m\) |
-| \(E_{m,o}\) | Accepted effects for message \(m\), operation \(o\) |
-| \(g\) | Monotone ownership/lease generation used as a fence |
+| $\lambda$ | Mean arrival rate into the logical subscription |
+| $k$ | Number of eligible consumer instances |
+| $\mu_i$ | Mean service rate of consumer $i$ under stated workload |
+| $p$ | Number of independently assignable partitions/groups |
+| $C_d$ | Safe downstream effect capacity |
+| $U$ | Utilization; idealized as $\lambda/\sum_i\mu_i$ |
+| $D_m$ | Number of delivery attempts for message $m$ |
+| $E_{m,o}$ | Accepted effects for message $m$, operation $o$ |
+| $g$ | Monotone ownership/lease generation used as a fence |
 | in-flight | Assigned but not terminally acknowledged/deleted work |
 | prefetch/credit | Maximum deliveries made available ahead of acknowledgement |
 | lease | Time-bounded processing claim whose expiry enables recovery |
 | poison message | Work that predictably fails ordinary processing and retry |
 | hot key | Key whose rate/cost dominates its partition or fairness share |
 
-The simple \(M/M/k\)-like capacity notation is a model, not a product guarantee. It assumes stationary arrivals, independent homogeneous service, no retry amplification, and no external bottleneck. Measurements from a real workload are empirical evidence and must report distributions and conditions.
+The simple $M/M/k$-like capacity notation is a model, not a product guarantee. It assumes stationary arrivals, independent homogeneous service, no retry amplification, and no external bottleneck. Measurements from a real workload are empirical evidence and must report distributions and conditions.
 
 ## Mechanisms, Invariants, or Proof Structure
 
 ### Safety argument for one accepted effect
 
-Assume every logical operation has stable key \(q=(subscription,m,o)\). The effect store atomically enforces either a unique committed row for \(q\), or a conditional state transition from the expected entity version. Any number of attempts can race; at most one commits the guarded effect. Completed retries observe the prior result. Thus \(E_{m,o}\le1\). If policy and recovery ensure some valid attempt eventually executes and the store remains available, then \(E_{m,o}\ge1\), giving \(E_{m,o}=1\). The liveness premise is separate from safety.
+Assume every logical operation has stable key $q=(subscription,m,o)$. The effect store atomically enforces either a unique committed row for $q$, or a conditional state transition from the expected entity version. Any number of attempts can race; at most one commits the guarded effect. Completed retries observe the prior result. Thus $E_{m,o}\le1$. If policy and recovery ensure some valid attempt eventually executes and the store remains available, then $E_{m,o}\ge1$, giving $E_{m,o}=1$. The liveness premise is separate from safety.
 
 ### Fencing argument for expired ownership
 
-Each reassignment allocates a larger generation \(g\). The effect store records the current generation and accepts a completion only when the presented generation equals it. If worker A holds \(g=1\), expires, and worker B receives \(g=2\), A's late write fails the predicate. This protects guarded effects even though the workers overlap. The proof does not cover an unguarded external side effect; that needs its own idempotency/fencing protocol.
+Each reassignment allocates a larger generation $g$. The effect store records the current generation and accepts a completion only when the presented generation equals it. If worker A holds $g=1$, expires, and worker B receives $g=2$, A's late write fails the predicate. This protects guarded effects even though the workers overlap. The proof does not cover an unguarded external side effect; that needs its own idempotency/fencing protocol.
 
 ### Capacity bound
 
@@ -323,9 +323,9 @@ Push delivery reduces polling latency but needs credit/backpressure. Pull lets w
 
 ### Example 1
 
-**Situation.** A render queue receives \(\lambda=180\) jobs/s. One worker completes \(\mu=30\) jobs/s; downstream storage safely accepts 240 results/s. How many workers are minimally stable in the idealized model?
+**Situation.** A render queue receives $\lambda=180$ jobs/s. One worker completes $\mu=30$ jobs/s; downstream storage safely accepts 240 results/s. How many workers are minimally stable in the idealized model?
 
-**Reasoning.** Stability requires \(180<30k\), so \(k>6\). Six workers equal arrivals and provide no headroom; seven provide ideal capacity 210 jobs/s, below the downstream bound. Tail latency, maintenance, and retries require measured additional headroom.
+**Reasoning.** Stability requires $180<30k$, so $k>6$. Six workers equal arrivals and provide no headroom; seven provide ideal capacity 210 jobs/s, below the downstream bound. Tail latency, maintenance, and retries require measured additional headroom.
 
 **Conclusion.** Seven is the mathematical minimum under the assumptions, not a production sizing recommendation; validate a larger bounded pool empirically.
 
@@ -457,17 +457,17 @@ A logical subscription is one owned business obligation and its progress state. 
 
 ### Answer 2
 
-Ideal stability requires \(320<50k\), so \(k>6.4\) and the minimum integer is seven. At eight workers, raw worker capacity is \(8\times50=400\) jobs/s. Eight partitions do not reduce that bound if each can feed one worker at 50 jobs/s, but no ninth traditional group member could add partition parallelism. Downstream capacity reduces useful capacity to \(\min(400,400,360)=360\) effects/s. With serial fraction \(f=0.2\),
+Ideal stability requires $320<50k$, so $k>6.4$ and the minimum integer is seven. At eight workers, raw worker capacity is $8\times50=400$ jobs/s. Eight partitions do not reduce that bound if each can feed one worker at 50 jobs/s, but no ninth traditional group member could add partition parallelism. Downstream capacity reduces useful capacity to $\min(400,400,360)=360$ effects/s. With serial fraction $f=0.2$,
 
-\[
+$$
 S(8)\le\frac{1}{0.2+0.8/8}=\frac{1}{0.3}\approx3.33.
-\]
+$$
 
 The calculations do not prove stability under bursty arrivals, skew, heterogeneous service times, retries, coordination overhead, failures, or a particular latency SLO. Measurements and fault/load tests must validate headroom.
 
 ### Answer 3
 
-Use stable operation key `(inventory-subscription,message_id,reserve)` and a monotone lease generation \(g\). In one database transaction: authenticate/validate the message; read the current claim and SKU row; require presented \(g\) to equal the current claim generation; insert the operation key if absent; require SKU version to equal `expected_version` and available quantity to cover the request; decrement quantity and advance version; record result and outgoing outbox event. A unique constraint prevents a second operation key, and conditional version/generation predicates reject stale workers. Commit, then acknowledge. After a crash before acknowledgement, retry reads the completed operation result and acknowledges without decrementing again. Conflicts, insufficient inventory, malformed input, and transient storage failure receive distinct terminal/retry policies.
+Use stable operation key `(inventory-subscription,message_id,reserve)` and a monotone lease generation $g$. In one database transaction: authenticate/validate the message; read the current claim and SKU row; require presented $g$ to equal the current claim generation; insert the operation key if absent; require SKU version to equal `expected_version` and available quantity to cover the request; decrement quantity and advance version; record result and outgoing outbox event. A unique constraint prevents a second operation key, and conditional version/generation predicates reject stale workers. Commit, then acknowledge. After a crash before acknowledgement, retry reads the completed operation result and acknowledges without decrementing again. Conflicts, insufficient inventory, malformed input, and transient storage failure receive distinct terminal/retry policies.
 
 ### Answer 4
 

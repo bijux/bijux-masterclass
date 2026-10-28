@@ -32,13 +32,13 @@ How can one movable region of spare storage make cursor-local insertion and dele
 
 For each valid logical index `i`:
 
-\[
+$$
 \operatorname{phys}(i)=
 \begin{cases}
 i,&0\le i<g_0,\\
 i+(g_1-g_0),&g_0\le i<n.
 \end{cases}
-\]
+$$
 
 To edit at logical position `p`, move the gap from `g0` to `p`, preserving the order of transferred elements. Insertion consumes slots from the left of the gap; backspace expands the gap left; forward deletion expands it right. If an operation moves the gap distance `d`, inserts `k`, and triggers a transfer of `n` live elements during growth, its modeled work is `Theta(d+k+n)`; without growth it is `Theta(d+k)`. Thus repeated edits near one cursor can be cheap, but arbitrary jumps do not have worst-case constant cost.
 

@@ -33,9 +33,9 @@ How can one contiguous table resolve collisions by unit-step probing while prese
 
 For capacity `m>0` and home `q`, linear probe order is
 
-\[
+$$
 p_j=(q+j)\bmod m,\quad 0\le j<m.
-\]
+$$
 
 This visits every slot exactly once because `p_a=p_b` implies `a≡b (mod m)`, and `|a-b|<m`. Search may stop unsuccessfully at the first EMPTY because an insertion following the same sequence could not have placed the key beyond an always-empty slot. It may not stop at DELETED, which may have held an earlier link in reachability.
 

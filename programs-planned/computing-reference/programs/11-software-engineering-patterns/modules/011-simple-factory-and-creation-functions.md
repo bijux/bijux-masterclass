@@ -32,15 +32,15 @@ When should object or resource creation move from direct construction into a nam
 
 Model a creation boundary as a partial, explicit result function
 
-\[
+$$
 F:K\times C\rightarrow Result(P,E),
-\]
+$$
 
 where (K) is a selection key, (C) validated creation configuration, (P) the client contract, and (E) a bounded error set. For every successful result (p):
 
-\[
+$$
 valid_C(p)\land owns(p,owner(F,C))\land usable(p).
-\]
+$$
 
 Selection must be total over the documented supported key set and reject unsupported or unsafe configurations explicitly. A factory centralizes creation variability; it should not become a hidden global dependency source or an unbounded container.
 
@@ -183,35 +183,35 @@ Cache keys must include every configuration dimension affecting semantics. Pools
 
 ## Definitions and Notation
 
-Let supported keys be (K_S\subseteq K), validated configurations (C_V\subseteq C), product contract (P), and bounded creation errors (E). Define
+Let supported keys be $K_S\subseteq K$, validated configurations $C_V\subseteq C$, product contract (P), and bounded creation errors (E). Define
 
-\[
+$$
 F:K\times C\to Result(P,E).
-\]
+$$
 
 Selection completeness and rejection require
 
-\[
+$$
 \forall k\in K_S,\forall c\in C_V:\ F(k,c)\text{ returns }Ok(p)\text{ or a documented environmental }Err(e),
-\]
+$$
 
-\[
+$$
 \forall k\notin K_S:\ F(k,c)=Err(UnsupportedKey(k)).
-\]
+$$
 
 For success, postcondition (I(p,c)) captures product invariants and configuration correspondence. For acquired resource set (R) and escaped owned resources (R_e), failure cleanup requires
 
-\[
+$$
 F(k,c)=Err(e)\implies R_e=\varnothing
 \quad\text{and every }r\in R\text{ is released exactly once}.
-\]
+$$
 
 If a factory caches by key function (q(k,c)), semantic correctness requires
 
-\[
+$$
 q(k_1,c_1)=q(k_2,c_2)
 \implies compatible(F(k_1,c_1),F(k_2,c_2)).
-\]
+$$
 
 This implication is a design obligation, not proof that a chosen key is complete.
 

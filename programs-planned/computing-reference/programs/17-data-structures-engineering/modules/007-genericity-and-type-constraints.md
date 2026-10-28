@@ -33,15 +33,15 @@ How can one data-structure abstraction support many element, key, allocator, or 
 
 Define a generic ADT family (D[T]) over admissible types
 
-\[
+$$
 \mathcal T_C=\{T\mid T\text{ supplies operations }C_{op}\text{ and satisfies laws }C_{law}\}.
-\]
+$$
 
 For an ordered set, `compare` must do more than type-check. Its induced relation must satisfy the structure's declared ordering laws, and equivalent keys must remain equivalent while resident. For a hash map, equality and hashing must satisfy
 
-\[
+$$
 x\equiv y\implies hash(x)=hash(y),
-\]
+$$
 
 with stability and domain requirements stated. The type system may enforce operation availability; lawfulness generally needs proof, trusted contracts, tests, or restricted constructors.
 
@@ -115,11 +115,11 @@ A hash set is different: bucket placement and duplicate detection depend on equa
 
 **Operation constraints versus laws.** An interface can require methods `eq`, `hash`, or `compare`. The compiler may verify signatures and lifetimes, but usually cannot establish reflexivity, symmetry, transitivity, determinism, or consistency. State laws explicitly.
 
-For equality relation (\equiv), typical set/map laws are:
+For equality relation $\equiv$, typical set/map laws are:
 
-- reflexive: (x\equiv x);
-- symmetric: (x\equiv y\Rightarrow y\equiv x);
-- transitive: (x\equiv y\land y\equiv z\Rightarrow x\equiv z).
+- reflexive: $x\equiv x$;
+- symmetric: $x\equiv y\Rightarrow y\equiv x$;
+- transitive: $x\equiv y\land y\equiv z\Rightarrow x\equiv z$.
 
 Some domains deliberately use partial/nonreflexive comparisons—for example IEEE NaN under ordinary equality. Then do not advertise a mathematical equivalence relation without normalization/wrapper policy.
 
@@ -217,11 +217,11 @@ print("evidence=finite_examples_not_lawfulness_proof")
 
 ## Definitions and Notation
 
-Let generic family (D:T\mapsto D[T]). Constraint environment (C(T)) combines syntactic capabilities, associated types/lifetimes, and semantic predicates. An operation may introduce an additional local constraint (C_{op}(T)) without constraining the entire family.
+Let generic family $D:T\mapsto D[T]$. Constraint environment (C(T)) combines syntactic capabilities, associated types/lifetimes, and semantic predicates. An operation may introduce an additional local constraint (C_{op}(T)) without constraining the entire family.
 
-Equivalence (\equiv_T), hash (h_T), and strict order (<_T) are policy-indexed. Hash compatibility is (x\equiv_T y\Rightarrow h_T(x)=h_T(y)). Strict weak order additionally requires irreflexivity/transitivity and transitive incomparability equivalence under the applicable library definition.
+Equivalence $\equiv_T$, hash (h_T), and strict order (<_T) are policy-indexed. Hash compatibility is $x\equiv_T y\Rightarrow h_T(x)=h_T(y)$. Strict weak order additionally requires irreflexivity/transitivity and transitive incomparability equivalence under the applicable library definition.
 
-For type constructor (F), covariance means (S<:T\Rightarrow F[S]<:F[T]); contravariance reverses the constructed relation; invariance provides neither. Actual language rules may use declaration-site, use-site, or inferred variance.
+For type constructor (F), covariance means $S<:T\Rightarrow F[S]<:F[T]$; contravariance reverses the constructed relation; invariance provides neither. Actual language rules may use declaration-site, use-site, or inferred variance.
 
 ## Mechanisms, Invariants, or Proof Structure
 

@@ -32,9 +32,9 @@ How can one application request be implemented as a clear procedural transaction
 
 For pre-state (S), validated authorized request (r) with idempotency identity (k), and one local transaction (T), script computes
 
-\[
+$$
 T(S,r,k)\to(S',result,outbox')\quad\text{or}\quad(S,error,\varnothing).
-\]
+$$
 
 Atomic commit means governed state, idempotency record, and outbox intent become visible together or none do. Correctness additionally depends on isolation/locking, constraint enforcement, retry scope, trusted inputs, and domain invariants; procedural order alone proves none of these.
 
@@ -209,11 +209,11 @@ Refactor incrementally: extract value objects/pure policies, then aggregates/dom
 
 ## Definitions and Notation
 
-Let accounts have balances (b_i\in\mathbb{Z}_{\ge0}) in one currency. A fee-free transfer of (a>0) from (i) to (j) requires (b_i\ge a) and preserves
+Let accounts have balances $b_i\in\mathbb{Z}_{\ge0}$ in one currency. A fee-free transfer of (a>0) from (i) to (j) requires $b_i\ge a$ and preserves
 
-\[
+$$
 b'_i=b_i-a,\quad b'_j=b_j+a,\quad \sum_k b'_k=\sum_k b_k.
-\]
+$$
 
 Let idempotency map (K) bind request key to normalized digest/result. A same-key/same-digest retry returns recorded result without a second state/outbox transition; same-key/different-digest is conflict. These local properties assume atomic isolation and do not establish distributed exactly-once effects.
 

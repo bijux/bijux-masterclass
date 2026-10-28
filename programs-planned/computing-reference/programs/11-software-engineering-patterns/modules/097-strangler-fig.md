@@ -34,9 +34,9 @@ How can a system transfer one coherent capability at a time from a legacy implem
 
 Model each capability (k) as a state machine:
 
-\[
+$$
 Legacy \rightarrow Shadow \rightarrow Canary(c) \rightarrow Replacement \rightarrow Retired.
-\]
+$$
 
 Every transition has entry evidence, an invariant set and abort/rollback action. At any instant, exactly one path owns authoritative writes for a given entity/cohort unless a documented transaction/consensus protocol provides one logical authority. Routing must be deterministic and sticky where state/session semantics require it. Retirement is reached only after routes, callers, jobs, data writes, credentials, alerts, runbooks and fallback code for the legacy slice are removed or archived under policy.
 
@@ -223,11 +223,11 @@ The run proves only deterministic example bucketing and a 10-bucket threshold. I
 
 ## Definitions and Notation
 
-Let capability (k) have contract (C_k), legacy implementation (L_k), replacement (N_k), cohort space (U), deterministic assignment (h:U\rightarrow\{0,\ldots,99\}), and policy (R_t(k,u)). Let (A_t(k,u)\in\{L,N\}) be authoritative writer at time (t). The single-authority invariant is (|A_t(k,u)|=1) for each record/cohort except under an explicitly proven logical atomicity protocol.
+Let capability (k) have contract (C_k), legacy implementation (L_k), replacement (N_k), cohort space (U), deterministic assignment $h:U\rightarrow\{0,\ldots,99\}$, and policy (R_t(k,u)). Let $A_t(k,u)\in\{L,N\}$ be authoritative writer at time (t). The single-authority invariant is (|A_t(k,u)|=1) for each record/cohort except under an explicitly proven logical atomicity protocol.
 
 Let normalization (norm_C(output)) remove only contract-declared nondeterminism. Semantic differential result is (D(x)=compare_C(norm_C(L(x)),norm_C(N(x)))), including authorization, effect intent and errors—not payload alone.
 
-Let data snapshots be (B_L(p)) and migrated (B_N(p)) at comparable boundary (p). Reconciliation asserts a defined projection (M(B_L(p))\equiv_C B_N(p)), not raw schema equality. **Traffic coverage** is the observed fraction across meaningful operation/risk strata; **rollback compatibility** means every accepted new state in horizon can be represented/replayed safely by the old path, stronger than route reversibility.
+Let data snapshots be (B_L(p)) and migrated (B_N(p)) at comparable boundary (p). Reconciliation asserts a defined projection $M(B_L(p))\equiv_C B_N(p)$, not raw schema equality. **Traffic coverage** is the observed fraction across meaningful operation/risk strata; **rollback compatibility** means every accepted new state in horizon can be represented/replayed safely by the old path, stronger than route reversibility.
 
 ## Mechanisms, Invariants, or Proof Structure
 

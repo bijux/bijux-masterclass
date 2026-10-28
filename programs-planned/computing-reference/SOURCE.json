@@ -2,16 +2,16 @@
   "schema_version": 1,
   "source_repository": "bijux/bijux-courses",
   "source_branch": "master",
-  "source_commit": "34ff851141a04a7eb58ebea27bd331da30e7cd66",
+  "source_commit": "1a585c5ac73272477fb82efc6c08c572285fc880",
   "captured_source_tip": "71f14e0a9ff959e0dbd5ef87720ce3d0b8e6ee7c",
   "captured_source_commit_count": 1486,
   "history_complete": false,
-  "destination_base": "2b4c4455cfc5f29b3138b6c92c15d7663e86ce85",
+  "destination_base": "36a3ee4ae538967b483ae6eab24f43af27fc9574",
   "original_destination_base": "3c776dde16320dc85e4c5f223d77a6abc510ded5",
   "status": "planned",
   "publication_qualification": "not-assessed",
-  "original_commit_count": 380,
-  "history_access": "git show 34ff851141a04a7eb58ebea27bd331da30e7cd66:<source_path>",
+  "original_commit_count": 570,
+  "history_access": "git show 1a585c5ac73272477fb82efc6c08c572285fc880:<source_path>",
   "meta_boundary": "The production backlog TODO.md remains recoverable in the original Git history; it is not a product backlog.",
   "files": [
     {
@@ -72,7 +72,7 @@
     },
     {
       "source_path": "MODULE_CONTENT_CONTRACT.md",
-      "source_blob": "21d1740ed605637ce70e05c14801fbb4da3114a7",
+      "source_blob": "abdb7005f15c76889f53f6dbbd4773de5bbe8f52",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/MODULE_CONTENT_CONTRACT.md",
       "disposition": "imported-unchanged"
@@ -128,14 +128,14 @@
     },
     {
       "source_path": "manifests/modules.csv",
-      "source_blob": "462408d6bad85de1ba397889a3323cb33fb76b13",
+      "source_blob": "8b222afd053bee2aaf9526e45d7ee2db7b8c85c8",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/manifests/modules.csv",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "manifests/modules.jsonl",
-      "source_blob": "e947709d102fe97144d595ffda060b6c3b493df7",
+      "source_blob": "6fe39bdd99e29f5b7aad00f3b8aef2f2ea0413fa",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/manifests/modules.jsonl",
       "disposition": "imported-unchanged"
@@ -156,14 +156,14 @@
     },
     {
       "source_path": "programs/01-programming-languages-and-semantics/modules/001-programs-languages-and-observable-behavior.md",
-      "source_blob": "637d99d183733366b169f766be54983ce2831ad7",
+      "source_blob": "193909859ac36832e0d30054e475173ae2293fc0",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/01-programming-languages-and-semantics/modules/001-programs-languages-and-observable-behavior.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/01-programming-languages-and-semantics/modules/002-lexical-structure-tokens-and-concrete-syntax.md",
-      "source_blob": "f0930712f9f2c381bddbfbf5f7a9cb20d84cdad2",
+      "source_blob": "176b24121b2efc36fcb63cec52f196f8727ca1cd",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/01-programming-languages-and-semantics/modules/002-lexical-structure-tokens-and-concrete-syntax.md",
       "disposition": "imported-unchanged"
@@ -184,21 +184,21 @@
     },
     {
       "source_path": "programs/02-programming-languages-object-oriented-programming/modules/001-objects-as-state-behavior-and-identity.md",
-      "source_blob": "5fe31ca04ec47ab204f77d1d732d68539a62b707",
+      "source_blob": "b7c7c5e47a010d8112320bbf282878326c24e728",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/02-programming-languages-object-oriented-programming/modules/001-objects-as-state-behavior-and-identity.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/02-programming-languages-object-oriented-programming/modules/002-classes-as-construction-and-classification-mechanisms.md",
-      "source_blob": "6eb8d313bbe88e72c9e0fbed802d08f66c66044b",
+      "source_blob": "7ea3e5c68a4c2d93e06162f4f335d2a0e3a1484b",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/02-programming-languages-object-oriented-programming/modules/002-classes-as-construction-and-classification-mechanisms.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/02-programming-languages-object-oriented-programming/modules/003-messages-methods-and-dynamic-dispatch.md",
-      "source_blob": "f442934a343f3bf0ca7bac81c9f9c3a9a107db50",
+      "source_blob": "bacc453d6ed04a5302f3df569a440527ab85814b",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/02-programming-languages-object-oriented-programming/modules/003-messages-methods-and-dynamic-dispatch.md",
       "disposition": "imported-unchanged"
@@ -212,21 +212,21 @@
     },
     {
       "source_path": "programs/03-programming-languages-functional-programming/modules/001-expressions-values-and-referential-transparency.md",
-      "source_blob": "7716e3755d5a25a77d7df42c8dfe0c07e72eb5aa",
+      "source_blob": "3b1fb807d178787793cc3c74e281a2919eef9cbd",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/03-programming-languages-functional-programming/modules/001-expressions-values-and-referential-transparency.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/03-programming-languages-functional-programming/modules/002-pure-functions-and-explicit-inputs.md",
-      "source_blob": "c5378954ac0193b23834d9d3f87de586f7115d6f",
+      "source_blob": "8d9bcdf08e7b4a199d0fc179713441d7fd09d188",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/03-programming-languages-functional-programming/modules/002-pure-functions-and-explicit-inputs.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/03-programming-languages-functional-programming/modules/003-first-class-and-higher-order-functions.md",
-      "source_blob": "96a54556565177a79a06748541d46e8a29fc4c45",
+      "source_blob": "9cf168c788d06e0623c4b9369858d0f94d5a4b61",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/03-programming-languages-functional-programming/modules/003-first-class-and-higher-order-functions.md",
       "disposition": "imported-unchanged"
@@ -240,14 +240,14 @@
     },
     {
       "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/001-concurrency-parallelism-and-asynchrony.md",
-      "source_blob": "545d90f33d645ed69ffbec9db84425cbc589c154",
+      "source_blob": "5ad96a23dc95a69424a85c0d316eabdcc8cc1916",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/001-concurrency-parallelism-and-asynchrony.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/002-processes-threads-tasks-and-fibers.md",
-      "source_blob": "820318958990d7dfe4c6cd988fde7a9b5c25cc5c",
+      "source_blob": "92abaf1f1e6b9338d5c1532dafce19af1ea8ef45",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/002-processes-threads-tasks-and-fibers.md",
       "disposition": "imported-unchanged"
@@ -345,7 +345,7 @@
     },
     {
       "source_path": "programs/04-programming-languages-concurrent-and-parallel-programming/modules/016-barriers-latches-and-phasers.md",
-      "source_blob": "eed2838ac8969ede33568784528f1e4f7090b8fc",
+      "source_blob": "c34dd4848e5106f1633a3066c04e7293a60ba521",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/04-programming-languages-concurrent-and-parallel-programming/modules/016-barriers-latches-and-phasers.md",
       "disposition": "imported-unchanged"
@@ -947,21 +947,21 @@
     },
     {
       "source_path": "programs/05-programming-languages-systems-programming/modules/001-from-source-text-to-process-image.md",
-      "source_blob": "6abf8a666ec7388ac45d687b256ec66afe1f81b6",
+      "source_blob": "e8183b2078d932ef128d5675d05792a2171c419f",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/05-programming-languages-systems-programming/modules/001-from-source-text-to-process-image.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/05-programming-languages-systems-programming/modules/002-integer-representation-overflow-and-conversion.md",
-      "source_blob": "edbd91b55568fed9a6690b283e569c0866a10530",
+      "source_blob": "b10f03b45122c1feb6be809ce93251dbb0c354da",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/05-programming-languages-systems-programming/modules/002-integer-representation-overflow-and-conversion.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/05-programming-languages-systems-programming/modules/003-floating-point-representation-and-exceptional-values.md",
-      "source_blob": "1a42a3bcacf51e60f27824316fcc3efb3d75d64d",
+      "source_blob": "973ad1858d319d5ecdfa1f194bdf5871f2b383ab",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/05-programming-languages-systems-programming/modules/003-floating-point-representation-and-exceptional-values.md",
       "disposition": "imported-unchanged"
@@ -975,21 +975,21 @@
     },
     {
       "source_path": "programs/06-programming-languages-metaprogramming/modules/001-programs-about-programs.md",
-      "source_blob": "2076579bbf6eb424f3608ed16be2abc754328327",
+      "source_blob": "7189b676e50f83a3acbc9515b7f1f7e94e654317",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/06-programming-languages-metaprogramming/modules/001-programs-about-programs.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/06-programming-languages-metaprogramming/modules/002-compile-time-build-time-load-time-and-run-time-metaprogramming.md",
-      "source_blob": "a415587288ff5151fdd0cef1889f7a90ecfe0f9e",
+      "source_blob": "80e820123c29ea23b96617daef1d7fe34e8b53bb",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/06-programming-languages-metaprogramming/modules/002-compile-time-build-time-load-time-and-run-time-metaprogramming.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/06-programming-languages-metaprogramming/modules/003-text-substitution-and-its-failure-modes.md",
-      "source_blob": "702d4aefff2ed731b1cdae1bd965dbc585281614",
+      "source_blob": "3e6d4f20fcc773135751edfd72697d74ba671dcf",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/06-programming-languages-metaprogramming/modules/003-text-substitution-and-its-failure-modes.md",
       "disposition": "imported-unchanged"
@@ -1003,21 +1003,21 @@
     },
     {
       "source_path": "programs/07-programming-languages-theory-of-programming/modules/001-propositions-predicates-and-formal-specifications.md",
-      "source_blob": "678ac519a0b64badc0ef22afff15e56a168eeee9",
+      "source_blob": "2b39aa8a6d5910b36b7adbf9c1b537006b7a4bd0",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/07-programming-languages-theory-of-programming/modules/001-propositions-predicates-and-formal-specifications.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/07-programming-languages-theory-of-programming/modules/002-natural-deduction.md",
-      "source_blob": "8a10c7dea6b1ac339a9d1b02ea30fa5cfa43ae47",
+      "source_blob": "f7e7144a798b640ad82d4804e3b96bbbff1eeef7",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/07-programming-languages-theory-of-programming/modules/002-natural-deduction.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/07-programming-languages-theory-of-programming/modules/003-induction-and-structural-induction.md",
-      "source_blob": "811b776478913f2afa082dbbbc1ae4b2af28cab7",
+      "source_blob": "6850a79f4a793bde2fa88b40bd91e2f11499a541",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/07-programming-languages-theory-of-programming/modules/003-induction-and-structural-induction.md",
       "disposition": "imported-unchanged"
@@ -1031,21 +1031,21 @@
     },
     {
       "source_path": "programs/08-compilers-and-language-implementation/modules/001-language-implementation-pipelines.md",
-      "source_blob": "0ddc8dc47f6dde06c86ea7b052c1d4cd5c5aea47",
+      "source_blob": "d6949a19a6ea238ca30447f549b509d50db7fb01",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/08-compilers-and-language-implementation/modules/001-language-implementation-pipelines.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/08-compilers-and-language-implementation/modules/002-source-text-encodings-and-position-tracking.md",
-      "source_blob": "7c3ff9a88fb641463ae7dfd008d299762eda9dad",
+      "source_blob": "b09efcfbcd59c3966044f5a99e239ff0ce488591",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/08-compilers-and-language-implementation/modules/002-source-text-encodings-and-position-tracking.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/08-compilers-and-language-implementation/modules/003-tokens-and-lexical-specifications.md",
-      "source_blob": "0d81730aae931a220d01235886f3dd43f159688f",
+      "source_blob": "aa2cfcf68ac4fd5052325e399ddb76c71c3100a3",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/08-compilers-and-language-implementation/modules/003-tokens-and-lexical-specifications.md",
       "disposition": "imported-unchanged"
@@ -1059,16 +1059,23 @@
     },
     {
       "source_path": "programs/09-software-engineering-software-design-and-domain-modeling/modules/001-distinguishing-the-problem-domain-from-the-solution-domain.md",
-      "source_blob": "d009ecaab81e12244e3fbea7bd4c26cdfff06385",
+      "source_blob": "c10ce7421319ca3e2f718162e1234b5293d31200",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/09-software-engineering-software-design-and-domain-modeling/modules/001-distinguishing-the-problem-domain-from-the-solution-domain.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/09-software-engineering-software-design-and-domain-modeling/modules/002-stakeholders-goals-and-observable-outcomes.md",
-      "source_blob": "3167c8d9dca7ebc90d4bdb567e122755243d8ba9",
+      "source_blob": "1a5de60cfc1d802911db0cedc60127e9f099cbd8",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/09-software-engineering-software-design-and-domain-modeling/modules/002-stakeholders-goals-and-observable-outcomes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/09-software-engineering-software-design-and-domain-modeling/modules/003-domain-language-and-terminology.md",
+      "source_blob": "4e4324c1216115a2de921f5c4737126863147634",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/09-software-engineering-software-design-and-domain-modeling/modules/003-domain-language-and-terminology.md",
       "disposition": "imported-unchanged"
     },
     {
@@ -1080,14 +1087,14 @@
     },
     {
       "source_path": "programs/10-software-engineering-methods-and-evolution/modules/001-software-products-projects-services-and-platforms.md",
-      "source_blob": "d8a208d8f08549819b36528c63b8a7fc31edabb4",
+      "source_blob": "8df430568a37cffd26fd6aa56a153c3dbe8238f4",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/10-software-engineering-methods-and-evolution/modules/001-software-products-projects-services-and-platforms.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/10-software-engineering-methods-and-evolution/modules/002-lifecycle-activities-and-feedback-loops.md",
-      "source_blob": "bfeeca3052d453d53c38fac639157aeca8de64af",
+      "source_blob": "b8158bb3a6372500c05776a324f6b7a7972d2f83",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/10-software-engineering-methods-and-evolution/modules/002-lifecycle-activities-and-feedback-loops.md",
       "disposition": "imported-unchanged"
@@ -1101,700 +1108,700 @@
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/001-recurring-problems-context-forces-and-consequences.md",
-      "source_blob": "d1d4f5c4d07d73a035eaddf0ea6e4b0aa6ca8c74",
+      "source_blob": "e87c5813df84ed25ad92cb8bdc42e44fb0043f47",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/001-recurring-problems-context-forces-and-consequences.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/002-pattern-versus-idiom-principle-recipe-and-framework.md",
-      "source_blob": "b1c5555e4d1897749da7b31169b353271ca733ad",
+      "source_blob": "c9302b90d4109da9cb885c01681364e455ac5cb7",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/002-pattern-versus-idiom-principle-recipe-and-framework.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/003-reading-and-writing-a-pattern-form.md",
-      "source_blob": "6175ad30bb3827c6e1bc025628bc33e569410212",
+      "source_blob": "25202fa523a4dcf4c65f0520140fd0c06bc0421e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/003-reading-and-writing-a-pattern-form.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/004-pattern-intent-and-applicability.md",
-      "source_blob": "c5c1869772cf77cf7d31e3de51d39d1769e265eb",
+      "source_blob": "d5113dc7f20a164ead8048201a685206b8b4b18e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/004-pattern-intent-and-applicability.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/005-trade-offs-and-negative-consequences.md",
-      "source_blob": "5732c49919be9ec1a9d7aaa655ddab892892a704",
+      "source_blob": "0b624df182ac182a3eb624a077cec239b94530d8",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/005-trade-offs-and-negative-consequences.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/006-pattern-composition.md",
-      "source_blob": "42c9221307947f0e7df229f2d6bfed4b94744fd8",
+      "source_blob": "504644ccbf27e349dabac06c2c0bf195c8bcfb6a",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/006-pattern-composition.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/007-pattern-sequences-and-pattern-languages.md",
-      "source_blob": "8b9903839dbf370ddefa19bd1e15255ca3cffdac",
+      "source_blob": "68b1df7afdd241f517e076cfa39c393520812a68",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/007-pattern-sequences-and-pattern-languages.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/008-refactoring-toward-and-away-from-patterns.md",
-      "source_blob": "7dbfa71b98d9c8a3ce3e593b8c028c1d7fd09c6a",
+      "source_blob": "2b462c6adf9b3d61282d84a4d57901d193c1fcbe",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/008-refactoring-toward-and-away-from-patterns.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/009-pattern-hype-and-cargo-cult-design.md",
-      "source_blob": "1be14445e8eb04f22b12a60ec80e77738466122c",
+      "source_blob": "a0d6f15290bfe68a39d7ea11961a68cbb9e670ae",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/009-pattern-hype-and-cargo-cult-design.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/010-selecting-a-pattern-from-forces-rather-than-names.md",
-      "source_blob": "27a833f28d435bf5cd13c54dfe46cb6e5c76caba",
+      "source_blob": "388b171d6d5ca60b711b7937b80b9e25894a90d7",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/010-selecting-a-pattern-from-forces-rather-than-names.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/011-simple-factory-and-creation-functions.md",
-      "source_blob": "f160b2e7e00dda0740a05c6c33d703f1baaf43d3",
+      "source_blob": "218348e5ee7021be6b2aa9d133a4ef831f078f68",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/011-simple-factory-and-creation-functions.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/012-factory-method.md",
-      "source_blob": "24bc912d463f333ba6e4ebd250e5743374561be8",
+      "source_blob": "668dc68aabe3388929ae83fad428889552f249c7",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/012-factory-method.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/013-abstract-factory.md",
-      "source_blob": "e3c8518488eea23b6e0d4656680fd92c19e22c4b",
+      "source_blob": "0a177a21c28ad82c76abc998e2a1f8ba745bdc9f",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/013-abstract-factory.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/014-builder.md",
-      "source_blob": "31393512ad1697a674d97ae0e2fce3801d791e97",
+      "source_blob": "91e206c760d9ea58d0b4248c77afc11d785478bf",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/014-builder.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/015-prototype.md",
-      "source_blob": "f074ce500854ff1148ef4d92f34e91d64b7d3a87",
+      "source_blob": "1d05432d86fcdd2450dd83aec86820cae9bdcdfa",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/015-prototype.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/016-singleton-and-its-hidden-global-state.md",
-      "source_blob": "85b0a64a79d25d538eaaa65c228975095708f7f6",
+      "source_blob": "ae176f3fc9755ffa2c3491b5264732c91c68fb59",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/016-singleton-and-its-hidden-global-state.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/017-object-pool.md",
-      "source_blob": "13f4e637ad5270b640354f1112b689a3841c44f3",
+      "source_blob": "3d2714f0f809a5af82f76099621c10c06f31e21a",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/017-object-pool.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/018-dependency-injection-as-a-creation-pattern.md",
-      "source_blob": "9738ebedfc142da91ae6ddc9575882908f6cb2de",
+      "source_blob": "efb005f3f79edc17995ea273ab6f8e6e36c37324",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/018-dependency-injection-as-a-creation-pattern.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/019-lazy-initialization.md",
-      "source_blob": "09660d786588c9ac6034e94f6f66a91e5d8b3152",
+      "source_blob": "42cdaaad7c1080a1e494e6d3953bb53db526057a",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/019-lazy-initialization.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/020-comparing-creational-patterns-under-change.md",
-      "source_blob": "9b1702bcdee4746fbcd83c76eb37739b5b65dafd",
+      "source_blob": "3279e5ee014d1cd1a064eee76b3f9a90dfe561b8",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/020-comparing-creational-patterns-under-change.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/021-adapter.md",
-      "source_blob": "70c6f66c49594772c5f61392987fa466dc09e496",
+      "source_blob": "2eff1198811209dfa0dcf3002f1e0574fc82ca26",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/021-adapter.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/022-bridge.md",
-      "source_blob": "0d7e8da82e28547039fc527f0c00356f32d110d8",
+      "source_blob": "4f9518296ddedd1441bc8f87ecc707806b164129",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/022-bridge.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/023-composite.md",
-      "source_blob": "8e2d54bf2e132903280a5eae6453910673d9abf5",
+      "source_blob": "17cd6e38280d5d5d25d95a631d589012f5f70d36",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/023-composite.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/024-decorator.md",
-      "source_blob": "bc2bc67b26a0127514028f9e20a79cf6356791ed",
+      "source_blob": "3c1652a074c2c5a7615cc4e00707642a87ca2b40",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/024-decorator.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/025-facade.md",
-      "source_blob": "abc8c47e791b5fdfe77d0192d451c8cc915e43f9",
+      "source_blob": "3ac44db57a28913fa56f3ec9359ec512dc01eb0f",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/025-facade.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/026-flyweight.md",
-      "source_blob": "deca339a4a51d13aa0fca0acf66850fb590396a9",
+      "source_blob": "789000576d8f424cd5d829dcb689c461bd7a7b5a",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/026-flyweight.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/027-proxy.md",
-      "source_blob": "58ef299058761400f9dcec173db6c09a65aad3c9",
+      "source_blob": "f2ff41ce7aa831e35ca7e8fce441edef7eabda4b",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/027-proxy.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/028-module-and-package-facades.md",
-      "source_blob": "87f6e227de4c00c46af71b147c78023c8fbf6d2e",
+      "source_blob": "637d8d83efc4075d79eb9b2656640bb2b47d0b69",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/028-module-and-package-facades.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/029-ports-and-adapters-as-a-structural-pattern.md",
-      "source_blob": "60d032eea4c2888d0fd6d6636ed888ac5b798496",
+      "source_blob": "bef67bd24593139bd861c058e87158c1b3804d09",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/029-ports-and-adapters-as-a-structural-pattern.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/030-combining-structural-patterns-without-indirection-explosion.md",
-      "source_blob": "47c89728547bb3ea90e74694599ba6784eaaa990",
+      "source_blob": "e59c9d8ce0dcbfff66b82b37da20d6a99eaecde3",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/030-combining-structural-patterns-without-indirection-explosion.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/031-chain-of-responsibility.md",
-      "source_blob": "9dc82cd2bc528f956391ff164f5e445963a2d4af",
+      "source_blob": "d2e030a12c3fcd1525d5bd8b37e3e06bf47aa8a9",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/031-chain-of-responsibility.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/032-command.md",
-      "source_blob": "0c188ffa2a8a14b006d45eb91441e1a25ef8c0ca",
+      "source_blob": "feb039802835ac0f535dc79a85ec904dc3af4c37",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/032-command.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/033-interpreter-as-an-object-pattern.md",
-      "source_blob": "a18647a56b568ab6d8affdc4f8f9992631547ff6",
+      "source_blob": "789ab21e3380b882846969f9e24061a604cd1e02",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/033-interpreter-as-an-object-pattern.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/034-iterator.md",
-      "source_blob": "48259e355fcd5f0f96b8e36a6d50d720f3456b3b",
+      "source_blob": "90f344e4e0133ea24983a225fc30743d3aebf7f5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/034-iterator.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/035-mediator.md",
-      "source_blob": "d008e527e4c4bf0a5d7c025a272461468f5935e9",
+      "source_blob": "5669f75066e8c93c0b9edc5fd178555dcbd844ec",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/035-mediator.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/036-memento.md",
-      "source_blob": "e1858b40ed4e0dbeda9952de797fc268a3d2a3e2",
+      "source_blob": "858f715785643abc848ecb803d9f9cd68f24d6be",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/036-memento.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/037-observer.md",
-      "source_blob": "04dbf5098ee72cdecf8d6ac2fcd1aeed8284a008",
+      "source_blob": "891ede008767d6b58d94b9e449df9dd70b21f669",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/037-observer.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/038-state.md",
-      "source_blob": "3ccc6e3da4db2c29d31b487f77514b27483c16f2",
+      "source_blob": "49e7a874a791835b472cb1954ab6c539fe3a0c9f",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/038-state.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/039-strategy.md",
-      "source_blob": "b2388386c00ab649d4c75a2ed2d41f789bbc648a",
+      "source_blob": "809df7250f3a1a918426d1f8f11ccb7bf1c2fd2e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/039-strategy.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/040-template-method.md",
-      "source_blob": "51cbb0ec0ab3bb7c20c81dbb4c94c53a44946b07",
+      "source_blob": "af416cc3ff94c844ec31c13f52a6188b47fc5dfe",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/040-template-method.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/041-visitor.md",
-      "source_blob": "0fe88230e72ec53fc343c80fd55810c49804d303",
+      "source_blob": "0a871f5db407606fa482f0c2352b321aa239f29e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/041-visitor.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/042-null-object.md",
-      "source_blob": "79b99b9e18ad0160a309ab1f6edb290ac2d289db",
+      "source_blob": "dbc3b1ebf90abdeab6392fe1a3b05d6df7e61903",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/042-null-object.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/043-specification.md",
-      "source_blob": "f9d083b2e331dff449d2e6367696c1c5528e5eee",
+      "source_blob": "3ce74fdaac2d29030765c23ef7e2dc22a2f83e07",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/043-specification.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/044-method-object.md",
-      "source_blob": "b07dc98ed5d81d8047fb3006e3f27ea8e66289d5",
+      "source_blob": "3fa6b2c09832f0967e9f5a500e1f80150e1ea356",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/044-method-object.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/045-role-object.md",
-      "source_blob": "154478a15b795fc91d5f871cd6ecc713f65d879c",
+      "source_blob": "b030774187d29073351f06ebb012f5be0d902c1a",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/045-role-object.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/046-double-dispatch.md",
-      "source_blob": "2185906051118a68a60e66343024f7339a07960c",
+      "source_blob": "72a40da5bd4fafe9984685ad05d3cf5825b4c8c8",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/046-double-dispatch.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/047-event-listener-and-callback.md",
-      "source_blob": "c52d1cd947fa636dba68f2d7a8ad42b301326000",
+      "source_blob": "9ce264aef8ecf2318f007c95a264b47256ef96c6",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/047-event-listener-and-callback.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/048-policy-object.md",
-      "source_blob": "b2edd9f46722b148048aa1ca840b6cbefa2a0126",
+      "source_blob": "fd2e7825497a58dfb92e7afcdfa6d6a6a2348443",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/048-policy-object.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/049-object-mother-and-test-data-builder.md",
-      "source_blob": "182bb2719b68ea3c6428185bcd1581097233749f",
+      "source_blob": "c1fcece71498f6c04d65e599b8a8c30dbdb3a0c5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/049-object-mother-and-test-data-builder.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/050-diagnosing-behavioral-pattern-misuse.md",
-      "source_blob": "3e6b8910d6a89addf7102221454d7d3743a678db",
+      "source_blob": "73224f1b12bf86f45c29c46fb9572ee9e96aab7d",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/050-diagnosing-behavioral-pattern-misuse.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/051-transaction-script.md",
-      "source_blob": "3faf745d547928499384ed94d941090a331db235",
+      "source_blob": "bb80933ad5b4f9120a8ed91f9b8cd63c7c7097ae",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/051-transaction-script.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/052-domain-model.md",
-      "source_blob": "3348d2ceb2867fb9d4e87efe25746956eefc2188",
+      "source_blob": "8c2e407351e2d7b1feddbd661a29712e9c02f75c",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/052-domain-model.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/053-table-module.md",
-      "source_blob": "e95eec01fa8fbe63c3c721f712b7ce3cb29c1bfc",
+      "source_blob": "201954b2ec334ff06046ba18f8f685151f8ff7f2",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/053-table-module.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/054-service-layer.md",
-      "source_blob": "c0aab5fce0cc709ad321f84e2d805a660551337a",
+      "source_blob": "f826983f894755b12af603821ee712199cd390ee",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/054-service-layer.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/055-unit-of-work.md",
-      "source_blob": "bae2aaaa5b4c2a4cce43c8447daf873b9151599e",
+      "source_blob": "e728ce9c50d49f4f19679e5a1804240353c94745",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/055-unit-of-work.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/056-identity-map.md",
-      "source_blob": "8c66867e40e77372c8b52448089d42bc69b09ef6",
+      "source_blob": "c39df9a5cab5e4c4c1baf4ab0dbeee5452cae96d",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/056-identity-map.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/057-data-mapper.md",
-      "source_blob": "cc6e94f873a2f94dbe70e31a024a995df9ab08a4",
+      "source_blob": "3f05d7cea7ff97a307594006422074d242d4a4d2",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/057-data-mapper.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/058-active-record.md",
-      "source_blob": "2f750d4804402f95851769dc737da7dc7dc81ebf",
+      "source_blob": "5c48b68492fe7b0c2977f381753ec9e6ed6925a9",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/058-active-record.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/059-lazy-load.md",
-      "source_blob": "7e1bd4508d0ee2241977b51c8944672088e4baa1",
+      "source_blob": "9fec9f0497f53a0e83fb1c288ac37d4de424afa6",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/059-lazy-load.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/060-choosing-an-enterprise-domain-and-persistence-pattern.md",
-      "source_blob": "e594450b838a0951bf5eb769c261ae358d0bf5fd",
+      "source_blob": "d4ebcd1af64fc95a55219b1a5d5a414695e298a8",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/060-choosing-an-enterprise-domain-and-persistence-pattern.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/061-message-channel.md",
-      "source_blob": "08af11b7af2e1120ea29a3f84f32183e0e507a6e",
+      "source_blob": "9ecaf342951c3155cf5247066b530f2ed5c173a5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/061-message-channel.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/062-message-router.md",
-      "source_blob": "1c8065c17e979b511b1b854a5a8a91183e42c383",
+      "source_blob": "1460a84be992d5ef217b6bc6b4b8ba1a5c27ce77",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/062-message-router.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/063-message-translator.md",
-      "source_blob": "081a1e7f0a5e5f9c9eeb608d0686246af9109af5",
+      "source_blob": "c025038323bef2d4f63683a80d298dd1bdf3cddb",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/063-message-translator.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/064-canonical-data-model.md",
-      "source_blob": "f4ee3b2e39b8efe27560400616a5470b225ffad9",
+      "source_blob": "58b361abd0a6f211a6b1149782dc1292221c2032",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/064-canonical-data-model.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/065-content-based-router.md",
-      "source_blob": "9ac046188808f5d05ccd7385d47c185371419f5a",
+      "source_blob": "3af005a728a957146e78977749f3f7210fe1c301",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/065-content-based-router.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/066-publish-subscribe-channel.md",
-      "source_blob": "d9a40498ad3a7ab3deb52f23f8e2a392d940032d",
+      "source_blob": "023aa19f50d5912692c0264f843b2824fb146083",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/066-publish-subscribe-channel.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/067-competing-consumers.md",
-      "source_blob": "9348d31a81edbb6f5587f3f2eaea5d96a3fbd150",
+      "source_blob": "2190083829d0f5338745b46a3b86049eba8d11e9",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/067-competing-consumers.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/068-claim-check.md",
-      "source_blob": "3482779fec7cbaea98d00ef9baf4f665167897b5",
+      "source_blob": "1002e2aed1b328d93fe85db2172df80b18c7d4a2",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/068-claim-check.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/069-dead-letter-channel.md",
-      "source_blob": "125acb24049e132cc2f05e1bc386f2c2a31d398b",
+      "source_blob": "14fe19918feabe50b093f6d5c9ff7761a8a64bc3",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/069-dead-letter-channel.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/070-designing-an-integration-flow-from-message-semantics.md",
-      "source_blob": "60de241c9ecb52be68bde39f50190bd23bb4b9f4",
+      "source_blob": "8b959eb115e989d480dc946a4ac0634453303b0f",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/070-designing-an-integration-flow-from-message-semantics.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/071-reactor.md",
-      "source_blob": "6338d7c7f5f1938e7a35d6e76a25c96c0c267ffc",
+      "source_blob": "b942a052d0ccc39d5437620b88fc9a5fd9db12b1",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/071-reactor.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/072-proactor.md",
-      "source_blob": "b0ca57831a8bbd0052d837d18d265c41a1822323",
+      "source_blob": "c186cd72c55344487cb2f68b7d71afbe8b0deafb",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/072-proactor.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/073-half-sync-half-async.md",
-      "source_blob": "4c1abf08d388740acbb9039630e2043cfc5d001b",
+      "source_blob": "1f6c5b451a31873ada6919d8e78a7487d88ebc47",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/073-half-sync-half-async.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/074-leader-followers.md",
-      "source_blob": "4378e0ec474cd99ef76c1c008f3e421e0a98aa74",
+      "source_blob": "61ea48e012f67cc6a223a09b26240b862d8fc8bf",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/074-leader-followers.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/075-thread-pool.md",
-      "source_blob": "8a8325c452efdfa916b1eb497b8c4ec64ce78341",
+      "source_blob": "86e32bc44a720d18242068b09dbb87902247e8f0",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/075-thread-pool.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/076-active-object.md",
-      "source_blob": "e4e141ffaaf7486f436b8991ee4b081fa4888537",
+      "source_blob": "d14b2c7ab50225eed99cf5e7383e31c8a5236f43",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/076-active-object.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/077-monitor-object.md",
-      "source_blob": "f58b127a746df7dd058fac4926ba3d8396cc0c0d",
+      "source_blob": "a4a29cd5816ffbb1bd2f23efbc7f9813579bc580",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/077-monitor-object.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/078-future-and-promise.md",
-      "source_blob": "43dd6c5c744361f2b1a4b6db8ce74f22d5703345",
+      "source_blob": "7b819212566e16dd55de1e0d8cec8830da845554",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/078-future-and-promise.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/079-producer-consumer-with-bounded-buffers.md",
-      "source_blob": "f8dd759b985f608dec0a7c8825a1ded5710d4b08",
+      "source_blob": "666fb10eaf93905dda84c49397aa482bd25b73d1",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/079-producer-consumer-with-bounded-buffers.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/080-selecting-a-concurrency-pattern-from-blocking-and-ownership-constraints.md",
-      "source_blob": "e60f0d39c7a9ca0436a21a175ca69c86a54d8906",
+      "source_blob": "8ff22d57eba3b971d4223f216e7c05ab5039709e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/080-selecting-a-concurrency-pattern-from-blocking-and-ownership-constraints.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/081-retry-with-bounded-backoff.md",
-      "source_blob": "19bb038022173a3997997aab0f82658c6fca0efe",
+      "source_blob": "efb136da5524d2ba684f3cbd9de550e9a38b9847",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/081-retry-with-bounded-backoff.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/082-timeout-and-deadline.md",
-      "source_blob": "962d0a1862c72710832c6c4ef0d8c8df1f62b378",
+      "source_blob": "8c0e832b06febaa049edef7c1d2984377bb5e2a2",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/082-timeout-and-deadline.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/083-circuit-breaker.md",
-      "source_blob": "a39bb5f6b916fb7c1d3c4f851e466303edde87e1",
+      "source_blob": "67e3949a8c44ea0d0fe42f105b95e6f5e45bb1ce",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/083-circuit-breaker.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/084-bulkhead.md",
-      "source_blob": "34af96fd616e6409be39f7796b74d6ee3cf83e15",
+      "source_blob": "7d8493b05b819c1ad035a7ce7b95b1e33dbc6c1e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/084-bulkhead.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/085-rate-limiter.md",
-      "source_blob": "15fabf7754dc07344fd3fa4a7c4c7728d7670f08",
+      "source_blob": "293015db6b0d810d616a623422a23a399fc5bb35",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/085-rate-limiter.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/086-load-shedding-pattern.md",
-      "source_blob": "1942a3315e76644f47e24ad1f7420f378eea3ae6",
+      "source_blob": "f59f030ad85bb855378b68b13df244cc985eddd3",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/086-load-shedding-pattern.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/087-saga.md",
-      "source_blob": "8c697b4f46971c11c1f7bcdb2ce8425b26ee3bf9",
+      "source_blob": "c7bf122d20d14e29bf66f600e51d37e769010215",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/087-saga.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/088-transactional-outbox.md",
-      "source_blob": "be4041804616f9703f68a3f9b3de5b5f989eddc5",
+      "source_blob": "323132cba7689fe82ba8a7b1087b036030a60494",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/088-transactional-outbox.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/089-idempotent-consumer.md",
-      "source_blob": "71fd2d5f510dc9e04cf4e0f0312ccf3013d8e120",
+      "source_blob": "adf9d597802345bef494e8bade88aa6712959d89",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/089-idempotent-consumer.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/090-combining-resilience-patterns-without-failure-amplification.md",
-      "source_blob": "0324f3a7195de207d6c40d967e7e63371a7a5a25",
+      "source_blob": "96a2847b8449153cfab4ee317722d6555f520053",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/090-combining-resilience-patterns-without-failure-amplification.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/091-repository.md",
-      "source_blob": "31f04dd4fce6b69ba2fae12463cdfdf6603ba24e",
+      "source_blob": "6e66917aa54800e650173486451f213a3bce18cd",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/091-repository.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/092-data-transfer-object.md",
-      "source_blob": "486e1a044fda22899a2f1fbe757ddfbe2f2cfc1c",
+      "source_blob": "ce8d7230fed3178bfadfbb1a2e7db8b33a588fa5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/092-data-transfer-object.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/093-change-data-capture-pattern.md",
-      "source_blob": "c6c18c97da0fe62b350b64935d1f0d3b73bb633c",
+      "source_blob": "7e20df1715674093649ad63f7af26d9921427612",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/093-change-data-capture-pattern.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/094-event-sourcing.md",
-      "source_blob": "3ae5d3326cecf978e75fc8644ffdc846ab9c1657",
+      "source_blob": "7a5b64efc5736525d0ef45688e29308a3cb0f0ae",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/094-event-sourcing.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/095-command-query-responsibility-segregation.md",
-      "source_blob": "833859b680735682d8d277b6efd6c744ddfcc169",
+      "source_blob": "8b6de9ad86c2b5d7ee1e71c7739eea022e8b0fb5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/095-command-query-responsibility-segregation.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/096-materialized-view.md",
-      "source_blob": "22c4bab59b03c4677be27ed4ca8deecd4b8aabaa",
+      "source_blob": "8c8a72954b04b99700712dfe858794a299d01cb9",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/096-materialized-view.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/097-strangler-fig.md",
-      "source_blob": "20c732eeee431f4b864e3ca4cef4d87798ce7941",
+      "source_blob": "2eea63414a763b23cf332f526ff2529d95d08cde",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/097-strangler-fig.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/098-branch-by-abstraction-pattern.md",
-      "source_blob": "38c63c8068b1bd820f2ca01af67579d0da7d7fcf",
+      "source_blob": "0d75762c1cd9c77c320abd18c0e2a53042576384",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/098-branch-by-abstraction-pattern.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/099-recognizing-golden-hammer-big-ball-of-mud-and-distributed-monolith.md",
-      "source_blob": "bbf6e47b1ed9d5d450abaf4f38952b043d05e910",
+      "source_blob": "6c673e92a714b4a6657279ded73a0927cac5e0b0",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/099-recognizing-golden-hammer-big-ball-of-mud-and-distributed-monolith.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/11-software-engineering-patterns/modules/100-conducting-a-pattern-review-from-context-forces-and-evidence.md",
-      "source_blob": "9f621aa8d2ca1455e160fd152f31e5c15f494011",
+      "source_blob": "7de0fc0bf4f4031b138c4247898b57fee3aa6138",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/11-software-engineering-patterns/modules/100-conducting-a-pattern-review-from-context-forces-and-evidence.md",
       "disposition": "imported-unchanged"
@@ -1808,14 +1815,14 @@
     },
     {
       "source_path": "programs/12-software-engineering-software-architecture/modules/001-architecture-as-significant-design-decisions.md",
-      "source_blob": "92a45630cf13644e31908d64f267d0b865fc0c67",
+      "source_blob": "7b3f0bfa989de8ab5cb12b75f25714b8511e2dc8",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/12-software-engineering-software-architecture/modules/001-architecture-as-significant-design-decisions.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/12-software-engineering-software-architecture/modules/002-stakeholders-and-architectural-concerns.md",
-      "source_blob": "b021d59803305b084725aaeca2f29ee1defe6de0",
+      "source_blob": "b55c5034cb5d016be1cdd948b0dc4c367b053514",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/12-software-engineering-software-architecture/modules/002-stakeholders-and-architectural-concerns.md",
       "disposition": "imported-unchanged"
@@ -1829,14 +1836,14 @@
     },
     {
       "source_path": "programs/13-software-engineering-testing-and-quality-engineering/modules/001-why-software-testing-cannot-prove-absence-of-defects.md",
-      "source_blob": "9ed34c9c5d9bb46acf81677dcb705ba535db5572",
+      "source_blob": "7617597de171ae5ffc3f40ce7a85da6498a44165",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/13-software-engineering-testing-and-quality-engineering/modules/001-why-software-testing-cannot-prove-absence-of-defects.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/13-software-engineering-testing-and-quality-engineering/modules/002-specifications-expectations-and-test-oracles.md",
-      "source_blob": "cf83c294194231a1d01fc5b8ddd2e6f44e31c9ea",
+      "source_blob": "236cb1e04318bb1e1b654535a82f8ae3c95d13e1",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/13-software-engineering-testing-and-quality-engineering/modules/002-specifications-expectations-and-test-oracles.md",
       "disposition": "imported-unchanged"
@@ -1850,14 +1857,14 @@
     },
     {
       "source_path": "programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/001-from-source-change-to-deployable-artifact.md",
-      "source_blob": "f1d9d2039a2892e2774d2f2ff8226aae26a200b0",
+      "source_blob": "bb072729a4594980d202416950c73b5471952da5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/001-from-source-change-to-deployable-artifact.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/002-dependency-resolution-and-locking.md",
-      "source_blob": "ccbae5ecbfa4f77f54bed5241a75423ba50f82d2",
+      "source_blob": "067b7d2f8da6acc21fa0e9810d007ab1ce69300a",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/14-software-engineering-software-delivery-and-reliability-engineering/modules/002-dependency-resolution-and-locking.md",
       "disposition": "imported-unchanged"
@@ -1871,14 +1878,14 @@
     },
     {
       "source_path": "programs/15-theory-of-computation-and-complexity/modules/001-alphabets-strings-languages-and-decision-problems.md",
-      "source_blob": "6a5f9614c3ee8ec128da997f6af54197f5e2c7b8",
+      "source_blob": "3093b5234ee3674fca0c2e50fcdddbe0ce7b5128",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/15-theory-of-computation-and-complexity/modules/001-alphabets-strings-languages-and-decision-problems.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/15-theory-of-computation-and-complexity/modules/002-machines-recognizers-deciders-and-transducers.md",
-      "source_blob": "d18e89fe823d44883e3ba0d020f838269d7e0d61",
+      "source_blob": "16d8763afa5b8011f3f0eacadf61992073389989",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/15-theory-of-computation-and-complexity/modules/002-machines-recognizers-deciders-and-transducers.md",
       "disposition": "imported-unchanged"
@@ -1899,7 +1906,7 @@
     },
     {
       "source_path": "programs/16-algorithm-engineering/modules/002-preconditions-postconditions-and-correctness.md",
-      "source_blob": "e162871c081db8ba6610be538d666cdd3904d83f",
+      "source_blob": "e5b487b320733c8d14a5e078e11cc83958d4fb0b",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/16-algorithm-engineering/modules/002-preconditions-postconditions-and-correctness.md",
       "disposition": "imported-unchanged"
@@ -1927,77 +1934,77 @@
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/003-operation-contracts.md",
-      "source_blob": "16176c024bcd514b66692502c9ed5c7849adc98c",
+      "source_blob": "97af487f53faff80ab629c4a207a84a7c923ad53",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/003-operation-contracts.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/004-time-space-and-allocation-cost.md",
-      "source_blob": "de8893cf18c75d766d85e17ba13700a2d363c8f5",
+      "source_blob": "d31e3056002c98a9dd6c48bf6830120cb8d82ded",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/004-time-space-and-allocation-cost.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/005-contiguous-and-linked-layouts.md",
-      "source_blob": "19fcc109cb41e7198acd7596269040b80aaa1872",
+      "source_blob": "153fe863f9d87b54f160f00cea6fbddc9d80a33b",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/005-contiguous-and-linked-layouts.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/006-memory-locality-and-cache-behavior.md",
-      "source_blob": "33310ea86acdeb0c866440d71851ec95bdd2bea2",
+      "source_blob": "8c851b97800e30756608172b06e0bde14d8adc12",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/006-memory-locality-and-cache-behavior.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/007-genericity-and-type-constraints.md",
-      "source_blob": "27f497e7e425bcbd11628b615350511284a5ef57",
+      "source_blob": "364cb5b60ba2ce4249bb2045a2bb72face77d514",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/007-genericity-and-type-constraints.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/008-iterators-and-traversal-protocols.md",
-      "source_blob": "7ba8b422a555ca22c96f19ed92d28d8f135aa48d",
+      "source_blob": "e21b86d92bd77dd936d593f55ad6c5a383907f25",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/008-iterators-and-traversal-protocols.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/009-property-based-testing-of-data-structures.md",
-      "source_blob": "07ea0afbc39b8a4e111f5279a68e810493519cf3",
+      "source_blob": "ebfc247f382230b310ddfef01d4c9530506e9a1d",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/009-property-based-testing-of-data-structures.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/010-benchmarking-a-structure-without-misleading-results.md",
-      "source_blob": "aeb7aff8914b0ebfa9b40cd9413ea4e0ecd28067",
+      "source_blob": "a4c803068a827c5243ff2dee240b112f641b3c4d",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/010-benchmarking-a-structure-without-misleading-results.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/011-fixed-arrays.md",
-      "source_blob": "d713cb03515b327b61d56241cbd03e759a3bd561",
+      "source_blob": "2750bc34403b6f9582ac14896a9e1c16ff3e71ca",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/011-fixed-arrays.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/012-dynamic-arrays-and-geometric-growth.md",
-      "source_blob": "117a65559ac9857ddc0ea996638afb0f101d5800",
+      "source_blob": "dcbb983f249a8e3bff1846abf53579438a7e0ce2",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/012-dynamic-arrays-and-geometric-growth.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/013-gap-buffers.md",
-      "source_blob": "11508619af1c052469c15e9730e3d3fba8b04d84",
+      "source_blob": "a10a99003760ceae0157ceac278f41a6956ef526",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/013-gap-buffers.md",
       "disposition": "imported-unchanged"
@@ -2011,77 +2018,77 @@
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/015-doubly-and-intrusive-linked-lists.md",
-      "source_blob": "78333e98480641de4f9db9343bd6f3b46c6b63ff",
+      "source_blob": "99ee3e234e5b09b74919221320e017ac5af1939e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/015-doubly-and-intrusive-linked-lists.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/016-stacks.md",
-      "source_blob": "7253ac19fcf639221b2339a9c50c4de434ac5e17",
+      "source_blob": "7f6670642716952fad8c601a7eaaa6af9917a976",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/016-stacks.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/017-queues.md",
-      "source_blob": "c313ca859778386ff18761c640f8e9fead332174",
+      "source_blob": "7f7e05eca4b954e233ddcbb42c0b8bffe7b396d8",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/017-queues.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/018-deques.md",
-      "source_blob": "8b7e5770c09c9a8b2c900e9d440ecf4b43f4be41",
+      "source_blob": "0feb797e78816ee4a7e6c41979a682a043f61b01",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/018-deques.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/019-ring-buffers.md",
-      "source_blob": "e7bfade694b4f01b0b5b04d1deda8d90e7250cf2",
+      "source_blob": "914cec2faf5f1d7d1d09d0965169f3cce41642c4",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/019-ring-buffers.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/020-ropes-and-piece-tables.md",
-      "source_blob": "849669ecc4cb48b9bc203e3e6e4c94648a4f22f7",
+      "source_blob": "f04be9bcd4de30877f5b541c6f0b3e4e165a143b",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/020-ropes-and-piece-tables.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/021-hash-functions-and-distribution.md",
-      "source_blob": "a376e73deb5c009790f51c9028cc96e13abe3db7",
+      "source_blob": "538aa07c5857602f903c3f8c7bfb724f35dee388",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/021-hash-functions-and-distribution.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/022-separate-chaining.md",
-      "source_blob": "09a7cb9e6800d667127428e20d3aecaaaaea1249",
+      "source_blob": "6aca3f901555c460b72ddd77d08ae71e34ca0345",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/022-separate-chaining.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/023-linear-probing.md",
-      "source_blob": "5ccf56be1bfcbcfb7ee6f2aff2d950e969be02a0",
+      "source_blob": "38507213501cc7cd91da33b7b76454890d12152d",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/023-linear-probing.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/024-quadratic-probing-and-double-hashing.md",
-      "source_blob": "454ce646e63b8e7c875fb399a704a8200bc36b35",
+      "source_blob": "b5aebc74bea8ee7dca06653bbb1179c5782bd6fb",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/024-quadratic-probing-and-double-hashing.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/025-robin-hood-hashing.md",
-      "source_blob": "1b65be588aba79233049e1a46d31e7c1d7e9a2a2",
+      "source_blob": "ed3873cbefc3a1f802a7361a1e7b5ee152a5bceb",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/025-robin-hood-hashing.md",
       "disposition": "imported-unchanged"
@@ -2095,7 +2102,7 @@
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/027-hopscotch-hashing.md",
-      "source_blob": "e3c1d4bbfbb69be2231881c5e30bb375f815792d",
+      "source_blob": "eb5922ef0c650340ebf5077a772abf9bdaf20fc1",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/027-hopscotch-hashing.md",
       "disposition": "imported-unchanged"
@@ -2473,7 +2480,7 @@
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/081-bloom-filters.md",
-      "source_blob": "cb6df3e452a50862541c1271524787dadf24f687",
+      "source_blob": "36e3468b0bdc9eafb832a58cec04b1fd7f467bf5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/081-bloom-filters.md",
       "disposition": "imported-unchanged"
@@ -2494,84 +2501,84 @@
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/084-count-min-sketch.md",
-      "source_blob": "62becc4cb7c931cf1bd5e3057bedd5796bff6d43",
+      "source_blob": "8a6ac811d79a1905f02f22404bd6b604df7ad7c7",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/084-count-min-sketch.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/085-hyperloglog.md",
-      "source_blob": "8f892b0b67184457b91ea2377de49aaaa00515ba",
+      "source_blob": "bb10da9ab1c0f8b0b216f8d07ed298a8dd43f393",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/085-hyperloglog.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/086-quantile-sketches.md",
-      "source_blob": "b5efc3868c7f6d5f99ed8317822b1c92c9feff16",
+      "source_blob": "ac64ab4b1506f81bdc53c9eb92cb6a7cf1d2440b",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/086-quantile-sketches.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/087-k-d-trees.md",
-      "source_blob": "03fcad6e815f64c1326ed8a1a6ec9065b3b30bce",
+      "source_blob": "db7edc524b5c426e5588701ea4a729f2197c0f95",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/087-k-d-trees.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/088-r-trees.md",
-      "source_blob": "927bbc913d51783286da7f1d80a0c56e6b848cdd",
+      "source_blob": "e325d8fdf9bd9ea85f4417b56627caa27d649287",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/088-r-trees.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/089-locality-sensitive-hashing.md",
-      "source_blob": "9cf85166e5c97643c9e473ae8cad31b5d2c21041",
+      "source_blob": "76cb97c6fda4ea9a1664b55ff37e4f4a43c16ac5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/089-locality-sensitive-hashing.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/090-hnsw-and-approximate-nearest-neighbor-graphs.md",
-      "source_blob": "e86ae482d42b112dbc8210a6678cce142522d139",
+      "source_blob": "75c1517742bcc2ddc38f16d501019460aee424d5",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/090-hnsw-and-approximate-nearest-neighbor-graphs.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/091-bit-vectors-with-rank-and-select.md",
-      "source_blob": "0a42d524b5c8575a8063496b79ce3827d1b3180b",
+      "source_blob": "6d01a3f2d09ec7fe42d01508cb6e661a23b96ed7",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/091-bit-vectors-with-rank-and-select.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/092-wavelet-trees.md",
-      "source_blob": "8ea15cf13595f38a7b84b05a5c07408f4f59006a",
+      "source_blob": "b8b5a7d33969f78c2f72965028d484d2ed67d236",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/092-wavelet-trees.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/093-succinct-trees-and-graphs.md",
-      "source_blob": "8e4c8f9b313445dd9cc915f7fdad4a1bafd99abb",
+      "source_blob": "8026d82733bcec89b155ac4ece5eb14a7bd403e6",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/093-succinct-trees-and-graphs.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/094-compressed-suffix-arrays.md",
-      "source_blob": "efa4fafc3baf17308c401996d82e8c225f00c85a",
+      "source_blob": "f4370efb0ffb9eaa75fd526346d6aea7cda5758f",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/094-compressed-suffix-arrays.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/095-dynamic-fenwick-and-segment-structures.md",
-      "source_blob": "90e7e556c4e3f185fe9bbca85bd57d8395530caa",
+      "source_blob": "62846f873e8fef4e40915fa5f470af07c3e45f6b",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/095-dynamic-fenwick-and-segment-structures.md",
       "disposition": "imported-unchanged"
@@ -2592,14 +2599,14 @@
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/098-distributed-hash-table-data-structures.md",
-      "source_blob": "a53a9dd37614b7019880ae9e23fe755f97641162",
+      "source_blob": "6a82c8778a335747420ddf35cf692001fc19d74d",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/098-distributed-hash-table-data-structures.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/17-data-structures-engineering/modules/099-conflict-free-replicated-data-types-as-structures.md",
-      "source_blob": "6064f8816325ae65c7ce753fdb2047c2621ef3d1",
+      "source_blob": "3d9473ca8e1babd6a9fdf0543553aef234515369",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/17-data-structures-engineering/modules/099-conflict-free-replicated-data-types-as-structures.md",
       "disposition": "imported-unchanged"
@@ -2696,6 +2703,447 @@
       "disposition": "imported-unchanged"
     },
     {
+      "source_path": "programs/18-database-engineering/modules/012-joins-and-join-semantics.md",
+      "source_blob": "15560ca8e0e1c7c677e3dd5f9184555915386f68",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/012-joins-and-join-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/013-aggregation-and-grouping.md",
+      "source_blob": "0b6e8902ddd076b7b2221ae6ee1902198aac9fa4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/013-aggregation-and-grouping.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/014-subqueries-and-common-table-expressions.md",
+      "source_blob": "ddb75885e755e87df39cb8316a7eab56bab6eab6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/014-subqueries-and-common-table-expressions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/015-window-functions.md",
+      "source_blob": "427fd8f8e3cf356c4926f2c04656b37b5253c901",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/015-window-functions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/016-set-operations.md",
+      "source_blob": "a453bfe23b34490afd1e64bf0db4c83b3ba52d72",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/016-set-operations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/017-recursive-queries.md",
+      "source_blob": "d91c3dab0b85572345a5770cc135f9e431847797",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/017-recursive-queries.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/018-null-and-three-valued-logic.md",
+      "source_blob": "ba75533937e18696da60e613e92080c0a25d78c6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/018-null-and-three-valued-logic.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/019-data-modification-and-upsert.md",
+      "source_blob": "4a28a6d800266f51464e643d308104ddb4e15e4c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/019-data-modification-and-upsert.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/020-writing-correct-sql-under-duplicate-and-null-semantics.md",
+      "source_blob": "8195fef1b62351be099d31adbe25ec5b33a2b71f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/020-writing-correct-sql-under-duplicate-and-null-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/021-pages-blocks-and-database-files.md",
+      "source_blob": "80ce4aca5ce114bd0399ff4c698718559525584d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/021-pages-blocks-and-database-files.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/022-record-and-tuple-layout.md",
+      "source_blob": "083278197fa5c06521795b6dca89cc86b5ffcba4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/022-record-and-tuple-layout.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/023-slotted-pages.md",
+      "source_blob": "9937e996b3c455647c44726045bbe50aa93aca1e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/023-slotted-pages.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/024-heap-files.md",
+      "source_blob": "8cfb355b81b9739709c37963fbfea053cedd9a13",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/024-heap-files.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/025-database-page-free-space-management.md",
+      "source_blob": "3273cc01eb9ccfea22fb079501ed99889f10ad59",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/025-database-page-free-space-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/026-buffer-pools.md",
+      "source_blob": "6db133340c1997a339ea5915341c634e4b33330e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/026-buffer-pools.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/027-buffer-pool-page-replacement.md",
+      "source_blob": "e1c209e258db226f3c334dea55d6ef8dcdec7b1a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/027-buffer-pool-page-replacement.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/028-dirty-pages-and-writeback.md",
+      "source_blob": "f69bbd8edd700ae08775888ba61ef5ebf17d9a62",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/028-dirty-pages-and-writeback.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/029-checksums-and-page-corruption.md",
+      "source_blob": "0c3f852084dd28f40d385c4bb03f770df428ee64",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/029-checksums-and-page-corruption.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/030-tracing-a-record-from-logical-row-to-persistent-bytes.md",
+      "source_blob": "a0a60a56d736c6190d568f26a76464e43a04be45",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/030-tracing-a-record-from-logical-row-to-persistent-bytes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/031-b-tree-structure.md",
+      "source_blob": "b25ac68d7e22c06e125e91d4576c2e9ffbc33e62",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/031-b-tree-structure.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/032-b-tree-search-and-range-scan.md",
+      "source_blob": "59e7efa4c14937e4aa282049ca7a139285ac6f80",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/032-b-tree-search-and-range-scan.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/033-b-tree-insertion-splitting-and-deletion.md",
+      "source_blob": "3b132b39408541427bc0762f87561e0bc8684c7f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/033-b-tree-insertion-splitting-and-deletion.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/034-hash-indexes.md",
+      "source_blob": "3f64919987eb688b6a0573c39b47e80b59612537",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/034-hash-indexes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/035-composite-and-covering-indexes.md",
+      "source_blob": "bfb2c373692fae9fbc3f926a0d8301f9c16131e0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/035-composite-and-covering-indexes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/036-partial-and-expression-indexes.md",
+      "source_blob": "0154c55bce5b6afe7c1b5e1ae6663121cc84f6b4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/036-partial-and-expression-indexes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/037-bitmap-and-brin-style-indexes.md",
+      "source_blob": "1f1b1939bb96943278aca099873ddf2659ef6e93",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/037-bitmap-and-brin-style-indexes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/038-full-text-and-inverted-indexes.md",
+      "source_blob": "63f0cb806ba9742fb0a0b2425e37473355497291",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/038-full-text-and-inverted-indexes.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/039-index-maintenance-and-write-amplification.md",
+      "source_blob": "b16959a5183c24638e665bfdf833336b98176b23",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/039-index-maintenance-and-write-amplification.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/040-choosing-indexes-from-workload-evidence.md",
+      "source_blob": "2954ce680f28373d72eec9b5ff01f0a1408596e8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/040-choosing-indexes-from-workload-evidence.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/041-acid-and-transaction-boundaries.md",
+      "source_blob": "2660ba0d13bcc7bb991b9c9f5d171a77dec28de0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/041-acid-and-transaction-boundaries.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/042-read-and-write-anomalies.md",
+      "source_blob": "4bff2c4635a8bd0b5057766d075fcc1e6e45dd2c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/042-read-and-write-anomalies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/043-lock-modes-and-granularity.md",
+      "source_blob": "8f2c5bc4ff0ee52917f6725f0fbe0faab45228a5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/043-lock-modes-and-granularity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/044-two-phase-locking.md",
+      "source_blob": "7625de9db7e0b99bc0dd5a09281b8a719442422e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/044-two-phase-locking.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/045-deadlock-detection-and-resolution.md",
+      "source_blob": "a3ef9ca7b3fccac3ef2bb61b6fb446fae8a627e0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/045-deadlock-detection-and-resolution.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/046-multi-version-concurrency-control.md",
+      "source_blob": "4e33a55d7ace85daf9983f8886118747e44410ba",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/046-multi-version-concurrency-control.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/047-snapshot-visibility.md",
+      "source_blob": "2601d6505c7df2378804ffd34ebaaa935dacf404",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/047-snapshot-visibility.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/048-isolation-levels.md",
+      "source_blob": "84d30ba3371c6a3e6a783f8e0e591695c41cf6c2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/048-isolation-levels.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/049-serializable-snapshot-isolation.md",
+      "source_blob": "6b40d375feddc189e3ff24855ab2730a71989081",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/049-serializable-snapshot-isolation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/050-reproducing-and-eliminating-transaction-anomalies.md",
+      "source_blob": "ce16d25478cd03003d4ff3804faeddc08c499f60",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/050-reproducing-and-eliminating-transaction-anomalies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/051-logical-and-physical-plans.md",
+      "source_blob": "ae4d57d5116f9aec95eb23eba69207856c6ff69f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/051-logical-and-physical-plans.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/052-sequential-and-index-scans.md",
+      "source_blob": "d6031adf5e40d36db1efa5f9fb259432a212adea",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/052-sequential-and-index-scans.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/053-nested-loop-joins.md",
+      "source_blob": "6d55ca7361b01fcc770ab4159ad3a1ea54501f18",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/053-nested-loop-joins.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/054-hash-joins.md",
+      "source_blob": "26e9a2c24a2acc59c760a90d6878a38c13e461ff",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/054-hash-joins.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/055-single-node-sort-merge-joins.md",
+      "source_blob": "3441a40a2c60c9508bee5cbaafaa42914c18e729",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/055-single-node-sort-merge-joins.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/056-hash-and-sort-aggregation.md",
+      "source_blob": "8b42c258002e58c95221c48d5796c6359ae8359a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/056-hash-and-sort-aggregation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/057-external-sorting-and-spilling.md",
+      "source_blob": "23e0697ccdcc9535f2b6ebb9431fa769dda78b94",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/057-external-sorting-and-spilling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/058-iterator-and-volcano-execution.md",
+      "source_blob": "818569d43d2f5c549bcfe608477d3d55c98c5c0c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/058-iterator-and-volcano-execution.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/059-vectorized-and-pipeline-execution.md",
+      "source_blob": "7900386f7c7822c21320bf69d4011e66f72626e6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/059-vectorized-and-pipeline-execution.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/060-profiling-a-query-operator-pipeline.md",
+      "source_blob": "e8a9c6fcf01a2054ebbf39dfc482db971faa6a81",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/060-profiling-a-query-operator-pipeline.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/061-relational-rewrite-rules.md",
+      "source_blob": "417ffbed03d8765b8211f0cf3ab085ef6964fc86",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/061-relational-rewrite-rules.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/062-predicate-pushdown-and-projection-pruning.md",
+      "source_blob": "b8ee8166e9d18e74ed9d1dbd8762857559ba8509",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/062-predicate-pushdown-and-projection-pruning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/063-statistics-and-histograms.md",
+      "source_blob": "8aedad23d36885df9d4bdcf360017eae0a6d31ed",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/063-statistics-and-histograms.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/064-cardinality-estimation.md",
+      "source_blob": "ae0b4e5f7bfb4acefeb022ecc7c9069a45bed714",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/064-cardinality-estimation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/065-cost-models.md",
+      "source_blob": "260f665399292c9594b38c2a2b2ffc322e133ade",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/065-cost-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/066-join-ordering.md",
+      "source_blob": "1ffb2b10b463d163919115d9021a11cbc07ca482",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/066-join-ordering.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/067-access-path-selection.md",
+      "source_blob": "9493aeb3e336d34f243b82e854056f5e7246daac",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/067-access-path-selection.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/068-plan-caching-and-parameter-sensitivity.md",
+      "source_blob": "dd70782806a5322ff2b2cb99220c3b385530e59a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/068-plan-caching-and-parameter-sensitivity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/069-adaptive-query-processing.md",
+      "source_blob": "b0c2f0c9165d51b841f1a26667888a2b89582042",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/069-adaptive-query-processing.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/070-diagnosing-an-incorrect-or-unstable-query-plan.md",
+      "source_blob": "77881f1ca8d07c335c9642a18421b25869790729",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/070-diagnosing-an-incorrect-or-unstable-query-plan.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/071-failure-models.md",
+      "source_blob": "c1fc9d708ccb97d3ebba554508903107b0b97fb0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/071-failure-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/072-write-ahead-logging.md",
+      "source_blob": "e55d718288b76f99cff165aa8a1ee064ee848f3a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/072-write-ahead-logging.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/073-log-sequence-numbers.md",
+      "source_blob": "d39ef5860f53acc30a12e97b0a2e0283b2db3de7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/073-log-sequence-numbers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/18-database-engineering/modules/074-undo-and-redo-logging.md",
+      "source_blob": "3f08ba5fec0f244290b36c47f580a8654c913c62",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/18-database-engineering/modules/074-undo-and-redo-logging.md",
+      "disposition": "imported-unchanged"
+    },
+    {
       "source_path": "programs/19-data-engineering/ROADMAP.md",
       "source_blob": "8bbee14dd17a45d01f741e9d17574f0055a1596a",
       "mode": "100644",
@@ -2788,14 +3236,14 @@
     },
     {
       "source_path": "programs/23-computer-architecture/modules/001-boolean-logic-and-combinational-circuits.md",
-      "source_blob": "b3d0a4baf6c9fb0e4fc4fd3b07c5e4438f69f9a7",
+      "source_blob": "4b461056a2bf21de27af66719eb3b63272bb181e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/23-computer-architecture/modules/001-boolean-logic-and-combinational-circuits.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/23-computer-architecture/modules/002-sequential-logic-and-state.md",
-      "source_blob": "8f1a06e1ffcba7ae341eafcb0178bba8c17bfae0",
+      "source_blob": "56eb8236a27e51c298dbfe381ed3b588ec36c537",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/23-computer-architecture/modules/002-sequential-logic-and-state.md",
       "disposition": "imported-unchanged"
@@ -2809,14 +3257,14 @@
     },
     {
       "source_path": "programs/24-network-engineering/modules/001-network-requirements-reachability-capacity-delay-and-loss.md",
-      "source_blob": "66e81ce97afdba5f3c7cf05ce892f5465b038e2f",
+      "source_blob": "369d2b0efeece6337332e3fa298bc1a142df9b1a",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/24-network-engineering/modules/001-network-requirements-reachability-capacity-delay-and-loss.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/24-network-engineering/modules/002-layering-encapsulation-and-protocol-data-units.md",
-      "source_blob": "9279627c414e3255458db278eef843eb677ea31e",
+      "source_blob": "6cc14b7e69348e3088092a6b8bc99db93ab3d0fc",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/24-network-engineering/modules/002-layering-encapsulation-and-protocol-data-units.md",
       "disposition": "imported-unchanged"
@@ -2837,7 +3285,7 @@
     },
     {
       "source_path": "programs/25-security-engineering/modules/002-confidentiality-integrity-availability-and-authenticity.md",
-      "source_blob": "78e90103bb841fe0094b51441053ad300ee12956",
+      "source_blob": "095a52ccab97140d8de6aea02f7aa999c95b9684",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/25-security-engineering/modules/002-confidentiality-integrity-availability-and-authenticity.md",
       "disposition": "imported-unchanged"
@@ -2851,16 +3299,660 @@
     },
     {
       "source_path": "programs/26-systems-engineering/modules/001-systems-boundaries-environments-and-context.md",
-      "source_blob": "a7aec398af85f13bc487015157dbf6500883418d",
+      "source_blob": "d5437ac32543313ce31e4a8e6df5903389dda2d7",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/001-systems-boundaries-environments-and-context.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/26-systems-engineering/modules/002-purpose-mission-and-measures-of-effectiveness.md",
-      "source_blob": "68c961c48a71df8e216e325317c7c62415b20905",
+      "source_blob": "c17ababa4eab4566e0254deebfd6059f8474c4e7",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/002-purpose-mission-and-measures-of-effectiveness.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/003-stakeholders-and-value.md",
+      "source_blob": "f4f15b743e8d1ae37b6758f02ea05e151ef4f507",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/003-stakeholders-and-value.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/004-elements-relationships-and-emergent-behavior.md",
+      "source_blob": "fc34e8875ac7723bec70281e067c0746e1354f76",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/004-elements-relationships-and-emergent-behavior.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/005-feedback-loops-and-dynamic-behavior.md",
+      "source_blob": "160b2b5dfe94c693c871841b8ca9c3a87970656d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/005-feedback-loops-and-dynamic-behavior.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/006-open-and-closed-systems.md",
+      "source_blob": "d94e65fef0e7f5d9e4d9e9bb9f7f8a04c1fee8c5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/006-open-and-closed-systems.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/007-complexity-complication-and-uncertainty.md",
+      "source_blob": "839d263f12f31a6e0b151767913d66853475d25d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/007-complexity-complication-and-uncertainty.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/008-assumptions-constraints-and-external-dependencies.md",
+      "source_blob": "0bac259d1a8b97fef7d56a233500fb31de75b6e5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/008-assumptions-constraints-and-external-dependencies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/009-system-context-and-operational-scenarios.md",
+      "source_blob": "fbc5f073e3dee1d18f47032afce3d1e90e8481d9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/009-system-context-and-operational-scenarios.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/010-framing-a-system-problem-without-premature-solutioning.md",
+      "source_blob": "c86d4493898e15c7aa6a68a727db95599cd31f45",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/010-framing-a-system-problem-without-premature-solutioning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/011-stakeholder-needs-and-expectations.md",
+      "source_blob": "c401e2ab56589d8956e7311082de56db6e9cf73d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/011-stakeholder-needs-and-expectations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/012-operational-concepts.md",
+      "source_blob": "f64fab2a6a01af54dfd00856a3ad7cec46eea989",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/012-operational-concepts.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/013-functional-requirements.md",
+      "source_blob": "282df10f89b4b86fe600509139062775c2e8eabd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/013-functional-requirements.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/014-performance-and-quality-requirements.md",
+      "source_blob": "e7d3540639c7b6dc5960092550ff53ccff5c418f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/014-performance-and-quality-requirements.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/015-constraints-and-regulatory-requirements.md",
+      "source_blob": "cf223a0c19cd5efcd724b88e3bc09db037068eda",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/015-constraints-and-regulatory-requirements.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/016-requirement-quality-and-testability.md",
+      "source_blob": "a610f38ba84de6d30f3d7b4824476d31c8b5c3c9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/016-requirement-quality-and-testability.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/017-requirement-decomposition.md",
+      "source_blob": "78dd0f3ad1684a4c3fae1efbcf0fa9f5dbcfb389",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/017-requirement-decomposition.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/018-allocation-to-subsystems.md",
+      "source_blob": "066cc2d7ec4cce8f5f9b84c16acd554ec7a4bfd7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/018-allocation-to-subsystems.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/019-bidirectional-traceability.md",
+      "source_blob": "9d8501f279e89188150074cf6cfddc9ecb689ebc",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/019-bidirectional-traceability.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/020-managing-requirement-change-and-conflict.md",
+      "source_blob": "a90f750246be091b16430ab21ba5e3b01c68f66c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/020-managing-requirement-change-and-conflict.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/021-functions-inputs-outputs-and-transformations.md",
+      "source_blob": "ffb9f7c46fd608e89fd46ea1977766a1aaf26511",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/021-functions-inputs-outputs-and-transformations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/022-functional-decomposition.md",
+      "source_blob": "3c94509d61ed495c27ff22484708fb07062dee78",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/022-functional-decomposition.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/023-functional-flow-block-diagrams.md",
+      "source_blob": "1e5ad65f4494966064800d70312d4c7006f18678",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/023-functional-flow-block-diagrams.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/024-state-and-mode-models.md",
+      "source_blob": "20656e6475023cccb8f59b6d4b80cfaf1f3523f4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/024-state-and-mode-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/025-behavioral-scenarios.md",
+      "source_blob": "69b7f01836fb9dd949c2db166be39e37afcebe5d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/025-behavioral-scenarios.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/026-logical-components.md",
+      "source_blob": "6e4e384f613fb8bd1fd3e5cda48f014c37fc1743",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/026-logical-components.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/027-allocation-of-function-to-logical-elements.md",
+      "source_blob": "adfdda081cc86e988e1b7c1d137acfd8ab56b473",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/027-allocation-of-function-to-logical-elements.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/028-control-and-data-flows.md",
+      "source_blob": "4f66df229aab613a68d8891dba94f32bd0a07cd5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/028-control-and-data-flows.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/029-architecture-alternatives.md",
+      "source_blob": "b1426cca7fdc66919613b25f56a50c314c527ec6",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/029-architecture-alternatives.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/030-checking-completeness-and-consistency-of-a-logical-architecture.md",
+      "source_blob": "e9c290274f5bcfb8e8a1d779ad9a481118d55dac",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/030-checking-completeness-and-consistency-of-a-logical-architecture.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/031-interface-identification.md",
+      "source_blob": "9c444e1ad8830a5b5d907347b3013ede80106672",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/031-interface-identification.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/032-interface-control-documents.md",
+      "source_blob": "64b4d10d35bff0ba2f63dfbb392314695b90f7a3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/032-interface-control-documents.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/033-data-control-mechanical-electrical-and-human-interfaces.md",
+      "source_blob": "8cccfe0f683a6629de75ebd71fc52e2adacf193a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/033-data-control-mechanical-electrical-and-human-interfaces.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/034-interface-contracts-and-assumptions.md",
+      "source_blob": "364b102d30ce5e2c4162ca0676971ef6245158ae",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/034-interface-contracts-and-assumptions.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/035-physical-architecture.md",
+      "source_blob": "3872dd2bfde3d4d612f86b1b262d9e7dc8bba892",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/035-physical-architecture.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/036-subsystem-decomposition.md",
+      "source_blob": "c96384ce372e113becf4125935c8cc01e3a291a1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/036-subsystem-decomposition.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/037-integration-order-and-dependency.md",
+      "source_blob": "e91e9355021c762576e327ff9fb300db49cc96e3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/037-integration-order-and-dependency.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/038-integration-readiness.md",
+      "source_blob": "2afb24f37aa1e26ea777b2ab9af8bc772830758b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/038-integration-readiness.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/039-configuration-baselines.md",
+      "source_blob": "b9264a797c4607c0e88460a3ef6d66df35d4abda",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/039-configuration-baselines.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/040-planning-system-integration-around-interface-risk.md",
+      "source_blob": "eb38af1a49f68ca38091ee64b4f3042955f6d491",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/040-planning-system-integration-around-interface-risk.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/041-decision-criteria-and-utility.md",
+      "source_blob": "7a2b64cbb9d0774165cd53ee6bf2f91d12799c9b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/041-decision-criteria-and-utility.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/042-weighted-trade-studies.md",
+      "source_blob": "15e3029048bf5edf6a28717be7c90dfab5c58b8a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/042-weighted-trade-studies.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/043-cost-schedule-performance-and-risk.md",
+      "source_blob": "be32fda9a845c1a66cda25e56c6b9e3ffd6df48c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/043-cost-schedule-performance-and-risk.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/044-sensitivity-analysis.md",
+      "source_blob": "40f62d39dcdf128daf9afebaead2857d2301f3ac",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/044-sensitivity-analysis.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/045-uncertainty-and-confidence.md",
+      "source_blob": "e51b14af7b3c29c7aecaef47967521ff56c8a26d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/045-uncertainty-and-confidence.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/046-technology-readiness.md",
+      "source_blob": "41a8d13bf4d45c8f1dbcc42c53d472581a37a431",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/046-technology-readiness.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/047-risk-identification-and-risk-registers.md",
+      "source_blob": "5382652a4670bca7bd5163190229ece16ec5ee2a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/047-risk-identification-and-risk-registers.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/048-risk-mitigation-and-retirement.md",
+      "source_blob": "a1204f07998987298763233d777eea1d05901500",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/048-risk-mitigation-and-retirement.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/049-decision-records-and-rationale.md",
+      "source_blob": "a5f7996752b0013d57b9995b1dc81c4d74d61b34",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/049-decision-records-and-rationale.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/050-selecting-an-architecture-under-competing-stakeholder-values.md",
+      "source_blob": "3e29c86b13509846773dcedd8a83775d3fdeca41",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/050-selecting-an-architecture-under-competing-stakeholder-values.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/051-models-as-authoritative-engineering-artifacts.md",
+      "source_blob": "c76430aed2d0d55aca4ed8f571e9b5a9422fd36f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/051-models-as-authoritative-engineering-artifacts.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/052-requirements-models.md",
+      "source_blob": "63357f1475dd66aaa97d4ea28f134987d6581674",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/052-requirements-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/053-behavior-models.md",
+      "source_blob": "1268c53fbe2ace062659213ba071718e03117e7e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/053-behavior-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/054-structure-models.md",
+      "source_blob": "08abd3bc7f2baa1c8d084688d1092c6a2f222c30",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/054-structure-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/055-parametric-models.md",
+      "source_blob": "30a5ed4ede0a21d2796afed1f24e326b2d9886f4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/055-parametric-models.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/056-sysml-concepts.md",
+      "source_blob": "f36c99865ec82c465c03b1aabf3bea9222f5bad9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/056-sysml-concepts.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/057-model-consistency-and-validation.md",
+      "source_blob": "9e9ce2f31a1f0df84f5f04ea0614c261e8fbd890",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/057-model-consistency-and-validation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/058-model-transformations-and-code-generation.md",
+      "source_blob": "16b369ee717febd2b099f4664bf437af1387a5a5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/058-model-transformations-and-code-generation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/059-digital-threads.md",
+      "source_blob": "f5f98f0545c97b3d21e8ec7315c04ec71ed75733",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/059-digital-threads.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/060-establishing-an-mbse-workflow-without-model-bureaucracy.md",
+      "source_blob": "70b0204ade408aff905f1a844720448dd37450cd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/060-establishing-an-mbse-workflow-without-model-bureaucracy.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/061-failure-modes-and-effects-analysis.md",
+      "source_blob": "2f46c49143a16884ed955c2c7f920d5375eccb38",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/061-failure-modes-and-effects-analysis.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/062-fault-trees.md",
+      "source_blob": "fb71c9d6c949631ccd338b196b3aa37afe8eaa8e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/062-fault-trees.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/063-reliability-block-diagrams.md",
+      "source_blob": "5638c9a4e10410aeff70fe5c708af021d7c7f295",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/063-reliability-block-diagrams.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/064-availability-modeling.md",
+      "source_blob": "49061df7c491af9562b0d8ce9de31be726778dc3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/064-availability-modeling.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/065-maintainability-and-repair.md",
+      "source_blob": "8a92afa10df1e476bd0611e7c53f592927c5955d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/065-maintainability-and-repair.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/066-system-safety-hazards.md",
+      "source_blob": "e38285319c2e51ab9bcf8c4d522d1c2e9ebe7536",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/066-system-safety-hazards.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/067-safety-cases.md",
+      "source_blob": "17b3a54c75411a7430f253f859bd4a4a07257228",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/067-safety-cases.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/068-redundancy-and-common-cause-failure.md",
+      "source_blob": "1dfa0ae147d2f9c2608f11c76e378b5e6451fd20",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/068-redundancy-and-common-cause-failure.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/069-resilience-and-graceful-degradation.md",
+      "source_blob": "8c3321601666a8a7d67b667665c05e63ff9519c9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/069-resilience-and-graceful-degradation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/070-balancing-reliability-safety-and-lifecycle-cost.md",
+      "source_blob": "99a656d5ed18b4fc0d5568877489b5904c4ac9d1",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/070-balancing-reliability-safety-and-lifecycle-cost.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/071-verification-versus-validation.md",
+      "source_blob": "3e14cfb6302122854001a0ca79cf5989c3d8f644",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/071-verification-versus-validation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/072-verification-planning.md",
+      "source_blob": "e489517b9756b60d7490a0cc0f9c945543a9d5c7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/072-verification-planning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/073-analysis-inspection-demonstration-and-test.md",
+      "source_blob": "639fa763f41dcb2500912e9803442694c82e073e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/073-analysis-inspection-demonstration-and-test.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/074-requirement-based-verification.md",
+      "source_blob": "95b46044d4405c8b6ba0f284f2e42abcc7f7cd21",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/074-requirement-based-verification.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/075-model-verification.md",
+      "source_blob": "55ffee4ae0171de3c1b1fccdbeaf166c537d60db",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/075-model-verification.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/076-interface-verification.md",
+      "source_blob": "d682c85d2956d94b6487f82729208ad3eb57fbde",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/076-interface-verification.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/077-system-validation-in-operational-context.md",
+      "source_blob": "7111b355874b40333029bc8c230372765a16524d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/077-system-validation-in-operational-context.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/078-acceptance-criteria.md",
+      "source_blob": "67f678f7bd73d90c5848e8ae1f6517c241c41621",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/078-acceptance-criteria.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/079-anomaly-resolution-and-evidence.md",
+      "source_blob": "dbfd0823596a23655d429f64ae773acac2ce2490",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/079-anomaly-resolution-and-evidence.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/080-building-a-verification-cross-reference-matrix.md",
+      "source_blob": "088aa76f51f1e9d54af2344e1914e6aff0151f83",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/080-building-a-verification-cross-reference-matrix.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/081-concept-development-production-operation-and-retirement.md",
+      "source_blob": "b6f90e438510e3a1d462ef9c8eba7bf9f4a1d2c0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/081-concept-development-production-operation-and-retirement.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/082-technical-reviews-and-decision-gates.md",
+      "source_blob": "9029237427784fdd584f4caba317ed4027159288",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/082-technical-reviews-and-decision-gates.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/083-configuration-identification-and-control.md",
+      "source_blob": "3e70a67ece7bc48a7a028be008210587100497fa",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/083-configuration-identification-and-control.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/084-baseline-management.md",
+      "source_blob": "645f14084d67ed409beb030541eee2a063efd6d9",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/084-baseline-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/085-change-impact-analysis.md",
+      "source_blob": "d080b722cf0f9866244b6158a35d5b244ef50a1d",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/085-change-impact-analysis.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/086-obsolescence-management.md",
+      "source_blob": "44d7a612c73cbce023c09425677177cbfe58c583",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/086-obsolescence-management.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/087-technology-refresh.md",
+      "source_blob": "f8bf291bb3c774b57397f9e273303540e65833d0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/087-technology-refresh.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/088-maintainability-and-support-concepts.md",
+      "source_blob": "c2e8393dcd8b04d8913c4b344be0a2e24a99f4ed",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/088-maintainability-and-support-concepts.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/089-decommissioning-and-disposal.md",
+      "source_blob": "d5adfa2f8594e44d39f0ad81866b13ef9bb8a0e4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/089-decommissioning-and-disposal.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/090-planning-evolution-while-preserving-system-integrity.md",
+      "source_blob": "0d3042ca766df02ab64c5e72e11fdb1995bdd87e",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/090-planning-evolution-while-preserving-system-integrity.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/091-systems-of-systems-characteristics.md",
+      "source_blob": "a43904c0b1eb5d750130a6dc3c130f9c3be0bfa7",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/091-systems-of-systems-characteristics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/092-managerial-and-operational-independence.md",
+      "source_blob": "d94acffdb4dd19803a9ff2491b88de0648a7e2b5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/092-managerial-and-operational-independence.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/093-federated-architectures.md",
+      "source_blob": "29a2c859082441d399e5c7d1bf670780a72359a2",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/093-federated-architectures.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/26-systems-engineering/modules/094-interoperability-across-authorities.md",
+      "source_blob": "5ca216c112ac769bcf8792a93966f1673bbc2554",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/26-systems-engineering/modules/094-interoperability-across-authorities.md",
       "disposition": "imported-unchanged"
     },
     {
@@ -2872,14 +3964,14 @@
     },
     {
       "source_path": "programs/27-distributed-systems-engineering/modules/001-why-distribution-changes-the-problem.md",
-      "source_blob": "54669ab14a7b2006f615bc91d6393af9855f27c2",
+      "source_blob": "35b863f0977114bcfd36a236d02a96e61143c3d3",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/27-distributed-systems-engineering/modules/001-why-distribution-changes-the-problem.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/27-distributed-systems-engineering/modules/002-processes-nodes-links-and-executions.md",
-      "source_blob": "254ecaf12b1e71714756da21fb27fc9aea5ab8d3",
+      "source_blob": "a711f0607f7248bb96fc479cb4be32863e7aefce",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/27-distributed-systems-engineering/modules/002-processes-nodes-links-and-executions.md",
       "disposition": "imported-unchanged"
@@ -2900,9 +3992,142 @@
     },
     {
       "source_path": "programs/28-api-and-service-engineering/modules/002-http-methods-and-their-semantics.md",
-      "source_blob": "c45d1ba7a96b792d183c39e659cddedc5de672f7",
+      "source_blob": "f7913b8bf48d24cf9ac515708f0441ce8b1b973e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/002-http-methods-and-their-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/003-status-codes-and-error-meaning.md",
+      "source_blob": "ccc4ef4d5332f9f862c269737e7be3cdb124f804",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/003-status-codes-and-error-meaning.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/004-headers-and-metadata.md",
+      "source_blob": "b47152dd2c3937f4e6c7b712795822aaf040b5d3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/004-headers-and-metadata.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/005-content-negotiation.md",
+      "source_blob": "c4dd76e229e1dd663db6b8698d3c2ab72f1efdcd",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/005-content-negotiation.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/006-conditional-requests.md",
+      "source_blob": "d221c697bfbe3ca378bd3fa2c5bde3fc7e5c60f5",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/006-conditional-requests.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/007-caching.md",
+      "source_blob": "5e5299393e33e8a3800c5ef0397b6a3e8aa8edd3",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/007-caching.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/008-idempotency-and-safety.md",
+      "source_blob": "3bbb17bac0fcde829176270bad15eee5b2a60f03",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/008-idempotency-and-safety.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/009-http-1-1-http-2-and-http-3-semantics.md",
+      "source_blob": "299f305b99a819924662d12ec409ce5f8859707b",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/009-http-1-1-http-2-and-http-3-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/010-tracing-a-request-through-client-proxy-and-service.md",
+      "source_blob": "da2d54aede7bdcfe7891cf8d66dd1f8981fea383",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/010-tracing-a-request-through-client-proxy-and-service.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/011-outside-in-api-requirements.md",
+      "source_blob": "080f079ed6bc15a1afa317c3facfebafe9141149",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/011-outside-in-api-requirements.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/012-resource-identification.md",
+      "source_blob": "9bd19a30fdfee28bb214a1ca9a967bbdd297b96f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/012-resource-identification.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/013-uri-design.md",
+      "source_blob": "0b288852533de5f49bff0e7fce3d5a5f73700532",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/013-uri-design.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/014-collections-and-individual-resources.md",
+      "source_blob": "ca29c1fff1d71675cc360c160c7109152b434aaf",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/014-collections-and-individual-resources.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/015-create-read-update-and-delete-semantics.md",
+      "source_blob": "6e9972a6603517e5a1b0075c918adc274a309dc0",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/015-create-read-update-and-delete-semantics.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/016-partial-updates.md",
+      "source_blob": "356a5f8093a3a0863fa1d59558446c2bcd62a2a8",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/016-partial-updates.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/017-filtering-sorting-and-pagination.md",
+      "source_blob": "1e0affd67505386fee5736b77d80e99136f6ba1c",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/017-filtering-sorting-and-pagination.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/018-long-running-operations.md",
+      "source_blob": "89c377f8f19756f707bc9c5a1d49760013f51bc4",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/018-long-running-operations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/019-bulk-and-batch-operations.md",
+      "source_blob": "2563d7233af15041c165c6bf0a9387bb6749e96a",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/019-bulk-and-batch-operations.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/020-designing-an-api-from-consumer-tasks-rather-than-database-tables.md",
+      "source_blob": "080fc7448844c3b4528c9363fd0236ce55a8d4be",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/020-designing-an-api-from-consumer-tasks-rather-than-database-tables.md",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "programs/28-api-and-service-engineering/modules/021-api-contracts-and-behavioral-guarantees.md",
+      "source_blob": "bea6341b719bd2952bb2e53c7277d53dd77ce61f",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/programs/28-api-and-service-engineering/modules/021-api-contracts-and-behavioral-guarantees.md",
       "disposition": "imported-unchanged"
     },
     {
@@ -2914,14 +4139,14 @@
     },
     {
       "source_path": "programs/29-platform-engineering/modules/001-platform-engineering-as-complexity-management.md",
-      "source_blob": "b36fdeecefa965732fe2452f642a25f5590954b1",
+      "source_blob": "2cd1f129eb0d451112026c4c6fe6ca58f06848ed",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/001-platform-engineering-as-complexity-management.md",
       "disposition": "imported-unchanged"
     },
     {
       "source_path": "programs/29-platform-engineering/modules/002-platform-consumers-and-jobs-to-be-done.md",
-      "source_blob": "07b1ee6f732c76a0679beb54be403ab85b4e8d7b",
+      "source_blob": "356e2c806d6317728e32b963c50da34dba66c014",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/29-platform-engineering/modules/002-platform-consumers-and-jobs-to-be-done.md",
       "disposition": "imported-unchanged"
@@ -2935,7 +4160,7 @@
     },
     {
       "source_path": "programs/30-cloud-and-infrastructure-engineering/modules/001-cloud-service-and-deployment-models.md",
-      "source_blob": "e9b023cb0651adf073e6844e66b22f19f693c6e4",
+      "source_blob": "21c2263738403b13058a67f56cbeb1bf4f8a3131",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/programs/30-cloud-and-infrastructure-engineering/modules/001-cloud-service-and-deployment-models.md",
       "disposition": "imported-unchanged"
@@ -2991,7 +4216,7 @@
     },
     {
       "source_path": "tests/course_validation/test_chapter.py",
-      "source_blob": "d678875d086d429edf63646a30e00b881ec7a549",
+      "source_blob": "267abb3f07b778a8eef9d837a4cf8288f63ca7fa",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/tests/course_validation/test_chapter.py",
       "disposition": "imported-unchanged"
@@ -3005,7 +4230,7 @@
     },
     {
       "source_path": "tests/course_validation/test_markdown.py",
-      "source_blob": "f90f875c8546c107ecb99b6005bec302d1026efe",
+      "source_blob": "6318f64abf67e2f9099559759ad4f1cfb4b0e0e1",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/tests/course_validation/test_markdown.py",
       "disposition": "imported-unchanged"
@@ -3061,7 +4286,7 @@
     },
     {
       "source_path": "tools/course_validation/chapter.py",
-      "source_blob": "6917d0934e649c37288835cc230f2cb965238e9d",
+      "source_blob": "96b616c4b5607726c4aaeeca4e01a585addd3dc3",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/tools/course_validation/chapter.py",
       "disposition": "imported-unchanged"
@@ -3082,7 +4307,7 @@
     },
     {
       "source_path": "tools/course_validation/markdown.py",
-      "source_blob": "1ffc236ec08b95739d8428caa0b7124f49a99b33",
+      "source_blob": "45e47ae3afa10f09848394f0f0d5d3f59b39571e",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/tools/course_validation/markdown.py",
       "disposition": "imported-unchanged"
@@ -3113,6 +4338,13 @@
       "source_blob": "e322334afd4636c2f496f93d55065bb6e5bd69d2",
       "mode": "100644",
       "destination": "programs-planned/computing-reference/tools/create_review_record.py",
+      "disposition": "imported-unchanged"
+    },
+    {
+      "source_path": "tools/normalize_markdown_rendering.py",
+      "source_blob": "0adce9ef3aee116c2180ec60b47a177551cc1d90",
+      "mode": "100644",
+      "destination": "programs-planned/computing-reference/tools/normalize_markdown_rendering.py",
       "disposition": "imported-unchanged"
     },
     {

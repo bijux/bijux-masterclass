@@ -31,9 +31,9 @@ How can state-dependent behavior and legal transitions be made explicit so an ob
 
 Define deterministic partial transition function
 
-\[
+$$
 \delta:S\times E\times D\times Ctx\to(S\times D\times A^*)\cup Rejected,
-\]
+$$
 
 where (S) is control state, (D) extended data, and (A^*) ordered actions. A valid implementation preserves invariant (P(s,d)): if (P(s,d)) and the selected guard holds, the committed successor satisfies (P(s',d')). State objects organize this function by source state; they do not prove guards, effect atomicity, termination, or distributed consistency.
 
@@ -182,9 +182,9 @@ Fault-inject before/after state commit, outbox, publish, effect request/response
 
 ## Definitions and Notation
 
-Machine (M=(S,E,D,\delta,s_0)). For current tuple (x=(id,s,d,v)), event (e=(eid,type,payload,expectedVersion)). A transition plan is (p=(s',d',A)).
+Machine $M=(S,E,D,\delta,s_0)$. For current tuple (x=(id,s,d,v)), event (e=(eid,type,payload,expectedVersion)). A transition plan is (p=(s',d',A)).
 
-Commit condition is (expectedVersion=v\land P(s,d)\land Guard(s,e,d,ctx)). Successful commit yields `(s',d',v+1)`; rejection/conflict preserves `(s,d,v)`.
+Commit condition is $expectedVersion=v\land P(s,d)\land Guard(s,e,d,ctx)$. Successful commit yields `(s',d',v+1)`; rejection/conflict preserves `(s,d,v)`.
 
 Transition coverage is not path coverage: with cycles, paths may be infinite. Reachability (Reach(s_0)) and safety (P) can be checked over a finite abstraction; liveness claims need fairness/environment assumptions.
 

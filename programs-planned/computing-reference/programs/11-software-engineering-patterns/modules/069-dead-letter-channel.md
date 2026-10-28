@@ -31,15 +31,15 @@ How should a messaging system preserve, explain, govern, and eventually resolve 
 
 ### Central model, mechanism, or theorem
 
-For message \(m\), let \(a_m\) be total attempts, \(e_m\) elapsed processing horizon, \(c_m\) accumulated cost, and \(d_m\) business deadline. Retry remains admissible only while the classified failure is retryable and
+For message $m$, let $a_m$ be total attempts, $e_m$ elapsed processing horizon, $c_m$ accumulated cost, and $d_m$ business deadline. Retry remains admissible only while the classified failure is retryable and
 
-\[
+$$
 a_m<A_{class}\land e_m<E_{class}\land c_m<C_{class}\land now<d_m.
-\]
+$$
 
-Otherwise the system records a reasoned transition to quarantine, dead letter, cancellation, or escalation. If independent transient failure probability were \(q\), the probability that all \(r\) attempts fail would be \(q^r\); correlated outages and deterministic defects violate independence, so attempt count alone cannot choose policy.
+Otherwise the system records a reasoned transition to quarantine, dead letter, cancellation, or escalation. If independent transient failure probability were $q$, the probability that all $r$ attempts fail would be $q^r$; correlated outages and deterministic defects violate independence, so attempt count alone cannot choose policy.
 
-Let \(O_m\in\{unresolved,completed,cancelled,superseded,accepted\_loss\}\). Moving to a DLQ preserves evidence but leaves \(O_m=unresolved\) until a governed resolution transition occurs.
+Let $O_m\in\{unresolved,completed,cancelled,superseded,accepted\_loss\}$. Moving to a DLQ preserves evidence but leaves $O_m=unresolved$ until a governed resolution transition occurs.
 
 ### Critical invariants
 
@@ -185,19 +185,19 @@ Alert on novel reasons and rate change even when depth is small. Alert on age ev
 
 | Symbol or term | Meaning |
 | --- | --- |
-| \(a_m\) | Total classified attempts for message \(m\) in the relevant retry cycle |
-| \(e_m\) | Elapsed time since first relevant failure |
-| \(c_m\) | Accumulated resource/financial/risk cost of attempts |
-| \(d_m\) | Business deadline or expiry for the intended action |
-| \(A,E,C\) | Failure-class limits on attempts, elapsed horizon, and cost |
-| \(q\) | Hypothetical independent per-attempt transient failure probability |
-| \(O_m\) | Business obligation state for \(m\) |
+| $a_m$ | Total classified attempts for message $m$ in the relevant retry cycle |
+| $e_m$ | Elapsed time since first relevant failure |
+| $c_m$ | Accumulated resource/financial/risk cost of attempts |
+| $d_m$ | Business deadline or expiry for the intended action |
+| $A,E,C$ | Failure-class limits on attempts, elapsed horizon, and cost |
+| $q$ | Hypothetical independent per-attempt transient failure probability |
+| $O_m$ | Business obligation state for $m$ |
 | poison cohort | Messages sharing a deterministic failing property, not necessarily one message |
 | redrive cycle | Governed set of new attempts after a named remediation |
 | accepted loss | Explicit authorized terminal decision with rationale; never an implicit drop |
 | transfer evidence | Proof or reconciliation state connecting source removal and target acceptance |
 
-Attempt limits are policies, not proofs that a message is invalid. The \(q^r\) calculation is an illustrative probability model requiring independent identical failures; outages, code defects, and bad schemas are correlated.
+Attempt limits are policies, not proofs that a message is invalid. The $q^r$ calculation is an illustrative probability model requiring independent identical failures; outages, code defects, and bad schemas are correlated.
 
 ## Mechanisms, Invariants, or Proof Structure
 
@@ -207,11 +207,11 @@ Assume the system atomically or reconcilably records original identity, source t
 
 ### Idempotent redrive argument
 
-Let stable operation key be \((subscription,message\_id,operation)\). Every original and redriven attempt uses that key, validates current policy/state, and commits through one atomic unique or conditional effect boundary. Therefore multiple transfer/redrive attempts produce at most one accepted effect. Eventual completion still depends on remediation, availability, deadline, authorization, and valid data.
+Let stable operation key be $(subscription,message\_id,operation)$. Every original and redriven attempt uses that key, validates current policy/state, and commits through one atomic unique or conditional effect boundary. Therefore multiple transfer/redrive attempts produce at most one accepted effect. Eventual completion still depends on remediation, availability, deadline, authorization, and valid data.
 
 ### Retry amplification
 
-If each initial message independently fails transiently with probability \(p<1\) and retries without a bound until success, expected attempts are \(1/(1-p)\); extra retry load is \(p/(1-p)\) per initial message. Correlation and overload can make \(p\) increase with retry traffic, invalidating the stationary model and causing collapse. Budgets, backoff, admission control, and circuit breaking bound the feedback.
+If each initial message independently fails transiently with probability $p<1$ and retries without a bound until success, expected attempts are $1/(1-p)$; extra retry load is $p/(1-p)$ per initial message. Correlation and overload can make $p$ increase with retry traffic, invalidating the stationary model and causing collapse. Budgets, backoff, admission control, and circuit breaking bound the feedback.
 
 ### Executable finite model
 
@@ -431,7 +431,7 @@ Distinguish a delivery attempt, processing attempt, effect attempt, retry cycle,
 
 ### Exercise 2
 
-Under the illustrative independent model, a transient attempt fails with probability \(p=0.2\). Compute the probability all four attempts fail, expected attempts with unlimited retry, and expected extra retry load per 1,000 initial messages. Then explain why an outage invalidates the model.
+Under the illustrative independent model, a transient attempt fails with probability $p=0.2$. Compute the probability all four attempts fail, expected attempts with unlimited retry, and expected extra retry load per 1,000 initial messages. Then explain why an outage invalidates the model.
 
 ### Exercise 3
 
@@ -455,17 +455,17 @@ A delivery attempt is broker assignment and may end before application execution
 
 The probability all four independent attempts fail is
 
-\[
+$$
 p^4=0.2^4=0.0016,
-\]
+$$
 
 or 0.16%. Unlimited geometric retry has expected attempts
 
-\[
+$$
 \frac{1}{1-p}=\frac{1}{0.8}=1.25.
-\]
+$$
 
-Expected extra attempts are \(p/(1-p)=0.25\) per initial message, or 250 extra attempts per 1,000. During an outage, failures are correlated across messages and time; retry traffic can worsen overload so \(p\) changes with the retry policy. The independent stationary calculation then understates tail risk and cannot choose the budget. Use deadlines, backoff, circuit/admission control, observed recovery, cost and downstream capacity.
+Expected extra attempts are $p/(1-p)=0.25$ per initial message, or 250 extra attempts per 1,000. During an outage, failures are correlated across messages and time; retry traffic can worsen overload so $p$ changes with the retry policy. The independent stationary calculation then understates tail risk and cannot choose the budget. Use deadlines, backoff, circuit/admission control, observed recovery, cost and downstream capacity.
 
 ### Answer 3
 

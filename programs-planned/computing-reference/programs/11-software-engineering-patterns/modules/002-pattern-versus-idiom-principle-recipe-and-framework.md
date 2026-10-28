@@ -31,9 +31,9 @@ How can engineers classify reusable guidance accurately enough to know what it e
 
 Classify an artifact (a) along independent dimensions rather than by one label:
 
-\[
+$$
 Classify(a)=(scope,form,executable,control,variability,rationale).
-\]
+$$
 
 A pattern primarily preserves contextual rationale and an adaptable design relationship. An idiom narrows scope to language or platform expression. A principle broadens scope and weakens structural prescription. A recipe strengthens procedural order. A framework is executable and owns part of the control flow. These categories overlap: a framework can embody patterns, expose idioms, recommend principles, and document recipes.
 
@@ -161,44 +161,44 @@ The stronger the embodiment, the stronger the coupling. Principles and patterns 
 
 For reusable artifact (a), define a descriptive profile
 
-\[
+$$
 D(a)=(S,F,E,C,V,R),
-\]
+$$
 
 where:
 
 - (S) is scope, from language expression to system structure;
 - (F) is primary form: proposition, contextual argument, ordered procedure, or executable software;
-- (E\in\{0,1\}) records whether the artifact executes;
+- $E\in\{0,1\}$ records whether the artifact executes;
 - (C) describes control ownership;
 - (V) describes permitted variation and extension points; and
 - (R) records rationale, including context, forces, and consequences.
 
 This is a multi-axis description, not a partition. Let labels be predicates over the profile:
 
-\[
+$$
 Pattern(a),\ Idiom(a),\ Principle(a),\ Recipe(a),\ Framework(a).
-\]
+$$
 
 More than one predicate may be informative for different parts of one artifact. A framework (w) can embody a set of patterns:
 
-\[
+$$
 Embodies(w)=\{\Pi_1,\ldots,\Pi_n\},
-\]
+$$
 
-but (w\ne\Pi_i). The executable framework has implementation identity, versions, and concrete policy; the pattern is reusable design knowledge.
+but $w\ne\Pi_i$. The executable framework has implementation identity, versions, and concrete policy; the pattern is reusable design knowledge.
 
 For control, write (calls(x,y,t)) when component (x) invokes (y) at time (t). A library interaction is commonly initiated and sequenced by application (A):
 
-\[
+$$
 A\rightarrow Library\rightarrow A.
-\]
+$$
 
 In a framework lifecycle, application configuration precedes a longer interval in which framework (W) invokes extension (X):
 
-\[
+$$
 A\rightarrow W;\quad W\rightarrow X\rightarrow W.
-\]
+$$
 
 These are schematic relations; real systems can mix both.
 
