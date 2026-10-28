@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "module_id": "PLAT-020",
+  "chapter_digest": "f0ca6a2c9fa03a7fecf3b4e52775f1e88bf9ae5e869268d12b0dcfa1819e3b98",
+  "review_date": "2026-09-02",
+  "source_review": {
+    "status": "passed",
+    "checked_references": 12,
+    "current_claims": "passed",
+    "retrieval_date": "2026-09-02",
+    "notes": "Checked all twelve structured references. The official Microsoft Research SPACE publication supports multidimensional productivity, multiple levels of analysis, and rejection of single activity measures. The official Google Research HEART publication supports user-centered dimensions and goals-signals-metrics reasoning. Current DORA platform guidance supports clear feedback, balanced platform measures, task success, satisfaction, adoption, retention, and delivery outcomes; the January 2026 delivery guide and history support the current five-metric throughput/instability model, contextual service-level application, changing definitions, and anti-ranking/anti-target cautions. The two developer-experience papers support the experience construct and contextual framework. The Microsoft Research survey and workday studies support mixed methods, context, agency, satisfaction/perceived-productivity distinctions, response limitations, and cautious generalization. Google Research supports team-level software-development framing. No source is treated as a universal dashboard, causal proof, privacy law, or external validation of the chapter's synthetic example."
+  },
+  "mathematics": {
+    "notation_and_syntax": {
+      "status": "passed",
+      "method": "manual_review",
+      "evidence": [
+        "Checked M=(D,P,C,I,O,G,A,R,E), eligible/active user sets, adoption A_t, cohort K_m, eligible attempt set J_t, success subset S_t, task-success T_t, duration/work/block/rework variables, indicators I_i, construct X, outcome Y, and confounders Z against first use and Definitions and Notation.",
+        "Checked tuple, set intersection, cardinality, subset, ratio, subscript, superscript, ellipsis, leadsto, bidirectional-association, and causal-arrow syntax with the repository GitHub-math validator through validate_module."
+      ],
+      "notes": "All symbols are defined, and the chapter explicitly distinguishes an indicator used as evidence from equality, association from causation, and a completeness tuple from a theorem."
+    },
+    "numerical_recomputation": {
+      "status": "passed",
+      "method": "numerical_recomputation",
+      "evidence": [
+        "Executed developer-experience-balanced-evidence under the repository Python toolchain and reproduced five before tasks, five after tasks, success rates 0.60 and 0.80, successful-task medians 50.0 and 37.5 minutes, eight generated repositories, four verified successes, and a teaching contrast of four.",
+        "Recomputed before successes as three of five and after successes as four of five; sorted successful durations [40, 50, 60] and [30, 35, 40, 45] yield medians 50 and (35+40)/2=37.5.",
+        "Checked every narrative rate and count in the compact example and executable interpretation against the fixture, including that generated artifacts exceed verified successes without being classified as universally wasteful."
+      ],
+      "notes": "The ten observations are synthetic and intentionally too small for a population or causal estimate; no interval or production effect is claimed."
+    },
+    "symbolic_recomputation": {
+      "status": "passed",
+      "method": "symbolic_recomputation",
+      "evidence": [
+        "Expanded the nine-element measurement contract against decision, population/unit, constructs, indicators, outcomes, guardrails, analysis, rights/governance, and evidence/limitations throughout the workflow.",
+        "Expanded adoption as active intersection eligible divided by eligible and verified that ineligible or unknown teams are not silently counted as nonusers.",
+        "Expanded task success as the successful subset divided by all eligible attempts and checked that abandonment, timeout, assistance, and missing instrumentation remain visible rather than conditioning on completion.",
+        "Checked I_i leadsto X separately from I_i equals X and observed association separately from a causal arrow to outcome Y."
+      ],
+      "notes": "The formulas are operational definitions and traceability aids, not claims that indicators exhaust constructs or identify causal effects."
+    },
+    "boundary_and_adversarial_cases": {
+      "status": "passed",
+      "method": "boundary_analysis",
+      "evidence": [
+        "Reviewed zero or unknown eligibility, no recurring opportunity, abandoned and failed attempts, support-assisted completion, missing events, client clock skew, retries, joins, schema revisions, small samples, long tails, multimodal populations, and Simpson-style aggregation reversal.",
+        "Reviewed forced adoption, unavailable alternatives, response/nonresponse bias, survivorship, self-report limits, instrumentation gaps, changed cohort mix, seasonality, incidents, staffing, architecture, concurrent interventions, interference, and unobserved confounding.",
+        "Reviewed commit splitting, premature ticket closure, omitted hard changes, coerced satisfaction, definition manipulation, favorable slicing, hidden countermetrics, and cross-team or individual ranking under Goodhart pressure.",
+        "Reviewed sparse-group reidentification, timestamp/role linkage, purpose drift, debugging-to-employment repurposing, excessive retention, unauthorized access, and the privacy/equity trade-off in coarse aggregation."
+      ],
+      "notes": "The chapter keeps negative evidence, guardrails, context, privacy, and limits visible under normal, boundary, and adversarial measurement conditions."
+    },
+    "invariant_checking": {
+      "status": "passed",
+      "method": "invariant_analysis",
+      "evidence": [
+        "Traced decision-first measurement through theory of change, construct definition, governed collection, analysis, interpretation, action, outcome verification, and retirement.",
+        "Checked separation among DevEx, productivity, platform quality, activity, delivery performance, and product/mission outcome in exposition, examples, failure modes, and answers.",
+        "Checked denominators, eligibility, counts, windows, distributions, missingness, uncertainty, versioned definitions, and contextual comparisons wherever ratios or trends are interpreted.",
+        "Checked no individual scoring, no causal overclaiming, no target without guardrails, no sensitive collection without governance, and no metric without owner, action, review, and retirement path."
+      ],
+      "notes": "The decision, construct, context, mixed-evidence, anti-surveillance, anti-gaming, causal-discipline, actionability, and retirement invariants hold across the chapter."
+    },
+    "proof_review": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "The chapter states no theorem and contains no deductive proof."
+    },
+    "proof_sketch_labeling": {
+      "status": "not_applicable",
+      "method": "not_applicable",
+      "evidence": [],
+      "notes": "No proof sketch is claimed; the measurement loop and traceability checks are explicitly a practice model."
+    },
+    "empirical_evidence_labeling": {
+      "status": "passed",
+      "method": "label_audit",
+      "evidence": [
+        "The executable before/after data is labeled synthetic and explicitly denied population, uncertainty, DevEx, and causal conclusions.",
+        "The source review distinguishes research frameworks, survey and interview studies, current DORA guidance, and the chapter's practitioner synthesis rather than presenting every item as an equivalent causal result.",
+        "All ten worked examples are framed as diagnostic scenarios and do not claim observed production prevalence, legal compliance, privacy certification, or externally reviewed results."
+      ],
+      "notes": "No external user study, randomized trial, causal estimate, privacy review, worker consultation, or production audit is claimed for this chapter."
+    }
+  },
+  "conceptual_review": {
+    "status": "passed",
+    "notes": "The chapter consistently treats measurement as a decision-bounded validity argument and learning system. It preserves distinct constructs and evidence sources, connects proximal mechanisms to distal outcomes cautiously, and makes governance, incentives, uncertainty, action, and retirement part of measurement quality."
+  },
+  "practitioner_review": {
+    "status": "passed",
+    "notes": "A practitioner can apply the measurement-contract template, eligible-population and task-success definitions, end-to-end task design, mixed-method evidence families, balanced scorecard, delivery-metric contextualization, baseline/comparison choices, data-quality checks, human-data safeguards, Goodhart audit, action rules, and metric retirement criteria."
+  },
+  "pedagogical_review": {
+    "status": "passed",
+    "notes": "The sequence moves from construct distinctions and decision theory through operational definitions, task evidence, mixed methods, scorecards, comparison design, uncertainty, governance, gaming, action, and retirement. Ten examples remain distinct; five exercises progress from contract construction through dashboard audit, rollout design, contradictory evidence, and safety-critical transfer, with complete answers."
+  },
+  "external_review_claimed": false,
+  "limitations": "Internal evidence record only; no external academic or practitioner review is claimed."
+}
