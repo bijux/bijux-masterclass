@@ -1,3 +1,5 @@
+> Planned source collection. See [collection status](COLLECTION.md) for preservation and qualification limits.
+
 # Platform Engineering
 
 Platform Engineering is a cumulative ten-course program that follows one **Atlas Developer Platform** from Linux processes to a governed internal platform. An abstraction is introduced only after the learner has studied the mechanism, failure model, authority boundary, and evidence that the abstraction hides.
