@@ -1,0 +1,47 @@
+{
+  "dimensions": [
+    {
+      "name": "control-plane and API reasoning",
+      "points": 15
+    },
+    {
+      "name": "object ownership and change semantics",
+      "points": 12
+    },
+    {
+      "name": "Pod and controller lifecycle",
+      "points": 12
+    },
+    {
+      "name": "rollout, scheduling and disruption mathematics",
+      "points": 15
+    },
+    {
+      "name": "configuration, identity and security-context preservation",
+      "points": 10
+    },
+    {
+      "name": "custom controller correctness",
+      "points": 14
+    },
+    {
+      "name": "failure evidence and repair discipline",
+      "points": 12
+    },
+    {
+      "name": "successor handoff and claim honesty",
+      "points": 10
+    }
+  ],
+  "nonCompensable": [
+    "mutable image identity",
+    "ambiguous field ownership",
+    "root/privileged runtime",
+    "durable path backed only by Pod-lifetime storage",
+    "status churn",
+    "finalizer removed without cleanup evidence",
+    "unsupported production claim"
+  ],
+  "passing": 85,
+  "total": 100
+}

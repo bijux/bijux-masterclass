@@ -1,0 +1,20 @@
+version: atlas-controller-choice-1.0
+workloads:
+  atlas-api:
+    controller: Deployment
+    invariant: replaceable continuously running replicas
+  atlas-worker:
+    controller: Deployment
+    invariant: replaceable consumer; durable state remains external
+    replicaLimitInCourse4: 1
+  atlas-reconciliation-report:
+    controller: CronJob
+    invariant: scheduled finite execution with idempotent logical run identity
+  atlas-node-observer:
+    controller: DaemonSet
+    invariant: one observer per eligible node; laboratory only
+rejected:
+  - candidate: StatefulSet for atlas-worker
+    reason: no stable ordinal, network, or per-replica storage identity is required
+  - candidate: custom Pod controller for atlas-api
+    reason: Deployment already owns the required rollout and replica relationship

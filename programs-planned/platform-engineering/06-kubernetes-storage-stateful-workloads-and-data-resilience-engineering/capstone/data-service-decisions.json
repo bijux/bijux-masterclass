@@ -1,0 +1,22 @@
+{
+  "decisions": [
+    {
+      "capability": "transactional-run-state",
+      "mandatoryLane": "single-writer local ledger",
+      "productionPreference": "managed database unless operator responsibility is complete",
+      "reason": "database correctness exceeds StatefulSet semantics"
+    },
+    {
+      "capability": "immutable-artifacts",
+      "mandatoryLane": "content-addressed local object repository",
+      "productionPreference": "managed object storage",
+      "reason": "independent durability and transfer semantics"
+    },
+    {
+      "capability": "worker-scratch",
+      "mandatoryLane": "emptyDir or bounded ephemeral volume",
+      "productionPreference": "ephemeral storage",
+      "reason": "complete loss is acceptable"
+    }
+  ]
+}

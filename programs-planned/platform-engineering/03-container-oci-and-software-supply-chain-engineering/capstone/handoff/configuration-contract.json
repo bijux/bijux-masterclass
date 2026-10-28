@@ -1,0 +1,5 @@
+{
+  "cloudIdentity": "short-lived workload identity",
+  "nonSecret": "environment or projected configuration",
+  "secret": "runtime secret source; never image layer or manifest annotation"
+}

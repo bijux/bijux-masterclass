@@ -1,0 +1,19 @@
+{
+  "profile": "atlas-container-security-1.0",
+  "required": {
+    "runAsNonRoot": true,
+    "uid": 65532,
+    "gid": 65532,
+    "readOnlyRootFilesystem": true,
+    "allowPrivilegeEscalation": false,
+    "capabilityPolicy": "drop-all; add only through reviewed workload exception",
+    "seccomp": "runtime-default-or-stricter-reviewed-profile",
+    "hostNamespaces": false,
+    "privileged": false,
+    "hostRuntimeSocketMount": false,
+    "hostRootMount": false,
+    "deviceAccess": "none-by-default",
+    "secretMaterialInImage": false
+  },
+  "evidenceBoundary": "Dependency-light validation checks intent and structure; native runtime and LSM enforcement require an actual Linux container environment."
+}

@@ -1,0 +1,8 @@
+{
+  "expectedPostImportAction": "no-op",
+  "import": {
+    "id": "rtb-001_10.100.0.0/16",
+    "to": "module.network.aws_route.partner"
+  },
+  "owner": "network-team"
+}

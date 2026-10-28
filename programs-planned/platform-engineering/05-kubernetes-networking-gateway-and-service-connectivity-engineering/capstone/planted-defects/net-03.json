@@ -1,0 +1,6 @@
+{
+  "id": "NET-03",
+  "title": "Endpoint readiness is ignored",
+  "description": "Service forwarding includes a not-ready API Pod.",
+  "expectedProof": "service-endpoint-proof"
+}

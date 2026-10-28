@@ -1,0 +1,45 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: atlas-api
+  namespace: flux-system
+spec:
+  image: registry.atlas.test/platform/atlas-api
+  interval: 5m
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: atlas-api-candidate
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: atlas-api
+  policy:
+    semver:
+      range: ">=1.7.0-0 <1.8.0-0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageUpdateAutomation
+metadata:
+  name: atlas-staging-candidate
+  namespace: flux-system
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: atlas-environment
+  git:
+    checkout:
+      ref:
+        branch: candidates/staging
+    commit:
+      author:
+        email: flux-bot@example.invalid
+        name: Flux Candidate Bot
+      messageTemplate: "chore(staging): propose {{range .Updated.Images}}{{println .}}{{end}}"
+    push:
+      branch: candidates/staging
+  update:
+    path: ./capstone/repository/apps/atlas/overlays/staging
+    strategy: Setters

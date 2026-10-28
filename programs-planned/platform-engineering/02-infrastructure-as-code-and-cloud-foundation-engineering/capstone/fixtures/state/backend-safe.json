@@ -1,0 +1,12 @@
+{
+  "bucketOwner": "foundation-admin",
+  "keyPrefix": "atlas/foundation",
+  "kmsEncryption": true,
+  "nativeLockfile": true,
+  "publicAccessBlock": true,
+  "recoveryVersionSelection": true,
+  "retainedVersions": 20,
+  "tlsOnlyPolicy": true,
+  "versioning": true,
+  "workloadOwner": "atlas-runtime"
+}

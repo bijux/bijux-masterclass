@@ -1,0 +1,12 @@
+region      = "eu-central-1"
+environment = "dev"
+owner       = "platform-team"
+cost_center = "education"
+account_id  = "REPLACE_WITH_SANDBOX_ACCOUNT_ID"
+backup_bucket_name = "REPLACE_WITH_GLOBALLY_UNIQUE_BUCKET"
+nat_mode    = "none"
+audit_enabled = false
+availability_zone_names_by_id = {
+  euc1-az1 = "eu-central-1a"
+  euc1-az2 = "eu-central-1b"
+}

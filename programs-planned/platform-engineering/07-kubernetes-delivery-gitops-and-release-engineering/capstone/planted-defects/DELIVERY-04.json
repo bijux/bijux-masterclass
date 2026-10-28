@@ -1,0 +1,6 @@
+{
+  "expectedControl": "protected prune policy",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-04",
+  "title": "GitOps inventory prunes retained PVC"
+}

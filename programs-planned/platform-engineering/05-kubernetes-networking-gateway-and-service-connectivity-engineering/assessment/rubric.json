@@ -1,0 +1,20 @@
+{
+  "areas": {
+    "egress": 10,
+    "gatewayTLS": 20,
+    "handoffHonesty": 10,
+    "operationsRelease": 15,
+    "packetPathsAndCNI": 15,
+    "policyLocality": 15,
+    "servicesDNS": 15
+  },
+  "nonCompensable": [
+    "broad unauthorized reachability",
+    "false dual-stack claim",
+    "unsafe TLS identity",
+    "unsafe retry",
+    "false executed evidence"
+  ],
+  "pass": 85,
+  "total": 100
+}

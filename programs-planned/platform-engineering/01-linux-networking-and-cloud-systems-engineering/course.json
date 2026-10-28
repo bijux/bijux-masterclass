@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 2,
+  "program": "platform-engineering",
+  "number": 1,
+  "id": "linux-networking-and-cloud-systems-engineering",
+  "directory": "01-linux-networking-and-cloud-systems-engineering",
+  "title": "Linux, Networking, and Cloud Systems Engineering",
+  "stage": "Understand and operate the substrate",
+  "centralQuestion": "What actually happens beneath containers, Kubernetes, and cloud abstractions, and how can a host be operated from evidence rather than guesswork?",
+  "responsibility": "Build and operate a production-shaped Linux host with explicit process, identity, resource, storage, network, trust, virtualization, cloud, and recovery boundaries.",
+  "duration": {
+    "calendarWeeks": 2,
+    "teachingDays": 10,
+    "orientationCounted": false
+  },
+  "incomingBoundary": "Basic programming, basic command-line use, and no assumed Linux administration, networking, or cloud experience.",
+  "outgoingBoundary": "Atlas Host Runtime 1.0 plus exact compute, identity, network, storage, DNS, load-balancing, metadata, observability, recovery, and failure-domain requirements ready for Course 2 infrastructure-as-code implementation.",
+  "versionState": "Atlas Host Runtime Profile 1.0; Debian 13 primary lane; Ubuntu 26.04 LTS comparison lane; POSIX.1-2024; cgroup v2; TLS 1.3; no containers or Kubernetes.",
+  "predecessor": null,
+  "successor": "02-infrastructure-as-code-and-cloud-foundation-engineering",
+  "primaryProduct": "course-book",
+  "languageStrategy": "Shell and Python for mechanisms and evidence; native Linux configuration for service, network, storage, and security boundaries.",
+  "modules": [
+    {
+      "number": 1,
+      "directory": "module-01-processes-system-calls-files-and-signals",
+      "title": "Processes, System Calls, Files, and Signals",
+      "centralQuestion": "How does a Linux process actually acquire resources, communicate, fail, and terminate?",
+      "capstoneIncrement": "Run the Atlas API and worker as separate processes with explicit descriptors, exit behavior, signal handling, and observable process ownership.",
+      "learningOutcomes": [
+        "Trace a program from executable image through process creation, system calls, descriptors, and exit status.",
+        "Use `/proc`, `ps`, `lsof`, `strace`, and shell job control to explain observed behavior.",
+        "Distinguish process identity, parentage, sessions, process groups, and terminal ownership.",
+        "Design graceful `SIGTERM` handling without pretending `SIGKILL` can be handled.",
+        "Recognize descriptor leaks, zombie processes, orphaned children, and ambiguous shutdown.",
+        "Prove process behavior with transcripts and state observations rather than screenshots alone."
+      ]
+    },
+    {
+      "number": 2,
+      "directory": "module-02-identity-permissions-capabilities-and-supervision",
+      "title": "Identity, Permissions, Capabilities, and Service Supervision",
+      "centralQuestion": "Which authority should each process possess, and who is responsible for keeping it running?",
+      "capstoneIncrement": "Give Atlas dedicated service identities, owned directories, restrictive modes, hardened systemd units, and unambiguous restart and shutdown policy.",
+      "learningOutcomes": [
+        "Reason about users, groups, mode bits, umask, ACLs, set-user-ID, and effective identity.",
+        "Use Linux capabilities only when a narrow kernel privilege is genuinely required.",
+        "Separate code, configuration, mutable state, secrets, logs, and runtime files by ownership and lifecycle.",
+        "Design systemd service dependencies, restart policy, readiness, and sandboxing deliberately.",
+        "Reject root execution, writable code, and credential exposure as convenience shortcuts.",
+        "Verify unit syntax and the effective authority of a running process."
+      ]
+    },
+    {
+      "number": 3,
+      "directory": "module-03-cpu-memory-scheduling-namespaces-and-cgroups",
+      "title": "CPU, Memory, Scheduling, Namespaces, and cgroups",
+      "centralQuestion": "How does the kernel share finite host resources, and how can one workload be bounded without making false isolation claims?",
+      "capstoneIncrement": "Publish and exercise a resource envelope for Atlas using cgroup v2 and systemd resource controls, with explicit throttling and memory-failure behavior.",
+      "learningOutcomes": [
+        "Distinguish CPU time, load average, utilization, run-queue pressure, and throttling.",
+        "Explain virtual memory, resident memory, page cache, swap, overcommit, and out-of-memory selection.",
+        "Read cgroup v2 hierarchy, controller, and pressure evidence.",
+        "Use namespaces and cgroups as mechanisms without calling them complete security boundaries.",
+        "Choose CPU, memory, task, and file-descriptor limits from workload evidence.",
+        "Demonstrate bounded failure and recovery with safe stress fixtures."
+      ]
+    },
+    {
+      "number": 4,
+      "directory": "module-04-storage-filesystems-io-and-durability",
+      "title": "Storage, Filesystems, I/O, and Durability",
+      "centralQuestion": "When an application says that data was written, which bytes are actually durable and on which failure boundary?",
+      "capstoneIncrement": "Separate Atlas runtime, configuration, logs, queue state, and results; publish files atomically; and prove disk-full and restart behavior.",
+      "learningOutcomes": [
+        "Distinguish files, directory entries, inodes, file descriptors, mounts, filesystems, and block devices.",
+        "Explain page cache, writeback, sync, fsync, rename, and directory durability.",
+        "Classify data as immutable code, configuration, ephemeral runtime state, logs, or durable application state.",
+        "Design atomic publication that does not cross filesystem boundaries.",
+        "Handle `ENOSPC`, inode exhaustion, partial writes, and interrupted cleanup explicitly.",
+        "Perform and verify a small backup-and-restore exercise rather than equating backup creation with recoverability."
+      ]
+    },
+    {
+      "number": 5,
+      "directory": "module-05-ip-routing-transport-and-sockets",
+      "title": "IP, Routing, Transport, and Sockets",
+      "centralQuestion": "How does a byte leave one process and reach the intended process across interfaces, routes, and transport state?",
+      "capstoneIncrement": "Define Atlas listening addresses, route assumptions, port ownership, timeouts, and dual-stack behavior; prove them with socket and packet-path evidence.",
+      "learningOutcomes": [
+        "Read addresses, prefixes, interfaces, routes, and neighbor state for IPv4 and IPv6.",
+        "Trace a TCP connection through SYN, established state, shutdown, and TIME_WAIT.",
+        "Distinguish TCP streams, UDP datagrams, Unix-domain sockets, and their failure models.",
+        "Choose loopback, wildcard, private, and public bindings deliberately.",
+        "Use connect, read, write, and idle timeouts as separate controls.",
+        "Diagnose listening, routing, reachability, and application failures without guessing."
+      ]
+    },
+    {
+      "number": 6,
+      "directory": "module-06-dns-http-tls-and-pki",
+      "title": "DNS, HTTP, TLS, and PKI",
+      "centralQuestion": "How does a client turn a name into an authenticated application connection, and where can that chain fail?",
+      "capstoneIncrement": "Serve Atlas through an HTTPS edge with a local trust chain, correct names, certificate verification, rotation evidence, and protocol-aware health checks.",
+      "learningOutcomes": [
+        "Explain recursive resolution, authoritative data, caching, TTLs, and negative answers.",
+        "Separate HTTP semantics from a particular transport version.",
+        "Trace TLS negotiation, certificate path validation, hostname verification, SNI, and ALPN.",
+        "Create and inspect a local CA and leaf certificate without normalizing insecure trust bypasses.",
+        "Distinguish encryption, server authentication, client authentication, and application authorization.",
+        "Diagnose name, trust, expiry, and protocol mismatch failures from evidence."
+      ]
+    },
+    {
+      "number": 7,
+      "directory": "module-07-firewalls-nat-proxies-and-load-balancing",
+      "title": "Firewalls, NAT, Proxies, and Load Balancing",
+      "centralQuestion": "Which intermediary is allowed to accept, transform, route, or reject traffic, and which identity survives each hop?",
+      "capstoneIncrement": "Place Atlas behind a bounded reverse proxy, define host firewall policy, remove untrusted forwarding headers, and demonstrate health-aware backend removal.",
+      "learningOutcomes": [
+        "Distinguish packet filtering, connection tracking, NAT, forwarding, proxying, and application routing.",
+        "Read a least-privilege nftables policy and predict its stateful behavior.",
+        "Separate forward proxies, reverse proxies, L4 load balancers, and L7 gateways.",
+        "Handle client identity and forwarding headers only across trusted proxy hops.",
+        "Design health checks, connection draining, and bounded retries without request amplification.",
+        "Explain what a load balancer can and cannot prove about application correctness."
+      ]
+    },
+    {
+      "number": 8,
+      "directory": "module-08-virtualization-images-boot-and-cloud-compute",
+      "title": "Virtualization, Images, Boot, and Cloud Compute",
+      "centralQuestion": "What changes\u2014and what does not\u2014when the Linux host becomes a virtual machine created from an image?",
+      "capstoneIncrement": "Define the Atlas machine image, boot sequence, cloud-init inputs, ephemeral-disk policy, metadata access, maintenance behavior, and replacement strategy.",
+      "learningOutcomes": [
+        "Distinguish hardware virtualization, emulation, paravirtual devices, and process isolation.",
+        "Trace firmware, bootloader, kernel, initramfs, system manager, and service startup.",
+        "Separate immutable image content from instance configuration and mutable application data.",
+        "Use cloud-init and instance metadata without placing long-lived secrets in user data.",
+        "Treat instances as replaceable while preserving state according to explicit durability boundaries.",
+        "Model host maintenance, stop/start, reboot, termination, and image replacement as distinct events."
+      ]
+    },
+    {
+      "number": 9,
+      "directory": "module-09-cloud-primitives-identity-and-failure-domains",
+      "title": "Cloud Primitives, Identity, and Failure Domains",
+      "centralQuestion": "Which cloud resources and trust boundaries are required to preserve the host guarantees without copying one provider\u2019s vocabulary into the architecture?",
+      "capstoneIncrement": "Publish provider-neutral compute, identity, network, storage, DNS, load-balancing, metadata, quota, and failure-domain requirements for Course 2.",
+      "learningOutcomes": [
+        "Use the NIST cloud characteristics and service models without reducing cloud to \u201csomeone else\u2019s server.\u201d",
+        "Map regions, zones, virtual networks, subnets, routes, security controls, and managed services across providers.",
+        "Use workload identity and metadata services without storing static cloud keys on the host.",
+        "Separate block, object, and ephemeral storage guarantees.",
+        "Reason about quotas, control-plane APIs, eventual observation, cost, and shared responsibility.",
+        "Reject single-zone and single-instance designs that claim unsupported availability."
+      ]
+    },
+    {
+      "number": 10,
+      "directory": "module-10-production-host-engineering-and-final-defense",
+      "title": "Production Host Engineering and Final Defense",
+      "centralQuestion": "Can the host be installed, started, observed, upgraded, degraded, recovered, and replaced without making a claim stronger than the evidence?",
+      "capstoneIncrement": "Release Atlas Host Runtime 1.0, run a bounded failure game day, verify recovery, and export an exact Course 2 cloud-foundation requirements package.",
+      "learningOutcomes": [
+        "Integrate service identity, resources, storage, network, TLS, firewall, supervision, logging, backup, and recovery into one host release.",
+        "Distinguish liveness, readiness, diagnostics, and business correctness.",
+        "Design patching, configuration change, rollback, certificate rotation, and machine replacement procedures.",
+        "Use structured evidence and runbooks during a multi-fault exercise.",
+        "Classify local, Linux-privileged, VM, and real-cloud evidence honestly.",
+        "Defend every outgoing infrastructure requirement and its failure assumption."
+      ]
+    }
+  ],
+  "courseRelease": "1.0.0",
+  "hostRuntimeProfile": "1.0",
+  "course2HandoffProfile": "1.0",
+  "moduleCount": 10,
+  "orientationIncluded": true
+}

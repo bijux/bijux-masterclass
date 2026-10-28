@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "kind": "Deployment",
+      "protected": false
+    },
+    {
+      "kind": "PersistentVolumeClaim",
+      "protected": true
+    },
+    {
+      "kind": "VolumeSnapshotContent",
+      "protected": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+version: atlas-readiness-handoff-1.0
+api:
+  readinessPath: /ready
+  livenessPath: /live
+  startupPath: /live
+  remoteDependenciesInLiveness: forbidden
+  endpointRule: only Ready Pods are eligible for normal Service traffic
+  propagationRisk: endpoint and data-plane changes are not instantaneous
+worker:
+  readiness: fresh heartbeat plus durable queue access
+  serviceEndpoint: none

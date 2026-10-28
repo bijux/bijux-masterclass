@@ -1,0 +1,35 @@
+{
+  "cases": [
+    {
+      "decision": "accepted",
+      "name": "accepted",
+      "states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "decision": "review-required",
+      "name": "native-missing",
+      "states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "not-executed"
+      ]
+    },
+    {
+      "decision": "rejected",
+      "name": "restore-failed",
+      "states": [
+        "pass",
+        "pass",
+        "fail",
+        "pass"
+      ]
+    }
+  ]
+}

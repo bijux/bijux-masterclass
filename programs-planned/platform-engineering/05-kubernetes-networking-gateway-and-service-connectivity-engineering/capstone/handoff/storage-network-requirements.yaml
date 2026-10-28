@@ -1,0 +1,8 @@
+version: atlas-storage-network-requirements-1.0
+requirements:
+  - CSI node and controller endpoints must be named and observable
+  - volume attachment and mount failures must be separable from service-network failures
+  - snapshot and restore traffic must have explicit egress and DNS ownership
+  - database and object-store Service identities must be stable across Pod replacement
+  - backup restoration must be tested from an empty destination
+  - stateful readiness must not report ready before durable recovery is complete

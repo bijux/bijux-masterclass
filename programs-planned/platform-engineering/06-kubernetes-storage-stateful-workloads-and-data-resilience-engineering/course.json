@@ -1,0 +1,14 @@
+{
+  "capstone": "Atlas Data Plane 1.0",
+  "cumulativeCapstone": "Atlas Data Plane 1.0",
+  "directory": "06-kubernetes-storage-stateful-workloads-and-data-resilience-engineering",
+  "duration": "10 dense teaching days plus orientation",
+  "id": "platform-engineering-course-06",
+  "modules": 10,
+  "number": 6,
+  "predecessor": "05-kubernetes-networking-gateway-and-service-connectivity-engineering",
+  "primaryProduct": "course-book",
+  "schemaVersion": 1,
+  "successor": "07-kubernetes-delivery-gitops-and-release-engineering",
+  "title": "Kubernetes Storage, Stateful Workloads, and Data Resilience Engineering"
+}

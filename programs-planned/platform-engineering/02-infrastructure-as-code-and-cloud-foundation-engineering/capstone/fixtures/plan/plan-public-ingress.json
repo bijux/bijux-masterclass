@@ -1,0 +1,7 @@
+{
+  "imdsTokens": "required",
+  "liveCloudEvidence": "not-executed",
+  "longLivedCiKey": false,
+  "publicSsh": true,
+  "stateProtection": "verified"
+}

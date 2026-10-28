@@ -1,0 +1,11 @@
+{
+  "profile": "atlas-host-runtime-1.0",
+  "operatingSystem": "debian-13",
+  "architectures": [
+    "amd64",
+    "arm64"
+  ],
+  "initSystem": "systemd",
+  "replaceableRoot": true,
+  "durableStateOutsideRoot": true
+}

@@ -1,0 +1,17 @@
+{
+  "count": 10,
+  "directory": "capstone/planted-defects",
+  "ids": [
+    "KUBE-01",
+    "KUBE-02",
+    "KUBE-03",
+    "KUBE-04",
+    "KUBE-05",
+    "KUBE-06",
+    "KUBE-07",
+    "KUBE-08",
+    "KUBE-09",
+    "KUBE-10"
+  ],
+  "rule": "Do not disclose the expected proof until the learner has named the owner and failure transition."
+}

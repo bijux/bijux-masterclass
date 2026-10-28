@@ -1,0 +1,6 @@
+{
+  "course1HostRuntime": "1.0.0",
+  "course2CloudFoundation": "1.0.0",
+  "course3WorkloadRelease": "1.0.0",
+  "course4Target": "kubernetes-workload-1.0.0"
+}

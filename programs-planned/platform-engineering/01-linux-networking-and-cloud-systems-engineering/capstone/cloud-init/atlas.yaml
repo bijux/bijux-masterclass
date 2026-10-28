@@ -1,0 +1,23 @@
+#cloud-config
+package_update: false
+
+users:
+  - default
+  - name: atlas-operator
+    groups: [sudo]
+    lock_passwd: true
+    shell: /bin/bash
+
+write_files:
+  - path: /etc/atlas/README
+    owner: root:root
+    permissions: "0644"
+    content: |
+      Atlas release, configuration, identity, and access are delivered by the
+      deployment system. This cloud-init fixture contains no long-lived key,
+      package installation, or application secret.
+
+runcmd:
+  - [install, -d, -m, "0755", /etc/atlas]
+
+final_message: "Atlas base host initialized; image and application release remain separate evidence."

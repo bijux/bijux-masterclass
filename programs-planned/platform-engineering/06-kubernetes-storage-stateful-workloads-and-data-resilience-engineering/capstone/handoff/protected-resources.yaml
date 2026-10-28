@@ -1,0 +1,8 @@
+version: atlas-protected-resources-1.0
+neverPruneWithoutDataOwnerApproval:
+  - retained PersistentVolumes
+  - retained PersistentVolumeClaims
+  - VolumeSnapshotContents with Retain deletion policy
+  - VolumeGroupSnapshotContents with Retain deletion policy
+  - backup manifests and referenced objects
+  - recovery keys and catalogues

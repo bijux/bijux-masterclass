@@ -1,0 +1,11 @@
+{
+  "candidateRelease": "atlas-workload-release-1.0.0",
+  "condition": "The signature and provenance are valid but identify the previous image index, not the candidate.",
+  "evidenceClass": "dependency-light",
+  "expectedDecision": "rejected",
+  "failedGate": "subject-binding",
+  "id": "rejected-wrong-subject",
+  "reviewQuestion": "What exact evidence would be required to change this decision without weakening another gate?",
+  "schemaVersion": "1.0",
+  "title": "Evidence refers to a different digest"
+}

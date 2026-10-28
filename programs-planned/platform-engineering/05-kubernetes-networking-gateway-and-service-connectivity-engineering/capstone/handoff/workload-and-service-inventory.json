@@ -1,0 +1,8 @@
+{
+  "namespace": "atlas-system",
+  "workloads": [
+    {"name": "atlas-api", "kind": "Deployment", "replicas": 3, "service": "atlas-api", "port": 8080},
+    {"name": "atlas-worker", "kind": "Deployment", "replicas": 1, "service": null, "port": null}
+  ],
+  "gateway": {"namespace": "atlas-gateway", "name": "atlas-public", "host": "atlas.example.invalid", "listener": "https"}
+}

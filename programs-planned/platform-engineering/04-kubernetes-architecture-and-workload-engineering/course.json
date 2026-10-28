@@ -1,0 +1,78 @@
+{
+  "capstone": "Atlas Kubernetes Workload 1.0",
+  "checkpoints": 10,
+  "courseBookPages": 97,
+  "courseBookWords": 40089,
+  "courseNumber": 4,
+  "exercises": 120,
+  "goFiles": 6,
+  "goTests": 6,
+  "id": "04-kubernetes-architecture-and-workload-engineering",
+  "jsonFiles": 40,
+  "kindReference": "0.32.0",
+  "kubernetesBaseline": "1.36.2",
+  "labs": 10,
+  "manifestControlledFiles": 246,
+  "markdownFiles": 116,
+  "modules": [
+    {
+      "number": 1,
+      "slug": "kubernetes-as-an-api-driven-control-system",
+      "title": "Kubernetes as an API-Driven Control System"
+    },
+    {
+      "number": 2,
+      "slug": "api-objects-change-semantics-and-ownership",
+      "title": "API Objects, Change Semantics, and Ownership"
+    },
+    {
+      "number": 3,
+      "slug": "pods-container-composition-and-lifecycle",
+      "title": "Pods, Container Composition, and Lifecycle"
+    },
+    {
+      "number": 4,
+      "slug": "deployments-replicasets-and-rollout-mathematics",
+      "title": "Deployments, ReplicaSets, and Rollout Mathematics"
+    },
+    {
+      "number": 5,
+      "slug": "jobs-cronjobs-daemonsets-and-controller-choice",
+      "title": "Jobs, CronJobs, DaemonSets, and Controller Choice"
+    },
+    {
+      "number": 6,
+      "slug": "configuration-secrets-and-workload-identity-projection",
+      "title": "Configuration, Secrets, and Workload Identity Projection"
+    },
+    {
+      "number": 7,
+      "slug": "resources-qos-scheduling-and-topology",
+      "title": "Resources, QoS, Scheduling, and Topology"
+    },
+    {
+      "number": 8,
+      "slug": "health-lifecycle-disruption-and-availability",
+      "title": "Health, Lifecycle, Disruption, and Availability"
+    },
+    {
+      "number": 9,
+      "slug": "statefulsets-stable-identity-and-controller-fit",
+      "title": "StatefulSets, Stable Identity, and Controller Fit"
+    },
+    {
+      "number": 10,
+      "slug": "custom-resources-controllers-and-workload-release",
+      "title": "Custom Resources, Controllers, and Workload Release"
+    }
+  ],
+  "predecessor": "Atlas Workload Release 1.0",
+  "primaryProduct": "course-book",
+  "pythonFiles": 41,
+  "pythonTests": 66,
+  "schemaVersion": 1,
+  "successor": "Kubernetes Networking, Gateway, and Service Connectivity Engineering",
+  "title": "Kubernetes Architecture and Workload Engineering",
+  "version": "1.0.0",
+  "yamlFiles": 36
+}

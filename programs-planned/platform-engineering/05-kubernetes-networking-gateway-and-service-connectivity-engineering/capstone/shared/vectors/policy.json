@@ -1,0 +1,12 @@
+{
+  "allowed": [
+    "gateway->api:tcp/8080",
+    "client->api:tcp/8080",
+    "api->dns:udp/53",
+    "api->dns:tcp/53"
+  ],
+  "denied": [
+    "attacker->api:tcp/8080",
+    "api->internet:tcp/443"
+  ]
+}

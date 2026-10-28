@@ -1,0 +1,51 @@
+{
+  "claimBoundary": "Dependency-light and local-network evidence does not certify a Kubernetes distribution, CNI, Gateway controller, cloud provider, or operated production environment.",
+  "course": "05-kubernetes-networking-gateway-and-service-connectivity-engineering",
+  "courseBook": {
+    "checkpoints": 10,
+    "exercises": 120,
+    "labs": 10,
+    "modules": 10,
+    "orientationModules": 1,
+    "pages": 107,
+    "wordsApproximate": 56000,
+    "workedAnswers": 120
+  },
+  "executed": {
+    "capstoneExperiments": 10,
+    "courseManifestFiles": 287,
+    "evidenceClasses": [
+      "document",
+      "semantic",
+      "local-network"
+    ],
+    "goModules": 2,
+    "kubernetesAndGatewayResourcesParsed": 18,
+    "plantedDefects": 10,
+    "predecessorFiles": 10,
+    "programOverlayManifestFiles": 302,
+    "pythonTests": 30,
+    "releaseCandidates": 7,
+    "successorHandoffFiles": 10,
+    "toolchain": {
+      "go": "1.23.2",
+      "openssl": "3.5.5",
+      "platform": "linux-amd64",
+      "python": "3.13.5"
+    }
+  },
+  "notExecuted": [
+    "live Kubernetes API and controller behavior",
+    "kind and Cilium cluster proof",
+    "native CNI and NetworkPolicy enforcement",
+    "CoreDNS in-cluster behavior",
+    "multi-node Service data-plane convergence",
+    "Gateway controller and cloud load-balancer behavior",
+    "managed DNS, NAT, private endpoint, and cloud firewall behavior",
+    "multi-node and multi-zone failure",
+    "representative production traffic, upgrades, incidents, and recovery",
+    "strict MkDocs rendering"
+  ],
+  "release": "Atlas Connectivity Plane 1.0",
+  "schemaVersion": "1.0"
+}

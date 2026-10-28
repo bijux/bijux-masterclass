@@ -1,0 +1,34 @@
+version: atlas-kubernetes-runtime-1.0
+transitions:
+  - transition: admit AtlasWorkload
+    owner: kube-apiserver admission chain
+    desiredObject: AtlasWorkload
+    evidence: admitted object or Status failure
+  - transition: render native workload objects
+    owner: atlas-controller
+    desiredObject: AtlasWorkload
+    evidence: owner-referenced Deployments and conditions
+  - transition: create rollout revisions
+    owner: deployment-controller
+    desiredObject: Deployment
+    evidence: ReplicaSets and Deployment status
+  - transition: maintain replica Pods
+    owner: replicaset-controller
+    desiredObject: ReplicaSet
+    evidence: controlled Pods and replica counts
+  - transition: place Pods
+    owner: kube-scheduler
+    desiredObject: unscheduled Pod
+    evidence: binding and scheduling condition
+  - transition: realize containers
+    owner: kubelet and OCI runtime
+    desiredObject: bound Pod
+    evidence: container states and Pod conditions
+  - transition: select traffic endpoints
+    owner: networking controllers and data plane
+    desiredObject: Service and readiness
+    evidence: deferred to Course 5
+  - transition: provision durable volumes
+    owner: CSI and storage system
+    desiredObject: PVC
+    evidence: deferred to Course 6

@@ -1,0 +1,10 @@
+{
+  "defect": "one matching rebuild is claimed as universal reproducibility",
+  "expectedDecision": "review-required",
+  "expectedGate": "evidence-class-proof",
+  "expectedProof": "evidence-class-proof",
+  "id": "C3-DEFECT-010",
+  "learnerTask": "Identify the violated invariant, run the named proof, and explain why a superficial green check would miss the defect.",
+  "scenario": "One same-environment rebuild is reported as toolchain-independent reproducibility.",
+  "title": "Universal reproducibility claimed from one controlled repeat"
+}

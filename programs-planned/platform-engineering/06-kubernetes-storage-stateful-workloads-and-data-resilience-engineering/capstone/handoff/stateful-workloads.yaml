@@ -1,0 +1,12 @@
+version: atlas-stateful-workloads-1.0
+workloads:
+  - name: atlas-db
+    namespace: atlas-system
+    kind: StatefulSet
+    replicas: 1
+    governingService: atlas-db
+    claims: [data]
+    readinessGate: recovery and fencing complete
+    claimRetention:
+      whenDeleted: Retain
+      whenScaled: Retain

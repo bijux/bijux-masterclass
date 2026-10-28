@@ -1,0 +1,12 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: atlas-db-data-manual
+  namespace: atlas-system
+  annotations:
+    atlas.example.invalid/consistency: application
+    atlas.example.invalid/recovery-point: REPLACE_AT_EXECUTION
+spec:
+  volumeSnapshotClassName: atlas-retained
+  source:
+    persistentVolumeClaimName: data-atlas-db-0

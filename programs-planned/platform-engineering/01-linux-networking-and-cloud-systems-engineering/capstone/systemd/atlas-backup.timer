@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Atlas backup fixture
+
+[Timer]
+OnCalendar=daily
+Persistent=yes
+RandomizedDelaySec=30m
+Unit=atlas-backup.service
+
+[Install]
+WantedBy=timers.target

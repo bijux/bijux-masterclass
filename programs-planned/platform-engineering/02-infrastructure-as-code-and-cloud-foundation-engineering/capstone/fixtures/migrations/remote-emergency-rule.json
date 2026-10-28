@@ -1,0 +1,8 @@
+{
+  "address": "module.network.aws_security_group_rule.edge_block",
+  "owner": "incident-commander",
+  "signals": {
+    "incidentId": "INC-2026-0042",
+    "remoteAuditEvent": true
+  }
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "destination": "1.1.1.1",
+    "expectedTarget": "nat-a",
+    "source": "private-a"
+  },
+  {
+    "destination": "1.1.1.1",
+    "expectedTarget": "nat-b",
+    "source": "private-b"
+  },
+  {
+    "destination": "10.64.16.10",
+    "expectedTarget": "local",
+    "source": "data-a"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "expectedControl": "field ownership review",
+  "expectedDecision": "rejected",
+  "id": "DELIVERY-05",
+  "title": "Argo CD ignoreDifferences hides an application-owned field"
+}

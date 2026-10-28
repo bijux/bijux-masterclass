@@ -1,0 +1,15 @@
+version: atlas-connectivity-handoff-1.0
+services:
+  - name: atlas-api
+    namespace: atlas-system
+    type: ClusterIP
+    selector:
+      app.kubernetes.io/name: atlas-api
+      app.kubernetes.io/part-of: atlas
+    ports:
+      - name: http
+        port: 8080
+        targetPort: http
+        protocol: TCP
+    endpointEligibility: Pod Ready condition
+    ownership: Course 5

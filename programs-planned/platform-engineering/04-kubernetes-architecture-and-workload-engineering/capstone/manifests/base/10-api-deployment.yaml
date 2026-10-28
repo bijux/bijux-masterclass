@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas-api
+  namespace: atlas-system
+  labels:
+    app.kubernetes.io/name: atlas-api
+    app.kubernetes.io/part-of: atlas
+spec:
+  replicas: 3
+  minReadySeconds: 10
+  progressDeadlineSeconds: 300
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: atlas-api
+      app.kubernetes.io/part-of: atlas
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: atlas-api
+        app.kubernetes.io/part-of: atlas
+        app.kubernetes.io/version: "1.0.0"
+      annotations:
+        platform.bijux.dev/config-digest: "sha256:6253e63db38b3f6cd63f2a35b25a6a2451996d3b24ec55570ca3e18d94a54c3b"
+    spec:
+      serviceAccountName: atlas-api
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: atlas-api
+          image: platform/atlas-api@sha256:6e3b38e88f6ef4252b635b6d199095db46233d7b6f85f3be4384d746386317a7
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: atlas-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          startupProbe:
+            httpGet:
+              path: /live
+              port: http
+            periodSeconds: 2
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 2
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 5"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: run
+              mountPath: /run/atlas
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 64Mi
+        - name: run
+          emptyDir:
+            medium: Memory
+            sizeLimit: 16Mi
