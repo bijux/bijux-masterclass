@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "collection": "research-workflows",
+  "state": "planned",
+  "base_commit": "30265cfc10a0875d49504cf12c169f7e92e7c3cd",
+  "qualified_for_course_ci": false,
+  "qualified_for_publication": false,
+  "selected_snapshot": "b0832aa26413535a52a2b8dc20f9e978d8a002fc",
+  "source_snapshots": [
+    {
+      "content_id": "f3d1d2ce42bb47567a5e268606ab06f56bf3acab30252833516e4b400fb1cd53",
+      "commit": "b0832aa26413535a52a2b8dc20f9e978d8a002fc",
+      "files": [
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-reproducible-research/deep-dive-containers/tools-[apptainer]/ToC.md",
+          "destination": "hpc/apptainer/outline.md",
+          "sha256": "eaf4b8c54a1dfc109aa25347ca3b949b26ed33c701efeb0424d226afb36ab4d6",
+          "bytes": 5016,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-reproducible-research/deep-dive-slurm/ToC.md",
+          "destination": "hpc/slurm/outline.md",
+          "sha256": "e6b86addd2fbd72072ec00cfd8c6003edc807ebf4594e1936403f770b8af2def",
+          "bytes": 8778,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-platform-engineering/ToC.md",
+          "destination": "data-platform/outline.md",
+          "sha256": "2d084a6a9a11c8c26fd3aa75023b118dff784b157b74dba441d41a474a85c0d1",
+          "bytes": 21219,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/___devops/ToC-delivery.md",
+          "destination": "delivery/outline.md",
+          "sha256": "4d04343b674de6a017cdb90320ede29362af7b135fc4168481680ebcbf581308",
+          "bytes": 8847,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/___devops/python-testing-primer.md",
+          "destination": "testing/primer.md",
+          "sha256": "a5051d409df8aaea346ca1a85938d3dd182657fea59ec1e7cbefd949fbb83606",
+          "bytes": 24071,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/___devops/test.md",
+          "destination": "testing/assessment-outline.md",
+          "sha256": "2f89368f5a3a36477ade735c667bd1202fa58ea07f8cee9df0a35c7245c05b9d",
+          "bytes": 6029,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/tools-[python-static-analysis]/ToC.md",
+          "destination": "python-quality/static-analysis/outline.md",
+          "sha256": "155eb727ccf9a4513a20e1fcf973f108f87a393db3f36b60ad5565ad9ba1305d",
+          "bytes": 5278,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/tools-[python-testing]/ToC.md",
+          "destination": "python-quality/testing/outline.md",
+          "sha256": "260fe2f3467228fcdd75e0381fcf9e412a5143b78c820dd5d89837c0b2c606fc",
+          "bytes": 7370,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/tools-[python-typing-pydantic]/ToC.md",
+          "destination": "python-quality/typing-pydantic/outline.md",
+          "sha256": "cbe104b091c991e7e338c81cea4bfe490c262462792f55e03a882a019463c740",
+          "bytes": 9650,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-tools/deep-dive-mlflow/ToC.md",
+          "destination": "experiment-tracking/mlflow/outline.md",
+          "sha256": "4d90a3e335dbb7a80e11760399a6170385b468517f3bbca52d68dba9f50e8083",
+          "bytes": 5199,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-tools/tools-py[airflow]/M01.md",
+          "destination": "orchestration/airflow/M01.md",
+          "sha256": "1860ebd4bc8c85d7da9b64167e0d8266a4fce84b5b5b459dd8ac8dd5aeccfc53",
+          "bytes": 21530,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-tools/tools-py[airflow]/M02.md",
+          "destination": "orchestration/airflow/M02.md",
+          "sha256": "c00e064779524bebc6dfefa61a122aa19b738e43f16117399b5260a6a97afd00",
+          "bytes": 26769,
+          "mode": "100755"
+        },
+        {
+          "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-tools/tools-py[airflow]/ToC.md",
+          "destination": "orchestration/airflow/outline.md",
+          "sha256": "b29d8341c756367d8792d184dfe7fe0c470c23c9a45ec84b04de5b680707ee53",
+          "bytes": 4896,
+          "mode": "100755"
+        }
+      ]
+    }
+  ],
+  "current_source_files": [
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-reproducible-research/deep-dive-containers/tools-[apptainer]/ToC.md",
+      "destination": "programs-planned/research-workflows/hpc/apptainer/outline.md",
+      "sha256": "eaf4b8c54a1dfc109aa25347ca3b949b26ed33c701efeb0424d226afb36ab4d6",
+      "bytes": 5016,
+      "mode": "100755",
+      "sha256_after": "eaf4b8c54a1dfc109aa25347ca3b949b26ed33c701efeb0424d226afb36ab4d6",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/courses-to-add/-reproducible-research/deep-dive-slurm/ToC.md",
+      "destination": "programs-planned/research-workflows/hpc/slurm/outline.md",
+      "sha256": "e6b86addd2fbd72072ec00cfd8c6003edc807ebf4594e1936403f770b8af2def",
+      "bytes": 8778,
+      "mode": "100755",
+      "sha256_after": "e6b86addd2fbd72072ec00cfd8c6003edc807ebf4594e1936403f770b8af2def",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-data-platform-engineering/ToC.md",
+      "destination": "programs-planned/research-workflows/data-platform/outline.md",
+      "sha256": "2d084a6a9a11c8c26fd3aa75023b118dff784b157b74dba441d41a474a85c0d1",
+      "bytes": 21219,
+      "mode": "100755",
+      "sha256_after": "2d084a6a9a11c8c26fd3aa75023b118dff784b157b74dba441d41a474a85c0d1",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/___devops/ToC-delivery.md",
+      "destination": "programs-planned/research-workflows/delivery/outline.md",
+      "sha256": "4d04343b674de6a017cdb90320ede29362af7b135fc4168481680ebcbf581308",
+      "bytes": 8847,
+      "mode": "100755",
+      "sha256_after": "4d04343b674de6a017cdb90320ede29362af7b135fc4168481680ebcbf581308",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/___devops/python-testing-primer.md",
+      "destination": "programs-planned/research-workflows/testing/primer.md",
+      "sha256": "a5051d409df8aaea346ca1a85938d3dd182657fea59ec1e7cbefd949fbb83606",
+      "bytes": 24071,
+      "mode": "100755",
+      "sha256_after": "a5051d409df8aaea346ca1a85938d3dd182657fea59ec1e7cbefd949fbb83606",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/___devops/test.md",
+      "destination": "programs-planned/research-workflows/testing/assessment-outline.md",
+      "sha256": "2f89368f5a3a36477ade735c667bd1202fa58ea07f8cee9df0a35c7245c05b9d",
+      "bytes": 6029,
+      "mode": "100755",
+      "sha256_after": "2f89368f5a3a36477ade735c667bd1202fa58ea07f8cee9df0a35c7245c05b9d",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/tools-[python-static-analysis]/ToC.md",
+      "destination": "programs-planned/research-workflows/python-quality/static-analysis/outline.md",
+      "sha256": "155eb727ccf9a4513a20e1fcf973f108f87a393db3f36b60ad5565ad9ba1305d",
+      "bytes": 5278,
+      "mode": "100755",
+      "sha256_after": "155eb727ccf9a4513a20e1fcf973f108f87a393db3f36b60ad5565ad9ba1305d",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/tools-[python-testing]/ToC.md",
+      "destination": "programs-planned/research-workflows/python-quality/testing/outline.md",
+      "sha256": "260fe2f3467228fcdd75e0381fcf9e412a5143b78c820dd5d89837c0b2c606fc",
+      "bytes": 7370,
+      "mode": "100755",
+      "sha256_after": "260fe2f3467228fcdd75e0381fcf9e412a5143b78c820dd5d89837c0b2c606fc",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-reproducible-research/tools-[python-typing-pydantic]/ToC.md",
+      "destination": "programs-planned/research-workflows/python-quality/typing-pydantic/outline.md",
+      "sha256": "cbe104b091c991e7e338c81cea4bfe490c262462792f55e03a882a019463c740",
+      "bytes": 9650,
+      "mode": "100755",
+      "sha256_after": "cbe104b091c991e7e338c81cea4bfe490c262462792f55e03a882a019463c740",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-tools/deep-dive-mlflow/ToC.md",
+      "destination": "programs-planned/research-workflows/experiment-tracking/mlflow/outline.md",
+      "sha256": "4d90a3e335dbb7a80e11760399a6170385b468517f3bbca52d68dba9f50e8083",
+      "bytes": 5199,
+      "mode": "100755",
+      "sha256_after": "4d90a3e335dbb7a80e11760399a6170385b468517f3bbca52d68dba9f50e8083",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-tools/tools-py[airflow]/M01.md",
+      "destination": "programs-planned/research-workflows/orchestration/airflow/M01.md",
+      "sha256": "1860ebd4bc8c85d7da9b64167e0d8266a4fce84b5b5b459dd8ac8dd5aeccfc53",
+      "bytes": 21530,
+      "mode": "100755",
+      "sha256_after": "1860ebd4bc8c85d7da9b64167e0d8266a4fce84b5b5b459dd8ac8dd5aeccfc53",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-tools/tools-py[airflow]/M02.md",
+      "destination": "programs-planned/research-workflows/orchestration/airflow/M02.md",
+      "sha256": "c00e064779524bebc6dfefa61a122aa19b738e43f16117399b5260a6a97afd00",
+      "bytes": 26769,
+      "mode": "100755",
+      "sha256_after": "c00e064779524bebc6dfefa61a122aa19b738e43f16117399b5260a6a97afd00",
+      "transformation": null
+    },
+    {
+      "source": "zzz-bijux-courses-new-v1/- programs/---bijux-masterclass/deep-dive-tools/tools-py[airflow]/ToC.md",
+      "destination": "programs-planned/research-workflows/orchestration/airflow/outline.md",
+      "sha256": "b29d8341c756367d8792d184dfe7fe0c470c23c9a45ec84b04de5b680707ee53",
+      "bytes": 4896,
+      "mode": "100755",
+      "sha256_after": "b29d8341c756367d8792d184dfe7fe0c470c23c9a45ec84b04de5b680707ee53",
+      "transformation": null
+    }
+  ],
+  "duplicate_source_aliases": []
+}
