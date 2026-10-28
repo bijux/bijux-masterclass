@@ -1,0 +1,1 @@
+mod api{mod p{pub trait S{}}pub trait BuiltIn:p::S{}pub trait Rule{}pub struct X;impl p::S for X{}impl BuiltIn for X{}impl Rule for X{}}struct Mine;impl api::Rule for Mine{}impl api::BuiltIn for Mine{}fn main(){}

@@ -1,0 +1,1 @@
+trait S{fn items(self)->Vec<u8>;}trait R{fn ok(&self,u8)->bool;}struct M;impl S for M{fn items(self)->Vec<u8>{vec![1,2]}}struct Even;impl R for Even{fn ok(&self,x:u8)->bool{x%2==0}}fn run<T:S>(s:T,r:&[Box<dyn R>])->usize{s.items().into_iter().filter(|x|r.iter().all(|q|q.ok(*x))).count()}fn main(){assert_eq!(run(M,&[Box::new(Even)]),1);}

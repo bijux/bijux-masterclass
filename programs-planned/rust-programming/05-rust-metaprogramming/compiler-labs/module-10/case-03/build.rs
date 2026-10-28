@@ -1,0 +1,1 @@
+use std::{env,fs,path::PathBuf};fn main(){println!("cargo::rerun-if-changed=config/value.txt");let v=fs::read_to_string("config/value.txt").unwrap();let n:u32=v.trim().parse().unwrap();let out=PathBuf::from(env::var("OUT_DIR").unwrap());fs::write(out.join("generated.rs"),format!("pub const VALUE:u32={n};\n")).unwrap();}

@@ -1,0 +1,12 @@
+[package]
+name = "rust-foundations-lab-10-inventory-ledger-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "inventory-ledger"
+path = "src/main.rs"

@@ -1,0 +1,4 @@
+INVENTORY-LEDGER-V1
+NEXT_ID	3
+ITEM	1	available	Rust Book
+ITEM	2	checked-out	Ownership Manual	A. Learner

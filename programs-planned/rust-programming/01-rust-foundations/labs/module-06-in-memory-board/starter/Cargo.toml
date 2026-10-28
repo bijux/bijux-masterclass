@@ -1,0 +1,8 @@
+[package]
+name = "rust-foundations-lab-06-in-memory-board-starter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[workspace]

@@ -1,0 +1,1 @@
+trait S{type E;fn load(self)->Result<u8,Self::E>;}struct M;impl S for M{type E=std::convert::Infallible;fn load(self)->Result<u8,Self::E>{Ok(1)}}fn run<T:S>(s:T)->Result<u8,T::E>{s.load()}fn main(){assert_eq!(run(M),Ok(1));}

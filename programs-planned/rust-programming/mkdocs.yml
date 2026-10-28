@@ -1,0 +1,295 @@
+site_name: Rust Programming — Courses 1–6
+site_description: A reader-first sixty-module Rust curriculum
+docs_dir: .
+site_dir: ../rust-programming-site
+theme:
+  name: mkdocs
+nav:
+- Start: README.md
+- How to study: START_HERE.md
+- Shared reasoning model: REASONING_MODEL.md
+- Skill map: SKILL_MAP.md
+- Sixty-module map: COURSE_MAP.md
+- Progress: PROGRESS.md
+- Glossary: GLOSSARY.md
+- Course 1 — Rust Foundations:
+  - Course overview: 01-rust-foundations/course-book/index.md
+  - Ten-day plan: 01-rust-foundations/course-book/study-plan.md
+  - '01 — Compilation, Expressions, and Types':
+    - Chapter: 01-rust-foundations/course-book/module-01-compilation-expressions-and-types/index.md
+    - Workbook: 01-rust-foundations/course-book/module-01-compilation-expressions-and-types/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-01-compilation-expressions-and-types/solutions.md
+  - '02 — Control Flow, Functions, and Invariants':
+    - Chapter: 01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/index.md
+    - Workbook: 01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-02-control-flow-functions-and-invariants/solutions.md
+  - '03 — Ownership, Moves, Copying, and Destruction':
+    - Chapter: 01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/index.md
+    - Workbook: 01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-03-ownership-moves-copying-and-destruction/solutions.md
+  - '04 — Borrowing, References, Slices, and Strings':
+    - Chapter: 01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/index.md
+    - Workbook: 01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-04-borrowing-references-slices-and-strings/solutions.md
+  - '05 — Structs, Enums, Methods, and Pattern Matching':
+    - Chapter: 01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/index.md
+    - Workbook: 01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-05-structs-enums-methods-and-pattern-matching/solutions.md
+  - '06 — Collections, Iterators, and Closures':
+    - Chapter: 01-rust-foundations/course-book/module-06-collections-iterators-and-closures/index.md
+    - Workbook: 01-rust-foundations/course-book/module-06-collections-iterators-and-closures/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-06-collections-iterators-and-closures/solutions.md
+  - '07 — Errors, Parsing, Files, and Persistence':
+    - Chapter: 01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/index.md
+    - Workbook: 01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-07-errors-parsing-files-and-persistence/solutions.md
+  - '08 — Generics, Traits, Conversions, and Lifetime Basics':
+    - Chapter: 01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/index.md
+    - Workbook: 01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-08-generics-traits-conversions-and-lifetime-basics/solutions.md
+  - '09 — Crates, Modules, Public APIs, Tests, and Documentation':
+    - Chapter: 01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/index.md
+    - Workbook: 01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-09-crates-modules-public-apis-tests-and-documentation/solutions.md
+  - '10 — Integration and Independent Change':
+    - Chapter: 01-rust-foundations/course-book/module-10-integration-and-independent-change/index.md
+    - Workbook: 01-rust-foundations/course-book/module-10-integration-and-independent-change/workbook.md
+    - Reasoned solutions: 01-rust-foundations/course-book/module-10-integration-and-independent-change/solutions.md
+  - Taskboard engineering guide: 01-rust-foundations/course-book/capstone.md
+  - Course reference: 01-rust-foundations/course-book/reference.md
+  - Final review: 01-rust-foundations/course-book/final-review.md
+- Course 2 — Ownership, Lifetimes, and Memory:
+  - Course overview: 02-rust-ownership-lifetimes-memory/course-book/index.md
+  - Ten-day plan: 02-rust-ownership-lifetimes-memory/course-book/study-plan.md
+  - '11 — Places, Move Paths, and Advanced Borrowing':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-11-places-move-paths-and-advanced-borrowing/solutions.md
+  - '12 — Lifetime Relationships and Borrowed APIs':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-12-lifetime-relationships-and-borrowed-apis/solutions.md
+  - '13 — Scoped Access and Escape Prevention':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-13-scoped-access-and-escape-prevention/solutions.md
+  - '14 — RAII, Drop, Unwinding, and Failure Atomicity':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-14-raii-drop-unwinding-and-failure-atomicity/solutions.md
+  - '15 — Box, Deref, Dynamically Sized Types, and Cow':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-15-box-deref-dynamically-sized-types-and-cow/solutions.md
+  - '16 — Rc, Weak, and Ownership Graphs':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-16-rc-weak-and-ownership-graphs/solutions.md
+  - '17 — Interior Mutability and Runtime Borrows':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-17-interior-mutability-and-runtime-borrows/solutions.md
+  - '18 — Memory Representation, Validity, and Layout':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-18-memory-representation-validity-and-layout/solutions.md
+  - '19 — Subtyping, Variance, PhantomData, and Drop Checking':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-19-subtyping-variance-phantomdata-and-drop-checking/solutions.md
+  - '20 — Pinning and Address-Sensitive Design':
+    - Chapter: 02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/index.md
+    - Workbook: 02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/workbook.md
+    - Reasoned solutions: 02-rust-ownership-lifetimes-memory/course-book/module-20-pinning-and-address-sensitive-design/solutions.md
+  - Memory Workspace engineering guide: 02-rust-ownership-lifetimes-memory/course-book/capstone.md
+  - Course reference: 02-rust-ownership-lifetimes-memory/course-book/reference.md
+  - Final review: 02-rust-ownership-lifetimes-memory/course-book/final-review.md
+- Course 3 — Traits, Generics, and Architectural Design:
+  - Course overview: 03-rust-traits-generics-architectural-design/course-book/index.md
+  - Ten-day plan: 03-rust-traits-generics-architectural-design/course-book/study-plan.md
+  - '21 — Traits as Behavioral Contracts':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-21-traits-as-behavioral-contracts/solutions.md
+  - '22 — Associated Types and Type Families':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-22-associated-types-and-type-families/solutions.md
+  - '23 — Coherence and Implementation Ownership':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-23-coherence-and-implementation-ownership/solutions.md
+  - '24 — Static Polymorphism and Opaque Types':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-24-static-polymorphism-and-opaque-types/solutions.md
+  - '25 — Trait Objects and Dynamic Polymorphism':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-25-trait-objects-and-dynamic-polymorphism/solutions.md
+  - '26 — Composition and OOP-Style Design Without Inheritance':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-26-composition-and-oop-style-design-without-inheritance/solutions.md
+  - '27 — Typestate and Capability-Oriented APIs':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-27-typestate-and-capability-oriented-apis/solutions.md
+  - '28 — Boundary Traits and Adapters':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-28-boundary-traits-and-adapters/solutions.md
+  - '29 — Public API Evolution':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-29-public-api-evolution/solutions.md
+  - '30 — Architectural Synthesis':
+    - Chapter: 03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/index.md
+    - Workbook: 03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/workbook.md
+    - Reasoned solutions: 03-rust-traits-generics-architectural-design/course-book/module-30-architectural-synthesis/solutions.md
+  - Review Engine engineering guide: 03-rust-traits-generics-architectural-design/course-book/capstone.md
+  - Course reference: 03-rust-traits-generics-architectural-design/course-book/reference.md
+  - Final review: 03-rust-traits-generics-architectural-design/course-book/final-review.md
+- Course 4 — Functional Rust:
+  - Course overview: 04-rust-functional-programming/course-book/index.md
+  - Ten-day plan: 04-rust-functional-programming/course-book/study-plan.md
+  - '31 — Closures, Capture, and Callable Contracts':
+    - Chapter: 04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-31-closures-capture-and-callable-contracts/solutions.md
+  - '32 — The Iterator Model':
+    - Chapter: 04-rust-functional-programming/course-book/module-32-the-iterator-model/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-32-the-iterator-model/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-32-the-iterator-model/solutions.md
+  - '33 — Iterator Algebra and Pipeline Shape':
+    - Chapter: 04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-33-iterator-algebra-and-pipeline-shape/solutions.md
+  - '34 — Folds, Scans, and Short-Circuiting':
+    - Chapter: 04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-34-folds-scans-and-short-circuiting/solutions.md
+  - '35 — Option, Result, and Fallible Traversal':
+    - Chapter: 04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-35-option-result-and-fallible-traversal/solutions.md
+  - '36 — Custom Iterators and Collection Protocols':
+    - Chapter: 04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-36-custom-iterators-and-collection-protocols/solutions.md
+  - '37 — Recursive Data and Structural Sharing':
+    - Chapter: 04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-37-recursive-data-and-structural-sharing/solutions.md
+  - '38 — Functional Core and Effect Isolation':
+    - Chapter: 04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-38-functional-core-and-effect-isolation/solutions.md
+  - '39 — Combinator Laws and Cost Models':
+    - Chapter: 04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-39-combinator-laws-and-cost-models/solutions.md
+  - '40 — Functional Architecture Synthesis':
+    - Chapter: 04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/index.md
+    - Workbook: 04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/workbook.md
+    - Reasoned solutions: 04-rust-functional-programming/course-book/module-40-functional-architecture-synthesis/solutions.md
+  - LedgerFlow engineering guide: 04-rust-functional-programming/course-book/capstone.md
+  - Course reference: 04-rust-functional-programming/course-book/reference.md
+  - Final review: 04-rust-functional-programming/course-book/final-review.md
+- Course 5 — Rust Metaprogramming:
+  - Course overview: 05-rust-metaprogramming/course-book/index.md
+  - Ten-day plan: 05-rust-metaprogramming/course-book/study-plan.md
+  - '41 — Metaprogramming Boundaries and the Expansion Model':
+    - Chapter: 05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-41-metaprogramming-boundaries-and-expansion-model/solutions.md
+  - '42 — Declarative Macros: Matchers, Fragments, and Repetition':
+    - Chapter: 05-rust-metaprogramming/course-book/module-42-declarative-macros-matchers-fragments-and-repetition/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-42-declarative-macros-matchers-fragments-and-repetition/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-42-declarative-macros-matchers-fragments-and-repetition/solutions.md
+  - '43 — Recursive Macro Parsing and Token-Tree Techniques':
+    - Chapter: 05-rust-metaprogramming/course-book/module-43-recursive-macro-parsing-and-token-tree-techniques/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-43-recursive-macro-parsing-and-token-tree-techniques/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-43-recursive-macro-parsing-and-token-tree-techniques/solutions.md
+  - '44 — Hygiene, Scope, Paths, and Cross-Crate Macros':
+    - Chapter: 05-rust-metaprogramming/course-book/module-44-hygiene-scope-paths-and-cross-crate-macros/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-44-hygiene-scope-paths-and-cross-crate-macros/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-44-hygiene-scope-paths-and-cross-crate-macros/solutions.md
+  - '45 — Macro Diagnostics, Testing, and Public API Design':
+    - Chapter: 05-rust-metaprogramming/course-book/module-45-macro-diagnostics-testing-and-public-api-design/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-45-macro-diagnostics-testing-and-public-api-design/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-45-macro-diagnostics-testing-and-public-api-design/solutions.md
+  - '46 — Procedural Macro Execution and TokenStream Engineering':
+    - Chapter: 05-rust-metaprogramming/course-book/module-46-procedural-macro-execution-and-tokenstream-engineering/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-46-procedural-macro-execution-and-tokenstream-engineering/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-46-procedural-macro-execution-and-tokenstream-engineering/solutions.md
+  - '47 — Custom Derive Macros and Structural Generation':
+    - Chapter: 05-rust-metaprogramming/course-book/module-47-custom-derive-macros-and-structural-generation/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-47-custom-derive-macros-and-structural-generation/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-47-custom-derive-macros-and-structural-generation/solutions.md
+  - '48 — Attribute Macros and Item Transformation':
+    - Chapter: 05-rust-metaprogramming/course-book/module-48-attribute-macros-and-item-transformation/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-48-attribute-macros-and-item-transformation/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-48-attribute-macros-and-item-transformation/solutions.md
+  - '49 — Function-Like Procedural Macros and Typed DSLs':
+    - Chapter: 05-rust-metaprogramming/course-book/module-49-function-like-procedural-macros-and-typed-dsls/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-49-function-like-procedural-macros-and-typed-dsls/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-49-function-like-procedural-macros-and-typed-dsls/solutions.md
+  - '50 — Build Scripts, Generated Code, and Compile-Time Architecture':
+    - Chapter: 05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/index.md
+    - Workbook: 05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/workbook.md
+    - Reasoned solutions: 05-rust-metaprogramming/course-book/module-50-build-scripts-generated-code-and-compile-time-architecture/solutions.md
+  - CommandForge engineering guide: 05-rust-metaprogramming/course-book/capstone.md
+  - Course reference: 05-rust-metaprogramming/course-book/reference.md
+  - Final review: 05-rust-metaprogramming/course-book/final-review.md
+- Course 6 — Rust Systems Programming:
+  - Course overview: 06-rust-systems-programming/course-book/index.md
+  - Ten-day plan: 06-rust-systems-programming/course-book/study-plan.md
+  - '51 — Binary Data Contracts: Bytes, Endianness, and Checked Parsing':
+    - Chapter: 06-rust-systems-programming/course-book/module-51-binary-data-contracts/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-51-binary-data-contracts/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-51-binary-data-contracts/solutions.md
+  - '52 — Files, Durability, and Transactional Replacement':
+    - Chapter: 06-rust-systems-programming/course-book/module-52-files-durability-and-transactional-replacement/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-52-files-durability-and-transactional-replacement/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-52-files-durability-and-transactional-replacement/solutions.md
+  - '53 — Paths, Names, and Platform Boundaries':
+    - Chapter: 06-rust-systems-programming/course-book/module-53-paths-names-and-platform-boundaries/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-53-paths-names-and-platform-boundaries/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-53-paths-names-and-platform-boundaries/solutions.md
+  - '54 — Processes, Environments, and Standard Streams':
+    - Chapter: 06-rust-systems-programming/course-book/module-54-processes-environments-and-standard-streams/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-54-processes-environments-and-standard-streams/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-54-processes-environments-and-standard-streams/solutions.md
+  - '55 — Unsafe Rust as a Proof Boundary':
+    - Chapter: 06-rust-systems-programming/course-book/module-55-unsafe-rust-and-safety-proofs/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-55-unsafe-rust-and-safety-proofs/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-55-unsafe-rust-and-safety-proofs/solutions.md
+  - '56 — Raw Pointers, Provenance, and Uninitialized Memory':
+    - Chapter: 06-rust-systems-programming/course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-56-raw-pointers-provenance-and-uninitialized-memory/solutions.md
+  - '57 — Manual Allocation and Owning Unsafe Abstractions':
+    - Chapter: 06-rust-systems-programming/course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-57-manual-allocation-and-owning-unsafe-abstractions/solutions.md
+  - '58 — C FFI: ABI, Strings, Pointers, and Error Boundaries':
+    - Chapter: 06-rust-systems-programming/course-book/module-58-c-ffi-abi-strings-and-error-boundaries/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-58-c-ffi-abi-strings-and-error-boundaries/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-58-c-ffi-abi-strings-and-error-boundaries/solutions.md
+  - '59 — Foreign Resources, Callbacks, and Wrapper Architecture':
+    - Chapter: 06-rust-systems-programming/course-book/module-59-foreign-resources-callbacks-and-wrapper-architecture/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-59-foreign-resources-callbacks-and-wrapper-architecture/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-59-foreign-resources-callbacks-and-wrapper-architecture/solutions.md
+  - '60 — Integrated Systems Design, Testing, and Audit':
+    - Chapter: 06-rust-systems-programming/course-book/module-60-integrated-systems-design-and-audit/index.md
+    - Workbook: 06-rust-systems-programming/course-book/module-60-integrated-systems-design-and-audit/workbook.md
+    - Reasoned solutions: 06-rust-systems-programming/course-book/module-60-integrated-systems-design-and-audit/solutions.md
+  - FrameVault engineering guide: 06-rust-systems-programming/course-book/capstone.md
+  - Course reference: 06-rust-systems-programming/course-book/reference.md
+  - Final review: 06-rust-systems-programming/course-book/final-review.md
+- Source notes: SOURCE_NOTES.md
+exclude_docs: |
+  **/target/**
+  **/.git/**
+  **/.progress.json

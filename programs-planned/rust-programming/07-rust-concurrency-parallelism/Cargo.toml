@@ -1,0 +1,51 @@
+[workspace]
+resolver = "3"
+members = [
+    "capstone",
+    "labs/module-01-thread-handoff-matrix/solution",
+    "labs/module-02-scoped-slice-analysis/solution",
+    "labs/module-03-protected-inventory/solution",
+    "labs/module-04-phase-gate/solution",
+    "labs/module-05-bounded-map-pipeline/solution",
+    "labs/module-06-cancellable-worker-group/solution",
+    "labs/module-07-atomic-progress/solution",
+    "labs/module-08-spsc-ring/solution",
+    "labs/module-09-parallel-histogram/solution",
+    "labs/module-10-concurrent-verifier/solution",
+]
+exclude = [
+    "labs/module-01-thread-handoff-matrix/starter",
+    "labs/module-02-scoped-slice-analysis/starter",
+    "labs/module-03-protected-inventory/starter",
+    "labs/module-04-phase-gate/starter",
+    "labs/module-05-bounded-map-pipeline/starter",
+    "labs/module-06-cancellable-worker-group/starter",
+    "labs/module-07-atomic-progress/starter",
+    "labs/module-08-spsc-ring/starter",
+    "labs/module-09-parallel-histogram/starter",
+    "labs/module-10-concurrent-verifier/starter",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+publish = false
+
+[workspace.dependencies]
+rayon = "=1.12.0"
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+missing_docs = "allow"
+
+[workspace.lints.clippy]
+correctness = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+undocumented_unsafe_blocks = "deny"
+missing_safety_doc = "deny"
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"
