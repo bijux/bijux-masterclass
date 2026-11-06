@@ -11,7 +11,7 @@
         "mkdocs-minify-plugin",
         "setuptools"
       ],
-      "lock_sha256": "75e94b7c0b12e3941afa22aa305e689d30200a17d7c59f506ef38ae8d3c3fc7e",
+      "lock_sha256": "6fc80ffaefae3d604b97cfccc68e536402f114cd14dd501b4efb6380208b3fe2",
       "packages": {
         "babel": "2.18.0",
         "backrefs": "8.1",
@@ -32,11 +32,11 @@
         "markupsafe": "3.0.4",
         "mergedeep": "1.3.4",
         "mkdocs": "1.6.1",
-        "mkdocs-autorefs": "1.4.4",
+        "mkdocs-autorefs": "1.4.5",
         "mkdocs-get-deps": "0.2.2",
-        "mkdocs-git-revision-date-localized-plugin": "1.6.0",
+        "mkdocs-git-revision-date-localized-plugin": "1.6.2",
         "mkdocs-macros-plugin": "1.5.0",
-        "mkdocs-material": "9.7.7",
+        "mkdocs-material": "9.8.0",
         "mkdocs-material-extensions": "1.3.1",
         "mkdocs-minify-plugin": "0.8.0",
         "packaging": "26.3",

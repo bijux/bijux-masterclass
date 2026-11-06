@@ -244,7 +244,11 @@ class DocsEnvironmentTests(unittest.TestCase):
 
     def test_authored_plugin_and_version_ranges_are_preserved(self):
         before=self.requirements.read_text()
-        for contents in (before.replace('mkdocs-material>=9.7.7,<10','mkdocs-material>=9.8,<10'),before+'mkdocs-extra-plugin>=1,<2\n',before.replace('mkdocs-autorefs>=1.4.4,<2\n','')):
+        material=next(line for line in before.splitlines() if line.startswith('mkdocs-material>='))
+        autorefs=next(line for line in before.splitlines() if line.startswith('mkdocs-autorefs>='))
+        unsupported_major=int(self.packages['mkdocs-material'].split('.')[0])+1
+        incompatible=f'mkdocs-material>={unsupported_major},<{unsupported_major+1}'
+        for contents in (before.replace(material,incompatible),before+'mkdocs-extra-plugin>=1,<2\n',before.replace(autorefs+'\n','')):
             self.requirements.write_text(contents)
             with self.subTest(contents=contents), self.assertRaises(RuntimeError):
                 self.prepare()
