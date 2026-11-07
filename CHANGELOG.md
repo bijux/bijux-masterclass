@@ -4,7 +4,10 @@
 
 ### Changed
 
-- Qualify Material 9.8, autorefs 1.4.5 and revision-date 1.6.2 in the hashed
+- Patch the Fastify static-file dependency closure in all seven retained API tracks,
+  and record the maintained lock identities without changing original teaching snapshots.
+
+- Qualify Material 9.8, autorefs 1.4.5 and revision-date 1.6.3 in the hashed
   catalogue verification environment, and adopt accepted workflow installer actions.
 
 - Harden documentation and retained course dependencies, qualify the documentation and Snakemake locks, and add reproducible Node locks. Record maintained source hashes separately from the original teaching snapshots; planned programs remain outside course CI and publication.
