@@ -82180,6 +82180,46 @@
           ]
         }
       ]
+    },
+    {
+      "intent": "Patch Fastify static-file glob and minimatch dependency closures across all retained API track copies; original source snapshots and course admission remain unchanged.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/01-openapi-contract-engineering/capstone/services/typescript-fastify/package-lock.json",
+          "sha256_before": "3a91d343f45979f948808d23cfac74f9fac78d91978a679f4f611bda82f4a71c",
+          "sha256_after": "f2faf0d99795ede537781699dc1ff66ed69ecaf49eeefd22d0872129c5944bbe"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/handoff/reference-tracks/typescript-fastify/package-lock.json",
+          "sha256_before": "a60a430a85aadcf1858b4d117b662ccd5b820e849bc27449e3c157140c368071",
+          "sha256_after": "b872eb992266b9114ae5e939b537e5e1bd28468e815d7a08ad8dd126584c8cfd"
+        },
+        {
+          "path": "programs-planned/api-engineering/02-contract-driven-api-service-engineering/capstone/tracks/typescript-fastify/package-lock.json",
+          "sha256_before": "a60a430a85aadcf1858b4d117b662ccd5b820e849bc27449e3c157140c368071",
+          "sha256_after": "b872eb992266b9114ae5e939b537e5e1bd28468e815d7a08ad8dd126584c8cfd"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/predecessor/reference-tracks/typescript-fastify/package-lock.json",
+          "sha256_before": "a60a430a85aadcf1858b4d117b662ccd5b820e849bc27449e3c157140c368071",
+          "sha256_after": "b872eb992266b9114ae5e939b537e5e1bd28468e815d7a08ad8dd126584c8cfd"
+        },
+        {
+          "path": "programs-planned/api-engineering/03-api-security-engineering/capstone/tracks/typescript-fastify/package-lock.json",
+          "sha256_before": "ba7371a148d918468ca2b546a827352ffbeea18793a68e3d3d6ddd3814a8def2",
+          "sha256_after": "031bf4e35589eeee0181fd5aa1a21b72a4cf396f80dad08db56f7fbe9d3a3a2e"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/predecessor/reference-tracks/typescript-fastify/package-lock.json",
+          "sha256_before": "ba7371a148d918468ca2b546a827352ffbeea18793a68e3d3d6ddd3814a8def2",
+          "sha256_after": "031bf4e35589eeee0181fd5aa1a21b72a4cf396f80dad08db56f7fbe9d3a3a2e"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/package-lock.json",
+          "sha256_before": "24962e4501d68567a5fc29665baf5c146487213266f341fe3a7c489eef72b5e1",
+          "sha256_after": "5e2859af6f13d17c4329c94470242c0343c738f2ec48087dc92a62ba613eb0d6"
+        }
+      ]
     }
   ]
 }

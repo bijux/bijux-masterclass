@@ -4,6 +4,9 @@
 
 ### Changed
 
+- Patch the Fastify static-file dependency closure in all seven retained API tracks,
+  and record the maintained lock identities without changing original teaching snapshots.
+
 - Qualify Material 9.8, autorefs 1.4.5 and revision-date 1.6.3 in the hashed
   catalogue verification environment, and adopt accepted workflow installer actions.
 
