@@ -4,6 +4,11 @@
 
 ### Changed
 
+- Qualify Material 9.8.1, PyMdown Extensions 13.0 and revision-date 1.7.0 in the
+  hashed catalogue environment, and adopt the accepted Ruby installer action while
+  preserving independent course and documentation authorities
+  ([#134](https://github.com/bijux/bijux-masterclass/pull/134)).
+
 - Patch the Fastify static-file dependency closure in all seven retained API tracks,
   and record the maintained lock identities without changing original teaching snapshots.
 
