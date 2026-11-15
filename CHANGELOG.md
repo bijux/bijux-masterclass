@@ -4,6 +4,10 @@
 
 ### Changed
 
+- Keep the optional reliability FastAPI OpenTelemetry API, SDK and exporter at
+  1.45.2 with matching 0.66b2 instrumentation, and record the maintained source
+  identities ([#136](https://github.com/bijux/bijux-masterclass/pull/136)).
+
 - Qualify Material 9.8.1, PyMdown Extensions 13.0 and revision-date 1.7.0 in the
   hashed catalogue environment, and adopt the accepted Ruby installer action while
   preserving independent course and documentation authorities

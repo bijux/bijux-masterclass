@@ -59962,7 +59962,7 @@
       "sha256": "a11186ff8adc2e23147162cee7ec54f21b4ee8854c12c4ffbda46c1e4705ed49",
       "bytes": 853,
       "mode": "100644",
-      "sha256_after": "380b23eea9ae38123112bd2e2379ca96cd364513697a026024a8a5d0703ba51b",
+      "sha256_after": "931d18d7c020b232aecaf59359db499407fd681bbd8ebbfbb7d25bbd67381ec0",
       "transformation": "maintained-tool-version-inventory"
     },
     {
@@ -62599,7 +62599,7 @@
       "sha256": "ce72b5f3f4014c7b01884903170129f0a65882d9a4410fb148142178f02a730c",
       "bytes": 1150,
       "mode": "100644",
-      "sha256_after": "df020ee553481a463aa0d95907b8f221f677638e3c4b45e2eeac9293c7d4111d",
+      "sha256_after": "22825233ffc973f52704275a1ff0a5a4658e56b64063cf6a6690f3191acbfd23",
       "transformation": "dependency-security-maintenance"
     },
     {
@@ -82218,6 +82218,21 @@
           "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/typescript-fastify/package-lock.json",
           "sha256_before": "24962e4501d68567a5fc29665baf5c146487213266f341fe3a7c489eef72b5e1",
           "sha256_after": "5e2859af6f13d17c4329c94470242c0343c738f2ec48087dc92a62ba613eb0d6"
+        }
+      ]
+    },
+    {
+      "intent": "Qualify the matching OpenTelemetry Python API, SDK, exporter and instrumentation cohort for the optional reliability track; original source snapshots and course admission remain unchanged.",
+      "files": [
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/capstone/tracks/python-fastapi/pyproject.toml",
+          "sha256_before": "df020ee553481a463aa0d95907b8f221f677638e3c4b45e2eeac9293c7d4111d",
+          "sha256_after": "22825233ffc973f52704275a1ff0a5a4658e56b64063cf6a6690f3191acbfd23"
+        },
+        {
+          "path": "programs-planned/api-engineering/04-api-reliability-and-observability-engineering/tool-versions.json",
+          "sha256_before": "380b23eea9ae38123112bd2e2379ca96cd364513697a026024a8a5d0703ba51b",
+          "sha256_after": "931d18d7c020b232aecaf59359db499407fd681bbd8ebbfbb7d25bbd67381ec0"
         }
       ]
     }
