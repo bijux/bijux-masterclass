@@ -16,8 +16,8 @@
   "typebox": "0.34.52",
   "nodePostgres": "8.22.0",
   "vitest": "4.1.12",
-  "opentelemetryPythonSdk": "1.45.1",
-  "opentelemetryPythonInstrumentation": "0.66b1",
+  "opentelemetryPythonSdk": "1.45.2",
+  "opentelemetryPythonInstrumentation": "0.66b2",
   "opentelemetryJsApi": "1.9.1",
   "opentelemetryJsSdkNode": "0.221.0",
   "otelCollectorContrib": "0.136.0",
@@ -29,5 +29,5 @@
     "mkdocs": "1.6.1",
     "mkdocsMaterial": "9.7.7"
   },
-  "maintained_on": "2026-10-28"
+  "maintained_on": "2026-11-15"
 }
